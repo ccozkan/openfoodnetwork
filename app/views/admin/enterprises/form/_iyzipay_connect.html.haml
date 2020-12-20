@@ -1,0 +1,35 @@
+- if @iyzipay_account = IyzipayAccount.where(enterprise_id: @enterprise.id).first
+  .stripe-info
+    .row İyzico hesabı bağlandı
+- elsif @enterprise.abn.blank?
+  .row.stripe-info
+    .six.columns.alpha Iyzipay ile çevirimiçi kredi kartı ödemesi almak için lütfen 'İşletme Detayları' bölümünden VKN/TCKN numarasını giriniz.
+- else
+  .stripe-info
+    .row Bu üreticiye ait İyzico hesabı bulunamadı. Aşağıdaki bilgileri doldurup bir hesap açabilirsiniz.
+  .row
+    .alpha.three.columns Alt Üye İşyeri Tipi
+    .omega.eight.columns
+      %select{"ng-model" => "sub_merchant_type"}
+        %option{value: "PERSONAL"} Bireysel Satıcı
+        %option{value: "PRIVATE_COMPANY"} Sahış Şirketi
+        %option{value: "LIMITED_OR_JOINT_STOCK_COMPANY"} Anonim / Limited Şirket
+  .row
+    .alpha.three.columns IBAN (zorunlu)
+    .omega.eight.columns
+      %input{:type => "text", "ng-model" => "iban"}
+  .row
+    .alpha.three.columns Vergi Dairesi (Şahıs Şirketi ve Anonim / Limited Şirketi için zorunlu)
+    .omega.eight.columns
+      %input{:type => "text", "ng-model" => "tax_office"}
+  .row
+    .alpha.three.columns Vergi Numarası (Şahıs Şirketi ve Anonim / Limited Şirketi için zorunlu)
+    .omega.eight.columns
+      %input{:type => "text", "ng-model" => "tax_number"}
+  .row
+    .alpha.three.columns Yasal Şirket Unvanı (Şahıs Şirketi ve Anonim / Limited Şirket için zorunlu)
+    .omega.eight.columns
+      %input{:type => "text", "ng-model" => "legal_company_title"}
+
+  .row.stripe-info.text-center
+    = link_to "Alt üye işyeri kaydı oluştur", main_app.admin_iyzipay_submerchants_path(enterprise_id: @enterprise.id), :method => :post, :class => 'button', "ng-href" => "#{main_app.admin_iyzipay_submerchants_path(enterprise_id: @enterprise.id)}&sub_merchant_type={{sub_merchant_type}}&iban={{iban}}&tax_office={{tax_office}}&tax_number={{tax_number}}&legal_company_title={{legal_company_title}}"

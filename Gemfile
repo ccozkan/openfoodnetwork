@@ -40,6 +40,7 @@ gem 'stringex', '~> 2.8.5'
 gem 'spree_paypal_express', github: 'openfoodfoundation/better_spree_paypal_express', branch: '2-1-0-stable'
 
 gem 'stripe'
+gem 'iyzipay'
 
 # We need at least this version to have Digicert's root certificate
 # which is needed for Pin Payments (and possibly others).

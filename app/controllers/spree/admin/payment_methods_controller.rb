@@ -103,6 +103,7 @@ module Spree
                        Gateway.providers.reject{ |p| p.name.include? "Bogus" }.sort_by(&:name)
                      end
         @providers.reject!{ |provider| stripe_provider?(provider) } unless show_stripe?
+        @providers.reject!{ |provider| provider.name.ends_with?("Iyzipay") } unless show_iyzipay?
         @calculators = PaymentMethod.calculators.sort_by(&:name)
       end
 
@@ -129,6 +130,13 @@ module Spree
           stripe_payment_method?
       end
 
+      # Show Iyzipay as an option if enabled, or if the
+      # current payment_method is already a Iyzipay method
+      def show_iyzipay?
+        Spree::Config.iyzipay_enabled ||
+          iyzipay_payment_method?
+      end
+
       def restrict_stripe_account_change
         return unless @payment_method
         return unless stripe_payment_method?
@@ -145,6 +153,10 @@ module Spree
          "Spree::Gateway::StripeSCA"].include? @payment_method.try(:type)
       end
 
+      def iyzipay_payment_method?
+        "Spree::Gateway::Iyzipay" == @payment_method.try(:type)
+      end
+      
       def stripe_provider?(provider)
         provider.name.ends_with?("StripeConnect", "StripeSCA")
       end

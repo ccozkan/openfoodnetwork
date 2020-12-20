@@ -56,6 +56,18 @@
           = f.text_area :special_instructions, size: "60x4", "ng-model" => "order.special_instructions"
 
       .row
+        .small-12.columns
+          %label
+            %input{type: :checkbox, required: true, name: "accept_sales_agreement_form", "ng-model" => "accept_sales_agreement_form"}
+            %a{:href => "/mesafeli-satis-sozlesmesi.pdf", :target => "_blank"}Mesafeli satış sözleşmesi
+            ve
+            %a{:href => "/on-bilgilendirme-formu.pdf", :target => "_blank"}ön bilgilendirme formunu
+            kabul ediyorum
+        .small-12.columns
+          %small.error.medium.input-text{"ng-show" => "!fieldValid('accept_sales_agreement_form')"}
+            = t :checkout_accept_sales_agreement_form_required
+
+      .row
         .small-12.columns.text-right
           %button.primary{"ng-disabled" => "shipping.$invalid", "ng-click" => "next($event)"}
             = t :next

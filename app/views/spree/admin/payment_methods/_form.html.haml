@@ -7,12 +7,12 @@
     .alpha.three.columns
       = label_tag nil, t('.name')
     .omega.eight.columns
-      = text_field :payment_method, :name, class: 'fullwidth'
+      = text_field :payment_method, :name, class: 'fullwidth', placeholder: 'Örn. Kredi Kartı, Nakit/EFT'
   .row
     .alpha.three.columns
       = label_tag nil, t('.description')
     .omega.eight.columns
-      = text_area :payment_method, :description, {cols: 60, rows: 6, class: 'fullwidth'}
+      = text_area :payment_method, :description, {cols: 60, rows: 6, class: 'fullwidth', placeholder: 'EFT/Havale için bu alana banka hesap bilgilerinizi giriniz.'}
   - if spree_current_user.admin?
     .row
       .alpha.three.columns

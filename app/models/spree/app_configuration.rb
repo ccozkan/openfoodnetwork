@@ -139,6 +139,7 @@ module Spree
 
     # Stripe Connect
     preference :stripe_connect_enabled, :boolean, default: false
+    preference :iyzipay_enabled, :boolean, default: false
 
     # Number localization
     preference :enable_localized_number?, :boolean, default: false

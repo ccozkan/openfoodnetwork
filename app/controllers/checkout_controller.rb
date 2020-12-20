@@ -20,6 +20,7 @@ class CheckoutController < Spree::StoreController
   prepend_before_action :check_order_cycle_expiry
   prepend_before_action :require_order_cycle
   prepend_before_action :require_distributor_chosen
+  prepend_before_action :turn_iyzipay_post_request_to_get
 
   before_action :load_order
 
@@ -35,6 +36,7 @@ class CheckoutController < Spree::StoreController
 
   def edit
     return handle_redirect_from_stripe if valid_payment_intent_provided?
+    return handle_redirect_from_iyzipay if valid_iyzipay_callback?
 
     # This is only required because of spree_paypal_express. If we implement
     # a version of paypal that uses this controller, and more specifically
@@ -45,6 +47,8 @@ class CheckoutController < Spree::StoreController
   end
 
   def update
+    return handle_redirect_from_iyzipay if valid_iyzipay_callback?
+
     params_adapter = Checkout::FormDataAdapter.new(permitted_params, @order, spree_current_user)
     return action_failed unless @order.update(params_adapter.params[:order])
 
@@ -148,6 +152,39 @@ class CheckoutController < Spree::StoreController
     end
   end
 
+  def valid_iyzipay_callback?
+    if params["conversationId"].present? && params["status"].present?
+      last_payment = OrderPaymentFinder.new(@order).last_payment
+      @order.state == "payment" &&
+        last_payment&.state == "pending" &&
+        last_payment&.response_code == params["conversationId"]
+    else
+      false
+    end
+  end
+
+  def handle_redirect_from_iyzipay
+    last_payment = OrderPaymentFinder.new(@order).last_payment
+    last_payment.cvv_response_message = params.slice(:status, :paymentId, :conversationData, :conversationId, :mdStatus).to_json
+    unless last_payment.save
+      raise last_payment.errors
+    end
+
+    if advance_order_state(@order) && order_complete?
+      checkout_succeeded
+      redirect_to(order_path(@order)) && return
+    else
+      flash[:error] = order_error
+      checkout_failed
+    end
+  end
+
+  def turn_iyzipay_post_request_to_get
+    if request.request_method == 'POST'
+      redirect_to main_app.checkout_path(params.slice(:status, :paymentId, :conversationData, :conversationId, :mdStatus))
+    end
+  end
+
   def checkout_workflow(shipping_method_id)
     while @order.state != "complete"
       if @order.state == "payment"
@@ -165,6 +202,7 @@ class CheckoutController < Spree::StoreController
   def redirect_to_payment_gateway
     redirect_path = Checkout::PaypalRedirect.new(params).path
     redirect_path = Checkout::StripeRedirect.new(params, @order).path if redirect_path.blank?
+    redirect_path = Checkout::IyzipayRedirect.new(params, @order).path if redirect_path.blank?
     return if redirect_path.blank?
 
     render json: { path: redirect_path }, status: :ok

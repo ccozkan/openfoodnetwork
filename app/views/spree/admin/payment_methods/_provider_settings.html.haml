@@ -3,6 +3,8 @@
   = render 'stripe_connect'
 - when Spree::Gateway::StripeSCA
   = render 'stripe_connect'
+- when Spree::Gateway::Iyzipay
+  = render 'iyzipay_connect'
 - else
   - if @payment_method.preferences.present?
     %fieldset.alpha.eleven.columns.no-border-bottom#gateway_fields

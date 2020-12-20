@@ -92,6 +92,8 @@ Openfoodnetwork::Application.routes.draw do
       get :status, on: :collection
     end
 
+    resources :iyzipay_submerchants
+    
     resources :schedules, only: [:index, :create, :update, :destroy], format: :json
 
     resources :subscriptions, only: [:index, :new, :create, :edit, :update] do
