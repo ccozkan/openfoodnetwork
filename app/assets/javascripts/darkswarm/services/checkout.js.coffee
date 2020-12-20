@@ -16,7 +16,11 @@ Darkswarm.factory 'Checkout', ($injector, CurrentOrder, ShippingMethods, StripeE
       Messages.loading(t 'submitting_order')
       $http.put('/checkout.json', {order: @preprocess()})
       .then (response) =>
-        Navigation.go response.data.path
+        if response.data.path.indexOf("<html") > -1
+          document.querySelector('html').innerHTML = response.data.path
+          document.querySelector('form').submit()
+        else
+          Navigation.go response.data.path
       .catch (response) =>
         try
           @handle_checkout_error_response(response)
@@ -67,7 +71,7 @@ Darkswarm.factory 'Checkout', ($injector, CurrentOrder, ShippingMethods, StripeE
         # ship address, and Rails will error with a 404 for that address.
         delete munged_order.ship_address_attributes.id
 
-      if @paymentMethod()?.method_type == 'gateway'
+      if @paymentMethod()?.method_type == 'gateway' || @paymentMethod()?.method_type == 'iyzipay'
         angular.extend munged_order.payments_attributes[0], {
           source_attributes:
             number: @secrets.card_number

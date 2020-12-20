@@ -36,7 +36,7 @@ Openfoodnetwork::Application.configure do
   config.action_mailer.default_url_options = { protocol: 'https' }
 
   # Set log level (default is :debug in Rails 4)
-  config.log_level = :info
+  config.log_level = :debug
 
   # Configure logging:
   config.log_formatter = Logger::Formatter.new.tap { |f| f.datetime_format = "%Y-%m-%d %H:%M:%S" }

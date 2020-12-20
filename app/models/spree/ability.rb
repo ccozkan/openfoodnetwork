@@ -176,6 +176,8 @@ module Spree
         user.enterprises.include? stripe_account.enterprise
       end
 
+      can [:admin, :create], IyzipayAccount
+      
       can [:admin, :create], :manager_invitation
     end
 

@@ -134,6 +134,7 @@ module Openfoodnetwork
 
     # Register Spree payment methods
     initializer "spree.gateway.payment_methods", :after => "spree.register.payment_methods" do |app|
+      app.config.spree.payment_methods << Spree::Gateway::Iyzipay
       app.config.spree.payment_methods << Spree::Gateway::StripeConnect
       app.config.spree.payment_methods << Spree::Gateway::StripeSCA
       app.config.spree.payment_methods << Spree::Gateway::PayPalExpress

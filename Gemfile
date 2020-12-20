@@ -47,6 +47,7 @@ gem 'stringex', '~> 2.8.5'
 
 gem 'paypal-sdk-merchant', '1.117.2'
 gem 'stripe'
+gem 'iyzipay'
 
 gem 'devise'
 gem 'devise-encryptable'
