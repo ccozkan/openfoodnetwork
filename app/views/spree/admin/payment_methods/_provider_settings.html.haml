@@ -3,7 +3,7 @@
   = render 'stripe_connect'
 - when Spree::Gateway::StripeSCA
   = render 'stripe_connect'
-- when Spree::Gateway::Iyzipay
+- when Spree::Gateway::IyzipayAga
   = render 'iyzipay_connect'
 - else
   - if @payment_method.preferences.present?

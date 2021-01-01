@@ -1,8 +1,8 @@
-require 'iyzipay/authorize_response_patcher'
+require 'iyzipay_authorize_response_patcher'
 
 module Spree
   class Gateway
-    class Iyzipay < Gateway
+    class IyzipayAga < Spree::Gateway
       acts_as_taggable
       preference :enterprise_id, :integer
 
@@ -25,13 +25,15 @@ module Spree
 
       # NOTE: the name of this method is determined by Spree::Payment::Processing
       def purchase(money, creditcard, gateway_options)
+        Rails.logger.error("IyzipayAga.purchase(money: #{money}, creditcard: #{creditcard}, gateway_options: #{gateway_options})")
         provider.capture(money, creditcard, gateway_options)
       end
 
       # NOTE: the name of this method is determined by Spree::Payment::Processing
       def authorize(money, creditcard, gateway_options)
+        Rails.logger.error("IyzipayAga.authorize(money: #{money}, creditcard: #{creditcard}, gateway_options: #{gateway_options})")
         authorize_response = provider.authorize(money, creditcard, gateway_options)
-        ::Iyzipay::AuthorizeResponsePatcher.new(authorize_response).call!
+        IyzipayAuthorizeResponsePatcher.new(authorize_response).call!
       rescue
         failed_activemerchant_billing_response($!.message)
       end
@@ -44,6 +46,7 @@ module Spree
 
       # NOTE: the name of this method is determined by Spree::Payment::Processing
       def credit(money, _creditcard, response_code, gateway_options)
+        Rails.logger.error("IyzipayAga.credit(money: #{money}, _creditcard: #{_creditcard}, gateway_options: #{gateway_options})")
         gateway_options[:stripe_account] = stripe_account_id
         provider.refund(money, response_code, gateway_options)
       end

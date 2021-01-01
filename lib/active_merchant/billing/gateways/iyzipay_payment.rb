@@ -2,7 +2,7 @@
 
 module ActiveMerchant
   module Billing
-    class IyzipayPaymentGateway < Gateway
+    class IyzipayPaymentGateway < Spree::Gateway
       self.test_url = 'https://sandbox-api.iyzipay.com'
       self.live_url = 'https://api.iyzipay.com'
 

@@ -16,7 +16,7 @@ angular.module("admin.subscriptions").controller "DetailsController", ($scope, $
     return if !newValue?
     paymentMethod = ($scope.paymentMethods.filter (pm) -> pm.id == newValue)[0]
     return unless paymentMethod?
-    $scope.cardRequired = (paymentMethod.type == "Spree::Gateway::StripeConnect" || paymentMethod.type == "Spree::Gateway::StripeSCA" || paymentMethod.type == "Spree::Gateway::Iyzipay")
+    $scope.cardRequired = (paymentMethod.type == "Spree::Gateway::StripeConnect" || paymentMethod.type == "Spree::Gateway::StripeSCA" || paymentMethod.type == "Spree::Gateway::IyzipayAga")
     $scope.loadCustomer() if $scope.cardRequired && !$scope.customer
 
   $scope.loadCustomer = ->

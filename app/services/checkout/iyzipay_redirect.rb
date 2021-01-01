@@ -25,7 +25,7 @@ module Checkout
 
       payment_method_id = @params[:order][:payments_attributes].first[:payment_method_id]
       payment_method = Spree::PaymentMethod.find(payment_method_id)
-      payment_method.is_a?(Spree::Gateway::Iyzipay)
+      payment_method.is_a?(Spree::Gateway::IyzipayAga)
     end
 
     def url?(string)
