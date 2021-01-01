@@ -154,7 +154,7 @@ module Spree
       end
 
       def iyzipay_payment_method?
-        "Spree::Gateway::Iyzipay" == @payment_method.try(:type)
+        "Spree::Gateway::IyzipayAga" == @payment_method.try(:type)
       end
       
       def stripe_provider?(provider)
