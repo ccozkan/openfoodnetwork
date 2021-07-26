@@ -5,7 +5,7 @@
   id: '101'
   abbr: ADN
 
-- name: Adiyaman
+- name: Adıyaman
   country_id: '206'
   id: '102'
   abbr: AYN
@@ -15,7 +15,7 @@
   id: '103'
   abbr: AFN
 
-- name: Agri
+- name: Ağrı
   country_id: '206'
   id: '104'
   abbr: AGR
@@ -40,12 +40,12 @@
   id: '108'
   abbr: ART
 
-- name: Aydin
+- name: Aydın
   country_id: '206'
   id: '109'
   abbr: ADN
 
-- name: Balikesir
+- name: Balıkesir
   country_id: '206'
   id: '110'
   abbr: BLK
@@ -55,7 +55,7 @@
   id: '111'
   abbr: BCK
 
-- name: Bingol
+- name: Bingöl
   country_id: '206'
   id: '112'
   abbr: BGL
@@ -80,17 +80,17 @@
   id: '116'
   abbr: BRS
 
-- name: Canakkale
+- name: Çanakkale
   country_id: '206'
   id: '117'
   abbr: CNK
 
-- name: Cankiri
+- name: Çankırı
   country_id: '206'
   id: '118'
   abbr: CKR
 
-- name: Corum
+- name: Çorum
   country_id: '206'
   id: '119'
   abbr: COR
@@ -100,7 +100,7 @@
   id: '120'
   abbr: DNZ
 
-- name: Diyarbakir
+- name: Diyarbakır
   country_id: '206'
   id: '121'
   abbr: DYB
@@ -110,12 +110,12 @@
   id: '122'
   abbr: CT
 
-- name: Elazig
+- name: Elazığ
   country_id: '206'
   id: '123'
   abbr: ELZ
 
-- name: Erzican
+- name: Erzincan
   country_id: '206'
   id: '124'
   abbr: ERZ
@@ -125,7 +125,7 @@
   id: '125'
   abbr: ERZ
 
-- name: Eskisehir
+- name: Eskişehir
   country_id: '206'
   id: '126'
   abbr: ESK
@@ -140,7 +140,7 @@
   id: '128'
   abbr: GIR
 
-- name: Gumushane
+- name: Gümüşhane
   country_id: '206'
   id: '129'
   abbr: GHN
@@ -165,12 +165,12 @@
   id: '133'
   abbr: MER
 
-- name: Istanbul
+- name: İstanbul
   country_id: '206'
   id: '134'
   abbr: IST
 
-- name: Izmir
+- name: İzmir
   country_id: '206'
   id: '135'
   abbr: IZM
@@ -190,12 +190,12 @@
   id: '138'
   abbr: KYS
 
-- name: Kirklareli
+- name: Kırklareli
   country_id: '206'
   id: '139'
   abbr: KRL
 
-- name: Kirsehir
+- name: Kırşehir
   country_id: '206'
   id: '140'
   abbr: KIR
@@ -210,7 +210,7 @@
   id: '142'
   abbr: KON
 
-- name: Kutahya
+- name: Kütahya
   country_id: '206'
   id: '143'
   abbr: KUT
@@ -225,7 +225,7 @@
   id: '145'
   abbr: MSN
 
-- name: Kahramanmaras
+- name: Kahramanmaraş
   country_id: '206'
   id: '146'
   abbr: KHM
@@ -235,22 +235,22 @@
   id: '147'
   abbr: MRD
 
-- name: Mugla
+- name: Muğla
   country_id: '206'
   id: '148'
   abbr: MUG
 
-- name: Mus
+- name: Muş
   country_id: '206'
   id: '149'
   abbr: MUS
 
-- name: Nevsehir
+- name: Nevşehir
   country_id: '206'
   id: '150'
   abbr: NEV
 
-- name: Nigde
+- name: Niğde
   country_id: '206'
   id: '151'
   abbr: NGD
@@ -290,7 +290,7 @@
   id: '158'
   abbr: SVS
 
-- name: Tekirdag
+- name: Tekirdağ
   country_id: '206'
   id: '159'
   abbr: TKD
@@ -310,12 +310,12 @@
   id: '162'
   abbr: TCL
 
-- name: Sanliurfa
+- name: Şanlıurfa
   country_id: '206'
   id: '163'
   abbr: SRF
 
-- name: Usak
+- name: Uşak
   country_id: '206'
   id: '164'
   abbr: USK
@@ -345,12 +345,12 @@
   id: '169'
   abbr: BRT
 
-- name: KARAMAN
+- name: Karaman
   country_id: '206'
   id: '170'
   abbr: KMN
 
-- name: Kirikkale
+- name: Kırıkkale
   country_id: '206'
   id: '171'
   abbr: KRK
@@ -360,12 +360,12 @@
   id: '172'
   abbr: BAT
 
-- name: Sirnak
+- name: Şırnak
   country_id: '206'
   id: '173'
   abbr: SNK
 
-- name: Bartin
+- name: Bartın
   country_id: '206'
   id: '174'
   abbr: BRN
@@ -375,7 +375,7 @@
   id: '175'
   abbr: ARD
 
-- name: Igdir
+- name: Iğdır
   country_id: '206'
   id: '176'
   abbr: IGD
@@ -385,7 +385,7 @@
   id: '177'
   abbr: YLV
 
-- name: Karabuk
+- name: Karabük
   country_id: '206'
   id: '178'
   abbr: KBK
@@ -400,7 +400,7 @@
   id: '180'
   abbr: OSM
 
-- name: Duzce
+- name: Düzce
   country_id: '206'
   id: '181'
   abbr: DZC
