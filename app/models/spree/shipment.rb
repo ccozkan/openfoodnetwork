@@ -3,7 +3,7 @@
 require 'ostruct'
 
 module Spree
-  class Shipment < ActiveRecord::Base
+  class Shipment < ApplicationRecord
     belongs_to :order, class_name: 'Spree::Order'
     belongs_to :address, class_name: 'Spree::Address'
     belongs_to :stock_location, class_name: 'Spree::StockLocation'
@@ -12,12 +12,14 @@ module Spree
     has_many :shipping_methods, through: :shipping_rates
     has_many :state_changes, as: :stateful
     has_many :inventory_units, dependent: :delete_all
-    has_one :adjustment, as: :source, dependent: :destroy
+    has_many :adjustments, as: :adjustable, dependent: :destroy
 
     before_create :generate_shipment_number
-    after_save :ensure_correct_adjustment, :update_order
+    after_save :ensure_correct_adjustment, :update_adjustments
 
     attr_accessor :special_instructions
+
+    alias_attribute :amount, :cost
 
     accepts_nested_attributes_for :address
     accepts_nested_attributes_for :inventory_units
@@ -103,6 +105,10 @@ module Spree
       save!
     end
 
+    def tax_category
+      selected_shipping_rate.try(:shipping_method).try(:tax_category)
+    end
+
     def refresh_rates
       return shipping_rates if shipped?
 
@@ -141,15 +147,6 @@ module Spree
       order ? order.currency : Spree::Config[:currency]
     end
 
-    # The adjustment amount associated with this shipment (if any)
-    #   Returns only the first adjustment to match the shipment
-    #   There should never really be more than one.
-    def cost
-      adjustment ? adjustment.amount : 0
-    end
-
-    alias_method :amount, :cost
-
     def display_cost
       Spree::Money.new(cost, currency: currency)
     end
@@ -164,16 +161,14 @@ module Spree
       Spree::Money.new(item_cost, currency: currency)
     end
 
-    def total_cost
-      cost + item_cost
-    end
+    def update_amounts
+      return unless fee_adjustment&.amount != cost
 
-    def display_total_cost
-      Spree::Money.new(total_cost, currency: currency)
-    end
-
-    def editable_by?(_user)
-      !shipped?
+      update_columns(
+        cost: fee_adjustment&.amount || 0.0,
+        updated_at: Time.zone.now
+      )
+      recalculate_adjustments
     end
 
     def manifest
@@ -187,14 +182,6 @@ module Spree
 
     def scoper
       @scoper ||= OpenFoodNetwork::ScopeVariantToHub.new(order.distributor)
-    end
-
-    def line_items
-      if order.complete?
-        order.line_items.select { |li| inventory_units.pluck(:variant_id).include?(li.variant_id) }
-      else
-        order.line_items
-      end
     end
 
     def finalize!
@@ -217,7 +204,10 @@ module Spree
     def update!(order)
       old_state = state
       new_state = determine_state(order)
-      update_column :state, new_state
+      update_columns(
+        state: new_state,
+        updated_at: Time.zone.now
+      )
       after_ship if new_state == 'shipped' && old_state != 'shipped'
     end
 
@@ -249,8 +239,11 @@ module Spree
 
     def to_package
       package = OrderManagement::Stock::Package.new(stock_location, order)
-      inventory_units.includes(:variant).each do |inventory_unit|
-        package.add inventory_unit.variant, 1, inventory_unit.state_name
+      grouped_inventory_units = inventory_units.includes(:variant).group_by do |iu|
+        [iu.variant, iu.state_name]
+      end
+      grouped_inventory_units.each do |(variant, state_name), inventory_units|
+        package.add variant, inventory_units.count, state_name
       end
       package
     end
@@ -259,26 +252,46 @@ module Spree
       inventory_units.create(variant_id: variant.id, state: state, order_id: order.id)
     end
 
+    def fee_adjustment
+      @fee_adjustment ||= adjustments.shipping.first
+    end
+
     def ensure_correct_adjustment
-      if adjustment
-        adjustment.originator = shipping_method
-        adjustment.label = shipping_method.adjustment_label
-        adjustment.amount = selected_shipping_rate.cost if adjustment.open?
-        adjustment.save!
-        adjustment.reload
+      if fee_adjustment
+        fee_adjustment.originator = shipping_method
+        fee_adjustment.label = adjustment_label
+        fee_adjustment.amount = selected_shipping_rate.cost if fee_adjustment.open?
+        fee_adjustment.save!
+        fee_adjustment.reload
       elsif selected_shipping_rate_id
-        shipping_method.create_adjustment(shipping_method.adjustment_label,
-                                          order,
+        shipping_method.create_adjustment(adjustment_label,
                                           self,
                                           true,
                                           "open")
         reload # ensure adjustment is present on later saves
       end
 
-      update_adjustment_included_tax if adjustment
+      update_amounts
+    end
+
+    def adjustment_label
+      I18n.t('shipping')
+    end
+
+    def can_modify?
+      !shipped? && !order.canceled?
     end
 
     private
+
+    def line_items
+      if order.complete?
+        inventory_unit_ids = inventory_units.pluck(:variant_id)
+        order.line_items.select { |li| inventory_unit_ids.include?(li.variant_id) }
+      else
+        order.line_items
+      end
+    end
 
     def manifest_unstock(item)
       stock_location.unstock item.variant, item.quantity, self
@@ -294,7 +307,7 @@ module Spree
       record = true
       while record
         random = "H#{Array.new(11) { rand(9) }.join}"
-        record = self.class.find_by(number: random)
+        record = self.class.default_scoped.find_by(number: random)
       end
       self.number = random
     end
@@ -313,25 +326,32 @@ module Spree
 
     def after_ship
       inventory_units.each(&:ship!)
-      adjustment.finalize!
+      fee_adjustment.finalize!
       send_shipped_email
       touch :shipped_at
+      update_order_shipment_state
+    end
+
+    def update_order_shipment_state
+      new_state = order.updater.update_shipment_state
+      order.update_columns(
+        shipment_state: new_state,
+        updated_at: Time.zone.now,
+      )
     end
 
     def send_shipped_email
       ShipmentMailer.shipped_email(id).deliver_later
     end
 
-    def update_adjustment_included_tax
-      if Config.shipment_inc_vat && (order.distributor.nil? || order.distributor.charges_sales_tax)
-        adjustment.set_included_tax! Config.shipping_tax_rate
-      else
-        adjustment.set_included_tax! 0
-      end
+    def update_adjustments
+      return unless cost_changed? && state != 'shipped'
+
+      recalculate_adjustments
     end
 
-    def update_order
-      order.update!
+    def recalculate_adjustments
+      Spree::ItemAdjustments.new(self).update
     end
   end
 end

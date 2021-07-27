@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'order_management/subscriptions/summarizer'
 
 # Confirms orders of unconfirmed proxy orders in recently closed Order Cycles
-class SubscriptionConfirmJob
+class SubscriptionConfirmJob < ActiveJob::Base
   def perform
     confirm_proxy_orders!
   end
@@ -38,7 +40,9 @@ class SubscriptionConfirmJob
   end
 
   def recently_closed_order_cycles
-    OrderCycle.closed.where('order_cycles.orders_close_at BETWEEN (?) AND (?) OR order_cycles.updated_at BETWEEN (?) AND (?)', 1.hour.ago, Time.zone.now, 1.hour.ago, Time.zone.now)
+    OrderCycle.closed.where(
+      'order_cycles.orders_close_at BETWEEN (?) AND (?) OR order_cycles.updated_at BETWEEN (?) AND (?)', 1.hour.ago, Time.zone.now, 1.hour.ago, Time.zone.now
+    )
   end
 
   # It sets up payments, processes payments and sends confirmation emails
@@ -84,19 +88,21 @@ class SubscriptionConfirmJob
   def authorize_payment!(order)
     return if order.subscription.payment_method.class != Spree::Gateway::StripeSCA
 
-    OrderManagement::Subscriptions::StripeScaPaymentAuthorize.new(order).call!
+    OrderManagement::Order::StripeScaPaymentAuthorize.new(order).
+      extend(OrderManagement::Order::SendAuthorizationEmails).
+      call!
   end
 
   def send_confirmation_email(order)
-    order.update!
+    order.update_order!
     record_success(order)
-    SubscriptionMailer.confirmation_email(order).deliver_later
+    SubscriptionMailer.confirmation_email(order).deliver_now
   end
 
   def send_failed_payment_email(order, error_message = nil)
-    order.update!
+    order.update_order!
     record_and_log_error(:failed_payment, order, error_message)
-    SubscriptionMailer.failed_payment_email(order).deliver_later
+    SubscriptionMailer.failed_payment_email(order).deliver_now
   rescue StandardError => e
     Bugsnag.notify(e, order: order, error_message: error_message)
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open_food_network/spree_api_key_loader'
 
 module Spree
@@ -12,14 +14,6 @@ module Spree
 
       # Ensure that the distributor is set for an order when
       before_action :ensure_distribution, only: :new
-
-      # After updating an order, the fees should be updated as well
-      # Currently, adding or deleting line items does not trigger updating the
-      # fees! This is a quick fix for that.
-      # TODO: update fees when adding/removing line items
-      # instead of the update_distribution_charge method.
-      after_action :update_distribution_charge, only: :update
-
       before_action :require_distributor_abn, only: :invoice
 
       respond_to :html, :json
@@ -34,24 +28,27 @@ module Spree
       def edit
         @order.shipments.map(&:refresh_rates)
 
-        OrderWorkflow.new(@order).complete
-
-        # The payment step shows an error of 'No pending payments'
-        # Clearing the errors from the order object will stop this error
-        # appearing on the edit page where we don't want it to.
+        OrderWorkflow.new(@order).advance_to_payment
         @order.errors.clear
       end
 
       def update
-        unless order_params.present? && @order.update(order_params) && @order.line_items.present?
-          if @order.line_items.empty?
-            @order.errors.add(:line_items, Spree.t('errors.messages.blank'))
-          end
-          return redirect_to(spree.edit_admin_order_path(@order),
-                             flash: { error: @order.errors.full_messages.join(', ') })
+        @order.recreate_all_fees!
+
+        unless @order.cart?
+          @order.create_tax_charge!
+          @order.update_order!
         end
 
-        @order.update!
+        unless order_params.present? && @order.update(order_params) && @order.line_items.present?
+          if @order.line_items.empty? && !params[:suppress_error_msg]
+            @order.errors.add(:line_items, Spree.t('errors.messages.blank'))
+          end
+
+          flash[:error] = @order.errors.full_messages.join(', ') if @order.errors.present?
+          return redirect_to spree.edit_admin_order_path(@order)
+        end
+
         if @order.complete?
           redirect_to spree.edit_admin_order_path(@order)
         else
@@ -74,20 +71,20 @@ module Spree
       rescue Spree::Core::GatewayError => e
         flash[:error] = e.message.to_s
       ensure
-        redirect_to :back
+        redirect_back fallback_location: spree.admin_dashboard_path
       end
 
       def resend
         Spree::OrderMailer.confirm_email_for_customer(@order.id, true).deliver_later
         flash[:success] = t('admin.orders.order_email_resent')
 
-        respond_with(@order) { |format| format.html { redirect_to :back } }
+        respond_with(@order) do |format|
+          format.html { redirect_back(fallback_location: spree.admin_dashboard_path) }
+        end
       end
 
       def invoice
-        pdf = InvoiceRenderer.new.render_to_string(@order)
-
-        Spree::OrderMailer.invoice_email(@order.id, pdf).deliver_later
+        Spree::OrderMailer.invoice_email(@order.id).deliver_later
         flash[:success] = t('admin.orders.invoice_email_sent')
 
         respond_with(@order) { |format|
@@ -96,15 +93,11 @@ module Spree
       end
 
       def print
-        render InvoiceRenderer.new.args(@order)
+        render_with_wicked_pdf InvoiceRenderer.new.args(@order)
       end
 
       def print_ticket
         render template: "spree/admin/orders/ticket", layout: false
-      end
-
-      def update_distribution_charge
-        @order.update_distribution_charge!
       end
 
       private
