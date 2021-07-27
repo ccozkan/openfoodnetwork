@@ -17,9 +17,9 @@ feature '
     let!(:order) do
       create(:order_with_taxes, distributor: distributor, ship_address: create(:address),
                                 product_price: 110, tax_rate_amount: 0.1,
-                                tax_rate_name: "Tax 1").tap do |record|
-                                  Spree::TaxRate.adjust(record)
-                                  record.update_shipping_fees!
+                                tax_rate_name: "Tax 1").tap do |order|
+                                  order.create_tax_charge!
+                                  order.update_shipping_fees!
                                 end
     end
 
@@ -75,7 +75,7 @@ feature '
 
       def adjustments_in_print_data
         checkout_adjustments_for(order, exclude: [:line_item]).
-          reject { |a| a.amount == 0 }.
+          reject { |a| a.amount.zero? }.
           map do |adjustment|
             [raw(adjustment.label),
              display_adjustment_amount(adjustment).format(symbol: false, with_currency: false)]

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require 'simplecov'
-SimpleCov.start 'rails'
+require 'simplecov' if ENV["COVERAGE"]
 
 require 'rubygems'
 
@@ -22,7 +21,6 @@ require 'rspec/rails'
 require 'capybara'
 require 'database_cleaner'
 require 'rspec/retry'
-require 'coverage_helper'
 require 'paper_trail/frameworks/rspec'
 
 require 'webdrivers'
@@ -57,6 +55,8 @@ Capybara.register_driver :chrome do |app|
   options = Selenium::WebDriver::Chrome::Options.new(
     args: %w[headless disable-gpu no-sandbox window-size=1280,768]
   )
+  options.add_preference(:download, default_directory: DownloadsHelper.path.to_s)
+
   Capybara::Selenium::Driver
     .new(app, browser: :chrome, options: options)
     .tap { |driver| driver.browser.download_path = DownloadsHelper.path.to_s }
@@ -73,6 +73,8 @@ require "paperclip/matchers"
 
 # Override setting in Spree engine: Spree::Core::MailSettings
 ActionMailer::Base.default_url_options[:host] = 'test.host'
+
+require "view_component/test_helpers"
 
 RSpec.configure do |config|
   # ## Mock Framework
@@ -96,11 +98,13 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
 
-  # Filters
-  config.filter_run_excluding skip: true, future: true, to_figure_out: true
-
-  # Retry
+  # Show retries in test output
   config.verbose_retry = true
+  # Set maximum retry count
+  config.default_retry_count = 0
+
+  # Force colored output, whether or not the output is a TTY
+  config.color_mode = :on
 
   # Force use of expect (over should)
   config.expect_with :rspec do |expectations|
@@ -108,15 +112,20 @@ RSpec.configure do |config|
   end
 
   # DatabaseCleaner
-  config.before(:suite)          { DatabaseCleaner.clean_with :deletion, except: ['spree_countries', 'spree_states'] }
+  config.before(:suite) {
+    DatabaseCleaner.clean_with :deletion, except: ['spree_countries', 'spree_states']
+  }
   config.before(:each)           { DatabaseCleaner.strategy = :transaction }
-  config.before(:each, js: true) { DatabaseCleaner.strategy = :deletion, { except: ['spree_countries', 'spree_states'] } }
-  config.before(:each, concurrency: true) { DatabaseCleaner.strategy = :deletion, { except: ['spree_countries', 'spree_states'] } }
+  config.before(:each, js: true) {
+    DatabaseCleaner.strategy = :deletion, { except: ['spree_countries', 'spree_states'] }
+  }
+  config.before(:each, concurrency: true) {
+    DatabaseCleaner.strategy = :deletion, { except: ['spree_countries', 'spree_states'] }
+  }
   config.before(:each)           { DatabaseCleaner.start }
   config.after(:each)            { DatabaseCleaner.clean }
   config.after(:each, js: true) do
     Capybara.reset_sessions!
-    RackRequestBlocker.wait_for_requests_complete
   end
 
   def restart_driver
@@ -134,6 +143,9 @@ RSpec.configure do |config|
     example.run
     ActionController::Base.perform_caching = caching
   end
+
+  # Fix encoding issue in Rails 5.0; allows passing empty arrays or hashes as params.
+  config.before(:each, type: :controller) { @request.env["CONTENT_TYPE"] = 'application/json' }
 
   # Show javascript errors in test output with `js_debug: true`
   config.after(:each, :js_debug) do
@@ -158,9 +170,11 @@ RSpec.configure do |config|
   end
 
   # Geocoding
-  config.before(:each) { allow_any_instance_of(Spree::Address).to receive(:geocode).and_return([1, 1]) }
+  config.before(:each) {
+    allow_any_instance_of(Spree::Address).to receive(:geocode).and_return([1, 1])
+  }
 
-  default_country_id = Spree::Config[:default_country_id]
+  default_country_id = DefaultCountry.id
   checkout_zone = Spree::Config[:checkout_zone]
   currency = Spree::Config[:currency]
   # Ensure we start with consistent config settings
@@ -171,18 +185,16 @@ RSpec.configure do |config|
       spree_config.checkout_zone = checkout_zone
       spree_config.currency = currency
       spree_config.shipping_instructions = true
-      spree_config.auto_capture = true
     end
   end
 
   # Helpers
   config.include Rails.application.routes.url_helpers
   config.include Spree::UrlHelpers
-  config.include Spree::CheckoutHelpers
   config.include Spree::MoneyHelper
   config.include PreferencesHelper
   config.include ControllerRequestsHelper, type: :controller
-  config.include Devise::TestHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :controller
   config.include OpenFoodNetwork::ApiHelper, type: :controller
   config.include OpenFoodNetwork::ControllerHelper, type: :controller
   config.include Features::DatepickerHelper, type: :feature
@@ -193,7 +205,6 @@ RSpec.configure do |config|
   config.include OpenFoodNetwork::DistributionHelper
   config.include OpenFoodNetwork::HtmlHelper
   config.include ActionView::Helpers::DateHelper
-  config.include OpenFoodNetwork::DelayedJobHelper
   config.include OpenFoodNetwork::PerformanceHelper
   config.include DownloadsHelper, type: :feature
   config.include ActiveJob::TestHelper
@@ -205,16 +216,6 @@ RSpec.configure do |config|
   config.include Paperclip::Shoulda::Matchers
 
   config.include JsonSpec::Helpers
-
-  # Suppress Selenium deprecation warnings. Stops a flood of pointless warnings filling the
-  # test output. We can remove this in the future after upgrading Rails, Rack, and Capybara.
-  if Rails::VERSION::MAJOR == 4 && Rails::VERSION::MINOR == 0
-    Selenium::WebDriver.logger.level = :error
-  else
-    ActiveSupport::Deprecation.warn(
-      "Suppressing Selenium deprecation warnings is not needed any more."
-    )
-  end
 
   # Profiling
   #
@@ -237,6 +238,8 @@ RSpec.configure do |config|
   # PerfTools::CpuProfiler.stop
   # end
   config.infer_spec_type_from_file_location!
+
+  config.include ViewComponent::TestHelpers, type: :component
 end
 
 FactoryBot.use_parent_strategy = false

@@ -1,3 +1,11 @@
+Openfoodnetwork::Application.routes.draw do
+  scope module: 'spree' do
+    resources :orders do
+      put :cancel, on: :member
+    end
+  end
+end
+
 # Overriding Devise routes to use our own controller
 Spree::Core::Engine.routes.draw do
   devise_for :spree_user,
@@ -159,16 +167,9 @@ Spree::Core::Engine.routes.draw do
     resources :payment_methods
   end
 
-  resources :orders do
-    get :clear, :on => :collection
-    get :order_cycle_expired, :on => :collection
-    put :cancel, on: :member
-  end
-
   resources :products
 
   # Used by spree_paypal_express
-  get '/checkout/:state', :to => 'checkout#edit', :as => :checkout_state
   get '/content/cvv', :to => 'content#cvv', :as => :cvv
   get '/content/*path', :to => 'content#show', :as => :content
   get '/paypal', :to => "paypal#express", :as => :paypal_express

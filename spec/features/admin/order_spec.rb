@@ -61,6 +61,13 @@ feature '
     select2_select order_cycle.name, from: 'order_order_cycle_id'
     click_button 'Next'
 
+    expect(page).not_to have_selector '.flash.error'
+    expect(page).not_to have_content "Line items can't be blank"
+
+    click_button "Update And Recalculate Fees"
+    expect(page).to have_selector '.flash.error'
+    expect(page).to have_content "Line items can't be blank"
+
     # it suppresses validation errors when setting distribution
     expect(page).not_to have_selector '#errorExplanation'
     expect(page).to have_content 'ADD PRODUCT'
@@ -85,7 +92,7 @@ feature '
     find('button.add_variant').click
 
     expect(page).to have_selector 'td', text: product.name
-    expect(order.line_items(true).map(&:product)).to include product
+    expect(order.line_items.reload.map(&:product)).to include product
   end
 
   scenario "displays error when incorrect distribution for products is chosen" do
@@ -117,6 +124,113 @@ feature '
     login_as_admin_and_visit spree.edit_admin_order_path(order)
 
     expect(page).not_to have_select2 "add_variant_id", with_options: [product.name]
+  end
+
+  scenario "can't add more items than are available" do
+    # Move the order back to the cart state
+    order.state = 'cart'
+    order.completed_at = nil
+
+    login_as_admin_and_visit spree.edit_admin_order_path(order)
+
+    quantity = order.line_items.first.quantity
+    max_quantity = 0
+    total = order.display_total
+
+    within("tr.stock-item", text: order.products.first.name) do
+      find("a.edit-item").click
+      expect(page).to have_input(:quantity)
+      max_quantity = find("input[name='quantity']")["max"].to_i
+      fill_in(:quantity, with: max_quantity + 1)
+      find("a.save-item").click
+    end
+    accept_js_alert
+
+    expect(page).to_not have_content "Loading..."
+    within("tr.stock-item", text: order.products.first.name) do
+      expect(page).to have_text("#{max_quantity} x")
+    end
+    expect(order.reload.line_items.first.quantity).to eq(max_quantity)
+  end
+
+  scenario "there are infinite items available (variant is on demand)" do
+    # Move the order back to the cart state
+    order.state = 'cart'
+    order.completed_at = nil
+    order.line_items.first.variant.update_attribute(:on_demand, true)
+
+    login_as_admin_and_visit spree.edit_admin_order_path(order)
+
+    within("tr.stock-item", text: order.products.first.name) do
+      find("a.edit-item").click
+      expect(page).to have_input(:quantity)
+      fill_in(:quantity, with: 1000)
+      find("a.save-item").click
+    end
+
+    within("tr.stock-item", text: order.products.first.name) do
+      expect(page).to have_text("1000 x")
+    end
+    expect(order.reload.line_items.first.quantity).to eq(1000)
+  end
+
+  # Regression test for #7337
+  context "creating a new order with a variant override" do
+    let!(:override) {
+      create(:variant_override, hub: distributor, variant: product.variants.first,
+                                count_on_hand: 100)
+    }
+
+    before do
+      product.variants.first.update(on_demand: false, on_hand: 0)
+
+      login_as user
+      new_order_with_distribution(distributor, order_cycle)
+      expect(page).to have_content I18n.t('spree.add_product').upcase
+    end
+
+    it "creates order and shipment successfully and allows proceeding to payment" do
+      select2_select product.name, from: 'add_variant_id', search: true
+
+      within("table.stock-levels") do
+        expect(page).to have_selector("#stock_item_quantity")
+        fill_in "stock_item_quantity", with: 50
+        find("button.add_variant").click
+      end
+
+      expect(page).to_not have_selector("table.stock-levels")
+      expect(page).to have_selector("table.stock-contents")
+
+      within("tr.stock-item") do
+        expect(page).to have_text("50 x")
+      end
+
+      order = Spree::Order.last
+      expect(order.line_items.first.quantity).to eq(50)
+      expect(order.shipments.count).to eq(1)
+
+      click_button "Update And Recalculate Fees"
+      expect(page).to have_selector 'h1', text: "Customer Details"
+
+      fill_in "order_email", with: "test@test.com"
+      check "order_use_billing"
+      fill_in "order_bill_address_attributes_firstname", with: "xxx"
+      fill_in "order_bill_address_attributes_lastname", with: "xxx"
+      fill_in "order_bill_address_attributes_address1", with: "xxx"
+      fill_in "order_bill_address_attributes_city", with: "xxx"
+      fill_in "order_bill_address_attributes_zipcode", with: "xxx"
+      select "Australia", from: "order_bill_address_attributes_country_id"
+      select "Victoria", from: "order_bill_address_attributes_state_id"
+      fill_in "order_bill_address_attributes_phone", with: "xxx"
+
+      click_button "Update"
+
+      expect(page).to have_content "Customer Details updated"
+
+      click_link "Payments"
+
+      expect(page).to have_content "New Payment"
+    end
   end
 
   scenario "can't change distributor or order cycle once order has been finalized" do
@@ -196,9 +310,9 @@ feature '
       let!(:order) do
         create(:order_with_taxes, distributor: distributor1, ship_address: create(:address),
                                   product_price: 110, tax_rate_amount: 0.1,
-                                  tax_rate_name: "Tax 1").tap do |record|
-                                    Spree::TaxRate.adjust(record)
-                                    record.update_shipping_fees!
+                                  tax_rate_name: "Tax 1").tap do |order|
+                                    order.create_tax_charge!
+                                    order.update_shipping_fees!
                                   end
       end
 
@@ -246,7 +360,8 @@ feature '
                                     href: spree.resend_admin_order_path(order)
           expect(page).to have_link "Send Invoice", href: spree.invoice_admin_order_path(order)
           expect(page).to have_link "Print Invoice", href: spree.print_admin_order_path(order)
-          expect(page).to have_link "Cancel Order", href: spree.fire_admin_order_path(order, e: 'cancel')
+          expect(page).to have_link "Cancel Order",
+                                    href: spree.fire_admin_order_path(order, e: 'cancel')
         end
       end
 
@@ -296,7 +411,7 @@ feature '
 
       scenario "editing shipping fees" do
         click_link "Adjustments"
-        shipping_adjustment_tr_selector = "tr#spree_adjustment_#{order.adjustments.shipping.first.id}"
+        shipping_adjustment_tr_selector = "tr#spree_adjustment_#{order.shipment_adjustments.first.id}"
         page.find("#{shipping_adjustment_tr_selector} td.actions a.icon-edit").click
 
         fill_in "Amount", with: "5"
@@ -313,6 +428,16 @@ feature '
         it "still lists the variant in the order page" do
           within ".stock-contents" do
             expect(page).to have_content deleted_variant.product_and_full_name
+          end
+        end
+      end
+
+      context "and the order has been canceled" do
+        it "does not allow modifying line items" do
+          order.cancel!
+          visit spree.edit_admin_order_path(order)
+          within("tr.stock-item", text: order.products.first.name) do
+            expect(page).to_not have_selector("a.edit-item")
           end
         end
       end

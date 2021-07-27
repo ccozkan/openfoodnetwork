@@ -7,7 +7,7 @@ describe BaseController, type: :controller do
   let(:order) { instance_double(Spree::Order) }
   controller(BaseController) do
     def index
-      render text: ""
+      render plain: ""
     end
   end
 
@@ -100,8 +100,8 @@ describe BaseController, type: :controller do
     end
   end
 
-  it "redirects to home with message if order cycle is expired" do
-    expect(controller).to receive(:current_order_cycle).and_return(oc).twice
+  it "redirects to shopfront with message if order cycle is expired" do
+    expect(controller).to receive(:current_order_cycle).and_return(oc)
     expect(controller).to receive(:current_order).and_return(order).twice
     expect(oc).to receive(:closed?).and_return(true)
     expect(order).to receive(:empty!)
@@ -109,8 +109,7 @@ describe BaseController, type: :controller do
 
     get :index
 
-    expect(session[:expired_order_cycle_id]).to eq oc.id
-    expect(response).to redirect_to root_url
+    expect(response).to redirect_to shop_url
     expect(flash[:info]).to eq I18n.t('order_cycle_closed')
   end
 end

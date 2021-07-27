@@ -12,9 +12,12 @@ feature "Registration", js: true do
     before do
       Spree::Config.enterprises_require_tos = false
 
-      albania = Spree::Country.create!({ name: "Albania", iso3: "ALB", iso: "AL", iso_name: "ALBANIA", numcode: "8" })
+      albania = Spree::Country.create!({ name: "Albania", iso3: "ALB", iso: "AL",
+                                         iso_name: "ALBANIA", numcode: "8" })
       Spree::State.create!({ name: "Berat", abbr: "BRA", country: albania })
-      Spree::Country.create!({ name: "Chad", iso3: "TCD", iso: "TD", iso_name: "CHAD", numcode: "148" })
+      Spree::Country.create!({ name: "Chad", iso3: "TCD", iso: "TD", iso_name: "CHAD",
+                               numcode: "148" })
+      AddressGeocoder.any_instance.stub(:geocode)
     end
 
     after do
@@ -53,7 +56,8 @@ feature "Registration", js: true do
       fill_in 'enterprise_address', with: '123 Abc Street'
       fill_in 'enterprise_city', with: 'Northcote'
       fill_in 'enterprise_zipcode', with: '3070'
-      expect(page).to have_select('enterprise_country', options: ["Albania", "Australia"], selected: 'Australia')
+      expect(page).to have_select('enterprise_country', options: ["Albania", "Australia"],
+                                                        selected: 'Australia')
       select 'Vic', from: 'enterprise_state'
       click_button "Continue"
       expect(page).to have_content 'Who is responsible for managing My Awesome Enterprise?'
@@ -99,9 +103,19 @@ feature "Registration", js: true do
       expect(e.charges_sales_tax).to be true
 
       # Images
+      # Upload logo image
+      attach_file "image-select", Rails.root.join("spec/fixtures/files/logo.png"), visible: false
+      expect(page).to have_no_css('#image-placeholder .loading')
+      expect(page.find('#image-placeholder img')['src']).to_not be_empty
+
       # Move from logo page
       click_button "Continue"
       expect(page).to have_content 'Step 3. Select Promo Image'
+
+      # Upload promo image
+      attach_file "image-select", Rails.root.join("spec/fixtures/files/promo.png"), visible: false
+      expect(page).to have_no_css('#image-placeholder .loading')
+      expect(page.find('#image-placeholder img')['src']).to_not be_empty
 
       # Move from promo page
       click_button "Continue"

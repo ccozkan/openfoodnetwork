@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 # This mailer is configured to be the Devise mailer
 # Some methods here override Devise::Mailer methods
 module Spree
   class UserMailer < BaseMailer
     include I18nHelper
+
+    helper MailerHelper
 
     # Overrides `Devise::Mailer.reset_password_instructions`
     def reset_password_instructions(user, token, _opts = {})

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SearchOrders
   attr_reader :orders
 
@@ -8,25 +10,14 @@ class SearchOrders
     @orders = fetch_orders
   end
 
-  def pagination_data
-    return unless using_pagination?
-
-    {
-      results: @orders.total_count,
-      pages: @orders.num_pages,
-      page: params[:page].to_i,
-      per_page: params[:per_page].to_i
-    }
-  end
-
   private
 
   attr_reader :params, :current_user
 
   def fetch_orders
-    @search = search_query.ransack(params[:q])
-
-    return paginated_results if using_pagination?
+    @search = search_query.
+      includes(:payments, :subscription, :shipments, :bill_address, :distributor, :order_cycle).
+      ransack(params[:q])
 
     @search.result(distinct: true)
   end
@@ -41,15 +32,5 @@ class SearchOrders
                selected: true,
                shipping_method_id: params[:shipping_method_id]
              })
-  end
-
-  def paginated_results
-    @search.result(distinct: true)
-      .page(params[:page])
-      .per(params[:per_page])
-  end
-
-  def using_pagination?
-    params[:per_page]
   end
 end

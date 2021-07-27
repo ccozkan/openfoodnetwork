@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Finds tax rates on which an adjustment is based on.
 # For example a packaging fee may contain VAT. This service finds the VAT rate
 # for the tax included in the packaging fee.
@@ -6,36 +8,36 @@ class TaxRateFinder
   def self.tax_rates_of(adjustment)
     new.tax_rates(
       adjustment.originator,
-      adjustment.source,
+      adjustment.adjustable,
       adjustment.amount,
       adjustment.included_tax
     )
   end
 
   # @return [Array<Spree::TaxRate>]
-  def tax_rates(originator, source, amount, included_tax)
-    find_associated_tax_rate(originator, source) ||
+  def tax_rates(originator, adjustable, amount, included_tax)
+    find_associated_tax_rate(originator, adjustable) ||
       find_closest_tax_rates_from_included_tax(amount, included_tax)
   end
 
   private
 
-  def find_associated_tax_rate(originator, source)
+  def find_associated_tax_rate(originator, adjustable)
     case originator
     when Spree::TaxRate
       [originator]
     when EnterpriseFee
-      enterprise_fee_tax_rates(originator, source)
+      enterprise_fee_tax_rates(originator, adjustable)
     end
   end
 
-  def enterprise_fee_tax_rates(enterprise_fee, source)
-    case source
+  def enterprise_fee_tax_rates(enterprise_fee, adjustable)
+    case adjustable
     when Spree::LineItem
-      tax_category = line_item_tax_category(enterprise_fee, source)
-      tax_category ? tax_category.tax_rates.match(source.order) : []
+      tax_category = line_item_tax_category(enterprise_fee, adjustable)
+      tax_category ? tax_category.tax_rates.match(adjustable.order) : []
     when Spree::Order
-      enterprise_fee.tax_category ? enterprise_fee.tax_category.tax_rates.match(source) : []
+      enterprise_fee.tax_category ? enterprise_fee.tax_category.tax_rates.match(adjustable) : []
     end
   end
 
@@ -75,8 +77,8 @@ class TaxRateFinder
   # to the included tax.
   def find_closest_tax_rates_from_included_tax(amount, included_tax)
     approximation = (included_tax / (amount - included_tax))
-    return [] if approximation.infinite? || approximation.zero?
+    return [] if approximation.infinite? || approximation.zero? || approximation.nan?
 
-    [Spree::TaxRate.order("ABS(amount - #{approximation})").first]
+    [Spree::TaxRate.order(Arel.sql("ABS(amount - #{approximation})")).first]
   end
 end

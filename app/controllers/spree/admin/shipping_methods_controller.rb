@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Spree
   module Admin
     class ShippingMethodsController < ::Admin::ResourceController
@@ -79,14 +81,15 @@ module Spree
 
       def load_data
         @available_zones = Zone.order(:name)
+        @tax_categories = Spree::TaxCategory.order(:name)
         @calculators = ShippingMethod.calculators.sort_by(&:name)
       end
 
       def permitted_resource_params
         params.require(:shipping_method).permit(
           :name, :description, :display_on, :require_ship_address, :tag_list, :calculator_type,
-          distributor_ids: [],
-          calculator_attributes: PermittedAttributes::Calculator.attributes
+          :tax_category_id, distributor_ids: [],
+                            calculator_attributes: PermittedAttributes::Calculator.attributes
         )
       end
     end

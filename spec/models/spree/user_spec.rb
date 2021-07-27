@@ -16,7 +16,9 @@ describe Spree::User do
           old_bill_address = user.bill_address
           new_bill_address = create(:address, firstname: 'abc')
 
-          user.update(bill_address_attributes: new_bill_address.dup.attributes.merge('id' => old_bill_address.id).except!('created_at', 'updated_at'))
+          user.update(bill_address_attributes: new_bill_address.dup.attributes.merge('id' => old_bill_address.id).except!(
+            'created_at', 'updated_at'
+          ))
 
           expect(user.bill_address.id).to eq old_bill_address.id
           expect(user.bill_address.firstname).to eq new_bill_address.firstname
@@ -25,7 +27,9 @@ describe Spree::User do
         it 'creates new shipping address' do
           new_ship_address = create(:address, firstname: 'abc')
 
-          user.update(ship_address_attributes: new_ship_address.dup.attributes.except!('created_at', 'updated_at'))
+          user.update(ship_address_attributes: new_ship_address.dup.attributes.except!(
+            'created_at', 'updated_at'
+          ))
 
           expect(user.ship_address.id).not_to eq new_ship_address.id
           expect(user.ship_address.firstname).to eq new_ship_address.firstname
@@ -40,17 +44,18 @@ describe Spree::User do
       let!(:e2) { create(:enterprise, owner: u1) }
 
       it "provides access to owned enterprises" do
-        expect(u1.owned_enterprises(:reload)).to include e1, e2
+        expect(u1.owned_enterprises.reload).to include e1, e2
       end
 
       it "enforces the limit on the number of enterprise owned" do
-        expect(u2.owned_enterprises(:reload)).to eq []
+        expect(u2.owned_enterprises.reload).to eq []
         u2.owned_enterprises << e1
         expect { u2.save! }.to_not raise_error
         expect do
           u2.owned_enterprises << e2
           u2.save!
-        end.to raise_error ActiveRecord::RecordInvalid, "Validation failed: #{u2.email} is not permitted to own any more enterprises (limit is 1)."
+        end.to raise_error ActiveRecord::RecordInvalid,
+                           "Validation failed: #{u2.email} is not permitted to own any more enterprises (limit is 1)."
       end
     end
 
@@ -62,8 +67,8 @@ describe Spree::User do
       let!(:g3) { create(:enterprise_group, owner: u2) }
 
       it "provides access to owned groups" do
-        expect(u1.owned_groups(:reload)).to match_array([g1, g2])
-        expect(u2.owned_groups(:reload)).to match_array([g3])
+        expect(u1.owned_groups.reload).to match_array([g1, g2])
+        expect(u2.owned_groups.reload).to match_array([g3])
       end
     end
 
@@ -111,7 +116,9 @@ describe Spree::User do
 
       expect do
         create(:user, confirmed_at: nil).confirm
-      end.to enqueue_job ConfirmSignupJob
+      end.to enqueue_job ActionMailer::DeliveryJob
+
+      expect(enqueued_jobs.last.to_s).to match "signup_confirmation"
     end
   end
 
@@ -185,6 +192,13 @@ describe Spree::User do
       user = order.user
 
       expect { user.destroy }.to raise_exception(Spree::User::DestroyWithOrdersError)
+    end
+  end
+
+  describe "#flipper_id" do
+    it "provides a unique id" do
+      user = Spree::User.new(id: 42)
+      expect(user.flipper_id).to eq "Spree::User;42"
     end
   end
 end

@@ -8,7 +8,10 @@ describe SubscriptionMailer, type: :mailer do
 
   before { setup_email }
 
-  describe "order placement" do
+  describe '#placement_email' do
+    subject(:email) { SubscriptionMailer.placement_email(order, changes) }
+    let(:changes) { {} }
+
     let(:shop) { create(:enterprise) }
     let(:customer) { create(:customer, enterprise: shop) }
     let(:subscription) { create(:subscription, shop: shop, customer: customer, with_items: true) }
@@ -16,48 +19,38 @@ describe SubscriptionMailer, type: :mailer do
     let!(:order) { proxy_order.initialise_order! }
 
     context "when changes have been made to the order" do
-      let(:changes) { {} }
-
-      before do
-        changes[order.line_items.first.id] = 2
-        expect do
-          SubscriptionMailer.placement_email(order, changes).deliver
-        end.to change{ SubscriptionMailer.deliveries.count }.by(1)
-      end
+      before { changes[order.line_items.first.id] = 2 }
 
       it "sends the email, which notifies the customer of changes made" do
+        expect { email.deliver_now }.to change { SubscriptionMailer.deliveries.count }.by(1)
+
         body = SubscriptionMailer.deliveries.last.body.encoded
+
         expect(body).to include "This order was automatically created for you."
         expect(body).to include "Unfortunately, not all products that you requested were available."
       end
     end
 
     context "and changes have not been made to the order" do
-      before do
-        expect do
-          SubscriptionMailer.placement_email(order, {}).deliver
-        end.to change{ SubscriptionMailer.deliveries.count }.by(1)
-      end
-
       it "sends the email" do
+        expect { email.deliver_now }.to change { SubscriptionMailer.deliveries.count }.by(1)
+
         body = SubscriptionMailer.deliveries.last.body.encoded
+
         expect(body).to include "This order was automatically created for you."
         expect(body).to_not include "Unfortunately, not all products that you requested were available."
       end
     end
 
     describe "linking to order page" do
-      let(:order_link_href) { "href=\"#{spree.order_url(order)}\"" }
+      let(:order_link_href) { "href=\"#{order_url(order)}\"" }
       let(:order_link_style) { "style='[^']+'" }
 
       let(:shop) { create(:enterprise, allow_order_changes: true) }
 
-      let(:email) { SubscriptionMailer.deliveries.last }
-      let(:body) { email.body.encoded }
+      let(:body) { SubscriptionMailer.deliveries.last.body.encoded }
 
-      before do
-        SubscriptionMailer.placement_email(order, {}).deliver
-      end
+      before { email.deliver_now }
 
       context "when the customer has a user account" do
         let(:customer) { create(:customer, enterprise: shop) }
@@ -93,36 +86,48 @@ describe SubscriptionMailer, type: :mailer do
         end
       end
     end
+
+    context 'when the order has outstanding balance' do
+      before { allow(order).to receive(:new_outstanding_balance) { 123 } }
+
+      it 'renders the amount as money' do
+        expect(email.body).to include('$123')
+      end
+    end
+
+    context 'when the order has no outstanding balance' do
+      before { allow(order).to receive(:new_outstanding_balance) { 0 } }
+
+      it 'displays the payment status' do
+        expect(email.body).to include(I18n.t(:email_payment_not_paid))
+      end
+    end
   end
 
-  describe "order confirmation" do
+  describe '#confirmation_email' do
+    subject(:email) { SubscriptionMailer.confirmation_email(order) }
+
     let(:customer) { create(:customer) }
     let(:subscription) { create(:subscription, customer: customer, with_items: true) }
     let(:proxy_order) { create(:proxy_order, subscription: subscription) }
     let!(:order) { proxy_order.initialise_order! }
-
-    before do
-      expect do
-        SubscriptionMailer.confirmation_email(order).deliver
-      end.to change{ SubscriptionMailer.deliveries.count }.by(1)
-    end
+    let(:user) { order.user }
 
     it "sends the email" do
+      expect { email.deliver_now }.to change{ SubscriptionMailer.deliveries.count }.by(1)
+
       body = SubscriptionMailer.deliveries.last.body.encoded
       expect(body).to include "This order was automatically placed for you"
     end
 
     describe "linking to order page" do
-      let(:order_link_href) { "href=\"#{spree.order_url(order)}\"" }
-
-      let(:email) { SubscriptionMailer.deliveries.last }
-      let(:body) { email.body.encoded }
+      let(:order_link_href) { "href=\"#{order_url(order)}\"" }
 
       context "when the customer has a user account" do
         let(:customer) { create(:customer) }
 
         it "provides link to view details" do
-          expect(body).to match /#{order_link_href}/
+          expect(email.body.encoded).to include(order_url(order))
         end
       end
 
@@ -130,8 +135,24 @@ describe SubscriptionMailer, type: :mailer do
         let(:customer) { create(:customer, user: nil) }
 
         it "does not provide link" do
-          expect(body).to_not match /#{order_link_href}/
+          expect(email.body).to_not match /#{order_link_href}/
         end
+      end
+    end
+
+    context 'when the order has outstanding balance' do
+      before { allow(order).to receive(:new_outstanding_balance) { 123 } }
+
+      it 'renders the amount as money' do
+        expect(email.body).to include('$123')
+      end
+    end
+
+    context 'when the order has no outstanding balance' do
+      before { allow(order).to receive(:new_outstanding_balance) { 0 } }
+
+      it 'displays the payment status' do
+        expect(email.body).to include(I18n.t(:email_payment_not_paid))
       end
     end
   end
@@ -143,7 +164,7 @@ describe SubscriptionMailer, type: :mailer do
 
     before do
       expect do
-        SubscriptionMailer.empty_email(order, {}).deliver
+        SubscriptionMailer.empty_email(order, {}).deliver_now
       end.to change{ SubscriptionMailer.deliveries.count }.by(1)
     end
 
@@ -164,14 +185,15 @@ describe SubscriptionMailer, type: :mailer do
       order.errors.add(:base, "This is a payment failure error")
 
       expect do
-        SubscriptionMailer.failed_payment_email(order).deliver
+        SubscriptionMailer.failed_payment_email(order).deliver_now
       end.to change{ SubscriptionMailer.deliveries.count }.by(1)
     end
 
     it "sends the email" do
       body = strip_tags(SubscriptionMailer.deliveries.last.body.encoded)
       expect(body).to include I18n.t("email_so_failed_payment_intro_html")
-      explainer = I18n.t("email_so_failed_payment_explainer_html", distributor: subscription.shop.name)
+      explainer = I18n.t("email_so_failed_payment_explainer_html",
+                         distributor: subscription.shop.name)
       expect(body).to include strip_tags(explainer)
       details = I18n.t("email_so_failed_payment_details_html", distributor: subscription.shop.name)
       expect(body).to include strip_tags(details)
@@ -179,7 +201,7 @@ describe SubscriptionMailer, type: :mailer do
     end
 
     describe "linking to order page" do
-      let(:order_link_href) { "href=\"#{spree.order_url(order)}\"" }
+      let(:order_link_href) { "href=\"#{order_url(order)}\"" }
 
       let(:email) { SubscriptionMailer.deliveries.last }
       let(:body) { email.body.encoded }
@@ -208,14 +230,17 @@ describe SubscriptionMailer, type: :mailer do
     let(:body) { strip_tags(SubscriptionMailer.deliveries.last.body.encoded) }
     let(:scope) { "subscription_mailer" }
 
-    before { allow(summary).to receive(:unrecorded_ids) { [] } }
+    before do
+      allow(summary).to receive(:unrecorded_ids) { [] }
+      allow(summary).to receive(:subscription_issues) { [] }
+    end
 
     context "when no issues were encountered while processing subscriptions" do
       before do
         allow(summary).to receive(:order_count) { 37 }
         allow(summary).to receive(:issue_count) { 0 }
         allow(summary).to receive(:issues) { {} }
-        SubscriptionMailer.placement_summary_email(summary).deliver
+        SubscriptionMailer.placement_summary_email(summary).deliver_now
       end
 
       it "sends the email, which notifies the enterprise that all orders were successfully processed" do
@@ -234,13 +259,15 @@ describe SubscriptionMailer, type: :mailer do
         allow(summary).to receive(:order_count) { 37 }
         allow(summary).to receive(:success_count) { 35 }
         allow(summary).to receive(:issue_count) { 2 }
-        allow(summary).to receive(:issues) { { processing: { 1 => "Some Error Message", 2 => nil } } }
+        allow(summary).to receive(:issues) {
+                            { processing: { 1 => "Some Error Message", 2 => nil } }
+                          }
         allow(summary).to receive(:orders_affected_by) { [order1, order2] }
       end
 
       context "when no unrecorded issues are present" do
         it "sends the email, which notifies the enterprise that some issues were encountered" do
-          SubscriptionMailer.placement_summary_email(summary).deliver
+          SubscriptionMailer.placement_summary_email(summary).deliver_now
           expect(body).to include I18n.t("#{scope}.placement_summary_email.intro", shop: shop.name)
           expect(body).to include I18n.t("#{scope}.summary_overview.total", count: 37)
           expect(body).to include I18n.t("#{scope}.summary_overview.success_some", count: 35)
@@ -268,7 +295,7 @@ describe SubscriptionMailer, type: :mailer do
 
         it "sends the email, which notifies the enterprise that some issues were encountered" do
           expect(summary).to receive(:orders_affected_by).with(:other) { [order3, order4] }
-          SubscriptionMailer.placement_summary_email(summary).deliver
+          SubscriptionMailer.placement_summary_email(summary).deliver_now
           expect(body).to include I18n.t("#{scope}.summary_detail.processing.title", count: 2)
           expect(body).to include I18n.t("#{scope}.summary_detail.processing.explainer")
           expect(body).to include I18n.t("#{scope}.summary_detail.other.title", count: 2)
@@ -291,7 +318,7 @@ describe SubscriptionMailer, type: :mailer do
         allow(summary).to receive(:issue_count) { 2 }
         allow(summary).to receive(:issues) { { changes: { 1 => nil, 2 => nil } } }
         allow(summary).to receive(:orders_affected_by) { [order1, order2] }
-        SubscriptionMailer.placement_summary_email(summary).deliver
+        SubscriptionMailer.placement_summary_email(summary).deliver_now
       end
 
       it "sends the email, which notifies the enterprise that some issues were encountered" do
@@ -318,14 +345,17 @@ describe SubscriptionMailer, type: :mailer do
     let(:body) { strip_tags(SubscriptionMailer.deliveries.last.body.encoded) }
     let(:scope) { "subscription_mailer" }
 
-    before { allow(summary).to receive(:unrecorded_ids) { [] } }
+    before do
+      allow(summary).to receive(:unrecorded_ids) { [] }
+      allow(summary).to receive(:subscription_issues) { [] }
+    end
 
     context "when no issues were encountered while processing subscriptions" do
       before do
         allow(summary).to receive(:order_count) { 37 }
         allow(summary).to receive(:issue_count) { 0 }
         allow(summary).to receive(:issues) { {} }
-        SubscriptionMailer.confirmation_summary_email(summary).deliver
+        SubscriptionMailer.confirmation_summary_email(summary).deliver_now
       end
 
       it "sends the email, which notifies the enterprise that all orders were successfully processed" do
@@ -344,14 +374,17 @@ describe SubscriptionMailer, type: :mailer do
         allow(summary).to receive(:order_count) { 37 }
         allow(summary).to receive(:success_count) { 35 }
         allow(summary).to receive(:issue_count) { 2 }
-        allow(summary).to receive(:issues) { { failed_payment: { 1 => "Some Error Message", 2 => nil } } }
+        allow(summary).to receive(:issues) {
+                            { failed_payment: { 1 => "Some Error Message", 2 => nil } }
+                          }
         allow(summary).to receive(:orders_affected_by) { [order1, order2] }
       end
 
       context "when no unrecorded issues are present" do
         it "sends the email, which notifies the enterprise that some issues were encountered" do
-          SubscriptionMailer.confirmation_summary_email(summary).deliver
-          expect(body).to include I18n.t("#{scope}.confirmation_summary_email.intro", shop: shop.name)
+          SubscriptionMailer.confirmation_summary_email(summary).deliver_now
+          expect(body).to include I18n.t("#{scope}.confirmation_summary_email.intro",
+                                         shop: shop.name)
           expect(body).to include I18n.t("#{scope}.summary_overview.total", count: 37)
           expect(body).to include I18n.t("#{scope}.summary_overview.success_some", count: 35)
           expect(body).to include I18n.t("#{scope}.summary_overview.issues")
@@ -378,7 +411,7 @@ describe SubscriptionMailer, type: :mailer do
 
         it "sends the email, which notifies the enterprise that some issues were encountered" do
           expect(summary).to receive(:orders_affected_by).with(:other) { [order3, order4] }
-          SubscriptionMailer.confirmation_summary_email(summary).deliver
+          SubscriptionMailer.confirmation_summary_email(summary).deliver_now
           expect(body).to include I18n.t("#{scope}.summary_detail.failed_payment.title", count: 2)
           expect(body).to include I18n.t("#{scope}.summary_detail.failed_payment.explainer")
           expect(body).to include I18n.t("#{scope}.summary_detail.other.title", count: 2)
@@ -401,7 +434,7 @@ describe SubscriptionMailer, type: :mailer do
         allow(summary).to receive(:issue_count) { 2 }
         allow(summary).to receive(:issues) { { changes: { 1 => nil, 2 => nil } } }
         allow(summary).to receive(:orders_affected_by) { [order1, order2] }
-        SubscriptionMailer.confirmation_summary_email(summary).deliver
+        SubscriptionMailer.confirmation_summary_email(summary).deliver_now
       end
 
       it "sends the email, which notifies the enterprise that some issues were encountered" do

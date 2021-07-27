@@ -16,7 +16,8 @@ feature '
     scenario "listing relationships" do
       # Given some users and enterprises with relationships
       u1, u2 = create(:user), create(:user)
-      e1, e2, e3, e4 = create(:enterprise), create(:enterprise), create(:enterprise), create(:enterprise)
+      e1, e2, e3, e4 = create(:enterprise), create(:enterprise), create(:enterprise),
+create(:enterprise)
       create(:enterprise_role, user: u1, enterprise: e1)
       create(:enterprise_role, user: u1, enterprise: e2)
       create(:enterprise_role, user: u2, enterprise: e3)
@@ -94,7 +95,9 @@ feature '
       let(:new_email) { 'new@manager.com' }
 
       let!(:enterprise) { create(:enterprise, name: 'Test Enterprise', owner: user1) }
-      let!(:enterprise_role) { create(:enterprise_role, user_id: user2.id, enterprise_id: enterprise.id) }
+      let!(:enterprise_role) {
+        create(:enterprise_role, user_id: user2.id, enterprise_id: enterprise.id)
+      }
 
       before do
         click_link 'Enterprises'
@@ -117,7 +120,7 @@ feature '
         end
       end
 
-      it "allows adding new managers" do
+      xit "allows adding new managers" do
         within 'table.managers' do
           select2_select user3.email, from: 'ignored', search: true
 
@@ -129,7 +132,7 @@ feature '
         end
       end
 
-      it "shows changes to enterprise contact or owner" do
+      xit "shows changes to enterprise contact or owner" do
         select2_select user2.email, from: 'receives_notifications_dropdown'
         within('#save-bar') { click_button 'Update' }
         navigate_to_enterprise_users
@@ -146,7 +149,7 @@ feature '
         end
       end
 
-      it "can invite unregistered users to be managers" do
+      xit "can invite unregistered users to be managers" do
         setup_email
         find('a.button.help-modal').click
         expect(page).to have_css '#invite-manager-modal'

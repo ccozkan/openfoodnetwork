@@ -17,8 +17,7 @@
           %th.cart-item-delete-header
 
       %tbody#line_items{"data-hook" => ""}
-        = order_form.fields_for :line_items do |item_form|
-          = render :partial => 'line_item', :locals => { :variant => item_form.object.variant, :line_item => item_form.object, :item_form => item_form }
+        = render partial: 'line_item', collection: order_form.object.line_items, locals: {order_form: order_form}
 
       = render 'bought' if show_bought_items? && @order.cart?
 
@@ -31,12 +30,12 @@
           %td.text-right
             %span.order-total.item-total= display_checkout_subtotal(@order)
           %td
-        -if display_checkout_admin_and_handling_adjustments_total_for(@order) != Spree::Money.new(0 , currency: @order.currency)
+        -if display_line_item_fees_total_for(@order) != Spree::Money.new(0 , currency: @order.currency)
           %tr
             %td.text-right{colspan:"3"}
               = t :orders_form_admin
             %td.text-right
-              %span.order-total.distribution-total= display_checkout_admin_and_handling_adjustments_total_for(@order)
+              %span.order-total.distribution-total= display_line_item_fees_total_for(@order)
             %td
 
         - checkout_adjustments_for(@order, exclude: [:line_item, :admin_and_handling]).reject{ |a| a.amount == 0 }.reverse_each do |adjustment|
@@ -57,7 +56,8 @@
 
         - if @order.total_tax > 0
           %tr
-            %td.text-right{colspan:"3"} (includes tax)
+            %td.text-right{colspan:"3"}
+              = t :order_includes_tax
             %td.text-right
               %span.order-total.tax-total= display_checkout_tax_total(@order)
             %td

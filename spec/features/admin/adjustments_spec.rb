@@ -13,8 +13,14 @@ feature '
   let!(:distributor) { create(:distributor_enterprise, charges_sales_tax: true) }
   let!(:order_cycle) { create(:simple_order_cycle, distributors: [distributor]) }
 
-  let!(:order) { create(:order_with_totals_and_distribution, user: user, distributor: distributor, order_cycle: order_cycle, state: 'complete', payment_state: 'balance_due') }
-  let!(:tax_rate) { create(:tax_rate, name: 'GST', calculator: build(:calculator, preferred_amount: 10), zone: create(:zone_with_member)) }
+  let!(:order) {
+    create(:order_with_totals_and_distribution, user: user, distributor: distributor,
+                                                order_cycle: order_cycle, state: 'complete', payment_state: 'balance_due')
+  }
+  let!(:tax_rate) {
+    create(:tax_rate, name: 'GST', calculator: build(:calculator, preferred_amount: 10),
+                      zone: create(:zone_with_member))
+  }
 
   before do
     order.finalize!
@@ -42,7 +48,8 @@ feature '
 
   scenario "modifying taxed adjustments on an order" do
     # Given a taxed adjustment
-    adjustment = create(:adjustment, label: "Extra Adjustment", adjustable: order, amount: 110, included_tax: 10)
+    adjustment = create(:adjustment, label: "Extra Adjustment", adjustable: order,
+                                     amount: 110, included_tax: 10, order: order)
 
     # When I go to the adjustments page for the order
     login_as_admin_and_visit spree.admin_orders_path
@@ -65,7 +72,8 @@ feature '
 
   scenario "modifying an untaxed adjustment on an order" do
     # Given an untaxed adjustment
-    adjustment = create(:adjustment, label: "Extra Adjustment", adjustable: order, amount: 110, included_tax: 0)
+    adjustment = create(:adjustment, label: "Extra Adjustment", adjustable: order,
+                                     amount: 110, included_tax: 0, order: order)
 
     # When I go to the adjustments page for the order
     login_as_admin_and_visit spree.admin_orders_path
@@ -84,5 +92,19 @@ feature '
     # Then the adjustment tax should be recalculated
     expect(page).to have_selector 'td.amount', text: '110'
     expect(page).to have_selector 'td.included-tax', text: '10'
+  end
+
+  scenario "viewing adjustments on a canceled order" do
+    # Given a taxed adjustment
+    adjustment = create(:adjustment, label: "Extra Adjustment", adjustable: order,
+                                     amount: 110, included_tax: 10, order: order)
+    order.cancel!
+
+    login_as_admin_and_visit spree.edit_admin_order_path(order)
+
+    click_link 'Adjustments'
+
+    expect(page).to_not have_selector('tr a.icon-edit')
+    expect(page).to_not have_selector('a.icon-plus'), text: I18n.t(:new_adjustment)
   end
 end

@@ -10,13 +10,10 @@
 //= require jquery-migrate-min
 //= require jquery_ujs
 //= require jquery.ui.all
-//= require jquery-ui-timepicker-addon
 //= require jquery.powertip
 //= require jquery.cookie
 //= require jquery.jstree/jquery.jstree
 //= require jquery.vAlign
-//= require jquery.horizontalNav
-//= require jquery.adaptivemenu
 //= require angular
 //= require angular-resource
 //= require angular-animate
@@ -25,6 +22,24 @@
 //= require ../shared/ng-tags-input.min.js
 //= require angular-rails-templates
 //= require lodash.underscore.js
+
+// datetimepicker  (fil, nb)
+//= require flatpickr/dist/flatpickr.min
+//= require flatpickr/dist/l10n/ar
+//= require flatpickr/dist/l10n/cat
+//= require flatpickr/dist/l10n/cy
+//= require flatpickr/dist/l10n/de
+//= require flatpickr/dist/l10n/es
+//= require flatpickr/dist/l10n/fr
+//= require flatpickr/dist/l10n/it
+//= require flatpickr/dist/l10n/nl
+//= require flatpickr/dist/l10n/pl
+//= require flatpickr/dist/l10n/pt
+//= require flatpickr/dist/l10n/ru
+//= require flatpickr/dist/l10n/sv
+//= require flatpickr/dist/l10n/tr
+//= require shortcut-buttons-flatpickr/dist/shortcut-buttons-flatpickr.min
+//= require flatpickr/dist/plugins/labelPlugin/labelPlugin
 
 // spree
 //= require admin/spree/spree
@@ -37,6 +52,9 @@
 //= require admin/spree/handlebar_extensions
 
 // OFN specific
+//= require ../shared/shared
+//= require_tree ../shared/directives
+//= require_tree ../templates/shared
 //= require_tree ../templates/admin
 //= require ./admin_ofn
 //= require ./customers/customers
@@ -91,6 +109,9 @@
 
 // foundation
 //= require ../shared/mm-foundation-tpls-0.9.0-20180826174721.min.js
+
+// LocalStorage
+//= require ../shared/angular-local-storage.js
 
 // requires the rest of the JS code in this folder
 //= require_tree .

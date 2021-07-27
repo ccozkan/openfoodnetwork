@@ -94,13 +94,27 @@ module OrderManagement
             end
           end
         end
+
+        describe "#record_subscription_issue" do
+          let(:subscription) { double(:subscription, shop_id: 1) }
+
+          before do
+            allow(summarizer).to receive(:summary_for_shop_id).
+              with(subscription.shop_id) { summary }
+          end
+
+          it "records a subscription issue" do
+            expect(summary).to receive(:record_subscription_issue).with(subscription).once
+            summarizer.record_subscription_issue(subscription)
+          end
+        end
       end
 
       describe "#send_placement_summary_emails" do
         let(:summary1) { double(:summary) }
         let(:summary2) { double(:summary) }
         let(:summaries) { { 1 => summary1, 2 => summary2 } }
-        let(:mail_mock) { double(:mail, deliver: true) }
+        let(:mail_mock) { double(:mail, deliver_now: true) }
 
         before do
           summarizer.instance_variable_set(:@summaries, summaries)
@@ -116,7 +130,7 @@ module OrderManagement
         let(:summary1) { double(:summary) }
         let(:summary2) { double(:summary) }
         let(:summaries) { { 1 => summary1, 2 => summary2 } }
-        let(:mail_mock) { double(:mail, deliver: true) }
+        let(:mail_mock) { double(:mail, deliver_now: true) }
 
         before do
           summarizer.instance_variable_set(:@summaries, summaries)

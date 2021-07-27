@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open_food_network/address_finder'
 
 module Admin
@@ -10,16 +12,20 @@ module Admin
         tag_rule_mapping = TagRule.mapping_for(Enterprise.where(id: @customer.enterprise))
         render_as_json @customer, tag_rule_mapping: tag_rule_mapping
       },
-      failure: lambda { render json: { errors: @customer.errors.full_messages }, status: :unprocessable_entity }
+      failure: lambda {
+                 render json: { errors: @customer.errors.full_messages },
+                        status: :unprocessable_entity
+               }
     } }
 
     def index
       respond_to do |format|
         format.html
         format.json do
-          render_as_json @collection,
-                         tag_rule_mapping: tag_rule_mapping,
-                         customer_tags: customer_tags_by_id
+          render json: @collection,
+                 each_serializer: ::Api::Admin::CustomerWithBalanceSerializer,
+                 tag_rule_mapping: tag_rule_mapping,
+                 customer_tags: customer_tags_by_id
         end
       end
     end
@@ -44,15 +50,12 @@ module Admin
 
     # copy of Admin::ResourceController without flash notice
     def destroy
-      invoke_callbacks(:destroy, :before)
       if @object.destroy
-        invoke_callbacks(:destroy, :after)
         respond_with(@object) do |format|
           format.html { redirect_to location_after_destroy }
           format.js   { render partial: "spree/admin/shared/destroy" }
         end
       else
-        invoke_callbacks(:destroy, :fails)
         respond_with(@object) do |format|
           format.html { redirect_to location_after_destroy }
           format.json { render json: { errors: @object.errors.full_messages }, status: :conflict }
@@ -63,10 +66,17 @@ module Admin
     private
 
     def collection
-      return Customer.where("1=0") unless json_request? && params[:enterprise_id].present?
-
-      Customer.of(managed_enterprise_id).
-        includes(:bill_address, :ship_address, user: :credit_cards)
+      if json_request? && params[:enterprise_id].present?
+        CustomersWithBalance.new(managed_enterprise_id).query.
+          includes(
+            :enterprise,
+            { bill_address: [:state, :country] },
+            { ship_address: [:state, :country] },
+            user: :credit_cards
+          )
+      else
+        Customer.where('1=0')
+      end
     end
 
     def managed_enterprise_id

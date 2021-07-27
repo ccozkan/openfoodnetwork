@@ -16,7 +16,6 @@ describe Enterprise do
         let(:producer_property) { enterprise.producer_properties.last }
 
         before do
-          pp enterprise.updated_at
           product.set_property 'Organic', 'NASAA 12345'
           enterprise.set_producer_property 'Biodynamic', 'ASDF 4321'
         end
@@ -52,7 +51,10 @@ describe Enterprise do
 
       describe "with a distributed product" do
         let(:product) { create(:simple_product) }
-        let(:oc) { create(:simple_order_cycle, distributors: [enterprise], variants: [product.variants.first]) }
+        let(:oc) {
+          create(:simple_order_cycle, distributors: [enterprise],
+                                      variants: [product.variants.first])
+        }
         let(:supplier) { product.supplier }
         let!(:classification) { create(:classification, taxon: taxon, product: product) }
         let(:property) { product.product_properties.last }
@@ -90,6 +92,13 @@ describe Enterprise do
           it "touches enterprise when the supplier of a product changes" do
             expect {
               product.update!(supplier: supplier2)
+              enterprise.reload
+            }.to change { enterprise.updated_at }
+          end
+
+          it "touches enterprise when a relevant exchange is updated" do
+            expect {
+              oc.exchanges.first.update!(updated_at: Time.zone.now)
               enterprise.reload
             }.to change { enterprise.updated_at }
           end

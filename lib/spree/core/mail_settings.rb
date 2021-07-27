@@ -7,24 +7,14 @@ module Spree
       SECURE_CONNECTION_TYPES = ['None', 'SSL', 'TLS'].freeze
 
       # Override the Rails application mail settings based on preferences
-      # This makes it possible to configure the mail settings through an admin
-      # interface instead of requiring changes to the Rails envrionment file
       def self.init
-        new.override! if override?
-      end
-
-      def self.override?
-        Config.override_actionmailer_config
+        new.override!
       end
 
       def override!
-        if Config.enable_mail_delivery
-          ActionMailer::Base.default_url_options[:host] ||= Config.site_url
-          ActionMailer::Base.smtp_settings = mail_server_settings
-          ActionMailer::Base.perform_deliveries = true
-        else
-          ActionMailer::Base.perform_deliveries = false
-        end
+        ActionMailer::Base.default_url_options[:host] ||= ENV.fetch("SITE_URL", Config.site_url)
+        ActionMailer::Base.smtp_settings = mail_server_settings
+        ActionMailer::Base.perform_deliveries = true
       end
 
       private

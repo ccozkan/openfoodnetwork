@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 require 'open_food_network/enterprise_injection_data'
 
 module InjectionHelper
   include SerializerHelper
+  include EnterprisesHelper
+  include OrderCyclesHelper
 
   def inject_enterprises(enterprises = nil)
     inject_json_array(

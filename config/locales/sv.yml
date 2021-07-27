@@ -2,6 +2,8 @@ sv:
   language_name: "Svenska"
   activerecord:
     attributes:
+      spree/user:
+        password: "Lösenord"
       enterprise_fee:
         fee_type: Avgiftstyp
       spree/order:
@@ -29,11 +31,14 @@ sv:
         order_cycle_ids: "Beställningsomgångar"
         shipping_method_ids: "Transportsätt"
         payment_method_ids: "Betalningssätt"
+  customer_instructions: "Kundinstruktioner"
   devise:
     failure:
       invalid: |
           Ogiltig e-post eller lösenord.
           Var du gäst senast? Du behöver kanske skapa ett konto eller återställa ditt lösenord.
+  sku: "SKU"
+  tax_rate: "Skattesats"
   enterprise_mailer:
     confirmation_instructions:
       subject: "Vänligen bekräfta e-postadressen för %{enterprise}"
@@ -288,6 +293,7 @@ sv:
         max_fulfilled_units: "Maximalt expedierade enheter"
         order_error: "En del misstag måste korrigeras innan du kan uppdatera en order. Alla rödmarkerade fält innehåller fel."
         variants_without_unit_value: "VARNING: På en del ställen saknas antalsuppgift"
+        all: "Alla"
     enterprise:
       select_outgoing_oc_products_from: Välj utgående produkter i beställningsrunda från
     enterprises:
@@ -400,6 +406,8 @@ sv:
           shopfront_category_ordering: "Sorteringsordning av kategorier i butik"
           open_date: "Öppningsdatum"
           close_date: "Stängningsdatum"
+          shopfront_sort_by_category_placeholder: "Kategori"
+          shopfront_sort_by_producer_placeholder: "Producent"
         social:
           twitter_placeholder: "t.ex. @the_prof"
           facebook_placeholder: "eg. www.facebook.com/PageNameHere"
@@ -491,7 +499,6 @@ sv:
         create: "Skapa"
         cancel: "Avbryt"
       edit:
-        advanced_settings: "Avancerade inställningar"
         next: "Näst"
         cancel: "Avbryt"
         choose_products_from: "Välj produkter från:"
@@ -519,6 +526,8 @@ sv:
         preferred_product_selection_from_coordinator_inventory_only_here: Enbart koordinatorns inventarielista
         preferred_product_selection_from_coordinator_inventory_only_all: Alla tillgängliga produkter
         save_reload: Spara och ladda om sidan
+      order_cycle_top_buttons:
+        advanced_settings: "Avancerade inställningar"
       coordinator_fees:
         add: Lägg till koordinatoravgift
       form:
@@ -634,6 +643,9 @@ sv:
       hide_closed_shops: "Dölj stängda butiker"
       show_on_map: "Visa allt på kartan"
   shared:
+    mailers:
+      powered_by:
+        open_food_network: "Open Food Network"
     menu:
       cart_sidebar:
         checkout: "Utcheckning"
@@ -653,7 +665,6 @@ sv:
       footer_join_body: "Skapa en lista, butik eller gruppförteckning på Open Food Network."
       footer_join_cta: "Berätta mer!"
       footer_legal_call: "Läs vår"
-      footer_legal_tos: "Användarvillkor"
       footer_legal_visit: "Hitta oss på"
       footer_legal_text_html: "Open Food Network är en avgiftsfri plattform för öppen källkod. Vårt innehåll har licens med  %{content_license} och vår kod med %{code_license}."
   shop:
@@ -740,8 +751,6 @@ sv:
   label_producers: "Producenter "
   label_groups: "Grupper"
   label_about: "Om oss"
-  label_connect: "Anslut"
-  label_learn: "Lär mer"
   label_shopping: "Handel"
   label_login: "Logga in"
   label_logout: "Logga ut"
@@ -777,10 +786,6 @@ sv:
   brandstory_part4: "Det fungerar överallt. Det förändrar alltihop."
   brandstory_part5_strong: "Vi kallar det Open Food Network."
   brandstory_part6: "Vi alla älskar mat. Nu kan vi älska vårt matsystem också."
-  learn_body: "Utforskar modeller, beskrivningar och resurser för att stödja hur du utvecklar din rättvisemärkta butik eller organisation. Finner utbildningar, evenemang och andra möjligheter att lära av föregångare."
-  learn_cta: "Bli Inspirerad"
-  connect_body: "Sök i våra kataloger för producenter, köpcentrum och grupper för att finna handlare för rättvisemärkta varor i din närhet."
-  connect_cta: "Gå Utforska"
   system_headline: "Handla - här är hur det fungerar."
   system_step1: "1. Sök"
   system_step1_text: "Sök bland oberoende butiker efter säsongens lokala varor. Sök efter grannskap och matkategori samt om du vill ha leverans eller ?"
@@ -883,7 +888,6 @@ sv:
   email_signup_text: "Tack för att du anslutit dig till vårt nätverk. Om du är kund, vi vill introducera dig för många utmärkta odlare och ett stort urval av god mat. Om du är producent eller matföretag är vi glada att ha dig som en del av vårt nätverk.\n."
   email_signup_help_html: "Vi uppskattar alla frågor och synpunkter; du kan använda  <em>Send Feedback</em> knappen på sidan eller skicka e-post till %{email}"
   producer_mail_greeting: "Kära"
-  producer_mail_text_before: "Nu har vi alla kundorder för nästa matleverans."
   producer_mail_order_text: "Detta är en summering av order för dina produkter:"
   producer_mail_delivery_instructions: "Upphämtnings- / leveransinstruktioner:"
   producer_mail_signoff: "Med vänliga hälsningar"
@@ -894,7 +898,9 @@ sv:
   shopping_tabs_home: "Hem"
   shopping_tabs_shop: "Butik "
   shopping_tabs_about: "Om oss"
+  shopping_tabs_producers: "Producenter "
   shopping_tabs_contact: "Kontakt"
+  shopping_tabs_groups: "Grupper"
   shopping_contact_address: "Adress"
   shopping_contact_web: "Kontakt"
   shopping_contact_social: "Följ"
@@ -905,6 +911,7 @@ sv:
   enterprises_choose: "Välj när du vill ha din beställning:"
   maps_open: "Öppen"
   maps_closed: "Stängd"
+  map_title: "Karta"
   hubs_buy: "Handla:"
   hubs_shopping_here: "Att handla här"
   hubs_orders_closed: "Beställningar avslutade"
@@ -1032,27 +1039,28 @@ sv:
   shops_signup_help: Vi är redo att hjälpa.
   shops_signup_help_text: Du behöver bättre vinst. Du behöver nya kunder och logistikpartner. Din historia behöver bli känd bland grossister, detaljhandlare och vid köksbordet.
   shops_signup_detail: Här är haken.
-  orders_fees: Avgifter...
-  orders_edit_title: Varukorg
-  orders_edit_headline: Din varukorg
-  orders_edit_time: Beställning redo för
-  orders_edit_continue: Fortsätt handla
-  orders_edit_checkout: Utcheckning
+  orders_fees: "Avgifter..."
+  orders_edit_title: "Varukorg"
+  orders_edit_headline: "Din varukorg"
+  orders_edit_time: "Beställning redo för"
+  orders_edit_continue: "Fortsätt handla"
+  orders_edit_checkout: "Utcheckning"
   orders_form_empty_cart: "Tom varukorg"
-  orders_form_subtotal: Framställ delsumma
-  orders_form_admin: Administration och hantering
-  orders_form_total: 'Summa '
-  orders_oc_expired_headline: Denna orderomgång är stängd för nya order
+  orders_form_update_cart: "Uppdatera"
+  orders_form_subtotal: "Framställ delsumma"
+  orders_form_admin: "Administration och hantering"
+  orders_form_total: "Summa "
+  orders_oc_expired_headline: "Denna orderomgång är stängd för nya order"
   orders_oc_expired_text: "Tyvärr, order för denna orderomgång stängde  för %{time} sedan! Var vänlig kontakta ditt matcenter för att se om de kan ta emot en sen order. "
   orders_oc_expired_text_others_html: "Tyvärr, order för denna orderomgång stängde  för %{time} sedan! Var vänlig kontakta ditt matcenter för att se om de kan ta emot en sen order <strong>%{link}</strong>."
   orders_oc_expired_text_link: "eller se de andra beställningstiderna för detta matställe"
   orders_oc_expired_email: "E-post:"
   orders_oc_expired_phone: "Telefon:"
-  orders_show_title: Orderbekräftelse
-  orders_show_time: Order redo den
+  orders_show_title: "Orderbekräftelse"
+  orders_show_time: "Order redo den"
   orders_show_order_number: "Beställning # %{number}"
-  orders_show_cancelled: Avbokad
-  orders_show_confirmed: Bekräftad
+  orders_show_cancelled: "Avbokad"
+  orders_show_confirmed: "Bekräftad"
   orders_your_order_has_been_cancelled: "Din beställning har avbrutits"
   orders_could_not_cancel: "Tyvärr kan denna beställning inte avbrytas"
   orders_cannot_remove_the_final_item: "Det går inte att ta bort det sista varan från en beställning, var god och avbryt beställningen istället."
@@ -1060,9 +1068,9 @@ sv:
     few: "%{count} ytterligare artiklar är redan bekräftade för denna beställningsomgång"
     many: "%{count} ytterligare artiklar är redan bekräftade för denna beställningsomgång"
     other: "%{count} ytterligare artiklar är redan bekräftade för denna beställningsomgång"
-  orders_bought_edit_button: Redigera bekräftade varor
+  orders_bought_edit_button: "Redigera bekräftade varor"
   orders_bought_already_confirmed: "* redan bekräftad"
-  orders_confirm_cancel: Är du säker på att du vill avbryta denna beställning?
+  orders_confirm_cancel: "Är du säker på att du vill avbryta denna beställning?"
   products_cart_distributor_choice: "Distributör för din order:"
   products_cart_distributor_change: "Din distributör för denna order kommer att ändras till %{name} om du lägger denna produkt i din kundkorg."
   products_cart_distributor_is: "Din distributör för denna order är %{name}."
@@ -1140,6 +1148,7 @@ sv:
         registration_action: "Låt oss börja!"
       details:
         headline: "Låt oss börja"
+        enterprise: "Hej! Först bejöver vi veta lite om ditt företag:"
         producer: "Hej! Först behöver vi veta lite om din gård:"
         enterprise_name_field: "Företagets namn:"
         producer_name_field: "Gårdens namn:"
@@ -1310,6 +1319,8 @@ sv:
   delivery_method: Leveransmetod
   fee_type: "Avgiftstyp"
   tax_category: "Taxområde"
+  description: "Beskrivning"
+  tags: "Taggar"
   calculator: "Kalkulator"
   calculator_values: "Kalkulatorvärden"
   flat_percent_per_item: "Procent (per vara)"
@@ -1384,7 +1395,6 @@ sv:
   remove_tax: "Tag bort skatt"
   enterprise_tos_link: "Länk till företagets servicevillkor"
   enterprise_tos_message: "Vi vill arbeta med personer som delar våra mål och värderingar. Därför ber vi nya företag att samtycka med vår"
-  enterprise_tos_link_text: "Servicevillkor"
   enterprise_tos_agree: "Jag samtycker med ovanstående servicevillkor "
   tax_settings: "Skatteskalor"
   products_require_tax_category: "produkter kräver skattekategori"
@@ -1893,6 +1903,8 @@ sv:
               fee_type: "Avgiftstyp"
               customer_name: "Kund"
               tax_category_name: "Skattekategori"
+      report:
+        none: "Ingen"
   order: "Beställningar"
   distribution: "Distribution"
   payment: "Betalning "
@@ -1903,7 +1915,12 @@ sv:
   account: "Konto"
   logout: "Logga ut"
   spree:
-    resend: Återsänd
+    all: "Alla"
+    category: "Kategori"
+    credit: "Kredit"
+    none: "Ingen"
+    updating: "Uppdaterar"
+    resend: "Återsänd"
     quantity: "Antal"
     on_demand: "På begäran"
     on_hand: "På lager"
@@ -1924,10 +1941,13 @@ sv:
     password: "Lösenord"
     tax rate: "Skattesatser"
     tax_category: "Skattekategori"
+    tax_rates: "Skattesatser"
     tax_settings: "Skatteskalor"
     payment_methods: "Betalningssätt"
     shipping_methods: "Transportsätt"
     shipping_method: "Fraktmetod"
+    payment: "Betalning "
+    status: "Status"
     name: "Namn"
     description: "Beskrivning"
     type: "Typ"
@@ -1937,8 +1957,10 @@ sv:
     inventory: Lager
     zipcode: Postkod
     payment_method: "Betalningsmetod"
+    sku: "SKU"
     actions:
       update: "Uppdatera"
+      cancel: "Avbryt"
     shared:
       payments_list:
         amount: "Belopp"
@@ -2021,6 +2043,8 @@ sv:
           name: "Namn"
           products_distributor: "Distributör"
           calculator: "Beräkning"
+        form:
+          tax_category: "Skattekategori"
       payment_methods:
         index:
           payment_methods: "Betalningssätt"
@@ -2040,6 +2064,7 @@ sv:
           units: "Enhetsstorlek"
           value: "Värde"
           price: "Pris"
+          unit_price: "Styckpris"
           on_hand: "På lager"
           on_demand: "På begäran"
           or: "eller"
@@ -2083,6 +2108,7 @@ sv:
         form:
           sku: "SKU"
           price: "Pris"
+          unit_price: "Styckpris"
           display_as: "Visa som"
         autocomplete:
           producer_name: "Producent"
@@ -2099,9 +2125,6 @@ sv:
         edit:
           enterprises_require_tos: "Företag måste acceptera servicevillkoren"
           footer_tos_url: "Användarvillkor URL"
-    date_picker:
-      format: '%Y-%m-%d'
-      js_format: 'yy-mm-dd'
     orders:
       bought:
         item: "Redan beställd i denna beställningsomgång"
@@ -2150,6 +2173,8 @@ sv:
       resumed: återupptagen
       returned: returnerad
       skrill: skrill
+    paypal:
+      refund_amount: "Belopp"
     users:
       open_orders:
         order: Beställningar

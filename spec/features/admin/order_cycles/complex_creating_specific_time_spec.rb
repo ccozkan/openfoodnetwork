@@ -10,8 +10,8 @@ feature '
   include AuthenticationHelper
   include WebHelper
 
-  let(:order_cycle_opening_time) { Time.zone.local(2040, 11, 0o6, 0o6, 0o0, 0o0).strftime("%F %T %z") }
-  let(:order_cycle_closing_time) { Time.zone.local(2040, 11, 13, 17, 0o0, 0o0).strftime("%F %T %z") }
+  let(:order_cycle_opening_time) { Time.zone.local(2040, 11, 0o6, 0o6, 0o0, 0o0) }
+  let(:order_cycle_closing_time) { Time.zone.local(2040, 11, 13, 17, 0o0, 0o0) }
 
   scenario "creating an order cycle with full interface", js: true do
     # Given coordinating, supplying and distributing enterprises with some products with variants
@@ -20,12 +20,16 @@ feature '
     product = create(:product, supplier: supplier)
     v1 = create(:variant, product: product)
     v2 = create(:variant, product: product)
-    distributor = create(:distributor_enterprise, name: 'My distributor', with_payment_and_shipping: true)
+    distributor = create(:distributor_enterprise, name: 'My distributor',
+                                                  with_payment_and_shipping: true)
 
     # Relationships required for interface to work
-    create(:enterprise_relationship, parent: supplier, child: coordinator, permissions_list: [:add_to_order_cycle])
-    create(:enterprise_relationship, parent: distributor, child: coordinator, permissions_list: [:add_to_order_cycle])
-    create(:enterprise_relationship, parent: supplier, child: distributor, permissions_list: [:add_to_order_cycle])
+    create(:enterprise_relationship, parent: supplier, child: coordinator,
+                                     permissions_list: [:add_to_order_cycle])
+    create(:enterprise_relationship, parent: distributor, child: coordinator,
+                                     permissions_list: [:add_to_order_cycle])
+    create(:enterprise_relationship, parent: supplier, child: distributor,
+                                     permissions_list: [:add_to_order_cycle])
 
     # And some enterprise fees
     supplier_fee = create(:enterprise_fee, enterprise: supplier, name: 'Supplier fee')
@@ -48,8 +52,27 @@ feature '
     expect(page).to have_button("Create", disabled: false)
 
     # If I fill in the basic fields
-    fill_in 'order_cycle_orders_open_at', with: order_cycle_opening_time
-    fill_in 'order_cycle_orders_close_at', with: order_cycle_closing_time
+    find('#order_cycle_orders_open_at').click
+    # select date
+    select_date_from_datepicker Time.at(order_cycle_opening_time)
+    # select time
+    within(".flatpickr-calendar.open .flatpickr-time") do
+      find('.flatpickr-hour').set('%02d' % order_cycle_opening_time.hour)
+      find('.flatpickr-minute').set('%02d' % order_cycle_opening_time.min)
+    end
+    # hide the datetimepicker
+    find("body").send_keys(:escape)
+
+    find('#order_cycle_orders_close_at').click
+    # select date
+    select_date_from_datepicker Time.at(order_cycle_closing_time)
+    # select time
+    within(".flatpickr-calendar.open .flatpickr-time") do
+      find('.flatpickr-hour').set('%02d' % order_cycle_closing_time.hour)
+      find('.flatpickr-minute').set('%02d' % order_cycle_closing_time.min)
+    end
+    # hide the datetimepicker
+    find("body").send_keys(:escape)
 
     # And I add a coordinator fee
     click_button 'Add coordinator fee'
@@ -77,8 +100,9 @@ feature '
 
     # And I add a supplier fee
     within("tr.supplier-#{supplier.id}") { click_button 'Add fee' }
-    select 'My supplier',  from: 'order_cycle_incoming_exchange_0_enterprise_fees_0_enterprise_id'
-    select 'Supplier fee', from: 'order_cycle_incoming_exchange_0_enterprise_fees_0_enterprise_fee_id'
+    select 'My supplier', from: 'order_cycle_incoming_exchange_0_enterprise_fees_0_enterprise_id'
+    select 'Supplier fee',
+           from: 'order_cycle_incoming_exchange_0_enterprise_fees_0_enterprise_fee_id'
 
     click_button 'Save and Next'
 
@@ -100,8 +124,10 @@ feature '
 
     # And I add a distributor fee
     within("tr.distributor-#{distributor.id}") { click_button 'Add fee' }
-    select 'My distributor',  from: 'order_cycle_outgoing_exchange_0_enterprise_fees_0_enterprise_id'
-    select 'Distributor fee', from: 'order_cycle_outgoing_exchange_0_enterprise_fees_0_enterprise_fee_id'
+    select 'My distributor',
+           from: 'order_cycle_outgoing_exchange_0_enterprise_fees_0_enterprise_id'
+    select 'Distributor fee',
+           from: 'order_cycle_outgoing_exchange_0_enterprise_fees_0_enterprise_fee_id'
 
     click_button 'Save and Back to List'
 
@@ -109,8 +135,10 @@ feature '
     toggle_columns "Producers", "Shops"
 
     expect(page).to have_input "oc#{oc.id}[name]", value: "Plums & Avos"
-    expect(page).to have_input "oc#{oc.id}[orders_open_at]", value: order_cycle_opening_time
-    expect(page).to have_input "oc#{oc.id}[orders_close_at]", value: order_cycle_closing_time
+    expect(page).to have_input "oc#{oc.id}[orders_open_at]",
+                               value: Time.at(order_cycle_opening_time), visible: false
+    expect(page).to have_input "oc#{oc.id}[orders_close_at]",
+                               value: Time.at(order_cycle_closing_time), visible: false
     expect(page).to have_content "My coordinator"
 
     expect(page).to have_selector 'td.producers', text: 'My supplier'

@@ -13,14 +13,22 @@ module Admin
     describe "#index" do
       describe "when the user manages a coordinator" do
         let!(:coordinator) { create(:distributor_enterprise, owner: distributor_owner) }
-        let!(:oc1) { create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 60.days.ago ) }
-        let!(:oc2) { create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 40.days.ago ) }
-        let!(:oc3) { create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 20.days.ago ) }
-        let!(:oc4) { create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: nil ) }
+        let!(:oc1) {
+          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 60.days.ago )
+        }
+        let!(:oc2) {
+          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 40.days.ago )
+        }
+        let!(:oc3) {
+          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 20.days.ago )
+        }
+        let!(:oc4) {
+          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: nil )
+        }
 
         context "html" do
           it "doesn't load any data" do
-            spree_get :index, format: :html
+            get :index, as: :html
             expect(assigns(:collection)).to be_empty
           end
         end
@@ -28,7 +36,7 @@ module Admin
         context "json" do
           context "where ransack conditions are specified" do
             it "loads order cycles that closed within the past month, and orders without a close_at date" do
-              spree_get :index, format: :json
+              get :index, as: :json
               expect(assigns(:collection)).to_not include oc1, oc2
               expect(assigns(:collection)).to include oc3, oc4
             end
@@ -38,7 +46,7 @@ module Admin
             let(:q) { { orders_close_at_gt: 45.days.ago } }
 
             it "loads order cycles that closed after the specified date, and orders without a close_at date" do
-              spree_get :index, format: :json, q: q
+              get :index, as: :json, params: { q: q }
               expect(assigns(:collection)).to_not include oc1
               expect(assigns(:collection)).to include oc2, oc3, oc4
             end
@@ -47,7 +55,7 @@ module Admin
               before { q.merge!(id_not_in: [oc2.id, oc4.id]) }
 
               it "loads order cycles that meet all conditions" do
-                spree_get :index, format: :json, q: q
+                get :index, format: :json, params: { q: q }
                 expect(assigns(:collection)).to_not include oc1, oc2, oc4
                 expect(assigns(:collection)).to include oc3
               end
@@ -62,7 +70,7 @@ module Admin
         let!(:distributor) { create(:distributor_enterprise, owner: distributor_owner) }
 
         it "renders the new template" do
-          spree_get :new
+          get :new
           expect(response).to render_template :new
         end
       end
@@ -73,21 +81,21 @@ module Admin
         let!(:distributor3) { create(:distributor_enterprise) }
 
         it "renders the set_coordinator template" do
-          spree_get :new
+          get :new
           expect(response).to render_template :set_coordinator
         end
 
         describe "and a coordinator_id is submitted as part of the request" do
           describe "when the user manages the enterprise" do
             it "renders the new template" do
-              spree_get :new, coordinator_id: distributor1.id
+              get :new, params: { coordinator_id: distributor1.id }
               expect(response).to render_template :new
             end
           end
 
           describe "when the user does not manage the enterprise" do
             it "renders the set_coordinator template and sets a flash error" do
-              spree_get :new, coordinator_id: distributor3.id
+              get :new, params: { coordinator_id: distributor3.id }
               expect(response).to render_template :set_coordinator
               expect(flash[:error]).to eq "You don't have permission to create an order cycle coordinated by that enterprise"
             end
@@ -101,7 +109,7 @@ module Admin
 
       context "as a manager of a shop" do
         let(:form_mock) { instance_double(OrderCycleForm) }
-        let(:params) { { format: :json, order_cycle: {} } }
+        let(:params) { { as: :json, order_cycle: {} } }
 
         before do
           controller_login_as_enterprise_user([shop])
@@ -203,11 +211,19 @@ module Admin
       let(:coordinator) { order_cycle.coordinator }
       let(:hub) { create(:distributor_enterprise) }
       let(:v) { create(:variant) }
-      let!(:incoming_exchange) { create(:exchange, order_cycle: order_cycle, sender: producer, receiver: coordinator, incoming: true, variants: [v]) }
-      let!(:outgoing_exchange) { create(:exchange, order_cycle: order_cycle, sender: coordinator, receiver: hub, incoming: false, variants: [v]) }
+      let!(:incoming_exchange) {
+        create(:exchange, order_cycle: order_cycle, sender: producer, receiver: coordinator,
+                          incoming: true, variants: [v])
+      }
+      let!(:outgoing_exchange) {
+        create(:exchange, order_cycle: order_cycle, sender: coordinator, receiver: hub, incoming: false,
+                          variants: [v])
+      }
 
       let(:allowed) { { incoming_exchanges: [], outgoing_exchanges: [] } }
-      let(:restricted) { { name: 'some name', orders_open_at: 1.day.from_now, orders_close_at: 1.day.ago } }
+      let(:restricted) {
+        { name: 'some name', orders_open_at: 1.day.from_now.to_s, orders_close_at: 1.day.ago.to_s }
+      }
       let(:params) { { format: :json, id: order_cycle.id, order_cycle: allowed.merge(restricted) } }
       let(:form_mock) { instance_double(OrderCycleForm, save: true) }
 
@@ -267,8 +283,13 @@ module Admin
         end
 
         context "when a validation error occurs" do
-          before do
-            params[:order_cycle_set][:collection_attributes]['0'][:orders_open_at] = Date.current + 25.days
+          let(:params) do
+            { format: :json, order_cycle_set: { collection_attributes: { '0' => {
+              id: oc.id,
+              name: "Updated Order Cycle",
+              orders_open_at: Date.current + 25.days,
+              orders_close_at: Date.current + 21.days,
+            } } } }
           end
 
           it "returns an error message" do
@@ -331,7 +352,7 @@ module Admin
 
       describe "when an order cycle is deleteable" do
         it "allows the order_cycle to be destroyed" do
-          spree_get :destroy, id: oc.id
+          get :destroy, params: { id: oc.id }
           expect(OrderCycle.find_by(id: oc.id)).to be nil
         end
       end
@@ -340,7 +361,7 @@ module Admin
         let!(:order) { create(:order, order_cycle: oc) }
 
         it "displays an error message when we attempt to delete it" do
-          spree_get :destroy, id: oc.id
+          get :destroy, params: { id: oc.id }
           expect(response).to redirect_to admin_order_cycles_path
           expect(flash[:error]).to eq I18n.t('admin.order_cycles.destroy_errors.orders_present')
         end
@@ -350,7 +371,7 @@ module Admin
         let!(:schedule) { create(:schedule, order_cycles: [oc]) }
 
         it "displays an error message when we attempt to delete it" do
-          spree_get :destroy, id: oc.id
+          get :destroy, params: { id: oc.id }
           expect(response).to redirect_to admin_order_cycles_path
           expect(flash[:error]).to eq I18n.t('admin.order_cycles.destroy_errors.schedule_present')
         end

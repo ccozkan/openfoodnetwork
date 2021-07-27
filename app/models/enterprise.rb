@@ -2,15 +2,17 @@
 
 require 'spree/core/s3_support'
 
-class Enterprise < ActiveRecord::Base
+class Enterprise < ApplicationRecord
   SELLS = %w(unspecified none own any).freeze
   ENTERPRISE_SEARCH_RADIUS = 100
 
   preference :shopfront_message, :text, default: ""
   preference :shopfront_closed_message, :text, default: ""
   preference :shopfront_taxon_order, :string, default: ""
+  preference :shopfront_producer_order, :string, default: ""
   preference :shopfront_order_cycle_order, :string, default: "orders_close_at"
   preference :show_customer_names_to_suppliers, :boolean, default: false
+  preference :shopfront_product_sorting_method, :string, default: "by_category"
 
   # Allow hubs to restrict visible variants to only those in their inventory
   preference :product_selection_from_inventory_only, :boolean, default: false
@@ -38,7 +40,6 @@ class Enterprise < ActiveRecord::Base
   has_many :enterprise_roles, dependent: :destroy
   has_many :users, through: :enterprise_roles
   belongs_to :owner, class_name: 'Spree::User',
-                     foreign_key: :owner_id,
                      inverse_of: :owned_enterprises
   has_and_belongs_to_many :payment_methods, join_table: 'distributors_payment_methods',
                                             class_name: 'Spree::PaymentMethod',
@@ -96,17 +97,17 @@ class Enterprise < ActiveRecord::Base
   validates :owner, presence: true
   validates :permalink, uniqueness: true, presence: true
   validate :shopfront_taxons
+  validate :shopfront_producers
   validate :enforce_ownership_limit, if: lambda { owner_id_changed? && !owner_id.nil? }
 
   before_validation :initialize_permalink, if: lambda { permalink.nil? }
   before_validation :set_unused_address_fields
-  after_validation :geocode_address
   after_validation :ensure_owner_is_manager, if: lambda { owner_id_changed? && !owner_id.nil? }
 
   after_touch :touch_distributors
   after_create :set_default_contact
   after_create :relate_to_owners_enterprises
-  after_create :send_welcome_email
+  after_create_commit :send_welcome_email
 
   after_rollback :restore_permalink
 
@@ -122,7 +123,7 @@ class Enterprise < ActiveRecord::Base
   scope :not_ready_for_checkout, lambda {
     # When ready_for_checkout is empty, return all rows when there are no enterprises ready for
     # checkout.
-    ready_enterprises = Enterprise.ready_for_checkout.
+    ready_enterprises = Enterprise.default_scoped.ready_for_checkout.
       except(:select).
       select('DISTINCT enterprises.id')
 
@@ -250,7 +251,7 @@ class Enterprise < ActiveRecord::Base
 
   def plus_relatives_and_oc_producers(order_cycles)
     oc_producer_ids = Exchange.in_order_cycle(order_cycles).incoming.pluck :sender_id
-    Enterprise.relatives_of_one_union_others(id, oc_producer_ids | [id])
+    Enterprise.is_primary_producer.relatives_of_one_union_others(id, oc_producer_ids | [id])
   end
 
   def relatives_including_self
@@ -400,7 +401,7 @@ class Enterprise < ActiveRecord::Base
   end
 
   def send_welcome_email
-    WelcomeEnterpriseJob.perform_later(id)
+    EnterpriseMailer.welcome(self).deliver_later
   end
 
   def strip_url(url)
@@ -409,10 +410,6 @@ class Enterprise < ActiveRecord::Base
 
   def set_unused_address_fields
     address.firstname = address.lastname = address.phone = 'unused' if address.present?
-  end
-
-  def geocode_address
-    address.geocode if address.andand.changed?
   end
 
   def ensure_owner_is_manager
@@ -461,6 +458,12 @@ class Enterprise < ActiveRecord::Base
   def shopfront_taxons
     unless preferred_shopfront_taxon_order =~ /\A((\d+,)*\d+)?\z/
       errors.add(:shopfront_category_ordering, "must contain a list of taxons.")
+    end
+  end
+
+  def shopfront_producers
+    unless preferred_shopfront_producer_order =~ /\A((\d+,)*\d+)?\z/
+      errors.add(:shopfront_category_ordering, "must contain a list of producers.")
     end
   end
 

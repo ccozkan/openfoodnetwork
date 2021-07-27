@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Spree
-  class Order < ActiveRecord::Base
+  class Order < ApplicationRecord
     module Checkout
       def self.included(klass)
         klass.class_eval do
@@ -63,21 +63,20 @@ module Spree
                 transition to: :awaiting_return
               end
 
-              if states[:payment]
-                before_transition to: :complete do |order|
-                  order.process_payments! if order.payment_required?
-                end
+              event :restart_checkout do
+                transition to: :cart, unless: :completed?
               end
 
               before_transition from: :cart, do: :ensure_line_items_present
 
               before_transition to: :delivery, do: :create_proposed_shipments
               before_transition to: :delivery, do: :ensure_available_shipping_rates
+              before_transition to: :payment, do: :create_tax_charge!
 
               after_transition to: :complete, do: :finalize!
-              after_transition to: :delivery, do: :create_tax_charge!
               after_transition to: :resumed,  do: :after_resume
               after_transition to: :canceled, do: :after_cancel
+              after_transition to: :payment, do: :set_payment_amount!
             end
           end
 
@@ -126,20 +125,11 @@ module Spree
             steps
           end
 
-          def checkout_step?(step)
-            step.present? ? checkout_steps.include?(step) : false
-          end
-
-          def checkout_step_index(step)
-            checkout_steps.index(step)
-          end
-
-          def can_go_to_state?(state)
-            return false unless self.state.present? &&
-                                checkout_step?(state) &&
-                                checkout_step?(self.state)
-
-            checkout_step_index(state) > checkout_step_index(self.state)
+          def restart_checkout_flow
+            update_columns(
+              state: checkout_steps.first,
+              updated_at: Time.zone.now,
+            )
           end
         end
       end

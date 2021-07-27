@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   module InjectionHelper
     def admin_inject_enterprise
@@ -128,10 +130,6 @@ module Admin
       render partial: "admin/json/injection_ams", locals: { ngModule: "admin.variantOverrides",
                                                             name: "hubPermissions",
                                                             json: @hub_permissions.to_json }
-    end
-
-    def admin_inject_products
-      admin_inject_json_ams_array "ofn.admin", "products", @products, Api::Admin::ProductSerializer
     end
 
     def admin_inject_tax_categories(opts = { module: 'ofn.admin' })

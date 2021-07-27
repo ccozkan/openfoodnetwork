@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OrderManagement
   module Reports
     module EnterpriseFeeSummary
@@ -65,11 +67,11 @@ module OrderManagement
         end
 
         def for_order_adjustment_source?
-          data["adjustment_source_type"] == "Spree::Order"
+          data["adjustment_adjustable_type"] == "Spree::Order"
         end
 
         def for_line_item_adjustment_source?
-          data["adjustment_source_type"] == "Spree::LineItem"
+          data["adjustment_adjustable_type"] == "Spree::LineItem"
         end
       end
     end

@@ -4,7 +4,7 @@ require 'concerns/payment_method_distributors'
 require 'spree/core/calculated_adjustments'
 
 module Spree
-  class PaymentMethod < ActiveRecord::Base
+  class PaymentMethod < ApplicationRecord
     include Spree::Core::CalculatedAdjustments
     include PaymentMethodDistributors
 
@@ -87,10 +87,6 @@ module Spree
 
     def source_required?
       true
-    end
-
-    def auto_capture?
-      Spree::Config[:auto_capture]
     end
 
     def supports?(_source)

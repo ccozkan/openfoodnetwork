@@ -2,6 +2,8 @@ nl_BE:
   language_name: "Nederlands"
   activerecord:
     attributes:
+      spree/user:
+        password: "Wachtwoord"
       enterprise_fee:
         fee_type: Soort commissie
       spree/order:
@@ -24,6 +26,8 @@ nl_BE:
       spree/credit_card:
         base: "Kredietkaart"
         number: "Nummer"
+        month: "Maand"
+        year: "Jaar"
       order_cycle:
         orders_close_at: Sluitingsdatum
       variant_override:
@@ -82,6 +86,7 @@ nl_BE:
               no_default_card: "^Er is geen standaardkaart beschikbaar voor deze klant"
             shipping_method:
               not_available_to_shop: "is niet beschikbaar voor %{shop}"
+  customer_instructions: "Klantenaanwijzingen"
   devise:
     confirmations:
       send_instructions: "U ontvangt een e-mail met instructies over hoe u uw account binnen enkele minuten kunt bevestigen."
@@ -114,6 +119,8 @@ nl_BE:
   models:
     order_cycle:
       cloned_order_cycle_name: "KOPIE VAN %{order_cycle}"
+  sku: "SKU"
+  tax_rate: "BTW-tarief"
   validators:
     date_time_string_validator:
       not_string_error: "moet een snaar zijn"
@@ -121,9 +128,6 @@ nl_BE:
     integer_array_validator:
       not_array_error: "moet een array zijn"
       invalid_element_error: "mogen alleen geldige gehele getallen bevatten"
-  datetime_picker_ui:
-    close_text: Afgerond
-    time_text: Uur
   enterprise_mailer:
     confirmation_instructions:
       subject: "Bevestig a.u.b. het e-mailadres voor %{enterprise}"
@@ -262,7 +266,6 @@ nl_BE:
   error: Fout
   processing_payment: "Verwerking van de betaling....."
   no_pending_payments: "Geen betaling in afhandeling"
-  invalid_payment_state: "Onjuiste betaling status"
   filter_results: Filter resultaten
   quantity: Kwantiteit
   pick_up: Afhalen
@@ -616,6 +619,7 @@ nl_BE:
         max_fulfilled_units: "Maximum aantal vervulde eenheden"
         order_error: "Sommige fouten moeten opgelost worden voordat je je bestelling kan updaten.\nDe velden met rode randen bevatten fouten."
         variants_without_unit_value: "Waarschuwing: Sommige varianten hebben geen eenheidswaarde."
+        all: "Universum"
       select_variant: "Selecteer een variant"
     enterprise:
       select_outgoing_oc_products_from: Selecteer uitgaande OC producten uit
@@ -753,6 +757,8 @@ nl_BE:
           shopfront_category_ordering: "Etalage Categorie Bestelling"
           open_date: "Open Datum"
           close_date: "Sluiten Datum"
+          shopfront_sort_by_category_placeholder: "Categorie"
+          shopfront_sort_by_producer_placeholder: "Producent"
         social:
           twitter_placeholder: "bv. @de_prof"
           instagram_placeholder: "bv. de_prof"
@@ -873,7 +879,6 @@ nl_BE:
         cancel: "Annuleren"
         back_to_list: "Terug naar lijst"
       edit:
-        advanced_settings: "Geavanceerde Instellingen"
         save: "Save"
         save_and_next: "Opslaan en volgende"
         next: "Volgende"
@@ -926,6 +931,8 @@ nl_BE:
         preferred_product_selection_from_coordinator_inventory_only_here: 'Enkel Coördinator Inventaris '
         preferred_product_selection_from_coordinator_inventory_only_all: Alle Beschikbare Producten
         save_reload: Bewaar en Herlaad Webpagina
+      order_cycle_top_buttons:
+        advanced_settings: "Geavanceerde Instellingen"
       coordinator_fees:
         add: Voeg Coördinatievergoeding toe
       filters:
@@ -1131,6 +1138,7 @@ nl_BE:
       yes_cancel_them: 'Annuleer ze '
       no_keep_them: Behoud ze
       yes_i_am_sure: Ja, ik ben zeker
+      number: "Nummer"
       order_update_issues_msg: Sommige bestellingen konden niet automatisch geüpdatet worden, dit is de meest waarschijnlijke omdat ze handmatig werden aangepast. Kijk alsjeblieft eens naar de hieronder opgelijste aspecten en maak aanpassingen aan specifieke bestellingen indien nodig.
       no_results:
         no_subscriptions: Er zijn nog geen abonnementen...
@@ -1164,6 +1172,9 @@ nl_BE:
       hide_closed_shops: "Verberg gesloten winkels"
       show_on_map: "Toon alles op de kaart"
   shared:
+    mailers:
+      powered_by:
+        open_food_network: "Open Food Network"
     menu:
       cart:
         cart: "kar"
@@ -1192,7 +1203,6 @@ nl_BE:
       footer_join_body: "Creëer een lijst, winkel of groep directory in het Open Food Network."
       footer_join_cta: "Vertel mij meer !"
       footer_legal_call: "Lees onze"
-      footer_legal_tos: "Voorwaarden"
       footer_legal_visit: "Vind ons op"
       footer_legal_text_html: "Open Food Network is een vrij en opensource-software-platform. Onze inhoud valt onder de %{content_license} en onze code onder %{code_license} licentie."
       footer_data_text_with_privacy_policy_html: "We dragen op een goede manier zorg voor je gegevens. Neem een kijkje naar onze %{privacy_policy} en onze %{cookies_policy}."
@@ -1305,8 +1315,6 @@ nl_BE:
   label_producers: "Producenten"
   label_groups: "Groepen"
   label_about: "Over"
-  label_connect: "Verbinden"
-  label_learn: "Ontdek"
   label_blog: "Blog"
   label_support: "Ondersteuning"
   label_shopping: "Winkelen"
@@ -1394,10 +1402,6 @@ nl_BE:
   brandstory_part4: "U bent\n● Een producent: registreer en presenteer uw producten om ze in uw regio te promoten. U geeft het platform energie en maakt contact met nieuwe klanten.\n● Een distributeur: registreer en presenteer uw project om het bekend te maken en nieuwe klanten te overtuigen.\n● Een consument: vind producten bij u in de buurt en ontdek hun verhalen."
   brandstory_part5_strong: "Wij noemen het Open Food Network."
   brandstory_part6: "We kunnen allemaal meewerken aan de opbouw van een eerlijker voedselsysteem dat de mensheid respecteert en de planeet in stand houdt."
-  learn_body: "Verken rolmodellen, verhalen en bronnen om je te ondersteunen in de ontwikkeling van een eerlijke voedselzaak of organisatie. Vind opleidingen, evenementen, en andere mogelijkheden om te leren van mensen zoals jij."
-  learn_cta: "Vind Inspiratie"
-  connect_body: "Zoek in onze volledige lijst van producenten, hubs en groepen om een eerlijke voedselhandelaar te vinden bij jou in de buurt. Maak je zaak or organisatie deel van het OFN zodat klanten je kunnen vinden. Maak deel van de gemeenschap om advies te krijgen en samen moeilijkheden te overkomen."
-  connect_cta: "Ontdek Nu"
   system_headline: "Winkelen - dit is hoe het werkt."
   system_step1: "1. Zoek"
   system_step1_text: "Zoek in onze uitgebreide, onafhankelijke winkels voor lokale seizoenswaren. Zoek op basis van buurt-en-voedselcategorie, of indien je levering of ophaling verkiest. "
@@ -1530,7 +1534,6 @@ nl_BE:
     set_a_password: "Je zal dan gevraagd worden een wachtwoord in te stellen voordat je je ondernemingen kan inschrijven."
     mistakenly_sent: "Ben je niet zeker waarom je deze E-mail hebt ontvangen? Contacteer dan alsjeblieft %{owner_email} voor meer informatie."
   producer_mail_greeting: "Beste"
-  producer_mail_text_before: "We hebben nu alle consumentenbestellingen voor de volgende voedsellevering."
   producer_mail_order_text: "Hier heb je een samenvatting van bestellingen van al je producten:"
   producer_mail_delivery_instructions: "Voorraad ophaling/ levering instructies:"
   producer_mail_signoff: "Bedankt en beste wensen"
@@ -1542,7 +1545,9 @@ nl_BE:
   shopping_tabs_home: "Start"
   shopping_tabs_shop: "winkel"
   shopping_tabs_about: "Over"
+  shopping_tabs_producers: "Producenten"
   shopping_tabs_contact: "Contact"
+  shopping_tabs_groups: "Groepen"
   shopping_contact_address: "Adres"
   shopping_contact_web: "Contact"
   shopping_contact_social: "Volg"
@@ -1553,6 +1558,7 @@ nl_BE:
   enterprises_choose: "Kies wanneer je je bestelling wenst te ontvangen:"
   maps_open: "Open"
   maps_closed: "Gesloten"
+  map_title: "Kaart"
   hubs_buy: "Op zoek naar:"
   hubs_shopping_here: "Winkel hier"
   hubs_orders_closed: "Bestellingen gesloten"
@@ -1691,28 +1697,29 @@ nl_BE:
   shops_signup_help: We zijn klaar om te helpen.
   shops_signup_help_text: Je hebt een betere winst nodig. Je hebt nood aan kopers en logistieke partners. Je moet een verhaal verkocht krijgen aan groothandelaren, retail en aan de keukentafel.
   shops_signup_detail: Hier is het plaatje gedetailleerder.
-  orders: Bestellingen
-  orders_fees: Kosten...
-  orders_edit_title: Winkelwagentje
-  orders_edit_headline: Je winkelwagentje
-  orders_edit_time: Bestellingen klaar tegen
-  orders_edit_continue: Ga verder met winkelen
-  orders_edit_checkout: Kassa
+  orders: "Bestellingen"
+  orders_fees: "Kosten..."
+  orders_edit_title: "Winkelwagentje"
+  orders_edit_headline: "Je winkelwagentje"
+  orders_edit_time: "Bestellingen klaar tegen"
+  orders_edit_continue: "Ga verder met winkelen"
+  orders_edit_checkout: "Kassa"
   orders_form_empty_cart: "Maak je winkelwagentje leeg"
-  orders_form_subtotal: subtotaal Producten
-  orders_form_admin: Beheer & Behandeling
-  orders_form_total: Totaal
-  orders_oc_expired_headline: Bestellingen zijn gesloten voor deze bestellingscyclus
+  orders_form_update_cart: "Update"
+  orders_form_subtotal: "subtotaal Producten"
+  orders_form_admin: "Beheer & Behandeling"
+  orders_form_total: "Totaal"
+  orders_oc_expired_headline: "Bestellingen zijn gesloten voor deze bestellingscyclus"
   orders_oc_expired_text: "Sorry, bestellingen voor deze bestellingscyclus zijn %{time} geleden gesloten! Contacteer alsjeblief rechtstreeks een hub om te zien indien ze of ze laattijdige bestellingen kunnen accepteren."
   orders_oc_expired_text_others_html: "Sorry, bestellingen voor deze cyclus zijn %{time} geleden gesloten! Contacteer alsjeblief een hub rechtstreeks om te kijken of ze laattijdige bestellingen kunnen accepteren <strong>%{link}</strong>."
   orders_oc_expired_text_link: "of kijk eens naar de andere bestellingscycli beschikbaar in deze hub"
   orders_oc_expired_email: "E-Mail:"
   orders_oc_expired_phone: "Telefoon:"
-  orders_show_title: Bestellingsinformatie
-  orders_show_time: Bestelling klaar op
+  orders_show_title: "Bestellingsinformatie"
+  orders_show_time: "Bestelling klaar op"
   orders_show_order_number: "Bestelling #%{number}"
-  orders_show_cancelled: Geannuleerd
-  orders_show_confirmed: Bevestigd
+  orders_show_cancelled: "Geannuleerd"
+  orders_show_confirmed: "Bevestigd"
   orders_your_order_has_been_cancelled: "Je bestelling werd geannuleerd"
   orders_could_not_cancel: "Sorry, de bestelling kon niet worden geannuleerd"
   orders_cannot_remove_the_final_item: "Het is niet mogelijk om het laatste artikel van de bestelling te verwijderen, verwijder in plaats daarvan alsjeblieft de bestelling."
@@ -1720,9 +1727,9 @@ nl_BE:
     few: "%{count}bijkomende artikels zijn reeds bevestigd voor deze bestellingscyclus"
     many: "%{count}bijkomende artikels zijn reeds bevestigd voor deze bestellingscyclus"
     other: "%{count}bijkomende artikels zijn reeds bevestigd voor deze bestellingscyclus"
-  orders_bought_edit_button: Pas de bevestigde artikels aan
+  orders_bought_edit_button: "Pas de bevestigde artikels aan"
   orders_bought_already_confirmed: "* reeds bevestigd"
-  orders_confirm_cancel: Ben je zeker dat je deze bestelling wil annuleren?
+  orders_confirm_cancel: "Ben je zeker dat je deze bestelling wil annuleren?"
   order_processed_successfully: "Je bestelling is met succes geplaatst"
   products_cart_distributor_choice: "Verdeler voor jouw bestelling:"
   products_cart_distributor_change: "Je verdeler voor deze bestelling zal vervangen worden door %{name} indien je dit product toevoegt aan je winkelwagentje."
@@ -1808,7 +1815,7 @@ nl_BE:
       details:
         title: "Details"
         headline: "Laten we beginnen"
-        enterprise: "Goed bezig! Eerst een woordje over je bedrijf. "
+        enterprise: "Goed bezig! Eerst moeten we nog wat meer weten over je onderneming:"
         producer: "Goed bezig! Eerst moeten we nog wat meer weten over je kweekbedrijf:"
         enterprise_name_field: "Naam bedrijf : "
         producer_name_field: "Naam boerderij : "
@@ -1994,6 +2001,9 @@ nl_BE:
   delivery_method: Leveringswijze
   fee_type: "Sprookjesachtig type"
   tax_category: "Belastingcategorie"
+  description: "Beschrijving"
+  display: "Display"
+  tags: "Tags"
   calculator: "Rekenmachine"
   calculator_values: "Rekenmachine waarden"
   calculator_settings_warning: "Als u de rekenmachine type veranderd, moet u dan eerst opslaan vooraleer u de rekenmachine type kunt aanpassen."
@@ -2084,7 +2094,6 @@ nl_BE:
   new_order: "Nieuwe bestelling"
   enterprise_tos_link: "Link Voorwaarden Onderneming"
   enterprise_tos_message: "We willen met mensen werken die onze normen en waarden en delen. Daarom vragen wij aan de nieuwe bedrijven akkoord te gaan met onze  "
-  enterprise_tos_link_text: "Dienstvoorwaarden"
   enterprise_tos_agree: "Ik ga akkoord met bovenstaande Voorwaarden"
   tax_settings: "Belastings Instellingen"
   products_require_tax_category: "product vereist een belastingscategorie"
@@ -2341,6 +2350,7 @@ nl_BE:
   back_to_orders_list: "Terug naar de bestellijst"
   no_orders_found: "Geen bestelling gevonden"
   order_information: "Info bestelling"
+  new_payment: "Nieuwe betaling"
   date_completed: "Datum uitvoering"
   amount: "Bedrag"
   state_names:
@@ -2674,6 +2684,9 @@ nl_BE:
       start_free_profile: "Eerst uw bedrijfsprofiel maken en wijzig de formule als U klaar bent !"
   order_management:
     reports:
+      bulk_coop:
+        filters:
+          generate_report: "Ontwikkel verslag"
       enterprise_fee_summaries:
         filters:
           date_range: "Datumbereik"
@@ -2719,6 +2732,8 @@ nl_BE:
               tax_category_name: "Belastingcategorie"
               total_amount: "€€ SUM"
         invalid_filter_parameters: "De filters voor dit verslag zijn ongeldig."
+      report:
+        none: "Geen enkele"
   order: "Bestelling"
   distribution: "Distributie"
   order_details: "Bestellingsgegevens"
@@ -2734,6 +2749,7 @@ nl_BE:
   shipment_inc_vat: "Verzending BTW inbegrepen"
   shipping_tax_rate: "Toegepaste BTW op verzending "
   category: "Categorie"
+  import_date: "Importdatum"
   delivery: "Levering"
   temperature_controlled: "Temperatuurgestuurd"
   new_product: "Nieuw product"
@@ -2751,14 +2767,20 @@ nl_BE:
   previous: "Voorgaande"
   last: "Laatst"
   spree:
+    all: "Universum"
+    category: "Categorie"
+    credit: "Krediet"
     more: "Meer"
+    no_pending_payments: "Geen betaling in afhandeling"
+    none: "Geen enkele"
+    updating: "Updatend"
     your_order_is_empty_add_product: "Je bestelling is leeg, gelieve hierboven  een product te zoeken en toe te voegen "
     add_product: "Voeg een product toe"
     name_or_sku: "Beschrijving of artikelnummer ( tenminste 4 letters van de productnaam invoeren )"
-    resend: Zend opnieuw
-    back_to_orders_list: Terug naar de bestellingslijst
-    return_authorizations: terugkeer autorisatie
-    cannot_create_returns: Kan geen terugkeer aanmaken omdat deze orde geen verzonden units heeft
+    resend: "Zend opnieuw"
+    back_to_orders_list: "Terug naar de bestellingslijst"
+    return_authorizations: "terugkeer autorisatie"
+    cannot_create_returns: "Kan geen terugkeer aanmaken omdat deze orde geen verzonden units heeft"
     select_stock: "Selecteer voorraad"
     location: "Locatie"
     count_on_hand: "Count On Hand"
@@ -2815,7 +2837,6 @@ nl_BE:
     default_meta_description: "Standaard Meta Beschrijving"
     default_meta_keywords: "Standaard Meta Sleutelwoorden "
     security_settings: "Beveiligheidsinstellingen"
-    allow_ssl_in_development_and_test: "SSL toelaten bij ontwikkeling en testmode"
     allow_ssl_in_production: "SSl toelaten wanneer  in productiemode wordt gebruikt "
     allow_ssl_in_staging: "SSL toelaten wanneer in mode zichtbaar wordt gebruikt"
     currency_decimal_mark: "Valuta 1 decimaal bij"
@@ -2840,6 +2861,7 @@ nl_BE:
     tax rate: "Percentage belasting"
     new_tax_rate: "Nieuwe BTW percentage"
     tax_category: "Belastingcategorie"
+    tax_rates: "Percentage belasting"
     rate: "Percentage"
     tax_rate_amount_explanation: "BTW percentages zijn decimaal om de berekening gemakkelijker te maken, (bv. als de percentage 5% is dan 0.05 invoeren)"
     included_in_price: "In de prijs inbegrepen "
@@ -2867,6 +2889,9 @@ nl_BE:
     back_to_taxonomies_list: "Terug naar de lijst Taxonomies"
     shipping_methods: "Methode Verzending"
     shipping_method: "Het verschepen Methode"
+    shipment: "Verzending"
+    payment: "Betaling"
+    status: "Status"
     shipping_categories: "Verzendingscategorieën"
     new_shipping_category: "Nieuwe verzendingscategorie"
     back_to_shipping_categories: "Terug naar verzendingscategoriëen"
@@ -2916,8 +2941,10 @@ nl_BE:
     successfully_updated: '%{resource}is succesvol bijgewerkt!'
     payment_method: "Betaalmethode"
     payment_processing_failed: "De betaling is niet succesvol, gelieve de  ingevoerde gegevens na te kijken"
+    sku: "SKU"
     actions:
       update: "Update"
+      cancel: "Annuleren"
     shared:
       error_messages:
         there_were_problems_with_the_following_fields: "Er waren fouten met de volgende velden"
@@ -2935,6 +2962,8 @@ nl_BE:
           header:
             store: Zicht koper
     admin:
+      subscriptions:
+        number: "Nummer"
       tab:
         dashboard: "Dashboard"
         orders: "Bestellingen"
@@ -3083,6 +3112,7 @@ nl_BE:
           back_to_shipping_methods_list: "Terug naar Verzendmethodenlijst"
         form:
           categories: "Categorieën"
+          tax_category: "Belastingcategorie"
           zones: "Zones "
           both: "Bijden uitchecken en Back office"
           back_end: "Aleen Back Office"
@@ -3156,6 +3186,7 @@ nl_BE:
           value: "Waarde"
           unit_name: "Unit naam"
           price: "Prijs"
+          unit_price: "Stukprijs"
           on_hand: "Bij de Hand"
           on_demand: "Op Aanvraag"
           product_description: "Beschrijving product"
@@ -3226,7 +3257,6 @@ nl_BE:
           price: "Prijs"
           options: "Opties"
           no_results: "Geen resultaten "
-          to_add_variants_you_must_first_define: "Om varianten toetevoegen moet u eerst bepalen"
           option_types: "Optietypen"
           option_values: "Waarden opties"
           and: "En"
@@ -3236,9 +3266,9 @@ nl_BE:
         new:
           new_variant: "Nieuw variant"
         form:
-          cost_price: "Kostprijs"
           sku: "SKU"
           price: "Prijs"
+          unit_price: "Stukprijs"
           display_as: "Weergeven als"
           display_name: "Weergave naam"
           display_as_placeholder: 'bv. 2.kg'
@@ -3278,9 +3308,6 @@ nl_BE:
           used_saved_card: "Gebruik een opgeslaan kaart : "
           or_enter_new_card: "Of, voer de gegevens in voor een nieuwe kaart : "
           remember_this_card: 'Deze kaart onthouden? '
-    date_picker:
-      format: '%Y-%m-%d'
-      js_format: 'yy-mm-dd'
     orders:
       error_flash_for_unavailable_items: "Een item in u winkelkar is niet meer beschikbaar. Vernieuwd de geselecteerde hoeveelheid."
       edit:
@@ -3319,6 +3346,9 @@ nl_BE:
         paid_order: "Uw besteling was al betaald dus %{distributor}heeft uw de volledige bedrag terugbetaald"
         credit_order: "Uw besteling was al betaald dus werd uw acount gecrediteerd"
         subject: "Annulering van de bestelling"
+      cancel_email_for_shop:
+        greeting: "Beste %{name}"
+        subject: "Annulering van de bestelling"
       confirm_email:
         subject: "Bestellingsinformatie"
       invoice_email:
@@ -3340,7 +3370,6 @@ nl_BE:
     shipment_mailer:
       shipped_email:
         dear_customer: "Geachte klant,"
-        instructions: "Uw bestelling is verzonden"
         shipment_summary: "Samenvatting van de zending"
         subject: "Kennisgeving van verzending"
         thanks: "Bedankt voor uw bedrijf."
@@ -3372,6 +3401,8 @@ nl_BE:
       ended: ten einde gebracht
       paused: 'in pause '
       canceled: geschrapt
+    paypal:
+      refund_amount: "Bedrag"
     users:
       form:
         account_settings: Rekeningsinstellingen

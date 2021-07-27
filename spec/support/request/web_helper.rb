@@ -22,19 +22,19 @@ module WebHelper
     selector  = "[name='#{name}']"
     selector += "[placeholder='#{opts[:placeholder]}']" if opts.key? :placeholder
 
-    element = page.all(selector).first
+    visible = opts.key?(:visible) ? opts[:visible] : true
+
+    element = page.all(selector, visible: visible).first
     expect(element.value).to eq(opts[:with]) if element && opts.key?(:with)
 
-    have_selector selector
+    have_selector selector, visible: visible
   end
 
   def fill_in_fields(field_values)
     field_values.each do |key, value|
-      begin
-        fill_in key, with: value
-      rescue Capybara::ElementNotFound
-        find_field(key).select(value)
-      end
+      fill_in key, with: value
+    rescue Capybara::ElementNotFound
+      find_field(key).select(value)
     end
   end
 
@@ -118,7 +118,8 @@ module WebHelper
   end
 
   def open_select2(selector)
-    page.find(selector).find(:css, '.select2-choice, .select2-search-field').click
+    page.find(selector).scroll_to(page.find(selector)).find(:css,
+                                                            '.select2-choice, .select2-search-field').click
   end
 
   def close_select2
@@ -155,6 +156,6 @@ module WebHelper
   end
 
   def wait_for_ajax
-    wait_until { page.evaluate_script("$.active") == 0 }
+    wait_until { page.evaluate_script("$.active").zero? }
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Represents the minimum details of an Enterprise when all shopfronts are being listed
 module Api
   class EnterpriseShopfrontListSerializer < ActiveModel::Serializer
@@ -19,7 +21,7 @@ module Api
         producer_shop: "map_003-producer-shop.svg",
         producer: "map_001-producer-only.svg",
       }
-      ImagePathGenerator.call(icons[enterprise.category])
+      "/map_icons/" + (icons[enterprise.category] || "map_001-producer-only.svg")
     end
 
     def icon_font

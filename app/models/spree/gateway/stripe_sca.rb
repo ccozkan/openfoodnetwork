@@ -5,11 +5,12 @@ require 'stripe/credit_card_cloner'
 require 'stripe/authorize_response_patcher'
 require 'stripe/payment_intent_validator'
 require 'active_merchant/billing/gateways/stripe_payment_intents'
-require 'active_merchant/billing/gateways/stripe_decorator'
 
 module Spree
   class Gateway
     class StripeSCA < Gateway
+      include FullUrlHelper
+
       preference :enterprise_id, :integer
 
       validate :ensure_enterprise_selected
@@ -43,6 +44,11 @@ module Spree
         provider.capture(money, payment_intent_id, options)
       rescue Stripe::StripeError => e
         failed_activemerchant_billing_response(e.message)
+      end
+
+      def capture(money, payment_intent_id, gateway_options)
+        options = basic_options(gateway_options)
+        provider.capture(money, payment_intent_id, options)
       end
 
       # NOTE: the name of this method is determined by Spree::Payment::Processing
@@ -105,12 +111,13 @@ module Spree
         options[:description] = "Spree Order ID: #{gateway_options[:order_id]}"
         options[:currency] = gateway_options[:currency]
         options[:stripe_account] = stripe_account_id
+        options[:execute_threed] = true # Handle 3DS responses
         options
       end
 
       def options_for_authorize(money, creditcard, gateway_options)
         options = basic_options(gateway_options)
-        options[:return_url] = full_checkout_path
+        options[:return_url] = gateway_options[:return_url] || full_checkout_path
 
         customer_id, payment_method_id =
           Stripe::CreditCardCloner.new(creditcard, stripe_account_id).find_or_clone
@@ -122,7 +129,19 @@ module Spree
         payment = fetch_payment(creditcard, gateway_options)
         raise Stripe::StripeError, I18n.t(:no_pending_payments) unless payment&.response_code
 
-        Stripe::PaymentIntentValidator.new.call(payment.response_code, stripe_account_id)
+        payment_intent_response = Stripe::PaymentIntentValidator.new.
+          call(payment.response_code, stripe_account_id)
+
+        raise_if_not_in_capture_state(payment_intent_response)
+
+        payment.response_code
+      end
+
+      def raise_if_not_in_capture_state(payment_intent_response)
+        state = payment_intent_response.status
+        return if state == 'requires_capture'
+
+        raise Stripe::StripeError, I18n.t(:invalid_payment_state, state: state)
       end
 
       def fetch_payment(creditcard, gateway_options)
@@ -139,16 +158,6 @@ module Spree
         return if preferred_enterprise_id.andand.positive?
 
         errors.add(:stripe_account_owner, I18n.t(:error_required))
-      end
-
-      def full_checkout_path
-        URI.join(url_helpers.root_url, url_helpers.checkout_path).to_s
-      end
-
-      def url_helpers
-        # This is how we can get the helpers with a usable root_url outside the controllers
-        Rails.application.routes.default_url_options = ActionMailer::Base.default_url_options
-        Rails.application.routes.url_helpers
       end
     end
   end

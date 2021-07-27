@@ -22,6 +22,10 @@ module OrderManagement
         summary_for(order).record_issue(type, order, message)
       end
 
+      def record_subscription_issue(subscription)
+        summary_for_shop_id(subscription.shop_id).record_subscription_issue(subscription)
+      end
+
       def record_and_log_error(type, order, error_message = nil)
         return record_issue(type, order) unless order.errors.any?
 
@@ -35,23 +39,28 @@ module OrderManagement
         record_issue(type, order, line2)
       end
 
+      # This uses `deliver_now` since it's called from inside a job
       def send_placement_summary_emails
         @summaries.values.each do |summary|
-          SubscriptionMailer.placement_summary_email(summary).deliver
+          SubscriptionMailer.placement_summary_email(summary).deliver_now
         end
       end
 
+      # This uses `deliver_now` since it's called from inside a job
       def send_confirmation_summary_emails
         @summaries.values.each do |summary|
-          SubscriptionMailer.confirmation_summary_email(summary).deliver
+          SubscriptionMailer.confirmation_summary_email(summary).deliver_now
         end
       end
 
       private
 
-      def summary_for(order)
-        shop_id = order.distributor_id
+      def summary_for_shop_id(shop_id)
         @summaries[shop_id] ||= Summary.new(shop_id)
+      end
+
+      def summary_for(order)
+        summary_for_shop_id(order.distributor_id)
       end
     end
   end

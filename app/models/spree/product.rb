@@ -24,7 +24,7 @@ require 'concerns/product_stock'
 # Sum of on_hand each variant's inventory level determine "on_hand" level for the product.
 #
 module Spree
-  class Product < ActiveRecord::Base
+  class Product < ApplicationRecord
     include PermalinkGenerator
     include ProductStock
 
@@ -52,11 +52,11 @@ module Spree
             dependent: :destroy
 
     has_many :variants, -> {
-      where(is_master: false).order("#{::Spree::Variant.quoted_table_name}.position ASC")
+      where(is_master: false).order("spree_variants.position ASC")
     }, class_name: 'Spree::Variant'
 
     has_many :variants_including_master,
-             -> { order("#{::Spree::Variant.quoted_table_name}.position ASC") },
+             -> { order("spree_variants.position ASC") },
              class_name: 'Spree::Variant',
              dependent: :destroy
 
@@ -67,10 +67,8 @@ module Spree
     has_many :stock_items, through: :variants
 
     delegate_belongs_to :master, :sku, :price, :currency, :display_amount, :display_price, :weight,
-                        :height, :width, :depth, :is_master, :default_price?, :cost_currency,
+                        :height, :width, :depth, :is_master, :cost_currency,
                         :price_in, :amount_in, :unit_value, :unit_description
-    delegate_belongs_to :master, :cost_price if Variant.table_exists? &&
-                                                Variant.column_names.include?('cost_price')
     delegate :images_attributes=, :display_as=, to: :master
 
     after_create :set_master_variant_defaults
@@ -88,11 +86,12 @@ module Spree
     validates :name, presence: true
     validates :permalink, presence: true
     validates :price, presence: true, if: proc { Spree::Config[:require_master_price] }
-    validates :shipping_category_id, presence: true
+    validates :shipping_category, presence: true
 
     validates :supplier, presence: true
     validates :primary_taxon, presence: true
-    validates :tax_category_id, presence: true, if: "Spree::Config.products_require_tax_category"
+    validates :tax_category, presence: true,
+                             if: proc { Spree::Config[:products_require_tax_category] }
 
     validates :variant_unit, presence: true
     validates :unit_value, presence: { if: ->(p) { %w(weight volume).include? p.variant_unit } }
@@ -174,7 +173,7 @@ module Spree
     scope :in_distributors, lambda { |distributors|
       with_order_cycles_outer.
         where('(o_exchanges.incoming = ? AND o_exchanges.receiver_id IN (?))', false, distributors).
-        uniq
+        distinct
     }
 
     # Products supplied by a given enterprise or distributed via that enterprise through an OC
@@ -267,17 +266,6 @@ module Spree
       duplicator.duplicate
     end
 
-    # use deleted? rather than checking the attribute directly. this
-    # allows extensions to override deleted? if they want to provide
-    # their own definition.
-    def deleted?
-      !!deleted_at
-    end
-
-    def available?
-      !(available_on.nil? || available_on.future?)
-    end
-
     # split variants list into hash which shows mapping of opt value onto matching variants
     # eg categorise_variants_from_option(color) => {"red" -> [...], "blue" -> [...]}
     def categorise_variants_from_option(opt_type)
@@ -292,12 +280,6 @@ module Spree
           arel_table[field].matches("%#{value}%")
         }.inject(:or)
       }.inject(:or)
-    end
-
-    def empty_option_values?
-      options.empty? || options.any? do |opt|
-        opt.option_type.option_values.empty?
-      end
     end
 
     def property(property_name)
@@ -372,7 +354,7 @@ module Spree
       Spree::OptionType.where('name LIKE ?', 'unit_%%')
     end
 
-    def destroy_with_delete_from_order_cycles
+    def destroy
       transaction do
         touch_distributors
 
@@ -380,10 +362,9 @@ module Spree
           where('exchange_variants.variant_id IN (?)', variants_including_master.with_deleted.
           select(:id)).destroy_all
 
-        destroy_without_delete_from_order_cycles
+        super
       end
     end
-    alias_method_chain :destroy, :delete_from_order_cycles
 
     private
 
@@ -445,7 +426,7 @@ module Spree
     end
 
     def update_units
-      return unless variant_unit_changed?
+      return unless saved_change_to_variant_unit?
 
       option_types.delete self.class.all_variant_unit_option_types
       option_types << variant_unit_option_type if variant_unit.present?
@@ -461,9 +442,9 @@ module Spree
     end
 
     def remove_previous_primary_taxon_from_taxons
-      return unless primary_taxon_id_changed? && primary_taxon_id_was
+      return unless saved_change_to_primary_taxon_id? && primary_taxon_id_before_last_save
 
-      taxons.destroy(primary_taxon_id_was)
+      taxons.destroy(primary_taxon_id_before_last_save)
     end
 
     def ensure_standard_variant
@@ -477,7 +458,7 @@ module Spree
 
     # Spree creates a permalink already but our implementation fixes an edge case.
     def sanitize_permalink
-      return unless permalink.blank? || permalink_changed?
+      return unless permalink.blank? || saved_change_to_permalink? || permalink_changed?
 
       requested = permalink.presence || permalink_was.presence || name.presence || 'product'
       self.permalink = create_unique_permalink(requested.parameterize)

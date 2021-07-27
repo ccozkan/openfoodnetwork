@@ -1,9 +1,11 @@
-module Spree
-  class OrdersController < Spree::StoreController
-    include OrderCyclesHelper
-    layout 'darkswarm'
+# frozen_string_literal: true
 
-    ssl_required :show
+module Spree
+  class OrdersController < ::BaseController
+    include OrderCyclesHelper
+    include Rails.application.routes.url_helpers
+
+    layout 'darkswarm'
 
     before_action :check_authorization
     rescue_from ActiveRecord::RecordNotFound, with: :render_404
@@ -12,7 +14,7 @@ module Spree
     respond_to :html
     respond_to :json
 
-    before_action :update_distribution, only: :update
+    before_action :set_current_order, only: :update
     before_action :filter_order_params, only: :update
     before_action :enable_embedded_shopfront
 
@@ -24,6 +26,8 @@ module Spree
 
     def show
       @order = Spree::Order.find_by!(number: params[:id])
+
+      handle_stripe_response
     end
 
     def empty
@@ -32,17 +36,6 @@ module Spree
       end
 
       redirect_to main_app.cart_path
-    end
-
-    def check_authorization
-      session[:access_token] ||= params[:token]
-      order = Spree::Order.find_by(number: params[:id]) || current_order
-
-      if order
-        authorize! :edit, order, session[:access_token]
-      else
-        authorize! :create, Spree::Order
-      end
     end
 
     # Patching to redirect to shop if order is empty
@@ -58,7 +51,7 @@ module Spree
         associate_user
 
         if @order.insufficient_stock_lines.present? || @unavailable_order_variants.present?
-          flash[:error] = t("spree.orders.error_flash_for_unavailable_items")
+          flash.now[:error] = t("spree.orders.error_flash_for_unavailable_items")
         end
       end
     end
@@ -71,19 +64,23 @@ module Spree
         redirect_to(main_app.root_path) && return
       end
 
-      if @order.update(order_params)
-        discard_empty_line_items
-        with_open_adjustments { update_totals_and_taxes }
+      # This action is called either from the cart page when the order is not yet complete, or from
+      # the edit order page (frontoffice) if the hub allows users to update completed orders.
+      if @order.contents.update_cart(order_params)
+        @order.recreate_all_fees! # Enterprise fees on line items and on the order itself
 
-        @order.update_distribution_charge!
+        if @order.complete?
+          @order.update_payment_fees!
+          @order.create_tax_charge!
+        end
 
         respond_with(@order) do |format|
           format.html do
             if params.key?(:checkout)
               @order.next_transition.run_callbacks if @order.cart?
-              redirect_to checkout_state_path(@order.checkout_steps.first)
+              redirect_to main_app.checkout_state_path(@order.checkout_steps.first)
             elsif @order.complete?
-              redirect_to spree.order_path(@order)
+              redirect_to main_app.order_path(@order)
             else
               redirect_to main_app.cart_path
             end
@@ -92,29 +89,51 @@ module Spree
       else
         # Show order with original values, not newly entered ones
         @insufficient_stock_lines = @order.insufficient_stock_lines
-        @order.line_items(true)
+        @order.line_items.reload
         respond_with(@order)
       end
     end
 
-    def update_distribution
-      @order = current_order(true)
+    def cancel
+      @order = Spree::Order.find_by!(number: params[:id])
+      authorize! :cancel, @order
 
-      if params[:commit] == 'Choose Hub'
-        distributor = Enterprise.is_distributor.find params[:order][:distributor_id]
-        @order.set_distributor! distributor
-
-        flash[:notice] = I18n.t(:order_choosing_hub_notice)
-        redirect_to request.referer
-
-      elsif params[:commit] == 'Choose Order Cycle'
-        @order.empty! # empty cart
-        order_cycle = OrderCycle.active.find params[:order][:order_cycle_id]
-        @order.set_order_cycle! order_cycle
-
-        flash[:notice] = I18n.t(:order_choosing_hub_notice)
-        redirect_to request.referer
+      if CustomerOrderCancellation.new(@order).call
+        flash[:success] = I18n.t(:orders_your_order_has_been_cancelled)
+      else
+        flash[:error] = I18n.t(:orders_could_not_cancel)
       end
+      redirect_to request.referer || main_app.order_path(@order)
+    end
+
+    private
+
+    def set_current_order
+      @order = current_order(true)
+    end
+
+    def check_authorization
+      session[:access_token] ||= params[:token]
+      order = Spree::Order.find_by(number: params[:id]) || current_order
+
+      if order
+        authorize! :edit, order, session[:access_token]
+      else
+        authorize! :create, Spree::Order
+      end
+    end
+
+    # Stripe can redirect here after a payment is processed in the backoffice.
+    # We verify if it was successful here and persist the changes.
+    def handle_stripe_response
+      return unless params.key?("payment_intent")
+
+      result = ProcessPaymentIntent.new(params["payment_intent"], @order).call!
+
+      unless result.ok?
+        flash.now[:error] = "#{I18n.t('payment_could_not_process')}. #{result.error}"
+      end
+      @order.reload
     end
 
     def filter_order_params
@@ -127,55 +146,6 @@ module Spree
     def remove_missing_line_items(attrs)
       attrs.select do |_i, line_item|
         Spree::LineItem.find_by(id: line_item[:id])
-      end
-    end
-
-    def clear
-      @order = current_order(true)
-      @order.empty!
-      @order.set_order_cycle! nil
-      redirect_to main_app.enterprise_path(@order.distributor.id)
-    end
-
-    def order_cycle_expired
-      @order_cycle = OrderCycle.find session[:expired_order_cycle_id]
-    end
-
-    def cancel
-      @order = Spree::Order.find_by!(number: params[:id])
-      authorize! :cancel, @order
-
-      if @order.cancel
-        flash[:success] = I18n.t(:orders_your_order_has_been_cancelled)
-      else
-        flash[:error] = I18n.t(:orders_could_not_cancel)
-      end
-      redirect_to request.referer || spree.order_path(@order)
-    end
-
-    private
-
-    # Updates the various denormalized total attributes of the order and
-    # recalculates the shipment taxes
-    def update_totals_and_taxes
-      @order.updater.update_totals
-      @order.shipment&.ensure_correct_adjustment
-    end
-
-    # Sets the adjustments to open to perform the block's action and restores
-    # their state to whatever the they had. Note that it does not change any new
-    # adjustments that might get created in the yielded block.
-    def with_open_adjustments
-      previous_states = @order.adjustments.each_with_object({}) do |adjustment, hash|
-        hash[adjustment.id] = adjustment.state
-      end
-      @order.adjustments.each { |adjustment| adjustment.fire_events(:open) }
-
-      yield
-
-      @order.adjustments.each do |adjustment|
-        previous_state = previous_states[adjustment.id]
-        adjustment.update_attribute(:state, previous_state) if previous_state
       end
     end
 
@@ -214,7 +184,7 @@ module Spree
 
       if items.empty?
         flash[:error] = I18n.t(:orders_cannot_remove_the_final_item)
-        redirect_to spree.order_path(order_to_update)
+        redirect_to main_app.order_path(order_to_update)
       end
     end
 

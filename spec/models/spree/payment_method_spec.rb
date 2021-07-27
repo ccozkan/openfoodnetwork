@@ -59,8 +59,6 @@ module Spree
 
     it "generates a clean name for known Payment Method types" do
       expect(Spree::PaymentMethod::Check.clean_name).to eq(I18n.t("spree.admin.payment_methods.providers.check"))
-      expect(Spree::Gateway::Migs.clean_name).to eq(I18n.t("spree.admin.payment_methods.providers.migs"))
-      expect(Spree::Gateway::Pin.clean_name).to eq(I18n.t("spree.admin.payment_methods.providers.pin"))
       expect(Spree::Gateway::PayPalExpress.clean_name).to eq(I18n.t("spree.admin.payment_methods.providers.paypalexpress"))
       expect(Spree::Gateway::StripeConnect.clean_name).to eq(I18n.t("spree.admin.payment_methods.providers.stripeconnect"))
       expect(Spree::Gateway::StripeSCA.clean_name).to eq(I18n.t("spree.admin.payment_methods.providers.stripesca"))
@@ -74,14 +72,16 @@ module Spree
       free_payment_method = create(:payment_method) # flat rate calculator with preferred_amount of 0
       expect(free_payment_method.compute_amount(order)).to eq 0
 
-      flat_rate_payment_method = create(:payment_method, calculator: ::Calculator::FlatRate.new(preferred_amount: 10))
+      flat_rate_payment_method = create(:payment_method,
+                                        calculator: ::Calculator::FlatRate.new(preferred_amount: 10))
       expect(flat_rate_payment_method.compute_amount(order)).to eq 10
 
-      flat_percent_payment_method = create(:payment_method, calculator: ::Calculator::FlatPercentItemTotal.new(preferred_flat_percent: 10))
+      flat_percent_payment_method = create(:payment_method,
+                                           calculator: ::Calculator::FlatPercentItemTotal.new(preferred_flat_percent: 10))
       expect(flat_percent_payment_method.compute_amount(order)).to eq 0
 
       product = create(:product)
-      order.add_variant(product.master)
+      order.contents.add(product.variants.first)
       expect(flat_percent_payment_method.compute_amount(order)).to eq 2.0
     end
 
@@ -91,7 +91,9 @@ module Spree
         let!(:distributor_b) { create(:distributor_enterprise) }
         let!(:distributor_c) { create(:distributor_enterprise) }
 
-        let!(:payment_method_a) { create(:payment_method, distributors: [distributor_a, distributor_b]) }
+        let!(:payment_method_a) {
+          create(:payment_method, distributors: [distributor_a, distributor_b])
+        }
         let!(:payment_method_b) { create(:payment_method, distributors: [distributor_b]) }
         let!(:payment_method_c) { create(:payment_method, distributors: [distributor_c]) }
 

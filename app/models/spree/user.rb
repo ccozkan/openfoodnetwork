@@ -1,19 +1,20 @@
+# frozen_string_literal: true
+
 module Spree
-  class User < ActiveRecord::Base
+  class User < ApplicationRecord
     devise :database_authenticatable, :token_authenticatable, :registerable, :recoverable,
            :rememberable, :trackable, :validatable,
            :encryptable, :confirmable, encryptor: 'authlogic_sha512', reconfirmable: true
 
     has_many :orders
-    belongs_to :ship_address, foreign_key: 'ship_address_id', class_name: 'Spree::Address'
-    belongs_to :bill_address, foreign_key: 'bill_address_id', class_name: 'Spree::Address'
+    belongs_to :ship_address, class_name: 'Spree::Address'
+    belongs_to :bill_address, class_name: 'Spree::Address'
 
     has_and_belongs_to_many :spree_roles,
                             join_table: 'spree_roles_users',
-                            foreign_key: "user_id",
                             class_name: "Spree::Role"
 
-    has_many :spree_orders, foreign_key: "user_id", class_name: "Spree::Order"
+    has_many :spree_orders, class_name: "Spree::Order"
 
     before_validation :set_login
     before_destroy :check_completed_orders
@@ -101,7 +102,7 @@ module Spree
     end
 
     def send_signup_confirmation
-      ConfirmSignupJob.perform_later(id)
+      Spree::UserMailer.signup_confirmation(self).deliver_later
     end
 
     def associate_customers
@@ -109,7 +110,7 @@ module Spree
     end
 
     def can_own_more_enterprises?
-      owned_enterprises(:reload).size < enterprise_limit
+      owned_enterprises.reload.size < enterprise_limit
     end
 
     def default_card
@@ -133,6 +134,10 @@ module Spree
 
     def last_incomplete_spree_order
       spree_orders.incomplete.where(created_by_id: id).order('created_at DESC').first
+    end
+
+    def flipper_id
+      "#{self.class.name};#{id}"
     end
 
     protected

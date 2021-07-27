@@ -11,7 +11,13 @@ Openfoodnetwork::Application.configure do
   config.cache_classes = !!ENV["PROFILE"]
 
   # :file_store is used by default when no cache store is specifically configured.
-  config.cache_store = :memory_store if !!ENV["PROFILE"]
+  if !!ENV["PROFILE"]
+    config.cache_store = :redis_cache_store, {
+      driver: :hiredis,
+      url: ENV.fetch("OFN_REDIS_URL", "redis://localhost:6379/1"),
+      expires_in: 90.minutes
+    }
+  end
 
   config.eager_load = false
 
@@ -64,4 +70,6 @@ Openfoodnetwork::Application.configure do
   config.action_mailer.default_url_options = { host: "0.0.0.0:3000" }
 
   config.log_level = :debug
+
+  config.view_component_storybook.stories_path = Rails.root.join("spec/components/stories")
 end

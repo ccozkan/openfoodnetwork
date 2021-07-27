@@ -20,6 +20,7 @@ Openfoodnetwork::Application.routes.draw do
   get "/register", to: "registration#index", as: :registration
   get "/register/auth", to: "registration#authenticate", as: :registration_auth
   post "/user/registered_email", to: "spree/users#registered_email"
+  resources :locales, only: [:show]
 
   # Redirects to global website
   get "/connect", to: redirect("https://openfoodnetwork.org/#{ENV['DEFAULT_COUNTRY_CODE'].andand.downcase}/connect/")
@@ -29,6 +30,7 @@ Openfoodnetwork::Application.routes.draw do
   patch "/cart", :to => "spree/orders#update", :as => :update_cart
   put "/cart/empty", :to => 'spree/orders#empty', :as => :empty_cart
   get '/orders/:id/token/:token' => 'spree/orders#show', :as => :token_order
+  get '/payments/:id/authorize' => 'payments#redirect_to_authorize', as: "authorize_payment"
 
   resource :cart, controller: "cart" do
     post :populate
@@ -67,9 +69,10 @@ Openfoodnetwork::Application.routes.draw do
     resources :webhooks, only: [:create]
   end
 
-  get '/checkout', :to => 'checkout#edit' , :as => :checkout
-  put '/checkout', :to => 'checkout#update' , :as => :update_checkout
-  post '/checkout', :to => 'checkout#update'
+  get '/checkout', to: 'checkout#edit' , as: :checkout
+  put '/checkout', to: 'checkout#update' , as: :update_checkout
+  post '/checkout', to: 'checkout#update'
+  get '/checkout/:state', to: 'checkout#edit', as: :checkout_state
   get '/checkout/paypal_payment/:order_id', to: 'checkout#paypal_payment', as: :paypal_payment
 
   get 'embedded_shopfront/shopfront_session', to: 'application#shopfront_session'
@@ -92,8 +95,10 @@ Openfoodnetwork::Application.routes.draw do
 
   get 'sitemap.xml', to: 'sitemap#index', defaults: { format: 'xml' }
 
-  # Mount DFC API endpoints
-  mount DfcProvider::Engine, at: '/'
+  unless Rails.env.production?
+    # Mount DFC API endpoints
+    mount DfcProvider::Engine, at: '/'
+  end
 
   # Mount Spree's routes
   mount Spree::Core::Engine, :at => '/'

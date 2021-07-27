@@ -6,22 +6,23 @@ require 'concerns/variant_stock'
 require 'spree/localized_number'
 
 module Spree
-  class Variant < ActiveRecord::Base
+  class Variant < ApplicationRecord
     extend Spree::LocalizedNumber
     include VariantUnits::VariantAndLineItemNaming
     include VariantStock
 
     acts_as_paranoid
 
-    belongs_to :product, touch: true, class_name: 'Spree::Product'
+    belongs_to :product, -> { with_deleted }, touch: true, class_name: 'Spree::Product'
+
     delegate_belongs_to :product, :name, :description, :permalink, :available_on,
                         :tax_category_id, :shipping_category_id, :meta_description,
                         :meta_keywords, :tax_category, :shipping_category
 
-    has_many :inventory_units
-    has_many :line_items
+    has_many :inventory_units, inverse_of: :variant
+    has_many :line_items, inverse_of: :variant
 
-    has_many :stock_items, dependent: :destroy
+    has_many :stock_items, dependent: :destroy, inverse_of: :variant
     has_many :stock_locations, through: :stock_items
     has_many :stock_movements
 
@@ -33,7 +34,7 @@ module Spree
     accepts_nested_attributes_for :images
 
     has_one :default_price,
-            -> { where currency: Spree::Config[:currency] },
+            -> { with_deleted.where(currency: Spree::Config[:currency]) },
             class_name: 'Spree::Price',
             dependent: :destroy
     has_many :prices,
@@ -47,23 +48,25 @@ module Spree
     has_many :variant_overrides
     has_many :inventory_items
 
-    localize_number :price, :cost_price, :weight
+    localize_number :price, :weight
 
     validate :check_price
     validates :price, numericality: { greater_than_or_equal_to: 0 },
                       presence: true,
                       if: proc { Spree::Config[:require_master_price] }
-    validates :cost_price, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
 
     validates :unit_value, presence: true, if: ->(variant) {
       %w(weight volume).include?(variant.product.andand.variant_unit)
     }
+
+    validates :unit_value, numericality: { greater_than: 0 }
 
     validates :unit_description, presence: true, if: ->(variant) {
       variant.product.andand.variant_unit.present? && variant.unit_value.nil?
     }
 
     before_validation :set_cost_currency
+    before_validation :ensure_unit_value
     before_validation :update_weight_from_unit_value, if: ->(v) { v.product.present? }
 
     after_save :save_default_price
@@ -109,12 +112,13 @@ module Spree
     }
 
     scope :not_hidden_for, lambda { |enterprise|
-      return where("1=0") if enterprise.blank?
+      enterprise_id = enterprise&.id.to_i
+      return none if enterprise_id < 1
 
       joins("
         LEFT OUTER JOIN (SELECT *
                            FROM inventory_items
-                           WHERE enterprise_id = #{sanitize enterprise.andand.id})
+                           WHERE enterprise_id = #{enterprise_id})
           AS o_inventory_items
           ON o_inventory_items.variant_id = spree_variants.id")
         .where("o_inventory_items.id IS NULL OR o_inventory_items.visible = (?)", true)
@@ -150,11 +154,6 @@ module Spree
                                           select("spree_variants.id"))
     end
 
-    # Allow variant to access associated soft-deleted prices.
-    def default_price
-      Spree::Price.unscoped { super }
-    end
-
     def price_with_fees(distributor, order_cycle)
       price + fees_for(distributor, order_cycle)
     end
@@ -167,61 +166,8 @@ module Spree
       OpenFoodNetwork::EnterpriseFeeCalculator.new(distributor, order_cycle).fees_by_type_for self
     end
 
-    # returns number of units currently on backorder for this variant.
-    def on_backorder
-      inventory_units.with_state('backordered').size
-    end
-
-    def gross_profit
-      cost_price.nil? ? 0 : (price - cost_price)
-    end
-
-    # use deleted? rather than checking the attribute directly. this
-    # allows extensions to override deleted? if they want to provide
-    # their own definition.
-    def deleted?
-      deleted_at
-    end
-
-    def set_option_value(opt_name, opt_value)
-      # no option values on master
-      return if is_master
-
-      option_type = Spree::OptionType.where(name: opt_name).first_or_initialize do |o|
-        o.presentation = opt_name
-        o.save!
-      end
-
-      current_value = option_values.detect { |o| o.option_type.name == opt_name }
-
-      if current_value.nil?
-        # then we have to check to make sure that the product has the option type
-        unless product.option_types.include? option_type
-          product.option_types << option_type
-          product.save
-        end
-      else
-        return if current_value.name == opt_value
-
-        option_values.delete(current_value)
-      end
-
-      option_value = Spree::OptionValue.where(option_type_id: option_type.id,
-                                              name: opt_value).first_or_initialize do |o|
-        o.presentation = opt_value
-        o.save!
-      end
-
-      option_values << option_value
-      save
-    end
-
     def option_value(opt_name)
       option_values.detect { |o| o.option_type.name == opt_name }.try(:presentation)
-    end
-
-    def default_price?
-      !default_price.nil?
     end
 
     def price_in(currency)
@@ -231,17 +177,6 @@ module Spree
 
     def amount_in(currency)
       price_in(currency).try(:amount)
-    end
-
-    def name_and_sku
-      "#{name} - #{sku}"
-    end
-
-    # Product may be created with deleted_at already set,
-    # which would make AR's default finder return nil.
-    # This is a stopgap for that little problem.
-    def product
-      Spree::Product.unscoped { super }
     end
 
     # can_supply? is implemented in VariantStock
@@ -294,8 +229,15 @@ module Spree
     end
 
     def destruction
-      exchange_variants(:reload).destroy_all
+      exchange_variants.reload.destroy_all
       yield
+    end
+
+    def ensure_unit_value
+      Bugsnag.notify("Trying to set unit_value to NaN") if unit_value&.nan?
+      return unless (product&.variant_unit == "items" && unit_value.nil?) || unit_value&.nan?
+
+      self.unit_value = 1.0
     end
   end
 end

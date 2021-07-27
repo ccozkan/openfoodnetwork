@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 module Spree
   module Admin
     class GeneralSettingsController < Spree::Admin::BaseController
       def edit
         @preferences_general = [:site_name, :default_seo_title, :default_meta_keywords,
-                                :default_meta_description, :site_url, :bugherd_api_key]
-        @preferences_security = [:allow_ssl_in_production,
-                                 :allow_ssl_in_staging, :allow_ssl_in_development_and_test]
+                                :default_meta_description, :site_url]
+        @preferences_security = [:allow_ssl_in_production, :allow_ssl_in_staging]
         @preferences_currency = [:display_currency, :hide_cents]
       end
 

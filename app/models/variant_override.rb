@@ -1,4 +1,8 @@
-class VariantOverride < ActiveRecord::Base
+# frozen_string_literal: true
+
+require 'spree/localized_number'
+
+class VariantOverride < ApplicationRecord
   extend Spree::LocalizedNumber
   include StockSettingsOverrideValidation
 
@@ -7,10 +11,12 @@ class VariantOverride < ActiveRecord::Base
   belongs_to :hub, class_name: 'Enterprise'
   belongs_to :variant, class_name: 'Spree::Variant'
 
-  validates :hub_id, presence: true
-  validates :variant_id, presence: true
+  validates :hub, presence: true
+  validates :variant, presence: true
   # Default stock can be nil, indicating stock should not be reset or zero, meaning reset to zero. Need to ensure this can be set by the user.
   validates :default_stock, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :price, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :count_on_hand, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
 
   default_scope { where(permission_revoked_at: nil) }
 
@@ -67,5 +73,14 @@ class VariantOverride < ActiveRecord::Base
       end
     end
     self
+  end
+
+  def deletable?
+    price.blank? &&
+      count_on_hand.blank? &&
+      default_stock.blank? &&
+      resettable.blank? &&
+      sku.nil? &&
+      on_demand.nil?
   end
 end

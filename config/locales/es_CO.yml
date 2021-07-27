@@ -2,6 +2,8 @@ es_CO:
   language_name: "Español"
   activerecord:
     attributes:
+      spree/user:
+        password: "Contraseña"
       enterprise_fee:
         fee_type: Tipo de Comisión
       spree/order:
@@ -82,6 +84,7 @@ es_CO:
               no_default_card: "^No hay una tarjeta predeterminada disponible para este cliente"
             shipping_method:
               not_available_to_shop: "no está disponible para %{shop}"
+  customer_instructions: "Instrucciones del cliente"
   devise:
     confirmations:
       send_instructions: "En unos minutos recibirá un correo electrónico con instrucciones sobre cómo confirmar su cuenta."
@@ -114,6 +117,8 @@ es_CO:
   models:
     order_cycle:
       cloned_order_cycle_name: "COPIA DE %{order_cycle}"
+  sku: "SKU"
+  tax_rate: "Tarifa de impuestos"
   validators:
     date_time_string_validator:
       not_string_error: "debe ser una cadena"
@@ -121,8 +126,6 @@ es_CO:
     integer_array_validator:
       not_array_error: "debe ser una lista"
       invalid_element_error: "debe contener solo enteros válidos"
-  datetime_picker_ui:
-    time_text: Hora
   enterprise_mailer:
     confirmation_instructions:
       subject: "Por favor, confirma la dirección de correo electrónico de %{enterprise}"
@@ -188,7 +191,7 @@ es_CO:
   home: "OFN"
   title: "Open Food Network"
   welcome_to: "Bienvenido a"
-  site_meta_description: "Nosotros empezamos desde abajo. Con granjeros y productores listos para contar sus historias con orgullo y autenticidad. Con distribuidores listos para conectar gente con productos de forma justa y honesta. Con compradores que creen que mejores decisiones de compras semanales pueden..."
+  site_meta_description: "Nosotros empezamos desde abajo. Con cultivadores y productores listos para contar sus historias con orgullo y autenticidad. Con distribuidores listos para conectar gente con productos de forma justa y honesta. Con compradores que creen que mejores decisiones de compras semanales pueden..."
   search_by_name: Buscar por nombre o municipio...
   producers_join: Los productores colombianos ahora son bienvenidos a unirse a Open Food Network.
   charges_sales_tax: ¿Cargos de IVA?
@@ -261,7 +264,6 @@ es_CO:
   error: Error
   processing_payment: "Procesando el pago..."
   no_pending_payments: "No tiene pagos pendientes"
-  invalid_payment_state: "Estado de pago no válido"
   filter_results: Filtrar resultados
   quantity: Cantidad
   pick_up: Recoger
@@ -614,6 +616,7 @@ es_CO:
         max_fulfilled_units: "Max Unidades Completadas"
         order_error: "Algunos errores deberán ser resueltos antes de que puedas actualizar los pedidos.\nTodos los campos con borde rojo contienen errores."
         variants_without_unit_value: "CUIDADO: Algunas variedades no tienen un valor unitario "
+        all: "Todos"
       select_variant: "Seleccione una variante"
     enterprise:
       select_outgoing_oc_products_from: Selecciona los productos OC que salgan de
@@ -750,6 +753,8 @@ es_CO:
           shopfront_category_ordering: "Orden de las categorías de la tienda"
           open_date: "Fecha de Inicio"
           close_date: "Fecha de Finalización"
+          shopfront_sort_by_category_placeholder: "Categoría"
+          shopfront_sort_by_producer_placeholder: "Productor"
         social:
           twitter_placeholder: "ej: the_prof"
           instagram_placeholder: "p.ej. @mi_huerta"
@@ -870,7 +875,6 @@ es_CO:
         cancel: "Cancelar"
         back_to_list: "Regresar a la lista"
       edit:
-        advanced_settings: "Configuración avanzada"
         save: "Guardar"
         save_and_next: "Guardar y continuar"
         next: "Siguiente"
@@ -923,6 +927,8 @@ es_CO:
         preferred_product_selection_from_coordinator_inventory_only_here: Solo el inventario del coordinador
         preferred_product_selection_from_coordinator_inventory_only_all: Todos los productos disponibles
         save_reload: Guardar y recargar la página
+      order_cycle_top_buttons:
+        advanced_settings: "Configuración avanzada"
       coordinator_fees:
         add: Añadir comisión para el coordinador
       filters:
@@ -1128,6 +1134,7 @@ es_CO:
       yes_cancel_them: Cancelarlos
       no_keep_them: Guárdalos
       yes_i_am_sure: Si, estoy seguro
+      number: "Número"
       order_update_issues_msg: Algunas órdenes no se pudieron actualizar automáticamente, esto es más probable porque se han editado manualmente. Revise los problemas que se detallan a continuación y realice los ajustes a los pedidos individuales si es necesario.
       no_results:
         no_subscriptions: Aún no hay suscripciones ...
@@ -1161,6 +1168,9 @@ es_CO:
       hide_closed_shops: "Ocultar tiendas cerradas"
       show_on_map: "Ver todos en el mapa"
   shared:
+    mailers:
+      powered_by:
+        open_food_network: "Open Food Network"
     menu:
       cart:
         cart: "Carrito"
@@ -1189,7 +1199,6 @@ es_CO:
       footer_join_body: "Crea una lista, tienda o directorio de grupos en Open Food Network."
       footer_join_cta: "¡Cuéntame más!"
       footer_legal_call: "Leer nuestros"
-      footer_legal_tos: "Términos y condiciones"
       footer_legal_visit: "Encuéntrenos en"
       footer_legal_text_html: "Open Food Network es una plataforma de software gratuita y de código abierto. Nuestro contenido tiene licencia con %{content_license} y nuestro código con %{code_license}."
       footer_data_text_with_privacy_policy_html: "Cuidamos bien sus datos. Consulte nuestra %{privacy_policy} y %{cookies_policy}"
@@ -1247,11 +1256,11 @@ es_CO:
   menu_4_title: "Grupos"
   menu_4_url: "/groups"
   menu_5_title: "Acerca de"
-  menu_5_url: "https://about.openfoodnetwork.org.au/"
+  menu_5_url: "https://cutt.ly/Sporos-openfoodcolombia"
   menu_6_title: "Conectar"
   menu_6_url: " "
   menu_7_title: "Aprender"
-  menu_7_url: " "
+  menu_7_url: " https://www.facebook.com/groups/ofncolombia"
   logo: "Logo (640x130)"
   logo_mobile: "Logo para móvil (75x26)"
   logo_mobile_svg: "Logo para móvil (SVG)"
@@ -1302,8 +1311,6 @@ es_CO:
   label_producers: "Productores"
   label_groups: "Grupos"
   label_about: "Acerca de"
-  label_connect: "Conectar"
-  label_learn: "Aprender"
   label_blog: "Blog"
   label_support: "Soporte"
   label_shopping: "Tienda"
@@ -1391,10 +1398,6 @@ es_CO:
   brandstory_part4: "Funciona en cualquier lugar. Lo cambia todo."
   brandstory_part5_strong: "Le llamamos Open Food Network."
   brandstory_part6: "Todos amamos la comida. Ahora podemos amar nuestro sistema de comida también."
-  learn_body: "Explora modelos, historias y recursos para ayudarte a desarrollar tu organización. Encuentra formación, eventos y otras oportunidades para aprender de tus compañeros."
-  learn_cta: "Inspírate"
-  connect_body: "Busque en nuestros directorios completos de productores, nodos y grupos para encontrar comerciantes justos de alimentos cerca de usted. Incluya su empresa u organización en la OFN para que los compradores puedan encontrarlo. Únase a la comunidad para recibir consejos y resolver problemas juntos."
-  connect_cta: "Explorar"
   system_headline: "Compras - aquí está cómo funcionan."
   system_step1: "1. Buscar"
   system_step1_text: "Busque comida local y de temporada en nuestras tiendas diversas e independientes. Puede buscar por cantón y tipo de comida o si prefiere por método de envío."
@@ -1527,7 +1530,6 @@ es_CO:
     set_a_password: "Luego se le pedirá que establezca una contraseña antes de poder administrar la organización."
     mistakenly_sent: "¿No está seguro de por qué ha recibido este correo electrónico? Por favor, póngase en contacto con %{owner_email} para más información."
   producer_mail_greeting: "Estimada"
-  producer_mail_text_before: "Ahora tenemos todas los pedidos de las consumidoras para la siguiente ronda."
   producer_mail_order_text: "Se muestra un resumen de los pedidos de tus productos:"
   producer_mail_delivery_instructions: "Instrucciones de recogida/entrega de inventario:"
   producer_mail_signoff: "Gracias y hasta pronto"
@@ -1539,7 +1541,9 @@ es_CO:
   shopping_tabs_home: "Bienvenidos"
   shopping_tabs_shop: "Tienda"
   shopping_tabs_about: "Acerca de"
+  shopping_tabs_producers: "Productoras"
   shopping_tabs_contact: "Contacto"
+  shopping_tabs_groups: "Grupos"
   shopping_contact_address: "Dirección"
   shopping_contact_web: "Contacto"
   shopping_contact_social: "Seguir"
@@ -1550,6 +1554,7 @@ es_CO:
   enterprises_choose: "Hay más de un ciclo abierto. Escoge en cuál quieres realizar el pedido:"
   maps_open: "Abierto"
   maps_closed: "Cerrado"
+  map_title: "Mapa"
   hubs_buy: "Comprar:"
   hubs_shopping_here: "Comprando aquí"
   hubs_orders_closed: "Pedidos cerrados"
@@ -1688,28 +1693,29 @@ es_CO:
   shops_signup_help: Estamos listos para ayudar.
   shops_signup_help_text: Usted necesita un mejor retorno. Usted necesita nuevos compradores y socios de logística. Usted necesita que su historia sea contada a través de ventas al por mayor, al detalle y en la mesa de la cocina.
   shops_signup_detail: Aquí está el detalle.
-  orders: Pedidos
-  orders_fees: Comisiones...
-  orders_edit_title: Carrito de compras
-  orders_edit_headline: Su carrito de compras
-  orders_edit_time: Pedido listo para
-  orders_edit_continue: Continuar comprando
-  orders_edit_checkout: Validar
+  orders: "Pedidos"
+  orders_fees: "Comisiones..."
+  orders_edit_title: "Carrito de compras"
+  orders_edit_headline: "Su carrito de compras"
+  orders_edit_time: "Pedido listo para"
+  orders_edit_continue: "Continuar comprando"
+  orders_edit_checkout: "Validar"
   orders_form_empty_cart: "Vaciar carrito"
-  orders_form_subtotal: Subtotal de productos
-  orders_form_admin: Administrar y Gestionar
-  orders_form_total: Total
-  orders_oc_expired_headline: Los pedidos están cerrados para este ciclo
+  orders_form_update_cart: "Actualizar"
+  orders_form_subtotal: "Subtotal de productos"
+  orders_form_admin: "Administrar y Gestionar"
+  orders_form_total: "Total"
+  orders_oc_expired_headline: "Los pedidos están cerrados para este ciclo"
   orders_oc_expired_text: "Lo sentimos, ¡los pedidos para este ciclo cerraron hace %{time}! Contacta con tu nodo directamente para ver si pueden aceptar pedidos tardíos."
   orders_oc_expired_text_others_html: "Lo sentimos, ¡los pedidos para este ciclo cerraron hace %{time}! Contacta con tu nodo directamente para ver si pueden aceptar pedidos tardíos <strong>%{link}</strong>."
   orders_oc_expired_text_link: "o vea los otros ciclos de pedidos disponibles en este nodo"
   orders_oc_expired_email: "Correo electrónico:"
   orders_oc_expired_phone: "Teléfono:"
-  orders_show_title: Confirmación del pedido
-  orders_show_time: Pedido listo en
+  orders_show_title: "Confirmación del pedido"
+  orders_show_time: "Pedido listo en"
   orders_show_order_number: "Pedido #%{number}"
-  orders_show_cancelled: Cancelado
-  orders_show_confirmed: Confirmado
+  orders_show_cancelled: "Cancelado"
+  orders_show_confirmed: "Confirmado"
   orders_your_order_has_been_cancelled: "Su pedido ha sido cancelado"
   orders_could_not_cancel: "Lo sentimos, no se pudo cancelar el pedido"
   orders_cannot_remove_the_final_item: "No se puede quitar el último artículo de un pedido, en su lugar, por favor cancele el pedido."
@@ -1717,9 +1723,9 @@ es_CO:
     few: "%{count} artículos adicionales ya confirmados para este ciclo de pedido"
     many: "%{count} artículos adicionales ya confirmados para este ciclo de pedido"
     other: "%{count} artículos adicionales ya confirmados para este ciclo de pedido"
-  orders_bought_edit_button: Editar artículos confirmados
+  orders_bought_edit_button: "Editar artículos confirmados"
   orders_bought_already_confirmed: "* ya confirmados"
-  orders_confirm_cancel: Seguro que desea cancelar este pedido?
+  orders_confirm_cancel: "Seguro que desea cancelar este pedido?"
   order_processed_successfully: "Su pedido ha sido procesado con éxito."
   products_cart_distributor_choice: "Distribuidora para tu pedido:"
   products_cart_distributor_change: "Su distribuidora para este pedido se cambiará a %{name} si agregas este producto al carrito."
@@ -1805,7 +1811,6 @@ es_CO:
       details:
         title: "Detalles"
         headline: "Empecemos"
-        enterprise: "Ei! Primero necesitamos saber un poco sobre tu organización:"
         producer: "Primero necesitamos saber un poco sobre tu productora:"
         enterprise_name_field: "Nombre de la organización:"
         producer_name_field: "Nombre de la productora:"
@@ -1991,6 +1996,9 @@ es_CO:
   delivery_method: Método de entrega
   fee_type: "Tipo de Comisión"
   tax_category: "Categoría del impuesto"
+  description: "Descripción"
+  display: "Mostrar"
+  tags: "Etiquetas"
   calculator: "Calculadora"
   calculator_values: "Calculadora de valores"
   calculator_settings_warning: "Si está cambiando el tipo de calculadora, debe de salvar primero antes de editar las configuraciones de la calculadora"
@@ -2081,7 +2089,6 @@ es_CO:
   new_order: "Nuevo pedido"
   enterprise_tos_link: "Enlace a los Términos del Servicio de la Organización"
   enterprise_tos_message: "Queremos trabajar con personas que compartan nuestros objetivos y valores. Por ello, pedimos a las nuevas organizaciones que acepten"
-  enterprise_tos_link_text: "Términos del Servicio."
   enterprise_tos_agree: "Estoy de acuerdo con los Términos del Servicio"
   tax_settings: "Configuración de Impuestos"
   products_require_tax_category: "Los productos requieren categoría de impuesto"
@@ -2338,6 +2345,7 @@ es_CO:
   back_to_orders_list: "Volver a la lista de pedidos"
   no_orders_found: "No se encontraron pedidos"
   order_information: "información del pedido"
+  new_payment: "Nuevo pago"
   date_completed: "Fecha completada"
   amount: "Cantidad"
   state_names:
@@ -2747,6 +2755,9 @@ es_CO:
       start_free_profile: "¡Empieze con un perfil gratuito, y amplíelo cuando esté preparado!"
   order_management:
     reports:
+      bulk_coop:
+        filters:
+          generate_report: "Generar reporte"
       enterprise_fee_summaries:
         filters:
           date_range: "Rango de fechas"
@@ -2792,6 +2803,8 @@ es_CO:
               tax_category_name: "Categoría de impuestos"
               total_amount: "$$ SUM"
         invalid_filter_parameters: "Los filtros que seleccionó para este reporte no son válidos."
+      report:
+        none: "Ninguno"
   order: "Pedido"
   distribution: "Distribución"
   order_details: "Detalles del pedido"
@@ -2807,6 +2820,7 @@ es_CO:
   shipment_inc_vat: "Envío incluido VAT"
   shipping_tax_rate: "Impuestos de envío"
   category: "Categoría"
+  import_date: "Fecha de importación"
   delivery: "Entrega"
   temperature_controlled: "Control de temperatura"
   new_product: "Nuevo producto"
@@ -2824,14 +2838,20 @@ es_CO:
   previous: "Anterior"
   last: "Último"
   spree:
+    all: "Todos"
+    category: "Categoría"
+    credit: "Crédito"
     more: "Más"
+    no_pending_payments: "No tiene pagos pendientes"
+    none: "Ninguno"
+    updating: "Actualizando"
     your_order_is_empty_add_product: "Su pedido está vacío, busque y añada un producto arriba"
     add_product: "Añadir Producto"
     name_or_sku: "Nombre o código SKU (ingrese al menos los primeros 4 caracteres del nombre del producto)"
-    resend: Reenviar
-    back_to_orders_list: Volver a la lista de pedidos
-    return_authorizations: Autorizaciones de devolución
-    cannot_create_returns: No se pueden crear devoluciones ya que este pedido no tiene unidades enviadas.
+    resend: "Reenviar"
+    back_to_orders_list: "Volver a la lista de pedidos"
+    return_authorizations: "Autorizaciones de devolución"
+    cannot_create_returns: "No se pueden crear devoluciones ya que este pedido no tiene unidades enviadas."
     select_stock: "Seleccionar inventario"
     location: "Ubicación"
     count_on_hand: "Cuenta de disponibilidad"
@@ -2888,7 +2908,6 @@ es_CO:
     default_meta_description: "Meta Descripción predeterminada"
     default_meta_keywords: "Palabras clave Meta predeterminadas"
     security_settings: "Configuraciones de seguridad"
-    allow_ssl_in_development_and_test: "Permitir el uso de SSL en los modos de desarrollo y prueba"
     allow_ssl_in_production: "Permitir el uso de SSL modo de producción"
     allow_ssl_in_staging: "Permitir que SSL se utilice en modo de staging"
     currency_decimal_mark: "Marca decimal de la moneda"
@@ -2913,6 +2932,7 @@ es_CO:
     tax rate: "Tarifas de impuesto"
     new_tax_rate: "Nueva tarifa de impuesto"
     tax_category: "Categoría de impuestos"
+    tax_rates: "Tarifas de impuesto"
     rate: "Impuesto"
     tax_rate_amount_explanation: "Las tarifas de impuestos son una cantidad decimal para ayudar en los cálculos (es decir, si la tasa de impuestos es del 5%, introduzca 0.05)"
     included_in_price: "Incluido en el precio"
@@ -2940,6 +2960,9 @@ es_CO:
     back_to_taxonomies_list: "Volver a la lista de taxonomías"
     shipping_methods: "Métodos de envío"
     shipping_method: "Método de envío"
+    shipment: "Envío"
+    payment: "Pago"
+    status: "Estado"
     shipping_categories: "Categorías de envío"
     new_shipping_category: "Nueva categoría de envío"
     back_to_shipping_categories: "Volver a las categorías de envío"
@@ -2989,8 +3012,10 @@ es_CO:
     successfully_updated: '%{resource} ha sido actualizado exitosamente!'
     payment_method: "Método de pago"
     payment_processing_failed: "No se pudo procesar el pago, por favor verifique los detalles que introdujo"
+    sku: "SKU"
     actions:
       update: "Actualizar"
+      cancel: "Cancelar"
     shared:
       error_messages:
         there_were_problems_with_the_following_fields: "Hubo problemas con los siguientes campos"
@@ -3008,6 +3033,8 @@ es_CO:
           header:
             store: Tienda
     admin:
+      subscriptions:
+        number: "Número"
       tab:
         dashboard: "Panel de inicio"
         orders: "Pedidos"
@@ -3156,6 +3183,7 @@ es_CO:
           back_to_shipping_methods_list: "Volver a la lista de métodos de envío"
         form:
           categories: "Categorías"
+          tax_category: "Categoría de impuestos"
           zones: "Zonas"
           both: "Tanto Checkout como Back office"
           back_end: "Back office solamente"
@@ -3229,6 +3257,7 @@ es_CO:
           value: "Valor"
           unit_name: "Nombre de la unidad"
           price: "Precio"
+          unit_price: "Precio por unidad"
           on_hand: "Disponibles"
           on_demand: "Bajo demanda"
           product_description: "Descripción del producto"
@@ -3299,7 +3328,6 @@ es_CO:
           price: "Precio"
           options: "Opciones"
           no_results: "No hay resultados"
-          to_add_variants_you_must_first_define: "Para agregar variantes, usted debe primero definir"
           option_types: "Tipos de opciones"
           option_values: "Valores de opción"
           and: "y"
@@ -3309,9 +3337,9 @@ es_CO:
         new:
           new_variant: "Nueva variante"
         form:
-          cost_price: "Precio de costo"
           sku: "SKU"
           price: "Precio"
+          unit_price: "Precio por unidad"
           display_as: "Mostrar como"
           display_name: "Nombre para mostrar"
           display_as_placeholder: 'p.ej. 2 kilogramos'
@@ -3351,9 +3379,6 @@ es_CO:
           used_saved_card: "Usa una tarjeta guardada:"
           or_enter_new_card: "O introduce los detalles de una nueva tarjeta:"
           remember_this_card: ¿Recordar esta tarjeta?
-    date_picker:
-      format: '%Y-%m-%d'
-      js_format: 'yy-mm-dd'
     orders:
       error_flash_for_unavailable_items: "Un artículo de tu carrito ya no está disponible. Actualiza las cantidades seleccionadas."
       edit:
@@ -3392,6 +3417,8 @@ es_CO:
         paid_order: "Tu pedido fue pagado, por lo que %{distributor} ha reembolsado el monto total"
         credit_order: "Tu pedido fue pagado por lo que su cuenta ha sido acreditada"
         subject: "Cancelación del pedido"
+      cancel_email_for_shop:
+        subject: "Cancelación del pedido"
       confirm_email:
         subject: "Confirmación del pedido"
       invoice_email:
@@ -3412,7 +3439,6 @@ es_CO:
     shipment_mailer:
       shipped_email:
         dear_customer: "Estimado cliente,"
-        instructions: "Su pedido ha sido enviado"
         shipment_summary: "Resumen de envío"
         subject: "Notificación de envío"
         thanks: "Gracias por su negocio."
@@ -3444,6 +3470,8 @@ es_CO:
       ended: terminado
       paused: pausado
       canceled: cancelado
+    paypal:
+      refund_amount: "Cantidad"
     users:
       form:
         account_settings: Configuración de la cuenta

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Spree
-  class CreditCard < ActiveRecord::Base
+  class CreditCard < ApplicationRecord
     belongs_to :payment_method
     belongs_to :user
 
@@ -33,10 +33,10 @@ module Spree
 
     def number=(num)
       @number = begin
-                  num.gsub(/[^0-9]/, '')
-                rescue StandardError
-                  nil
-                end
+        num.gsub(/[^0-9]/, '')
+      rescue StandardError
+        nil
+      end
     end
 
     # cc_type is set by jquery.payment, which helpfully provides different
@@ -56,8 +56,8 @@ module Spree
     end
 
     def set_last_digits
-      number.to_s.gsub!(/\s/, '')
-      verification_value.to_s.gsub!(/\s/, '')
+      number = @number.to_s.gsub(/\s/, '')
+      verification_value = verification_value.to_s.gsub(/\s/, '')
       self.last_digits ||= number.to_s.length <= 4 ? number : number.to_s.slice(-4..-1)
     end
 
@@ -79,11 +79,17 @@ module Spree
     end
 
     def actions
-      %w{capture void credit}
+      %w{capture void credit resend_authorization_email}
+    end
+
+    def can_resend_authorization_email?(payment)
+      payment.requires_authorization?
     end
 
     # Indicates whether its possible to capture the payment
     def can_capture?(payment)
+      return false if payment.requires_authorization?
+
       payment.pending? || payment.checkout?
     end
 
@@ -141,7 +147,7 @@ module Spree
     end
 
     def default_card_needs_updating?
-      is_default_changed? || gateway_customer_profile_id_changed?
+      saved_change_to_is_default? || saved_change_to_gateway_customer_profile_id?
     end
 
     def ensure_single_default_card

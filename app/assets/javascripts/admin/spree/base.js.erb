@@ -8,26 +8,9 @@ Hopefully, this will evolve into a propper class.
 **/
 
 jQuery(function($) {
-  // Make main menu use full width
-  mainMenu = $('.fullwidth-menu')
-  if (typeof mainMenu.horizontalNav === 'function' )
-    mainMenu.horizontalNav({
-      tableDisplay: false,
-      responsiveDelay: 0
-    });
-
   // Vertical align of checkbox fields
   if (typeof $('.field.checkbox label').vAlign === 'function' )
     $('.field.checkbox label').vAlign()
-
-  // We activate AdaptiveMenu only if not on webdriver
-  // Re-adjusting the admin menu during tests causes tests to fail.
-  if (!navigator.webdriver && typeof Spree !== 'undefined') {
-    $('.main-menu-wrapper ul').AdaptiveMenu({
-      text: "<a href='#'><i class='icon-chevron-down'></i> " + Spree.translations.more + "</a>",
-      klass: "dropdown"
-    });
-  }
 
   // Add some tips
   if (typeof $('.with-tip').powerTip === 'function' ) {
@@ -115,40 +98,6 @@ $.fn.radioControlsVisibilityOfElement = function(dependentElementSelector){
 }
 
 $(document).ready(function() {
-  if (typeof Spree !== 'undefined' &&
-    typeof Spree.translations !== 'undefined') {
-    handle_date_picker_fields = function(){
-      $('.datepicker').datepicker({
-        dateFormat: Spree.translations.date_picker,
-        dayNames: Spree.translations.abbr_day_names,
-        dayNamesMin: Spree.translations.abbr_day_names,
-        monthNames: Spree.translations.month_names,
-        prevText: Spree.translations.previous,
-        nextText: Spree.translations.next,
-        showOn: "focus"
-      });
-      
-       $.datepicker.regional[I18n.locale] = {
-          prevText: Spree.translations.previous,
-          nextText: Spree.translations.next,
-          monthNames: Spree.translations.month_names,
-          dayNames: Spree.translations.abbr_day_names,
-          dayNamesMin: Spree.translations.abbr_day_names,
-          dateFormat: Spree.translations.date_picker
-      };
-      $.datepicker.setDefaults( $.datepicker.regional[I18n.locale]);
-      // Correctly display range dates
-      $('.date-range-filter .datepicker-from').datepicker('option', 'onSelect', function(selectedDate) {
-        $(".date-range-filter .datepicker-to" ).datepicker( "option", "minDate", selectedDate );
-      });
-      $('.date-range-filter .datepicker-to').datepicker('option', 'onSelect', function(selectedDate) {
-        $(".date-range-filter .datepicker-from" ).datepicker( "option", "maxDate", selectedDate );
-      });
-    }
-
-    handle_date_picker_fields();
-  }
-
   $(".observe_field").on('change', function() {
     target = $(this).attr("data-update");
     ajax_indicator = $(this).attr("data-ajax-indicator") || '#busy_indicator';

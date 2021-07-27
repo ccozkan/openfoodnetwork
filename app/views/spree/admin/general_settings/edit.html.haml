@@ -27,11 +27,11 @@
           %fieldset.legal.no-border-bottom
             %legend{:align => "center"}= t('.legal_settings')
             .field
-              = label_tag(:footer_tos_url, t('.footer_tos_url')) + tag(:br)
-              = preference_field_tag(:footer_tos_url, Spree::Config[:footer_tos_url], type: Spree::Config.preference_type(:footer_tos_url))
-            .field
               = preference_field_tag(:enterprises_require_tos, Spree::Config[:enterprises_require_tos], :type => Spree::Config.preference_type(:enterprises_require_tos))
               = label_tag(:enterprises_require_tos, t('.enterprises_require_tos')) + tag(:br)
+            .field
+              = preference_field_tag(:shoppers_require_tos, Spree::Config[:shoppers_require_tos], :type => Spree::Config.preference_type(:shoppers_require_tos))
+              = label_tag(:shoppers_require_tos, t('.shoppers_require_tos')) + tag(:br)
             .field
               = preference_field_tag(:cookies_consent_banner_toggle, Spree::Config[:cookies_consent_banner_toggle], :type => Spree::Config.preference_type(:cookies_consent_banner_toggle))
               = label_tag(:cookies_consent_banner_toggle, t('.cookies_consent_banner_toggle')) + tag(:br)
@@ -59,10 +59,6 @@
                 = label_tag(key, Spree.t(key) + ': ') + tag(:br) if type != :boolean
                 = preference_field_tag(key, Spree::Config[key], :type => type)
                 = label_tag(key, Spree.t(key)) + tag(:br) if type == :boolean
-            .field
-              = label_tag :currency, Spree.t(:choose_currency)
-              %br/
-              = select_tag :currency, currency_options, :class => 'fullwidth'
             .field
               = label_tag Spree.t(:currency_symbol_position)
               %br/

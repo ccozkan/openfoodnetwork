@@ -35,5 +35,41 @@ describe RemoveTransientData do
 
       expect(RemoveTransientData::Session.all).to be_empty
     end
+
+    describe "deleting old carts" do
+      let(:product) { create(:product) }
+      let(:variant) { product.variants.first }
+
+      let!(:cart) { create(:order, state: 'cart') }
+      let!(:line_item) { create(:line_item, order: cart, variant: variant) }
+      let!(:adjustment) { create(:adjustment, order: cart) }
+
+      let!(:old_cart) { create(:order, state: 'cart', updated_at: retention_period - 1.day) }
+      let!(:old_line_item) { create(:line_item, order: old_cart, variant: variant) }
+      let!(:old_adjustment) { create(:adjustment, order: old_cart) }
+
+      before do
+        old_cart.update_columns(updated_at: retention_period - 1.day)
+      end
+
+      it 'deletes cart orders and related objects older than retention_period' do
+        RemoveTransientData.new.call
+
+        expect{ cart.reload }.to_not raise_error
+        expect{ line_item.reload }.to_not raise_error
+        expect{ adjustment.reload }.to_not raise_error
+
+        expect{ old_cart.reload }.to raise_error ActiveRecord::RecordNotFound
+        expect{ old_line_item.reload }.to raise_error ActiveRecord::RecordNotFound
+        expect{ old_adjustment.reload }.to raise_error ActiveRecord::RecordNotFound
+      end
+
+      it "removes any defunct line item option value records" do
+        line_item.delete
+
+        expect{ RemoveTransientData.new.call }.
+          to change{ Spree::OptionValuesLineItem.count }.by(-1)
+      end
+    end
   end
 end

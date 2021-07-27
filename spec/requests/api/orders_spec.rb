@@ -2,20 +2,27 @@
 
 require 'swagger_helper'
 
-describe 'api/orders', type: :request do
-  path '/api/orders' do
+describe 'api/v0/orders', type: :request do
+  path '/api/v0/orders' do
     get('list orders') do
       tags 'Orders'
       # type should be replaced with swagger 3.01 valid schema: {type: string} when rswag #317 is resolved:
       # https://github.com/rswag/rswag/pull/319
       parameter name: 'X-Spree-Token', in: :header, type: :string
-      parameter name: 'q[distributor_id_eq]', in: :query, type: :string, required: false, description: "Query orders for a specific distributor id."
-      parameter name: 'q[completed_at_gt]', in: :query, type: :string, required: false, description: "Query orders completed after a date."
-      parameter name: 'q[completed_at_lt]', in: :query, type: :string, required: false, description: "Query orders completed before a date."
-      parameter name: 'q[state_eq]', in: :query, type: :string, required: false, description: "Query orders by order state, eg 'cart', 'complete'."
-      parameter name: 'q[payment_state_eq]', in: :query, type: :string, required: false, description: "Query orders by order payment_state, eg 'balance_due', 'paid', 'failed'."
-      parameter name: 'q[email_cont]', in: :query, type: :string, required: false, description: "Query orders where the order email contains a string."
-      parameter name: 'q[order_cycle_id_eq]', in: :query, type: :string, required: false, description: "Query orders for a specific order_cycle id."
+      parameter name: 'q[distributor_id_eq]', in: :query, type: :string, required: false,
+                description: "Query orders for a specific distributor id."
+      parameter name: 'q[completed_at_gt]', in: :query, type: :string, required: false,
+                description: "Query orders completed after a date."
+      parameter name: 'q[completed_at_lt]', in: :query, type: :string, required: false,
+                description: "Query orders completed before a date."
+      parameter name: 'q[state_eq]', in: :query, type: :string, required: false,
+                description: "Query orders by order state, eg 'cart', 'complete'."
+      parameter name: 'q[payment_state_eq]', in: :query, type: :string, required: false,
+                description: "Query orders by order payment_state, eg 'balance_due', 'paid', 'failed'."
+      parameter name: 'q[email_cont]', in: :query, type: :string, required: false,
+                description: "Query orders where the order email contains a string."
+      parameter name: 'q[order_cycle_id_eq]', in: :query, type: :string, required: false,
+                description: "Query orders for a specific order_cycle id."
 
       response(200, 'get orders') do
         # Adds model metadata for Swagger UI. Ideally we'd be able to just add:
@@ -28,10 +35,18 @@ describe 'api/orders', type: :request do
           }
         }
         context "when there are four orders with different properties set" do
-          let!(:order_dist_1) { create(:order_with_distributor, email: "specific_name@example.com") }
+          let!(:order_dist_1) {
+            create(:order_with_distributor, email: "specific_name@example.com")
+          }
           let!(:order_dist_2) { create(:order_with_totals_and_distribution) }
-          let!(:order_dist_1_complete) { create(:order, distributor: order_dist_1.distributor, state: 'complete', completed_at: Time.zone.today - 7.days) }
-          let!(:order_dist_1_credit_owed) { create(:order, distributor: order_dist_1.distributor, payment_state: 'credit_owed', completed_at: Time.zone.today) }
+          let!(:order_dist_1_complete) {
+            create(:order, distributor: order_dist_1.distributor, state: 'complete',
+                           completed_at: Time.zone.today - 7.days)
+          }
+          let!(:order_dist_1_credit_owed) {
+            create(:order, distributor: order_dist_1.distributor, payment_state: 'credit_owed',
+                           completed_at: Time.zone.today)
+          }
 
           let(:user) { order_dist_1.distributor.owner }
           let(:'X-Spree-Token') do
@@ -52,7 +67,7 @@ describe 'api/orders', type: :request do
           context "and queried by distributor id" do
             let(:'q[distributor_id_eq]') { order_dist_2.distributor.id }
 
-            before { order_dist_2.distributor.update_attributes owner: user }
+            before { order_dist_2.distributor.update owner: user }
 
             run_test! do |response|
               expect(response).to have_http_status(200)
@@ -119,7 +134,7 @@ describe 'api/orders', type: :request do
               order_dist_2.order_cycle.id
             }
 
-            before { order_dist_2.distributor.update_attributes owner: user }
+            before { order_dist_2.distributor.update owner: user }
 
             run_test! do |response|
               expect(response).to have_http_status(200)

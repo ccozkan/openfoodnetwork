@@ -11,7 +11,7 @@ Openfoodnetwork::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = false
+  config.public_file_server.enabled = false
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
@@ -42,9 +42,11 @@ Openfoodnetwork::Application.configure do
   config.log_formatter = Logger::Formatter.new.tap { |f| f.datetime_format = "%Y-%m-%d %H:%M:%S" }
 
   # Use a different cache store in production
-  memcached_value_max_megabytes = ENV.fetch("MEMCACHED_VALUE_MAX_MEGABYTES", 1).to_i
-  memcached_value_max_bytes = memcached_value_max_megabytes * 1024 * 1024
-  config.cache_store = :mem_cache_store, { value_max_bytes: memcached_value_max_bytes }
+  config.cache_store = :redis_cache_store, {
+    driver: :hiredis,
+    url: ENV.fetch("OFN_REDIS_URL", "redis://localhost:6380/0"),
+    reconnect_attempts: 1
+  }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -53,7 +55,7 @@ Openfoodnetwork::Application.configure do
   # config.assets.precompile += %w( search.js )
 
   require 'uglifier'
-  config.assets.js_compressor = Uglifier.new(mangle: false)
+  config.assets.js_compressor = Uglifier.new(mangle: false, harmony: true)
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false

@@ -26,7 +26,8 @@ feature '
       it "displays a link to the map page" do
         visit '/admin'
         expect(page).to have_selector ".dashboard_item h3", text: "Your profile live"
-        expect(page).to have_selector ".dashboard_item .button.bottom", text: "SEE #{d1.name.upcase} LIVE"
+        expect(page).to have_selector ".dashboard_item .button.bottom",
+                                      text: "SEE #{d1.name.upcase} LIVE"
       end
 
       context "when visibilty is set to false" do
@@ -37,11 +38,12 @@ feature '
 
         it "displays a message telling how to set visibility" do
           visit '/admin'
-          expect(page).to have_selector ".alert-box", text: "To allow people to find you, turn on your visibility under Manage #{d1.name}."
+          expect(page).to have_selector ".alert-box",
+                                        text: "To allow people to find you, turn on your visibility under Manage #{d1.name}."
         end
       end
 
-      pending "when user is a profile only" do
+      context "when user is a profile only" do
         before do
           d1.sells = "none"
           d1.save!
@@ -49,7 +51,7 @@ feature '
 
         it "does not show a products item" do
           visit '/admin'
-          page.should_not have_selector "#products"
+          expect(page).to have_no_selector "#products"
         end
       end
     end
@@ -73,19 +75,25 @@ feature '
         expect(page).to have_selector ".dashboard_item#products"
         expect(page).to have_selector ".dashboard_item#order_cycles"
         expect(page).to have_selector ".dashboard_item#enterprises .list-item", text: d1.name
-        expect(page).to have_selector ".dashboard_item#enterprises .list-item", text: non_distributor_enterprise.name
-        expect(page).to have_selector ".dashboard_item#enterprises .button.bottom", text: "MANAGE MY ENTERPRISES"
+        expect(page).to have_selector ".dashboard_item#enterprises .list-item",
+                                      text: non_distributor_enterprise.name
+        expect(page).to have_selector ".dashboard_item#enterprises .button.bottom",
+                                      text: "MANAGE MY ENTERPRISES"
       end
 
       context "but no products or order cycles" do
         it "prompts the user to create a new product and to manage order cycles" do
           visit '/admin'
           expect(page).to have_selector ".dashboard_item#products h3", text: "Products"
-          expect(page).to have_selector ".dashboard_item#products .list-item", text: "You don't have any active products."
-          expect(page).to have_selector ".dashboard_item#products .button.bottom", text: "CREATE A NEW PRODUCT"
+          expect(page).to have_selector ".dashboard_item#products .list-item",
+                                        text: "You don't have any active products."
+          expect(page).to have_selector ".dashboard_item#products .button.bottom",
+                                        text: "CREATE A NEW PRODUCT"
           expect(page).to have_selector ".dashboard_item#order_cycles h3", text: "Order Cycles"
-          expect(page).to have_selector ".dashboard_item#order_cycles .list-item", text: "You don't have any active order cycles."
-          expect(page).to have_selector ".dashboard_item#order_cycles .button.bottom", text: "MANAGE ORDER CYCLES"
+          expect(page).to have_selector ".dashboard_item#order_cycles .list-item",
+                                        text: "You don't have any active order cycles."
+          expect(page).to have_selector ".dashboard_item#order_cycles .button.bottom",
+                                        text: "MANAGE ORDER CYCLES"
         end
       end
 
@@ -96,11 +104,15 @@ feature '
         it "displays information about products and order cycles" do
           visit '/admin'
           expect(page).to have_selector ".dashboard_item#products h3", text: "Products"
-          expect(page).to have_selector ".dashboard_item#products .list-item", text: "You don't have any active products."
-          expect(page).to have_selector ".dashboard_item#products .button.bottom", text: "CREATE A NEW PRODUCT"
+          expect(page).to have_selector ".dashboard_item#products .list-item",
+                                        text: "You don't have any active products."
+          expect(page).to have_selector ".dashboard_item#products .button.bottom",
+                                        text: "CREATE A NEW PRODUCT"
           expect(page).to have_selector ".dashboard_item#order_cycles h3", text: "Order Cycles"
-          expect(page).to have_selector ".dashboard_item#order_cycles .list-item", text: "You don't have any active order cycles."
-          expect(page).to have_selector ".dashboard_item#order_cycles .button.bottom", text: "MANAGE ORDER CYCLES"
+          expect(page).to have_selector ".dashboard_item#order_cycles .list-item",
+                                        text: "You don't have any active order cycles."
+          expect(page).to have_selector ".dashboard_item#order_cycles .button.bottom",
+                                        text: "MANAGE ORDER CYCLES"
         end
       end
     end

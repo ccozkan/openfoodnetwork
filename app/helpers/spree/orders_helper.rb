@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Spree
   module OrdersHelper
     def cart_is_empty
@@ -28,7 +30,7 @@ module Spree
     end
 
     def changeable_orders_link_path
-      changeable_orders.one? ? spree.order_path(changeable_orders.first) : spree.account_path
+      changeable_orders.one? ? order_path(changeable_orders.first) : spree.account_path
     end
 
     def shop_changeable_orders_alert_html

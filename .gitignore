@@ -2,6 +2,9 @@
 .rbenv-version
 .python-version
 .byebug_history
+.env.local
+.env.development.local
+.env.test.local
 .swp
 *.swo
 *.swp
@@ -31,6 +34,7 @@ app/public
 public/system
 public/stylesheets
 public/images
+public/files
 public/spree
 public/assets
 config/abr.yml
@@ -45,4 +49,10 @@ vendor/bundle/
 coverage
 /reports/
 !/reports/README.md
-bin/
+/spec/components/stories/**/*.stories.json
+
+/public/packs
+/public/packs-test
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity

@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 module Spree
-  class ReturnAuthorization < ActiveRecord::Base
-    belongs_to :order, class_name: 'Spree::Order'
+  class ReturnAuthorization < ApplicationRecord
+    acts_as_paranoid
 
-    has_many :inventory_units
+    belongs_to :order, class_name: 'Spree::Order', inverse_of: :return_authorizations
+
+    has_many :inventory_units, inverse_of: :return_authorization
     has_one :stock_location
     before_create :generate_number
     before_save :force_positive_amount
@@ -64,6 +66,11 @@ module Spree
       order.shipped_shipments.collect{ |s| s.inventory_units.to_a }.flatten
     end
 
+    # Used when Adjustment#update_adjustment! wants to update the related adjustment
+    def compute_amount(*_args)
+      -amount.abs
+    end
+
     private
 
     def must_have_shipped_units
@@ -89,12 +96,16 @@ module Spree
         Spree::StockMovement.create!(stock_item_id: iu.find_stock_item.id, quantity: 1)
       end
 
-      credit = Adjustment.new(amount: amount.abs * -1, label: Spree.t(:rma_credit))
-      credit.source = self
-      credit.adjustable = order
-      credit.save
+      Adjustment.create(
+        amount: -amount.abs,
+        label: I18n.t('spree.rma_credit'),
+        order: order,
+        adjustable: order,
+        originator: self
+      )
 
       order.return if inventory_units.all?(&:returned?)
+      order.update_order!
     end
 
     def allow_receive?

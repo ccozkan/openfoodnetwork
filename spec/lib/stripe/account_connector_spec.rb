@@ -15,7 +15,7 @@ module Stripe
       let(:connector) { AccountConnector.new(user, params) }
 
       before do
-        allow(Stripe).to receive(:api_key) { "sk_test_12345" }
+        Stripe.api_key = "sk_test_12345"
       end
 
       context "when the connection was cancelled by the user" do
@@ -53,7 +53,9 @@ module Stripe
 
           context "and the decoded state param contains an 'enterprise_id' key" do
             let(:payload) { { enterprise_id: enterprise.permalink } }
-            let(:token_response) { { "stripe_user_id" => "some_user_id", "stripe_publishable_key" => "some_key" } }
+            let(:token_response) {
+              { "stripe_user_id" => "some_user_id", "stripe_publishable_key" => "some_key" }
+            }
 
             before do
               stub_request(:post, "https://connect.stripe.com/oauth/token").

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenFoodNetwork
   class OrderAndDistributorReport
     def initialize(user, params = {}, render_table = false)
@@ -36,7 +38,7 @@ module OpenFoodNetwork
     def search
       @permissions.visible_orders.select("DISTINCT spree_orders.*").
         complete.not_state(:canceled).
-        search(@params[:q])
+        ransack(@params[:q])
     end
 
     def table

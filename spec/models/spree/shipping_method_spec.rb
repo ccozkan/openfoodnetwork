@@ -31,7 +31,9 @@ module Spree
         let!(:distributor_b) { create(:distributor_enterprise) }
         let!(:distributor_c) { create(:distributor_enterprise) }
 
-        let!(:shipping_method_a) { create(:shipping_method, distributors: [distributor_a, distributor_b]) }
+        let!(:shipping_method_a) {
+          create(:shipping_method, distributors: [distributor_a, distributor_b])
+        }
         let!(:shipping_method_b) { create(:shipping_method, distributors: [distributor_b]) }
         let!(:shipping_method_c) { create(:shipping_method, distributors: [distributor_c]) }
 
@@ -67,9 +69,13 @@ module Spree
       let!(:d3) { create(:distributor_enterprise) }
       let!(:d4) { create(:distributor_enterprise) }
       let!(:d1_pickup) { create(:shipping_method, require_ship_address: false, distributors: [d1]) }
-      let!(:d1_delivery) { create(:shipping_method, require_ship_address: true, distributors: [d1]) }
+      let!(:d1_delivery) {
+        create(:shipping_method, require_ship_address: true, distributors: [d1])
+      }
       let!(:d2_pickup) { create(:shipping_method, require_ship_address: false, distributors: [d2]) }
-      let!(:d3_delivery) { create(:shipping_method, require_ship_address: true, distributors: [d3]) }
+      let!(:d3_delivery) {
+        create(:shipping_method, require_ship_address: true, distributors: [d3])
+      }
 
       it "reports when the services are available" do
         expect(ShippingMethod.services[d1.id]).to eq(pickup: true, delivery: true)
@@ -159,11 +165,35 @@ module Spree
       end
     end
 
+    # Regression test for Spree #4320
+    context "soft deletion" do
+      let(:shipping_method) { create(:shipping_method) }
+
+      it "soft-deletes when destroy is called" do
+        shipping_method.destroy
+        expect(shipping_method.deleted_at).to_not be_blank
+      end
+    end
+
     context 'factory' do
       let(:shipping_method){ create :shipping_method }
 
       it "should set calculable correctly" do
         expect(shipping_method.calculator.calculable).to eq(shipping_method)
+      end
+    end
+
+    # Regression test for Spree #4492
+    context "#shipments" do
+      let!(:shipping_method) { create(:shipping_method) }
+      let!(:shipment) do
+        shipment = create(:shipment)
+        shipment.shipping_rates.create!(shipping_method: shipping_method)
+        shipment
+      end
+
+      it "can gather all the related shipments" do
+        expect(shipping_method.shipments).to include(shipment)
       end
     end
   end

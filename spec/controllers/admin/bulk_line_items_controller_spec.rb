@@ -6,11 +6,23 @@ describe Admin::BulkLineItemsController, type: :controller do
   describe '#index' do
     render_views
 
-    let(:line_item_attributes) { %i[id quantity max_quantity price supplier final_weight_volume units_product units_variant order] }
+    let(:line_item_attributes) {
+      %i[id quantity max_quantity price supplier final_weight_volume units_product units_variant
+         order]
+    }
     let!(:dist1) { FactoryBot.create(:distributor_enterprise) }
-    let!(:order1) { FactoryBot.create(:order, state: 'complete', completed_at: 1.day.ago, distributor: dist1, billing_address: FactoryBot.create(:address) ) }
-    let!(:order2) { FactoryBot.create(:order, state: 'complete', completed_at: Time.zone.now, distributor: dist1, billing_address: FactoryBot.create(:address) ) }
-    let!(:order3) { FactoryBot.create(:order, state: 'complete', completed_at: Time.zone.now, distributor: dist1, billing_address: FactoryBot.create(:address) ) }
+    let!(:order1) {
+      FactoryBot.create(:order, state: 'complete', completed_at: 1.day.ago, distributor: dist1,
+                                billing_address: FactoryBot.create(:address) )
+    }
+    let!(:order2) {
+      FactoryBot.create(:order, state: 'complete', completed_at: Time.zone.now, distributor: dist1,
+                                billing_address: FactoryBot.create(:address) )
+    }
+    let!(:order3) {
+      FactoryBot.create(:order, state: 'complete', completed_at: Time.zone.now, distributor: dist1,
+                                billing_address: FactoryBot.create(:address) )
+    }
     let!(:line_item1) { FactoryBot.create(:line_item_with_shipment, order: order1) }
     let!(:line_item2) { FactoryBot.create(:line_item_with_shipment, order: order2) }
     let!(:line_item3) { FactoryBot.create(:line_item_with_shipment, order: order2) }
@@ -20,7 +32,7 @@ describe Admin::BulkLineItemsController, type: :controller do
       before { allow(controller).to receive_messages spree_current_user: create(:user) }
 
       it "should deny me access to the index action" do
-        spree_get :index, format: :json
+        get :index, format: :json
         expect(response).to redirect_to unauthorized_path
       end
     end
@@ -32,7 +44,7 @@ describe Admin::BulkLineItemsController, type: :controller do
 
       context "when no ransack params are passed in" do
         before do
-          spree_get :index, format: :json
+          get :index, format: :json
         end
 
         it "retrieves a list of line_items with appropriate attributes, including line items with appropriate attributes" do
@@ -46,17 +58,21 @@ describe Admin::BulkLineItemsController, type: :controller do
         end
 
         it "formats final_weight_volume as a float" do
-          expect(json_response['line_items'].map{ |line_item| line_item['final_weight_volume'] }.all?{ |fwv| fwv.is_a?(Float) }).to eq(true)
+          expect(json_response['line_items'].map{ |line_item|
+                   line_item['final_weight_volume']
+                 }.all?{ |fwv| fwv.is_a?(Float) }).to eq(true)
         end
 
         it "returns distributor object with id key" do
-          expect(json_response['line_items'].map{ |line_item| line_item['supplier'] }.all?{ |d| d.key?('id') }).to eq(true)
+          expect(json_response['line_items'].map{ |line_item|
+                   line_item['supplier']
+                 }.all?{ |d| d.key?('id') }).to eq(true)
         end
       end
 
       context "when ransack params are passed in for line items" do
         before do
-          spree_get :index, format: :json, q: { order_id_eq: order2.id }
+          get :index, as: :json, params: { q: { order_id_eq: order2.id } }
         end
 
         it "retrives a list of line items which match the criteria" do
@@ -66,7 +82,7 @@ describe Admin::BulkLineItemsController, type: :controller do
 
       context "when ransack params are passed in for orders" do
         before do
-          spree_get :index, format: :json, q: { order: { completed_at_gt: 2.hours.ago } }
+          get :index, as: :json, params: { q: { order: { completed_at_gt: 2.hours.ago } } }
         end
 
         it "retrives a list of line items whose orders match the criteria" do
@@ -81,16 +97,31 @@ describe Admin::BulkLineItemsController, type: :controller do
       let(:distributor2) { create(:distributor_enterprise) }
       let(:coordinator) { create(:distributor_enterprise) }
       let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
-      let!(:order1) { FactoryBot.create(:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now, distributor: distributor1, billing_address: FactoryBot.create(:address) ) }
-      let!(:line_item1) { FactoryBot.create(:line_item_with_shipment, order: order1, product: FactoryBot.create(:product, supplier: supplier)) }
-      let!(:line_item2) { FactoryBot.create(:line_item_with_shipment, order: order1, product: FactoryBot.create(:product, supplier: supplier)) }
-      let!(:order2) { FactoryBot.create(:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now, distributor: distributor2, billing_address: FactoryBot.create(:address) ) }
-      let!(:line_item3) { FactoryBot.create(:line_item_with_shipment, order: order2, product: FactoryBot.create(:product, supplier: supplier)) }
+      let!(:order1) {
+        FactoryBot.create(:order, order_cycle: order_cycle, state: 'complete',
+                                  completed_at: Time.zone.now, distributor: distributor1, billing_address: FactoryBot.create(:address) )
+      }
+      let!(:line_item1) {
+        FactoryBot.create(:line_item_with_shipment, order: order1,
+                                                    product: FactoryBot.create(:product, supplier: supplier))
+      }
+      let!(:line_item2) {
+        FactoryBot.create(:line_item_with_shipment, order: order1,
+                                                    product: FactoryBot.create(:product, supplier: supplier))
+      }
+      let!(:order2) {
+        FactoryBot.create(:order, order_cycle: order_cycle, state: 'complete',
+                                  completed_at: Time.zone.now, distributor: distributor2, billing_address: FactoryBot.create(:address) )
+      }
+      let!(:line_item3) {
+        FactoryBot.create(:line_item_with_shipment, order: order2,
+                                                    product: FactoryBot.create(:product, supplier: supplier))
+      }
 
       context "producer enterprise" do
         before do
           allow(controller).to receive_messages spree_current_user: supplier.owner
-          spree_get :index, format: :json
+          get :index, as: :json
         end
 
         it "does not display line items for which my enterprise is a supplier" do
@@ -101,7 +132,7 @@ describe Admin::BulkLineItemsController, type: :controller do
       context "coordinator enterprise" do
         before do
           allow(controller).to receive_messages spree_current_user: coordinator.owner
-          spree_get :index, format: :json
+          get :index, as: :json
         end
 
         it "retrieves a list of line_items" do
@@ -113,7 +144,7 @@ describe Admin::BulkLineItemsController, type: :controller do
       context "hub enterprise" do
         before do
           allow(controller).to receive_messages spree_current_user: distributor1.owner
-          spree_get :index, format: :json
+          get :index, as: :json
         end
 
         it "retrieves a list of line_items" do
@@ -130,7 +161,7 @@ describe Admin::BulkLineItemsController, type: :controller do
 
       context "with pagination args" do
         it "returns paginated results" do
-          spree_get :index, { page: 1, per_page: 2 }, format: :json
+          get :index, params: { page: 1, per_page: 2 }, as: :json
 
           expect(line_item_ids).to eq [line_item1.id, line_item2.id]
           expect(json_response['pagination']).to eq(
@@ -139,7 +170,7 @@ describe Admin::BulkLineItemsController, type: :controller do
         end
 
         it "returns paginated results for a second page" do
-          spree_get :index, { page: 2, per_page: 2 }, format: :json
+          get :index, params: { page: 2, per_page: 2 }, as: :json
 
           expect(line_item_ids).to eq [line_item3.id, line_item4.id]
           expect(json_response['pagination']).to eq(
@@ -155,9 +186,13 @@ describe Admin::BulkLineItemsController, type: :controller do
     let(:distributor1) { create(:distributor_enterprise) }
     let(:coordinator) { create(:distributor_enterprise) }
     let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
-    let!(:order1) { FactoryBot.create(:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now, distributor: distributor1, billing_address: FactoryBot.create(:address) ) }
+    let!(:order1) {
+      FactoryBot.create(:order, order_cycle: order_cycle, state: 'complete',
+                                completed_at: Time.zone.now, distributor: distributor1, billing_address: FactoryBot.create(:address) )
+    }
     let!(:line_item1) {
-      line_item1 = FactoryBot.create(:line_item_with_shipment, order: order1, product: FactoryBot.create(:product, supplier: supplier))
+      line_item1 = FactoryBot.create(:line_item_with_shipment, order: order1,
+                                                               product: FactoryBot.create(:product, supplier: supplier))
       # make sure shipment is available through db reloads of this line_item
       line_item1.tap(&:save!)
     }
@@ -209,8 +244,10 @@ describe Admin::BulkLineItemsController, type: :controller do
             allow(Spree::LineItem)
               .to receive(:find).with(line_item1.id.to_s).and_return(line_item1)
 
-            expect(line_item1.order).to receive(:reload).with(lock: true)
-            expect(line_item1.order).to receive(:update_distribution_charge!)
+            expect(line_item1.order).to receive(:with_lock).and_call_original
+            expect(line_item1.order).to receive(:update_line_item_fees!)
+            expect(line_item1.order).to receive(:update_order_fees!)
+            expect(line_item1.order).to receive(:update_order!).once
 
             spree_put :update, params
           end
@@ -235,7 +272,7 @@ describe Admin::BulkLineItemsController, type: :controller do
       context "hub enterprise" do
         before do
           allow(controller).to receive_messages spree_current_user: distributor1.owner
-          xhr :put, :update, params
+          put :update, params: params, xhr: true
         end
 
         it "updates the line item" do
@@ -255,8 +292,14 @@ describe Admin::BulkLineItemsController, type: :controller do
     let(:distributor1) { create(:distributor_enterprise) }
     let(:coordinator) { create(:distributor_enterprise) }
     let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
-    let!(:order1) { FactoryBot.create(:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now, distributor: distributor1, billing_address: FactoryBot.create(:address) ) }
-    let!(:line_item1) { FactoryBot.create(:line_item_with_shipment, order: order1, product: FactoryBot.create(:product, supplier: supplier)) }
+    let!(:order1) {
+      FactoryBot.create(:order, order_cycle: order_cycle, state: 'complete',
+                                completed_at: Time.zone.now, distributor: distributor1, billing_address: FactoryBot.create(:address) )
+    }
+    let!(:line_item1) {
+      FactoryBot.create(:line_item_with_shipment, order: order1,
+                                                  product: FactoryBot.create(:product, supplier: supplier))
+    }
     let(:params) { { id: line_item1.id, order_id: order1.number } }
 
     before do
@@ -281,6 +324,123 @@ describe Admin::BulkLineItemsController, type: :controller do
       it 'returns a 204 response' do
         spree_delete :destroy, params
         expect(response.status).to eq 204
+      end
+    end
+  end
+
+  context "updating the order's taxes, fees, and states" do
+    let(:distributor) { create(:distributor_enterprise_with_tax) }
+    let!(:order_cycle) {
+      create(:order_cycle, distributors: [distributor],
+                           coordinator_fees: [line_item_fee1, line_item_fee2, order_fee])
+    }
+    let(:outgoing_exchange) { order_cycle.exchanges.outgoing.first }
+
+    let!(:order) {
+      create(:order_with_line_items, line_items_count: 2, distributor: distributor,
+                                     order_cycle: order_cycle)
+    }
+    let(:line_item1) { order.line_items.first }
+    let(:line_item2) { order.line_items.last }
+
+    let!(:zone) { create(:zone_with_member) }
+    let(:tax_included) { true }
+    let(:tax_rate5) { create(:tax_rate, amount: 0.05, zone: zone, included_in_price: tax_included) }
+    let(:tax_rate10) {
+      create(:tax_rate, amount: 0.10, zone: zone, included_in_price: tax_included)
+    }
+    let(:tax_rate15) {
+      create(:tax_rate, amount: 0.15, zone: zone, included_in_price: tax_included)
+    }
+    let(:tax_cat5) { create(:tax_category, tax_rates: [tax_rate5]) }
+    let(:tax_cat10) { create(:tax_category, tax_rates: [tax_rate10]) }
+    let(:tax_cat15) { create(:tax_category, tax_rates: [tax_rate15]) }
+
+    let!(:shipping_method) {
+      create(:shipping_method_with, :shipping_fee, tax_category: tax_cat5, name: "Shiperoo",
+                                                   distributors: [distributor])
+    }
+    let!(:payment_method) { create(:payment_method, :per_item, distributors: [distributor]) }
+
+    let(:line_item_fee1) {
+      create(:enterprise_fee, :per_item, amount: 1, inherits_tax_category: false,
+                                         tax_category: tax_cat15)
+    }
+    let(:line_item_fee2) {
+      create(:enterprise_fee, :per_item, amount: 2, inherits_tax_category: true)
+    }
+    let(:order_fee) { create(:enterprise_fee, :flat_rate, amount: 3, tax_category: tax_cat15 ) }
+
+    before do
+      outgoing_exchange.variants << [line_item1.variant, line_item2.variant]
+      allow(order).to receive(:tax_zone) { zone }
+      line_item1.product.update_columns(tax_category_id: tax_cat5.id)
+      line_item2.product.update_columns(tax_category_id: tax_cat10.id)
+
+      order.refresh_shipment_rates
+      order.select_shipping_method(shipping_method.id)
+      order.finalize!
+      order.recreate_all_fees!
+      order.create_tax_charge!
+      order.update_order!
+      order.payments << create(:payment, payment_method: payment_method, amount: order.total,
+                                         state: "completed")
+
+      allow(controller).to receive(:spree_current_user) { distributor.owner }
+      allow(Spree::LineItem).to receive(:find) { line_item1 }
+      allow(line_item1).to receive(:order) { order }
+    end
+
+    describe "updating a line item" do
+      let(:line_item_params) { { quantity: 3 } }
+      let(:params) { { id: line_item1.id, order_id: order.number, line_item: line_item_params } }
+
+      it "correctly updates order totals and states" do
+        expect(order.total).to eq 35.0
+        expect(order.shipment_adjustments.shipping.sum(:amount)).to eq 6.0
+        expect(order.shipment_adjustments.tax.sum(:amount)).to eq 0.29
+        expect(order.item_total).to eq 20.0
+        expect(order.adjustment_total).to eq 15.0
+        expect(order.included_tax_total).to eq 1.22
+        expect(order.payment_state).to eq "paid"
+
+        expect(order).to receive(:update_order!).at_least(:once).and_call_original
+        expect(order).to receive(:create_tax_charge!).at_least(:once).and_call_original
+
+        spree_put :update, params
+        order.reload
+
+        expect(order.total).to eq 67.0
+        expect(order.shipment_adjustments.sum(:amount)).to eq 12.57
+        expect(order.item_total).to eq 40.0
+        expect(order.adjustment_total).to eq 27.0
+        expect(order.included_tax_total).to eq 3.38
+        expect(order.payment_state).to eq "balance_due"
+      end
+    end
+
+    describe "deleting a line item" do
+      let(:params) { { id: line_item1.id, order_id: order.number } }
+
+      it "correctly updates order totals and states" do
+        expect(order.total).to eq 35.0
+        expect(order.shipment_adjustments.shipping.sum(:amount)).to eq 6.0
+        expect(order.shipment_adjustments.tax.sum(:amount)).to eq 0.29
+        expect(order.item_total).to eq 20.0
+        expect(order.adjustment_total).to eq 15.0
+        expect(order.included_tax_total).to eq 1.22
+        expect(order.payment_state).to eq "paid"
+
+        spree_delete :destroy, params
+        order.reload
+
+        expect(order.total).to eq 19.0
+        expect(order.shipment_adjustments.shipping.sum(:amount)).to eq 3.0
+        expect(order.shipment_adjustments.tax.sum(:amount)).to eq 0.14
+        expect(order.item_total).to eq 10.0
+        expect(order.adjustment_total).to eq 9.0
+        expect(order.included_tax_total).to eq 0.84
+        expect(order.payment_state).to eq "credit_owed"
       end
     end
   end

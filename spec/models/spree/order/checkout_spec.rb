@@ -68,8 +68,8 @@ describe Spree::Order::Checkout do
     context "from address" do
       before do
         order.state = 'address'
-        allow(order).to receive(:has_available_payment)
         order.shipments << create(:shipment)
+        order.distributor = build(:distributor_enterprise)
         order.email = "user@example.com"
         order.save!
       end
@@ -113,38 +113,6 @@ describe Spree::Order::Checkout do
         end
 
         it "transitions to complete" do
-          order.next!
-          expect(order.state).to eq "complete"
-        end
-      end
-    end
-
-    context "from payment" do
-      before do
-        order.state = 'payment'
-      end
-
-      context "when payment is required" do
-        before do
-          allow(order).to receive_messages confirmation_required?: false
-          allow(order).to receive_messages payment_required?: true
-        end
-
-        it "transitions to complete" do
-          expect(order).to receive(:process_payments!).once.and_return true
-          order.next!
-          expect(order.state).to eq "complete"
-        end
-      end
-
-      # Regression test for Spree #2028
-      context "when payment is not required" do
-        before do
-          allow(order).to receive_messages payment_required?: false
-        end
-
-        it "does not call process payments" do
-          expect(order).to_not receive(:process_payments!)
           order.next!
           expect(order.state).to eq "complete"
         end

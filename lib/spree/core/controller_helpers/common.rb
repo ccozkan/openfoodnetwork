@@ -12,7 +12,7 @@ module Spree
 
           layout :get_layout
 
-          before_filter :set_user_language
+          before_action :set_user_language
 
           protected
 
@@ -46,7 +46,7 @@ module Spree
                        formats: [:html],
                        layout: nil
               }
-              type.all { render status: :not_found, nothing: true }
+              type.all { render status: :not_found, body: nil }
             end
           end
 

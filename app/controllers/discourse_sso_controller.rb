@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'discourse/single_sign_on'
 
 class DiscourseSsoController < ApplicationController
@@ -19,7 +21,7 @@ class DiscourseSsoController < ApplicationController
       begin
         redirect_to sso_url
       rescue TypeError
-        render text: "Bad SingleSignOn request.", status: :bad_request
+        render plain: "Bad SingleSignOn request.", status: :bad_request
       end
     else
       redirect_to login_path

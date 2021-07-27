@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Spree
-  class Address < ActiveRecord::Base
+  class Address < ApplicationRecord
     include AddressDisplay
 
     belongs_to :country, class_name: "Spree::Country"
@@ -22,14 +22,12 @@ module Spree
     alias_attribute :last_name, :lastname
     delegate :name, to: :state, prefix: true, allow_nil: true
 
-    geocoded_by :geocode_address
-
     def self.default
       country = begin
-                  Spree::Country.find(Spree::Config[:default_country_id])
-                rescue StandardError
-                  Spree::Country.first
-                end
+        DefaultCountry.country
+      rescue StandardError
+        Spree::Country.first
+      end
       new(country: country)
     end
 
@@ -89,10 +87,6 @@ module Spree
       }
     end
 
-    def geocode_address
-      render_address([address1, address2, zipcode, city, country.andand.name, state.andand.name])
-    end
-
     def full_address
       render_address([address1, address2, city, zipcode, state.andand.name])
     end
@@ -134,16 +128,14 @@ module Spree
 
       # Ensure state_name belongs to country without states,
       #   or that it matches a predefined state name/abbr
-      if state_name.present?
-        if country.states.present?
-          states = country.states.find_all_by_name_or_abbr(state_name)
+      if state_name.present? && country.states.present?
+        states = country.states.find_all_by_name_or_abbr(state_name)
 
-          if states.size == 1
-            self.state = states.first
-            self.state_name = nil
-          else
-            errors.add(:state, :invalid)
-          end
+        if states.size == 1
+          self.state = states.first
+          self.state_name = nil
+        else
+          errors.add(:state, :invalid)
         end
       end
 
@@ -152,7 +144,9 @@ module Spree
     end
 
     def touch_enterprise
-      enterprise.andand.touch
+      return unless enterprise&.persisted?
+
+      enterprise.touch
     end
 
     def render_address(parts)

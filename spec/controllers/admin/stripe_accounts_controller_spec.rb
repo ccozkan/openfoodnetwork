@@ -6,7 +6,7 @@ describe Admin::StripeAccountsController, type: :controller do
   let(:enterprise) { create(:distributor_enterprise) }
 
   before do
-    allow(Stripe).to receive(:client_id) { "some_id" }
+    Stripe.client_id = "some_id"
   end
 
   describe "#connect" do
@@ -15,7 +15,7 @@ describe Admin::StripeAccountsController, type: :controller do
     end
 
     it "redirects to Stripe Authorization url constructed OAuth" do
-      spree_get :connect, enterprise_id: 1 # A deterministic id results in a deterministic state JWT token
+      get :connect, params: { enterprise_id: 1 } # A deterministic id results in a deterministic state JWT token
 
       expect(response).to redirect_to("https://connect.stripe.com/oauth/authorize?state=eyJhbGciOiJIUzI1NiJ9.eyJlbnRlcnByaXNlX2lkIjoiMSJ9.jSSFGn0bLhwuiQYK5ORmHWW7aay1l030bcfGwn1JbFg&scope=read_write&client_id=some_id&response_type=code")
     end
@@ -86,7 +86,7 @@ describe Admin::StripeAccountsController, type: :controller do
     end
 
     before do
-      allow(Stripe).to receive(:api_key) { "sk_test_12345" }
+      Stripe.api_key = "sk_test_12345"
       Spree::Config.set(stripe_connect_enabled: false)
     end
 
@@ -98,7 +98,7 @@ describe Admin::StripeAccountsController, type: :controller do
       end
 
       it "redirects to unauthorized" do
-        spree_get :status, params
+        get :status, params: params
         expect(response).to redirect_to unauthorized_path
       end
     end
@@ -110,7 +110,7 @@ describe Admin::StripeAccountsController, type: :controller do
 
       context "when Stripe is not enabled" do
         it "returns with a status of 'stripe_disabled'" do
-          spree_get :status, params
+          get :status, params: params
           json_response = JSON.parse(response.body)
           expect(json_response["status"]).to eq "stripe_disabled"
         end
@@ -121,22 +121,25 @@ describe Admin::StripeAccountsController, type: :controller do
 
         context "when no stripe account is associated with the specified enterprise" do
           it "returns with a status of 'account_missing'" do
-            spree_get :status, params
+            get :status, params: params
             json_response = JSON.parse(response.body)
             expect(json_response["status"]).to eq "account_missing"
           end
         end
 
         context "when a stripe account is associated with the specified enterprise" do
-          let!(:account) { create(:stripe_account, stripe_user_id: "acc_123", enterprise: enterprise) }
+          let!(:account) {
+            create(:stripe_account, stripe_user_id: "acc_123", enterprise: enterprise)
+          }
 
           context "but access has been revoked or does not exist on stripe's servers" do
             before do
-              stub_request(:get, "https://api.stripe.com/v1/accounts/acc_123").to_return(status: 404)
+              stub_request(:get,
+                           "https://api.stripe.com/v1/accounts/acc_123").to_return(status: 404)
             end
 
             it "returns with a status of 'access_revoked'" do
-              spree_get :status, params
+              get :status, params: params
               json_response = JSON.parse(response.body)
               expect(json_response["status"]).to eq "access_revoked"
             end
@@ -153,11 +156,12 @@ describe Admin::StripeAccountsController, type: :controller do
             end
 
             before do
-              stub_request(:get, "https://api.stripe.com/v1/accounts/acc_123").to_return(body: JSON.generate(stripe_account_mock))
+              stub_request(:get,
+                           "https://api.stripe.com/v1/accounts/acc_123").to_return(body: JSON.generate(stripe_account_mock))
             end
 
             it "returns with a status of 'connected'" do
-              spree_get :status, params
+              get :status, params: params
               json_response = JSON.parse(response.body)
               expect(json_response["status"]).to eq "connected"
               # serializes required attrs

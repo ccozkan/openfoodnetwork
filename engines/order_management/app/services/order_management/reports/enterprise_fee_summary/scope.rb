@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OrderManagement
   module Reports
     module EnterpriseFeeSummary
@@ -52,7 +54,10 @@ module OrderManagement
 
         def for_orders
           chain_to_scope do
-            where(adjustable_type: "Spree::Order")
+            where(
+              adjustable_type: ["Spree::Order", "Spree::Shipment", "Spree::LineItem",
+                                "Spree::Payment"]
+            )
           end
         end
 
@@ -81,8 +86,7 @@ module OrderManagement
             <<-JOIN_STRING.strip_heredoc
               LEFT OUTER JOIN spree_orders
                 ON (
-                  spree_adjustments.adjustable_type = 'Spree::Order'
-                    AND spree_orders.id = spree_adjustments.adjustable_id
+                  spree_orders.id = spree_adjustments.order_id
                     AND spree_orders.completed_at IS NOT NULL
                 )
             JOIN_STRING
@@ -180,8 +184,8 @@ module OrderManagement
             <<-JOIN_STRING.strip_heredoc
               LEFT OUTER JOIN spree_orders AS adjustment_source_orders
                 ON (
-                  spree_adjustments.source_type = 'Spree::Order'
-                    AND adjustment_source_orders.id = spree_adjustments.source_id
+                  spree_adjustments.adjustable_type = 'Spree::Order'
+                    AND adjustment_source_orders.id = spree_adjustments.adjustable_id
                 )
             JOIN_STRING
           )
@@ -206,8 +210,8 @@ module OrderManagement
             <<-JOIN_STRING.strip_heredoc
               LEFT OUTER JOIN spree_line_items
                 ON (
-                  spree_adjustments.source_type = 'Spree::LineItem'
-                    AND spree_line_items.id = spree_adjustments.source_id
+                  spree_adjustments.adjustable_type = 'Spree::LineItem'
+                    AND spree_line_items.id = spree_adjustments.adjustable_id
                 )
             JOIN_STRING
           )
@@ -216,7 +220,7 @@ module OrderManagement
             <<-JOIN_STRING.strip_heredoc
               LEFT OUTER JOIN spree_variants
                 ON (
-                  spree_adjustments.source_type = 'Spree::LineItem'
+                  spree_adjustments.adjustable_type = 'Spree::LineItem'
                     AND spree_variants.id = spree_line_items.variant_id
                 )
             JOIN_STRING
@@ -259,7 +263,7 @@ module OrderManagement
                     )
                 )
                 ON (
-                  spree_adjustments.source_type = 'Spree::LineItem'
+                  spree_adjustments.adjustable_type = 'Spree::LineItem'
                     AND adjustment_metadata.enterprise_role = 'supplier'
                     AND incoming_exchanges.order_cycle_id = spree_orders.order_cycle_id
                     AND incoming_exchange_variants.id IS NOT NULL
@@ -295,7 +299,7 @@ module OrderManagement
                     )
                 )
                 ON (
-                  spree_adjustments.source_type = 'Spree::LineItem'
+                  spree_adjustments.adjustable_type = 'Spree::LineItem'
                     AND adjustment_metadata.enterprise_role = 'distributor'
                     AND outgoing_exchanges.order_cycle_id = spree_orders.order_cycle_id
                     AND outgoing_exchange_variants.id IS NOT NULL
@@ -352,7 +356,7 @@ module OrderManagement
               "adjustment_metadata.enterprise_role",
               "spree_tax_categories.id",
               "product_tax_categories.id",
-              "spree_adjustments.source_type",
+              "spree_adjustments.adjustable_type",
               "adjustment_source_distributors.id",
               "incoming_exchange_enterprises.id",
               "outgoing_exchange_enterprises.id"
@@ -377,7 +381,7 @@ module OrderManagement
                   enterprise_fees.inherits_tax_category AS enterprise_fee_inherits_tax_category,
                   product_tax_categories.name AS product_tax_category_name,
                   adjustment_metadata.enterprise_role AS placement_enterprise_role,
-                  spree_adjustments.source_type AS adjustment_source_type,
+                  spree_adjustments.adjustable_type AS adjustment_adjustable_type,
                   adjustment_source_distributors.name AS adjustment_source_distributor_name,
                   incoming_exchange_enterprises.name AS incoming_exchange_enterprise_name,
                   outgoing_exchange_enterprises.name AS outgoing_exchange_enterprise_name

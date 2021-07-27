@@ -5,7 +5,6 @@ FactoryBot.define do
 
   factory :base_variant, class: Spree::Variant do
     price { 19.99 }
-    cost_price { 17.00 }
     sku    { SecureRandom.hex }
     weight { generate(:random_float) }
     height { generate(:random_float) }
@@ -16,7 +15,7 @@ FactoryBot.define do
     option_values { [create(:option_value)] }
 
     # ensure stock item will be created for this variant
-    before(:create) { create(:stock_location) if Spree::StockLocation.count == 0 }
+    before(:create) { create(:stock_location) if Spree::StockLocation.count.zero? }
 
     factory :variant do
       transient do

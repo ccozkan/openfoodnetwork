@@ -1,4 +1,6 @@
-class TagRule < ActiveRecord::Base
+# frozen_string_literal: true
+
+class TagRule < ApplicationRecord
   belongs_to :enterprise
 
   preference :customer_tags, :string, default: ""

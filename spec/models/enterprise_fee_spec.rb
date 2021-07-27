@@ -31,7 +31,9 @@ describe EnterpriseFee do
 
     describe "for tax_category" do
       let(:tax_category) { create(:tax_category) }
-      let(:enterprise_fee) { create(:enterprise_fee, tax_category_id: nil, inherits_tax_category: true) }
+      let(:enterprise_fee) {
+        create(:enterprise_fee, tax_category_id: nil, inherits_tax_category: true)
+      }
 
       it "maintains valid tax_category settings" do
         # Changing just tax_category, when inheriting
@@ -104,24 +106,25 @@ describe EnterpriseFee do
       line_item1 = create(:line_item, order: order, variant: order_cycle.variants.first)
       line_item2 = create(:line_item, order: order, variant: order_cycle.variants.second)
 
-      order_cycle.coordinator_fees[0].create_adjustment('foo1', line_item1.order, line_item1, true)
-      order_cycle.coordinator_fees[0].create_adjustment('foo2', line_item2.order, line_item2, true)
-      order_cycle.exchanges[0].enterprise_fees[0].create_adjustment('foo3', line_item1.order, line_item1, true)
-      order_cycle.exchanges[0].enterprise_fees[0].create_adjustment('foo4', line_item2.order, line_item2, true)
+      order_cycle.coordinator_fees[0].create_adjustment('foo1', line_item1.order, true)
+      order_cycle.coordinator_fees[0].create_adjustment('foo2', line_item2.order, true)
+      order_cycle.exchanges[0].enterprise_fees[0].create_adjustment('foo3', line_item1, true)
+      order_cycle.exchanges[0].enterprise_fees[0].create_adjustment('foo4', line_item2, true)
 
       expect do
-        EnterpriseFee.clear_all_adjustments_on_order order
-      end.to change(order.adjustments, :count).by(-4)
+        EnterpriseFee.clear_all_adjustments order
+      end.to change(order.all_adjustments, :count).by(-4)
     end
 
     it "clears adjustments from per-order fees" do
       order = create(:order)
       enterprise_fee = create(:enterprise_fee)
-      enterprise_fee_aplicator = OpenFoodNetwork::EnterpriseFeeApplicator.new(enterprise_fee, nil, 'coordinator')
+      enterprise_fee_aplicator = OpenFoodNetwork::EnterpriseFeeApplicator.new(enterprise_fee, nil,
+                                                                              'coordinator')
       enterprise_fee_aplicator.create_order_adjustment(order)
 
       expect do
-        EnterpriseFee.clear_all_adjustments_on_order order
+        EnterpriseFee.clear_all_adjustments order
       end.to change(order.adjustments, :count).by(-1)
     end
 
@@ -129,14 +132,33 @@ describe EnterpriseFee do
       order = create(:order)
       tax_rate = create(:tax_rate, calculator: build(:calculator))
       order.adjustments.create({ amount: 12.34,
-                                 source: order,
                                  originator: tax_rate,
                                  state: 'closed',
                                  label: 'hello' })
 
       expect do
-        EnterpriseFee.clear_all_adjustments_on_order order
+        EnterpriseFee.clear_all_adjustments order
       end.to change(order.adjustments, :count).by(0)
+    end
+  end
+
+  describe "soft-deletion" do
+    let(:tax_category) { create(:tax_category) }
+    let(:enterprise_fee) { create(:enterprise_fee, tax_category: tax_category ) }
+    let!(:adjustment) { create(:adjustment, originator: enterprise_fee) }
+
+    before do
+      enterprise_fee.destroy
+      enterprise_fee.reload
+    end
+
+    it "soft-deletes the enterprise fee" do
+      expect(enterprise_fee.deleted_at).to_not be_nil
+    end
+
+    it "can be accessed by old adjustments" do
+      expect(adjustment.reload.originator).to eq enterprise_fee
+      expect(adjustment.originator.tax_category).to eq enterprise_fee.tax_category
     end
   end
 end

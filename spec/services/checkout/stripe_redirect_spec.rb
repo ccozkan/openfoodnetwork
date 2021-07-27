@@ -38,11 +38,14 @@ describe Checkout::StripeRedirect do
           it "returns the redirect path" do
             stripe_payment = create(:payment, payment_method_id: payment_method.id)
             order.payments << stripe_payment
+            allow(OrderPaymentFinder).to receive_message_chain(:new, :last_pending_payment).
+              and_return(stripe_payment)
             allow(stripe_payment).to receive(:authorize!) do
               # Authorization moves the payment state from checkout/processing to pending
               stripe_payment.state = 'pending'
               true
             end
+            allow(stripe_payment.order).to receive(:distributor) { distributor }
             test_redirect_url = "http://stripe_auth_url/"
             allow(stripe_payment).to receive(:cvv_response_message).and_return(test_redirect_url)
 

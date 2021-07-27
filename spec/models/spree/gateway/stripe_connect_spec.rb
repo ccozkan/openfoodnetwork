@@ -15,7 +15,7 @@ describe Spree::Gateway::StripeConnect, type: :model do
   let(:stripe_account_id) { "acct_123" }
 
   before do
-    allow(Stripe).to receive(:api_key) { "sk_test_123456" }
+    Stripe.api_key = "sk_test_123456"
     allow(subject).to receive(:stripe_account_id) { stripe_account_id }
     allow(subject).to receive(:options_for_purchase_or_auth).and_return(['money', 'cc', 'opts'])
     allow(subject).to receive(:provider).and_return provider
@@ -70,7 +70,8 @@ describe Spree::Gateway::StripeConnect, type: :model do
     end
 
     it "requests a new token for the customer and card from Stripe, and returns the id of the response" do
-      expect(subject.send(:tokenize_instance_customer_card, customer_id, card_id)).to eq token_mock[:id]
+      expect(subject.send(:tokenize_instance_customer_card, customer_id,
+                          card_id)).to eq token_mock[:id]
     end
   end
 
@@ -88,7 +89,8 @@ describe Spree::Gateway::StripeConnect, type: :model do
     end
 
     it "adds the stripe_account to the gateway options hash" do
-      expect(provider).to have_received(:refund).with(money, response_code, hash_including(stripe_account: stripe_account_id))
+      expect(provider).to have_received(:refund).with(money, response_code,
+                                                      hash_including(stripe_account: stripe_account_id))
     end
   end
 

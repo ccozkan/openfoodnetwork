@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Spree
-  class Payment < ActiveRecord::Base
+  class Payment < ApplicationRecord
     include Spree::Payment::Processing
     extend Spree::LocalizedNumber
 
@@ -20,10 +20,10 @@ module Spree
              class_name: "Spree::Payment", foreign_key: :source_id
     has_many :log_entries, as: :source, dependent: :destroy
 
-    has_one :adjustment, as: :source, dependent: :destroy
+    has_one :adjustment, as: :adjustable, dependent: :destroy
 
     validate :validate_source
-    before_save :set_unique_identifier
+    before_create :set_unique_identifier
 
     after_save :create_payment_profile, if: :profiles_supported?
 
@@ -46,19 +46,24 @@ module Spree
     scope :from_credit_card, -> { where(source_type: 'Spree::CreditCard') }
     scope :with_state, ->(s) { where(state: s.to_s) }
     scope :completed, -> { with_state('completed') }
+    scope :incomplete, -> { where(state: %w(checkout pending requires_authorization)) }
     scope :pending, -> { with_state('pending') }
     scope :failed, -> { with_state('failed') }
-    scope :valid, -> { where('state NOT IN (?)', %w(failed invalid)) }
+    scope :valid, -> { where.not(state: %w(failed invalid)) }
+    scope :authorization_action_required, -> { where.not(cvv_response_message: nil) }
+    scope :requires_authorization, -> { with_state("requires_authorization") }
+    scope :with_payment_intent, ->(code) { where(response_code: code) }
 
     # order state machine (see http://github.com/pluginaweek/state_machine/tree/master for details)
     state_machine initial: :checkout do
       # With card payments, happens before purchase or authorization happens
       event :started_processing do
-        transition from: [:checkout, :pending, :completed, :processing], to: :processing
+        transition from: [:checkout, :pending, :completed, :processing, :requires_authorization],
+                   to: :processing
       end
       # When processing during checkout fails
       event :failure do
-        transition from: [:pending, :processing], to: :failed
+        transition from: [:pending, :processing, :requires_authorization], to: :failed
       end
       # With card payments this represents authorizing the payment
       event :pend do
@@ -66,14 +71,23 @@ module Spree
       end
       # With card payments this represents completing a purchase or capture transaction
       event :complete do
-        transition from: [:processing, :pending, :checkout], to: :completed
+        transition from: [:processing, :pending, :checkout, :requires_authorization], to: :completed
       end
       event :void do
-        transition from: [:pending, :completed, :checkout], to: :void
+        transition from: [:pending, :completed, :requires_authorization, :checkout], to: :void
       end
       # when the card brand isnt supported
       event :invalidate do
         transition from: [:checkout], to: :invalid
+      end
+      event :require_authorization do
+        transition from: [:checkout, :processing], to: :requires_authorization
+      end
+      event :fail_authorization do
+        transition from: [:requires_authorization], to: :failed
+      end
+      event :complete_authorization do
+        transition from: [:requires_authorization], to: :completed
       end
     end
 
@@ -103,22 +117,19 @@ module Spree
       source.user_id = order.user_id if order
     end
 
-    # Pin payments lacks void and credit methods, but it does have refund
-    # Here we swap credit out for refund and remove void as a possible action
     def actions
       return [] unless payment_source&.respond_to?(:actions)
 
-      actions = payment_source.actions.select do |action|
+      payment_source.actions.select do |action|
         !payment_source.respond_to?("can_#{action}?") ||
           payment_source.__send__("can_#{action}?", self)
       end
+    end
 
-      if payment_method.is_a? Gateway::Pin
-        actions << 'refund' if actions.include? 'credit'
-        actions.reject! { |a| ['credit', 'void'].include? a }
-      end
+    def resend_authorization_email!
+      return unless requires_authorization?
 
-      actions
+      PaymentMailer.authorize_payment(self).deliver_later
     end
 
     def payment_source
@@ -135,13 +146,17 @@ module Spree
         adjustment.label = adjustment_label
         adjustment.save
       else
-        payment_method.create_adjustment(adjustment_label, order, self, true)
-        association(:adjustment).reload
+        payment_method.create_adjustment(adjustment_label, self, true)
+        adjustment.reload
       end
     end
 
     def adjustment_label
       I18n.t('payment_method_fee')
+    end
+
+    def clear_authorization_url
+      update_attribute(:cvv_response_message, nil)
     end
 
     private
@@ -154,8 +169,10 @@ module Spree
       return unless adjustment.try(:reload)
       return if adjustment.finalized?
 
-      adjustment.update_attribute(:eligible, false)
-      adjustment.finalize!
+      adjustment.update(
+        eligible: false,
+        state: "finalized"
+      )
     end
 
     def validate_source
@@ -190,14 +207,16 @@ module Spree
       order.payments.with_state('checkout').where.not(id: id).each do |payment|
         # Using update_column skips validations and so it skips validate_source. As we are just
         # invalidating past payments here, we don't want to validate all of them at this stage.
-        payment.update_column(:state, 'invalid')
+        payment.update_columns(
+          state: 'invalid',
+          updated_at: Time.zone.now
+        )
         payment.ensure_correct_adjustment
       end
     end
 
     def update_order
-      order.payments.reload
-      order.update!
+      OrderManagement::Order::Updater.new(order).after_payment_update(self)
     end
 
     # Necessary because some payment gateways will refuse payments with

@@ -18,14 +18,11 @@ Spree::Gateway.class_eval do
 end
 
 Spree.config do |config|
+  config.site_url = ENV['SITE_URL'] if ENV['SITE_URL']
+  config.site_name = ENV['SITE_NAME'] if ENV['SITE_NAME']
   config.shipping_instructions = true
   config.address_requires_state = true
   config.admin_interface_logo = '/default_images/ofn-logo.png'
-
-  # -- spree_paypal_express
-  # Auto-capture payments. Without this option, payments must be manually captured in the paypal interface.
-  config.auto_capture = true
-  #config.override_actionmailer_config = false
 
   # S3 settings
   config.s3_bucket = ENV['S3_BUCKET'] if ENV['S3_BUCKET']
@@ -35,6 +32,10 @@ Spree.config do |config|
   config.s3_headers = ENV['S3_HEADERS'] if ENV['S3_HEADERS']
   config.s3_protocol = ENV.fetch('S3_PROTOCOL', 'https')
 end
+
+# Read mail configuration from ENV vars at boot time and ensure the values are
+# applied correctly in Spree::Config.
+MailConfiguration.apply!
 
 # Attachments settings
 Spree::Image.set_attachment_attribute(:path, ENV['ATTACHMENT_PATH']) if ENV['ATTACHMENT_PATH']

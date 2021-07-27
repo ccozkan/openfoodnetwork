@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require "open_food_network/reports/line_items"
 
 module OpenFoodNetwork
   class PackingReport
     attr_reader :params
+
     def initialize(user, params = {}, render_table = false)
       @params = params
       @user = user
@@ -53,7 +56,7 @@ module OpenFoodNetwork
           { group_by: proc { |line_item| line_item.order.distributor },
             sort_by: proc { |distributor| distributor.name } },
           { group_by: proc { |line_item| line_item.order },
-            sort_by: proc { |order| order.bill_address.lastname },
+            sort_by: proc { |order| order.bill_address.lastname.downcase },
             summary_columns: [proc { |_line_items| "" },
                               proc { |_line_items| "" },
                               proc { |_line_items| "" },
@@ -89,7 +92,7 @@ module OpenFoodNetwork
          { group_by: proc { |line_item| line_item.full_name },
            sort_by: proc { |full_name| full_name } },
          { group_by: proc { |line_item| line_item.order },
-           sort_by: proc { |order| order.bill_address.lastname } }]
+           sort_by: proc { |order| order.bill_address.lastname.downcase } }]
       end
     end
 

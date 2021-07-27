@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 class SubscriptionMailer < Spree::BaseMailer
-  helper CheckoutHelper
+  helper 'checkout'
+  helper MailerHelper
   helper ShopMailHelper
   helper OrderHelper
-  helper Spree::Admin::PaymentsHelper
+  helper Spree::PaymentMethodsHelper
   include I18nHelper
 
   def confirmation_email(order)

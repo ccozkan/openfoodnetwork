@@ -22,11 +22,14 @@
         %span.already-confirmed= t(:orders_bought_already_confirmed)
       %td.text-right.cart-item-price
         = line_item.single_display_amount_with_adjustments.to_html
+        %br
+        %span.unit-price
+          = line_item.unit_price_price_and_unit
       %td.text-center.cart-item-quantity
         = line_item.quantity
       %td.cart-item-total.text-right
         = line_item.display_amount_with_adjustments.to_html unless line_item.quantity.nil?
 
       %td.bought-item-delete.text-center
-        %a{ng: {click: "deleteLineItem(#{line_item.id})"}}
+        %a{ng: {click: "removeEnabled && deleteLineItem(#{line_item.id})"}}
           %i.ofn-i_026-trash

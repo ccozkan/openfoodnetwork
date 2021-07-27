@@ -2,6 +2,9 @@ tr:
   language_name: "Türkçe"
   activerecord:
     attributes:
+      spree/user:
+        password: "Parola"
+        password_confirmation: "Parola onayı"
       enterprise_fee:
         fee_type: Ücret Türü
       spree/order:
@@ -85,6 +88,11 @@ tr:
               no_default_card: "^ Bu müşteri için kayıtlı kart bulunmuyor"
             shipping_method:
               not_available_to_shop: "%{shop} için müsait değil"
+  card_details: "Kart detayları"
+  card_type: "Kart türü"
+  cardholder_name: "Kart sahibinin adı"
+  community_forum_url: "Topluluk forumu URL"
+  customer_instructions: "Müşteri talimatları"
   devise:
     confirmations:
       send_instructions: "Birkaç dakika içinde, hesabınızı nasıl doğrulayacağınız ile ilgili talimatları içeren bir e-posta alacaksınız."
@@ -114,9 +122,31 @@ tr:
         updated_not_active: "Parolanız sıfırlandı, ancak e-postanız henüz doğrulanmadı."
         updated: "Parolanız başarılı bir şekilde değiştirildi. Şimdi oturum açtınız."
         send_instructions: "Birkaç dakika içinde, hesabınızı nasıl doğrulayacağınız ile ilgili talimatları içeren bir e-posta alacaksınız."
+  home_page_alert_html: "Ana sayfa uyarısı HTML"
+  hub_signup_detail_html: "Pazar kayıt detayı HTML"
+  hub_signup_pricing_table_html: "Pazar kayıt fiyat listesi HTML"
+  item_description: "Ürün açıklaması"
+  menu_1_icon_name: "Menü 1 simge adı"
+  menu_2_icon_name: "Menü 2 simge adı"
+  menu_3_icon_name: "menü 3 simge adı"
+  menu_4_icon_name: "Menü 4 simge adı"
+  menu_5_icon_name: "Menü 5 simge adı"
+  menu_6_icon_name: "Menü 6 simge adı"
+  menu_7_icon_name: "Menü 7 simge adı"
   models:
     order_cycle:
       cloned_order_cycle_name: "%{order_cycle} KOPYALA"
+    tax_rate:
+      included_in_price: "Fiyata dahil"
+  open_street_map_enabled: "Açık Harita izin verildi"
+  open_street_map_default_latitude: "Açık Harita varsayılan enlem"
+  open_street_map_default_longitude: "Açık Harita varsayılan boylam"
+  open_street_map_provider_name: "Açık Harita sağlayıcı adı"
+  open_street_map_provider_options: "Açık Harita sağlayıcı seçenekleri"
+  resume_order: "Siparişe devam et"
+  sku: "Stok Kodu"
+  subtotal: "Alttoplam"
+  tax_rate: "Vergi oranı"
   validators:
     date_time_string_validator:
       not_string_error: "Dizili olmalı"
@@ -124,10 +154,6 @@ tr:
     integer_array_validator:
       not_array_error: "Sıralı olmalı"
       invalid_element_error: "Yalnızca geçerli tam sayılar içermelidir"
-  datetime_picker_ui:
-    current_text: Şimdi
-    close_text: Tamam
-    time_text: Zaman
   enterprise_mailer:
     confirmation_instructions:
       subject: "Lütfen %{enterprise} için e-posta adresini doğrulayın"
@@ -146,6 +172,7 @@ tr:
   producer_mailer:
     order_cycle:
       subject: "%{producer} için sipariş dönemi raporu"
+  provider_settings: "Sağlayıcı ayarları"
   shipment_mailer:
     shipped_email:
       dear_customer: "Değerli müşterimiz,"
@@ -266,7 +293,7 @@ tr:
   error: Hata
   processing_payment: "Ödeme İşlemi Gerçekleştiriliyor.."
   no_pending_payments: "Bekleyen ödeme yok"
-  invalid_payment_state: "Geçersiz ödeme durumu"
+  invalid_payment_state: "Geçersiz ödeme durumu %{state}"
   filter_results: SONUÇLARI FİLTRELE
   quantity: Miktar
   pick_up: Teslim Alma
@@ -285,6 +312,8 @@ tr:
   height: "Boy"
   width: "En"
   depth: "Boy"
+  payment_could_not_process: "Ödeme işlenemedi"
+  payment_could_not_complete: "Ödeme tamamlanamadı"
   actions:
     create_and_add_another: "Oluştur ve Yeni Ekle"
     create: "Oluştur"
@@ -300,8 +329,12 @@ tr:
     destroy: "İmha Et"
     rename: "Yeniden Adlandır"
   admin:
+    adjustments:
+      skipped_changing_canceled_order: "İptal edilmiş bir siparişi değiştiremezsiniz."
     begins_at: Başlangıç
     begins_on: Başlangıç vakti
+    bill_address: "Fatura adresi"
+    ship_address: "Teslimat adresi"
     customer: Müşteri
     date: Tarih
     email: E-posta
@@ -362,6 +395,17 @@ tr:
       embedded_shopfront_settings: "YERLEŞTİRİLMİŞ DÜKKAN AYARLARI"
       enable_embedded_shopfronts: "YERLEŞTİRİLMİŞ DÜKKANLARI ETKİNLEŞTİR"
       embedded_shopfronts_whitelist: "Beyaz Listedeki harici Domain'ler"
+    terms_of_service_files:
+      create:
+        select_file: "Lütfen ilk olarak bir dosya seçin."
+      show:
+        title: "Üyelik Sözleşmesi dosyaları"
+        no_files: "Yüklenmiş Üyelik Sözleşmesi bulunmamaktadır. "
+        using_default_terms_html: "Bu site sizin eski %{tos_link}bağlanmaktadır."
+        current_terms_html: "Güncel%{tos_link}görün. İçe aktarma zamanı: %{datetime}"
+        terms_of_service: "Üyelik Sözleşmesi"
+        delete: "Dosyayı sil"
+        confirm_delete: "Güncel Üyelik Sözleşmesi dosyasını silmek istediğinizden emin misiniz?"
     number_localization:
       number_localization_settings: "Numara Yerelleştirme Ayarları"
       enable_localized_number: "Uluslararası bin/ondalık ayırıcı mantığını kullanın"
@@ -630,6 +674,7 @@ tr:
         max_fulfilled_units: "Maks. Gerçekleşen Birim"
         order_error: "Siparişleri güncelleyebilmeniz için bazı hataların çözülmesi gerekir. Kırmızı kenarlıklı alanlar hata içeriyor."
         variants_without_unit_value: "UYARI: Bazı varyantların birim değeri yok"
+        all: "Hepsi"
       select_variant: "Bir varyant seçin"
     enterprise:
       select_outgoing_oc_products_from: Sipariş dönemi giden ürünleri şurdan seçin
@@ -768,6 +813,8 @@ tr:
           shopfront_category_ordering_note: "(yukarıdan aşağıya)"
           open_date: "AÇILIŞ TARİHİ"
           close_date: "KAPANIŞ TARİHİ"
+          shopfront_sort_by_category_placeholder: "Kategori"
+          shopfront_sort_by_producer_placeholder: "ÜRETİCİ"
         social:
           twitter_placeholder: "Örn.  @the_usta"
           instagram_placeholder: "Örn. ciftlik   (başına @ işareti koymayınız)"
@@ -888,7 +935,6 @@ tr:
         cancel: "İptal et"
         back_to_list: "Listeye geri dön"
       edit:
-        advanced_settings: "Gelişmiş Ayarlar"
         save: "Kaydet"
         save_and_next: "Kaydet ve İlerle"
         next: "Sonrakİ"
@@ -941,6 +987,8 @@ tr:
         preferred_product_selection_from_coordinator_inventory_only_here: Yalnızca Koordinatör Stokları
         preferred_product_selection_from_coordinator_inventory_only_all: Tüm Mevcut Ürünler
         save_reload: SAYFAYI KAYDET VE YENİDEN YÜKLE
+      order_cycle_top_buttons:
+        advanced_settings: "Gelişmiş Ayarlar"
       coordinator_fees:
         add: Koordinatör ücreti ekle
       filters:
@@ -1065,6 +1113,7 @@ tr:
       index:
         title: "Üyelikler"
         new: "Yeni Üyelik"
+      issue: "Sorun"
       new:
         title: "Yeni Üyelik"
       edit:
@@ -1146,6 +1195,7 @@ tr:
       yes_cancel_them: Bunları iptal et
       no_keep_them: Bunları sakla
       yes_i_am_sure: Evet eminim
+      number: "Numara"
       order_update_issues_msg: Bazı siparişler otomatik olarak güncellenemedi, bunun nedeni büyük olasılıkla manuel olarak düzenlenmiş olmasıdır. Lütfen aşağıda listelenen sorunları gözden geçirin ve gerekirse siparişler özelinde ayarlamalarını yapın.
       no_results:
         no_subscriptions: Henüz üyelik yok ...
@@ -1177,6 +1227,11 @@ tr:
     terms_and_conditions:
       message_html: "Bu satıcının %{terms_and_conditions_link}'ını onaylıyorum."
       link_text: "Şartlar ve Koşullar"
+    platform_terms_of_service:
+      message_html: "Platform %{tos_link}onaylıyorum."
+    all_terms_and_conditions:
+      message_html: "Satıcıya ait %{terms_and_conditions_link} ve platforma ait %{tos_link} onaylıyorum."
+      terms_and_conditions: "Şartlar ve Koşullar"
     failed: "Ödeme başarısız oldu. Siparişinizi işleme koyabilmemiz için lütfen bizimle iletişime geçin."
   shops:
     hubs:
@@ -1184,13 +1239,17 @@ tr:
       hide_closed_shops: "Kapalı dükkanları gizle"
       show_on_map: "Tümünü haritada göster"
   shared:
+    mailers:
+      powered_by:
+        open_food_network: "Açık Gıda Ağı"
+        powered_html: "Alışveriş deneyiminiz %{open_food_network} tarafından sağlanmaktadır."
     menu:
       cart:
         cart: "Sepet"
       cart_sidebar:
         checkout: "Ödeme Yap"
         edit_cart: "Sepeti düzenle"
-        items_in_cart_singular: "Sepetnizide %{num} ürün var"
+        items_in_cart_singular: "Sepetinizde %{num} ürün var"
         items_in_cart_plural: "Sepetinizde %{num} ürün var"
         close: "KAPANIŞ"
         cart_empty: "Sepetiniz boş"
@@ -1212,7 +1271,6 @@ tr:
       footer_join_body: "Açık Gıda Ağı üzerinden ürünlerinizi sergileyin, dükkanınızı oluşturun veya topluluğunuzu, grubunuzu listeleyin."
       footer_join_cta: "Daha fazlasını anlat!"
       footer_legal_call: "Okuyun"
-      footer_legal_tos: "Şartlar ve koşullar"
       footer_legal_visit: "Bizi bulun"
       footer_legal_text_html: "Açık Gıda Ağı ücretsiz ve açık kaynaklı bir yazılım platformudur. İçeriklerimiz %{content_license} ve kodumuz %{code_license} ile lisanslıdır."
       footer_data_text_with_privacy_policy_html: "Verilerinize iyi bakıyoruz. Bkz. %{privacy_policy} ve %{cookies_policy}"
@@ -1302,6 +1360,11 @@ tr:
   address2: Adres (devam)
   city: ŞEHİR
   city_placeholder: Örn. Bursa
+  latitude: Enlem
+  latitude_placeholder: eg. -37.4713077
+  latitude_longitude_tip: 'İşletmenizin haritada yer alması için enlem ve boylama ihtiyaç vardır. '
+  longitude: Boylam
+  use_geocoder: Enlem ve boylamı adresten otomatik olarak hesapla?
   postcode: posta kodu
   postcode_placeholder: Örn. 16000
   suburb: İlçe
@@ -1325,8 +1388,6 @@ tr:
   label_producers: "ÜRETİCİLER"
   label_groups: "AĞLAR"
   label_about: "HAKKIMIZDA"
-  label_connect: "Bağlan"
-  label_learn: "Öğren"
   label_blog: "Blog"
   label_support: "Destek"
   label_shopping: "Alışveriş "
@@ -1414,10 +1475,6 @@ tr:
   brandstory_part4: "Her yerde çalışıyor. Her şeyi değiştiriyor."
   brandstory_part5_strong: "Biz buna Açık Gıda Ağı diyoruz."
   brandstory_part6: "Hepimiz gıdamızı seviyoruz. Artık gıda sistemimizi de sevmeye başlayabiliriz."
-  learn_body: "Adil ve temiz gıda işletmenizi veya topluluğunuzu geliştirmenize yardımcı olacak modelleri, hikayeleri ve kaynakları keşfedin. Dostlardan öğrenmek için eğitim, etkinlikler ve diğer fırsatlara göz atın."
-  learn_cta: "İlham Alın"
-  connect_body: "Yakınınızdaki adil ve temiz gıda noktalarını bulmak için üreticilerin, pazarların ve topluluklarının tümünü gözden geçirin. İşletmenizi veya topluluğunuzu Açık Gıda Ağı üzerinden listeleyin, böylece alıcılar sizi rahatça bulabilir. Ortak hareket etmek için diğer hesaplar ile iletişime geçmekten çekinmeyin, birlikte daha güçlüsünüz. Tavsiye almak ve sorunları birlikte çözmek için topluluğa katılın."
-  connect_cta: "Keşfedin"
   system_headline: "Nasıl çalışıyor ?"
   system_step1: "1. Ara"
   system_step1_text: "Yerel ve mevsimsel gıda için, bağımsız ve cesur üreticilerimizin ve dağıtımcılarımızın dükkanlarından alışveriş yapın.  "
@@ -1550,7 +1607,7 @@ tr:
     set_a_password: "Daha sonra, işletmeyi yönetebilmeniz için önce bir parola ayarlamanız istenecek."
     mistakenly_sent: "Bu e-postayı neden aldığınızdan emin değil misiniz? Daha fazla bilgi için lütfen %{owner_email} ile iletişime geçin."
   producer_mail_greeting: "Sevgili"
-  producer_mail_text_before: "Bir sonraki gıda teslimatı için tüm müşteri siparişleri hazır."
+  producer_mail_text_before: "Aşağıda sipariş dönemine dair güncellemeyi bulabilirsiniz. Şunun için hazır: "
   producer_mail_order_text: "İşte ürünleriniz gelen için siparişlerin bir özeti:"
   producer_mail_delivery_instructions: "Stok teslimat/gönderim talimatları:"
   producer_mail_signoff: "En iyi dileklerimle"
@@ -1562,17 +1619,21 @@ tr:
   shopping_tabs_home: "Ana sayfa"
   shopping_tabs_shop: "ALIŞVERİŞ YAP"
   shopping_tabs_about: "Hakkında"
+  shopping_tabs_producers: "ÜRETİCİLER"
   shopping_tabs_contact: "İLETİŞİM"
+  shopping_tabs_groups: "AĞLAR"
   shopping_contact_address: "Adres"
   shopping_contact_web: "İLETİŞİM"
   shopping_contact_social: "TAKİP ET"
   shopping_groups_part_of: "şunun parçası:"
   shopping_producers_of_hub: "%{hub} üreticileri:"
   enterprises_next_closing: "Bir sonraki sipariş kapanışı"
+  enterprises_currently_open: "Siparişler şu anda açık"
   enterprises_ready_for: "Teslimat"
   enterprises_choose: "Siparişinizi ne zaman istediğinizi seçin:"
   maps_open: "Açık"
   maps_closed: "Kapalı"
+  map_title: "HARİTA"
   hubs_buy: "Neler Bulabilirsiniz:"
   hubs_shopping_here: "Alışveriş noktası"
   hubs_orders_closed: "Siparişler kapalı"
@@ -1712,39 +1773,40 @@ tr:
   shops_signup_help: Yardım etmeye hazırız.
   shops_signup_help_text: Daha yüksek bir iş potansiyeliniz var. Yeni alıcılarla ve ortak hareket edebileceğiniz diğer üretici ve gruplarla iletişime geçin. Birlikte daha güçlüyüz. Hikayeniz, bir ailenin sofrasında anlatılmayı bekliyor.
   shops_signup_detail: İşte detay.
-  orders: Siparişler
-  orders_fees: Ücretler ...
-  orders_edit_title: Alışveriş Sepeti
-  orders_edit_headline: Alışveriş sepetiniz
-  orders_edit_time: Sipariş Teslimat
-  orders_edit_continue: Alışverişe devam
-  orders_edit_checkout: Ödeme Yap
+  orders: "Siparişler"
+  orders_fees: "Ücretler ..."
+  orders_edit_title: "Alışveriş Sepeti"
+  orders_edit_headline: "Alışveriş sepetiniz"
+  orders_edit_time: "Sipariş Teslimat"
+  orders_edit_continue: "Alışverişe devam"
+  orders_edit_checkout: "Ödeme Yap"
   orders_form_empty_cart: "Sepeti Boşalt"
-  orders_form_subtotal: Ürün Ara Toplamı
-  orders_form_admin: Yönetim & Operasyon
-  orders_form_total: Toplam
-  orders_oc_expired_headline: Bu sipariş dönemi için siparişler kapatıldı
+  orders_form_update_cart: "Güncelle"
+  orders_form_subtotal: "Ürün Ara Toplamı"
+  orders_form_admin: "Yönetim & Operasyon"
+  orders_form_total: "Toplam"
+  orders_oc_expired_headline: "Bu sipariş dönemi için siparişler kapatıldı"
   orders_oc_expired_text: "Üzgünüz, bu sipariş dönemi siparişleri %{time} önce kapandı! Geç siparişleri kabul edip edemeyeceklerini görmek için lütfen doğrudan pazarınızla iletişime geçin."
   orders_oc_expired_text_others_html: "Üzgünüz, bu sipariş dönemi siparişleri %{time} önce kapandı! Geç siparişleri kabul edip edemeyeceklerini görmek için lütfen doğrudan pazarınızla iletişime geçin<strong>%{link}</strong> ."
   orders_oc_expired_text_link: "veya bu pazarın diğer sipariş dönemlerine bakın"
   orders_oc_expired_email: "E-posta:"
   orders_oc_expired_phone: "Telefon:"
-  orders_show_title: Sipariş Onayı
-  orders_show_time: Sipariş hazır
+  orders_show_title: "Sipariş Onayı"
+  orders_show_time: "Sipariş hazır"
   orders_show_order_number: "Sipariş # %{number}"
-  orders_show_cancelled: İptal edildi
-  orders_show_confirmed: Onaylandı
+  orders_show_cancelled: "İptal edildi"
+  orders_show_confirmed: "Onaylandı"
   orders_your_order_has_been_cancelled: "Siparişiniz iptal edildi"
   orders_could_not_cancel: "Maalesef sipariş iptal edilemedi"
   orders_cannot_remove_the_final_item: "Son ürün siparişten kaldırılamaz, lütfen bunun yerine siparişi iptal edin."
   orders_bought_items_notice:
-    one: Bu sipariş döngüsü için ek bir ürün zaten onaylandı.
+    one: "Bu sipariş döngüsü için ek bir ürün zaten onaylandı."
     few: "%{count} ürün bu sipariş dönemi için onaylandı bile"
     many: "%{count} ürün bu sipariş dönemi için onaylandı bile"
     other: "%{count} ürün bu sipariş dönemi için onaylandı bile"
-  orders_bought_edit_button: Onaylanan ürünleri düzenle
+  orders_bought_edit_button: "Onaylanan ürünleri düzenle"
   orders_bought_already_confirmed: "* zaten onaylandı"
-  orders_confirm_cancel: Bu siparişi iptal etmek istediğinize emin misiniz?
+  orders_confirm_cancel: "Bu siparişi iptal etmek istediğinize emin misiniz?"
   order_processed_successfully: "Siparişiniz başarıyla işlendi"
   products_cart_distributor_choice: "Siparişinizin dağıtımcısı:"
   products_cart_distributor_change: "Bu ürünü sepetinize eklerseniz, bu sipariş için dağıtımcınız %{name} olarak değiştirilecektir."
@@ -1830,7 +1892,7 @@ tr:
       details:
         title: "Ayrıntılar"
         headline: "Hadi Başlayalım !"
-        enterprise: "Merhaba! Öncelikle işletmenizi tanıyalım:"
+        enterprise: "Öncelikle işletmeniz hakkında biraz bilgi edinmemiz gerekiyor:"
         producer: "Merhaba! Öncelikle çiftliğinizi tanıyalım:"
         enterprise_name_field: "İŞLETME ADI:"
         producer_name_field: "ÇİFTLİK ADI:"
@@ -1850,6 +1912,11 @@ tr:
         state_field_error: "Şehir gerekli"
         country_field: "Ülke:"
         country_field_error: "lütfen bir ülke seçiniz"
+        map_location: "Harita Konumu"
+        locate_address: "Adresi haritada bulun"
+        drag_pin: "Konum doğru değilse imleci doğru konuma sürükleyin ve bırakın. "
+        confirm_address: "İşletmenin haritada belirtilen konumunun doğru olduğunu onaylıyorum."
+        drag_map_marker: "Kırsal alanda çok sayıda üretici olmasından dolayı haritaların doğruluğu sürekli geliştiriliyor. Sizin tam olarak nerede yer aldığınızı anlamamız için üstteki harita üzerinde oynama yaparak bize yardım edin. İmleci üstüne tıklayarak tutun ve size göre daha doğru olan konuma sürükleyin."
       contact:
         title: "İLETİŞİM"
         who_is_managing_enterprise: "%{enterprise}'ın yönetiminden kim sorumlu?"
@@ -2016,6 +2083,9 @@ tr:
   delivery_method: Teslimat Yöntemi
   fee_type: "Ücret Türü"
   tax_category: "Vergi Kategorisi"
+  description: "Açıklama"
+  display: "GÖSTER"
+  tags: "ETİKETLER"
   calculator: "Hesaplama"
   calculator_values: "Hesaplama Değerleri"
   calculator_settings_warning: "Hesaplama türünü değiştiriyorsanız, ayarları düzenlemeden önce kaydetmeniz gerekir"
@@ -2082,6 +2152,7 @@ tr:
   spree_classification_primary_taxon_error: "%{taxon} cinsi, %{product}ürününün birincil cinsidir ve silinemez"
   spree_order_availability_error: "Dağıtımcı veya sipariş dönemi sepetinizdeki ürünleri tedarik edemiyor"
   spree_order_populator_error: "Bu dağıtımcı veya sipariş dönemi, sepetinizdeki tüm ürünleri tedarik edemiyor. Lütfen başka birini seçin."
+  spree_order_cycle_error: "Bu sipariş için bir sipariş dönemi seçin."
   spree_order_populator_availability_error: "Bu ürün, seçilen dağıtımcıda veya sipariş döneminde mevcut değil."
   spree_distributors_error: "En az bir pazar seçilmelidir"
   spree_user_enterprise_limit_error: "^ %{email}'ın daha fazla işletmeye sahip olmasına izin verilmiyor (limit %{enterprise_limit})."
@@ -2107,7 +2178,6 @@ tr:
   new_order: "Yeni Sipariş"
   enterprise_tos_link: "İşletme Üyelik Sözleşmesi bağlantısı"
   enterprise_tos_message: "Amaçlarımızı ve değerlerimizi paylaşan insanlarla çalışmak istiyoruz. Yasal zorunluluk gereği de yeni işletmelerden kabul etmesini istiyoruz:"
-  enterprise_tos_link_text: "Üyelik Sözleşmesi"
   enterprise_tos_agree: "Yukarıdaki Üyelik Sözleşmesini kabul ediyorum"
   tax_settings: "Vergi Ayarları"
   products_require_tax_category: "ürünler vergi kategorisi gerektirir"
@@ -2314,6 +2384,8 @@ tr:
   payment_processing_failed: "Ödeme işlenemedi, lütfen girdiğiniz bilgileri kontrol edin"
   payment_method_not_supported: "Bu ödeme yöntemi desteklenmiyor. Lütfen başka birini seçiniz."
   payment_updated: "Ödeme Güncellendi"
+  cannot_perform_operation: "Ödeme güncellenemedi"
+  action_required: "İşlem gerekiyor"
   inventory_settings: "Stok Ayarları"
   tag_rules: "ETİKET KURALLARI"
   shop_preferences: "Dükkan Tercihleri"
@@ -2365,6 +2437,7 @@ tr:
   back_to_orders_list: "Sipariş listesine geri dön"
   no_orders_found: "SİPARİŞ BULUNAMADI"
   order_information: "Sipariş Bilgisi"
+  new_payment: "Yeni Ödeme"
   date_completed: "Tamamlanma Tarihi"
   amount: "Tutar"
   state_names:
@@ -2374,6 +2447,7 @@ tr:
   js:
     saving: 'Kaydediyor ...'
     changes_saved: 'Değişiklikler kaydedildi.'
+    authorising: "Yetki veriliyor..."
     save_changes_first: Önce değişiklikleri kaydedin.
     all_changes_saved: Tüm değişiklikler kaydedildi
     unsaved_changes: kaydedilmemiş değişiklikleriniz var
@@ -2389,6 +2463,7 @@ tr:
     resolve_errors: Lütfen aşağıdaki hataları düzeltin
     more_items: "+ %{count} Daha "
     default_card_updated: Varsayılan Kart Güncellendi
+    default_card_voids_auth: Varsayılan kartınızı değiştirmeniz mevcut üyelik hakkı verdiğiniz satıcıların izinlerini sıfırlar. Kartınızı güncelledikten sonra tekrar izin vermeniz gerekmektedir. Varsayılan kartınızı değiştirmek istiyor musunuz?
     cart:
       add_to_cart_failed: >
           Bu ürünü sepete eklerken bir hata oluştu. Ürün stokları bitmiş veya dükkan
@@ -2785,6 +2860,9 @@ tr:
       start_free_profile: "Ücretsiz bir profille başlayın ve hazır olduğunuzda devam edin!"
   order_management:
     reports:
+      bulk_coop:
+        filters:
+          generate_report: "Rapor Oluştur"
       enterprise_fee_summaries:
         filters:
           date_range: "Tarih Aralığı"
@@ -2830,6 +2908,8 @@ tr:
               tax_category_name: "Vergi Kategorisi"
               total_amount: "₺₺ TOPLAM"
         invalid_filter_parameters: "Bu rapor için seçtiğiniz filtreler geçersiz."
+      report:
+        none: "SATIŞ YAPMIYOR"
   order: "Sipariş"
   distribution: "dağıtım"
   order_details: "sipariş detayları"
@@ -2845,6 +2925,7 @@ tr:
   shipment_inc_vat: "KDV dahil teslimat"
   shipping_tax_rate: "Kargo Vergi Oranı"
   category: "Kategori"
+  import_date: "İçe Aktarım Tarihi"
   delivery: "Eve Teslim"
   temperature_controlled: "Soğuk Sevkiyat"
   new_product: "Yeni ürün"
@@ -2862,14 +2943,24 @@ tr:
   previous: "Önceki"
   last: "Son"
   spree:
+    all: "Hepsi"
+    category: "Kategori"
+    credit: "Bakiye"
+    invalid_payment_provider: "Geçersiz ödeme sağlayıcı"
     more: "Daha Fazla"
+    no_pending_payments: "Bekleyen ödeme yok"
+    none: "SATIŞ YAPMIYOR"
+    refund: "İade"
+    tree: "Ağaç"
+    updating: "Güncelleniyor"
     your_order_is_empty_add_product: "Sepetiniz boş, lütfen bir ürün arayın ve ekleyin"
     add_product: "ürün ekle"
     name_or_sku: "Ad veya STOK KODU (ürün adının en az ilk 4 karakterini girin)"
-    resend: Yeniden gönder
-    back_to_orders_list: Sipariş Listesine Geri Dön
-    return_authorizations: İade Yetkileri
-    cannot_create_returns: Bu siparişin sevk edilmiş birimi olmadığı için iade oluşturulamıyor.
+    resend: "Yeniden gönder"
+    back_to_orders_list: "Sipariş Listesine Geri Dön"
+    back_to_payments_list: "Ödeme Listesine Geri Dön"
+    return_authorizations: "İade Yetkileri"
+    cannot_create_returns: "Bu siparişin sevk edilmiş birimi olmadığı için iade oluşturulamıyor."
     select_stock: "Stok seçin"
     location: "yer"
     count_on_hand: "Eldeki Miktar"
@@ -2889,6 +2980,7 @@ tr:
     tracking_number: "Takip Numarası"
     order_total: "sipariş toplamı"
     customer_details: "MÜŞTERİ DETAYLARI"
+    customer_details_updated: "Müşteri Detayları güncellendi"
     customer_search: "Müşteri Arama"
     choose_a_customer: "Bir müşteri seçin"
     account: "Hesap"
@@ -2908,7 +3000,7 @@ tr:
     adjustments: "Düzeltmeler"
     continue: "Devam et"
     fill_in_customer_info: "Lütfen müşteri bilgilerini doldurun"
-    credit_card: "Kredİ kartı"
+    credit_card: "Kredi Kartı"
     new_payment: "Yeni Ödeme"
     capture: "Tahsilat"
     void: "Geçersiz"
@@ -2930,7 +3022,6 @@ tr:
     default_meta_description: "Varsayılan Meta Açıklaması"
     default_meta_keywords: "Varsayılan Meta Anahtar Kelimeleri"
     security_settings: "Güvenlik ayarları"
-    allow_ssl_in_development_and_test: "Geliştirme ve test modlarında SSL'nin kullanılmasına izin ver"
     allow_ssl_in_production: "SSL'nin üretim modunda kullanılmasına izin ver"
     allow_ssl_in_staging: "SSL'nin hazırlama modunda kullanılmasına izin ver"
     currency_decimal_mark: "Para birimi ondalık işareti"
@@ -2955,6 +3046,7 @@ tr:
     tax rate: "Vergi oranları"
     new_tax_rate: "Yeni Vergi Oranı"
     tax_category: "Vergi Kategorisi"
+    tax_rates: "Vergi oranları"
     rate: "oran"
     tax_rate_amount_explanation: "Vergi oranları ondalık bir tutar olmalı (yani vergi oranı % 5 ise 0.05 girin)"
     included_in_price: "Fiyata Dahil"
@@ -2982,6 +3074,9 @@ tr:
     back_to_taxonomies_list: "Kategori Listesine Geri Dön"
     shipping_methods: "TESLİMAT YÖNTEMLERİ"
     shipping_method: "TESLİMAT YÖNTEMİ"
+    shipment: "Teslimat"
+    payment: "Ödeme"
+    status: "Durum"
     shipping_categories: "Nakliye Kategorileri"
     new_shipping_category: "Yeni Nakliye Kategorisi"
     back_to_shipping_categories: "Teslimat Kategorilerine Geri Dön"
@@ -3033,10 +3128,14 @@ tr:
     successfully_updated: '%{resource} BAŞARIYLA GÜNCELLENDİ!'
     payment_method: "ÖDEME YÖNTEMİ"
     payment_processing_failed: "Ödeme işlenemedi, lütfen girdiğiniz bilgileri kontrol edin"
+    not_available: "Yok"
+    sku: "Stok Kodu"
+    there_are_no_items_for_this_order: "Bu sipariş için ürün yok."
     order_populator:
       out_of_stock: '%{item} stokta yok'
     actions:
       update: "Güncelle"
+      cancel: "İptal et"
     shared:
       error_messages:
         errors_prohibited_this_record_from_being_saved:
@@ -3059,6 +3158,13 @@ tr:
           header:
             store: Ana Site
     admin:
+      mail_methods:
+        send_testmail: "Deneme e-postası gönder"
+        testmail:
+          delivery_success: "Deneme e-postası gönderildi."
+          error: "Deneme e-postası gönderilirken bir sorun oluştu."
+      subscriptions:
+        number: "Numara"
       tab:
         dashboard: "KONTROL PANELİ"
         orders: "SİPARİŞLER"
@@ -3127,6 +3233,8 @@ tr:
           received: "Alındı"
           canceled: "İptal edildi"
       orders:
+        add_product:
+          cannot_add_item_to_canceled_order: "İptal edilmiş siparişe ürün eklenemez"
         index:
           listing_orders: "SİPARİŞLER LİSTELENİYOR"
           new_order: "Yeni Sipariş"
@@ -3169,6 +3277,9 @@ tr:
       overview:
         enterprises_header:
           ofn_with_tip: 'Açık Gıda Ağı''na kayıtlı İşletmeler üreticiler ve/veya üretici & türetici pazarlarıdır. '
+        enterprise_row:
+          has_no_payment_methods: "ödeme yöntemi yok"
+          has_no_shipping_methods: "teslimat yöntemi yok"
         products:
           active_products:
             zero: "Aktif ürününüz yok."
@@ -3207,6 +3318,7 @@ tr:
           back_to_shipping_methods_list: "Teslimat Yöntemlerine Gerİ Dön"
         form:
           categories: "Kategoriler"
+          tax_category: "Vergi Kategorisi"
           zones: "bölgeler"
           both: "Ödeme Sayfası ve Panel"
           back_end: "Sadece panel"
@@ -3280,6 +3392,8 @@ tr:
           value: "değer"
           unit_name: "BİRİM ADI"
           price: "Fiyat"
+          unit_price: "Birim fiyat"
+          unit_price_legend: "Ürün fiyatına göre hesaplandı"
           on_hand: "Mevcut"
           on_demand: "Talep üzerine"
           product_description: "Ürün Açıklaması"
@@ -3350,7 +3464,6 @@ tr:
           price: "Fiyat"
           options: "Seçenekler"
           no_results: "Sonuç yok"
-          to_add_variants_you_must_first_define: "Varyant eklemeden önce tanımlamanız gerekir"
           option_types: "Seçenek Türleri"
           option_values: "Seçenek Değerleri"
           and: "ve"
@@ -3360,9 +3473,9 @@ tr:
         new:
           new_variant: "Yeni Varyant"
         form:
-          cost_price: "Maliyet Fiyatı"
           sku: "Stok Kodu"
           price: "Fiyat"
+          unit_price: "Birim fiyat"
           display_as: "Gösterme Şekli"
           display_name: "Ekran adı"
           display_as_placeholder: 'Örn. 2 kg'
@@ -3372,6 +3485,8 @@ tr:
           producer_name: "Üretici"
           unit: "Birim"
       shared:
+        configuration_menu:
+          terms_of_service: "Üyelik Sözleşmesi"
         sortable_header:
           name: "Ad"
           number: "Numara"
@@ -3386,6 +3501,7 @@ tr:
           cookies_consent_banner_toggle: "Çerezler onay başlığını göster"
           privacy_policy_url: "Gizlilik Politikası URLsi"
           enterprises_require_tos: "İşletmeler Üyelik Sözleşmesini kabul etmelidir"
+          shoppers_require_tos: "Tüketiciler Üyelik Sözleşmesini kabul etmelidir"
           cookies_policy_matomo_section: "Çerez politikası sayfasında Matomo bölümünü görüntüle"
           footer_tos_url: "Üyelik Sözleşmesi URLsi"
     checkout:
@@ -3403,8 +3519,7 @@ tr:
           or_enter_new_card: "Veya yeni bir kart için bilgileri girin:"
           remember_this_card: Bu kart hatırlansın mı?
     date_picker:
-      format: '%Y-%m-%d'
-      js_format: 'yy-mm-dd'
+      now: "Şimdi"
     orders:
       error_flash_for_unavailable_items: "Sepetinizdeki ürünlerden biri bitti veya azaldı. Lütfen seçili miktarı güncelleyin."
       edit:
@@ -3421,6 +3536,7 @@ tr:
       pending: bekliyor
       ready: hazır
       shipped: gönderildi
+      canceled: iptal edildi
     payment_states:
       balance_due: ödenecek bakiye
       completed: tamamlandı
@@ -3432,6 +3548,7 @@ tr:
       processing: işleniyor
       void: geçersiz
       invalid: geçersiz
+      authorise: yetki ver
     order_mailer:
       cancel_email:
         customer_greeting: "Sevgili %{name},"
@@ -3443,6 +3560,11 @@ tr:
         paid_order: "Siparişinizin ödemesi yapılmıştı, bu sebeple %{distributor}iade işlemi gerçekleştirdi."
         credit_order: "Siparişinizin ödemesi yapılmıştı, bu sebeple hesabınızdan düşüldü."
         subject: "Sipariş İptali"
+      cancel_email_for_shop:
+        greeting: "Sevgili %{name},"
+        subject: "Sipariş İptali"
+        intro: "Bir tüketici %{number} siparişini iptal etti. "
+        view_cancelled_order: "İptal edilen siparişi gör"
       confirm_email:
         subject: "Sipariş Onayı"
       invoice_email:
@@ -3461,10 +3583,16 @@ tr:
         subject: "Şifre talimatlarını sıfırla"
       confirmation_instructions:
         subject: "Lütfen AGA hesabınızı onaylayın"
+    payment_mailer:
+      authorize_payment:
+        subject: "Lütfen ödemenizi AGA'da %{distributor}dağıtımcısına yetkilendirin."
+        instructions: "%{distributor}Dağıtımcısına olan %{amount}ödemeniz detaylandırma gerektiriyor. Lütfen ödemenizi yetkilendirmek için bu URL'ye gidin:"
+      authorization_required:
+        subject: "Ödeme için müşterinin yetkilendirmesi gerekiyor. "
+        message: "%{order_number}Siparişinin ödemesi için müşterinin yetkilendirmesi gerekiyor. Müşteri maille bilgilendirildi, ödeme yetkilendirilene kadar 'bekliyor' görünecek. "
     shipment_mailer:
       shipped_email:
         dear_customer: "Değerli Müşterimiz,"
-        instructions: "Siparişiniz gönderildi"
         shipment_summary: "Teslimat Özeti"
         subject: "TESLİMAT BİLDİRİMİ"
         thanks: "İş birliğiniz için teşekkür ederim."
@@ -3496,6 +3624,21 @@ tr:
       ended: bitti
       paused: durduruldu
       canceled: iptal edildi
+    paypal:
+      already_refunded: "Bu ödeme iade edildi, bu konuda başka işlem yapılamaz. "
+      payer_id: "Alıcı ID"
+      transaction_id: "İşlem ID"
+      refund: "İade"
+      refund_amount: "Tutar"
+      original_amount: "İlk tutar:%{amount}"
+      refund_successful: "PayPal iade başarılı"
+      refund_unsuccessful: "PayPal iade başarısız"
+      actions:
+        refund: "İade"
+      flash:
+        cancel: "PayPal kullanmak istemiyor musunuz? Sorun değil."
+        connection_failed: "PayPal'a bağlanılamadı."
+        generic_error: "PayPal başarısız oldu. %{reasons}"
     users:
       form:
         account_settings: Hesap Ayarları
@@ -3511,6 +3654,8 @@ tr:
         past_orders: GEÇMİŞ SİPARİŞLER
       transactions:
         transaction_history: İşlem Geçmişi
+        authorisation_required: Yetki gerekiyor.
+        authorise: Yetki ver
       open_orders:
         order: Sipariş
         shop: DÜKKAN
@@ -3534,9 +3679,11 @@ tr:
         delete?: Sil?
       cards:
         authorised_shops: Yetkili Pazarlar
+        authorised_shops_agreement: 'Varsayılan kredi kartınızdan üyeliklerinize (düzenli siparişleinize) istinaden ödeme almakla yetkilendirilmiş dükkanların listesini görebilirsiniz. Kart bilgileriniz gizli tutulacak ve satıcılar ile asla paylaşılmayacaktır. Kartınıza ödeme yansıtıldığında hemen bilgilendirileceksiniz. İlgili dükkanın yanındaki kutucuğu işaretlediğinizde, üyelik masraflarına ilişkin ödemelerini kartınıza yansıtması için izin vermiş olursunuz.  '
         saved_cards_popover: Bu, daha sonra kullanmak üzere kaydetmeyi seçtiğiniz kartların listesidir. Bir siparişin ödemesi tamamlandığında 'varsayılan'ınız otomatik olarak seçilir ve izin verdiğiniz satıcılar tarafından ücretlendirilebilir (sağa bakın).
       authorised_shops:
         shop_name: "DÜKKAN ADI"
+        allow_charges?: "Kayıtlı kredi kartı ile ödeme alınmasına izin verilsin mi?"
     localized_number:
       invalid_format: geçersiz bir biçime sahip. Lütfen bir numara giriniz.
     api:

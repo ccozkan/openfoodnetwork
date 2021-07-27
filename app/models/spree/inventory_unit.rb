@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 module Spree
-  class InventoryUnit < ActiveRecord::Base
-    belongs_to :variant, class_name: "Spree::Variant"
+  class InventoryUnit < ApplicationRecord
+    belongs_to :variant, -> { with_deleted }, class_name: "Spree::Variant"
     belongs_to :order, class_name: "Spree::Order"
     belongs_to :shipment, class_name: "Spree::Shipment"
-    belongs_to :return_authorization, class_name: "Spree::ReturnAuthorization"
+    belongs_to :return_authorization, class_name: "Spree::ReturnAuthorization",
+                                      inverse_of: :inventory_units
 
     scope :backordered, -> { where state: 'backordered' }
     scope :shipped, -> { where state: 'shipped' }
@@ -45,17 +46,17 @@ module Spree
     end
 
     def self.finalize_units!(inventory_units)
-      inventory_units.map { |iu| iu.update_column(:pending, false) }
+      inventory_units.map do |iu|
+        iu.update_columns(
+          pending: false,
+          updated_at: Time.zone.now
+        )
+      end
     end
 
     def find_stock_item
       Spree::StockItem.find_by(stock_location_id: shipment.stock_location_id,
                                variant_id: variant_id)
-    end
-
-    # Remove variant default_scope `deleted_at: nil`
-    def variant
-      Spree::Variant.unscoped { super }
     end
 
     private
@@ -65,7 +66,7 @@ module Spree
     end
 
     def update_order
-      order.update!
+      order.update_order!
     end
   end
 end

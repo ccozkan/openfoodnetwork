@@ -5,6 +5,8 @@ require "spec_helper"
 describe "spree/shared/_order_details.html.haml" do
   include AuthenticationHelper
   helper Spree::BaseHelper
+  helper CheckoutHelper
+  helper OrderHelper
 
   let(:order) { create(:completed_order_with_fees) }
 
@@ -12,12 +14,12 @@ describe "spree/shared/_order_details.html.haml" do
     assign(:order, order)
     allow(view).to receive_messages(
       order: order,
-      current_order: order,
+      current_order: order
     )
   end
 
   it "shows how the order is paid for" do
-    order.payments.first.payment_method.name = "Bartering"
+    order.payments.first.payment_method.update(name: "Bartering")
 
     render
 
@@ -25,7 +27,7 @@ describe "spree/shared/_order_details.html.haml" do
   end
 
   it "displays payment methods safely" do
-    order.payments.first.payment_method.name = "Bar<script>evil</script>ter&rarr;ing"
+    order.payments.first.payment_method.update(name: "Bar<script>evil</script>ter&rarr;ing")
 
     render
 

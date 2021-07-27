@@ -5,10 +5,12 @@ require 'spec_helper'
 describe ShopController, type: :controller do
   let!(:pm) { create(:payment_method) }
   let!(:sm) { create(:shipping_method) }
-  let(:distributor) { create(:distributor_enterprise, payment_methods: [pm], shipping_methods: [sm]) }
+  let(:distributor) {
+    create(:distributor_enterprise, payment_methods: [pm], shipping_methods: [sm])
+  }
 
   it "redirects to the home page if no distributor is selected" do
-    spree_get :show
+    get :show
     expect(response).to redirect_to root_path
   end
 
@@ -20,14 +22,14 @@ describe ShopController, type: :controller do
     describe "selecting an order cycle" do
       it "should select an order cycle when only one order cycle is open" do
         oc1 = create(:simple_order_cycle, distributors: [distributor])
-        spree_get :show
+        get :show
         expect(controller.current_order_cycle).to eq(oc1)
       end
 
       it "should not set an order cycle when multiple order cycles are open" do
         oc1 = create(:simple_order_cycle, distributors: [distributor])
         oc2 = create(:simple_order_cycle, distributors: [distributor])
-        spree_get :show
+        get :show
         expect(controller.current_order_cycle).to be_nil
       end
 
@@ -36,7 +38,7 @@ describe ShopController, type: :controller do
         oc2 = create(:simple_order_cycle, distributors: [distributor])
 
         spree_post :order_cycle, order_cycle_id: oc2.id
-        expect(response).to be_success
+        expect(response.status).to eq 200
         expect(controller.current_order_cycle).to eq(oc2)
       end
 
@@ -48,14 +50,14 @@ describe ShopController, type: :controller do
           oc2 = create(:simple_order_cycle, distributors: [distributor])
 
           spree_post :order_cycle, order_cycle_id: oc2.id
-          expect(response).to be_success
+          expect(response.status).to eq 200
           expect(response.body).to have_content oc2.id
         end
 
         it "should return the current order cycle when hit with GET" do
           oc1 = create(:simple_order_cycle, distributors: [distributor])
           allow(controller).to receive(:current_order_cycle).and_return oc1
-          spree_get :order_cycle
+          get :order_cycle
           expect(response.body).to have_content oc1.id
         end
 
@@ -68,7 +70,7 @@ describe ShopController, type: :controller do
 
           it "returns the new order cycle details" do
             spree_post :order_cycle, order_cycle_id: oc2.id
-            expect(response).to be_success
+            expect(response.status).to eq 200
             expect(response.body).to have_content oc2.id
           end
         end

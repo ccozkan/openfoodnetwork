@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'open_food_network/permissions'
+
 module OpenFoodNetwork
   # Class which is used for determining the permissions around a single order cycle and user
   # both of which are set at initialization
@@ -225,7 +229,7 @@ module OpenFoodNetwork
                                                   scope: Enterprise.is_primary_producer)
 
       # Variants from Producers via permissions, and from the hub itself
-      available_variants = variants_from_suppliers(producer_ids.push(hub.id))
+      available_variants = variants_from_suppliers(producer_ids.to_a + [hub.id])
 
       # PLUS variants that are already in an outgoing exchange of this hub, so things don't break
       active_variants = active_outgoing_variants(hub)
@@ -238,9 +242,7 @@ module OpenFoodNetwork
     end
 
     def active_outgoing_variants(hub)
-      @active_outgoing_variants ||= begin
-        @order_cycle.exchanges.outgoing.where(receiver_id: hub).first.andand.variants || []
-      end
+      @active_outgoing_variants ||= @order_cycle.exchanges.outgoing.where(receiver_id: hub).first.andand.variants || []
     end
 
     def user_manages_coordinator_or(enterprise)

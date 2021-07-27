@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 require 'open_food_network/referer_parser'
 require 'open_food_network/permissions'
 require 'open_food_network/order_cycle_permissions'
 
 module Admin
   class EnterprisesController < Admin::ResourceController
+    include GeocodeEnterpriseAddress
+
     # These need to run before #load_resource so that @object is initialised with sanitised values
     prepend_before_action :override_owner, only: :create
     prepend_before_action :override_sells, only: :create
@@ -22,13 +26,18 @@ module Admin
     before_action :load_properties, only: [:edit, :update]
     before_action :setup_property, only: [:edit]
 
+    after_action  :geocode_address_if_use_geocoder, only: [:create, :update]
+
     helper 'spree/products'
     include OrderCyclesHelper
 
     def index
       respond_to do |format|
         format.html
-        format.json { render_as_json @collection, ams_prefix: params[:ams_prefix], spree_current_user: spree_current_user }
+        format.json {
+          render_as_json @collection, ams_prefix: params[:ams_prefix],
+                                      spree_current_user: spree_current_user
+        }
       end
     end
 
@@ -43,33 +52,37 @@ module Admin
     end
 
     def update
-      invoke_callbacks(:update, :before)
       tag_rules_attributes = params[object_name].delete :tag_rules_attributes
       update_tag_rules(tag_rules_attributes) if tag_rules_attributes.present?
       update_enterprise_notifications
+
       if @object.update(enterprise_params)
-        invoke_callbacks(:update, :after)
         flash[:success] = flash_message_for(@object, :successfully_updated)
         respond_with(@object) do |format|
           format.html { redirect_to location_after_save }
           format.js   { render layout: false }
-          format.json { render_as_json @object, ams_prefix: 'index', spree_current_user: spree_current_user }
+          format.json {
+            render_as_json @object, ams_prefix: 'index', spree_current_user: spree_current_user
+          }
         end
       else
-        invoke_callbacks(:update, :fails)
         respond_with(@object) do |format|
-          format.json { render json: { errors: @object.errors.messages }, status: :unprocessable_entity }
+          format.json {
+            render json: { errors: @object.errors.messages }, status: :unprocessable_entity
+          }
         end
       end
     end
 
     def register
-      if params[:sells] == 'unspecified'
+      register_params = params.permit(:sells)
+
+      if register_params[:sells] == 'unspecified'
         flash[:error] = I18n.t(:enterprise_register_package_error)
         return render :welcome, layout: "spree/layouts/bare_admin"
       end
 
-      attributes = { sells: params[:sells], visible: true }
+      attributes = { sells: register_params[:sells], visible: true }
 
       if @enterprise.update(attributes)
         flash[:success] = I18n.t(:enterprise_register_success_notice, enterprise: @enterprise.name)
@@ -81,7 +94,7 @@ module Admin
     end
 
     def bulk_update
-      @enterprise_set = EnterpriseSet.new(collection, bulk_params)
+      @enterprise_set = Sets::EnterpriseSet.new(collection, bulk_params)
       if @enterprise_set.save
         flash[:success] = I18n.t(:enterprise_bulk_update_success_notice)
 
@@ -97,7 +110,8 @@ module Admin
     def for_order_cycle
       respond_to do |format|
         format.json do
-          render json: @collection, each_serializer: Api::Admin::ForOrderCycle::EnterpriseSerializer, order_cycle: @order_cycle, spree_current_user: spree_current_user
+          render json: @collection,
+                 each_serializer: Api::Admin::ForOrderCycle::EnterpriseSerializer, order_cycle: @order_cycle, spree_current_user: spree_current_user
         end
       end
     end
@@ -105,20 +119,20 @@ module Admin
     def visible
       respond_to do |format|
         format.json do
-          render_as_json @collection, ams_prefix: params[:ams_prefix] || 'basic', spree_current_user: spree_current_user
+          render_as_json @collection, ams_prefix: params[:ams_prefix] || 'basic',
+                                      spree_current_user: spree_current_user
         end
       end
     end
 
     protected
 
-    def build_resource_with_address
-      enterprise = build_resource_without_address
+    def build_resource
+      enterprise = super
       enterprise.address ||= Spree::Address.new
-      enterprise.address.country ||= Spree::Country.find_by(id: Spree::Config[:default_country_id])
+      enterprise.address.country ||= DefaultCountry.country
       enterprise
     end
-    alias_method_chain :build_resource, :address
 
     # Overriding method on Spree's resource controller,
     # so that resources are found using permalink
@@ -129,7 +143,7 @@ module Admin
     private
 
     def load_enterprise_set
-      @enterprise_set = EnterpriseSet.new(collection) if spree_current_user.admin?
+      @enterprise_set = Sets::EnterpriseSet.new(collection) if spree_current_user.admin?
     end
 
     def load_countries
@@ -149,7 +163,7 @@ module Admin
         if enterprises.present?
           enterprises.includes(
             supplied_products:
-              [:supplier, master: [:images], variants: { option_values: :option_type }]
+              [:supplier, { master: [:images], variants: { option_values: :option_type } }]
           )
         end
       when :index
@@ -213,7 +227,6 @@ module Admin
         tag_rules_attributes.select{ |_i, attrs| attrs[:type].present? }.each do |_i, attrs|
           rule = @object.tag_rules.find_by(id: attrs.delete(:id)) ||
                  attrs[:type].constantize.new(enterprise: @object)
-          create_calculator_for(rule, attrs) if rule.type == "TagRule::DiscountOrder" && rule.calculator.nil?
 
           rule.update(attrs.permit(PermittedAttributes::TagRules.attributes))
         end
@@ -235,7 +248,7 @@ module Admin
 
     def check_can_change_bulk_sells
       unless spree_current_user.admin?
-        params[:enterprise_set][:collection_attributes].each do |_i, enterprise_params|
+        params[:sets_enterprise_set][:collection_attributes].each do |_i, enterprise_params|
           unless spree_current_user == Enterprise.find_by(id: enterprise_params[:id]).owner
             enterprise_params.delete :sells
           end
@@ -245,31 +258,31 @@ module Admin
 
     def check_can_change_sells
       unless spree_current_user.admin? || spree_current_user == @enterprise.owner
-        params[:enterprise].delete :sells
+        enterprise_params.delete :sells
       end
     end
 
     def override_owner
-      params[:enterprise][:owner_id] = spree_current_user.id unless spree_current_user.admin?
+      enterprise_params[:owner_id] = spree_current_user.id unless spree_current_user.admin?
     end
 
     def override_sells
       unless spree_current_user.admin?
         has_hub = spree_current_user.owned_enterprises.is_hub.any?
         new_enterprise_is_producer = Enterprise.new(enterprise_params).is_primary_producer
-        params[:enterprise][:sells] = has_hub && !new_enterprise_is_producer ? 'any' : 'none'
+        enterprise_params[:sells] = has_hub && !new_enterprise_is_producer ? 'any' : 'none'
       end
     end
 
     def check_can_change_owner
       unless ( spree_current_user == @enterprise.owner ) || spree_current_user.admin?
-        params[:enterprise].delete :owner_id
+        enterprise_params.delete :owner_id
       end
     end
 
     def check_can_change_bulk_owner
       unless spree_current_user.admin?
-        params[:enterprise_set][:collection_attributes].each do |_i, enterprise_params|
+        bulk_params[:collection_attributes].each do |_i, enterprise_params|
           enterprise_params.delete :owner_id
         end
       end
@@ -277,15 +290,16 @@ module Admin
 
     def check_can_change_managers
       unless ( spree_current_user == @enterprise.owner ) || spree_current_user.admin?
-        params[:enterprise].delete :user_ids
+        enterprise_params.delete :user_ids
       end
     end
 
     def strip_new_properties
-      unless spree_current_user.admin? || params[:enterprise][:producer_properties_attributes].nil?
+      unless spree_current_user.admin? || params.dig(:enterprise,
+                                                     :producer_properties_attributes).nil?
         names = Spree::Property.pluck(:name)
-        params[:enterprise][:producer_properties_attributes].each do |key, property|
-          params[:enterprise][:producer_properties_attributes].delete key unless names.include? property[:property_name]
+        enterprise_params[:producer_properties_attributes].each do |key, property|
+          enterprise_params[:producer_properties_attributes].delete key unless names.include? property[:property_name]
         end
       end
     end
@@ -317,13 +331,14 @@ module Admin
     end
 
     def enterprise_params
-      PermittedAttributes::Enterprise.new(params).call
+      @enterprise_params ||= PermittedAttributes::Enterprise.new(params).call.
+        to_h.with_indifferent_access
     end
 
     def bulk_params
-      params.require(:enterprise_set).permit(
+      @bulk_params ||= params.require(:sets_enterprise_set).permit(
         collection_attributes: PermittedAttributes::Enterprise.attributes
-      )
+      ).to_h.with_indifferent_access
     end
 
     # Used in Admin::ResourceController#create

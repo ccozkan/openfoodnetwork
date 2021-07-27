@@ -23,14 +23,6 @@ module Spree
           before_validation(on: :create) { save_permalink }
         end
 
-        def find_by_param(value, *args)
-          __send__("find_by_#{permalink_field}", value, *args)
-        end
-
-        def find_by_param!(value, *args)
-          __send__("find_by_#{permalink_field}!", value, *args)
-        end
-
         def permalink_field
           permalink_options[:field]
         end
@@ -57,8 +49,9 @@ module Spree
 
           # Do other links exist with this permalink?
           other = self.class.
-            where("#{self.class.table_name}.#{field} LIKE ?", "#{permalink_value}%")
+            default_scoped.where("#{self.class.table_name}.#{field} LIKE ?", "#{permalink_value}%")
           if other.any?
+
             # Find the existing permalink with the highest number, and increment that number.
             # (If none of the existing permalinks have a number, this will evaluate to 1.)
             number = other.map { |o| o.__send__(field)[/-(\d+)$/, 1].to_i }.max + 1
@@ -70,6 +63,3 @@ module Spree
     end
   end
 end
-
-ActiveRecord::Base.include(Spree::Core::Permalinks)
-ActiveRecord::Relation.include(Spree::Core::Permalinks)

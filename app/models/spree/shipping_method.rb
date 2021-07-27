@@ -1,26 +1,28 @@
 # frozen_string_literal: true
 
 module Spree
-  class ShippingMethod < ActiveRecord::Base
+  class ShippingMethod < ApplicationRecord
     include Spree::Core::CalculatedAdjustments
     DISPLAY = [:both, :front_end, :back_end].freeze
 
+    acts_as_paranoid
     acts_as_taggable
 
     default_scope -> { where(deleted_at: nil) }
 
-    has_many :shipments
+    has_many :shipping_rates, inverse_of: :shipping_method
+    has_many :shipments, through: :shipping_rates
     has_many :shipping_method_categories
     has_many :shipping_categories, through: :shipping_method_categories
-    has_many :shipping_rates
     has_many :distributor_shipping_methods
     has_many :distributors, through: :distributor_shipping_methods,
                             class_name: 'Enterprise',
                             foreign_key: 'distributor_id'
 
     has_and_belongs_to_many :zones, join_table: 'spree_shipping_methods_zones',
-                                    class_name: 'Spree::Zone',
-                                    foreign_key: 'shipping_method_id'
+                                    class_name: 'Spree::Zone'
+
+    belongs_to :tax_category, class_name: 'Spree::TaxCategory'
 
     validates :name, presence: true
     validate :distributor_validation
@@ -52,10 +54,6 @@ module Spree
     scope :display_on_checkout, -> {
       where("spree_shipping_methods.display_on is null OR spree_shipping_methods.display_on = ''")
     }
-
-    def adjustment_label
-      I18n.t('shipping')
-    end
 
     # Here we allow checkout with shipping methods without zones (see issue #3928 for details)
     #   and also checkout with addresses outside of the zones of the selected shipping method
@@ -116,7 +114,7 @@ module Spree
     def at_least_one_shipping_category
       return unless shipping_categories.empty?
 
-      errors[:base] << "You need to select at least one shipping category"
+      errors.add(:base, "You need to select at least one shipping category")
     end
 
     def touch_distributors

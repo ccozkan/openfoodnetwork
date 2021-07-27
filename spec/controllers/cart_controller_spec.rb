@@ -16,8 +16,7 @@ describe CartController, type: :controller do
     it "returns HTTP success when successful" do
       allow(cart_service).to receive(:populate) { true }
       allow(cart_service).to receive(:valid?) { true }
-      allow(cart_service).to receive(:variants_h) { {} }
-      xhr :post, :populate, use_route: :spree, format: :json
+      post :populate, xhr: true, params: { use_route: :spree }, as: :json
       expect(response.status).to eq(200)
     end
 
@@ -26,15 +25,8 @@ describe CartController, type: :controller do
       allow(cart_service).to receive(:valid?) { false }
       allow(cart_service).to receive(:errors) { errors }
       allow(errors).to receive(:full_messages).and_return(["Error: foo"])
-      xhr :post, :populate, use_route: :spree, format: :json
+      post :populate, xhr: true, params: { use_route: :spree }, as: :json
       expect(response.status).to eq(412)
-    end
-
-    it "tells cart_service to overwrite" do
-      allow(cart_service).to receive(:variants_h) { {} }
-      allow(cart_service).to receive(:valid?) { true }
-      expect(cart_service).to receive(:populate).with({}, true)
-      xhr :post, :populate, use_route: :spree, format: :json
     end
 
     it "returns stock levels as JSON on success" do
@@ -42,19 +34,11 @@ describe CartController, type: :controller do
       allow_any_instance_of(VariantsStockLevels).to receive(:call).and_return("my_stock_levels")
       allow(cart_service).to receive(:populate) { true }
       allow(cart_service).to receive(:valid?) { true }
-      allow(cart_service).to receive(:variants_h) { {} }
 
-      xhr :post, :populate, use_route: :spree, format: :json
+      post :populate, xhr: true, params: { use_route: :spree }, as: :json
 
       data = JSON.parse(response.body)
       expect(data['stock_levels']).to eq('my_stock_levels')
-    end
-
-    it "extracts variant ids from the cart service" do
-      variants_h = [{ variant_id: "900", quantity: 2, max_quantity: nil },
-                    { variant_id: "940", quantity: 3, max_quantity: 3 }]
-
-      expect(controller.variant_ids_in(variants_h)).to eq([900, 940])
     end
   end
 
@@ -65,17 +49,28 @@ describe CartController, type: :controller do
     let!(:variant_not_in_the_order) { create(:variant) }
 
     let(:hub) { create(:distributor_enterprise, with_payment_and_shipping: true) }
-    let!(:variant_override_in_the_order) { create(:variant_override, hub: hub, variant: variant_in_the_order, price: 55.55, count_on_hand: 20, default_stock: nil, resettable: false) }
-    let!(:variant_override_not_in_the_order) { create(:variant_override, hub: hub, variant: variant_not_in_the_order, count_on_hand: 7, default_stock: nil, resettable: false) }
+    let!(:variant_override_in_the_order) {
+      create(:variant_override, hub: hub, variant: variant_in_the_order, price: 55.55,
+                                count_on_hand: 20, default_stock: nil, resettable: false)
+    }
+    let!(:variant_override_not_in_the_order) {
+      create(:variant_override, hub: hub, variant: variant_not_in_the_order, count_on_hand: 7,
+                                default_stock: nil, resettable: false)
+    }
 
-    let(:order_cycle) { create(:simple_order_cycle, suppliers: [producer], coordinator: hub, distributors: [hub]) }
+    let(:order_cycle) {
+      create(:simple_order_cycle, suppliers: [producer], coordinator: hub, distributors: [hub])
+    }
     let!(:order) { subject.current_order(true) }
-    let!(:line_item) { create(:line_item, order: order, variant: variant_in_the_order, quantity: 2, max_quantity: 3) }
+    let!(:line_item) {
+      create(:line_item, order: order, variant: variant_in_the_order, quantity: 2, max_quantity: 3)
+    }
 
     before do
       variant_in_the_order.on_hand = 4
       variant_not_in_the_order.on_hand = 2
-      order_cycle.exchanges.outgoing.first.variants = [variant_in_the_order, variant_not_in_the_order]
+      order_cycle.exchanges.outgoing.first.variants = [variant_in_the_order,
+                                                       variant_not_in_the_order]
       order.order_cycle = order_cycle
       order.distributor = hub
       order.save
@@ -110,11 +105,11 @@ describe CartController, type: :controller do
       order = subject.current_order(true)
       allow(order).to receive(:distributor) { distributor }
       allow(order).to receive(:order_cycle) { order_cycle }
-      expect(order).to receive(:set_variant_attributes).with(variant, max_quantity: '3')
       allow(controller).to receive(:current_order).and_return(order)
 
       expect do
-        spree_post :populate, variants: { variant.id => 1 }, variant_attributes: { variant.id => { max_quantity: 3 } }
+        spree_post :populate, variants: { variant.id => 1 },
+                              variant_attributes: { variant.id => { max_quantity: "3" } }
       end.to change(Spree::LineItem, :count).by(1)
     end
   end

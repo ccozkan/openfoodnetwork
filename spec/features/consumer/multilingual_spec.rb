@@ -26,27 +26,26 @@ feature 'Multilingual', js: true do
       visit root_path
       expect(get_i18n_locale).to eq 'en'
       expect(get_i18n_translation('label_shops')).to eq 'Shops'
-      expect(cookie_named('locale')).to be_nil
-      expect(page).to have_content 'Interested in getting on the Open Food Network?'
+      expect(cookies).to be_empty
       expect(page).to have_content 'SHOPS'
 
       visit root_path(locale: 'es')
       expect(get_i18n_locale).to eq 'es'
       expect(get_i18n_translation('label_shops')).to eq 'Tiendas'
       expect_menu_and_cookie_in_es
-      expect(page).to have_content '¿Estás interesada en entrar en Open Food Network?'
 
       # it is not in the list of available of available_locales
       visit root_path(locale: 'it')
       expect(get_i18n_locale).to eq 'es'
       expect(get_i18n_translation('label_shops')).to eq 'Tiendas'
       expect_menu_and_cookie_in_es
-      expect(page).to have_content '¿Estás interesada en entrar en Open Food Network?'
     end
 
     context 'with a product in the cart' do
       let(:distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
-      let!(:order_cycle) { create(:simple_order_cycle, distributors: [distributor], variants: [product.variants.first]) }
+      let!(:order_cycle) {
+        create(:simple_order_cycle, distributors: [distributor], variants: [product.variants.first])
+      }
       let(:product) { create(:simple_product) }
       let(:order) { create(:order, order_cycle: order_cycle, distributor: distributor) }
 
@@ -128,10 +127,11 @@ feature 'Multilingual', js: true do
 
         find('.language-switcher').click
         within '.language-switcher .dropdown' do
-          expect(page).to have_link I18n.t('language_name', locale: :en), href: '?locale=en'
-          expect(page).to have_link I18n.t('language_name', locale: :es, default: 'Language Name'), href: '?locale=es'
+          expect(page).not_to have_link I18n.t('language_name', locale: :en), href: '/locales/en'
+          expect(page).to have_link I18n.t('language_name', locale: :es, default: 'Language Name'),
+                                    href: '/locales/es'
 
-          find('li a[href="?locale=es"]').click
+          find('li a[href="/locales/es"]').click
         end
 
         expect_menu_and_cookie_in_es

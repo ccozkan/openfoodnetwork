@@ -11,7 +11,9 @@ describe Enterprise do
       it "sends a welcome email" do
         expect do
           create(:enterprise, owner: user)
-        end.to enqueue_job WelcomeEnterpriseJob
+        end.to enqueue_job ActionMailer::DeliveryJob
+
+        expect(enqueued_jobs.last.to_s).to match "welcome"
       end
     end
   end
@@ -101,13 +103,14 @@ describe Enterprise do
 
       it "validates ownership limit" do
         expect(u1.enterprise_limit).to be 5
-        expect(u1.owned_enterprises(:reload)).to eq [e]
+        expect(u1.owned_enterprises.reload).to eq [e]
         4.times { create(:enterprise, owner: u1) }
         e2 = create(:enterprise, owner: u2)
         expect {
           e2.owner = u1
           e2.save!
-        }.to raise_error ActiveRecord::RecordInvalid, "Validation failed: #{u1.email} is not permitted to own any more enterprises (limit is 5)."
+        }.to raise_error ActiveRecord::RecordInvalid,
+                         "Validation failed: #{u1.email} is not permitted to own any more enterprises (limit is 5)."
       end
     end
   end
@@ -185,15 +188,41 @@ describe Enterprise do
         expect(enterprise).to be_invalid
       end
     end
-  end
 
-  describe "delegations" do
-    # subject { FactoryBot.create(:distributor_enterprise, :address => FactoryBot.create(:address)) }
+    describe "preferred_shopfront_producer_order" do
+      it "empty strings are valid" do
+        enterprise = build(:enterprise, preferred_shopfront_producer_order: "")
+        expect(enterprise).to be_valid
+      end
 
-    it { is_expected.to delegate(:latitude).to(:address) }
-    it { is_expected.to delegate(:longitude).to(:address) }
-    it { is_expected.to delegate(:city).to(:address) }
-    it { is_expected.to delegate(:state_name).to(:address) }
+      it "a single integer is valid" do
+        enterprise = build(:enterprise, preferred_shopfront_producer_order: "11")
+        expect(enterprise).to be_valid
+      end
+
+      it "comma delimited integers are valid" do
+        enterprise = build(:enterprise, preferred_shopfront_producer_order: "1,2,3")
+        expect(enterprise).to be_valid
+        enterprise = build(:enterprise, preferred_shopfront_producer_order: "1,22,333")
+        expect(enterprise).to be_valid
+      end
+
+      it "commas at the beginning and end are disallowed" do
+        enterprise = build(:enterprise, preferred_shopfront_producer_order: ",1,2,3")
+        expect(enterprise).to be_invalid
+        enterprise = build(:enterprise, preferred_shopfront_producer_order: "1,2,3,")
+        expect(enterprise).to be_invalid
+      end
+
+      it "any other characters are invalid" do
+        enterprise = build(:enterprise, preferred_shopfront_producer_order: "a1,2,3")
+        expect(enterprise).to be_invalid
+        enterprise = build(:enterprise, preferred_shopfront_producer_order: ".1,2,3")
+        expect(enterprise).to be_invalid
+        enterprise = build(:enterprise, preferred_shopfront_producer_order: " 1,2,3")
+        expect(enterprise).to be_invalid
+      end
+    end
   end
 
   describe "callbacks" do
@@ -202,7 +231,7 @@ describe Enterprise do
       e2 = create(:enterprise, permalink: "not_taken")
       e2.permalink = "taken"
       e2.save
-      expect(e2.permalink).to eq "not_taken"
+      expect(e2.reload.permalink).to eq "not_taken"
     end
   end
 
@@ -318,7 +347,8 @@ describe Enterprise do
         s = create(:supplier_enterprise)
         d = create(:distributor_enterprise)
         p = create(:product)
-        create(:simple_order_cycle, orders_open_at: 10.days.from_now, orders_close_at: 17.days.from_now, suppliers: [s], distributors: [d], variants: [p.master])
+        create(:simple_order_cycle, orders_open_at: 10.days.from_now,
+                                    orders_close_at: 17.days.from_now, suppliers: [s], distributors: [d], variants: [p.master])
         expect(Enterprise.distributors_with_active_order_cycles).not_to include d
       end
     end
@@ -362,14 +392,17 @@ describe Enterprise do
       let(:product) { create(:product) }
 
       it "returns enterprises distributing via an order cycle" do
-        order_cycle = create(:simple_order_cycle, distributors: [distributor], variants: [product.master])
+        order_cycle = create(:simple_order_cycle, distributors: [distributor],
+                                                  variants: [product.master])
         expect(Enterprise.distributing_products(product.id)).to eq([distributor])
       end
 
       it "does not return duplicate enterprises" do
         another_product = create(:product)
-        order_cycle = create(:simple_order_cycle, distributors: [distributor], variants: [product.master, another_product.master])
-        expect(Enterprise.distributing_products([product.id, another_product.id])).to eq([distributor])
+        order_cycle = create(:simple_order_cycle, distributors: [distributor],
+                                                  variants: [product.master, another_product.master])
+        expect(Enterprise.distributing_products([product.id,
+                                                 another_product.id])).to eq([distributor])
       end
     end
 
@@ -417,8 +450,10 @@ describe Enterprise do
         it "creates links from the new producer to all hubs owned by the same user, granting add_to_order_cycle and create_variant_overrides permissions" do
           producer1
 
-          should_have_enterprise_relationship from: producer1, to: hub1, with: [:add_to_order_cycle, :create_variant_overrides]
-          should_have_enterprise_relationship from: producer1, to: hub2, with: [:add_to_order_cycle, :create_variant_overrides]
+          should_have_enterprise_relationship from: producer1, to: hub1,
+                                              with: [:add_to_order_cycle, :create_variant_overrides]
+          should_have_enterprise_relationship from: producer1, to: hub2,
+                                              with: [:add_to_order_cycle, :create_variant_overrides]
         end
 
         it "does not create any other links" do
@@ -434,8 +469,10 @@ describe Enterprise do
           producer2
           hub1
 
-          should_have_enterprise_relationship from: producer1, to: hub1, with: [:add_to_order_cycle, :create_variant_overrides]
-          should_have_enterprise_relationship from: producer2, to: hub1, with: [:add_to_order_cycle, :create_variant_overrides]
+          should_have_enterprise_relationship from: producer1, to: hub1,
+                                              with: [:add_to_order_cycle, :create_variant_overrides]
+          should_have_enterprise_relationship from: producer2, to: hub1,
+                                              with: [:add_to_order_cycle, :create_variant_overrides]
         end
 
         it "creates links from the new hub to all hubs owned by the same user, granting add_to_order_cycle permission" do
@@ -452,8 +489,12 @@ describe Enterprise do
           producer1
           producer2
           expect { hub1 }.to change(EnterpriseRelationship, :count).by(2) # 2 producer links
-          expect { hub2 }.to change(EnterpriseRelationship, :count).by(3) # 2 producer links + 1 hub link
-          expect { hub3 }.to change(EnterpriseRelationship, :count).by(4) # 2 producer links + 2 hub links
+          expect {
+            hub2
+          }.to change(EnterpriseRelationship, :count).by(3) # 2 producer links + 1 hub link
+          expect {
+            hub3
+          }.to change(EnterpriseRelationship, :count).by(4) # 2 producer links + 2 hub links
         end
       end
 
@@ -461,7 +502,8 @@ describe Enterprise do
         er = EnterpriseRelationship.where(parent_id: opts[:from], child_id: opts[:to]).last
         expect(er).not_to be_nil
         if opts[:with] == :all_permissions
-          expect(er.permissions.map(&:name)).to match_array ['add_to_order_cycle', 'manage_products', 'edit_profile', 'create_variant_overrides']
+          expect(er.permissions.map(&:name)).to match_array ['add_to_order_cycle',
+                                                             'manage_products', 'edit_profile', 'create_variant_overrides']
         elsif opts.key? :with
           expect(er.permissions.map(&:name)).to match_array opts[:with].map(&:to_s)
         end
@@ -489,8 +531,10 @@ describe Enterprise do
     let(:product1) { create(:simple_product, primary_taxon: taxon1, taxons: [taxon1]) }
     let(:product2) { create(:simple_product, primary_taxon: taxon1, taxons: [taxon1, taxon2]) }
     let(:product3) { create(:simple_product, primary_taxon: taxon3) }
-    let(:oc) { create(:order_cycle, distributors: [distributor]) }
-    let(:ex) { create(:exchange, order_cycle: oc, incoming: false, sender: supplier, receiver: distributor) }
+    let(:oc) { create(:order_cycle) }
+    let(:ex) {
+      create(:exchange, order_cycle: oc, incoming: false, sender: supplier, receiver: distributor)
+    }
 
     it "gets all taxons of all distributed products" do
       allow(Spree::Product).to receive(:in_distributor).and_return [product1, product2]
@@ -541,10 +585,18 @@ describe Enterprise do
   describe "provide enterprise category" do
     let(:producer_sell_all) { build_stubbed(:enterprise, is_primary_producer: true,  sells: "any") }
     let(:producer_sell_own) { build_stubbed(:enterprise, is_primary_producer: true,  sells: "own") }
-    let(:producer_sell_none) { build_stubbed(:enterprise, is_primary_producer: true, sells: "none") }
-    let(:non_producer_sell_all) { build_stubbed(:enterprise, is_primary_producer: false,  sells: "any") }
-    let(:non_producer_sell_own) { build_stubbed(:enterprise, is_primary_producer: false,  sells: "own") }
-    let(:non_producer_sell_none) { build_stubbed(:enterprise, is_primary_producer: false, sells: "none") }
+    let(:producer_sell_none) {
+      build_stubbed(:enterprise, is_primary_producer: true, sells: "none")
+    }
+    let(:non_producer_sell_all) {
+      build_stubbed(:enterprise, is_primary_producer: false,  sells: "any")
+    }
+    let(:non_producer_sell_own) {
+      build_stubbed(:enterprise, is_primary_producer: false,  sells: "own")
+    }
+    let(:non_producer_sell_none) {
+      build_stubbed(:enterprise, is_primary_producer: false, sells: "none")
+    }
 
     it "should output enterprise categories" do
       expect(producer_sell_all.is_primary_producer).to eq(true)
@@ -604,6 +656,21 @@ describe Enterprise do
         create(:enterprise, permalink: "permalink3")
         expect(Enterprise.find_available_permalink("permalink")).to eq "permalink2"
       end
+    end
+  end
+
+  describe "#plus_relatives_and_oc_producers" do
+    it "does not find non-produders " do
+      supplier = create(:supplier_enterprise)
+      distributor = create(:distributor_enterprise, is_primary_producer: false)
+      product = create(:product)
+      order_cycle = create(
+        :simple_order_cycle,
+        suppliers: [supplier],
+        distributors: [distributor],
+        variants: [product.master]
+      )
+      expect(distributor.plus_relatives_and_oc_producers(order_cycle)).to eq([supplier])
     end
   end
 end

@@ -4,24 +4,24 @@
 
 = form_for [:admin, @product], :html => { :multipart => true } do |f|
   .twelve.columns.alpha
-    %fieldset.no-border-bottom{ id: "new_product" }
+    %fieldset.no-border-bottom{ id: "new_product", 'ng-controller' => 'unitsCtrl' }
       %legend{align: "center"}= t(".new_product")
-      .twelve.columns.alpha
-        .six.columns.alpha
+      .sixteen.columns.alpha
+        .eight.columns.alpha
           = f.field_container :supplier do
             = f.label :supplier_id, t(".supplier")
             %span.required *
             = f.collection_select(:supplier_id, @producers, :id, :name, {:include_blank => true}, {:class => "select2 fullwidth"})
             = f.error_message_on :supplier
-        .six.columns.omega
+        .eight.columns.omega
           = f.field_container :name do
             = f.label :name, t(".product_name")
             %span.required *
             %br/
             = f.text_field :name, :class => 'fullwidth title'
             = f.error_message_on :name
-      .twelve.columns.alpha{ 'ng-controller' => 'unitsCtrl' }
-        .six.columns.alpha
+      .sixteen.columns.alpha
+        .eight.columns.alpha
           = f.field_container :units do
             = f.label :variant_unit_with_scale, t(".units")
             %span.required *
@@ -29,53 +29,64 @@
               %option{'value' => '', 'ng-hide' => "hasUnit(product)"}
             %input{ type: 'hidden', 'ng-value' => 'product.variant_unit', name: 'product[variant_unit]' }
             %input{ type: 'hidden', 'ng-value' => 'product.variant_unit_scale', name: 'product[variant_unit_scale]' }
-        .three.columns
+        .two.columns
           = f.field_container :unit_value do
-            = f.label :product_unit_value_with_description, t(".value"), 'ng-disabled' => "!hasUnit(product)"
+            = f.label :unit_value_with_description, t(".value"), 'ng-disabled' => "!hasUnit(product)"
             %span.required *
             %input.fullwidth{ id: 'product_unit_value_with_description', 'ng-model' => 'product.master.unit_value_with_description', :type => 'text', placeholder: "eg. 2", 'ng-disabled' => "!hasUnit(product)" }
             %input{ type: 'hidden', 'ng-value' => 'product.master.unit_value', name: 'product[unit_value]' }
             %input{ type: 'hidden', 'ng-value' => 'product.master.unit_description', name: 'product[unit_description]' }
         = render 'display_as', f: f
-        .three.columns.omega{ 'ng-show' => "product.variant_unit_with_scale == 'items'" }
+        .six.columns.omega{ 'ng-show' => "product.variant_unit_with_scale == 'items'" }
           = f.field_container :unit_name do
             = f.label :product_variant_unit_name, t(".unit_name")
             %span.required *
             %input.fullwidth{ id: 'product_variant_unit_name','ng-model' => 'product.variant_unit_name', :name => 'product[variant_unit_name]', :placeholder => t('admin.products.unit_name_placeholder'), :type => 'text' }
-      .twelve.columns.alpha
-        .six.columns.alpha
+      .sixteen.columns.alpha
+        .eight.columns.alpha
           = render 'spree/admin/products/primary_taxon_form', f: f
-        .two.columns
+        .four.columns
           = f.field_container :price do
             = f.label :price, t(".price")
             %span.required *
             %br/
-            = f.text_field :price, class: 'fullwidth'
+            = f.text_field :price, { "class" => "fullwidth", "ng-model" => "product.price" }
             = f.error_message_on :price
-        .two.columns
-          = f.field_container :on_hand do
-            = f.label :on_hand, t(".on_hand")
-            %span.required *
-            %br/
-            = f.text_field :on_hand, class: 'fullwidth'
-            = f.error_message_on :on_hand
-        .two.columns.omega
-          = f.field_container :on_demand do
-            = f.label :on_demand, t(".on_demand")
-            %br/
-            = f.check_box :on_demand
-            = f.error_message_on :on_demand
-      .twelve.columns.alpha
-        .six.columns.alpha &nbsp;
+        .four.columns{ ng: { app: 'ofn.admin'}}
+          = f.field_container :unit_price do
+            %div{style: "display: flex"}
+              = f.label :unit_price, t(".unit_price")
+              %question-mark-with-tooltip{"question-mark-with-tooltip" => "_",
+                "question-mark-with-tooltip-append-to-body" => "true",
+                "question-mark-with-tooltip-placement" => "top",
+                "question-mark-with-tooltip-animation" => true, 
+                key: "'js.admin.unit_price_tooltip'"}
+            %input{ "type" => "text", "id" => "product_unit_price", "name" => "product[unit_price]",
+                "class" => 'fullwidth', "disabled" =>  true, "ng-model" => "unit_price"}
+            %div{style: "color: black"}
+              = t(".unit_price_legend")
+      .sixteen.columns.alpha
         .three.columns
           - if Spree::TaxCategory.any?
             = render 'spree/admin/products/tax_category_form', f: f
           - else
             &nbsp;
-        .three.columns.omega
+        .five.columns.omega
           = render 'spree/admin/products/shipping_category_form', f: f
+        .five.columns
+          = f.field_container :on_hand do
+            = f.label :on_hand, t(".on_hand")
+            %br/
+            = f.text_field :on_hand, class: 'fullwidth'
+            = f.error_message_on :on_hand
+        .three.columns.omega
+          = f.field_container :on_demand do
+            = f.label :on_demand, t(".on_demand")
+            %br/
+            = f.check_box :on_demand
+            = f.error_message_on :on_demand
 
-      .twelve.columns.alpha
+      .sixteen.columns.alpha
         = f.field_container :description do
           = f.label :product_description, t(".product_description")
           %br/

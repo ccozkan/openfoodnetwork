@@ -2,10 +2,11 @@
 
 module Spree
   class OrderMailer < BaseMailer
-    helper ::CheckoutHelper
+    helper 'checkout'
     helper SpreeCurrencyHelper
-    helper Spree::Admin::PaymentsHelper
+    helper Spree::PaymentMethodsHelper
     helper OrderHelper
+    helper MailerHelper
     include I18nHelper
 
     def cancel_email(order_or_order_id, resend = false)
@@ -14,6 +15,16 @@ module Spree
         mail(to: @order.email,
              from: from_address,
              subject: mail_subject(t('spree.order_mailer.cancel_email.subject'), resend))
+      end
+    end
+
+    def cancel_email_for_shop(order)
+      @order = order
+      I18n.with_locale valid_locale(@order.distributor.owner) do
+        subject = I18n.t('spree.order_mailer.cancel_email_for_shop.subject')
+        mail(to: @order.distributor.contact.email,
+             from: from_address,
+             subject: subject)
       end
     end
 
@@ -38,8 +49,10 @@ module Spree
       end
     end
 
-    def invoice_email(order_or_order_id, pdf)
+    def invoice_email(order_or_order_id)
       @order = find_order(order_or_order_id)
+      pdf = InvoiceRenderer.new.render_to_string(@order)
+
       attach_file("invoice-#{@order.number}.pdf", pdf)
       I18n.with_locale valid_locale(@order.user) do
         mail(to: @order.email,

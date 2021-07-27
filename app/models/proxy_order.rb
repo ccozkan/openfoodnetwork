@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # Each Subscription has many ProxyOrders, one for each OrderCycle to which the Subscription applies
 # Proxy pattern allows for deferral of initialization until absolutely required
 # This reduces the need to keep Orders in sync with their parent Subscriptions
 
-class ProxyOrder < ActiveRecord::Base
+class ProxyOrder < ApplicationRecord
   belongs_to :order, class_name: 'Spree::Order', dependent: :destroy
   belongs_to :subscription
   belongs_to :order_cycle
@@ -14,7 +16,9 @@ class ProxyOrder < ActiveRecord::Base
   scope :not_closed, -> { joins(:order_cycle).merge(OrderCycle.not_closed) }
   scope :canceled, -> { where('proxy_orders.canceled_at IS NOT NULL') }
   scope :not_canceled, -> { where('proxy_orders.canceled_at IS NULL') }
-  scope :placed_and_open, -> { joins(:order).not_closed.where(spree_orders: { state: ['complete', 'resumed'] }) }
+  scope :placed_and_open, -> {
+                            joins(:order).not_closed.where(spree_orders: { state: ['complete', 'resumed'] })
+                          }
 
   def state
     # NOTE: the order is important here

@@ -2,19 +2,17 @@
 
 require 'open_food_network/address_finder'
 
-class CheckoutController < Spree::StoreController
+class CheckoutController < ::BaseController
   layout 'darkswarm'
 
   include OrderStockCheck
-  include CheckoutHelper
-  include OrderCyclesHelper
-  include EnterprisesHelper
 
-  ssl_required
+  helper 'terms_and_conditions'
+  helper 'checkout'
 
   # We need pessimistic locking to avoid race conditions.
   # Otherwise we fail on duplicate indexes or end up with negative stock.
-  prepend_around_action CurrentOrderLocker, only: :update
+  prepend_around_action CurrentOrderLocker, only: [:edit, :update]
 
   prepend_before_action :check_hub_ready_for_checkout
   prepend_before_action :check_order_cycle_expiry
@@ -41,7 +39,7 @@ class CheckoutController < Spree::StoreController
     # This is only required because of spree_paypal_express. If we implement
     # a version of paypal that uses this controller, and more specifically
     # the #action_failed method, then we can remove this call
-    OrderCheckoutRestart.new(@order).call
+    reset_order_to_cart
   rescue Spree::Core::GatewayError => e
     rescue_from_spree_gateway_error(e)
   end
@@ -50,7 +48,7 @@ class CheckoutController < Spree::StoreController
     return handle_redirect_from_iyzipay if valid_iyzipay_callback?
 
     params_adapter = Checkout::FormDataAdapter.new(permitted_params, @order, spree_current_user)
-    return action_failed unless @order.update(params_adapter.params[:order])
+    return action_failed unless @order.update(params_adapter.params[:order] || {})
 
     checkout_workflow(params_adapter.shipping_method_id)
   rescue Spree::Core::GatewayError => e
@@ -58,6 +56,8 @@ class CheckoutController < Spree::StoreController
   rescue StandardError => e
     flash[:error] = I18n.t("checkout.failed")
     action_failed(e)
+  ensure
+    @order.update_order!
   end
 
   # Clears the cached order. Required for #current_order to return a new order
@@ -86,7 +86,7 @@ class CheckoutController < Spree::StoreController
     @order = current_order
 
     redirect_to(main_app.shop_path) && return if redirect_to_shop?
-    redirect_to_cart_path && return unless valid_order_line_items?
+    handle_invalid_stock && return unless valid_order_line_items?
 
     before_address
     setup_for_current_state
@@ -104,7 +104,10 @@ class CheckoutController < Spree::StoreController
         distributes_order_variants?(@order)
   end
 
-  def redirect_to_cart_path
+  def handle_invalid_stock
+    cancel_incomplete_payments if valid_payment_intent_provided?
+    reset_order_to_cart
+
     respond_to do |format|
       format.html do
         redirect_to main_app.cart_path
@@ -114,6 +117,20 @@ class CheckoutController < Spree::StoreController
         render json: { path: main_app.cart_path }, status: :bad_request
       end
     end
+  end
+
+  def cancel_incomplete_payments
+    # The checkout could not complete due to stock running out. We void any pending (incomplete)
+    # Stripe payments here as the order will need to be changed and resubmitted (or abandoned).
+    @order.payments.incomplete.each do |payment|
+      payment.void!
+      payment.adjustment&.update_columns(eligible: false, state: "finalized")
+    end
+    flash[:notice] = I18n.t("checkout.payment_cancelled_due_to_stock")
+  end
+
+  def reset_order_to_cart
+    OrderCheckoutRestart.new(@order).call
   end
 
   def setup_for_current_state
@@ -139,14 +156,16 @@ class CheckoutController < Spree::StoreController
 
     last_payment = OrderPaymentFinder.new(@order).last_payment
     @order.state == "payment" &&
-      last_payment&.state == "pending" &&
+      last_payment&.state == "requires_authorization" &&
       last_payment&.response_code == params["payment_intent"]
   end
 
   def handle_redirect_from_stripe
+    return checkout_failed unless @order.process_payments!
+
     if OrderWorkflow.new(@order).next && order_complete?
       checkout_succeeded
-      redirect_to(spree.order_path(@order)) && return
+      redirect_to(order_path(@order)) && return
     else
       checkout_failed
     end
@@ -189,6 +208,8 @@ class CheckoutController < Spree::StoreController
     while @order.state != "complete"
       if @order.state == "payment"
         return if redirect_to_payment_gateway
+
+        return action_failed unless @order.process_payments!
       end
 
       next if OrderWorkflow.new(@order).next({ shipping_method_id: shipping_method_id })
@@ -240,10 +261,10 @@ class CheckoutController < Spree::StoreController
   def update_succeeded_response
     respond_to do |format|
       format.html do
-        respond_with(@order, location: spree.order_path(@order))
+        respond_with(@order, location: order_path(@order))
       end
       format.json do
-        render json: { path: spree.order_path(@order) }, status: :ok
+        render json: { path: order_path(@order) }, status: :ok
       end
     end
   end

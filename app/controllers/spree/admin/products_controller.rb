@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open_food_network/spree_api_key_loader'
 require 'open_food_network/referer_parser'
 require 'open_food_network/permissions'
@@ -38,7 +40,6 @@ module Spree
           end
         end
       rescue Paperclip::Errors::NotIdentifiedByImageMagickError
-        invoke_callbacks(:create, :fails)
         @object.errors.add(:base, t('spree.admin.products.image_upload_error'))
         respond_with(@object)
       end
@@ -54,7 +55,7 @@ module Spree
       end
 
       def edit
-        @url_filters = ::ProductFilters.new.extract(params)
+        @url_filters = ::ProductFilters.new.extract(request.query_parameters)
       end
 
       def update
@@ -75,16 +76,16 @@ module Spree
       end
 
       def bulk_update
-        product_set = product_set_from_params(params)
+        product_set = product_set_from_params
 
         product_set.collection.each { |p| authorize! :update, p }
 
         if product_set.save
-          redirect_to main_app.bulk_products_api_products_path( bulk_index_query(params) )
+          redirect_to main_app.bulk_products_api_v0_products_path(bulk_index_query)
         elsif product_set.errors.present?
           render json: { errors: product_set.errors }, status: :bad_request
         else
-          render nothing: true, status: :internal_server_error
+          render body: nil, status: :internal_server_error
         end
       end
 
@@ -126,28 +127,7 @@ module Spree
       end
 
       def collection
-        return @collection if @collection.present?
-
-        params[:q] ||= {}
-        params[:q][:deleted_at_null] ||= "1"
-
-        params[:q][:s] ||= "name asc"
-        @collection = Spree::Product
-        @collection = @collection.with_deleted if params[:q].delete(:deleted_at_null).blank?
-        # @search needs to be defined as this is passed to search_form_for
-        @search = @collection.ransack(params[:q])
-        @collection = @search.result.
-          managed_by(spree_current_user).
-          group_by_products_id.
-          includes(product_includes).
-          page(params[:page]).
-          per(Spree::Config[:admin_products_per_page])
-
-        if params[:q][:s].include?("master_default_price_amount")
-          # PostgreSQL compatibility
-          @collection = @collection.group("spree_prices.amount")
-        end
-        @collection
+        nil
       end
 
       def product_includes
@@ -161,15 +141,16 @@ module Spree
 
       private
 
-      def product_set_from_params(_params)
-        collection_hash = Hash[products_params.each_with_index.map { |p, i| [i, p] }]
-        Spree::ProductSet.new(collection_attributes: collection_hash)
+      def product_set_from_params
+        collection_hash = Hash[products_bulk_params[:products].each_with_index.map { |p, i|
+                                 [i, p]
+                               } ]
+        Sets::ProductSet.new(collection_attributes: collection_hash)
       end
 
-      def products_params
-        params.require(:products).map do |product|
-          product.permit(::PermittedAttributes::Product.attributes)
-        end
+      def products_bulk_params
+        params.permit(products: ::PermittedAttributes::Product.attributes).
+          to_h.with_indifferent_access
       end
 
       def permitted_resource_params
@@ -178,8 +159,8 @@ module Spree
         params.require(:product).permit(::PermittedAttributes::Product.attributes)
       end
 
-      def bulk_index_query(params)
-        (params[:filters] || {}).merge(page: params[:page], per_page: params[:per_page])
+      def bulk_index_query
+        (raw_params[:filters] || {}).merge(page: raw_params[:page], per_page: raw_params[:per_page])
       end
 
       def load_form_data

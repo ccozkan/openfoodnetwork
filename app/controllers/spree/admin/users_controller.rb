@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Spree
   module Admin
     class UsersController < ::Admin::ResourceController
@@ -91,10 +93,8 @@ module Spree
             limit(params[:limit] || 100)
         else
           @search = Spree::User.ransack(params[:q])
-          @collection = @search.
-            result.
-            page(params[:page]).
-            per(Spree::Config[:admin_products_per_page])
+          @pagy, @collection = pagy(@search.result, items: Spree::Config[:admin_products_per_page])
+          @collection
         end
       end
 
@@ -102,7 +102,6 @@ module Spree
 
       # handling raise from Admin::ResourceController#destroy
       def user_destroy_with_orders_error
-        invoke_callbacks(:destroy, :fails)
         render status: :forbidden, text: Spree.t(:error_user_destroy_with_orders)
       end
 

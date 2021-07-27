@@ -2,11 +2,17 @@ describe "unitsCtrl", ->
   ctrl = null
   scope = null
   product = null
+  currencyconfig =
+    symbol: "$"
+    symbol_position: "before"
+    currency: "D"
+    hide_cents: "false"
 
   beforeEach ->
     module('admin.products')
     module ($provide)->
       $provide.value "availableUnits", "g,kg,T,mL,L,kL"
+      $provide.value "currencyConfig", currencyconfig
       null
     inject ($rootScope, $controller, VariantUnitManager) ->
       scope = $rootScope
@@ -69,3 +75,21 @@ describe "unitsCtrl", ->
         scope.processUnitValueWithDescription()
         expect(scope.product.master.unit_value).toEqual 123
         expect(scope.product.master.unit_description).toEqual "54 boxes"
+
+      it "handle final point as decimal separator", ->
+        scope.product.master.unit_value_with_description = "22.22"
+        scope.processUnitValueWithDescription()
+        expect(scope.product.master.unit_value).toEqual 22.22
+        expect(scope.product.master.unit_description).toEqual ""
+
+      it "handle comma as decimal separator", ->
+        scope.product.master.unit_value_with_description = "22,22"
+        scope.processUnitValueWithDescription()
+        expect(scope.product.master.unit_value).toEqual 22.22
+        expect(scope.product.master.unit_description).toEqual ""
+      
+      it "handle comma as decimal separator with description", ->
+        scope.product.master.unit_value_with_description = "22,22 things"
+        scope.processUnitValueWithDescription()
+        expect(scope.product.master.unit_value).toEqual 22.22
+        expect(scope.product.master.unit_description).toEqual "things"

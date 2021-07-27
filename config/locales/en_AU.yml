@@ -2,6 +2,8 @@ en_AU:
   language_name: "English"
   activerecord:
     attributes:
+      spree/user:
+        password: "Password"
       enterprise_fee:
         fee_type: Fee Type
       spree/order:
@@ -85,6 +87,7 @@ en_AU:
               no_default_card: "^No default card available for this customer"
             shipping_method:
               not_available_to_shop: "is not available to %{shop}"
+  customer_instructions: "Customer instructions"
   devise:
     confirmations:
       send_instructions: "You will receive an email with instructions about how to confirm your account in a few minutes."
@@ -117,6 +120,8 @@ en_AU:
   models:
     order_cycle:
       cloned_order_cycle_name: "COPY OF %{order_cycle}"
+  sku: "SKU"
+  tax_rate: "Tax rate"
   validators:
     date_time_string_validator:
       not_string_error: "must be a string"
@@ -124,10 +129,6 @@ en_AU:
     integer_array_validator:
       not_array_error: "must be an array"
       invalid_element_error: "must contain only valid integers"
-  datetime_picker_ui:
-    current_text: Now
-    close_text: Done
-    time_text: Time
   enterprise_mailer:
     confirmation_instructions:
       subject: "Please confirm the email address for %{enterprise}"
@@ -266,7 +267,6 @@ en_AU:
   error: Error
   processing_payment: "Processing payment..."
   no_pending_payments: "No pending payments"
-  invalid_payment_state: "Invalid payment state"
   filter_results: Filter Results
   quantity: Quantity
   pick_up: Pick up
@@ -630,6 +630,7 @@ en_AU:
         max_fulfilled_units: "Max Fulfilled Units"
         order_error: "Some errors must be resolved before you can update orders.\nAny fields with red borders contain errors."
         variants_without_unit_value: "WARNING: Some variants do not have a unit value"
+        all: "All"
       select_variant: "Select a variant"
     enterprise:
       select_outgoing_oc_products_from: Select outgoing OC products from
@@ -771,6 +772,8 @@ en_AU:
           shopfront_category_ordering_note: "(top to bottom)"
           open_date: "Open Date"
           close_date: "Close Date"
+          shopfront_sort_by_category_placeholder: "Category"
+          shopfront_sort_by_producer_placeholder: "Producer"
         social:
           twitter_placeholder: "eg. @the_prof"
           instagram_placeholder: "eg. the_prof"
@@ -898,7 +901,6 @@ en_AU:
         cancel: "Cancel"
         back_to_list: "Back To List"
       edit:
-        advanced_settings: "Advanced Settings"
         save: "Save"
         save_and_next: "Save and Next"
         next: "Next"
@@ -951,6 +953,8 @@ en_AU:
         preferred_product_selection_from_coordinator_inventory_only_here: Coordinator's Inventory Only
         preferred_product_selection_from_coordinator_inventory_only_all: All Available Products
         save_reload: Save and Reload Page
+      order_cycle_top_buttons:
+        advanced_settings: "Advanced Settings"
       coordinator_fees:
         add: Add coordinator fee
       filters:
@@ -1156,6 +1160,7 @@ en_AU:
       yes_cancel_them: Cancel them
       no_keep_them: Keep them
       yes_i_am_sure: Yes, I'm sure
+      number: "Number"
       order_update_issues_msg: Some orders could not be automatically updated, this is most likely because they have been manually edited. Please review the issues listed below and make any adjustments to individual orders if required.
       no_results:
         no_subscriptions: No subscriptions yet...
@@ -1187,6 +1192,8 @@ en_AU:
     terms_and_conditions:
       message_html: "I agree to the seller's %{terms_and_conditions_link}."
       link_text: "Terms and Conditions"
+    all_terms_and_conditions:
+      terms_and_conditions: "Terms and Conditions"
     failed: "The checkout failed. Please let us know so that we can process your order."
   shops:
     hubs:
@@ -1194,6 +1201,9 @@ en_AU:
       hide_closed_shops: "Hide closed shops"
       show_on_map: "Show all on the map"
   shared:
+    mailers:
+      powered_by:
+        open_food_network: "Open Food Network"
     menu:
       cart:
         cart: "Cart"
@@ -1222,7 +1232,6 @@ en_AU:
       footer_join_body: "Create a listing, shop or group directory on the Open Food Network."
       footer_join_cta: "Tell me more!"
       footer_legal_call: "Read our"
-      footer_legal_tos: "Terms and conditions"
       footer_legal_visit: "Find us on"
       footer_legal_text_html: "Open Food Network is a free and open source software platform. Our content is licensed with %{content_license} and our code with %{code_license}."
       footer_data_text_with_privacy_policy_html: "We take good care of your data. See our %{privacy_policy} and %{cookies_policy}"
@@ -1281,8 +1290,8 @@ en_AU:
   menu_4_url: "/groups"
   menu_5_title: "About"
   menu_5_url: "https://about.openfoodnetwork.org.au/"
-  menu_6_title: "Shop in Vic"
-  menu_6_url: "https://about.openfoodnetwork.org.au/buy-food-online-from-local-farmers-in-victoria/"
+  menu_6_title: "Open Road"
+  menu_6_url: "https://about.openfoodnetwork.org.au/project/open-road/"
   menu_7_title: "Learn"
   menu_7_url: "https://openfoodnetwork.org/au/learn/"
   logo: "Logo (640x130)"
@@ -1335,8 +1344,6 @@ en_AU:
   label_producers: "Producers"
   label_groups: "Groups"
   label_about: "About"
-  label_connect: "Connect"
-  label_learn: "Learn"
   label_blog: "Blog"
   label_support: "Support"
   label_shopping: "Shopping"
@@ -1424,10 +1431,6 @@ en_AU:
   brandstory_part4: "It works everywhere. It changes everything."
   brandstory_part5_strong: "We call it Open Food Network."
   brandstory_part6: "We all love food. Now we can love our food system too."
-  learn_body: "Explore models, stories and resources to support you to develop your fair food business or organisation.  Find training, events and other opportunities to learn from peers."
-  learn_cta: "Get Inspired"
-  connect_body: "Search our full directories of producers, hubs and groups to find fair food traders near you.  List your business or organisation on the OFN so buyers can find you.  Join the community to get advice and solve problems together."
-  connect_cta: "Go Exploring"
   system_headline: "Shopping - here's how it works."
   system_step1: "1. Search"
   system_step1_text: "Search our diverse, independent shops for seasonal local food. Search by neighbourhood and food category, or whether you prefer delivery or pickup."
@@ -1560,7 +1563,6 @@ en_AU:
     set_a_password: "You will then be prompted to set a password before you are able to administer the enterprise."
     mistakenly_sent: "Not sure why you have received this email? Please contact %{owner_email} for more information."
   producer_mail_greeting: "Dear"
-  producer_mail_text_before: "We now have all the consumer orders for the next food drop."
   producer_mail_order_text: "Here is a summary of the orders for your products:"
   producer_mail_delivery_instructions: "Stock pickup/delivery instructions:"
   producer_mail_signoff: "Thanks and best wishes"
@@ -1572,7 +1574,9 @@ en_AU:
   shopping_tabs_home: "Home"
   shopping_tabs_shop: "Shop"
   shopping_tabs_about: "About"
+  shopping_tabs_producers: "Producers"
   shopping_tabs_contact: "Contact"
+  shopping_tabs_groups: "Groups"
   shopping_contact_address: "Address"
   shopping_contact_web: "Contact"
   shopping_contact_social: "Follow"
@@ -1583,6 +1587,7 @@ en_AU:
   enterprises_choose: "Choose when you want your order:"
   maps_open: "Open"
   maps_closed: "Closed"
+  map_title: "Map"
   hubs_buy: "Shop for:"
   hubs_shopping_here: "Shopping here"
   hubs_orders_closed: "Orders closed"
@@ -1722,39 +1727,40 @@ en_AU:
   shops_signup_help: We're ready to help.
   shops_signup_help_text: You need a better return. You need new buyers and logistics partners. You need your story told across wholesale, retail, and the kitchen table.
   shops_signup_detail: Here's the detail.
-  orders: Orders
-  orders_fees: Fees...
-  orders_edit_title: Shopping Cart
-  orders_edit_headline: Your shopping cart
-  orders_edit_time: Order ready for
-  orders_edit_continue: Continue shopping
-  orders_edit_checkout: Checkout
+  orders: "Orders"
+  orders_fees: "Fees..."
+  orders_edit_title: "Shopping Cart"
+  orders_edit_headline: "Your shopping cart"
+  orders_edit_time: "Order ready for"
+  orders_edit_continue: "Continue shopping"
+  orders_edit_checkout: "Checkout"
   orders_form_empty_cart: "Empty cart"
-  orders_form_subtotal: Produce subtotal
-  orders_form_admin: Admin & Handling
-  orders_form_total: Total
-  orders_oc_expired_headline: Orders have closed for this order cycle
+  orders_form_update_cart: "Update"
+  orders_form_subtotal: "Produce subtotal"
+  orders_form_admin: "Admin & Handling"
+  orders_form_total: "Total"
+  orders_oc_expired_headline: "Orders have closed for this order cycle"
   orders_oc_expired_text: "Sorry, orders for this order cycle closed %{time} ago! Please contact your hub directly to see if they can accept late orders."
   orders_oc_expired_text_others_html: "Sorry, orders for this order cycle closed %{time} ago! Please contact your hub directly to see if they can accept late orders <strong>%{link}</strong>."
   orders_oc_expired_text_link: "or see the other order cycles available at this hub"
   orders_oc_expired_email: "Email:"
   orders_oc_expired_phone: "Phone:"
-  orders_show_title: Order Confirmation
-  orders_show_time: Order ready on
+  orders_show_title: "Order Confirmation"
+  orders_show_time: "Order ready on"
   orders_show_order_number: "Order #%{number}"
-  orders_show_cancelled: Cancelled
-  orders_show_confirmed: Confirmed
+  orders_show_cancelled: "Cancelled"
+  orders_show_confirmed: "Confirmed"
   orders_your_order_has_been_cancelled: "Your order has been cancelled"
   orders_could_not_cancel: "Sorry, the order could not be cancelled"
   orders_cannot_remove_the_final_item: "Cannot remove the final item from an order, please cancel the order instead."
   orders_bought_items_notice:
-    one: An additional item is already confirmed for this order cycle
+    one: "An additional item is already confirmed for this order cycle"
     few: "%{count} additional items already confirmed for this order cycle"
     many: "%{count} additional items already confirmed for this order cycle"
     other: "%{count} additional items already confirmed for this order cycle"
-  orders_bought_edit_button: Edit confirmed items
+  orders_bought_edit_button: "Edit confirmed items"
   orders_bought_already_confirmed: "* already confirmed"
-  orders_confirm_cancel: Are you sure you want to cancel this order?
+  orders_confirm_cancel: "Are you sure you want to cancel this order?"
   order_processed_successfully: "Your order has been processed successfully"
   products_cart_distributor_choice: "Distributor for your order:"
   products_cart_distributor_change: "Your distributor for this order will be changed to %{name} if you add this product to your cart."
@@ -1840,7 +1846,6 @@ en_AU:
       details:
         title: "Details"
         headline: "Tell us about your enterprise"
-        enterprise: "This will put you on our map, and be shared on your profile."
         producer: "This will put you on our map, and be shared on your profile."
         enterprise_name_field: "Enterprise Name"
         producer_name_field: "Farm Name"
@@ -2026,6 +2031,9 @@ en_AU:
   delivery_method: Delivery Method
   fee_type: "Fee Type"
   tax_category: "Tax Category"
+  description: "Description"
+  display: "Display"
+  tags: "Tags"
   calculator: "Calculator"
   calculator_values: "Calculator values"
   calculator_settings_warning: "If you are changing the calculator type, you must save first before you can edit the calculator settings"
@@ -2117,7 +2125,6 @@ en_AU:
   new_order: "New Order"
   enterprise_tos_link: "Enterprise Terms of Service link"
   enterprise_tos_message: "We want to work with people that share our aims and values. As such we ask new enterprises to agree to our "
-  enterprise_tos_link_text: "Terms of Service."
   enterprise_tos_agree: "I agree to the above Terms of Service"
   tax_settings: "Tax Settings"
   products_require_tax_category: "products require tax category"
@@ -2375,6 +2382,7 @@ en_AU:
   back_to_orders_list: "Back to order list"
   no_orders_found: "No Orders Found"
   order_information: "Order Information"
+  new_payment: "New Payment"
   date_completed: "Date Completed"
   amount: "Amount"
   state_names:
@@ -2794,6 +2802,9 @@ en_AU:
       start_free_profile: "Start with a free profile, and expand when you're ready!"
   order_management:
     reports:
+      bulk_coop:
+        filters:
+          generate_report: "Generate Report"
       enterprise_fee_summaries:
         filters:
           date_range: "Date Range"
@@ -2839,6 +2850,8 @@ en_AU:
               tax_category_name: "Tax Category"
               total_amount: "$$ SUM"
         invalid_filter_parameters: "The filters you selected for this report are invalid."
+      report:
+        none: "None"
   order: "Order"
   distribution: "Distribution"
   order_details: "Order Details"
@@ -2854,6 +2867,7 @@ en_AU:
   shipment_inc_vat: "Shipment including VAT"
   shipping_tax_rate: "Shipping Tax Rate"
   category: "Category"
+  import_date: "Import Date"
   delivery: "Delivery"
   temperature_controlled: "Temperature Controlled"
   new_product: "New Product"
@@ -2871,14 +2885,20 @@ en_AU:
   previous: "Previous"
   last: "Last"
   spree:
+    all: "All"
+    category: "Category"
+    credit: "Credit"
     more: "More"
+    no_pending_payments: "No pending payments"
+    none: "None"
+    updating: "Updating"
     your_order_is_empty_add_product: "Your order is empty, please search for and add a product above"
     add_product: "Add Product"
     name_or_sku: "Name or SKU (enter at least first 4 characters of product name)"
-    resend: Resend
-    back_to_orders_list: Back To Orders List
-    return_authorizations: Return Authorizations
-    cannot_create_returns: Cannot create returns as this order has no shipped units.
+    resend: "Resend"
+    back_to_orders_list: "Back To Orders List"
+    return_authorizations: "Return Authorizations"
+    cannot_create_returns: "Cannot create returns as this order has no shipped units."
     select_stock: "Select stock"
     location: "Location"
     count_on_hand: "Count On Hand"
@@ -2939,7 +2959,6 @@ en_AU:
     default_meta_description: "Default Meta Description"
     default_meta_keywords: "Default Meta Keywords"
     security_settings: "Security Settings"
-    allow_ssl_in_development_and_test: "Allow SSL to be used when in development and test modes"
     allow_ssl_in_production: "Allow SSL to be used in production mode"
     allow_ssl_in_staging: "Allow SSL to be used in staging mode"
     currency_decimal_mark: "Currency decimal mark"
@@ -2964,6 +2983,7 @@ en_AU:
     tax rate: "Tax Rates"
     new_tax_rate: "New Tax Rate"
     tax_category: "Tax Category"
+    tax_rates: "Tax Rates"
     rate: "Rate"
     tax_rate_amount_explanation: "Tax rates are a decimal amount to aid in calculations, (i.e. if the tax rate is 5% then enter 0.05)"
     included_in_price: "Included in Price"
@@ -2991,6 +3011,9 @@ en_AU:
     back_to_taxonomies_list: "Back to Taxonomies List"
     shipping_methods: "Shipping Methods"
     shipping_method: "Shipping Method"
+    shipment: "Shipment"
+    payment: "Payment"
+    status: "Status"
     shipping_categories: "Shipping Categories"
     new_shipping_category: "New Shipping Category"
     back_to_shipping_categories: "Back To Shipping Categories"
@@ -3043,10 +3066,12 @@ en_AU:
     payment_method: "Payment Method"
     payment_processing_failed: "Payment could not be processed, please check the details you entered"
     not_available: "N/A"
+    sku: "SKU"
     order_populator:
       out_of_stock: '%{item} is out of stock.'
     actions:
       update: "Update"
+      cancel: "Cancel"
     shared:
       error_messages:
         errors_prohibited_this_record_from_being_saved:
@@ -3069,6 +3094,8 @@ en_AU:
           header:
             store: Store
     admin:
+      subscriptions:
+        number: "Number"
       tab:
         dashboard: "Dashboard"
         orders: "Orders"
@@ -3217,6 +3244,7 @@ en_AU:
           back_to_shipping_methods_list: "Back To Shipping Methods List"
         form:
           categories: "Categories"
+          tax_category: "Tax Category"
           zones: "Zones"
           both: "Both Checkout and Back office"
           back_end: "Back office only"
@@ -3290,6 +3318,7 @@ en_AU:
           value: "Value"
           unit_name: "Unit name"
           price: "Price"
+          unit_price: "Unit Price"
           on_hand: "On Hand"
           on_demand: "On Demand"
           product_description: "Product Description"
@@ -3360,7 +3389,6 @@ en_AU:
           price: "Price"
           options: "Options"
           no_results: "No results"
-          to_add_variants_you_must_first_define: "To add variants, you must first define"
           option_types: "Option Types"
           option_values: "Option Values"
           and: "and"
@@ -3370,9 +3398,9 @@ en_AU:
         new:
           new_variant: "New Variant"
         form:
-          cost_price: "Cost Price"
           sku: "SKU"
           price: "Price"
+          unit_price: "Unit Price"
           display_as: "Display As"
           display_name: "Display Name"
           display_as_placeholder: 'eg. 2 kg'
@@ -3413,8 +3441,7 @@ en_AU:
           or_enter_new_card: "Or, enter details for a new card:"
           remember_this_card: Remember this card?
     date_picker:
-      format: '%Y-%m-%d'
-      js_format: 'yy-mm-dd'
+      now: "Now"
     orders:
       error_flash_for_unavailable_items: "An item in your cart has become unavailable. Please update the selected quantities."
       edit:
@@ -3453,6 +3480,9 @@ en_AU:
         paid_order: "Your order was paid so %{distributor} has refunded the full amount"
         credit_order: "Your order was paid so your account has been credited"
         subject: "Cancellation of Order"
+      cancel_email_for_shop:
+        greeting: "Dear %{name},"
+        subject: "Cancellation of Order"
       confirm_email:
         subject: "Order Confirmation"
       invoice_email:
@@ -3474,7 +3504,6 @@ en_AU:
     shipment_mailer:
       shipped_email:
         dear_customer: "Dear Customer,"
-        instructions: "Your order has been shipped"
         shipment_summary: "Shipment Summary"
         subject: "Shipment Notification"
         thanks: "Thank you for your business."
@@ -3506,6 +3535,8 @@ en_AU:
       ended: ended
       paused: paused
       canceled: cancelled
+    paypal:
+      refund_amount: "Amount"
     users:
       form:
         account_settings: Account Settings

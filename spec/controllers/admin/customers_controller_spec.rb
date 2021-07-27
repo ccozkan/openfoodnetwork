@@ -16,7 +16,7 @@ module Admin
         end
 
         it "returns an empty @collection" do
-          spree_get :index, format: :html
+          get :index, as: :html
           expect(assigns(:collection)).to eq []
         end
       end
@@ -33,19 +33,102 @@ module Admin
             let(:params) { { format: :json, enterprise_id: enterprise.id } }
 
             it "scopes @collection to customers of that enterprise" do
-              spree_get :index, params
+              get :index, params: params
               expect(assigns(:collection)).to eq [customer]
             end
 
             it "serializes the data" do
               expect(ActiveModel::ArraySerializer).to receive(:new)
-              spree_get :index, params
+              get :index, params: params
+            end
+
+            it 'calls CustomersWithBalance' do
+              customers_with_balance = instance_double(CustomersWithBalance)
+              allow(CustomersWithBalance)
+                .to receive(:new).with(enterprise) { customers_with_balance }
+
+              expect(customers_with_balance).to receive(:query) { Customer.none }
+
+              get :index, params: params
+            end
+
+            it 'serializes using CustomerWithBalanceSerializer' do
+              expect(Api::Admin::CustomerWithBalanceSerializer).to receive(:new)
+
+              get :index, params: params
+            end
+
+            context 'when the customer has no orders' do
+              it 'includes the customer balance in the response' do
+                get :index, params: params
+                expect(json_response.first["balance"]).to eq("$0.00")
+              end
+            end
+
+            context 'when the customer has complete orders' do
+              let(:order) { create(:order, customer: customer, state: 'complete') }
+              let!(:line_item) { create(:line_item, order: order, price: 10.0) }
+
+              it 'includes the customer balance in the response' do
+                order.update_order!
+                get :index, params: params
+                expect(json_response.first["balance"]).to eq("$-10.00")
+              end
+            end
+
+            context 'when the customer has canceled orders' do
+              let(:order) { create(:order, customer: customer) }
+              let!(:variant) { create(:variant, price: 10.0) }
+
+              before do
+                allow_any_instance_of(Spree::Payment).to receive(:completed?).and_return(true)
+
+                order.contents.add(variant)
+                order.payments << create(:payment, order: order, amount: order.total)
+                order.reload
+
+                order.process_payments!
+                order.update_attribute(:state, 'canceled')
+              end
+
+              it 'includes the customer balance in the response' do
+                get :index, params: params
+                expect(json_response.first["balance"]).to eq("$10.00")
+              end
+            end
+
+            context 'when the customer has cart orders' do
+              let(:order) { create(:order, customer: customer, state: 'cart') }
+              let!(:line_item) { create(:line_item, order: order, price: 10.0) }
+
+              it 'includes the customer balance in the response' do
+                get :index, params: params
+                expect(json_response.first["balance"]).to eq("$0.00")
+              end
+            end
+
+            context 'when the customer has an order with a void payment' do
+              let(:order) { create(:order_with_totals, customer: customer, state: 'complete') }
+              let!(:payment) { create(:payment, order: order, amount: order.total) }
+
+              before do
+                allow_any_instance_of(Spree::Payment).to receive(:completed?).and_return(true)
+                order.process_payments!
+
+                payment.void_transaction!
+              end
+
+              it 'includes the customer balance in the response' do
+                expect(order.payment_total).to eq(0)
+                get :index, params: params
+                expect(json_response.first["balance"]).to eq('$-10.00')
+              end
             end
           end
 
           context "and enterprise_id is not given in params" do
             it "returns an empty collection" do
-              spree_get :index, format: :json
+              get :index, as: :json
               expect(assigns(:collection)).to eq []
             end
           end
@@ -57,7 +140,7 @@ module Admin
           end
 
           it "returns an empty collection" do
-            spree_get :index, format: :json
+            get :index, as: :json
             expect(assigns(:collection)).to eq []
           end
         end
@@ -79,7 +162,8 @@ module Admin
           end
 
           it "allows me to update the customer" do
-            spree_put :update, format: :json, id: customer.id, customer: { email: 'new.email@gmail.com' }
+            spree_put :update, format: :json, id: customer.id,
+                               customer: { email: 'new.email@gmail.com' }
             expect(JSON.parse(response.body)["id"]).to eq customer.id
             expect(assigns(:customer)).to eq customer
             expect(customer.reload.email).to eq 'new.email@gmail.com'
@@ -92,7 +176,8 @@ module Admin
           end
 
           it "prevents me from updating the customer" do
-            spree_put :update, format: :json, id: customer.id, customer: { email: 'new.email@gmail.com' }
+            spree_put :update, format: :json, id: customer.id,
+                               customer: { email: 'new.email@gmail.com' }
             expect(response).to redirect_to unauthorized_path
             expect(assigns(:customer)).to eq nil
             expect(customer.email).to_not eq 'new.email@gmail.com'
@@ -106,7 +191,8 @@ module Admin
       let(:another_enterprise) { create(:distributor_enterprise) }
 
       def create_customer(enterprise)
-        spree_put :create, format: :json, customer: { email: 'new@example.com', enterprise_id: enterprise.id }
+        spree_put :create, format: :json,
+                           customer: { email: 'new@example.com', enterprise_id: enterprise.id }
       end
 
       context "json" do
@@ -157,7 +243,7 @@ module Admin
           end
 
           it "renders the customer as json" do
-            spree_get :show, format: :json, id: customer.id
+            get :show, as: :json, params: { id: customer.id }
             expect(JSON.parse(response.body)["id"]).to eq customer.id
           end
         end
@@ -168,7 +254,7 @@ module Admin
           end
 
           it "prevents me from updating the customer" do
-            spree_get :show, format: :json, id: customer.id
+            get :show, as: :json, params: { id: customer.id }
             expect(response).to redirect_to unauthorized_path
           end
         end

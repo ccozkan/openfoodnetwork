@@ -1,9 +1,11 @@
-require 'open_food_network/user_balance_calculator'
+# frozen_string_literal: true
 
 module OpenFoodNetwork
   class OrderCycleManagementReport
     DEFAULT_DATE_INTERVAL = { from: -1.month, to: 1.day }.freeze
+
     attr_reader :params
+
     def initialize(user, params = {}, render_table = false)
       @params = sanitize_params(params)
       @user = user
@@ -44,11 +46,21 @@ module OpenFoodNetwork
     end
 
     def search
-      Spree::Order.complete.where("spree_orders.state != ?", :canceled).distributed_by_user(@user).managed_by(@user).search(params[:q])
+      Spree::Order.
+        finalized.
+        not_state(:canceled).
+        distributed_by_user(@user).
+        managed_by(@user).
+        ransack(params[:q])
     end
 
     def orders
-      filter search.result
+      search_result = search.result.order(:completed_at)
+      orders_with_balance = OutstandingBalance.new(search_result).
+        query.
+        select('spree_orders.*')
+
+      filter(orders_with_balance)
     end
 
     def table_items
@@ -67,6 +79,12 @@ module OpenFoodNetwork
 
     private
 
+    # This method relies on `balance_value` as a computed DB column. See `CompleteOrdersWithBalance`
+    # for reference.
+    def balance(order)
+      order.balance_value
+    end
+
     def payment_method_row(order)
       ba = order.billing_address
       [ba.andand.firstname,
@@ -78,7 +96,7 @@ module OpenFoodNetwork
        order.shipping_method.andand.name,
        order.payments.first.andand.payment_method.andand.name,
        order.payments.first.andand.amount,
-       OpenFoodNetwork::UserBalanceCalculator.new(order.email, order.distributor).balance]
+       balance(order)]
     end
 
     def delivery_row(order)
@@ -93,7 +111,7 @@ module OpenFoodNetwork
        order.shipping_method.andand.name,
        order.payments.first.andand.payment_method.andand.name,
        order.payments.first.andand.amount,
-       OpenFoodNetwork::UserBalanceCalculator.new(order.email, order.distributor).balance,
+       balance(order),
        has_temperature_controlled_items?(order),
        order.special_instructions]
     end
@@ -123,7 +141,9 @@ module OpenFoodNetwork
     end
 
     def has_temperature_controlled_items?(order)
-      order.line_items.any? { |line_item| line_item.product.shipping_category.andand.temperature_controlled }
+      order.line_items.any? { |line_item|
+        line_item.product.shipping_category.andand.temperature_controlled
+      }
     end
 
     def is_payment_methods?

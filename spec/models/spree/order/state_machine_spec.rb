@@ -18,7 +18,6 @@ describe Spree::Order do
         order.run_callbacks(:create)
         allow(order).to receive_messages payment_required?: true
         allow(order).to receive_messages process_payments!: true
-        allow(order).to receive :has_available_shipment
       end
 
       context "when payment processing succeeds" do
@@ -32,9 +31,9 @@ describe Spree::Order do
         context "when credit card processing fails" do
           before { allow(order).to receive_messages process_payments!: false }
 
-          it "should not complete the order" do
+          it "should still complete the order" do
             order.next
-            expect(order.state).to eq "payment"
+            expect(order.state).to eq "complete"
           end
         end
       end
@@ -42,32 +41,22 @@ describe Spree::Order do
       context "when payment processing fails" do
         before { allow(order).to receive_messages process_payments!: false }
 
-        it "cannot transition to complete" do
+        it "can transition to complete" do
           order.next
-          expect(order.state).to eq "payment"
+          expect(order.state).to eq "complete"
         end
-      end
-    end
-
-    context "when current state is address" do
-      before do
-        allow(order).to receive(:has_available_payment)
-        allow(order).to receive(:ensure_available_shipping_rates)
-        order.state = "address"
-      end
-
-      it "adjusts tax rates when transitioning to delivery" do
-        # Once because the record is being saved
-        # Twice because it is transitioning to the delivery state
-        expect(Spree::TaxRate).to receive(:adjust).twice
-        order.next!
       end
     end
 
     context "when current state is delivery" do
       before do
+        allow(order).to receive(:ensure_available_shipping_rates)
         order.state = "delivery"
-        allow(order).to receive_messages total: 10.0
+      end
+
+      it "adjusts tax rates when transitioning to payment" do
+        expect(Spree::TaxRate).to receive(:adjust).at_least(:once)
+        order.next!
       end
     end
   end
@@ -105,7 +94,8 @@ describe Spree::Order do
     end
 
     before do
-      allow(order).to receive_messages line_items: [build(:line_item, variant: variant, quantity: 2)]
+      allow(order).to receive_messages line_items: [build(:line_item, variant: variant,
+                                                                      quantity: 2)]
       allow(order.line_items).to receive_messages find_by_variant_id: order.line_items.first
 
       allow(order).to receive_messages completed?: true
@@ -115,7 +105,6 @@ describe Spree::Order do
     it "should send a cancel email" do
       # Stub methods that cause side-effects in this test
       allow(shipment).to receive(:cancel!)
-      allow(order).to receive :has_available_shipment
       allow(order).to receive :restock_items!
       mail_message = double "Mail::Message"
       order_id = nil
@@ -123,7 +112,7 @@ describe Spree::Order do
         order_id = args[0]
         mail_message
       }
-      expect(mail_message).to receive :deliver
+      expect(mail_message).to receive :deliver_later
       order.cancel!
       expect(order_id).to eq order.id
     end
@@ -133,9 +122,7 @@ describe Spree::Order do
         allow(shipment).to receive(:ensure_correct_adjustment)
         allow(shipment).to receive(:update_order)
         allow(Spree::OrderMailer).to receive(:cancel_email).and_return(mail_message = double)
-        allow(mail_message).to receive :deliver
-
-        allow(order).to receive :has_available_shipment
+        allow(mail_message).to receive :deliver_later
       end
     end
 
@@ -143,8 +130,7 @@ describe Spree::Order do
       before do
         # Stubs methods that cause unwanted side effects in this test
         allow(Spree::OrderMailer).to receive(:cancel_email).and_return(mail_message = double)
-        allow(mail_message).to receive :deliver
-        allow(order).to receive :has_available_shipment
+        allow(mail_message).to receive :deliver_later
         allow(order).to receive :restock_items!
         allow(shipment).to receive(:cancel!)
       end
@@ -175,9 +161,6 @@ describe Spree::Order do
       allow(order).to receive_messages email: "user@spreecommerce.com"
       allow(order).to receive_messages state: "canceled"
       allow(order).to receive_messages allow_resume?: true
-
-      # Stubs method that cause unwanted side effects in this test
-      allow(order).to receive :has_available_shipment
     end
   end
 end

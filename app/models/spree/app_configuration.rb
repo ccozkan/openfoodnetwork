@@ -33,11 +33,8 @@ module Spree
     preference :allow_backorder_shipping, :boolean, default: false
     preference :allow_checkout_on_gateway_error, :boolean, default: false
     preference :allow_guest_checkout, :boolean, default: true
-    preference :allow_ssl_in_development_and_test, :boolean, default: false
     preference :allow_ssl_in_production, :boolean, default: true
     preference :allow_ssl_in_staging, :boolean, default: true
-    # Automatically capture the credit card (as opposed to just authorize and capture later)
-    preference :auto_capture, :boolean, default: false
     # Replace with the name of a zone if you would like to limit the countries
     preference :checkout_zone, :string, default: nil
     preference :currency, :string, default: "USD"
@@ -60,7 +57,6 @@ module Spree
     preference :products_per_page, :integer, default: 12
     preference :redirect_https_to_http, :boolean, default: false
     preference :require_master_price, :boolean, default: true
-    preference :shipment_inc_vat, :boolean, default: false
     # Request instructions/info for shipping
     preference :shipping_instructions, :boolean, default: false
     # Displays variant full price or difference with product price.
@@ -92,13 +88,11 @@ module Spree
     preference :s3_host_alias, :string
 
     # Default mail headers settings
-    preference :enable_mail_delivery, :boolean, default: false
     preference :mails_from, :string, default: 'ofn@example.com'
     preference :mail_bcc, :string, default: 'ofn@example.com'
     preference :intercept_email, :string, default: nil
 
     # Default smtp settings
-    preference :override_actionmailer_config, :boolean, default: true
     preference :mail_host, :string, default: 'localhost'
     preference :mail_domain, :string, default: 'localhost'
     preference :mail_port, :integer, default: 25
@@ -115,19 +109,18 @@ module Spree
     # Legal Preferences
     preference :footer_tos_url, :string, default: "/Terms-of-service.pdf"
     preference :enterprises_require_tos, :boolean, default: false
+    preference :shoppers_require_tos, :boolean, default: false
     preference :privacy_policy_url, :string, default: nil
     preference :cookies_consent_banner_toggle, :boolean, default: false
     preference :cookies_policy_matomo_section, :boolean, default: false
 
     # Tax Preferences
     preference :products_require_tax_category, :boolean, default: false
-    preference :shipping_tax_rate, :decimal, default: 0
 
     # Monitoring
     preference :last_job_queue_heartbeat_at, :string, default: nil
 
     # External services
-    preference :bugherd_api_key, :string, default: nil
     preference :matomo_url, :string, default: nil
     preference :matomo_site_id, :string, default: nil
     preference :matomo_tag_manager_url, :string, default: nil

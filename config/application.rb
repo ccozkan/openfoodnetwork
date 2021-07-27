@@ -1,6 +1,25 @@
 require_relative 'boot'
 
-require 'rails/all'
+require "rails"
+[
+  "active_record/railtie",
+  #"active_storage/engine",
+  "action_controller/railtie",
+  "action_view/railtie",
+  "action_mailer/railtie",
+  "active_job/railtie",
+  #"action_cable/engine", # Enable this when installing StimulusReflex
+  #"action_mailbox/engine",
+  #"action_text/engine",
+  "rails/test_unit/railtie",
+  "sprockets/railtie" # Disable this after migrating to Webpacker
+].each do |railtie|
+  begin
+    require railtie
+  rescue LoadError
+  end
+end
+
 require_relative "../lib/open_food_network/i18n_config"
 
 require_relative '../lib/spree/core/environment'
@@ -39,10 +58,6 @@ module Openfoodnetwork
       Spree::Config = app.config.spree.preferences # legacy access
     end
 
-    initializer "spree.load_preferences", before: "spree.environment" do
-      ::ActiveRecord::Base.include Spree::Preferences::Preferable
-    end
-
     initializer "spree.register.payment_methods" do |app|
       app.config.spree.payment_methods = [
         Spree::Gateway::Bogus,
@@ -79,12 +94,6 @@ module Openfoodnetwork
     initializer 'ofn.spree_locale_settings', before: 'spree.promo.environment' do |app|
       Spree::Config['checkout_zone'] = ENV['CHECKOUT_ZONE']
       Spree::Config['currency'] = ENV['CURRENCY']
-      if Spree::Country.table_exists?
-        country = Spree::Country.find_by(iso: ENV['DEFAULT_COUNTRY_CODE'])
-        Spree::Config['default_country_id'] = country.id if country.present?
-      else
-        Spree::Config['default_country_id'] = 12  # Australia
-      end
     end
 
     # Register Spree calculators
@@ -125,10 +134,9 @@ module Openfoodnetwork
 
     # Register Spree payment methods
     initializer "spree.gateway.payment_methods", :after => "spree.register.payment_methods" do |app|
-      # app.config.spree.payment_methods << Spree::Gateway::Migs
-      # app.config.spree.payment_methods << Spree::Gateway::Pin
       app.config.spree.payment_methods << Spree::Gateway::StripeConnect
       app.config.spree.payment_methods << Spree::Gateway::StripeSCA
+      app.config.spree.payment_methods << Spree::Gateway::PayPalExpress
       app.config.spree.payment_methods << Spree::Gateway::IyzipayAga
     end
 
@@ -201,8 +209,10 @@ module Openfoodnetwork
 
     config.active_support.escape_html_entities_in_json = true
 
-    config.active_job.queue_adapter = :delayed_job
+    config.active_job.queue_adapter = :sidekiq
 
-    config.active_record.raise_in_transactional_callbacks = true
+    config.action_controller.include_all_helpers = false
+
+    config.generators.template_engine = :haml
   end
 end

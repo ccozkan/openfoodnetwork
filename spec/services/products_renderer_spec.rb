@@ -12,10 +12,12 @@ describe ProductsRenderer do
   describe "sorting" do
     let(:t1) { create(:taxon) }
     let(:t2) { create(:taxon) }
-    let!(:p1) { create(:product, name: "abc", primary_taxon_id: t2.id) }
-    let!(:p2) { create(:product, name: "def", primary_taxon_id: t1.id) }
-    let!(:p3) { create(:product, name: "ghi", primary_taxon_id: t2.id) }
-    let!(:p4) { create(:product, name: "jkl", primary_taxon_id: t1.id) }
+    let(:s1) { create(:supplier_enterprise) }
+    let(:s2) { create(:supplier_enterprise) }
+    let!(:p1) { create(:product, name: "abc", primary_taxon_id: t2.id, supplier_id: s1.id) }
+    let!(:p2) { create(:product, name: "def", primary_taxon_id: t1.id, supplier_id: s2.id) }
+    let!(:p3) { create(:product, name: "ghi", primary_taxon_id: t2.id, supplier_id: s1.id) }
+    let!(:p4) { create(:product, name: "jkl", primary_taxon_id: t1.id, supplier_id: s2.id) }
 
     before do
       exchange.variants << p1.variants.first
@@ -26,6 +28,13 @@ describe ProductsRenderer do
 
     it "sorts products by the distributor's preferred taxon list" do
       allow(distributor).to receive(:preferred_shopfront_taxon_order) { "#{t1.id},#{t2.id}" }
+      products = products_renderer.send(:products)
+      expect(products).to eq([p2, p4, p1, p3])
+    end
+
+    it "sorts products by the distributor's preferred producer list" do
+      allow(distributor).to receive(:preferred_shopfront_product_sorting_method) { "by_producer" }
+      allow(distributor).to receive(:preferred_shopfront_producer_order) { "#{s2.id},#{s1.id}" }
       products = products_renderer.send(:products)
       expect(products).to eq([p2, p4, p1, p3])
     end
@@ -86,10 +95,18 @@ describe ProductsRenderer do
     let(:hub) { create(:distributor_enterprise) }
     let(:oc) { create(:simple_order_cycle, distributors: [hub], variants: [v1, v3, v4]) }
     let(:p) { create(:simple_product) }
-    let!(:v1) { create(:variant, product: p, unit_value: 3) } # In exchange, not in inventory (ie. not_hidden)
+    let!(:v1) {
+      create(:variant, product: p, unit_value: 3)
+    } # In exchange, not in inventory (ie. not_hidden)
     let!(:v2) { create(:variant, product: p, unit_value: 5) } # Not in exchange
-    let!(:v3) { create(:variant, product: p, unit_value: 7, inventory_items: [create(:inventory_item, enterprise: hub, visible: true)]) }
-    let!(:v4) { create(:variant, product: p, unit_value: 9, inventory_items: [create(:inventory_item, enterprise: hub, visible: false)]) }
+    let!(:v3) {
+      create(:variant, product: p, unit_value: 7,
+                       inventory_items: [create(:inventory_item, enterprise: hub, visible: true)])
+    }
+    let!(:v4) {
+      create(:variant, product: p, unit_value: 9,
+                       inventory_items: [create(:inventory_item, enterprise: hub, visible: false)])
+    }
     let(:products_renderer) { ProductsRenderer.new(hub, oc, customer) }
     let(:variants) { products_renderer.send(:variants_for_shop_by_id) }
 

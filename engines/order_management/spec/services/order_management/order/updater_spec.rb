@@ -5,26 +5,42 @@ require 'spec_helper'
 module OrderManagement
   module Order
     describe Updater do
-      let(:order) { build(:order) }
+      let(:order) { create(:order) }
       let(:updater) { OrderManagement::Order::Updater.new(order) }
 
       before { allow(order).to receive(:backordered?) { false } }
 
-      it "updates totals" do
-        payments = [double(amount: 5), double(amount: 5)]
-        allow(order).to receive_message_chain(:payments, :completed).and_return(payments)
+      context "updating order totals" do
+        before do
+          2.times { create(:line_item, order: order, price: 10) }
+        end
 
-        line_items = [double(amount: 10), double(amount: 20)]
-        allow(order).to receive_messages line_items: line_items
+        it "updates payment totals" do
+          allow(order).to receive_message_chain(:payments, :completed, :sum).and_return(10)
 
-        adjustments = [double(amount: 10), double(amount: -20)]
-        allow(order).to receive_message_chain(:adjustments, :eligible).and_return(adjustments)
+          updater.update_totals
+          expect(order.payment_total).to eq(10)
+        end
 
-        updater.update_totals
-        expect(order.payment_total).to eq 10
-        expect(order.item_total).to eq 30
-        expect(order.adjustment_total).to eq(-10)
-        expect(order.total).to eq 20
+        it "updates item total" do
+          updater.update_item_total
+          expect(order.item_total).to eq(20)
+        end
+
+        it "updates adjustment totals" do
+          allow(order).to receive_message_chain(:all_adjustments, :additional, :eligible,
+                                                :sum).and_return(-5)
+          allow(order).to receive_message_chain(:all_adjustments, :tax, :additional,
+                                                :sum).and_return(20)
+          allow(order).to receive_message_chain(:all_adjustments, :tax, :inclusive,
+                                                :sum).and_return(15)
+          allow(order).to receive_message_chain(:adjustments, :admin, :sum).and_return(2)
+
+          updater.update_adjustment_total
+          expect(order.adjustment_total).to eq(-5)
+          expect(order.additional_tax_total).to eq(20)
+          expect(order.included_tax_total).to eq(17)
+        end
       end
 
       context "updating shipment state" do
@@ -90,7 +106,7 @@ module OrderManagement
           allow(order).to receive_messages shipments: [shipment]
 
           expect(shipment).to receive(:update!).with(order)
-          updater.update
+          updater.update_shipments
         end
       end
 
@@ -112,12 +128,13 @@ module OrderManagement
           allow(order).to receive_messages shipments: [shipment]
 
           expect(shipment).not_to receive(:update!).with(order)
+          expect(updater).not_to receive(:update_shipments).with(order)
           updater.update
         end
       end
 
-      it "updates totals twice" do
-        expect(updater).to receive(:update_totals).twice
+      it "updates totals once" do
+        expect(updater).to receive(:update_totals).once
         updater.update
       end
 
@@ -126,114 +143,142 @@ module OrderManagement
         updater.update
       end
 
-      it "is failed if no valid payments" do
-        allow(order).to receive_message_chain(:payments, :valid, :empty?).and_return(true)
+      describe "#update_payment_state" do
+        context "when the order has no valid payments" do
+          it "is failed" do
+            allow(order).to receive_message_chain(:payments, :valid, :empty?).and_return(true)
 
-        updater.update_payment_state
-        expect(order.payment_state).to eq('failed')
-      end
-
-      context "payment total is greater than order total" do
-        it "is credit_owed" do
-          order.payment_total = 2
-          order.total = 1
-
-          expect {
             updater.update_payment_state
-          }.to change { order.payment_state }.to 'credit_owed'
-        end
-      end
-
-      context "order total is greater than payment total" do
-        it "is credit_owed" do
-          order.payment_total = 1
-          order.total = 2
-
-          expect {
-            updater.update_payment_state
-          }.to change { order.payment_state }.to 'balance_due'
-        end
-      end
-
-      context "order total equals payment total" do
-        it "is paid" do
-          order.payment_total = 30
-          order.total = 30
-
-          expect {
-            updater.update_payment_state
-          }.to change { order.payment_state }.to 'paid'
-        end
-      end
-
-      context "order is canceled" do
-        before do
-          order.state = 'canceled'
-        end
-
-        context "and is still unpaid" do
-          it "is void" do
-            order.payment_total = 0
-            order.total = 30
-            expect {
-              updater.update_payment_state
-            }.to change { order.payment_state }.to 'void'
+            expect(order.payment_state).to eq('failed')
           end
         end
 
-        context "and is paid" do
+        context "when the order has a payment that requires authorization" do
+          let!(:payment) { create(:payment, order: order, state: "requires_authorization") }
+
+          it "returns requires_authorization" do
+            expect {
+              updater.update_payment_state
+            }.to change { order.payment_state }.to 'requires_authorization'
+          end
+        end
+
+        context "when the order has a payment that requires authorization and a completed payment" do
+          let!(:payment) { create(:payment, order: order, state: "requires_authorization") }
+          let!(:completed_payment) { create(:payment, order: order, state: "completed") }
+
+          it "returns paid" do
+            updater.update_payment_state
+            expect(order.payment_state).to_not eq("requires_authorization")
+          end
+        end
+
+        context "payment total is greater than order total" do
           it "is credit_owed" do
-            order.payment_total = 30
-            order.total = 30
-            allow(order).to receive_message_chain(:payments, :valid, :empty?).and_return(false)
-            allow(order).to receive_message_chain(:payments, :completed, :empty?).and_return(false)
+            order.payment_total = 2
+            order.total = 1
+
             expect {
               updater.update_payment_state
             }.to change { order.payment_state }.to 'credit_owed'
           end
         end
 
-        context "and payment is refunded" do
-          it "is void" do
-            order.payment_total = 0
-            order.total = 30
-            allow(order).to receive_message_chain(:payments, :valid, :empty?).and_return(false)
-            allow(order).to receive_message_chain(:payments, :completed, :empty?).and_return(false)
+        context "order total is greater than payment total" do
+          it "is credit_owed" do
+            order.payment_total = 1
+            order.total = 2
+
             expect {
               updater.update_payment_state
-            }.to change { order.payment_state }.to 'void'
-          end
-        end
-      end
-
-      context 'when the set payment_state does not match the last payment_state' do
-        before { order.payment_state = 'previous_to_paid' }
-
-        context 'and the order is being updated' do
-          before { allow(order).to receive(:persisted?) { true } }
-
-          it 'creates a new state_change for the order' do
-            expect { updater.update_payment_state }
-              .to change { order.state_changes.size }.by(1)
+            }.to change { order.payment_state }.to 'balance_due'
           end
         end
 
-        context 'and the order is being created' do
-          before { allow(order).to receive(:persisted?) { false } }
+        context "order total equals payment total" do
+          it "is paid" do
+            order.payment_total = 30
+            order.total = 30
 
-          it 'creates a new state_change for the order' do
+            expect {
+              updater.update_payment_state
+            }.to change { order.payment_state }.to 'paid'
+          end
+        end
+
+        context "order is canceled" do
+          before { order.state = 'canceled' }
+
+          context "and is still unpaid" do
+            it "is void" do
+              order.payment_total = 0
+              order.total = 30
+
+              expect {
+                updater.update_payment_state
+              }.to change { order.payment_state }.to 'void'
+            end
+          end
+
+          context "and is paid" do
+            it "is credit_owed" do
+              order.payment_total = 30
+              order.total = 30
+              allow(order).to receive_message_chain(:payments, :valid, :empty?) { false }
+              allow(order).to receive_message_chain(:payments, :completed, :empty?) { false }
+              allow(order).to receive_message_chain(:payments, :requires_authorization, :any?) {
+                                false
+                              }
+
+              expect {
+                updater.update_payment_state
+              }.to change { order.payment_state }.to 'credit_owed'
+            end
+          end
+
+          context "and payment is refunded" do
+            it "is void" do
+              order.payment_total = 0
+              order.total = 30
+              allow(order).to receive_message_chain(:payments, :valid, :empty?) { false }
+              allow(order).to receive_message_chain(:payments, :completed, :empty?) { false }
+
+              expect {
+                updater.update_payment_state
+              }.to change { order.payment_state }.to 'void'
+            end
+          end
+        end
+
+        context 'when the set payment_state matches the last payment_state' do
+          before { order.payment_state = 'paid' }
+
+          it 'does not create any state_change' do
             expect { updater.update_payment_state }
               .not_to change { order.state_changes.size }
           end
         end
-      end
 
-      context 'when the set payment_state matches the last payment_state' do
-        before { order.payment_state = 'paid' }
+        context 'when the set payment_state does not match the last payment_state' do
+          before { order.payment_state = 'previous_to_paid' }
 
-        it 'does not create any state_change' do
-          expect { updater.update_payment_state }
-            .not_to change { order.state_changes.size }
+          context 'and the order is being updated' do
+            before { allow(order).to receive(:persisted?) { true } }
+
+            it 'creates a new state_change for the order' do
+              expect { updater.update_payment_state }
+                .to change { order.state_changes.size }.by(1)
+            end
+          end
+
+          context 'and the order is being created' do
+            before { allow(order).to receive(:persisted?) { false } }
+
+            it 'creates a new state_change for the order' do
+              expect { updater.update_payment_state }
+                .not_to change { order.state_changes.size }
+            end
+          end
         end
       end
 
@@ -267,6 +312,52 @@ module OrderManagement
           it "does not populate the shipping address from distributor" do
             updater.before_save_hook
             expect(order.ship_address.firstname).to eq("will")
+          end
+        end
+      end
+
+      describe "updating order totals" do
+        describe "#update_totals_and_states" do
+          it "deals with legacy taxes" do
+            expect(updater).to receive(:handle_legacy_taxes)
+
+            updater.update_totals_and_states
+          end
+        end
+
+        describe "#handle_legacy_taxes" do
+          context "when the order is incomplete" do
+            it "doesn't touch taxes" do
+              allow(order).to receive(:completed?) { false }
+
+              expect(order).to_not receive(:create_tax_charge!)
+              updater.__send__(:handle_legacy_taxes)
+            end
+          end
+
+          context "when the order is complete" do
+            before { allow(order).to receive(:completed?) { true } }
+
+            context "and the order has legacy taxes" do
+              let!(:legacy_tax_adjustment) {
+                create(:adjustment, order: order, adjustable: order, included: false,
+                                    originator_type: "Spree::TaxRate")
+              }
+
+              it "re-applies order taxes" do
+                expect(order).to receive(:create_tax_charge!)
+
+                updater.__send__(:handle_legacy_taxes)
+              end
+            end
+
+            context "and the order has no legacy taxes" do
+              it "leaves taxes untouched" do
+                expect(order).to_not receive(:create_tax_charge!)
+
+                updater.__send__(:handle_legacy_taxes)
+              end
+            end
           end
         end
       end

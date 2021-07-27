@@ -1,6 +1,5 @@
 # frozen_string_literal: false
 
-require_dependency 'spree/calculator'
 require 'open_food_network/enterprise_fee_calculator'
 
 module Calculator
@@ -13,8 +12,8 @@ module Calculator
       case computable
       when Spree::Order
         compute_order(computable)
-      when Spree::LineItem
-        compute_line_item(computable)
+      when Spree::Shipment, Spree::LineItem, Spree::Adjustment
+        compute_item(computable)
       end
     end
 
@@ -24,13 +23,19 @@ module Calculator
       calculable
     end
 
-    # Enable calculation of tax for enterprise fees with tax rates where included_in_price = false
     def compute_order(order)
+      # This legacy tax calculation applies to additional taxes only, and is no longer used.
+      # In theory it should never be called any more after this has been deployed.
+      # If the message below doesn't show up in Bugsnag, we can safely delete this method and all
+      # the related methods below it.
+      Bugsnag.notify("Calculator::DefaultTax was called with legacy tax calculations")
+
       calculator = OpenFoodNetwork::EnterpriseFeeCalculator.new(order.distributor,
                                                                 order.order_cycle)
 
       [
         line_items_total(order),
+        shipments_total(order),
         per_item_fees_total(order, calculator),
         per_order_fees_total(order, calculator)
       ].sum do |total|
@@ -44,6 +49,12 @@ module Calculator
       end
 
       matched_line_items.sum(&:total)
+    end
+
+    def shipments_total(order)
+      order.shipments.select do |shipment|
+        shipment.tax_category == rate.tax_category
+      end.sum(&:cost)
     end
 
     # Finds relevant fees for each line_item,
@@ -70,15 +81,11 @@ module Calculator
         .sum { |applicator| applicator.enterprise_fee.compute_amount(order) }
     end
 
-    def compute_line_item(line_item)
-      if line_item.tax_category == rate.tax_category
-        if rate.included_in_price
-          deduced_total_by_rate(line_item.total, rate)
-        else
-          round_to_two_places(line_item.total * rate.amount)
-        end
+    def compute_item(item)
+      if rate.included_in_price
+        deduced_total_by_rate(item.amount, rate)
       else
-        0
+        round_to_two_places(item.amount * rate.amount)
       end
     end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open_food_network/enterprise_injection_data'
 
 class EnterprisesController < BaseController
@@ -39,14 +41,14 @@ class EnterprisesController < BaseController
 
   def check_permalink
     if Enterprise.find_by permalink: params[:permalink]
-      render(text: params[:permalink], status: :conflict) && return
+      render(plain: params[:permalink], status: :conflict) && return
     end
 
     begin
       Rails.application.routes.recognize_path( "/#{params[:permalink]}" )
-      render text: params[:permalink], status: :conflict
+      render plain: params[:permalink], status: :conflict
     rescue ActionController::RoutingError
-      render text: params[:permalink], status: :ok
+      render plain: params[:permalink], status: :ok
     end
   end
 

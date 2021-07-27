@@ -18,78 +18,19 @@ module Spree
         variant.price = 0
         expect(variant).to be_valid
       end
-    end
 
-    context "product has other variants" do
-      describe "option value accessors" do
-        before {
-          @multi_variant = create(:variant, product: variant.product)
-          variant.product.reload
-        }
-
-        let(:multi_variant) { @multi_variant }
-
-        it "should set option value" do
-          expect(multi_variant.option_value('media_type')).to be_nil
-
-          multi_variant.set_option_value('media_type', 'DVD')
-          expect(multi_variant.option_value('media_type')).to eq 'DVD'
-
-          multi_variant.set_option_value('media_type', 'CD')
-          expect(multi_variant.option_value('media_type')).to eq 'CD'
-        end
-
-        it "should not duplicate associated option values when set multiple times" do
-          multi_variant.set_option_value('media_type', 'CD')
-
-          expect {
-            multi_variant.set_option_value('media_type', 'DVD')
-          }.to_not change(multi_variant.option_values, :count)
-
-          expect {
-            multi_variant.set_option_value('coolness_type', 'awesome')
-          }.to change(multi_variant.option_values, :count).by(1)
-        end
-      end
-
-      context "product has other variants" do
-        describe "option value accessors" do
-          before {
-            @multi_variant = create(:variant, product: variant.product)
-            variant.product.reload
-          }
-
-          let(:multi_variant) { @multi_variant }
-
-          it "should set option value" do
-            expect(multi_variant.option_value('media_type')).to be_nil
-
-            multi_variant.set_option_value('media_type', 'DVD')
-            expect(multi_variant.option_value('media_type')).to eq 'DVD'
-
-            multi_variant.set_option_value('media_type', 'CD')
-            expect(multi_variant.option_value('media_type')).to eq 'CD'
-          end
-
-          it "should not duplicate associated option values when set multiple times" do
-            multi_variant.set_option_value('media_type', 'CD')
-
-            expect {
-              multi_variant.set_option_value('media_type', 'DVD')
-            }.to_not change(multi_variant.option_values, :count)
-
-            expect {
-              multi_variant.set_option_value('coolness_type', 'awesome')
-            }.to change(multi_variant.option_values, :count).by(1)
-          end
-        end
+      it "should validate unit_value is greater than 0" do
+        variant.unit_value = 0
+        expect(variant).to be_invalid
       end
     end
 
     context "price parsing" do
       before(:each) do
         I18n.locale = I18n.default_locale
-        I18n.backend.store_translations(:de, { number: { currency: { format: { delimiter: '.', separator: ',' } } } })
+        I18n.backend.store_translations(:de,
+                                        { number: { currency: { format: { delimiter: '.',
+                                                                          separator: ',' } } } })
       end
 
       after do
@@ -369,8 +310,12 @@ module Spree
         let!(:hidden_variant) { create(:variant) }
         let!(:visible_variant) { create(:variant) }
 
-        let!(:hidden_inventory_item) { create(:inventory_item, enterprise: enterprise, variant: hidden_variant, visible: false ) }
-        let!(:visible_inventory_item) { create(:inventory_item, enterprise: enterprise, variant: visible_variant, visible: true ) }
+        let!(:hidden_inventory_item) {
+          create(:inventory_item, enterprise: enterprise, variant: hidden_variant, visible: false )
+        }
+        let!(:visible_inventory_item) {
+          create(:inventory_item, enterprise: enterprise, variant: visible_variant, visible: true )
+        }
 
         context "finding variants that are not hidden from an enterprise's inventory" do
           context "when the enterprise given is nil" do
@@ -392,9 +337,18 @@ module Spree
             context "when inventory items exist for other enterprises" do
               let(:other_enterprise) { create(:distributor_enterprise) }
 
-              let!(:new_inventory_item) { create(:inventory_item, enterprise: other_enterprise, variant: new_variant, visible: true ) }
-              let!(:hidden_inventory_item2) { create(:inventory_item, enterprise: other_enterprise, variant: visible_variant, visible: false ) }
-              let!(:visible_inventory_item2) { create(:inventory_item, enterprise: other_enterprise, variant: hidden_variant, visible: true ) }
+              let!(:new_inventory_item) {
+                create(:inventory_item, enterprise: other_enterprise, variant: new_variant,
+                                        visible: true )
+              }
+              let!(:hidden_inventory_item2) {
+                create(:inventory_item, enterprise: other_enterprise, variant: visible_variant,
+                                        visible: false )
+              }
+              let!(:visible_inventory_item2) {
+                create(:inventory_item, enterprise: other_enterprise, variant: hidden_variant,
+                                        visible: true )
+              }
 
               it "lists any variants that are not listed as visible=false only for the relevant enterprise" do
                 expect(variants).to include new_variant, visible_variant
@@ -419,12 +373,16 @@ module Spree
         let(:add_to_oc_producer) { create(:supplier_enterprise) }
         let(:other_producer) { create(:supplier_enterprise) }
         let!(:v1) { create(:variant, product: create(:simple_product, supplier: shop ) ) }
-        let!(:v2) { create(:variant, product: create(:simple_product, supplier: add_to_oc_producer ) ) }
+        let!(:v2) {
+          create(:variant, product: create(:simple_product, supplier: add_to_oc_producer ) )
+        }
         let!(:v3) { create(:variant, product: create(:simple_product, supplier: other_producer ) ) }
 
         before do
-          create(:enterprise_relationship, parent: add_to_oc_producer, child: shop, permissions_list: [:add_to_order_cycle])
-          create(:enterprise_relationship, parent: other_producer, child: shop, permissions_list: [:manage_products])
+          create(:enterprise_relationship, parent: add_to_oc_producer, child: shop,
+                                           permissions_list: [:add_to_order_cycle])
+          create(:enterprise_relationship, parent: other_producer, child: shop,
+                                           permissions_list: [:manage_products])
         end
 
         it 'shows variants produced by the enterprise and any producers granting P-OC' do
@@ -486,7 +444,9 @@ module Spree
         order_cycle = double(:order_cycle)
         variant = Variant.new
 
-        expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).to receive(:fees_for).with(variant) { 23 }
+        expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).to receive(:fees_for).with(variant) {
+                                                                              23
+                                                                            }
 
         expect(variant.fees_for(distributor, order_cycle)).to eq(23)
       end
@@ -499,7 +459,9 @@ module Spree
         variant = Variant.new
         fees = double(:fees)
 
-        expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).to receive(:fees_by_type_for).with(variant) { fees }
+        expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).to receive(:fees_by_type_for).with(variant) {
+                                                                              fees
+                                                                            }
 
         expect(variant.fees_by_type_for(distributor, order_cycle)).to eq(fees)
       end
@@ -537,6 +499,7 @@ module Spree
         before do
           product.update_attribute :variant_unit, 'items'
           product.reload
+          variant.reload
         end
 
         it "is valid with only unit value set" do
@@ -551,10 +514,11 @@ module Spree
           expect(variant).to be_valid
         end
 
-        it "is invalid when neither unit value nor unit description are set" do
+        it "sets unit_value to 1.0 before validation if it's nil" do
           variant.unit_value = nil
           variant.unit_description = nil
-          expect(variant).not_to be_valid
+          expect(variant).to be_valid
+          expect(variant.unit_value).to eq 1.0
         end
 
         it "has a valid master variant" do
@@ -635,7 +599,7 @@ module Spree
       describe "setting the variant's weight from the unit value" do
         it "sets the variant's weight when unit is weight" do
           p = create(:simple_product, variant_unit: 'volume')
-          v = create(:variant, product: p, weight: nil)
+          v = create(:variant, product: p, weight: 0)
 
           p.update! variant_unit: 'weight', variant_unit_scale: 1
           v.update! unit_value: 10, unit_description: 'foo'
@@ -704,7 +668,9 @@ module Spree
 
       context "when the variant does not have a display_as value set" do
         let!(:p) { create(:simple_product, variant_unit: 'weight', variant_unit_scale: 1) }
-        let!(:v) { create(:variant, product: p, unit_value: 5, unit_description: 'bar', display_as: '') }
+        let!(:v) {
+          create(:variant, product: p, unit_value: 5, unit_description: 'bar', display_as: '')
+        }
 
         it "requests the name of the new option_value from OptionValueName" do
           expect_any_instance_of(VariantUnits::OptionValueNamer).to receive(:name).exactly(1).times.and_call_original
@@ -716,7 +682,9 @@ module Spree
 
       context "when the variant has a display_as value set" do
         let!(:p) { create(:simple_product, variant_unit: 'weight', variant_unit_scale: 1) }
-        let!(:v) { create(:variant, product: p, unit_value: 5, unit_description: 'bar', display_as: 'FOOS!') }
+        let!(:v) {
+          create(:variant, product: p, unit_value: 5, unit_description: 'bar', display_as: 'FOOS!')
+        }
 
         it "does not request the name of the new option_value from OptionValueName" do
           expect_any_instance_of(VariantUnits::OptionValueNamer).not_to receive(:name)
@@ -750,7 +718,7 @@ module Spree
     context "extends LocalizedNumber" do
       subject! { build_stubbed(:variant) }
 
-      it_behaves_like "a model using the LocalizedNumber module", [:price, :cost_price, :weight]
+      it_behaves_like "a model using the LocalizedNumber module", [:price, :weight]
     end
 
     context "in a circular order cycle setup" do
@@ -771,7 +739,7 @@ module Spree
       end
 
       it "saves without infinite loop" do
-        expect(variant1.update(cost_price: 1)).to be_truthy
+        expect(variant1.update(price: 1)).to be_truthy
       end
     end
   end
@@ -783,6 +751,43 @@ module Spree
 
       v.destroy
       expect(e.reload.variant_ids).to be_empty
+    end
+  end
+
+  describe "#ensure_unit_value" do
+    let(:product) { create(:product, variant_unit: "weight") }
+    let(:variant) { create(:variant, product_id: product.id) }
+
+    context "when a product's variant_unit value is changed from weight to items" do
+      it "sets the variant's unit_value to 1" do
+        product.update(variant_unit: "items")
+
+        expect(variant.unit_value).to eq 1
+      end
+    end
+
+    context "trying to set an invalid unit_value" do
+      it "does not allow NaN" do
+        variant.update(unit_value: Float::NAN)
+
+        expect(variant.reload.unit_value).to eq(1.0)
+      end
+    end
+  end
+
+  describe "#default_price" do
+    let(:variant) { create(:variant) }
+    let(:default_price) { variant.default_price }
+
+    context "when the default price is soft-deleted" do
+      it "can access the default price" do
+        price_id = default_price.id
+
+        default_price.destroy
+
+        expect(variant.reload.default_price).to be_a Spree::Price
+        expect(variant.default_price.id).to eq price_id
+      end
     end
   end
 end

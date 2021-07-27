@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenFoodNetwork
   class SalesTaxReport
     include Spree::ReportsHelper
@@ -70,7 +72,7 @@ module OpenFoodNetwork
     def relevant_rates
       return @relevant_rates unless @relevant_rates.nil?
 
-      @relevant_rates = Spree::TaxRate.uniq
+      @relevant_rates = Spree::TaxRate.distinct
     end
 
     def totals_of(line_items)
@@ -96,20 +98,11 @@ module OpenFoodNetwork
     end
 
     def shipping_cost_for(order)
-      shipping_cost = order.adjustments.find_by(label: "Shipping").andand.amount
-      shipping_cost.nil? ? 0.0 : shipping_cost
+      order.shipments.first&.cost || 0.0
     end
 
     def tax_included_in(line_item)
-      line_item.adjustments.sum(:included_tax)
-    end
-
-    def shipment_inc_vat
-      Spree::Config.shipment_inc_vat
-    end
-
-    def shipping_tax_rate
-      Spree::Config.shipping_tax_rate
+      line_item.adjustments.tax.inclusive.sum(:amount)
     end
   end
 end

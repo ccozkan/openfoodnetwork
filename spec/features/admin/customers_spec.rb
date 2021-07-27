@@ -26,7 +26,8 @@ feature 'Customers' do
 
       it "passes the smoke test" do
         # Prompts for a hub for a list of my managed enterprises
-        expect(page).to have_select2 "shop_id", with_options: [managed_distributor1.name, managed_distributor2.name], without_options: [unmanaged_distributor.name]
+        expect(page).to have_select2 "shop_id",
+                                     with_options: [managed_distributor1.name, managed_distributor2.name], without_options: [unmanaged_distributor.name]
 
         select2_select managed_distributor2.name, from: "shop_id"
 
@@ -56,15 +57,19 @@ feature 'Customers' do
         within "#customers thead" do
           click_on "Email"
         end
-        expect(page).to have_selector("#customers .customer:nth-child(1) .email", text: customer_emails[0])
-        expect(page).to have_selector("#customers .customer:nth-child(2) .email", text: customer_emails[1])
+        expect(page).to have_selector("#customers .customer:nth-child(1) .email",
+                                      text: customer_emails[0])
+        expect(page).to have_selector("#customers .customer:nth-child(2) .email",
+                                      text: customer_emails[1])
 
         # Then sorting in reverse when the header is clicked again
         within "#customers thead" do
           click_on "Email"
         end
-        expect(page).to have_selector("#customers .customer:nth-child(1) .email", text: customer_emails[1])
-        expect(page).to have_selector("#customers .customer:nth-child(2) .email", text: customer_emails[0])
+        expect(page).to have_selector("#customers .customer:nth-child(1) .email",
+                                      text: customer_emails[1])
+        expect(page).to have_selector("#customers .customer:nth-child(2) .email",
+                                      text: customer_emails[0])
 
         # Toggling columns
         expect(page).to have_selector "th.email"
@@ -81,7 +86,8 @@ feature 'Customers' do
               find("a.delete-customer").click
             end
           end
-          expect(page).to have_selector "#info-dialog .text", text: I18n.t('admin.customers.destroy.has_associated_orders')
+          expect(page).to have_selector "#info-dialog .text",
+                                        text: I18n.t('admin.customers.destroy.has_associated_orders')
           click_button "OK"
         }.to_not change{ Customer.count }
 
@@ -96,37 +102,74 @@ feature 'Customers' do
       end
 
       describe "for a shop with multiple customers" do
-        before do
-          mock_balance(customer1.email, managed_distributor1, 88)
-          mock_balance(customer2.email, managed_distributor1, -99)
-          mock_balance(customer4.email, managed_distributor1, 0)
+        let!(:order1) {
+          create(:order, total: 0, payment_total: 88, distributor: managed_distributor1, user: nil,
+                         state: 'complete', customer: customer1)
+        }
+        let!(:order2) {
+          create(:order, total: 99, payment_total: 0, distributor: managed_distributor1, user: nil,
+                         state: 'complete', customer: customer2)
+        }
+        let!(:order3) {
+          create(:order, total: 0,  payment_total: 0, distributor: managed_distributor1, user: nil,
+                         state: 'complete', customer: customer4)
+        }
 
+        let!(:payment_method) {
+          create(:stripe_sca_payment_method, distributors: [managed_distributor1])
+        }
+        let!(:payment1) {
+          create(:payment, order: order1, state: 'completed', payment_method: payment_method,
+                           response_code: 'pi_123', amount: 88.00)
+        }
+
+        before do
           customer4.update enterprise: managed_distributor1
         end
 
-        it "displays customer balances" do
-          select2_select managed_distributor1.name, from: "shop_id"
+        context "with one payment only" do
+          it "displays customer balances" do
+            select2_select managed_distributor1.name, from: "shop_id"
 
-          within "tr#c_#{customer1.id}" do
-            expect(page).to have_content "CREDIT OWED"
-            expect(page).to have_content "$88.00"
-          end
-          within "tr#c_#{customer2.id}" do
-            expect(page).to have_content "BALANCE DUE"
-            expect(page).to have_content "$-99.00"
-          end
-          within "tr#c_#{customer4.id}" do
-            expect(page).to_not have_content "CREDIT OWED"
-            expect(page).to_not have_content "BALANCE DUE"
-            expect(page).to have_content "$0.00"
+            within "tr#c_#{customer1.id}" do
+              expect(page).to have_content "CREDIT OWED"
+              expect(page).to have_content "$88.00"
+            end
+            within "tr#c_#{customer2.id}" do
+              expect(page).to have_content "BALANCE DUE"
+              expect(page).to have_content "$-99.00"
+            end
+            within "tr#c_#{customer4.id}" do
+              expect(page).to_not have_content "CREDIT OWED"
+              expect(page).to_not have_content "BALANCE DUE"
+              expect(page).to have_content "$0.00"
+            end
           end
         end
 
-        def mock_balance(email, enterprise, balance)
-          user_balance_calculator = instance_double(OpenFoodNetwork::UserBalanceCalculator)
-          expect(OpenFoodNetwork::UserBalanceCalculator).to receive(:new).
-            with(email, enterprise).and_return(user_balance_calculator)
-          expect(user_balance_calculator).to receive(:balance).and_return(balance)
+        context "with an additional negative payment (or refund)" do
+          let!(:payment2) {
+            create(:payment, order: order1, state: 'completed', payment_method: payment_method,
+                             response_code: 'pi_123', amount: -25.00)
+          }
+
+          before do
+            order1.user = user
+            order1.save!
+          end
+
+          it "displays an updated customer balance" do
+            visit spree.admin_order_payments_path order1
+            expect(page).to have_content "$#{payment2.amount}"
+
+            visit admin_customers_path
+            select2_select managed_distributor1.name, from: "shop_id"
+
+            within "tr#c_#{customer1.id}" do
+              expect(page).to have_content "CREDIT OWED"
+              expect(page).to have_content "$63.00"
+            end
+          end
         end
       end
 
@@ -300,19 +343,29 @@ feature 'Customers' do
           end
 
           it "creates customers when the email provided is valid" do
-            # When an invalid email is used
+            # When an invalid email without domain is used it is checked by a regex, in the UI
             expect{
               click_link('New Customer')
-              fill_in 'email', with: "not_an_email"
+              fill_in 'email', with: "email_with_no_domain@"
               click_button 'Add Customer'
-              expect(page).to have_selector "#new-customer-dialog .error", text: "Please enter a valid email address"
+              expect(page).to have_selector "#new-customer-dialog .error",
+                                            text: "Please enter a valid email address"
+            }.to_not change{ Customer.of(managed_distributor1).count }
+
+            # When an invalid email with domain is used it is checked by the "valid_email2" gem #7886
+            expect{
+              fill_in 'email', with: "invalid_email_with_no_complete_domain@incomplete"
+              click_button 'Add Customer'
+              expect(page).to have_selector "#new-customer-dialog .error",
+                                            text: "Email is invalid"
             }.to_not change{ Customer.of(managed_distributor1).count }
 
             # When an existing email is used
             expect{
               fill_in 'email', with: customer1.email
               click_button 'Add Customer'
-              expect(page).to have_selector "#new-customer-dialog .error", text: "Email is associated with an existing customer"
+              expect(page).to have_selector "#new-customer-dialog .error",
+                                            text: "Email is associated with an existing customer"
             }.to_not change{ Customer.of(managed_distributor1).count }
 
             # When a new valid email is used

@@ -17,10 +17,10 @@ module Spree
 
         # Pay the order
         order.payments.first.complete
-        order.updater.update_payment_state
+        order.update_order!
 
         # Ship the order
-        order.reload.shipment.ship!
+        order.shipment.ship!
       end
 
       it "creates and updates a return authorization" do
@@ -32,6 +32,9 @@ module Spree
         return_authorization = order.return_authorizations.first
         expect(return_authorization.amount.to_s).to eq "20.2"
         expect(return_authorization.reason.to_s).to eq "broken"
+
+        # Reset the test controller between requests
+        reset_controller_environment
 
         # Update return authorization
         spree_put :update, id: return_authorization.id,

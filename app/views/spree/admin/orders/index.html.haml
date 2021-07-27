@@ -3,12 +3,12 @@
 
 - content_for :page_actions do
   %li
-    = button_link_to t('.new_order'), new_admin_order_url, icon: 'icon-plus', id: 'admin_new_order'
+    = button_link_to t('.new_order'), spree.new_admin_order_url, icon: 'icon-plus', id: 'admin_new_order'
 
 = render partial: 'spree/admin/shared/order_sub_menu'
 
 - content_for :main_ng_app_name do
-  = "admin.orders"
+  = "ofn.admin"
 
 - content_for :main_ng_ctrl_name do
   = "ordersCtrl"
@@ -74,14 +74,16 @@
         %span.state{'ng-class' => 'order.shipment_state', 'ng-if' => 'order.shipment_state'}
           {{'js.admin.orders.shipment_states.' + order.shipment_state | t}}
       %td
-        = mail_to "{{order.email}}"
+        %a{ ng: { href: "mailto:{{order.email}}" } }
+          {{order.email}}
         %br
         {{order.full_name}}
       %td.align-center
         %span{'ng-bind-html' => 'order.display_total'}
       %td.actions
         %div.row-loading-icons
-          %img.spinner{src: image_path("spinning-circles.svg"), ng: {show: 'rowStatus[order.id] == "loading"'} }
+          %div{ng: {show: 'rowStatus[order.id] == "loading"', cloak: true}, style: "width: 30px; height: 30px;"}
+            = render partial: "components/spinner"
           %i.success.icon-ok-sign{ng: {show: 'rowStatus[order.id] == "success"'} }
           %i.error.icon-remove-sign.with-tip{ng: {show: 'rowStatus[order.id] == "error"'}, 'ofn-with-tip' => t('.order_not_updated')}
         %a.icon_link.with-tip.icon-edit.no-text{'ng-href' => '{{order.edit_path}}', 'data-action' => 'edit', 'ofn-with-tip' => t('.edit')}
@@ -93,7 +95,7 @@
 .orders-loading{'ng-show' => 'RequestMonitor.loading'}
   .row
     .small-12.columns.fullwidth.text-center
-      %img.spinner{ src: image_path("spinning-circles.svg") }
+      = render partial: "components/spinner"
   .row
     .small-12.columns.fullwidth.text-center
       %span= t('.loading')

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'stripe/account_connector'
 
 module Admin
   class StripeAccountsController < Spree::Admin::BaseController
     def connect
-      payload = params.slice(:enterprise_id)
+      payload = params.permit(:enterprise_id).to_h
       key = Openfoodnetwork::Application.config.secret_token
       url_params = { state: JWT.encode(payload, key, 'HS256'), scope: "read_write" }
       redirect_to Stripe::OAuth.authorize_url(url_params)

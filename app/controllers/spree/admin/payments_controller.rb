@@ -3,10 +3,16 @@
 module Spree
   module Admin
     class PaymentsController < Spree::Admin::BaseController
+      include FullUrlHelper
+
       before_action :load_order, except: [:show]
       before_action :load_payment, only: [:fire, :show]
       before_action :load_data
       before_action :can_transition_to_payment
+      # We ensure that items are in stock before all screens if the order is in the Payment state.
+      # This way, we don't allow someone to enter credit card details for an order only to be told
+      # that it can't be processed.
+      before_action :ensure_sufficient_stock_lines
 
       respond_to :html
 
@@ -29,15 +35,16 @@ module Spree
             return
           end
 
-          authorize_stripe_sca_payment
-
           if @order.completed?
-            @payment.process!
+            authorize_stripe_sca_payment
+            @payment.process_offline!
             flash[:success] = flash_message_for(@payment, :successfully_created)
 
             redirect_to spree.admin_order_payments_path(@order)
           else
             OrderWorkflow.new(@order).complete!
+            authorize_stripe_sca_payment
+            @payment.process_offline!
 
             flash[:success] = Spree.t(:new_order_completed)
             redirect_to spree.edit_admin_order_url(@order)
@@ -56,7 +63,7 @@ module Spree
 
         # Because we have a transition method also called void, we do this to avoid conflicts.
         event = "void_transaction" if event == "void"
-        if @payment.public_send("#{event}!")
+        if allowed_events.include?(event) && @payment.public_send("#{event}!")
           flash[:success] = t(:payment_updated)
         else
           flash[:error] = t(:cannot_perform_operation)
@@ -65,6 +72,25 @@ module Spree
         flash[:error] = e.message
       ensure
         redirect_to request.referer
+      end
+
+      def paypal_refund
+        if request.get?
+          if @payment.source.state == 'refunded'
+            flash[:error] = Spree.t(:already_refunded, scope: 'paypal')
+            redirect_to admin_order_payment_path(@order, @payment)
+          end
+        elsif request.post?
+          response = @payment.payment_method.refund(@payment, params[:refund_amount])
+          if response.success?
+            flash[:success] = Spree.t(:refund_successful, scope: 'paypal')
+            redirect_to admin_order_payments_path(@order)
+          else
+            flash.now[:error] = Spree.t(:refund_unsuccessful, scope: 'paypal') +
+                                " (#{response.errors.first.long_message})"
+            render
+          end
+        end
       end
 
       private
@@ -97,7 +123,7 @@ module Spree
         # Only show payments for the order's distributor
         @payment_methods = PaymentMethod.
           available(:back_end).
-          select{ |pm| pm.has_distributor? @order.distributor }
+          for_distributor(@order.distributor)
 
         @payment_method = if @payment&.payment_method
                             @payment.payment_method
@@ -111,14 +137,28 @@ module Spree
       # At this point admin should have passed through Customer Details step
       # where order.next is called which leaves the order in payment step
       #
-      # Orders in complete step also allows to access this controller
+      # Orders in complete or canceled step also allows to access this controller
       #
       # Otherwise redirect user to that step
       def can_transition_to_payment
-        return if @order.payment? || @order.complete?
+        return if @order.payment? || @order.complete? || @order.canceled? || @order.resumed?
 
         flash[:notice] = Spree.t(:fill_in_customer_info)
         redirect_to spree.edit_admin_order_customer_url(@order)
+      end
+
+      def ensure_sufficient_stock_lines
+        return if !@order.payment? || @order.insufficient_stock_lines.blank?
+
+        flash[:error] = I18n.t("spree.orders.line_item.insufficient_stock",
+                               on_hand: "0 #{out_of_stock_item_names}")
+        redirect_to spree.edit_admin_order_url(@order)
+      end
+
+      def out_of_stock_item_names
+        @order.insufficient_stock_lines.map do |line_item|
+          line_item.variant.name
+        end.join(", ")
       end
 
       def load_order
@@ -132,12 +172,22 @@ module Spree
       end
 
       def authorize_stripe_sca_payment
-        return unless @payment.payment_method.class == Spree::Gateway::StripeSCA
+        return unless @payment.payment_method.instance_of?(Spree::Gateway::StripeSCA)
 
-        @payment.authorize!
-        return if @payment.pending? && @payment.cvv_response_message.nil?
+        @payment.authorize!(full_order_path(@payment.order))
 
-        raise Spree::Core::GatewayError, I18n.t('authorization_failure')
+        unless @payment.pending? || @payment.requires_authorization?
+          raise Spree::Core::GatewayError, I18n.t('authorization_failure')
+        end
+
+        return unless @payment.requires_authorization?
+
+        PaymentMailer.authorize_payment(@payment).deliver_later
+        raise Spree::Core::GatewayError, I18n.t('action_required')
+      end
+
+      def allowed_events
+        %w{capture void_transaction credit refund resend_authorization_email}
       end
     end
   end

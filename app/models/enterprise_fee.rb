@@ -1,8 +1,12 @@
-class EnterpriseFee < ActiveRecord::Base
+# frozen_string_literal: true
+
+class EnterpriseFee < ApplicationRecord
   include Spree::Core::CalculatedAdjustments
 
+  acts_as_paranoid
+
   belongs_to :enterprise
-  belongs_to :tax_category, class_name: 'Spree::TaxCategory', foreign_key: 'tax_category_id'
+  belongs_to :tax_category, class_name: 'Spree::TaxCategory'
 
   has_many :coordinator_fees, dependent: :destroy
   has_many :order_cycles, through: :coordinator_fees
@@ -38,8 +42,8 @@ class EnterpriseFee < ActiveRecord::Base
     joins(:calculator).where('spree_calculators.type IN (?)', PER_ORDER_CALCULATORS)
   }
 
-  def self.clear_all_adjustments_on_order(order)
-    order.adjustments.where(originator_type: 'EnterpriseFee').destroy_all
+  def self.clear_all_adjustments(order)
+    order.all_adjustments.enterprise_fee.destroy_all
   end
 
   private

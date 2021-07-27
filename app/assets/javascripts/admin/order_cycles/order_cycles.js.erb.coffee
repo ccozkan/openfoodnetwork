@@ -1,27 +1,20 @@
 angular.module('admin.orderCycles', ['ngTagsInput', 'admin.indexUtils', 'admin.enterprises'])
-
-  .config ($httpProvider) ->
-    $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
-
   .directive 'datetimepicker', ($timeout, $parse) ->
     require: "ngModel"
     link: (scope, element, attrs, ngModel) ->
       $timeout ->
-        # using $parse instead of scope[attrs.datetimepicker] for cases
-        # where attrs.datetimepicker is 'foo.bar.lol'
-        $(element).datetimepicker(
-          Object.assign(
-            window.JQUERY_UI_DATETIME_PICKER_DEFAULTS,
-            {
-              onSelect: (dateText, inst) ->
-                scope.$apply(->
-                  element.val(dateText)
-                  parsed = $parse(attrs.datetimepicker)
-                  parsed.assign(scope, dateText)
-                )
-            }
-          )
-        )
+        fp = flatpickr(element,  Object.assign({},
+                            window.FLATPICKR_DATETIME_DEFAULT, {
+                            onOpen: (selectedDates, dateStr, instance) ->
+                              instance.setDate(ngModel.$modelValue)
+                              instance.input.dispatchEvent(new Event('focus', { bubbles: true }));
+                            }));
+        fp.minuteElement.addEventListener "keyup", (e) ->
+          if !isNaN(event.target.value)
+            fp.setDate(fp.selectedDates[0].setMinutes(e.target.value), true)
+        fp.hourElement.addEventListener "keyup", (e) ->
+          if !isNaN(event.target.value)
+            fp.setDate(fp.selectedDates[0].setHours(e.target.value), true)            
 
   .directive 'ofnOnChange', ->
     (scope, element, attrs) ->

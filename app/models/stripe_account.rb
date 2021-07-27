@@ -1,4 +1,6 @@
-class StripeAccount < ActiveRecord::Base
+# frozen_string_literal: true
+
+class StripeAccount < ApplicationRecord
   belongs_to :enterprise
   validates :stripe_user_id, :stripe_publishable_key, presence: true
   validates :enterprise_id, uniqueness: true

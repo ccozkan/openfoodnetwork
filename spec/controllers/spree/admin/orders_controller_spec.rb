@@ -19,11 +19,14 @@ describe Spree::Admin::OrdersController, type: :controller do
     describe "view" do
       render_views
 
-      it "shows only eligible adjustments" do
+      it "does not show ineligible payment adjustments" do
         adjustment = create(
           :adjustment,
-          adjustable: order,
+          adjustable: build(:payment),
+          originator_type: "Spree::PaymentMethod",
           label: "invalid adjustment",
+          eligible: false,
+          order: order,
           amount: 0
         )
 
@@ -55,12 +58,162 @@ describe Spree::Admin::OrdersController, type: :controller do
         expect(response.status).to eq 302
       end
 
-      it "updates distribution charges and redirects to order details page" do
-        expect_any_instance_of(Spree::Order).to receive(:update_distribution_charge!)
+      context "recalculating fees and taxes" do
+        before do
+          allow(Spree::Order).to receive_message_chain(:includes, :find_by!) { order }
+        end
 
-        spree_put :update, params
+        it "updates fees and taxes and redirects to order details page" do
+          expect(order).to receive(:recreate_all_fees!)
+          expect(order).to receive(:create_tax_charge!)
 
-        expect(response).to redirect_to spree.edit_admin_order_path(order)
+          spree_put :update, params
+
+          expect(response).to redirect_to spree.edit_admin_order_path(order)
+        end
+      end
+
+      context "recalculating enterprise fees" do
+        let(:user) { create(:admin_user) }
+        let(:variant1) { create(:variant) }
+        let(:variant2) { create(:variant) }
+        let(:distributor) {
+          create(:distributor_enterprise, allow_order_changes: true, charges_sales_tax: true)
+        }
+        let(:order_cycle) { create(:simple_order_cycle, distributors: [distributor]) }
+        let(:enterprise_fee) { create(:enterprise_fee, calculator: build(:calculator_per_item) ) }
+        let!(:exchange) {
+          create(:exchange, incoming: true, sender: variant1.product.supplier,
+                            receiver: order_cycle.coordinator, variants: [variant1, variant2], enterprise_fees: [enterprise_fee])
+        }
+        let!(:order) do
+          order = create(:completed_order_with_totals, line_items_count: 2,
+                                                       distributor: distributor, order_cycle: order_cycle)
+          order.reload.line_items.first.update(variant_id: variant1.id)
+          order.line_items.last.update(variant_id: variant2.id)
+          break unless order.next! while !order.completed?
+          order.recreate_all_fees!
+          order
+        end
+
+        before do
+          allow(controller).to receive(:spree_current_user) { user }
+          allow(controller).to receive(:order_to_update) { order }
+        end
+
+        it "recalculates fees if the orders contents have changed" do
+          expect(order.total).to eq order.item_total + (enterprise_fee.calculator.preferred_amount * 2)
+          expect(order.adjustment_total).to eq enterprise_fee.calculator.preferred_amount * 2
+
+          order.contents.add(order.line_items.first.variant, 1)
+
+          spree_put :update, { id: order.number }
+
+          expect(order.reload.total).to eq order.item_total + (enterprise_fee.calculator.preferred_amount * 3)
+          expect(order.adjustment_total).to eq enterprise_fee.calculator.preferred_amount * 3
+        end
+
+        context "if the associated enterprise fee record is soft-deleted" do
+          it "removes adjustments for deleted enterprise fees" do
+            fee_amount = enterprise_fee.calculator.preferred_amount
+
+            expect(order.total).to eq order.item_total + (fee_amount * 2)
+            expect(order.adjustment_total).to eq fee_amount * 2
+
+            enterprise_fee.destroy
+
+            spree_put :update, { id: order.number }
+
+            expect(order.reload.total).to eq order.item_total
+            expect(order.adjustment_total).to eq 0
+          end
+        end
+
+        context "if the associated enterprise fee record is hard-deleted" do
+          # Note: Enterprise fees are soft-deleted now, but we still have hard-deleted
+          # enterprise fees referenced as the originator of some adjustments (in production).
+          it "removes adjustments for deleted enterprise fees" do
+            fee_amount = enterprise_fee.calculator.preferred_amount
+
+            expect(order.total).to eq order.item_total + (fee_amount * 2)
+            expect(order.adjustment_total).to eq fee_amount * 2
+
+            enterprise_fee.really_destroy!
+
+            spree_put :update, { id: order.number }
+
+            expect(order.reload.total).to eq order.item_total
+            expect(order.adjustment_total).to eq 0
+          end
+        end
+
+        context "with taxes on enterprise fees" do
+          let(:zone) { create(:zone_with_member) }
+          let(:tax_included) { true }
+          let(:tax_rate) {
+            create(:tax_rate, amount: 0.25, included_in_price: tax_included, zone: zone)
+          }
+          let!(:enterprise_fee) {
+            create(:enterprise_fee, tax_category: tax_rate.tax_category, amount: 1)
+          }
+
+          before do
+            allow(order).to receive(:tax_zone) { zone }
+          end
+
+          context "with included taxes" do
+            it "taxes fees correctly" do
+              spree_put :update, { id: order.number }
+              order.reload
+
+              expect(order.all_adjustments.tax.count).to eq 2
+              expect(order.enterprise_fee_tax).to eq 0.4
+
+              expect(order.included_tax_total).to eq 0.4
+              expect(order.additional_tax_total).to eq 0
+            end
+          end
+
+          context "with added taxes" do
+            let(:tax_included) { false }
+
+            it "taxes fees correctly" do
+              spree_put :update, { id: order.number }
+              order.reload
+
+              expect(order.all_adjustments.tax.count).to eq 2
+              expect(order.enterprise_fee_tax).to eq 0.5
+
+              expect(order.included_tax_total).to eq 0
+              expect(order.additional_tax_total).to eq 0.5
+            end
+
+            context "when the order has legacy taxes" do
+              let(:legacy_tax_adjustment) {
+                create(:adjustment, amount: 0.5, included: false, originator: tax_rate,
+                                    order: order, adjustable: order, state: "closed")
+              }
+
+              before do
+                order.all_adjustments.tax.delete_all
+                order.adjustments << legacy_tax_adjustment
+              end
+
+              it "removes legacy tax adjustments before recalculating tax" do
+                expect(order.all_adjustments.tax.count).to eq 1
+                expect(order.all_adjustments.tax).to include legacy_tax_adjustment
+                expect(order.additional_tax_total).to eq 0.5
+
+                spree_put :update, { id: order.number }
+                order.reload
+
+                expect(order.all_adjustments.tax.count).to eq 2
+                expect(order.all_adjustments.tax).to_not include legacy_tax_adjustment
+                expect(order.additional_tax_total).to eq 0.5
+              end
+            end
+          end
+        end
       end
     end
 
@@ -81,12 +234,13 @@ describe Spree::Admin::OrdersController, type: :controller do
         before do
           order.line_items << line_item
           order.save
-          params[:order][:line_items_attributes] = [{ id: line_item.id, quantity: line_item.quantity }]
+          params[:order][:line_items_attributes] =
+            [{ id: line_item.id, quantity: line_item.quantity }]
         end
 
         context "and no errors" do
           it "updates distribution charges and redirects to customer details page" do
-            expect_any_instance_of(Spree::Order).to receive(:update_distribution_charge!)
+            expect_any_instance_of(Spree::Order).to receive(:recreate_all_fees!)
 
             spree_put :update, params
 
@@ -125,99 +279,6 @@ describe Spree::Admin::OrdersController, type: :controller do
 
       it "should allow access" do
         expect(response.status).to eq 200
-      end
-    end
-  end
-
-  describe "#invoice" do
-    let!(:user) { create(:user) }
-    let!(:enterprise_user) { create(:user) }
-    let!(:order) { create(:order_with_distributor, bill_address: create(:address), ship_address: create(:address)) }
-    let!(:distributor) { order.distributor }
-    let(:params) { { id: order.number } }
-
-    context "as a normal user" do
-      before { allow(controller).to receive(:spree_current_user) { user } }
-
-      it "should prevent me from sending order invoices" do
-        spree_get :invoice, params
-        expect(response).to redirect_to unauthorized_path
-      end
-    end
-
-    context "as an enterprise user" do
-      context "which is not a manager of the distributor for an order" do
-        before { allow(controller).to receive(:spree_current_user) { user } }
-
-        it "should prevent me from sending order invoices" do
-          spree_get :invoice, params
-          expect(response).to redirect_to unauthorized_path
-        end
-      end
-
-      context "which is a manager of the distributor for an order" do
-        before { allow(controller).to receive(:spree_current_user) { distributor.owner } }
-
-        context "when the distributor's ABN has not been set" do
-          before { distributor.update_attribute(:abn, "") }
-          it "should allow me to send order invoices" do
-            expect do
-              spree_get :invoice, params
-            end.to_not change{ Spree::OrderMailer.deliveries.count }
-            expect(response).to redirect_to spree.edit_admin_order_path(order)
-            expect(flash[:error]).to eq "#{distributor.name} must have a valid ABN before invoices can be sent."
-          end
-        end
-
-        context "when the distributor's ABN has been set" do
-          before { distributor.update_attribute(:abn, "123") }
-          before do
-            ActionMailer::Base.perform_deliveries = true
-            setup_email
-          end
-
-          it "should allow me to send order invoices" do
-            expect do
-              spree_get :invoice, params
-            end.to change{ Spree::OrderMailer.deliveries.count }.by(1)
-            expect(response).to redirect_to spree.edit_admin_order_path(order)
-          end
-        end
-      end
-    end
-  end
-
-  describe "#print" do
-    let!(:user) { create(:user) }
-    let!(:enterprise_user) { create(:user) }
-    let!(:order) { create(:order_with_distributor, bill_address: create(:address), ship_address: create(:address)) }
-    let!(:distributor) { order.distributor }
-    let(:params) { { id: order.number } }
-
-    context "as a normal user" do
-      before { allow(controller).to receive(:spree_current_user) { user } }
-
-      it "should prevent me from sending order invoices" do
-        spree_get :print, params
-        expect(response).to redirect_to unauthorized_path
-      end
-    end
-
-    context "as an enterprise user" do
-      context "which is not a manager of the distributor for an order" do
-        before { allow(controller).to receive(:spree_current_user) { user } }
-        it "should prevent me from sending order invoices" do
-          spree_get :print, params
-          expect(response).to redirect_to unauthorized_path
-        end
-      end
-
-      context "which is a manager of the distributor for an order" do
-        before { allow(controller).to receive(:spree_current_user) { distributor.owner } }
-        it "should allow me to send order invoices" do
-          spree_get :print, params
-          expect(response).to render_template :invoice
-        end
       end
     end
   end

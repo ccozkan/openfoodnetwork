@@ -1,4 +1,4 @@
-require 'action_callbacks'
+# frozen_string_literal: true
 
 module Admin
   class ResourceController < Spree::Admin::BaseController
@@ -11,7 +11,6 @@ module Admin
     respond_to :js, except: [:show, :index]
 
     def new
-      invoke_callbacks(:new_action, :before)
       respond_with(@object) do |format|
         format.html { render layout: !request.xhr? }
         format.js   { render layout: false }
@@ -26,32 +25,26 @@ module Admin
     end
 
     def update
-      invoke_callbacks(:update, :before)
       if @object.update(permitted_resource_params)
-        invoke_callbacks(:update, :after)
         flash[:success] = flash_message_for(@object, :successfully_updated)
         respond_with(@object) do |format|
           format.html { redirect_to location_after_save }
           format.js   { render layout: false }
         end
       else
-        invoke_callbacks(:update, :fails)
         respond_with(@object)
       end
     end
 
     def create
-      invoke_callbacks(:create, :before)
       @object.attributes = permitted_resource_params
       if @object.save
-        invoke_callbacks(:create, :after)
         flash[:success] = flash_message_for(@object, :successfully_created)
         respond_with(@object) do |format|
           format.html { redirect_to location_after_save }
           format.js   { render layout: false }
         end
       else
-        invoke_callbacks(:create, :fails)
         respond_with(@object)
       end
     end
@@ -62,21 +55,18 @@ module Admin
       end
 
       respond_to do |format|
-        format.js { render text: 'Ok' }
+        format.js { render plain: 'Ok' }
       end
     end
 
     def destroy
-      invoke_callbacks(:destroy, :before)
       if @object.destroy
-        invoke_callbacks(:destroy, :after)
         flash[:success] = flash_message_for(@object, :successfully_removed)
         respond_with(@object) do |format|
           format.html { redirect_to collection_url }
           format.js   { render partial: "spree/admin/shared/destroy" }
         end
       else
-        invoke_callbacks(:destroy, :fails)
         respond_with(@object) do |format|
           format.html { redirect_to collection_url }
         end
@@ -92,33 +82,12 @@ module Admin
 
     class << self
       attr_accessor :parent_data
-      attr_accessor :callbacks
 
       def belongs_to(model_name, options = {})
         @parent_data ||= {}
         @parent_data[:model_name] = model_name
         @parent_data[:model_class] = model_name.to_s.classify.constantize
         @parent_data[:find_by] = options[:find_by] || :id
-      end
-
-      def new_action
-        @callbacks ||= {}
-        @callbacks[:new_action] ||= ActionCallbacks.new
-      end
-
-      def create
-        @callbacks ||= {}
-        @callbacks[:create] ||= ActionCallbacks.new
-      end
-
-      def update
-        @callbacks ||= {}
-        @callbacks[:update] ||= ActionCallbacks.new
-      end
-
-      def destroy
-        @callbacks ||= {}
-        @callbacks[:destroy] ||= ActionCallbacks.new
       end
     end
 
@@ -210,17 +179,6 @@ module Admin
 
     def location_after_save
       collection_url
-    end
-
-    def invoke_callbacks(action, callback_type)
-      callbacks = self.class.callbacks || {}
-      return if callbacks[action].nil?
-
-      case callback_type.to_sym
-      when :before then callbacks[action].before_methods.each { |method| __send__ method }
-      when :after  then callbacks[action].after_methods.each  { |method| __send__ method }
-      when :fails  then callbacks[action].fails_methods.each  { |method| __send__ method }
-      end
     end
 
     # URL helpers

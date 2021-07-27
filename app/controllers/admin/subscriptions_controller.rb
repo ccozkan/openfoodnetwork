@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open_food_network/permissions'
 
 module Admin
@@ -57,14 +59,13 @@ module Admin
     end
 
     def unpause
-      params[:subscription][:paused_at] = nil
-      save_form_and_render
+      save_form_and_render(true, unpause: true)
     end
 
     private
 
-    def save_form_and_render(render_issues = true)
-      form = OrderManagement::Subscriptions::Form.new(@subscription, subscription_params)
+    def save_form_and_render(render_issues = true, options = {})
+      form = OrderManagement::Subscriptions::Form.new(@subscription, subscription_params, options)
       unless form.save
         render json: { errors: form.json_errors }, status: :unprocessable_entity
         return
@@ -86,7 +87,8 @@ module Admin
     def collection
       if request.format.json?
         permissions.editable_subscriptions.ransack(params[:q]).result
-          .preload([:shop, :customer, :schedule, :subscription_line_items, :ship_address, :bill_address, proxy_orders: { order: :order_cycle }])
+          .preload([:shop, :customer, :schedule, :subscription_line_items, :ship_address,
+                    :bill_address, { proxy_orders: { order: :order_cycle } }])
       else
         Subscription.where("1=0")
       end
@@ -106,22 +108,24 @@ module Admin
 
     # Wrap :subscription_line_items_attributes in :subscription root
     def wrap_nested_attrs
-      if params[:subscription_line_items].is_a? Array
-        attributes = params[:subscription_line_items].map do |sli|
+      if raw_params[:subscription_line_items].is_a? Array
+        attributes = raw_params[:subscription_line_items].map do |sli|
           sli.slice(*SubscriptionLineItem.attribute_names + ["_destroy"])
         end
-        params[:subscription][:subscription_line_items_attributes] = attributes
+        subscription_params[:subscription_line_items_attributes] = attributes
       end
       wrap_bill_address_attrs if params[:bill_address]
       wrap_ship_address_attrs if params[:ship_address]
     end
 
     def wrap_bill_address_attrs
-      params[:subscription][:bill_address_attributes] = params[:bill_address].slice(*Spree::Address.attribute_names)
+      subscription_params[:bill_address_attributes] =
+        raw_params[:bill_address].slice(*Spree::Address.attribute_names)
     end
 
     def wrap_ship_address_attrs
-      params[:subscription][:ship_address_attributes] = params[:ship_address].slice(*Spree::Address.attribute_names)
+      subscription_params[:ship_address_attributes] =
+        raw_params[:ship_address].slice(*Spree::Address.attribute_names)
     end
 
     def check_for_open_orders
@@ -130,19 +134,21 @@ module Admin
       @open_orders_to_keep = @subscription.proxy_orders.placed_and_open.pluck(:id)
       return if @open_orders_to_keep.empty? || params[:open_orders] == 'keep'
 
-      render json: { errors: { open_orders: t('admin.subscriptions.confirm_cancel_open_orders_msg') } }, status: :conflict
+      render json: { errors: { open_orders: t('admin.subscriptions.confirm_cancel_open_orders_msg') } },
+             status: :conflict
     end
 
     def check_for_canceled_orders
       return if params[:canceled_orders] == 'notified'
       return if @subscription.proxy_orders.active.canceled.empty?
 
-      render json: { errors: { canceled_orders: t('admin.subscriptions.resume_canceled_orders_msg') } }, status: :conflict
+      render json: { errors: { canceled_orders: t('admin.subscriptions.resume_canceled_orders_msg') } },
+             status: :conflict
     end
 
     def strip_banned_attrs
-      params[:subscription].delete :schedule_id
-      params[:subscription].delete :customer_id
+      subscription_params.delete :schedule_id
+      subscription_params.delete :customer_id
     end
 
     # Overriding Spree method to load data from params here so that
@@ -156,7 +162,8 @@ module Admin
     end
 
     def subscription_params
-      PermittedAttributes::Subscription.new(params).call
+      @subscription_params ||= PermittedAttributes::Subscription.new(params).call.
+        to_h.with_indifferent_access
     end
   end
 end

@@ -1,9 +1,11 @@
 # frozen_string_literal: false
 
 require 'spec_helper'
+require 'spree/payment_methods_helper'
 
 describe BulkInvoiceService do
   include ActiveJob::TestHelper
+  include Spree::PaymentMethodsHelper
 
   let(:service) { BulkInvoiceService.new }
 
@@ -60,9 +62,12 @@ describe BulkInvoiceService do
     end
 
     it "orders with completed desc" do
-      order_old = create(:order_with_distributor, :completed, completed_at: 2.minutes.ago)
-      order_oldest = create(:order_with_distributor, :completed, completed_at: 4.minutes.ago)
-      order_older = create(:order_with_distributor, :completed, completed_at: 3.minutes.ago)
+      order_old = create(:order_with_distributor, :with_line_item, :completed,
+                         completed_at: 2.minutes.ago)
+      order_oldest = create(:order_with_distributor, :with_line_item, :completed,
+                            completed_at: 4.minutes.ago)
+      order_older = create(:order_with_distributor, :with_line_item, :completed,
+                           completed_at: 3.minutes.ago)
 
       expect(renderer).to receive(:render_to_string).with(order_old).ordered.and_return("")
       expect(renderer).to receive(:render_to_string).with(order_older).ordered.and_return("")

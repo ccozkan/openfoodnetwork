@@ -21,6 +21,7 @@ angular.module("ofn.admin").controller "AdminProductEditCtrl", ($scope, $timeout
     sorting: ""
   }
 
+  $scope.sorting = "name asc"
   $scope.producers = producers
   $scope.taxons = Taxons.all
   $scope.tax_categories = tax_categories
@@ -48,7 +49,7 @@ angular.module("ofn.admin").controller "AdminProductEditCtrl", ($scope, $timeout
       'q[name_cont]': $scope.q.query,
       'q[supplier_id_eq]': $scope.q.producerFilter,
       'q[primary_taxon_id_eq]': $scope.q.categoryFilter,
-      'q[s]': $scope.q.sorting,
+      'q[s]': $scope.sorting,
       import_date: $scope.q.importDateFilter,
       page: $scope.page,
       per_page: $scope.per_page
@@ -104,7 +105,7 @@ angular.module("ofn.admin").controller "AdminProductEditCtrl", ($scope, $timeout
   $scope.$watch 'sortOptions', (sort) ->
     return unless sort && sort.predicate != ""
 
-    $scope.q.sorting = sort.getSortingExpr()
+    $scope.sorting = sort.getSortingExpr(defaultDirection: "asc")
     $scope.fetchProducts()
   , true
 
@@ -146,7 +147,7 @@ angular.module("ofn.admin").controller "AdminProductEditCtrl", ($scope, $timeout
     if confirm("Are you sure?")
       $http(
         method: "DELETE"
-        url: "/api/products/" + product.id
+        url: "/api/v0/products/" + product.id
       ).success (data) ->
         $scope.products.splice $scope.products.indexOf(product), 1
         DirtyProducts.deleteProduct product.id
@@ -161,7 +162,7 @@ angular.module("ofn.admin").controller "AdminProductEditCtrl", ($scope, $timeout
         if confirm(t("are_you_sure"))
           $http(
             method: "DELETE"
-            url: "/api/products/" + product.permalink_live + "/variants/" + variant.id
+            url: "/api/v0/products/" + product.permalink_live + "/variants/" + variant.id
           ).success (data) ->
             $scope.removeVariant(product, variant)
     else
@@ -216,6 +217,7 @@ angular.module("ofn.admin").controller "AdminProductEditCtrl", ($scope, $timeout
           'q[name_cont]': $scope.q.query
           'q[supplier_id_eq]': $scope.q.producerFilter
           'q[primary_taxon_id_eq]': $scope.q.categoryFilter
+          'q[s]': $scope.sorting
           import_date: $scope.q.importDateFilter
         page: $scope.page
         per_page: $scope.per_page

@@ -14,6 +14,7 @@ module OrderManagement
         ].freeze
 
         attr_reader :params
+
         def initialize(user, params = {}, render_table = false)
           @params = params
           @user = user
@@ -21,6 +22,7 @@ module OrderManagement
 
           @supplier_report = BulkCoopSupplierReport.new
           @allocation_report = BulkCoopAllocationReport.new
+          @filter_canceled = false
         end
 
         def header
@@ -90,10 +92,39 @@ module OrderManagement
                                  proc { |lis| lis.first.product.group_buy_unit_size || 0.0 },
                                  proc { |_lis| "" },
                                  proc { |_lis| "" },
-                                 proc { |lis| lis.sum { |li| li.quantity * (li.weight_from_unit_value || 0) } },
-                                 proc { |lis| lis.sum { |li| (li.max_quantity || 0) * (li.weight_from_unit_value || 0) } },
-                                 proc { |lis| ( (lis.first.product.group_buy_unit_size || 0).zero? ? 0 : ( lis.sum { |li| [li.max_quantity || 0, li.quantity || 0].max * (li.weight_from_unit_value || 0) } / lis.first.product.group_buy_unit_size ) ).floor },
-                                 proc { |lis| lis.sum { |li| [li.max_quantity || 0, li.quantity || 0].max * (li.weight_from_unit_value || 0) } - ( ( (lis.first.product.group_buy_unit_size || 0).zero? ? 0 : ( lis.sum { |li| [li.max_quantity || 0, li.quantity || 0].max * (li.weight_from_unit_value || 0) } / lis.first.product.group_buy_unit_size ) ).floor * (lis.first.product.group_buy_unit_size || 0) ) }] },
+                                 proc { |lis|
+                                   lis.sum { |li|
+                                     li.quantity * (li.weight_from_unit_value || 0)
+                                   }
+                                 },
+                                 proc { |lis|
+                                   lis.sum { |li|
+                                     (li.max_quantity || 0) * (li.weight_from_unit_value || 0)
+                                   }
+                                 },
+                                 proc { |lis|
+                                   ( if (lis.first.product.group_buy_unit_size || 0).zero?
+                                       0
+                                     else
+                                       ( lis.sum { |li|
+                                           [li.max_quantity || 0,
+                                            li.quantity || 0].max * (li.weight_from_unit_value || 0)
+                                         } / lis.first.product.group_buy_unit_size )
+                                     end ).floor
+                                 },
+                                 proc { |lis|
+                                   lis.sum { |li|
+                                     [li.max_quantity || 0,
+                                      li.quantity || 0].max * (li.weight_from_unit_value || 0)
+                                   } - ( ( if (lis.first.product.group_buy_unit_size || 0).zero?
+                                             0
+                                           else
+                                             ( lis.sum { |li|
+                                                 [li.max_quantity || 0,
+                                                  li.quantity || 0].max * (li.weight_from_unit_value || 0)
+                                               } / lis.first.product.group_buy_unit_size )
+                                           end ).floor * (lis.first.product.group_buy_unit_size || 0) )
+                                 }] },
              { group_by: proc { |li| li.full_name },
                sort_by: proc { |full_name| full_name } }]
           end
@@ -137,6 +168,8 @@ module OrderManagement
 
         private
 
+        attr_reader :filter_canceled
+
         def line_item_includes
           [
             {
@@ -148,25 +181,31 @@ module OrderManagement
         end
 
         def order_permissions
-          return @order_permissions unless @order_permissions.nil?
-
-          @order_permissions = ::Permissions::Order.new(@user, @params[:q])
+          @order_permissions ||= ::Permissions::Order.new(@user, filter_canceled)
         end
 
         def report_line_items
-          @report_line_items ||= OpenFoodNetwork::Reports::LineItems.new(order_permissions, @params)
+          @report_line_items ||= OpenFoodNetwork::Reports::LineItems.new(
+            order_permissions,
+            @params,
+            CompleteVisibleOrders.new(order_permissions).query
+          )
         end
 
         def customer_payments_total_cost(line_items)
-          line_items.map(&:order).uniq.sum(&:total)
+          unique_orders(line_items).sum(&:total)
         end
 
         def customer_payments_amount_owed(line_items)
-          line_items.map(&:order).uniq.sum(&:outstanding_balance)
+          unique_orders(line_items).sum(&:new_outstanding_balance)
         end
 
         def customer_payments_amount_paid(line_items)
-          line_items.map(&:order).uniq.sum(&:payment_total)
+          unique_orders(line_items).sum(&:payment_total)
+        end
+
+        def unique_orders(line_items)
+          line_items.map(&:order).uniq
         end
 
         def empty_cell(_line_items)

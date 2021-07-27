@@ -10,7 +10,9 @@ describe Admin::ProxyOrdersController, type: :controller do
     let!(:shop) { create(:distributor_enterprise) }
     let!(:order_cycle) { create(:simple_order_cycle, orders_close_at: 1.day.from_now) }
     let!(:subscription) { create(:subscription, shop: shop, with_items: true) }
-    let!(:proxy_order) { create(:proxy_order, subscription: subscription, order_cycle: order_cycle) }
+    let!(:proxy_order) {
+      create(:proxy_order, subscription: subscription, order_cycle: order_cycle)
+    }
 
     before do
       allow(controller).to receive(:spree_current_user) { user }
@@ -42,7 +44,7 @@ describe Admin::ProxyOrdersController, type: :controller do
 
           context "when cancellation succeeds" do
             it 'renders the cancelled proxy_order as json' do
-              spree_get :cancel, params
+              get :cancel, params: params
               json_response = JSON.parse(response.body)
               expect(json_response['state']).to eq "canceled"
               expect(json_response['id']).to eq proxy_order.id
@@ -54,7 +56,7 @@ describe Admin::ProxyOrdersController, type: :controller do
             before { order_cycle.update(orders_close_at: 1.day.ago) }
 
             it "shows an error" do
-              spree_get :cancel, params
+              get :cancel, params: params
               json_response = JSON.parse(response.body)
               expect(json_response['errors']).to eq ['Could not cancel the order']
             end
@@ -73,12 +75,14 @@ describe Admin::ProxyOrdersController, type: :controller do
     let!(:subscription) do
       create(:subscription, shipping_method: shipping_method, shop: shop, with_items: true)
     end
-    let!(:proxy_order) { create(:proxy_order, subscription: subscription, order_cycle: order_cycle) }
+    let!(:proxy_order) {
+      create(:proxy_order, subscription: subscription, order_cycle: order_cycle)
+    }
     let(:order) { proxy_order.initialise_order! }
 
     before do
       # Processing order to completion
-      allow(Spree::OrderMailer).to receive(:cancel_email) { double(:email, deliver: true) }
+      allow(Spree::OrderMailer).to receive(:cancel_email) { double(:email, deliver_later: true) }
       OrderWorkflow.new(order).complete!
       proxy_order.reload
       proxy_order.cancel
@@ -111,7 +115,7 @@ describe Admin::ProxyOrdersController, type: :controller do
 
           context "when resuming succeeds" do
             it 'renders the resumed proxy_order as json' do
-              spree_get :resume, params
+              get :resume, params: params
               json_response = JSON.parse(response.body)
               expect(json_response['state']).to eq "resumed"
               expect(json_response['id']).to eq proxy_order.id
@@ -123,7 +127,7 @@ describe Admin::ProxyOrdersController, type: :controller do
             before { order_cycle.update(orders_close_at: 1.day.ago) }
 
             it "shows an error" do
-              spree_get :resume, params
+              get :resume, params: params
               json_response = JSON.parse(response.body)
               expect(json_response['errors']).to eq ['Could not resume the order']
             end

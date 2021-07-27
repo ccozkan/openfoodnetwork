@@ -115,6 +115,10 @@ Darkswarm.factory 'Cart', (CurrentOrder, Variants, $timeout, $http, $modal, $roo
       @line_items = []
       localStorageService.clearAll() # One day this will have to be moar GRANULAR
 
+    isOnlyItemInOrder: (id) =>
+      deletedItem = @line_items_finalised.find((item) -> item.id == id)
+      @line_items_finalised.filter((item) -> item.order_id == deletedItem.order_id).length == 1
+
     removeFinalisedLineItem: (id) =>
       @line_items_finalised = @line_items_finalised.filter (item) ->
         item.id != id

@@ -5,7 +5,6 @@ FactoryBot.define do
     sequence(:name) { |n| "Product ##{n} - #{Kernel.rand(9999)}" }
     description { generate(:random_description) }
     price { 19.99 }
-    cost_price { 17.00 }
     sku { 'ABC' }
     available_on { 1.year.ago }
     deleted_at { nil }
@@ -23,7 +22,7 @@ FactoryBot.define do
     shipping_category { DefaultShippingCategory.find_or_create }
 
     # ensure stock item will be created for this products master
-    before(:create) { create(:stock_location) if Spree::StockLocation.count == 0 }
+    before(:create) { create(:stock_location) if Spree::StockLocation.count.zero? }
 
     factory :product do
       transient do

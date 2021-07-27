@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class EnterpriseRelationshipsController < Admin::ResourceController
     def index
@@ -14,16 +16,17 @@ module Admin
       @enterprise_relationship = EnterpriseRelationship.new enterprise_relationship_params
 
       if @enterprise_relationship.save
-        render text: Api::Admin::EnterpriseRelationshipSerializer.new(@enterprise_relationship).to_json
+        render plain: Api::Admin::EnterpriseRelationshipSerializer.new(@enterprise_relationship).to_json
       else
-        render status: :bad_request, json: { errors: @enterprise_relationship.errors.full_messages.join(', ') }
+        render status: :bad_request,
+               json: { errors: @enterprise_relationship.errors.full_messages.join(', ') }
       end
     end
 
     def destroy
       @enterprise_relationship = EnterpriseRelationship.find params[:id]
       @enterprise_relationship.destroy
-      render nothing: true
+      render body: nil
     end
 
     private

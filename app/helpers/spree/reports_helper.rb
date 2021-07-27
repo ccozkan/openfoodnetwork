@@ -1,4 +1,6 @@
-require 'spree/money_decorator'
+# frozen_string_literal: true
+
+require 'spree/money'
 
 module Spree
   module ReportsHelper

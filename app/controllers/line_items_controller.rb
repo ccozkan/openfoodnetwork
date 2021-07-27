@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LineItemsController < BaseController
   respond_to :json
 
@@ -29,21 +31,18 @@ class LineItemsController < BaseController
 
   def unauthorized
     status = spree_current_user ? 403 : 401
-    render(nothing: true, status: status) && return
+    render(body: nil, status: status) && return
   end
 
   def not_found
-    render(nothing: true, status: :not_found) && return
+    render(body: nil, status: :not_found) && return
   end
 
   def destroy_with_lock(item)
     order = item.order
     order.with_lock do
-      item.destroy
-      order.update_shipping_fees!
+      order.contents.remove(item.variant)
       order.update_payment_fees!
-      order.update_distribution_charge!
-      order.create_tax_charge!
     end
   end
 end

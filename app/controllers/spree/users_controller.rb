@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Spree
-  class UsersController < Spree::StoreController
+  class UsersController < ::BaseController
     layout 'darkswarm'
-    ssl_required
+
     skip_before_action :set_current_order, only: :show
     prepend_before_action :load_object, only: [:show, :edit, :update]
     prepend_before_action :authorize_actions, only: :new
@@ -12,9 +14,14 @@ module Spree
     before_action :set_locale
     before_action :enable_embedded_shopfront
 
-    # Ignores invoice orders, only order where state: 'complete'
     def show
-      @orders = @user.orders.where(state: 'complete').order('completed_at desc')
+      @payments_requiring_action = PaymentsRequiringAction.new(spree_current_user).query
+      @orders = orders_collection.includes(:line_items)
+
+      customers = spree_current_user.customers
+      @shops = Enterprise
+        .where(id: @orders.pluck(:distributor_id).uniq | customers.pluck(:enterprise_id))
+
       @unconfirmed_email = spree_current_user.unconfirmed_email
     end
 
@@ -53,6 +60,10 @@ module Spree
     end
 
     private
+
+    def orders_collection
+      CompleteOrdersWithBalance.new(@user).query
+    end
 
     def load_object
       @user ||= spree_current_user
