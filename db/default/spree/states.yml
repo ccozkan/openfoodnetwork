@@ -1,1 +1,406 @@
-/home/openfoodnetwork/apps/openfoodnetwork/shared/l10n/states.yml
+# Turkey
+
+- name: Adana
+  country_id: '206'
+  id: '101'
+  abbr: ADN
+
+- name: Adıyaman
+  country_id: '206'
+  id: '102'
+  abbr: AYN
+
+- name: Afyonkarahisar
+  country_id: '206'
+  id: '103'
+  abbr: AFN
+
+- name: Ağrı
+  country_id: '206'
+  id: '104'
+  abbr: AGR
+
+- name: Amasya
+  country_id: '206'
+  id: '105'
+  abbr: AMS
+
+- name: Ankara
+  country_id: '206'
+  id: '106'
+  abbr: ANK
+
+- name: Antalya
+  country_id: '206'
+  id: '107'
+  abbr: ANT
+
+- name: Artvin
+  country_id: '206'
+  id: '108'
+  abbr: ART
+
+- name: Aydın
+  country_id: '206'
+  id: '109'
+  abbr: ADN
+
+- name: Balıkesir
+  country_id: '206'
+  id: '110'
+  abbr: BLK
+
+- name: Bilecik
+  country_id: '206'
+  id: '111'
+  abbr: BCK
+
+- name: Bingöl
+  country_id: '206'
+  id: '112'
+  abbr: BGL
+
+- name: Bitlis
+  country_id: '206'
+  id: '113'
+  abbr: BTS
+
+- name: Bolu
+  country_id: '206'
+  id: '114'
+  abbr: BOL
+
+- name: Burdur
+  country_id: '206'
+  id: '115'
+  abbr: BUR
+
+- name: Bursa
+  country_id: '206'
+  id: '116'
+  abbr: BRS
+
+- name: Çanakkale
+  country_id: '206'
+  id: '117'
+  abbr: CNK
+
+- name: Çankırı
+  country_id: '206'
+  id: '118'
+  abbr: CKR
+
+- name: Çorum
+  country_id: '206'
+  id: '119'
+  abbr: COR
+
+- name: Denizli
+  country_id: '206'
+  id: '120'
+  abbr: DNZ
+
+- name: Diyarbakır
+  country_id: '206'
+  id: '121'
+  abbr: DYB
+
+- name: Edirne
+  country_id: '206'
+  id: '122'
+  abbr: CT
+
+- name: Elazığ
+  country_id: '206'
+  id: '123'
+  abbr: ELZ
+
+- name: Erzincan
+  country_id: '206'
+  id: '124'
+  abbr: ERZ
+
+- name: Erzurum
+  country_id: '206'
+  id: '125'
+  abbr: ERZ
+
+- name: Eskişehir
+  country_id: '206'
+  id: '126'
+  abbr: ESK
+
+- name: Gaziantep
+  country_id: '206'
+  id: '127'
+  abbr: GAZ
+
+- name: Giresun
+  country_id: '206'
+  id: '128'
+  abbr: GIR
+
+- name: Gümüşhane
+  country_id: '206'
+  id: '129'
+  abbr: GHN
+
+- name: Hakkari
+  country_id: '206'
+  id: '130'
+  abbr: HAK
+
+- name: Hatay
+  country_id: '206'
+  id: '131'
+  abbr: HTY
+
+- name: Isparta
+  country_id: '206'
+  id: '132'
+  abbr: ISP
+
+- name: Mersin
+  country_id: '206'
+  id: '133'
+  abbr: MER
+
+- name: İstanbul
+  country_id: '206'
+  id: '134'
+  abbr: IST
+
+- name: İzmir
+  country_id: '206'
+  id: '135'
+  abbr: IZM
+
+- name: Kars
+  country_id: '206'
+  id: '136'
+  abbr: KRS
+
+- name: Kastamonu
+  country_id: '206'
+  id: '137'
+  abbr: KST
+
+- name: Kayseri
+  country_id: '206'
+  id: '138'
+  abbr: KYS
+
+- name: Kırklareli
+  country_id: '206'
+  id: '139'
+  abbr: KRL
+
+- name: Kırşehir
+  country_id: '206'
+  id: '140'
+  abbr: KIR
+
+- name: Kocaeli
+  country_id: '206'
+  id: '141'
+  abbr: KOC
+
+- name: Konya
+  country_id: '206'
+  id: '142'
+  abbr: KON
+
+- name: Kütahya
+  country_id: '206'
+  id: '143'
+  abbr: KUT
+
+- name: Malatya
+  country_id: '206'
+  id: '144'
+  abbr: MLT
+
+- name: Manisa
+  country_id: '206'
+  id: '145'
+  abbr: MSN
+
+- name: Kahramanmaraş
+  country_id: '206'
+  id: '146'
+  abbr: KHM
+
+- name: Mardin
+  country_id: '206'
+  id: '147'
+  abbr: MRD
+
+- name: Muğla
+  country_id: '206'
+  id: '148'
+  abbr: MUG
+
+- name: Muş
+  country_id: '206'
+  id: '149'
+  abbr: MUS
+
+- name: Nevşehir
+  country_id: '206'
+  id: '150'
+  abbr: NEV
+
+- name: Niğde
+  country_id: '206'
+  id: '151'
+  abbr: NGD
+
+- name: Ordu
+  country_id: '206'
+  id: '152'
+  abbr: ORD
+
+- name: Rize
+  country_id: '206'
+  id: '153'
+  abbr: RZE
+
+- name: Sakarya
+  country_id: '206'
+  id: '154'
+  abbr: SKR
+
+- name: Samsun
+  country_id: '206'
+  id: '155'
+  abbr: SMN
+
+- name: Siirt
+  country_id: '206'
+  id: '156'
+  abbr: SRT
+
+- name: Sinop
+  country_id: '206'
+  id: '157'
+  abbr: SNP
+
+- name: Sivas
+  country_id: '206'
+  id: '158'
+  abbr: SVS
+
+- name: Tekirdağ
+  country_id: '206'
+  id: '159'
+  abbr: TKD
+
+- name: Tokat
+  country_id: '206'
+  id: '160'
+  abbr: TKT
+
+- name: Trabzon
+  country_id: '206'
+  id: '161'
+  abbr: TRB
+
+- name: Tunceli
+  country_id: '206'
+  id: '162'
+  abbr: TCL
+
+- name: Şanlıurfa
+  country_id: '206'
+  id: '163'
+  abbr: SRF
+
+- name: Uşak
+  country_id: '206'
+  id: '164'
+  abbr: USK
+
+- name: Van
+  country_id: '206'
+  id: '165'
+  abbr: VAN
+
+- name: Yozgat
+  country_id: '206'
+  id: '166'
+  abbr: YGT
+
+- name: Zonguldak
+  country_id: '206'
+  id: '167'
+  abbr: ZNG
+
+- name: Aksaray
+  country_id: '206'
+  id: '168'
+  abbr: AKS
+
+- name: Bayburt
+  country_id: '206'
+  id: '169'
+  abbr: BRT
+
+- name: Karaman
+  country_id: '206'
+  id: '170'
+  abbr: KMN
+
+- name: Kırıkkale
+  country_id: '206'
+  id: '171'
+  abbr: KRK
+
+- name: Batman
+  country_id: '206'
+  id: '172'
+  abbr: BAT
+
+- name: Şırnak
+  country_id: '206'
+  id: '173'
+  abbr: SNK
+
+- name: Bartın
+  country_id: '206'
+  id: '174'
+  abbr: BRN
+
+- name: Ardahan
+  country_id: '206'
+  id: '175'
+  abbr: ARD
+
+- name: Iğdır
+  country_id: '206'
+  id: '176'
+  abbr: IGD
+
+- name: Yalova
+  country_id: '206'
+  id: '177'
+  abbr: YLV
+
+- name: Karabük
+  country_id: '206'
+  id: '178'
+  abbr: KBK
+
+- name: Kilis
+  country_id: '206'
+  id: '179'
+  abbr: KLS
+
+- name: Osmaniye
+  country_id: '206'
+  id: '180'
+  abbr: OSM
+
+- name: Düzce
+  country_id: '206'
+  id: '181'
+  abbr: DZC
