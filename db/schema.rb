@@ -218,8 +218,8 @@ ActiveRecord::Schema.define(version: 20201113163227) do
     t.boolean  "display_invoice_logo",                          default: false
     t.boolean  "allow_order_changes",                           default: false,  null: false
     t.boolean  "enable_subscriptions",                          default: false,  null: false
-    t.string   "terms_and_conditions_file_name",    limit: 255
-    t.string   "terms_and_conditions_content_type", limit: 255
+    t.string   "terms_and_conditions_file_name"
+    t.string   "terms_and_conditions_content_type"
     t.integer  "terms_and_conditions_file_size"
     t.datetime "terms_and_conditions_updated_at"
   end
@@ -276,6 +276,28 @@ ActiveRecord::Schema.define(version: 20201113163227) do
   end
 
   add_index "inventory_items", ["enterprise_id", "variant_id"], name: "index_inventory_items_on_enterprise_id_and_variant_id", unique: true, using: :btree
+
+  create_table "iyzipay_accounts", id: false, force: :cascade do |t|
+    t.integer  "id",                       default: "nextval('iyzipay_accounts_id_seq'::regclass)"
+    t.integer  "enterprise_id"
+    t.text     "submerchant_key"
+    t.text     "name"
+    t.text     "gsm_number"
+    t.text     "contact_name"
+    t.text     "contact_surname"
+    t.text     "email"
+    t.text     "address"
+    t.text     "iban"
+    t.text     "sub_merchant_external_id"
+    t.text     "identity_number"
+    t.text     "sub_merchant_type"
+    t.text     "tax_office"
+    t.text     "legal_company_title"
+    t.text     "tax_number"
+    t.datetime "created_at",                                                                        null: false
+    t.datetime "updated_at",                                                                        null: false
+    t.datetime "deleted_at"
+  end
 
   create_table "order_cycle_schedules", force: :cascade do |t|
     t.integer  "order_cycle_id", null: false

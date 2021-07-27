@@ -2,7 +2,7 @@ require 'iyzipay_authorize_response_patcher'
 
 module Spree
   class Gateway
-    class IyzipayAga < Spree::Gateway
+    class IyzipayAga < Gateway
       acts_as_taggable
       preference :enterprise_id, :integer
 
@@ -35,6 +35,8 @@ module Spree
         authorize_response = provider.authorize(money, creditcard, gateway_options)
         IyzipayAuthorizeResponsePatcher.new(authorize_response).call!
       rescue
+        Rails.logger.error $!
+        Rails.logger.error $!.backtrace
         failed_activemerchant_billing_response($!.message)
       end
 

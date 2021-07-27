@@ -102,6 +102,7 @@ Darkswarm.factory 'Checkout', ($injector, CurrentOrder, ShippingMethods, StripeE
 
       if @terms_and_conditions_accepted()
         munged_order["terms_and_conditions_accepted"] = true
+      munged_order["sales_agreement"] = $("div#acik_gida_sales_agreement").html()
 
       munged_order
 

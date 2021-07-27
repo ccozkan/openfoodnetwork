@@ -1300,12 +1300,12 @@ tr:
   address: Adres
   address_placeholder: Örn. Barış Mah. 3. Cadde
   address2: Adres (devam)
-  city: ŞEHİR
+  city: İlçe
   city_placeholder: Örn. Bursa
   postcode: posta kodu
   postcode_placeholder: Örn. 16000
   suburb: İlçe
-  state: Şehir
+  state: İl
   country: Ülke
   unauthorized: Yetkisiz
   terms_of_service: "Üyelik Sözleşmesi"
@@ -2113,10 +2113,10 @@ tr:
   products_require_tax_category: "ürünler vergi kategorisi gerektirir"
   admin_shared_address_1: "Adres"
   admin_shared_address_2: "Adres (devam)"
-  admin_share_city: "ŞEHİR"
+  admin_share_city: "İlçe"
   admin_share_zipcode: "posta kodu"
   admin_share_country: "ülke"
-  admin_share_state: "Şehir"
+  admin_share_state: "İl"
   hub_sidebar_hubs: "Pazarlar"
   hub_sidebar_none_available: "Yok"
   hub_sidebar_manage: "yönet"
@@ -2898,10 +2898,10 @@ tr:
     last_name: "Soyadı"
     street_address: "Açık adres"
     street_address_2: "Açık Adres (devam)"
-    city: "ŞEHİR"
+    city: "İlçe"
     zip: "Postakodu"
     country: "ülke"
-    state: "Şehir"
+    state: "İl"
     phone: "Telefon"
     update: "Güncelle"
     use_billing_address: "fatura adresini kullan"

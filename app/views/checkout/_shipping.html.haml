@@ -59,10 +59,7 @@
         .small-12.columns
           %label
             %input{type: :checkbox, required: true, name: "accept_sales_agreement_form", "ng-model" => "accept_sales_agreement_form"}
-            %a{:href => "/mesafeli-satis-sozlesmesi.pdf", :target => "_blank"}Mesafeli satış sözleşmesi
-            ve
-            %a{:href => "/on-bilgilendirme-formu.pdf", :target => "_blank"}ön bilgilendirme formunu
-            kabul ediyorum
+            Mesafeli Satış Sözleşmesi ve Ön Bilgilendirme Formunu kabul ediyorum
         .small-12.columns
           %small.error.medium.input-text{"ng-show" => "!fieldValid('accept_sales_agreement_form')"}
             = t :checkout_accept_sales_agreement_form_required
@@ -71,3 +68,24 @@
         .small-12.columns.text-right
           %button.primary{"ng-disabled" => "shipping.$invalid", "ng-click" => "next($event)"}
             = t :next
+    %accordion-group{"is-open" => "accordion.accept_sales_agreement",
+      "ng-class" => "{open: accordion.accept_sales_agreement}"}
+      %accordion-heading
+        .row
+          .small-8.medium-9.columns
+            %em
+              %small Mesafeli Satış Sözleşmesi ve Ön Bilgilendirme Formu
+          .small-4.medium-3.columns.text-right
+            %span.accordion-up
+              %em
+                %small
+                  = t :checkout_hide
+              %i.ofn-i_053-point-up
+            %span.accordion-down
+              %em
+                %small
+                  = t :checkout_expand
+              %i.ofn-i_052-point-down
+      .row
+        .small-12.columns{"style" => "height: 200px; overflow: scroll;", "id" => "acik_gida_sales_agreement"}
+          = render 'checkout/sales_agreement'
