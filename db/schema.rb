@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_27_201938) do
+ActiveRecord::Schema.define(version: 2021_08_01_215451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -273,6 +273,27 @@ ActiveRecord::Schema.define(version: 2021_05_27_201938) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["enterprise_id", "variant_id"], name: "index_inventory_items_on_enterprise_id_and_variant_id", unique: true
+  end
+
+  create_table "iyzipay_accounts", force: :cascade do |t|
+    t.bigint "enterprise_id"
+    t.text "submerchant_key"
+    t.text "name"
+    t.text "gsm_number"
+    t.text "contact_name"
+    t.text "contact_surname"
+    t.text "email"
+    t.text "address"
+    t.text "iban"
+    t.text "sub_merchant_external_id"
+    t.text "identity_number"
+    t.text "sub_merchant_type"
+    t.text "tax_office"
+    t.text "legal_company_title"
+    t.text "tax_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["enterprise_id"], name: "index_iyzipay_accounts_on_enterprise_id"
   end
 
   create_table "order_cycle_schedules", force: :cascade do |t|
@@ -1213,6 +1234,7 @@ ActiveRecord::Schema.define(version: 2021_05_27_201938) do
   add_foreign_key "exchanges", "enterprises", column: "receiver_id", name: "exchanges_receiver_id_fk"
   add_foreign_key "exchanges", "enterprises", column: "sender_id", name: "exchanges_sender_id_fk"
   add_foreign_key "exchanges", "order_cycles", name: "exchanges_order_cycle_id_fk"
+  add_foreign_key "iyzipay_accounts", "enterprises"
   add_foreign_key "order_cycle_schedules", "order_cycles", name: "oc_schedules_order_cycle_id_fk"
   add_foreign_key "order_cycle_schedules", "schedules", name: "oc_schedules_schedule_id_fk"
   add_foreign_key "order_cycles", "enterprises", column: "coordinator_id", name: "order_cycles_coordinator_id_fk"
