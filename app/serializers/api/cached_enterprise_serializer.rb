@@ -16,7 +16,7 @@ module Api
                :long_description, :website, :instagram, :linkedin, :twitter,
                :facebook, :is_primary_producer, :is_distributor, :phone, :visible,
                :email_address, :hash, :logo, :promo_image, :path, :pickup, :delivery,
-               :icon, :icon_font, :producer_icon_font, :category
+               :icon, :icon_font, :producer_icon_font, :category, :abn
 
     attributes :taxons, :supplied_taxons
 

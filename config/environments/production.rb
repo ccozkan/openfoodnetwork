@@ -33,20 +33,19 @@ Openfoodnetwork::Application.configure do
   config.force_ssl = true
 
   # Use https in email links
-  config.action_mailer.default_url_options = { protocol: 'https' }
+  config.action_mailer.default_url_options = { protocol: 'https', host: "www.acikgida.com" }
 
   # Set log level (default is :debug in Rails 4)
-  config.log_level = :debug
+  config.log_level = :info
 
   # Configure logging:
   config.log_formatter = Logger::Formatter.new.tap { |f| f.datetime_format = "%Y-%m-%d %H:%M:%S" }
 
   # Use a different cache store in production
-  config.cache_store = :redis_cache_store, {
-    driver: :hiredis,
-    url: ENV.fetch("OFN_REDIS_URL", "redis://localhost:6380/0"),
-    reconnect_attempts: 1
-  }
+  memcached_value_max_megabytes = ENV.fetch("MEMCACHED_VALUE_MAX_MEGABYTES", 1).to_i
+  memcached_value_max_bytes = memcached_value_max_megabytes * 1024 * 1024
+  config.cache_store = :memory_store
+  # config.cache_store = :mem_cache_store, { value_max_bytes: memcached_value_max_bytes }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -72,4 +71,14 @@ Openfoodnetwork::Application.configure do
 
   # force ssl site-wide
   # config.middleware.insert_before ActionDispatch::Static, "Rack::SSL"
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :port           => ENV['MAIL_PORT'].to_i,
+    :address        => ENV['MAIL_HOST'],
+    :user_name      => ENV['SMTP_USERNAME'],
+    :password       => ENV['SMTP_PASSWORD'],
+    :domain         => ENV['MAIL_DOMAIN'],
+    :enable_starttls_auto => true,
+    :authentication => 'login',
+  }
 end

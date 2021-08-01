@@ -84,7 +84,9 @@ module Spree
       end
 
       def invoice
-        Spree::OrderMailer.invoice_email(@order.id).deliver_later
+        pdf = InvoiceRenderer.new.render_to_string(@order)
+
+        Spree::OrderMailer.invoice_email(@order.id, pdf).deliver_later
         flash[:success] = t('admin.orders.invoice_email_sent')
 
         respond_with(@order) { |format|

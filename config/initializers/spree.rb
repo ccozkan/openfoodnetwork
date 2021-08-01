@@ -24,6 +24,11 @@ Spree.config do |config|
   config.address_requires_state = true
   config.admin_interface_logo = '/default_images/ofn-logo.png'
 
+  # -- spree_paypal_express
+  # Auto-capture payments. Without this option, payments must be manually captured in the paypal interface.
+  config.auto_capture = true
+  config.override_actionmailer_config = false
+
   # S3 settings
   config.s3_bucket = ENV['S3_BUCKET'] if ENV['S3_BUCKET']
   config.s3_access_key = ENV['S3_ACCESS_KEY'] if ENV['S3_ACCESS_KEY']
@@ -40,7 +45,7 @@ MailConfiguration.apply!
 # Attachments settings
 Spree::Image.set_attachment_attribute(:path, ENV['ATTACHMENT_PATH']) if ENV['ATTACHMENT_PATH']
 Spree::Image.set_attachment_attribute(:url, ENV['ATTACHMENT_URL']) if ENV['ATTACHMENT_URL']
-Spree::Image.set_storage_attachment_attributes
+# Spree::Image.set_storage_attachment_attributes
 
 # Spree 2.0 recommends explicitly setting this here when using spree_auth_devise
 Spree.user_class = 'Spree::User'

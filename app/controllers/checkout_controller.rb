@@ -46,6 +46,7 @@ class CheckoutController < ::BaseController
 
   def update
     return handle_redirect_from_iyzipay if valid_iyzipay_callback?
+    save_sales_agreement
 
     params_adapter = Checkout::FormDataAdapter.new(permitted_params, @order, spree_current_user)
     return action_failed unless @order.update(params_adapter.params[:order] || {})
@@ -189,9 +190,9 @@ class CheckoutController < ::BaseController
       raise last_payment.errors
     end
 
-    if advance_order_state(@order) && order_complete?
+    if OrderWorkflow.new(@order).next && order_complete?
       checkout_succeeded
-      redirect_to(order_path(@order)) && return
+      redirect_to(spree.order_path(@order)) && return
     else
       flash[:error] = order_error
       checkout_failed
@@ -306,5 +307,14 @@ class CheckoutController < ::BaseController
     # This ensures flash errors generated during XHR requests are not persisted in the
     # session for longer than expected.
     flash.discard(:error)
+  end
+
+  def save_sales_agreement
+    sales_agreement_param = params[:order][:sales_agreement]
+    if sales_agreement_param.present?
+      sales_agreement = SalesAgreement.find_or_initialize_by(order_id: @order.id)
+      sales_agreement.content = sales_agreement_param
+      sales_agreement.save
+    end
   end
 end
