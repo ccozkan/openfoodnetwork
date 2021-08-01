@@ -2,7 +2,7 @@
 
 module ActiveMerchant
   module Billing
-    class IyzipayPaymentGateway < Spree::Gateway
+    class IyzipayPaymentGateway < Gateway
       self.test_url = 'https://sandbox-api.iyzipay.com'
       self.live_url = 'https://api.iyzipay.com'
 
@@ -13,6 +13,8 @@ module ActiveMerchant
       self.homepage_url = 'https://www.iyzico.com/'
       self.display_name = 'Iyzipay'
       self.logger = ::Rails.logger
+
+      attr_accessor :enterprise_id
 
       STANDARD_ERROR_CODE_MAPPING = {}
 
@@ -32,8 +34,14 @@ module ActiveMerchant
 
       def capture(money, creditcard, gateway_options)
         payment = fetch_payment(gateway_options)
+        initialize3ds_response = nil
 
-        initialize3ds_response = JSON.parse(payment.cvv_response_message)
+        begin
+          initialize3ds_response = JSON.parse(payment.cvv_response_message)
+        rescue
+          return Response.new(false, $!.message, payment.cvv_response_message, {test: false})
+        end
+        
         if initialize3ds_response["status"] == "failure"
           return Response.new(false, message_from_transaction_result(initialize3ds_response), initialize3ds_response, response_options(initialize3ds_response))
         end

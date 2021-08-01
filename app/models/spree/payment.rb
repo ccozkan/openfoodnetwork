@@ -206,7 +206,9 @@ module Spree
     # and this is it. Related to #1998.
     # See https://github.com/spree/spree/issues/1998#issuecomment-12869105
     def set_unique_identifier
-      self.identifier = generate_identifier while self.class.exists?(identifier: identifier)
+      if self.identifier.blank?
+        self.identifier = generate_identifier while self.class.exists?(identifier: identifier)
+      end
     end
 
     def generate_identifier
