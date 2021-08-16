@@ -81,4 +81,6 @@ Openfoodnetwork::Application.configure do
     :enable_starttls_auto => true,
     :authentication => 'login',
   }
+
+  config.hosts << "tunnel.zavodx.com"
 end

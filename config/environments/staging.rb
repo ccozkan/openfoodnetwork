@@ -72,4 +72,5 @@ Openfoodnetwork::Application.configure do
 
   # force ssl site-wide
   # config.middleware.insert_before ActionDispatch::Static, "Rack::SSL"
+  config.hosts << "tunnel.zavodx.com"
 end
