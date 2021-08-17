@@ -11,7 +11,7 @@ Openfoodnetwork::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.public_file_server.enabled = false
+  config.serve_static_assets = false
 
   # Compress JavaScripts and CSS
   config.assets.compress = true
@@ -33,7 +33,7 @@ Openfoodnetwork::Application.configure do
   config.force_ssl = true
 
   # Use https in email links
-  config.action_mailer.default_url_options = { protocol: 'https', host: "www.acikgida.com" }
+  config.action_mailer.default_url_options = { protocol: 'https' }
 
   # Set log level (default is :debug in Rails 4)
   config.log_level = :info
@@ -44,8 +44,7 @@ Openfoodnetwork::Application.configure do
   # Use a different cache store in production
   memcached_value_max_megabytes = ENV.fetch("MEMCACHED_VALUE_MAX_MEGABYTES", 1).to_i
   memcached_value_max_bytes = memcached_value_max_megabytes * 1024 * 1024
-  config.cache_store = :memory_store
-  # config.cache_store = :mem_cache_store, { value_max_bytes: memcached_value_max_bytes }
+  config.cache_store = :mem_cache_store, { value_max_bytes: memcached_value_max_bytes }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -54,7 +53,7 @@ Openfoodnetwork::Application.configure do
   # config.assets.precompile += %w( search.js )
 
   require 'uglifier'
-  config.assets.js_compressor = Uglifier.new(mangle: false, harmony: true)
+  config.assets.js_compressor = Uglifier.new(mangle: false)
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
@@ -71,16 +70,4 @@ Openfoodnetwork::Application.configure do
 
   # force ssl site-wide
   # config.middleware.insert_before ActionDispatch::Static, "Rack::SSL"
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    :port           => ENV['MAIL_PORT'].to_i,
-    :address        => ENV['MAIL_HOST'],
-    :user_name      => ENV['SMTP_USERNAME'],
-    :password       => ENV['SMTP_PASSWORD'],
-    :domain         => ENV['MAIL_DOMAIN'],
-    :enable_starttls_auto => true,
-    :authentication => 'login',
-  }
-
-  config.hosts << "tunnel.zavodx.com"
 end
