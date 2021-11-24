@@ -10,7 +10,8 @@ module OrderManagement
       def self.eligible_variants(distributor)
         variant_conditions = [
 "spree_products.supplier_id IN (?)",
-                              permitted_producer_ids(distributor)]
+                              permitted_producer_ids(distributor)
+]
         exchange_variant_ids = outgoing_exchange_variant_ids(distributor)
         if exchange_variant_ids.present?
           variant_conditions[0] << " OR spree_variants.id IN (?)"

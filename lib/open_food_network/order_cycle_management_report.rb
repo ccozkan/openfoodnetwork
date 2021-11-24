@@ -97,7 +97,8 @@ ba&.firstname,
        order.shipping_method&.name,
        order.payments.first&.payment_method&.name,
        order.total,
-       balance(order)]
+       balance(order)
+]
     end
 
     def delivery_row(order)
@@ -115,7 +116,8 @@ sa.firstname,
        order.total,
        balance(order),
        has_temperature_controlled_items?(order),
-       order.special_instructions]
+       order.special_instructions
+]
     end
 
     def filter_to_payment_method(orders)

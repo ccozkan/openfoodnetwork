@@ -57,7 +57,8 @@ module OpenFoodNetwork
       expect(header).to eq(
 [
 "Supplier", "Product", "Unit Size", "Variant", "Weight",
-                            "Total Ordered", "Total Max"])
+                            "Total Ordered", "Total Max"
+])
     end
 
     it "should provide the required variant and quantity information in a table" do
@@ -75,7 +76,8 @@ module OpenFoodNetwork
       expect(table[0]).to eq(
 [
 @variant1.product.supplier.name, @variant1.product.name, "UNITSIZE",
-                              @variant1.options_text, @variant1.weight, sum_quantities, sum_max_quantities])
+                              @variant1.options_text, @variant1.weight, sum_quantities, sum_max_quantities
+])
     end
 
     it "should return a table wherein each rows contains the same number of columns as the heading" do

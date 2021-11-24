@@ -72,7 +72,8 @@ line_item.quantity.to_s,
            line_item.single_display_amount_with_adjustments.format(
 symbol: false,
 with_currency: false),
-           line_item.display_amount_with_adjustments.format(symbol: false, with_currency: false)]
+           line_item.display_amount_with_adjustments.format(symbol: false, with_currency: false)
+]
         }
       end
 
@@ -82,7 +83,8 @@ with_currency: false),
           .map do |adjustment|
             [
 raw(adjustment.label),
-             display_adjustment_amount(adjustment).format(symbol: false, with_currency: false)]
+             display_adjustment_amount(adjustment).format(symbol: false, with_currency: false)
+]
           end
       end
 
@@ -90,7 +92,8 @@ raw(adjustment.label),
         display_checkout_taxes_hash(order).map { |tax_rate, tax_value|
           [
 tax_rate,
-           tax_value.format(with_currency: false)]
+           tax_value.format(with_currency: false)
+]
         }
       end
     end

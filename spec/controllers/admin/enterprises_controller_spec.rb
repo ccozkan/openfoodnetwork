@@ -160,7 +160,8 @@ id: distributor,
 enterprise: { 
 user_ids: [
 distributor_owner.id, distributor_manager.id,
-                                                   user.id] } }
+                                                   user.id
+] } }
         spree_post :update, update_params
 
         distributor.reload
@@ -290,7 +291,8 @@ id: distributor,
 enterprise: { 
 user_ids: [
 distributor_owner.id, distributor_manager.id,
-                                                   user.id] } }
+                                                   user.id
+] } }
         spree_post :update, update_params
 
         distributor.reload
@@ -324,7 +326,8 @@ id: distributor,
 enterprise: { 
 user_ids: [
 distributor_owner.id, distributor_manager.id,
-                                                   user.id] } }
+                                                   user.id
+] } }
         spree_post :update, update_params
 
         distributor.reload

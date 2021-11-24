@@ -409,7 +409,8 @@ describe Enterprise do
 Enterprise.distributing_products(
 [
 product.id,
-                                                 another_product.id])).to eq([distributor])
+                                                 another_product.id
+])).to eq([distributor])
       end
     end
 
@@ -511,7 +512,8 @@ product.id,
         if opts[:with] == :all_permissions
           expect(er.permissions.map(&:name)).to match_array [
 'add_to_order_cycle',
-                                                             'manage_products', 'edit_profile', 'create_variant_overrides']
+                                                             'manage_products', 'edit_profile', 'create_variant_overrides'
+]
         elsif opts.key? :with
           expect(er.permissions.map(&:name)).to match_array opts[:with].map(&:to_s)
         end

@@ -119,7 +119,8 @@ module Api
           master: [:images],
           variants: [
 :default_price, :stock_locations, :stock_items, :variant_overrides,
-                     { option_values: :option_type }]
+                     { option_values: :option_type }
+]
         ]
       end
 

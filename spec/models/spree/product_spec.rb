@@ -694,7 +694,8 @@ module Spree
 [
 { 
 id: property.id,
-name: "Organic Certified", value: 'NASAA 12345' }])
+name: "Organic Certified", value: 'NASAA 12345' }
+])
       end
 
       it "returns producer properties as a hash" do
@@ -708,7 +709,8 @@ name: "Organic Certified", value: 'NASAA 12345' }])
 [
 { 
 id: property.id,
-name: "Organic Certified", value: 'NASAA 54321' }])
+name: "Organic Certified", value: 'NASAA 54321' }
+])
       end
 
       it "overrides producer properties with product properties" do
@@ -723,7 +725,8 @@ name: "Organic Certified", value: 'NASAA 54321' }])
 [
 { 
 id: property.id,
-name: "Organic Certified", value: 'NASAA 12345' }])
+name: "Organic Certified", value: 'NASAA 12345' }
+])
       end
 
       context "when product has an inherit_properties value set to true" do
@@ -738,7 +741,8 @@ name: "Organic Certified", value: 'NASAA 12345' }])
 [
 { 
 id: property.id,
-name: "Organic Certified", value: 'NASAA 54321' }])
+name: "Organic Certified", value: 'NASAA 54321' }
+])
         end
       end
 
@@ -769,7 +773,8 @@ name: "Organic Certified", value: 'NASAA 54321' }])
           [
 { id: pa.id, name: "A", value: '1' },
            { id: pb.id, name: "B", value: '2' },
-           { id: pc.id, name: "C", value: '3' }]
+           { id: pc.id, name: "C", value: '3' }
+]
         )
       end
     end

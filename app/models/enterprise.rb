@@ -475,7 +475,8 @@ parent: enterprise,
 child: self,
 permissions_list: [
 :add_to_order_cycle,
-                                                          :create_variant_overrides])
+                                                          :create_variant_overrides
+])
       end
     end
   end

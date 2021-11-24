@@ -409,7 +409,8 @@ enterprise_fees: [enterprise_fee])
                subscription_line_items: [
 create(
 :subscription_line_item, variant: variant1,
-                         quantity: 2, price_estimate: 13.75)],
+                         quantity: 2, price_estimate: 13.75)
+],
                with_proxy_orders: true)
       }
 

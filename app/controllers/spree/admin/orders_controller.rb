@@ -10,7 +10,8 @@ module Spree
 
       before_action :load_order, only: [
 :edit, :update, :fire, :resend,
-                                        :invoice, :print, :print_ticket]
+                                        :invoice, :print, :print_ticket
+]
       before_action :load_distribution_choices, only: [:new, :edit, :update]
 
       # Ensure that the distributor is set for an order when

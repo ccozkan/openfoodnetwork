@@ -34,7 +34,8 @@ module OpenFoodNetwork
 [
 [
                                         "test@test.com", "Firsty", "Lasty", "Suburbia"
-                                      ]])
+                                      ]
+])
         end
       end
 
@@ -47,7 +48,8 @@ module OpenFoodNetwork
           expect(subject.header).to eq(
 [
 "First Name", "Last Name", "Billing Address", "Email",
-                                        "Phone", "Hub", "Hub Address", "Shipping Method"])
+                                        "Phone", "Hub", "Hub Address", "Shipping Method"
+])
         end
 
         it "builds a table from a list of variants" do
@@ -65,7 +67,8 @@ module OpenFoodNetwork
                                         o.email, a.phone, d.name,
                                         [d.address.address1, d.address.address2, d.address.city].join(" "),
                                         o.shipping_method.name
-                                      ]])
+                                      ]
+])
         end
       end
 

@@ -51,7 +51,8 @@ module CheckoutCallbacks
       [
 c.id, c.states.map { |s|
                [s.name, s.id]
-             }]
+             }
+]
     }
   end
 

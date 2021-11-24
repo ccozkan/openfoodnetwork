@@ -56,7 +56,8 @@ current_distributor,
     enterprises.map { |enterprise|
       [
 enterprise.name + ": " + enterprise.address.address1 + ", " + enterprise.address.city,
-       enterprise.id.to_i]
+       enterprise.id.to_i
+]
     }
   end
 

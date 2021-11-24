@@ -41,7 +41,8 @@ I18n.t(:report_header_hub), I18n.t(:report_header_customer), I18n.t(:report_head
          I18n.t(:report_header_billing_city), I18n.t(:report_header_billing_postcode),
          I18n.t(:report_header_billing_state),
          I18n.t(:report_header_order_number),
-         I18n.t(:report_header_date)]
+         I18n.t(:report_header_date)
+]
       end
       # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/MethodLength
@@ -210,7 +211,9 @@ I18n.t(:report_header_hub), I18n.t(:report_header_customer), I18n.t(:report_head
 variant: [{ option_values: :option_type }, { product: :supplier }],
 order: [
 :bill_address, :ship_address, :order_cycle, :adjustments, :payments,
-                   :user, :distributor, :shipments] }]
+                   :user, :distributor, :shipments
+] }
+]
       end
 
       private

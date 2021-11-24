@@ -97,7 +97,8 @@ module VariantUnits
       it "generates values for all weight scales" do
         [
 [1.0, 'g'], [28.35, 'oz'], [453.6, 'lb'], [1000.0, 'kg'],
-         [1_000_000.0, 'T']].each do |scale, unit|
+         [1_000_000.0, 'T']
+].each do |scale, unit|
           p = double(:product, variant_unit: 'weight', variant_unit_scale: scale)
           allow(v).to receive(:product) { p }
           allow(v).to receive(:unit_value) { 10.0 * scale }

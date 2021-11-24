@@ -57,7 +57,8 @@ module OrderManagement
             where(
               adjustable_type: [
 "Spree::Order", "Spree::Shipment", "Spree::LineItem",
-                                "Spree::Payment"]
+                                "Spree::Payment"
+]
             )
           end
         end
@@ -67,7 +68,8 @@ module OrderManagement
             where(
 originator_type: [
 "EnterpriseFee", "Spree::PaymentMethod",
-                                    "Spree::ShippingMethod"])
+                                    "Spree::ShippingMethod"
+])
           end
         end
 

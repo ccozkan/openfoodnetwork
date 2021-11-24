@@ -331,7 +331,8 @@ ef2, line_item.variant,
                                                                    'distributor'),
                       OpenFoodNetwork::EnterpriseFeeApplicator.new(
 ef3, line_item.variant,
-                                                                   'coordinator')]
+                                                                   'coordinator')
+]
           end
         end
 
@@ -374,7 +375,8 @@ ef3, line_item.variant,
               .to eq [
 OpenFoodNetwork::EnterpriseFeeApplicator.new(ef1, nil, 'supplier'),
                       OpenFoodNetwork::EnterpriseFeeApplicator.new(ef2, nil, 'distributor'),
-                      OpenFoodNetwork::EnterpriseFeeApplicator.new(ef3, nil, 'coordinator')]
+                      OpenFoodNetwork::EnterpriseFeeApplicator.new(ef3, nil, 'coordinator')
+]
           end
         end
 

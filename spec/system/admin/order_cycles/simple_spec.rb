@@ -70,7 +70,8 @@ describe '
     order_cycles = OrderCycle.order("id ASC")
     expect(order_cycles.map(&:name)).to eq [
 "Updated Order Cycle 1", "Updated Order Cycle 2",
-                                            "Updated Order Cycle 3"]
+                                            "Updated Order Cycle 3"
+]
     expect(order_cycles.map { |oc| oc.orders_open_at.sec }).to eq [0, 0, 4]
     expect(order_cycles.map { |oc| oc.orders_close_at.sec }).to eq [1, 3, 0]
   end
@@ -221,7 +222,8 @@ describe '
 
         [
 distributor_unmanaged.name, supplier_managed.name,
-         supplier_unmanaged.name].each do |enterprise_name|
+         supplier_unmanaged.name
+].each do |enterprise_name|
           expect(page).not_to have_select 'coordinator_id', with_options: [enterprise_name]
         end
         select2_select 'Managed distributor', from: 'coordinator_id'
@@ -405,11 +407,13 @@ receiver_id: distributor_managed, incoming: false).first
         oc.reload
         expect(oc.suppliers).to match_array [
 supplier_managed, supplier_permitted,
-                                             supplier_unmanaged]
+                                             supplier_unmanaged
+]
         expect(oc.coordinator).to eq(distributor_managed)
         expect(oc.distributors).to match_array [
 distributor_managed, distributor_permitted,
-                                                distributor_unmanaged]
+                                                distributor_unmanaged
+]
       end
     end
 
@@ -487,11 +491,13 @@ incoming: false).first
         oc.reload
         expect(oc.suppliers).to match_array [
 supplier_managed, supplier_permitted,
-                                             supplier_unmanaged]
+                                             supplier_unmanaged
+]
         expect(oc.coordinator).to eq(distributor_managed)
         expect(oc.distributors).to match_array [
 my_distributor, distributor_managed,
-                                                distributor_permitted, distributor_unmanaged]
+                                                distributor_permitted, distributor_unmanaged
+]
       end
     end
   end

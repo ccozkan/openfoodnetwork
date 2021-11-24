@@ -164,7 +164,8 @@ edit_path: main_app.admin_order_cycle_incoming_path(@order_cycle) }
 raw_params.delete(:q) || {}, { 
 m: 'or',
 orders_close_at_gt: orders_close_at_gt,
-orders_close_at_null: true }]
+orders_close_at_null: true }
+]
         }
         @collection = collection
       end

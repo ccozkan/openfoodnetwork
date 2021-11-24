@@ -770,7 +770,8 @@ describe '
       expect(page).to have_select 'product_supplier_id',
                                   with_options: [
 supplier_managed1.name, supplier_managed2.name,
-                                                 supplier_permitted.name]
+                                                 supplier_permitted.name
+]
 
       within 'fieldset#new_product' do
         fill_in 'product_name', with: 'Big Bag Of Apples'

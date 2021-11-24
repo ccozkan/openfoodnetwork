@@ -26,11 +26,13 @@ proc { |is|
                                                                       ""
                                                                     }, proc { |is|
                                                                          is.sum(&:property1)
-                                                                       }] },
+                                                                       }
+] },
                  { 
 group_by: proc { |sentence| sentence.paragraph }, sort_by: proc { |paragraph|
                                                                                 paragraph.name
-                                                                              } }]
+                                                                              } }
+]
         columns = [
 proc { |is| is.first.paragraph.chapter.name }, proc { |is|
                                                                     is.first.paragraph.name
@@ -38,7 +40,8 @@ proc { |is| is.first.paragraph.chapter.name }, proc { |is|
                                                                        is.first.name
                                                                      }, proc { |is|
                                                                           is.sum(&:property1)
-                                                                        }]
+                                                                        }
+]
 
         subject = OrderGrouper.new rules, columns
 

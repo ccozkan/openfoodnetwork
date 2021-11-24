@@ -18,7 +18,8 @@ class EnterpriseFee < ApplicationRecord
   PER_ORDER_CALCULATORS = [
 'Calculator::FlatRate',
                            'Calculator::FlexiRate',
-                           'Calculator::PriceSack'].freeze
+                           'Calculator::PriceSack'
+].freeze
 
   validates :fee_type, inclusion: { in: FEE_TYPES }
   validates :name, presence: true

@@ -41,7 +41,8 @@ module Spree
       separator, _delimiter = I18n.t(
 [
 :'number.currency.format.separator',
-                                      :'number.currency.format.delimiter'])
+                                      :'number.currency.format.delimiter'
+])
       non_price_characters = /[^0-9\-#{separator}]/
       # Strip everything else first
       price.gsub!(non_price_characters, '')

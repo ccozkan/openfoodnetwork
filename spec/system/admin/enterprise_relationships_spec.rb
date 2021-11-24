@@ -61,7 +61,8 @@ create(:enterprise)
       expect(er).to be_present
       expect(er.permissions.map(&:name)).to match_array [
 'add_to_order_cycle', 'edit_profile',
-                                                         'create_variant_overrides']
+                                                         'create_variant_overrides'
+]
     end
 
     it "attempting to create a relationship with invalid data" do

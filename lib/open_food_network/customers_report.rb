@@ -16,7 +16,8 @@ module OpenFoodNetwork
 I18n.t(:report_header_email),
          I18n.t(:report_header_first_name),
          I18n.t(:report_header_last_name),
-         I18n.t(:report_header_suburb)]
+         I18n.t(:report_header_suburb)
+]
       else
         [
 I18n.t(:report_header_first_name),
@@ -26,7 +27,8 @@ I18n.t(:report_header_first_name),
          I18n.t(:report_header_phone),
          I18n.t(:report_header_hub),
          I18n.t(:report_header_hub_address),
-         I18n.t(:report_header_shipping_method)]
+         I18n.t(:report_header_shipping_method)
+]
       end
     end
 
@@ -39,7 +41,8 @@ I18n.t(:report_header_first_name),
 order.email,
            order.billing_address.firstname,
            order.billing_address.lastname,
-           order.billing_address.city]
+           order.billing_address.city
+]
         else
           ba = order.billing_address
           da = order.distributor&.address
@@ -51,7 +54,8 @@ ba.firstname,
            ba.phone,
            order.distributor&.name,
            [da&.address1, da&.address2, da&.city].join(" "),
-           order.shipping_method&.name]
+           order.shipping_method&.name
+]
         end
       end
     end

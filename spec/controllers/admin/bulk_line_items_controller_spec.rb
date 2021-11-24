@@ -9,7 +9,8 @@ describe Admin::BulkLineItemsController, type: :controller do
     let(:line_item_attributes) {
       %i[
 id quantity max_quantity price supplier final_weight_volume units_product units_variant
-         order]
+         order
+]
     }
     let!(:dist1) { FactoryBot.create(:distributor_enterprise) }
     let!(:order1) {

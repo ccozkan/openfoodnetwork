@@ -21,7 +21,8 @@ describe Api::V0::ProductsController, type: :controller do
   let(:variants_attributes) {
     [
 "id", "options_text", "unit_value", "unit_description", "unit_to_display", "on_demand",
-     "display_as", "display_name", "name_to_display", "sku", "on_hand", "price"]
+     "display_as", "display_name", "name_to_display", "sku", "on_hand", "price"
+]
   }
 
   let(:current_api_user) { build(:user) }
@@ -139,7 +140,8 @@ unit_description: "things" }
       expect(errors.keys).to match_array(
 [
 "name", "price", "primary_taxon", "shipping_category",
-                                          "supplier", "variant_unit"])
+                                          "supplier", "variant_unit"
+])
     end
 
     it "can update a product" do
@@ -265,7 +267,8 @@ unit_description: "things" }
         api_get :bulk_products, { page: 1, per_page: 15 }, format: :json
         expect(returned_product_ids).to eq [
 product4.id, product3.id, product2.id,
-                                            inactive_product.id, product.id]
+                                            inactive_product.id, product.id
+]
       end
 
       it "returns pagination data" do

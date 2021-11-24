@@ -95,7 +95,8 @@ RSpec.describe Spree::StockItem do
           allow(subject).to receive_messages(
 backordered_inventory_units: [
 inventory_unit,
-                                                                           inventory_unit_2])
+                                                                           inventory_unit_2
+])
         }
 
         it "fills existing backorders" do

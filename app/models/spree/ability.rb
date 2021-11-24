@@ -142,7 +142,8 @@ module Spree
       can [
 :read, :edit, :update,
            :remove_logo, :remove_promo_image, :remove_terms_and_conditions,
-           :bulk_update, :resend_confirmation], Enterprise do |enterprise|
+           :bulk_update, :resend_confirmation
+], Enterprise do |enterprise|
         OpenFoodNetwork::Permissions.new(user).editable_enterprises.include? enterprise
       end
       can [:welcome, :register], Enterprise do |enterprise|
@@ -151,7 +152,8 @@ module Spree
       can [
 :manage_payment_methods,
            :manage_shipping_methods,
-           :manage_enterprise_fees], Enterprise do |enterprise|
+           :manage_enterprise_fees
+], Enterprise do |enterprise|
         user.enterprises.include? enterprise
       end
 
@@ -188,14 +190,16 @@ module Spree
 :admin, :read, :index, :update,
            :seo, :group_buy_options,
            :bulk_update, :clone, :delete,
-           :destroy], Spree::Product do |product|
+           :destroy
+], Spree::Product do |product|
         OpenFoodNetwork::Permissions.new(user).managed_product_enterprises.include? product.supplier
       end
 
       can [:create], Spree::Variant
       can [
 :admin, :index, :read, :edit,
-           :update, :search, :delete, :destroy], Spree::Variant do |variant|
+           :update, :search, :delete, :destroy
+], Spree::Variant do |variant|
         OpenFoodNetwork::Permissions.new(user)
           .managed_product_enterprises.include? variant.product.supplier
       end
@@ -231,7 +235,8 @@ module Spree
 
       can [
 :admin, :index, :read, :create,
-           :edit, :update_positions, :destroy], Spree::ProductProperty
+           :edit, :update_positions, :destroy
+], Spree::ProductProperty
       can [:admin, :index, :read, :create, :edit, :update, :destroy], Spree::Image
 
       can [:admin, :index, :read, :search], Spree::Taxon
@@ -239,12 +244,14 @@ module Spree
 
       can [
 :admin, :index, :guide, :import, :save, :save_data,
-           :validate_data, :reset_absent_products], ProductImport::ProductImporter
+           :validate_data, :reset_absent_products
+], ProductImport::ProductImporter
 
       # Reports page
       can [
 :admin, :index, :customers, :orders_and_distributors, :group_buys, :payments,
-           :orders_and_fulfillment, :products_and_inventory, :order_cycle_management, :packing],
+           :orders_and_fulfillment, :products_and_inventory, :order_cycle_management, :packing
+],
           Spree::Admin::ReportsController
       can [:admin, :show, :packing], :report
       add_bulk_coop_abilities
@@ -315,7 +322,8 @@ module Spree
       can [:index, :create], Spree::PaymentMethod
       can [
 :admin, :read, :update, :fire, :resend,
-           :destroy, :show_provider_preferences], Spree::PaymentMethod do |payment_method|
+           :destroy, :show_provider_preferences
+], Spree::PaymentMethod do |payment_method|
         (user.enterprises & payment_method.distributors).any?
       end
 
@@ -328,14 +336,16 @@ module Spree
       can [
 :admin, :index, :customers, :group_buys, :sales_tax, :payments,
            :orders_and_distributors, :orders_and_fulfillment, :products_and_inventory,
-           :order_cycle_management, :xero_invoices], Spree::Admin::ReportsController
+           :order_cycle_management, :xero_invoices
+], Spree::Admin::ReportsController
       add_bulk_coop_abilities
       add_enterprise_fee_summary_abilities
 
       can [:create], Customer
       can [
 :admin, :index, :update,
-           :destroy, :show], Customer, enterprise_id: Enterprise.managed_by(user).pluck(:id)
+           :destroy, :show
+], Customer, enterprise_id: Enterprise.managed_by(user).pluck(:id)
       can [:admin, :new, :index], Subscription
       can [:create, :edit, :update, :cancel, :pause, :unpause], Subscription do |subscription|
         user.enterprises.include?(subscription.shop)

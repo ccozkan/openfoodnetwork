@@ -102,7 +102,8 @@ module OpenFoodNetwork
           it "selects only rules of the specified type, in order of priority" do
             expect(rules).to eq [
 default_product_tag_rule, product_tag_rule3, product_tag_rule2,
-                                 product_tag_rule1]
+                                 product_tag_rule1
+]
           end
 
           it "splits rules into those which match customer tags and those which don't, in order of priority" do

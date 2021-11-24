@@ -74,7 +74,8 @@ module OpenFoodNetwork
                  "enterprises.visible",
                  "enterprises.is_primary_producer",
                  "enterprises.created_at",
-                 "#{email_user}.email AS user_email"])
+                 "#{email_user}.email AS user_email"
+])
         .to_a
         .map { |x|
         {

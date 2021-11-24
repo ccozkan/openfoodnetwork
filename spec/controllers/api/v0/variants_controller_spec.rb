@@ -12,7 +12,8 @@ describe Api::V0::VariantsController, type: :controller do
   let(:attributes) {
     [
 :id, :options_text, :price, :on_hand, :unit_value, :unit_description, :on_demand, :display_as,
-     :display_name]
+     :display_name
+]
   }
 
   before do

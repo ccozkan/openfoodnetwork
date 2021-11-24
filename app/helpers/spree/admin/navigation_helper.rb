@@ -68,7 +68,8 @@ options[:label],
         klass = [
 "Spree::#{model_name.classify}",
                  model_name.classify,
-                 model_name.tr('_', '/').classify]
+                 model_name.tr('_', '/').classify
+]
           .find(&:safe_constantize)
           .try(:safe_constantize)
 

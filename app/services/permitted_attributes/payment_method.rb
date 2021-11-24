@@ -15,7 +15,8 @@ module PermittedAttributes
          :calculator_type, :preferred_api_key,
          :preferred_signature, :preferred_solution, :preferred_landing_page, :preferred_logourl,
          :preferred_test_mode, :calculator_type, { distributor_ids: [] },
-         { calculator_attributes: PermittedAttributes::Calculator.attributes }]
+         { calculator_attributes: PermittedAttributes::Calculator.attributes }
+]
       )
     end
   end

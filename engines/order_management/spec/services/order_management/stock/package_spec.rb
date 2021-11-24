@@ -58,7 +58,8 @@ module OrderManagement
 Package::ContentItem.new(variant, 1, :on_hand),
                        Package::ContentItem.new(variant, 1, :on_hand),
                        Package::ContentItem.new(variant, 1, :backordered),
-                       Package::ContentItem.new(variant, 1, :backordered)]
+                       Package::ContentItem.new(variant, 1, :backordered)
+]
 
           subject.flattened = flattened
           expect(subject.on_hand.size).to eq 1
@@ -82,7 +83,8 @@ Package::ContentItem.new(variant, 1, :on_hand),
 Package::ContentItem.new(variant1, 1),
                       Package::ContentItem.new(variant1, 1),
                       Package::ContentItem.new(variant2, 1),
-                      Package::ContentItem.new(variant3, 1)]
+                      Package::ContentItem.new(variant3, 1)
+]
 
           package = Package.new(stock_location, order, contents)
           expect(package.shipping_methods.size).to eq 2
@@ -91,7 +93,8 @@ Package::ContentItem.new(variant1, 1),
         it "can convert to a shipment" do
           flattened = [
 Package::ContentItem.new(variant, 2, :on_hand),
-                       Package::ContentItem.new(variant, 1, :backordered)]
+                       Package::ContentItem.new(variant, 1, :backordered)
+]
           subject.flattened = flattened
 
           shipping_method = build(:shipping_method)

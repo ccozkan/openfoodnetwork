@@ -391,7 +391,8 @@ describe Spree::Ability do
         is_expected.to have_ability(
           [
 :admin, :index, :read, :create, :edit, :search, :update, :destroy,
-           :delete], for: p1.master
+           :delete
+], for: p1.master
         )
       end
 
@@ -405,7 +406,8 @@ describe Spree::Ability do
         is_expected.to have_ability(
           [
 :admin, :index, :read, :create, :edit, :update_positions,
-           :destroy], for: Spree::ProductProperty
+           :destroy
+], for: Spree::ProductProperty
         )
       end
 
@@ -429,7 +431,8 @@ describe Spree::Ability do
         is_expected.to have_ability(
           [
 :admin, :index, :read, :create, :edit, :update_positions,
-           :destroy], for: ProducerProperty
+           :destroy
+], for: ProducerProperty
         )
       end
 
@@ -453,7 +456,8 @@ describe Spree::Ability do
         is_expected.to have_ability(
           [
 :admin, :index, :customers, :bulk_coop, :orders_and_fulfillment, :products_and_inventory,
-           :order_cycle_management], for: Spree::Admin::ReportsController
+           :order_cycle_management
+], for: Spree::Admin::ReportsController
         )
       end
 
@@ -463,7 +467,8 @@ describe Spree::Ability do
         is_expected.not_to have_ability(
           [
 :group_buys, :payments, :orders_and_distributors, :users_and_enterprises,
-           :xero_invoices], for: Spree::Admin::ReportsController
+           :xero_invoices
+], for: Spree::Admin::ReportsController
         )
       end
 
@@ -557,7 +562,8 @@ describe Spree::Ability do
           is_expected.to have_ability(
             [
 :read, :edit, :update, :remove_logo, :remove_promo_image, :remove_terms_and_conditions,
-             :bulk_update, :resend_confirmation], for: d1
+             :bulk_update, :resend_confirmation
+], for: d1
           )
         end
 
@@ -565,7 +571,8 @@ describe Spree::Ability do
           is_expected.to have_ability(
             [
 :read, :edit, :update, :remove_logo, :remove_promo_image, :remove_terms_and_conditions,
-             :bulk_update, :resend_confirmation], for: d_related
+             :bulk_update, :resend_confirmation
+], for: d_related
           )
         end
 
@@ -579,7 +586,8 @@ describe Spree::Ability do
           is_expected.not_to have_ability(
             [
 :manage_shipping_methods, :manage_payment_methods,
-             :manage_enterprise_fees], for: d_related
+             :manage_enterprise_fees
+], for: d_related
           )
         end
       end
@@ -699,7 +707,8 @@ describe Spree::Ability do
         is_expected.to have_ability(
           [
 :admin, :index, :customers, :sales_tax, :group_buys, :bulk_coop, :payments,
-           :orders_and_distributors, :orders_and_fulfillment, :products_and_inventory, :order_cycle_management, :xero_invoices], for: Spree::Admin::ReportsController
+           :orders_and_distributors, :orders_and_fulfillment, :products_and_inventory, :order_cycle_management, :xero_invoices
+], for: Spree::Admin::ReportsController
         )
       end
 
@@ -772,7 +781,8 @@ describe Spree::Ability do
         is_expected.to have_ability(
           [
 :admin, :index, :read, :create, :edit, :bulk_update, :destroy,
-           :for_order_cycle], for: EnterpriseFee
+           :for_order_cycle
+], for: EnterpriseFee
         )
       end
 

@@ -26,7 +26,8 @@ order_cycle: {
 incoming_exchanges: [
 { 
 sender_id: "2",
-name: "Exchange Name", variants: [] }] } )
+name: "Exchange Name", variants: [] }
+] } )
       }
 
       it "keeps permitted and removes not permitted" do
@@ -46,7 +47,8 @@ incoming_exchanges: [
 { 
 variants: { 
 "7" => true,
-"12" => true } }] } )
+"12" => true } }
+] } )
       }
 
       it "keeps all variant_ids provided" do

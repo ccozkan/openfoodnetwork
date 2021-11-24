@@ -69,13 +69,16 @@ describe "Product Import", js: true do
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "shipping_category_id"]
+                "shipping_category_id"
+]
         csv << [
 "Carrots", "User Enterprise", "Vegetables", "5", "3.20", "500", "g",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
         csv << [
 "Potatoes", "User Enterprise", "Vegetables", "6", "6.50", "1", "kg",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
       end
       File.write('/tmp/test.csv', csv_data)
 
@@ -118,16 +121,20 @@ describe "Product Import", js: true do
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "shipping_category_id"]
+                "shipping_category_id"
+]
         csv << [
 "Carrots", "User Enterprise", "Vegetables", "5", "3.20", "500", "g",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
         csv << [
 "Carrots", "User Enterprise", "Vegetables", "5", "5.50", "1", "kg",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
         csv << [
 "Bad Carrots", "Unkown Enterprise", "Mouldy vegetables", "666", "3.20", "", "g",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
         csv << ["Bad Potatoes", "", "Vegetables", "6", "6", "6", ""]
       end
       File.write('/tmp/test.csv', csv_data)
@@ -152,10 +159,12 @@ describe "Product Import", js: true do
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "tax_category", "shipping_category"]
+                "tax_category", "shipping_category"
+]
         csv << [
 "Carrots", "User Enterprise", "Vegetables", "5", "3.20", "500", "g",
-                tax_category.name, shipping_category.name]
+                tax_category.name, shipping_category.name
+]
       end
       File.write('/tmp/test.csv', csv_data)
 
@@ -185,13 +194,16 @@ describe "Product Import", js: true do
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "shipping_category_id"]
+                "shipping_category_id"
+]
         csv << [
 "Carrots", "User Enterprise", "Vegetables", "5", "3.20", "500", "g",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
         csv << [
 "Potatoes", "User Enterprise", "Vegetables", "6", "6.50", "1", "kg",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
       end
       File.write('/tmp/test.csv', csv_data)
 
@@ -237,10 +249,12 @@ describe "Product Import", js: true do
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "shipping_category_id"]
+                "shipping_category_id"
+]
         csv << [
 "Carrots", "User Enterprise", "Vegetables", "500", "3.20", "500", "g",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
       end
       File.write('/tmp/test.csv', csv_data)
 
@@ -268,16 +282,20 @@ describe "Product Import", js: true do
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "display_name", "shipping_category_id"]
+                "display_name", "shipping_category_id"
+]
         csv << [
 "Potatoes", "User Enterprise", "Vegetables", "5", "3.50", "500", "g", "Small Bag",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
         csv << [
 "Potatoes", "User Enterprise", "Vegetables", "6", "5.50", "2000", "g", "Big Bag",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
         csv << [
 "Beans", "User Enterprise", "Vegetables", "7", "2.50", "250", "g", nil,
-                shipping_category_id_str]
+                shipping_category_id_str
+]
       end
       File.write('/tmp/test.csv', csv_data)
 
@@ -315,10 +333,12 @@ describe "Product Import", js: true do
         csv << ["Beans", "Another Enterprise", "User Enterprise", "Vegetables", "5", "3.20", "500"]
         csv << [
 "Sprouts", "Another Enterprise", "User Enterprise", "Vegetables", "6", "6.50",
-                "500"]
+                "500"
+]
         csv << [
 "Cabbage", "Another Enterprise", "User Enterprise", "Vegetables", "2001", "1.50",
-                "500"]
+                "500"
+]
       end
       File.write('/tmp/test.csv', csv_data)
 
@@ -381,10 +401,12 @@ hub_id: enterprise2.id).first
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "distributor", "producer", "category", "on_hand", "price", "unit_type",
-                "units", "on_demand"]
+                "units", "on_demand"
+]
         csv << [
 "Beets", "Another Enterprise", "User Enterprise", "Vegetables", nil, "3.20", "kg",
-                "1", "true"]
+                "1", "true"
+]
       end
 
       File.write('/tmp/test.csv', csv_data)
@@ -420,10 +442,12 @@ hub_id: enterprise2.id).first
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "distributor", "producer", "category", "on_hand", "price", "unit_type",
-                "units", "on_demand", "variant_unit_name"]
+                "units", "on_demand", "variant_unit_name"
+]
         csv << [
 "Aubergine", "Another Enterprise", "User Enterprise", "Vegetables", "", "3.3",
-                "kg", "1", "true", "Bag"]
+                "kg", "1", "true", "Bag"
+]
       end
 
       File.write('/tmp/test.csv', csv_data)
@@ -452,16 +476,20 @@ hub_id: enterprise2.id).first
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "distributor", "producer", "category", "on_hand", "price", "units",
-                "on_demand"]
+                "on_demand"
+]
         csv << [
 "Beans", "Another Enterprise", "User Enterprise", "Vegetables", nil, "3.20", "500",
-                "true"]
+                "true"
+]
         csv << [
 "Sprouts", "Another Enterprise", "User Enterprise", "Vegetables", "6", "6.50",
-                "500", "false"]
+                "500", "false"
+]
         csv << [
 "Cabbage", "Another Enterprise", "User Enterprise", "Vegetables", nil, "1.50",
-                "500", nil]
+                "500", nil
+]
       end
       File.write('/tmp/test.csv', csv_data)
 
@@ -509,13 +537,16 @@ hub_id: enterprise2.id).first
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "shipping_category_id"]
+                "shipping_category_id"
+]
         csv << [
 "Carrots", "User Enterprise", "Vegetables", "5", "3.20", "1", "lb",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
         csv << [
 "Potatoes", "User Enterprise", "Vegetables", "6", "6.50", "8", "oz",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
       end
       File.write('/tmp/test.csv', csv_data)
 
@@ -550,10 +581,12 @@ hub_id: enterprise2.id).first
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "variant_unit_name", "shipping_category_id"]
+                "variant_unit_name", "shipping_category_id"
+]
         csv << [
 "Cupcake", "User Enterprise", "Cake", "5", "2.2", "1", "", "Bunch",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
       end
       File.write('/tmp/test.csv', csv_data)
 
@@ -591,10 +624,12 @@ hub_id: enterprise2.id).first
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "shipping_category_id"]
+                "shipping_category_id"
+]
         csv << [
 "Heavy Carrots", "Unkown Enterprise", "Mouldy vegetables", "666", "3.20", "1",
-                "stones", shipping_category_id_str]
+                "stones", shipping_category_id_str
+]
       end
       File.write('/tmp/test.csv', csv_data)
 
@@ -681,13 +716,16 @@ I18n.t(
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "shipping_category_id"]
+                "shipping_category_id"
+]
         csv << [
 "My Carrots", "User Enterprise", "Vegetables", "5", "3.20", "500", "g",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
         csv << [
 "Your Potatoes", "Another Enterprise", "Vegetables", "6", "6.50", "1", "kg",
-                shipping_category_id_str]
+                shipping_category_id_str
+]
       end
       File.write('/tmp/test.csv', csv_data)
 

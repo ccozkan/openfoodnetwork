@@ -16,11 +16,13 @@ module OpenFoodNetwork
       when "tax_rates"
         [
 I18n.t(:report_header_order_number),
-         I18n.t(:report_header_total_excl_vat, currency_symbol: currency_symbol)] +
+         I18n.t(:report_header_total_excl_vat, currency_symbol: currency_symbol)
+] +
           relevant_rates.map { |rate| "%.1f%% (%s)" % [rate.amount.to_f * 100, currency_symbol] } +
           [
 I18n.t(:report_header_total_tax, currency_symbol: currency_symbol),
-           I18n.t(:report_header_total_incl_vat, currency_symbol: currency_symbol)]
+           I18n.t(:report_header_total_incl_vat, currency_symbol: currency_symbol)
+]
       else
         [
 I18n.t(:report_header_order_number),
@@ -34,7 +36,8 @@ I18n.t(:report_header_order_number),
          I18n.t(:report_header_tax_on_fees, currency_symbol: currency_symbol),
          I18n.t(:report_header_total_tax, currency_symbol: currency_symbol),
          I18n.t(:report_header_customer),
-         I18n.t(:report_header_distributor)]
+         I18n.t(:report_header_distributor)
+]
       end
     end
 
@@ -66,7 +69,8 @@ I18n.t(:report_header_order_number),
           [
 order.number, order.completed_at.strftime("%F %T"), totals[:items], totals[:items_total],
            totals[:taxable_total], totals[:sales_tax], shipping_cost, order.shipping_tax, order.enterprise_fee_tax, order.total_tax,
-           order.bill_address.full_name, order.distributor&.name]
+           order.bill_address.full_name, order.distributor&.name
+]
         end
       end
     end

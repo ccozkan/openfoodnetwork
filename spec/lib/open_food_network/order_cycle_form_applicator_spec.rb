@@ -81,7 +81,8 @@ variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2]
                     exchanges: [
 double(
 :exchange, sender_id: supplier_id,
-           receiver_id: coordinator_id, incoming: true)],
+           receiver_id: coordinator_id, incoming: true)
+],
                     incoming_exchanges: [incoming_exchange],
                     outgoing_exchanges: [])
 
@@ -116,7 +117,8 @@ variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2]
                     exchanges: [
 double(
 :exchange, sender_id: coordinator_id,
-           receiver_id: distributor_id, incoming: false)],
+           receiver_id: distributor_id, incoming: false)
+],
                     incoming_exchanges: [],
                     outgoing_exchanges: [outgoing_exchange])
 

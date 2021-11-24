@@ -566,7 +566,8 @@ variant_id: variant.id)
 subscription_line_items_attributes: [
 {
   id: subscription.subscription_line_items.last.id, quantity: 2
-}] }
+}
+] }
             subscription.assign_attributes(params)
             expect(syncer.sync!).to be true
 

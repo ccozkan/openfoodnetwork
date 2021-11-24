@@ -36,14 +36,16 @@ module OrderManagement
 I18n.t(:report_header_customer),
              I18n.t(:report_header_product),
              I18n.t(:report_header_variant),
-             I18n.t(:report_header_sum_total)]
+             I18n.t(:report_header_sum_total)
+]
           when "bulk_coop_customer_payments"
             [
 I18n.t(:report_header_customer),
              I18n.t(:report_header_date_of_order),
              I18n.t(:report_header_total_cost),
              I18n.t(:report_header_amount_owing),
-             I18n.t(:report_header_amount_paid)]
+             I18n.t(:report_header_amount_paid)
+]
           else
             [
 I18n.t(:report_header_supplier),
@@ -55,7 +57,8 @@ I18n.t(:report_header_supplier),
              I18n.t(:report_header_sum_total),
              I18n.t(:report_header_sum_max_total),
              I18n.t(:report_header_units_required),
-             I18n.t(:report_header_remainder)]
+             I18n.t(:report_header_remainder)
+]
           end
         end
 
@@ -85,12 +88,14 @@ group_by: proc { |li| li.full_name },
 sort_by: proc { |full_name| full_name } },
              { 
 group_by: proc { |li| li.order },
-sort_by: proc { |order| order.to_s } }]
+sort_by: proc { |order| order.to_s } }
+]
           when "bulk_coop_customer_payments"
             [
 { 
 group_by: proc { |li| li.order },
-sort_by: proc { |order| order.completed_at } }]
+sort_by: proc { |order| order.completed_at } }
+]
           else
             [
 { 
@@ -122,7 +127,8 @@ proc { |lis| lis.first.product.supplier.name },
                                        ( lis.sum { |li|
                                            [
 li.max_quantity || 0,
-                                            li.quantity || 0].max * (li.weight_from_unit_value || 0)
+                                            li.quantity || 0
+].max * (li.weight_from_unit_value || 0)
                                          } / lis.first.product.group_buy_unit_size )
                                      end ).floor
                                  },
@@ -130,20 +136,24 @@ li.max_quantity || 0,
                                    lis.sum { |li|
                                      [
 li.max_quantity || 0,
-                                      li.quantity || 0].max * (li.weight_from_unit_value || 0)
+                                      li.quantity || 0
+].max * (li.weight_from_unit_value || 0)
                                    } - ( ( if (lis.first.product.group_buy_unit_size || 0).zero?
                                              0
                                            else
                                              ( lis.sum { |li|
                                                  [
 li.max_quantity || 0,
-                                                  li.quantity || 0].max * (li.weight_from_unit_value || 0)
+                                                  li.quantity || 0
+].max * (li.weight_from_unit_value || 0)
                                                } / lis.first.product.group_buy_unit_size )
                                            end ).floor * (lis.first.product.group_buy_unit_size || 0) )
-                                 }] },
+                                 }
+] },
              { 
 group_by: proc { |li| li.full_name },
-sort_by: proc { |full_name| full_name } }]
+sort_by: proc { |full_name| full_name } }
+]
           end
         end
 

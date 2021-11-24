@@ -263,7 +263,8 @@ describe Spree::Order do
       @order = create(:order, user: user)
       @order.line_items = [
 create(:line_item, price: 1.0, quantity: 2),
-                           create(:line_item, price: 1.0, quantity: 1)]
+                           create(:line_item, price: 1.0, quantity: 1)
+]
     end
     it "should return the correct lum sum of items" do
       expect(@order.amount).to eq 3.0
@@ -1152,7 +1153,8 @@ create(:line_item, price: 1.0, quantity: 2),
         order.shipments = [
 create(
 :shipment_with, :shipping_method,
-                                  shipping_method: shipping_method)]
+                                  shipping_method: shipping_method)
+]
         order.save
 
         expect(order.adjustment_total).to eq expected_fees - (item_num * shipping_fee)

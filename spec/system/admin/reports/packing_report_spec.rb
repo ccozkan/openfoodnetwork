@@ -56,7 +56,8 @@ describe "Packing Reports", js: true do
 [
                               [
 "Hub", "Code", "First Name", "Last Name", "Supplier",
-                               "Product", "Variant", "Quantity", "TempControlled?"].map(&:upcase)
+                               "Product", "Variant", "Quantity", "TempControlled?"
+].map(&:upcase)
                             ])
         expect(page).to have_selector 'table#listing_orders tbody tr', count: 5 # Totals row per order
       end
@@ -92,7 +93,8 @@ describe "Packing Reports", js: true do
 [
                               [
 "Hub", "Supplier", "Code", "First Name", "Last Name",
-                               "Product", "Variant", "Quantity", "TempControlled?"].map(&:upcase)
+                               "Product", "Variant", "Quantity", "TempControlled?"
+].map(&:upcase)
                             ])
         expect(all('table#listing_orders tbody tr').count).to eq(4) # Totals row per supplier
       end

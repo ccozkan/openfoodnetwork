@@ -82,7 +82,8 @@ describe Admin::SchedulesController, type: :controller do
 :schedule,
              order_cycles: [
 coordinated_order_cycle, uncoordinated_order_cycle,
-                            uncoordinated_order_cycle3] )
+                            uncoordinated_order_cycle3
+] )
     }
     let!(:uncoordinated_schedule) { create(:schedule, order_cycles: [uncoordinated_order_cycle] ) }
 
@@ -106,7 +107,8 @@ coordinated_order_cycle, uncoordinated_order_cycle,
         it "allows me to add/remove only order cycles I coordinate to/from the schedule" do
           order_cycle_ids = [
 coordinated_order_cycle2.id, uncoordinated_order_cycle2.id,
-                             uncoordinated_order_cycle3.id]
+                             uncoordinated_order_cycle3.id
+]
           spree_put :update, format: :json, id: coordinated_schedule.id,
                              order_cycle_ids: order_cycle_ids
           expect(assigns(:schedule)).to eq coordinated_schedule
@@ -181,7 +183,8 @@ coordinated_order_cycle2.id, uncoordinated_order_cycle2.id,
             params.merge!( 
 order_cycle_ids: [
 coordinated_order_cycle.id,
-                                             uncoordinated_order_cycle.id] )
+                                             uncoordinated_order_cycle.id
+] )
           end
 
           it "allows me to create the schedule, adding only order cycles that I manage" do
@@ -217,7 +220,8 @@ coordinated_order_cycle.id,
           params.merge!( 
 order_cycle_ids: [
 coordinated_order_cycle.id,
-                                           uncoordinated_order_cycle.id] )
+                                           uncoordinated_order_cycle.id
+] )
         end
 
         it "allows me to create a schedule" do

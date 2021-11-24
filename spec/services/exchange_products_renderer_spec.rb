@@ -33,7 +33,8 @@ describe ExchangeProductsRenderer do
 
         suppliers = [
 exchange.variants[0].product.supplier.name,
-                     exchange.variants[1].product.supplier.name]
+                     exchange.variants[1].product.supplier.name
+]
         expect(suppliers).to include products.first.supplier.name
         expect(suppliers).to include products.second.supplier.name
       end
@@ -61,7 +62,8 @@ exchange.variants[0].product.supplier.name,
           exchange.variants.first.inventory_items = [
 create(
 :inventory_item,
-                                                            enterprise: order_cycle.coordinator)]
+                                                            enterprise: order_cycle.coordinator)
+]
 
           products = renderer.exchange_products(false, exchange.receiver)
 

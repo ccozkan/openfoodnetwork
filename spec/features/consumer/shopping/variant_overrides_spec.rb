@@ -76,7 +76,8 @@ describe "shopping with variant overrides defined", js: true do
   before do
     outgoing_exchange.variants = [
 product1_variant1, product1_variant2, product2_variant1,
-                                  product1_variant3, product3_variant1, product3_variant2, product4_variant1]
+                                  product1_variant3, product3_variant1, product3_variant2, product4_variant1
+]
     outgoing_exchange.enterprise_fees << enterprise_fee
     sm.calculator.preferred_amount = 0
     visit enterprise_shop_path(hub)

@@ -178,7 +178,8 @@ payment_method_name: pm1.name)
                                                 nil,
                                                 order.total,
                                                 -order.total
-                                              ]])
+                                              ]
+])
           end
         end
 
@@ -209,7 +210,8 @@ payment_method_name: pm1.name)
                                                 -order.total,
                                                 false,
                                                 order.special_instructions
-                                              ]])
+                                              ]
+])
           end
         end
       end
