@@ -20,7 +20,7 @@ module Spree
     end
 
     def to_html
-      unless (on_success || on_failure)
+      unless on_success || on_failure
         super
         return
       end
@@ -29,7 +29,7 @@ module Spree
     end
 
     def to_format
-      unless (on_success || on_failure)
+      unless on_success || on_failure
         super
         return
       end
