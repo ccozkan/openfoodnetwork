@@ -70,13 +70,17 @@ module Spree
     preference :track_inventory_levels, :boolean, default: true
 
     # Preferences related to image settings
-    preference :attachment_default_url, :string,
+    preference :attachment_default_url, 
+:string,
                default: '/spree/products/:id/:style/:basename.:extension'
-    preference :attachment_path, :string,
+    preference :attachment_path, 
+:string,
                default: ':rails_root/public/spree/products/:id/:style/:basename.:extension'
-    preference :attachment_url, :string,
+    preference :attachment_url, 
+:string,
                default: '/spree/products/:id/:style/:basename.:extension'
-    preference :attachment_styles, :string,
+    preference :attachment_styles, 
+:string,
                default: "{\"mini\":\"48x48>\",\"small\":\"100x100>\",\"product\":\"240x240>\",\"large\":\"600x600>\"}"
     preference :attachment_default_style, :string, default: 'product'
     preference :s3_access_key, :string
@@ -96,7 +100,8 @@ module Spree
     preference :mail_host, :string, default: 'localhost'
     preference :mail_domain, :string, default: 'localhost'
     preference :mail_port, :integer, default: 25
-    preference :secure_connection_type, :string,
+    preference :secure_connection_type, 
+:string,
                default: Core::MailSettings::SECURE_CONNECTION_TYPES[0]
     preference :mail_auth_type, :string, default: Core::MailSettings::MAIL_AUTH[0]
     preference :smtp_username, :string
@@ -137,7 +142,8 @@ module Spree
     preference :enable_localized_number?, :boolean, default: false
 
     # Enable cache
-    preference :enable_products_cache?, :boolean,
+    preference :enable_products_cache?, 
+:boolean,
                default: (Rails.env.production? || Rails.env.staging?)
 
     # Available units

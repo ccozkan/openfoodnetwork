@@ -61,7 +61,8 @@ sum_max_quantities
             sum_quantities = line_items_by_variant.to_a.sum(&:quantity)
             sum_max_quantities = line_items_by_variant.sum { |li| li.max_quantity || 0 }
             variants_and_quantities << GroupBuyVariantRow.new(
-variant, sum_quantities,
+variant, 
+sum_quantities,
                                                               sum_max_quantities)
           end
 
@@ -72,7 +73,8 @@ variant, sum_quantities,
             (li.variant.weight || 0) * (li.max_quantity || 0)
           }
           variants_and_quantities << GroupBuyProductRow.new(
-product, sum_quantities,
+product, 
+sum_quantities,
                                                             sum_max_quantities)
         end
       end

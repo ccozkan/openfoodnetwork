@@ -24,13 +24,19 @@ module OpenFoodNetwork
 
         if exchange_exists?(exchange[:enterprise_id], @order_cycle.coordinator_id, true)
           update_exchange(
-exchange[:enterprise_id], @order_cycle.coordinator_id, true,
-                          variant_ids: variant_ids, enterprise_fee_ids: enterprise_fee_ids,
+exchange[:enterprise_id], 
+@order_cycle.coordinator_id, 
+true,
+                          variant_ids: variant_ids, 
+enterprise_fee_ids: enterprise_fee_ids,
                           receival_instructions: exchange[:receival_instructions] )
         else
           add_exchange(
-exchange[:enterprise_id], @order_cycle.coordinator_id, true,
-                       variant_ids: variant_ids, enterprise_fee_ids: enterprise_fee_ids,
+exchange[:enterprise_id], 
+@order_cycle.coordinator_id, 
+true,
+                       variant_ids: variant_ids, 
+enterprise_fee_ids: enterprise_fee_ids,
                        receival_instructions: exchange[:receival_instructions], )
         end
       end
@@ -42,7 +48,9 @@ exchange[:enterprise_id], @order_cycle.coordinator_id, true,
 
         if exchange_exists?(@order_cycle.coordinator_id, exchange[:enterprise_id], false)
           update_exchange(
-@order_cycle.coordinator_id, exchange[:enterprise_id], false,
+@order_cycle.coordinator_id, 
+exchange[:enterprise_id], 
+false,
                           variant_ids: variant_ids,
                           enterprise_fee_ids: enterprise_fee_ids,
                           pickup_time: exchange[:pickup_time],
@@ -50,7 +58,9 @@ exchange[:enterprise_id], @order_cycle.coordinator_id, true,
                           tag_list: exchange[:tag_list] )
         else
           add_exchange(
-@order_cycle.coordinator_id, exchange[:enterprise_id], false,
+@order_cycle.coordinator_id, 
+exchange[:enterprise_id], 
+false,
                        variant_ids: variant_ids,
                        enterprise_fee_ids: enterprise_fee_ids,
                        pickup_time: exchange[:pickup_time],
@@ -68,13 +78,15 @@ exchange[:enterprise_id], @order_cycle.coordinator_id, true,
 
     def exchange_exists?(sender_id, receiver_id, incoming)
       @order_cycle.exchanges.where(
-sender_id: sender_id, receiver_id: receiver_id,
+sender_id: sender_id, 
+receiver_id: receiver_id,
 incoming: incoming).present?
     end
 
     def add_exchange(sender_id, receiver_id, incoming, attrs = {})
       attrs = attrs.reverse_merge(
-sender_id: sender_id, receiver_id: receiver_id,
+sender_id: sender_id, 
+receiver_id: receiver_id,
 incoming: incoming)
       variant_ids = attrs.delete :variant_ids
       exchange = @order_cycle.exchanges.build attrs
@@ -89,7 +101,8 @@ incoming: incoming)
 
     def update_exchange(sender_id, receiver_id, incoming, attrs = {})
       exchange = @order_cycle.exchanges.where(
-sender_id: sender_id, receiver_id: receiver_id,
+sender_id: sender_id, 
+receiver_id: receiver_id,
 incoming: incoming).first
       return unless permission_for(exchange)
 

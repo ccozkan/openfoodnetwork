@@ -5,7 +5,8 @@ require 'system_helper'
 describe '
   As an Administrator
   I want to manage relationships between users and enterprises
-', js: true do
+', 
+js: true do
   include AuthenticationHelper
   include WebHelper
   include OpenFoodNetwork::EmailHelper

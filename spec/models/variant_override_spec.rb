@@ -269,8 +269,12 @@ describe VariantOverride do
     describe "forcing the on hand level to the value in the default_stock field" do
       it "succeeds for variant override that forces limited stock" do
         vo = create(
-:variant_override, variant: variant, hub: hub, count_on_hand: 12,
-                   default_stock: 20, resettable: true)
+:variant_override, 
+variant: variant, 
+hub: hub, 
+count_on_hand: 12,
+                   default_stock: 20, 
+resettable: true)
         vo.reset_stock!
 
         vo.reload
@@ -280,7 +284,11 @@ describe VariantOverride do
 
       it "succeeds for variant override that forces unlimited stock" do
         vo = create(
-:variant_override, :on_demand, variant: variant, hub: hub, default_stock: 20,
+:variant_override, 
+:on_demand, 
+variant: variant, 
+hub: hub, 
+default_stock: 20,
                                resettable: true)
         vo.reset_stock!
 
@@ -291,8 +299,12 @@ describe VariantOverride do
 
       it "succeeds for variant override that uses producer stock settings" do
         vo = create(
-:variant_override, :use_producer_stock_settings, variant: variant, hub: hub,
-                                                 default_stock: 20, resettable: true)
+:variant_override, 
+:use_producer_stock_settings, 
+variant: variant, 
+hub: hub,
+                                                 default_stock: 20, 
+resettable: true)
         vo.reset_stock!
 
         vo.reload
@@ -303,8 +315,12 @@ describe VariantOverride do
 
     it "silently logs an error if the variant override doesn't have a default stock level" do
       vo = create(
-:variant_override, variant: variant, hub: hub, count_on_hand: 12,
-                   default_stock: nil, resettable: true)
+:variant_override, 
+variant: variant, 
+hub: hub, 
+count_on_hand: 12,
+                   default_stock: nil, 
+resettable: true)
       expect(Bugsnag).to receive(:notify)
       vo.reset_stock!
       expect(vo.reload.count_on_hand).to eq(12)
@@ -312,8 +328,12 @@ describe VariantOverride do
 
     it "doesn't reset the level if the behaviour is disabled" do
       vo = create(
-:variant_override, variant: variant, hub: hub, count_on_hand: 12,
-                   default_stock: 10, resettable: false)
+:variant_override, 
+variant: variant, 
+hub: hub, 
+count_on_hand: 12,
+                   default_stock: 10, 
+resettable: false)
       vo.reset_stock!
       expect(vo.reload.count_on_hand).to eq(12)
     end

@@ -46,7 +46,8 @@ module Spree
           # this logic needed b/c devise wants to log us out after password changes
           Spree::User.reset_password_by_token(params[:user])
           sign_in(
-@user, event: :authentication,
+@user, 
+event: :authentication,
        bypass: true)
         end
         redirect_to spree.account_url, notice: Spree.t(:account_updated)

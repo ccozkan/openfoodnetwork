@@ -22,17 +22,26 @@ units_variant
     let!(:dist1) { FactoryBot.create(:distributor_enterprise) }
     let!(:order1) {
       FactoryBot.create(
-:order, state: 'complete', completed_at: 1.day.ago, distributor: dist1,
+:order, 
+state: 'complete', 
+completed_at: 1.day.ago, 
+distributor: dist1,
         billing_address: FactoryBot.create(:address) )
     }
     let!(:order2) {
       FactoryBot.create(
-:order, state: 'complete', completed_at: Time.zone.now, distributor: dist1,
+:order, 
+state: 'complete', 
+completed_at: Time.zone.now, 
+distributor: dist1,
         billing_address: FactoryBot.create(:address) )
     }
     let!(:order3) {
       FactoryBot.create(
-:order, state: 'complete', completed_at: Time.zone.now, distributor: dist1,
+:order, 
+state: 'complete', 
+completed_at: Time.zone.now, 
+distributor: dist1,
         billing_address: FactoryBot.create(:address) )
     }
     let!(:line_item1) { FactoryBot.create(:line_item_with_shipment, order: order1) }
@@ -113,27 +122,38 @@ json_response['line_items'].map{ |line_item|
       let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
       let!(:order1) {
         FactoryBot.create(
-:order, order_cycle: order_cycle, state: 'complete',
-        completed_at: Time.zone.now, distributor: distributor1, billing_address: FactoryBot.create(:address) )
+:order, 
+order_cycle: order_cycle, 
+state: 'complete',
+        completed_at: Time.zone.now, 
+distributor: distributor1, 
+billing_address: FactoryBot.create(:address) )
       }
       let!(:line_item1) {
         FactoryBot.create(
-:line_item_with_shipment, order: order1,
+:line_item_with_shipment, 
+order: order1,
                           product: FactoryBot.create(:product, supplier: supplier))
       }
       let!(:line_item2) {
         FactoryBot.create(
-:line_item_with_shipment, order: order1,
+:line_item_with_shipment, 
+order: order1,
                           product: FactoryBot.create(:product, supplier: supplier))
       }
       let!(:order2) {
         FactoryBot.create(
-:order, order_cycle: order_cycle, state: 'complete',
-        completed_at: Time.zone.now, distributor: distributor2, billing_address: FactoryBot.create(:address) )
+:order, 
+order_cycle: order_cycle, 
+state: 'complete',
+        completed_at: Time.zone.now, 
+distributor: distributor2, 
+billing_address: FactoryBot.create(:address) )
       }
       let!(:line_item3) {
         FactoryBot.create(
-:line_item_with_shipment, order: order2,
+:line_item_with_shipment, 
+order: order2,
                           product: FactoryBot.create(:product, supplier: supplier))
       }
 
@@ -207,12 +227,17 @@ json_response['line_items'].map{ |line_item|
     let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
     let!(:order1) {
       FactoryBot.create(
-:order, order_cycle: order_cycle, state: 'complete',
-        completed_at: Time.zone.now, distributor: distributor1, billing_address: FactoryBot.create(:address) )
+:order, 
+order_cycle: order_cycle, 
+state: 'complete',
+        completed_at: Time.zone.now, 
+distributor: distributor1, 
+billing_address: FactoryBot.create(:address) )
     }
     let!(:line_item1) {
       line_item1 = FactoryBot.create(
-:line_item_with_shipment, order: order1,
+:line_item_with_shipment, 
+order: order1,
                           product: FactoryBot.create(:product, supplier: supplier))
       # make sure shipment is available through db reloads of this line_item
       line_item1.tap(&:save!)
@@ -315,12 +340,17 @@ json_response['line_items'].map{ |line_item|
     let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
     let!(:order1) {
       FactoryBot.create(
-:order, order_cycle: order_cycle, state: 'complete',
-        completed_at: Time.zone.now, distributor: distributor1, billing_address: FactoryBot.create(:address) )
+:order, 
+order_cycle: order_cycle, 
+state: 'complete',
+        completed_at: Time.zone.now, 
+distributor: distributor1, 
+billing_address: FactoryBot.create(:address) )
     }
     let!(:line_item1) {
       FactoryBot.create(
-:line_item_with_shipment, order: order1,
+:line_item_with_shipment, 
+order: order1,
                           product: FactoryBot.create(:product, supplier: supplier))
     }
     let(:params) { { id: line_item1.id, order_id: order1.number } }
@@ -355,14 +385,17 @@ json_response['line_items'].map{ |line_item|
     let(:distributor) { create(:distributor_enterprise_with_tax) }
     let!(:order_cycle) {
       create(
-:order_cycle, distributors: [distributor],
+:order_cycle, 
+distributors: [distributor],
               coordinator_fees: [line_item_fee1, line_item_fee2, order_fee])
     }
     let(:outgoing_exchange) { order_cycle.exchanges.outgoing.first }
 
     let!(:order) {
       create(
-:order_with_line_items, line_items_count: 2, distributor: distributor,
+:order_with_line_items, 
+line_items_count: 2, 
+distributor: distributor,
                         order_cycle: order_cycle)
     }
     let(:line_item1) { order.line_items.first }
@@ -383,14 +416,20 @@ json_response['line_items'].map{ |line_item|
 
     let!(:shipping_method) {
       create(
-:shipping_method_with, :shipping_fee, tax_category: tax_cat5, name: "Shiperoo",
+:shipping_method_with, 
+:shipping_fee, 
+tax_category: tax_cat5, 
+name: "Shiperoo",
                                       distributors: [distributor])
     }
     let!(:payment_method) { create(:payment_method, :per_item, distributors: [distributor]) }
 
     let(:line_item_fee1) {
       create(
-:enterprise_fee, :per_item, amount: 1, inherits_tax_category: false,
+:enterprise_fee, 
+:per_item, 
+amount: 1, 
+inherits_tax_category: false,
                             tax_category: tax_cat15)
     }
     let(:line_item_fee2) {
@@ -411,7 +450,9 @@ json_response['line_items'].map{ |line_item|
       order.create_tax_charge!
       order.update_order!
       order.payments << create(
-:payment, payment_method: payment_method, amount: order.total,
+:payment, 
+payment_method: payment_method, 
+amount: order.total,
           state: "completed")
 
       allow(controller).to receive(:spree_current_user) { distributor.owner }

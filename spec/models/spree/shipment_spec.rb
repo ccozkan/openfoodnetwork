@@ -394,7 +394,9 @@ describe Spree::Shipment do
       allow(shipment).to receive_messages(selected_shipping_rate_id: 1)
       expect(shipping_method).to receive(:create_adjustment).with(
 shipment.adjustment_label,
-                                                                  shipment, true, "open")
+                                                                  shipment, 
+true, 
+"open")
       shipment.__send__(:ensure_correct_adjustment)
     end
 

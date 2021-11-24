@@ -26,7 +26,8 @@ class CacheService
     Rails.cache.fetch(
 "home_stats_count_#{statistic}",
                       expires_in: HOME_STATS_EXPIRY,
-                      race_condition_ttl: 10, &block)
+                      race_condition_ttl: 10, 
+&block)
   end
 
   module FragmentCaching

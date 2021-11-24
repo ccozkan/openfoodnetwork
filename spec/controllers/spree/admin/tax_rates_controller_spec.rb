@@ -10,8 +10,12 @@ module Spree
       let!(:default_tax_zone) { create(:zone, default_tax: true) }
       let!(:tax_rate) {
         create(
-:tax_rate, name: "Original Rate", amount: 0.1, included_in_price: false,
-           calculator: build(:calculator), zone: default_tax_zone)
+:tax_rate, 
+name: "Original Rate", 
+amount: 0.1, 
+included_in_price: false,
+           calculator: build(:calculator), 
+zone: default_tax_zone)
       }
 
       describe "#update" do
@@ -39,7 +43,8 @@ module Spree
           context "when the amount is changed" do
             it "duplicates the record and soft-deletes the duplicate" do
               expect {
-                spree_put :update, id: tax_rate.id,
+                spree_put :update, 
+id: tax_rate.id,
                                    tax_rate: { name: "Changed Rate", amount: "0.5" }
               }.to change{ Spree::TaxRate.with_deleted.count }.by(1)
 
@@ -60,7 +65,8 @@ module Spree
           context "when included_in_price is changed" do
             it "duplicates the record and soft-deletes the duplicate" do
               expect {
-                spree_put :update, id: tax_rate.id,
+                spree_put :update, 
+id: tax_rate.id,
                                    tax_rate: { name: "Changed Rate", included_in_price: "1" }
               }.to change{ Spree::TaxRate.with_deleted.count }.by(1)
 

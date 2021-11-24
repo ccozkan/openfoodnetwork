@@ -3,8 +3,16 @@
 module Api
   module Admin
     class CustomerSerializer < ActiveModel::Serializer
-      attributes :id, :email, :enterprise_id, :user_id, :code, :tags, :tag_list, :name,
-                 :allow_charges, :default_card_present?
+      attributes :id, 
+:email, 
+:enterprise_id, 
+:user_id, 
+:code, 
+:tags, 
+:tag_list, 
+:name,
+                 :allow_charges, 
+:default_card_present?
 
       has_one :ship_address, serializer: Api::AddressSerializer
       has_one :bill_address, serializer: Api::AddressSerializer

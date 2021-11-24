@@ -162,7 +162,9 @@ module Admin
           end
 
           it "allows me to update the customer" do
-            spree_put :update, format: :json, id: customer.id,
+            spree_put :update, 
+format: :json, 
+id: customer.id,
                                customer: { email: 'new.email@gmail.com' }
             expect(JSON.parse(response.body)["id"]).to eq customer.id
             expect(assigns(:customer)).to eq customer
@@ -176,7 +178,9 @@ module Admin
           end
 
           it "prevents me from updating the customer" do
-            spree_put :update, format: :json, id: customer.id,
+            spree_put :update, 
+format: :json, 
+id: customer.id,
                                customer: { email: 'new.email@gmail.com' }
             expect(response).to redirect_to unauthorized_path
             expect(assigns(:customer)).to eq nil
@@ -191,7 +195,8 @@ module Admin
       let(:another_enterprise) { create(:distributor_enterprise) }
 
       def create_customer(enterprise)
-        spree_put :create, format: :json,
+        spree_put :create, 
+format: :json,
                            customer: { email: 'new@example.com', enterprise_id: enterprise.id }
       end
 

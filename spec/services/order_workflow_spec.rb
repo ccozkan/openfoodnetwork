@@ -6,7 +6,8 @@ describe OrderWorkflow do
   let!(:distributor) { create(:distributor_enterprise) }
   let!(:order) do
     create(
-:order_with_totals_and_distribution, distributor: distributor,
+:order_with_totals_and_distribution, 
+distributor: distributor,
                                      bill_address: create(:address),
                                      ship_address: create(:address),
                                      payments: [create(:payment)])

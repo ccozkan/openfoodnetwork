@@ -3,7 +3,9 @@
 module TermsAndConditionsHelper
   def link_to_platform_terms
     link_to(
-t("terms_of_service"), TermsOfServiceFile.current_url, target: "_blank",
+t("terms_of_service"), 
+TermsOfServiceFile.current_url, 
+target: "_blank",
                                                        rel: "noopener")
   end
 

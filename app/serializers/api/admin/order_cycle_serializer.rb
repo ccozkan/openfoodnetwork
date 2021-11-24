@@ -5,11 +5,18 @@ require 'open_food_network/order_cycle_permissions'
 module Api
   module Admin
     class OrderCycleSerializer < ActiveModel::Serializer
-      attributes :id, :name, :orders_open_at, :orders_close_at, :coordinator_id, :exchanges,
+      attributes :id, 
+:name, 
+:orders_open_at, 
+:orders_close_at, 
+:coordinator_id, 
+:exchanges,
                  :editable_variants_for_incoming_exchanges,
                  :editable_variants_for_outgoing_exchanges,
                  :visible_variants_for_outgoing_exchanges,
-                 :viewing_as_coordinator, :schedule_ids, :subscriptions_count
+                 :viewing_as_coordinator, 
+:schedule_ids, 
+:subscriptions_count
 
       has_many :coordinator_fees, serializer: Api::IdSerializer
 
@@ -33,7 +40,8 @@ module Api
         scoped_exchanges = permissions.visible_exchanges.by_enterprise_name
 
         ActiveModel::ArraySerializer
-          .new(scoped_exchanges, each_serializer: Api::Admin::ExchangeSerializer,
+          .new(scoped_exchanges, 
+each_serializer: Api::Admin::ExchangeSerializer,
                                  current_user: options[:current_user])
       end
 

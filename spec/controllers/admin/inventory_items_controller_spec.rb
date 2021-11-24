@@ -47,7 +47,9 @@ inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible:
         context "and the producer has granted VO permission" do
           before do
             create(
-:enterprise_relationship, parent: variant.product.supplier, child: enterprise,
+:enterprise_relationship, 
+parent: variant.product.supplier, 
+child: enterprise,
                           permissions_list: [:create_variant_overrides])
           end
 
@@ -123,7 +125,9 @@ visible: nil
         context "and the producer has granted VO permission" do
           before do
             create(
-:enterprise_relationship, parent: variant.product.supplier, child: enterprise,
+:enterprise_relationship, 
+parent: variant.product.supplier, 
+child: enterprise,
                           permissions_list: [:create_variant_overrides])
           end
 

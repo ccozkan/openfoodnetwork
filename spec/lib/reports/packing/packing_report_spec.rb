@@ -10,7 +10,9 @@ describe "Packing Reports" do
     let(:order_cycle) { create(:simple_order_cycle) }
     let(:order) {
       create(
-:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
+:completed_order_with_totals, 
+order_cycle: order_cycle, 
+distributor: distributor,
                               line_items_count: 0)
     }
     let(:line_item) { build(:line_item_with_shipment) }
@@ -53,7 +55,8 @@ describe "Packing Reports" do
       let(:supplier2) { create(:supplier_enterprise) }
       let(:order2) {
         create(
-:completed_order_with_totals, distributor: distributor,
+:completed_order_with_totals, 
+distributor: distributor,
                               bill_address: create(:address),
                               ship_address: create(:address))
       }
@@ -82,7 +85,9 @@ product: create(:simple_product, name: "not visible", supplier: supplier2))
       context "which has granted P-OC to the distributor" do
         before do
           create(
-:enterprise_relationship, parent: supplier1, child: distributor,
+:enterprise_relationship, 
+parent: supplier1, 
+child: distributor,
                           permissions_list: [:add_to_order_cycle])
         end
 
@@ -117,7 +122,8 @@ product: create(:simple_product, name: "not visible", supplier: supplier2))
       let(:distributor2) { create(:distributor_enterprise) }
       let(:order3) {
         create(
-:completed_order_with_totals, distributor: distributor2,
+:completed_order_with_totals, 
+distributor: distributor2,
                               line_items_count: 0)
       }
       let(:line_item3) { build(:line_item_with_shipment) }
@@ -137,7 +143,9 @@ product: create(:simple_product, name: "not visible", supplier: supplier2))
         let(:order_cycle2) { create(:simple_order_cycle) }
         let(:order4) {
           create(
-:completed_order_with_totals, distributor: distributor, order_cycle: order_cycle2,
+:completed_order_with_totals, 
+distributor: distributor, 
+order_cycle: order_cycle2,
                               line_items_count: 0)
         }
         let(:line_item4) { build(:line_item_with_shipment) }
@@ -159,7 +167,9 @@ product: create(:simple_product, name: "not visible", supplier: supplier2))
       let(:distributor2) { create(:distributor_enterprise) }
       let(:order2) {
         create(
-:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor2,
+:completed_order_with_totals, 
+order_cycle: order_cycle, 
+distributor: distributor2,
                               line_items_count: 2)
       }
 

@@ -47,7 +47,9 @@ Spree::Money.new(
     let(:enterprise_fee) { create(:enterprise_fee, amount: 123) }
     let!(:fee_adjustment) {
       create(
-:adjustment, originator: enterprise_fee, adjustable: order,
+:adjustment, 
+originator: enterprise_fee, 
+adjustable: order,
              order: order)
     }
 
@@ -73,7 +75,9 @@ Spree::Money.new(
       let!(:tax_rate) { create(:tax_rate, amount: 0.1, calculator: ::Calculator::DefaultTax.new) }
       let!(:line_item_fee_adjustment) {
         create(
-:adjustment, originator: enterprise_fee, adjustable: order.line_items.first,
+:adjustment, 
+originator: enterprise_fee, 
+adjustable: order.line_items.first,
              order: order)
       }
       let!(:order_tax_adjustment) {
@@ -103,7 +107,9 @@ Spree::Money.new(
     context "with return authorization adjustments" do
       let!(:return_adjustment) {
         create(
-:adjustment, originator_type: 'Spree::ReturnAuthorization', adjustable: order,
+:adjustment, 
+originator_type: 'Spree::ReturnAuthorization', 
+adjustable: order,
              order: order)
       }
 

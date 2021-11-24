@@ -5,10 +5,34 @@ module Api
   class EnterpriseShopfrontSerializer < ActiveModel::Serializer
     include SerializerHelper
 
-    attributes :name, :id, :description, :latitude, :longitude, :long_description, :website,
-               :instagram, :linkedin, :twitter, :facebook, :is_primary_producer, :is_distributor,
-               :phone, :visible, :email_address, :hash, :logo, :promo_image, :path, :category,
-               :active, :producers, :orders_close_at, :hubs, :taxons, :supplied_taxons, :pickup,
+    attributes :name, 
+:id, 
+:description, 
+:latitude, 
+:longitude, 
+:long_description, 
+:website,
+               :instagram, 
+:linkedin, 
+:twitter, 
+:facebook, 
+:is_primary_producer, 
+:is_distributor,
+               :phone, 
+:visible, 
+:email_address, 
+:hash, 
+:logo, 
+:promo_image, 
+:path, 
+:category,
+               :active, 
+:producers, 
+:orders_close_at, 
+:hubs, 
+:taxons, 
+:supplied_taxons, 
+:pickup,
                :delivery
 
     has_one :address, serializer: Api::AddressSerializer

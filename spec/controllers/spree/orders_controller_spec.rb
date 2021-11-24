@@ -87,7 +87,9 @@ describe Spree::OrdersController, type: :controller do
     let(:customer) { create(:customer) }
     let(:order) {
       create(
-:order_with_totals, customer: customer, distributor: customer.enterprise,
+:order_with_totals, 
+customer: customer, 
+distributor: customer.enterprise,
                     state: "payment")
     }
     let(:payment_method) { create(:stripe_sca_payment_method) }
@@ -248,7 +250,8 @@ describe Spree::OrdersController, type: :controller do
       let(:oc) { create(:simple_order_cycle, distributors: [d], variants: [variant]) }
       let(:d) {
         create(
-:distributor_enterprise, shipping_methods: [create(:shipping_method)],
+:distributor_enterprise, 
+shipping_methods: [create(:shipping_method)],
                          payment_methods: [create(:payment_method)])
       }
       let(:variant) { create(:variant, on_demand: false, on_hand: 5) }
@@ -303,7 +306,8 @@ describe Spree::OrdersController, type: :controller do
       it "should silently ignore the missing line item" do
         order = subject.current_order(true)
         li = order.contents.add(create(:simple_product, on_hand: 110).variants.first)
-        get :update, params: { 
+        get :update, 
+params: { 
 order: { 
 line_items_attributes: {
           "0" => { quantity: "0", id: "9999" },
@@ -335,7 +339,8 @@ line_items_attributes: {
       line_item = order.contents.add(create(:simple_product, on_hand: 110).variants.first)
       adjustment = create(:adjustment, adjustable: order)
 
-      get :update, params: { 
+      get :update, 
+params: { 
 order: { 
 line_items_attributes: {
         "1" => { quantity: "99", id: line_item.id }
@@ -358,8 +363,11 @@ line_items_attributes: {
       let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
       let(:order) {
         create(
-:completed_order_with_fees, distributor: distributor, shipping_fee: shipping_fee,
-                            payment_fee: payment_fee, shipping_tax_category: shipping_tax_category)
+:completed_order_with_fees, 
+distributor: distributor, 
+shipping_fee: shipping_fee,
+                            payment_fee: payment_fee, 
+shipping_tax_category: shipping_tax_category)
       }
       let(:line_item1) { order.line_items.first }
       let(:line_item2) { order.line_items.second }
@@ -409,13 +417,20 @@ line_items_attributes: {
       let(:enterprise_fee) { create(:enterprise_fee, calculator: build(:calculator_per_item) ) }
       let!(:exchange) {
         create(
-:exchange, incoming: true, sender: variant1.product.supplier,
-           receiver: order_cycle.coordinator, variants: [variant1, variant2], enterprise_fees: [enterprise_fee])
+:exchange, 
+incoming: true, 
+sender: variant1.product.supplier,
+           receiver: order_cycle.coordinator, 
+variants: [variant1, variant2], 
+enterprise_fees: [enterprise_fee])
       }
       let!(:order) do
         order = create(
-:completed_order_with_totals, line_items_count: 2, user: user,
-                              distributor: distributor, order_cycle: order_cycle)
+:completed_order_with_totals, 
+line_items_count: 2, 
+user: user,
+                              distributor: distributor, 
+order_cycle: order_cycle)
         order.reload.line_items.first.update(variant_id: variant1.id)
         order.reload.line_items.last.update(variant_id: variant2.id)
         break unless order.next! while !order.completed?
@@ -609,7 +624,8 @@ line_items_attributes: {
       context "when the order is complete" do
         let(:order) {
           create(
-:completed_order_with_totals, user: user,
+:completed_order_with_totals, 
+user: user,
                               distributor: create(:distributor_enterprise))
         }
 

@@ -5,7 +5,8 @@ require "system_helper"
 describe '
     As an administrator
     I want to print a ticket for an order
-', js: true do
+', 
+js: true do
   include CheckoutHelper
   include AuthenticationHelper
   include ActionView::Helpers::NumberHelper
@@ -16,8 +17,11 @@ describe '
 
     let!(:order) do
       create(
-:order_with_taxes, distributor: distributor, ship_address: create(:address),
-                   product_price: 110, tax_rate_amount: 0.1,
+:order_with_taxes, 
+distributor: distributor, 
+ship_address: create(:address),
+                   product_price: 110, 
+tax_rate_amount: 0.1,
                    tax_rate_name: "Tax 1").tap do |order|
                                   order.create_tax_charge!
                                   order.update_shipping_fees!

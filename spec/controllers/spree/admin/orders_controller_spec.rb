@@ -88,13 +88,19 @@ order_cycle_id: order.order_cycle_id
         let(:enterprise_fee) { create(:enterprise_fee, calculator: build(:calculator_per_item) ) }
         let!(:exchange) {
           create(
-:exchange, incoming: true, sender: variant1.product.supplier,
-           receiver: order_cycle.coordinator, variants: [variant1, variant2], enterprise_fees: [enterprise_fee])
+:exchange, 
+incoming: true, 
+sender: variant1.product.supplier,
+           receiver: order_cycle.coordinator, 
+variants: [variant1, variant2], 
+enterprise_fees: [enterprise_fee])
         }
         let!(:order) do
           order = create(
-:completed_order_with_totals, line_items_count: 2,
-                              distributor: distributor, order_cycle: order_cycle)
+:completed_order_with_totals, 
+line_items_count: 2,
+                              distributor: distributor, 
+order_cycle: order_cycle)
           order.reload.line_items.first.update(variant_id: variant1.id)
           order.line_items.last.update(variant_id: variant2.id)
           break unless order.next! while !order.completed?
@@ -197,8 +203,13 @@ order_cycle_id: order.order_cycle_id
             context "when the order has legacy taxes" do
               let(:legacy_tax_adjustment) {
                 create(
-:adjustment, amount: 0.5, included: false, originator: tax_rate,
-             order: order, adjustable: order, state: "closed")
+:adjustment, 
+amount: 0.5, 
+included: false, 
+originator: tax_rate,
+             order: order, 
+adjustable: order, 
+state: "closed")
               }
 
               before do

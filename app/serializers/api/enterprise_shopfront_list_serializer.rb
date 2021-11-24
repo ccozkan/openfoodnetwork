@@ -3,8 +3,18 @@
 # Represents the minimum details of an Enterprise when all shopfronts are being listed
 module Api
   class EnterpriseShopfrontListSerializer < ActiveModel::Serializer
-    attributes :name, :id, :latitude, :longitude, :is_primary_producer, :is_distributor,
-               :path, :icon, :icon_font, :producer_icon_font, :address_id, :sells,
+    attributes :name, 
+:id, 
+:latitude, 
+:longitude, 
+:is_primary_producer, 
+:is_distributor,
+               :path, 
+:icon, 
+:icon_font, 
+:producer_icon_font, 
+:address_id, 
+:sells,
                :permalink
 
     has_one :address, serializer: Api::AddressSerializer

@@ -22,8 +22,11 @@ receival_instructions: 'receival instructions'
 }
 
         oc = double(
-:order_cycle, coordinator_id: coordinator_id, exchanges: [],
-              incoming_exchanges: [incoming_exchange], outgoing_exchanges: [])
+:order_cycle, 
+coordinator_id: coordinator_id, 
+exchanges: [],
+              incoming_exchanges: [incoming_exchange], 
+outgoing_exchanges: [])
 
         applicator = OrderCycleFormApplicator.new(oc, user)
 
@@ -32,11 +35,16 @@ receival_instructions: 'receival instructions'
                                                                                                            1, 3
                                                                                                          ])
         expect(applicator).to receive(:exchange_exists?).with(
-supplier_id, coordinator_id,
+supplier_id, 
+coordinator_id,
                                                               true).and_return(false)
         expect(applicator).to receive(:add_exchange).with(
-supplier_id, coordinator_id, true,
-                                                          variant_ids: [1, 3], enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions')
+supplier_id, 
+coordinator_id, 
+true,
+                                                          variant_ids: [1, 3], 
+enterprise_fee_ids: [1, 2], 
+receival_instructions: 'receival instructions')
         expect(applicator).to receive(:destroy_untouched_exchanges)
 
         applicator.go!
@@ -57,8 +65,11 @@ tag_list: 'wholesale'
 }
 
         oc = double(
-:order_cycle, coordinator_id: coordinator_id, exchanges: [],
-              incoming_exchanges: [], outgoing_exchanges: [outgoing_exchange])
+:order_cycle, 
+coordinator_id: coordinator_id, 
+exchanges: [],
+              incoming_exchanges: [], 
+outgoing_exchanges: [outgoing_exchange])
 
         applicator = OrderCycleFormApplicator.new(oc, user)
 
@@ -67,11 +78,18 @@ tag_list: 'wholesale'
                                                                                                            1, 3
                                                                                                          ])
         expect(applicator).to receive(:exchange_exists?).with(
-coordinator_id, distributor_id,
+coordinator_id, 
+distributor_id,
                                                               false).and_return(false)
         expect(applicator).to receive(:add_exchange).with(
-coordinator_id, distributor_id, false,
-                                                          variant_ids: [1, 3], enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale')
+coordinator_id, 
+distributor_id, 
+false,
+                                                          variant_ids: [1, 3], 
+enterprise_fee_ids: [1, 2], 
+pickup_time: 'pickup time', 
+pickup_instructions: 'pickup instructions', 
+tag_list: 'wholesale')
         expect(applicator).to receive(:destroy_untouched_exchanges)
 
         applicator.go!
@@ -94,8 +112,10 @@ receival_instructions: 'receival instructions'
                     coordinator_id: coordinator_id,
                     exchanges: [
 double(
-:exchange, sender_id: supplier_id,
-           receiver_id: coordinator_id, incoming: true)
+:exchange, 
+sender_id: supplier_id,
+           receiver_id: coordinator_id, 
+incoming: true)
 ],
                     incoming_exchanges: [incoming_exchange],
                     outgoing_exchanges: [])
@@ -107,11 +127,16 @@ double(
                                                                                                            1, 3
                                                                                                          ])
         expect(applicator).to receive(:exchange_exists?).with(
-supplier_id, coordinator_id,
+supplier_id, 
+coordinator_id,
                                                               true).and_return(true)
         expect(applicator).to receive(:update_exchange).with(
-supplier_id, coordinator_id, true,
-                                                             variant_ids: [1, 3], enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions')
+supplier_id, 
+coordinator_id, 
+true,
+                                                             variant_ids: [1, 3], 
+enterprise_fee_ids: [1, 2], 
+receival_instructions: 'receival instructions')
         expect(applicator).to receive(:destroy_untouched_exchanges)
 
         applicator.go!
@@ -136,8 +161,10 @@ tag_list: 'wholesale'
                     coordinator_id: coordinator_id,
                     exchanges: [
 double(
-:exchange, sender_id: coordinator_id,
-           receiver_id: distributor_id, incoming: false)
+:exchange, 
+sender_id: coordinator_id,
+           receiver_id: distributor_id, 
+incoming: false)
 ],
                     incoming_exchanges: [],
                     outgoing_exchanges: [outgoing_exchange])
@@ -149,11 +176,18 @@ double(
                                                                                                            1, 3
                                                                                                          ])
         expect(applicator).to receive(:exchange_exists?).with(
-coordinator_id, distributor_id,
+coordinator_id, 
+distributor_id,
                                                               false).and_return(true)
         expect(applicator).to receive(:update_exchange).with(
-coordinator_id, distributor_id, false,
-                                                             variant_ids: [1, 3], enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale')
+coordinator_id, 
+distributor_id, 
+false,
+                                                             variant_ids: [1, 3], 
+enterprise_fee_ids: [1, 2], 
+pickup_time: 'pickup time', 
+pickup_instructions: 'pickup instructions', 
+tag_list: 'wholesale')
         expect(applicator).to receive(:destroy_untouched_exchanges)
 
         applicator.go!
@@ -164,7 +198,10 @@ coordinator_id, distributor_id, false,
           coordinator_id = 123
           supplier_id = 456
           exchange = double(
-:exchange, id: 1, sender_id: supplier_id, receiver_id: coordinator_id,
+:exchange, 
+id: 1, 
+sender_id: supplier_id, 
+receiver_id: coordinator_id,
            incoming: true)
 
           oc = double(
@@ -231,7 +268,8 @@ coordinator_id, distributor_id, false,
         let!(:v9) { create(:variant) } # Not Existing + Request Add + Editable + Not Incoming
         let!(:exchange) {
           create(
-:exchange, incoming: false,
+:exchange, 
+incoming: false,
            variant_ids: [v3.id, v4.id, v5.id, v6.id, v7.id, v8.id])
         }
         let!(:oc) { exchange.order_cycle }
@@ -386,23 +424,33 @@ coordinator_id, distributor_id, false,
 
         expect(
 applicator.send(
-:exchange_exists?, exchange.sender_id, exchange.receiver_id,
+:exchange_exists?, 
+exchange.sender_id, 
+exchange.receiver_id,
                                exchange.incoming)).to be true
         expect(
 applicator.send(
-:exchange_exists?, exchange.sender_id, exchange.receiver_id,
+:exchange_exists?, 
+exchange.sender_id, 
+exchange.receiver_id,
                                !exchange.incoming)).to be false
         expect(
 applicator.send(
-:exchange_exists?, exchange.receiver_id, exchange.sender_id,
+:exchange_exists?, 
+exchange.receiver_id, 
+exchange.sender_id,
                                exchange.incoming)).to be false
         expect(
 applicator.send(
-:exchange_exists?, exchange.sender_id, 999_999,
+:exchange_exists?, 
+exchange.sender_id, 
+999_999,
                                exchange.incoming)).to be false
         expect(
 applicator.send(
-:exchange_exists?, 999_999, exchange.receiver_id,
+:exchange_exists?, 
+999_999, 
+exchange.receiver_id,
                                exchange.incoming)).to be false
         expect(applicator.send(:exchange_exists?, 999_999, 888_888, exchange.incoming)).to be false
       end
@@ -423,8 +471,12 @@ applicator.send(
             allow(applicator).to receive(:manages_coordinator?) { true }
             applicator.send(:touched_exchanges=, [])
             applicator.send(
-:add_exchange, sender.id, receiver.id, incoming,
-                            variant_ids: [variant1.id, variant2.id], enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id])
+:add_exchange, 
+sender.id, 
+receiver.id, 
+incoming,
+                            variant_ids: [variant1.id, variant2.id], 
+enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id])
           end
 
           it "adds new exchanges" do
@@ -443,8 +495,12 @@ applicator.send(
           before do
             allow(applicator).to receive(:manages_coordinator?) { false }
             applicator.send(
-:add_exchange, sender.id, receiver.id, incoming,
-                            variant_ids: [variant1.id, variant2.id], enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id])
+:add_exchange, 
+sender.id, 
+receiver.id, 
+incoming,
+                            variant_ids: [variant1.id, variant2.id], 
+enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id])
           end
 
           it "does not add new exchanges" do
@@ -468,8 +524,13 @@ applicator.send(
 
         let!(:exchange) {
           create(
-:exchange, order_cycle: oc, sender: sender, receiver: receiver, incoming: incoming,
-           variant_ids: [variant1.id, variant2.id], enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id])
+:exchange, 
+order_cycle: oc, 
+sender: sender, 
+receiver: receiver, 
+incoming: incoming,
+           variant_ids: [variant1.id, variant2.id], 
+enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id])
         }
 
         context "as a manager of the coorindator" do
@@ -479,8 +540,15 @@ applicator.send(
             allow(applicator).to receive(:permission_for) { true }
             applicator.send(:touched_exchanges=, [])
             applicator.send(
-:update_exchange, sender.id, receiver.id, incoming,
-                            variant_ids: [variant1.id, variant3.id], enterprise_fee_ids: [enterprise_fee2.id, enterprise_fee3.id], pickup_time: 'New Pickup Time', pickup_instructions: 'New Pickup Instructions', tag_list: 'wholesale')
+:update_exchange, 
+sender.id, 
+receiver.id, 
+incoming,
+                            variant_ids: [variant1.id, variant3.id], 
+enterprise_fee_ids: [enterprise_fee2.id, enterprise_fee3.id], 
+pickup_time: 'New Pickup Time', 
+pickup_instructions: 'New Pickup Instructions', 
+tag_list: 'wholesale')
           end
 
           it "updates the variants, enterprise fees tags, and pickup information of the exchange" do
@@ -501,8 +569,15 @@ applicator.send(
             allow(applicator).to receive(:permission_for) { true }
             applicator.send(:touched_exchanges=, [])
             applicator.send(
-:update_exchange, sender.id, receiver.id, incoming,
-                            variant_ids: [variant1.id, variant3.id], enterprise_fee_ids: [enterprise_fee2.id, enterprise_fee3.id], pickup_time: 'New Pickup Time', pickup_instructions: 'New Pickup Instructions', tag_list: 'wholesale')
+:update_exchange, 
+sender.id, 
+receiver.id, 
+incoming,
+                            variant_ids: [variant1.id, variant3.id], 
+enterprise_fee_ids: [enterprise_fee2.id, enterprise_fee3.id], 
+pickup_time: 'New Pickup Time', 
+pickup_instructions: 'New Pickup Instructions', 
+tag_list: 'wholesale')
           end
 
           it "updates the variants, enterprise fees, tags and pickup information of the exchange" do
@@ -523,8 +598,15 @@ applicator.send(
             allow(applicator).to receive(:permission_for) { true }
             applicator.send(:touched_exchanges=, [])
             applicator.send(
-:update_exchange, sender.id, receiver.id, incoming,
-                            variant_ids: [variant1.id, variant3.id], enterprise_fee_ids: [enterprise_fee2.id, enterprise_fee3.id], pickup_time: 'New Pickup Time', pickup_instructions: 'New Pickup Instructions', tag_list: 'wholesale')
+:update_exchange, 
+sender.id, 
+receiver.id, 
+incoming,
+                            variant_ids: [variant1.id, variant3.id], 
+enterprise_fee_ids: [enterprise_fee2.id, enterprise_fee3.id], 
+pickup_time: 'New Pickup Time', 
+pickup_instructions: 'New Pickup Instructions', 
+tag_list: 'wholesale')
           end
 
           it "updates the variants in the exchange, but not the fees, tags or pickup information" do
@@ -559,13 +641,19 @@ applicator.send(
         applicator = OrderCycleFormApplicator.new(oc, user)
         incoming = true
         exchange = FactoryBot.create(
-:exchange, order_cycle: oc, sender: sender,
-           receiver: receiver, incoming: incoming)
+:exchange, 
+order_cycle: oc, 
+sender: sender,
+           receiver: receiver, 
+incoming: incoming)
         variant1 = FactoryBot.create(:variant)
 
         applicator.send(:touched_exchanges=, [])
         applicator.send(
-:update_exchange, sender.id, receiver.id, incoming,
+:update_exchange, 
+sender.id, 
+receiver.id, 
+incoming,
                         variant_ids: [variant1.id])
 
         expect(exchange.variants).not_to eq([variant1])

@@ -25,8 +25,10 @@ module OpenFoodNetwork
         it "builds a table from a list of variants" do
           order = double(:order, email: "test@test.com")
           address = double(
-:billing_address, firstname: "Firsty",
-                  lastname: "Lasty", city: "Suburbia")
+:billing_address, 
+firstname: "Firsty",
+                  lastname: "Lasty", 
+city: "Suburbia")
           allow(order).to receive(:billing_address).and_return address
           allow(subject).to receive(:orders).and_return [order]
 

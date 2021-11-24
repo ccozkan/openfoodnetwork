@@ -45,8 +45,10 @@ module OpenFoodNetwork
         let(:order) {
           create(
 :order,
-                 state: 'complete', completed_at: Time.zone.now,
-                 distributor: distributor, bill_address: bill_address,
+                 state: 'complete', 
+completed_at: Time.zone.now,
+                 distributor: distributor, 
+bill_address: bill_address,
                  special_instructions: shipping_instructions)
         }
         let(:payment_method) { create(:payment_method, distributors: [distributor]) }

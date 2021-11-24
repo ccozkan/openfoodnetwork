@@ -25,7 +25,8 @@ describe OrderManagement::Reports::BulkCoopController, type: :controller do
   describe "#create" do
     context "when the parameters are valid" do
       it "sends the generated report in the correct format" do
-        post :create, params: {
+        post :create, 
+params: {
           report: {
             start_at: "2018-10-09 07:30:00",
             report_type: "bulk_coop_supplier_report"
@@ -41,7 +42,8 @@ report_format: "csv"
 
     context "when the parameters are invalid" do
       it "renders the report form with an error" do
-        post :create, params: {
+        post :create, 
+params: {
           report: {
             start_at: "invalid_date",
             report_type: "bulk_coop_supplier_report"
@@ -61,7 +63,8 @@ report_format: "csv"
       let(:current_user) { distributor.owner }
 
       it "renders the report form with an error" do
-        post :create, params: {
+        post :create, 
+params: {
           report: {
             distributor_ids: [other_distributor.id],
             report_type: "bulk_coop_supplier_report"

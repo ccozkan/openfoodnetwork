@@ -20,7 +20,8 @@ module Spree
 
         it "updates an existing shipping category" do
           shipping_category = create(:shipping_category)
-          spree_put :update, id: shipping_category.id,
+          spree_put :update, 
+id: shipping_category.id,
                              shipping_category: { name: "Super Frozen" }
 
           expect(response).to redirect_to spree.admin_shipping_categories_url

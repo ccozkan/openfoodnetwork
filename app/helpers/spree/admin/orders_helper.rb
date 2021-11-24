@@ -138,7 +138,8 @@ confirm: t(:are_you_sure)
         button_link_to(
 event_label,
                        fire_admin_order_url(@order, e: event),
-                       method: :put, icon: "icon-#{event}",
+                       method: :put, 
+icon: "icon-#{event}",
                        data: { confirm: confirm_message })
       end
 

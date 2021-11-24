@@ -332,7 +332,9 @@ describe Spree::Ability do
 
     let(:er_ps) {
       create(
-:enterprise_relationship, parent: s_related, child: s1,
+:enterprise_relationship, 
+parent: s_related, 
+child: s1,
                           permissions_list: [:manage_products])
     }
 
@@ -399,7 +401,8 @@ describe Spree::Ability do
 :update, 
 :destroy,
            :delete
-], for: p1.master
+], 
+for: p1.master
         )
       end
 
@@ -419,7 +422,8 @@ describe Spree::Ability do
 :edit, 
 :update_positions,
            :destroy
-], for: Spree::ProductProperty
+], 
+for: Spree::ProductProperty
         )
       end
 
@@ -449,7 +453,8 @@ describe Spree::Ability do
 :edit, 
 :update_positions,
            :destroy
-], for: ProducerProperty
+], 
+for: ProducerProperty
         )
       end
 
@@ -479,7 +484,8 @@ describe Spree::Ability do
 :orders_and_fulfillment, 
 :products_and_inventory,
            :order_cycle_management
-], for: Spree::Admin::ReportsController
+], 
+for: Spree::Admin::ReportsController
         )
       end
 
@@ -493,7 +499,8 @@ describe Spree::Ability do
 :orders_and_distributors, 
 :users_and_enterprises,
            :xero_invoices
-], for: Spree::Admin::ReportsController
+], 
+for: Spree::Admin::ReportsController
         )
       end
 
@@ -528,7 +535,10 @@ describe Spree::Ability do
           let!(:order_cycle) { create(:simple_order_cycle) }
           let!(:exchange){
             create(
-:exchange, incoming: true, order_cycle: order_cycle, receiver: order_cycle.coordinator,
+:exchange, 
+incoming: true, 
+order_cycle: order_cycle, 
+receiver: order_cycle.coordinator,
            sender: s1)
           }
 
@@ -579,7 +589,9 @@ describe Spree::Ability do
         let!(:d_related) { create(:distributor_enterprise) }
         let!(:er_pd) {
           create(
-:enterprise_relationship, parent: d_related, child: d1,
+:enterprise_relationship, 
+parent: d_related, 
+child: d1,
                           permissions_list: [:edit_profile])
         }
 
@@ -594,7 +606,8 @@ describe Spree::Ability do
 :remove_terms_and_conditions,
              :bulk_update, 
 :resend_confirmation
-], for: d1
+], 
+for: d1
           )
         end
 
@@ -609,7 +622,8 @@ describe Spree::Ability do
 :remove_terms_and_conditions,
              :bulk_update, 
 :resend_confirmation
-], for: d_related
+], 
+for: d_related
           )
         end
 
@@ -625,7 +639,8 @@ describe Spree::Ability do
 :manage_shipping_methods, 
 :manage_payment_methods,
              :manage_enterprise_fees
-], for: d_related
+], 
+for: d_related
           )
         end
       end
@@ -638,7 +653,9 @@ describe Spree::Ability do
 
         let!(:er1) {
           create(
-:enterprise_relationship, parent: s1, child: d1,
+:enterprise_relationship, 
+parent: s1, 
+child: d1,
                           permissions_list: [:create_variant_overrides])
         }
 
@@ -756,7 +773,8 @@ describe Spree::Ability do
 :products_and_inventory, 
 :order_cycle_management, 
 :xero_invoices
-], for: Spree::Admin::ReportsController
+], 
+for: Spree::Admin::ReportsController
         )
       end
 
@@ -776,7 +794,10 @@ describe Spree::Ability do
         let!(:order_cycle) { create(:simple_order_cycle, coordinator: d2) }
         let!(:exchange){
           create(
-:exchange, incoming: false, order_cycle: order_cycle, receiver: d1,
+:exchange, 
+incoming: false, 
+order_cycle: order_cycle, 
+receiver: d1,
            sender: order_cycle.coordinator)
         }
 
@@ -836,7 +857,8 @@ describe Spree::Ability do
 :bulk_update, 
 :destroy,
            :for_order_cycle
-], for: EnterpriseFee
+], 
+for: EnterpriseFee
         )
       end
 
@@ -943,7 +965,9 @@ describe Spree::Ability do
       let!(:unauthorized_enterprise) do
         create(:enterprise, sells: "any").tap do |record|
           create(
-:enterprise_relationship, parent: producer, child: record,
+:enterprise_relationship, 
+parent: producer, 
+child: record,
                           permissions_list: [:add_to_order_cycle])
         end
       end
@@ -958,7 +982,9 @@ describe Spree::Ability do
       let!(:authorized_enterprise) do
         create(:enterprise, sells: "any").tap do |record|
           create(
-:enterprise_relationship, parent: producer, child: record,
+:enterprise_relationship, 
+parent: producer, 
+child: record,
                           permissions_list: [:create_variant_overrides])
         end
       end
@@ -972,7 +998,9 @@ describe Spree::Ability do
         let!(:authorized_enterprise) do
           create(:enterprise, sells: "none").tap do |record|
             create(
-:enterprise_relationship, parent: producer, child: record,
+:enterprise_relationship, 
+parent: producer, 
+child: record,
                           permissions_list: [:create_variant_overrides])
           end
         end

@@ -79,7 +79,8 @@ module OrderManagement
             it "sends error info to rails logger and calls #record_issue with an error message" do
               expect(summarizer).to receive(:record_issue).with(
 :processing,
-                                                                order, "Errors: Some error")
+                                                                order, 
+"Errors: Some error")
               summarizer.record_and_log_error(:processing, order)
             end
           end

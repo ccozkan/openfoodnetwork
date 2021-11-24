@@ -23,7 +23,9 @@ module Permissions
     }
     let(:order_from_last_year) {
       create(
-:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
+:completed_order_with_totals, 
+order_cycle: order_cycle, 
+distributor: distributor,
                               completed_at: Time.zone.now - 1.year)
     }
 
@@ -84,7 +86,9 @@ module Permissions
                                         Enterprise.where(id: producer)
                                       }
           create(
-:enterprise_relationship, parent: producer, child: distributor,
+:enterprise_relationship, 
+parent: producer, 
+child: distributor,
                           permissions_list: [:add_to_order_cycle])
         end
 
@@ -163,7 +167,9 @@ module Permissions
                                         Enterprise.where(id: producer)
                                       }
           create(
-:enterprise_relationship, parent: producer, child: distributor,
+:enterprise_relationship, 
+parent: producer, 
+child: distributor,
                           permissions_list: [:add_to_order_cycle])
 
           line_item1.product.supplier = producer

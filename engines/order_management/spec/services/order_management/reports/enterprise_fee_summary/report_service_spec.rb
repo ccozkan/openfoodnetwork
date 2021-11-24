@@ -60,12 +60,20 @@ outgoing_exchange_fees: variant_outgoing_exchange_fees)
     let!(:order_cycle_fees) do
       [
         create(
-:enterprise_fee, :per_item, name: "Coordinator Fee 1", enterprise: coordinator,
-                            fee_type: "admin", amount: 512.0,
+:enterprise_fee, 
+:per_item, 
+name: "Coordinator Fee 1", 
+enterprise: coordinator,
+                            fee_type: "admin", 
+amount: 512.0,
                             tax_category: coordinator_tax_category),
         create(
-:enterprise_fee, :per_item, name: "Coordinator Fee 2", enterprise: coordinator,
-                            fee_type: "sales", amount: 1024.0,
+:enterprise_fee, 
+:per_item, 
+name: "Coordinator Fee 2", 
+enterprise: coordinator,
+                            fee_type: "sales", 
+amount: 1024.0,
                             inherits_tax_category: true)
       ]
     end
@@ -74,12 +82,20 @@ outgoing_exchange_fees: variant_outgoing_exchange_fees)
     let!(:variant_incoming_exchange_fees) do
       [
         create(
-:enterprise_fee, :per_item, name: "Producer Fee 1", enterprise: producer,
-                            fee_type: "sales", amount: 64.0,
+:enterprise_fee, 
+:per_item, 
+name: "Producer Fee 1", 
+enterprise: producer,
+                            fee_type: "sales", 
+amount: 64.0,
                             tax_category: producer_tax_category),
         create(
-:enterprise_fee, :per_item, name: "Producer Fee 2", enterprise: producer,
-                            fee_type: "sales", amount: 128.0,
+:enterprise_fee, 
+:per_item, 
+name: "Producer Fee 2", 
+enterprise: producer,
+                            fee_type: "sales", 
+amount: 128.0,
                             inherits_tax_category: true)
       ]
     end
@@ -88,12 +104,20 @@ outgoing_exchange_fees: variant_outgoing_exchange_fees)
     let!(:variant_outgoing_exchange_fees) do
       [
         create(
-:enterprise_fee, :per_item, name: "Distributor Fee 1", enterprise: distributor,
-                            fee_type: "admin", amount: 4.0,
+:enterprise_fee, 
+:per_item, 
+name: "Distributor Fee 1", 
+enterprise: distributor,
+                            fee_type: "admin", 
+amount: 4.0,
                             tax_category: distributor_tax_category),
         create(
-:enterprise_fee, :per_item, name: "Distributor Fee 2", enterprise: distributor,
-                            fee_type: "sales", amount: 8.0,
+:enterprise_fee, 
+:per_item, 
+name: "Distributor Fee 2", 
+enterprise: distributor,
+                            fee_type: "sales", 
+amount: 8.0,
                             inherits_tax_category: true)
       ]
     end
@@ -328,8 +352,12 @@ nil,
 
       let!(:enterprise_fee) do
         create(
-:enterprise_fee, :per_item, name: "Sample Enterprise Fee", enterprise: distributor,
-                            fee_type: "admin", amount: 0)
+:enterprise_fee, 
+:per_item, 
+name: "Sample Enterprise Fee", 
+enterprise: distributor,
+                            fee_type: "admin", 
+amount: 0)
       end
 
       let!(:customer_order) { prepare_order(customer: customer) }
@@ -422,22 +450,34 @@ outgoing_exchange_fees: variant_outgoing_exchange_fees)
       let!(:producer_fee) do
         tax_category = create(:tax_category, name: "Sample Producer Tax")
         create(
-:enterprise_fee, :per_item, name: "Sample Producer Fee", enterprise: producer,
-                            fee_type: "sales", amount: 64.0,
+:enterprise_fee, 
+:per_item, 
+name: "Sample Producer Fee", 
+enterprise: producer,
+                            fee_type: "sales", 
+amount: 64.0,
                             tax_category: tax_category)
       end
       let!(:coordinator_fee) do
         tax_category = create(:tax_category, name: "Sample Coordinator Tax")
         create(
-:enterprise_fee, :per_item, name: "Sample Coordinator Fee", enterprise: coordinator,
-                            fee_type: "admin", amount: 512.0,
+:enterprise_fee, 
+:per_item, 
+name: "Sample Coordinator Fee", 
+enterprise: coordinator,
+                            fee_type: "admin", 
+amount: 512.0,
                             tax_category: tax_category)
       end
       let!(:distributor_fee) do
         tax_category = create(:tax_category, name: "Sample Distributor Tax")
         create(
-:enterprise_fee, :per_item, name: "Sample Distributor Fee", enterprise: distributor,
-                            fee_type: "admin", amount: 4.0,
+:enterprise_fee, 
+:per_item, 
+name: "Sample Distributor Fee", 
+enterprise: distributor,
+                            fee_type: "admin", 
+amount: 4.0,
                             tax_category: tax_category)
       end
 
@@ -521,33 +561,53 @@ nil,
       let!(:producer_fee) do
         tax_category = create(:tax_category, name: "Producer Tax A")
         create(
-:enterprise_fee, :flat_rate, name: "Producer Fee A", enterprise: producer,
-                             fee_type: "sales", tax_category: tax_category,
+:enterprise_fee, 
+:flat_rate, 
+name: "Producer Fee A", 
+enterprise: producer,
+                             fee_type: "sales", 
+tax_category: tax_category,
                              amount: 10)
       end
       let!(:coordinator_fee) do
         tax_category = create(:tax_category, name: "Coordinator Tax A")
         create(
-:enterprise_fee, :flat_rate, name: "Coordinator Fee A", enterprise: coordinator,
-                             fee_type: "admin", tax_category: tax_category,
+:enterprise_fee, 
+:flat_rate, 
+name: "Coordinator Fee A", 
+enterprise: coordinator,
+                             fee_type: "admin", 
+tax_category: tax_category,
                              amount: 15)
       end
       let!(:coordinator_fee_inheriting_product_tax_category) do
         create(
-:enterprise_fee, :flat_rate, name: "Coordinator Fee B", enterprise: coordinator,
-                             fee_type: "admin", inherits_tax_category: true,
+:enterprise_fee, 
+:flat_rate, 
+name: "Coordinator Fee B", 
+enterprise: coordinator,
+                             fee_type: "admin", 
+inherits_tax_category: true,
                              amount: 20)
       end
       let!(:coordinator_fee_without_tax) do
         create(
-:enterprise_fee, :flat_rate, name: "Coordinator Fee C", enterprise: coordinator,
-                             fee_type: "admin", inherits_tax_category: false,
+:enterprise_fee, 
+:flat_rate, 
+name: "Coordinator Fee C", 
+enterprise: coordinator,
+                             fee_type: "admin", 
+inherits_tax_category: false,
                              amount: 25)
       end
       let!(:distributor_fee) do
         create(
-:enterprise_fee, :flat_rate, name: "Distributor Fee A", enterprise: distributor,
-                             fee_type: "admin", inherits_tax_category: false,
+:enterprise_fee, 
+:flat_rate, 
+name: "Distributor Fee A", 
+enterprise: distributor,
+                             fee_type: "admin", 
+inherits_tax_category: false,
                              amount: 30)
       end
 
@@ -707,12 +767,16 @@ nil,
   describe "filtering results based on permissions" do
     let!(:distributor_a) do
       create(
-:distributor_enterprise, name: "Distributor A", payment_methods: [payment_method],
+:distributor_enterprise, 
+name: "Distributor A", 
+payment_methods: [payment_method],
                          shipping_methods: [shipping_method])
     end
     let!(:distributor_b) do
       create(
-:distributor_enterprise, name: "Distributor B", payment_methods: [payment_method],
+:distributor_enterprise, 
+name: "Distributor B", 
+payment_methods: [payment_method],
                          shipping_methods: [shipping_method])
     end
 
@@ -805,17 +869,23 @@ nil,
     describe "for specified shops" do
       let!(:distributor_a) do
         create(
-:distributor_enterprise, name: "Distributor A", payment_methods: [payment_method],
+:distributor_enterprise, 
+name: "Distributor A", 
+payment_methods: [payment_method],
                          shipping_methods: [shipping_method])
       end
       let!(:distributor_b) do
         create(
-:distributor_enterprise, name: "Distributor B", payment_methods: [payment_method],
+:distributor_enterprise, 
+name: "Distributor B", 
+payment_methods: [payment_method],
                          shipping_methods: [shipping_method])
       end
       let!(:distributor_c) do
         create(
-:distributor_enterprise, name: "Distributor C", payment_methods: [payment_method],
+:distributor_enterprise, 
+name: "Distributor C", 
+payment_methods: [payment_method],
                          shipping_methods: [shipping_method])
       end
 
@@ -875,17 +945,23 @@ nil,
     describe "for specified order cycles" do
       let!(:distributor_a) do
         create(
-:distributor_enterprise, name: "Distributor A", payment_methods: [payment_method],
+:distributor_enterprise, 
+name: "Distributor A", 
+payment_methods: [payment_method],
                          shipping_methods: [shipping_method])
       end
       let!(:distributor_b) do
         create(
-:distributor_enterprise, name: "Distributor B", payment_methods: [payment_method],
+:distributor_enterprise, 
+name: "Distributor B", 
+payment_methods: [payment_method],
                          shipping_methods: [shipping_method])
       end
       let!(:distributor_c) do
         create(
-:distributor_enterprise, name: "Distributor C", payment_methods: [payment_method],
+:distributor_enterprise, 
+name: "Distributor C", 
+payment_methods: [payment_method],
                          shipping_methods: [shipping_method])
       end
 

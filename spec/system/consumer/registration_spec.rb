@@ -69,7 +69,8 @@ numcode: "148"
       fill_in 'enterprise_city', with: 'Northcote'
       fill_in 'enterprise_zipcode', with: '3070'
       expect(page).to have_select(
-'enterprise_country', options: ["Albania", "Australia"],
+'enterprise_country', 
+options: ["Albania", "Australia"],
                       selected: 'Australia')
       select 'Vic', from: 'enterprise_state'
       click_button "Continue"

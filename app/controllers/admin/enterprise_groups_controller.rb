@@ -59,9 +59,22 @@ module Admin
 
     def permitted_resource_params
       params.require(:enterprise_group).permit(
-        :name, :description, :long_description, :logo, :promo_image, :on_front_page,
-        :owner_id, :permalink, :email, :website, :facebook, :instagram, :linkedin, :twitter,
-        enterprise_ids: [], address_attributes: PermittedAttributes::Address.attributes
+        :name, 
+:description, 
+:long_description, 
+:logo, 
+:promo_image, 
+:on_front_page,
+        :owner_id, 
+:permalink, 
+:email, 
+:website, 
+:facebook, 
+:instagram, 
+:linkedin, 
+:twitter,
+        enterprise_ids: [], 
+address_attributes: PermittedAttributes::Address.attributes
       )
     end
   end

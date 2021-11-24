@@ -20,7 +20,10 @@ describe Exchange do
 
     e2 = build(
 :exchange,
-               order_cycle: e1.order_cycle, sender: e1.sender, receiver: e1.receiver, incoming: e1.incoming)
+               order_cycle: e1.order_cycle, 
+sender: e1.sender, 
+receiver: e1.receiver, 
+incoming: e1.incoming)
     expect(e2).not_to be_valid
 
     e2.incoming = !e2.incoming

@@ -19,7 +19,8 @@ describe CartService do
     let(:distributor) { create(:distributor_enterprise) }
     let(:order_cycle) {
       create(
-:simple_order_cycle, distributors: [distributor],
+:simple_order_cycle, 
+distributors: [distributor],
                      variants: [variant])
     }
     let(:cart_service) { CartService.new(order) }

@@ -74,7 +74,8 @@ module Spree
           list_values = object.__send__("#{field}_values")
           selected_value = object.__send__(field)
           form.select(
-field, options_for_select(list_values, selected_value),
+field, 
+options_for_select(list_values, selected_value),
                       preference_field_options(options))
         else
           form.text_field(field, preference_field_options(options))
@@ -133,7 +134,8 @@ class: 'input_string fullwidth'
           preference_field = preference_field_for(
             form,
             "preferred_#{key}",
-            { type: object.preference_type(key) }, object
+            { type: object.preference_type(key) }, 
+object
           ).html_safe
           { label: preference_label, field: preference_field }
         }

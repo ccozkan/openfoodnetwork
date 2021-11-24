@@ -19,19 +19,25 @@ module OrderManagement
 
         let(:current_order_cycle) do
           create(
-:simple_order_cycle, coordinator: shop, orders_open_at: 1.week.ago,
+:simple_order_cycle, 
+coordinator: shop, 
+orders_open_at: 1.week.ago,
                      orders_close_at: 1.week.from_now)
         end
 
         let(:future_order_cycle) do
           create(
-:simple_order_cycle, coordinator: shop, orders_open_at: 1.week.from_now,
+:simple_order_cycle, 
+coordinator: shop, 
+orders_open_at: 1.week.from_now,
                      orders_close_at: 2.weeks.from_now)
         end
 
         let(:past_order_cycle) do
           create(
-:simple_order_cycle, coordinator: shop, orders_open_at: 2.weeks.ago,
+:simple_order_cycle, 
+coordinator: shop, 
+orders_open_at: 2.weeks.ago,
                      orders_close_at: 1.week.ago)
         end
 
@@ -48,7 +54,8 @@ module OrderManagement
         context "if the supplier is permitted for the shop" do
           let!(:enterprise_relationship) {
             create(
-:enterprise_relationship, child: shop,
+:enterprise_relationship, 
+child: shop,
                           parent: product.supplier,
                           permissions_list: [:add_to_order_cycle])
           }
@@ -67,7 +74,8 @@ module OrderManagement
               order_cycle.exchanges.create(
 sender: product.supplier,
 receiver: shop,
-incoming: true, variants: [variant])
+incoming: true, 
+variants: [variant])
             }
 
             it "is not eligible" do

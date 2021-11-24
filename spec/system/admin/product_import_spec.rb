@@ -15,7 +15,9 @@ describe "Product Import", js: true do
   let!(:enterprise2) { create(:distributor_enterprise, owner: user2, name: "Another Enterprise") }
   let!(:relationship) {
     create(
-:enterprise_relationship, parent: enterprise, child: enterprise2,
+:enterprise_relationship, 
+parent: enterprise, 
+child: enterprise2,
                           permissions_list: [:create_variant_overrides])
   }
 
@@ -28,13 +30,22 @@ describe "Product Import", js: true do
   let!(:product) { create(:simple_product, supplier: enterprise2, name: 'Hypothetical Cake') }
   let!(:variant) {
     create(
-:variant, product_id: product.id, price: '8.50', on_hand: 100, unit_value: '500',
+:variant, 
+product_id: product.id, 
+price: '8.50', 
+on_hand: 100, 
+unit_value: '500',
           display_name: 'Preexisting Banana')
   }
   let!(:product2) {
     create(
-:simple_product, supplier: enterprise, on_hand: 100, name: 'Beans', unit_value: '500',
-                 description: '', primary_taxon_id: category.id)
+:simple_product, 
+supplier: enterprise, 
+on_hand: 100, 
+name: 'Beans', 
+unit_value: '500',
+                 description: '', 
+primary_taxon_id: category.id)
   }
   let!(:product3) {
     create(:simple_product, supplier: enterprise, on_hand: 100, name: 'Sprouts', unit_value: '500')
@@ -47,12 +58,16 @@ describe "Product Import", js: true do
   }
   let!(:variant_override) {
     create(
-:variant_override, variant_id: product4.variants.first.id, hub: enterprise2,
+:variant_override, 
+variant_id: product4.variants.first.id, 
+hub: enterprise2,
                    count_on_hand: 42)
   }
   let!(:variant_override2) {
     create(
-:variant_override, variant_id: product5.variants.first.id, hub: enterprise,
+:variant_override, 
+variant_id: product5.variants.first.id, 
+hub: enterprise,
                    count_on_hand: 96)
   }
 
@@ -527,8 +542,12 @@ hub_id: enterprise2.id).first
 
     it "handles a unit of kg for inventory import" do
       product = create(
-:simple_product, supplier: enterprise, on_hand: 100, name: 'Beets',
-                 unit_value: '1000', variant_unit_scale: 1000)
+:simple_product, 
+supplier: enterprise, 
+on_hand: 100, 
+name: 'Beets',
+                 unit_value: '1000', 
+variant_unit_scale: 1000)
       csv_data =
  CSV.generate do |csv|
         csv << [
@@ -583,8 +602,14 @@ nil,
 
     it "handles the Items unit for inventory import" do
       product = create(
-:simple_product, supplier: enterprise, on_hand: nil, name: 'Aubergine',
-                 unit_value: '1', variant_unit_scale: nil, variant_unit: "items", variant_unit_name: "Bag")
+:simple_product, 
+supplier: enterprise, 
+on_hand: nil, 
+name: 'Aubergine',
+                 unit_value: '1', 
+variant_unit_scale: nil, 
+variant_unit: "items", 
+variant_unit_name: "Bag")
       csv_data =
  CSV.generate do |csv|
         csv << [

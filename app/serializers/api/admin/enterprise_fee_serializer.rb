@@ -3,8 +3,16 @@
 module Api
   module Admin
     class EnterpriseFeeSerializer < ActiveModel::Serializer
-      attributes :id, :enterprise_id, :fee_type, :name, :tax_category_id, :inherits_tax_category,
-                 :calculator_type, :enterprise_name, :calculator_description, :calculator_settings
+      attributes :id, 
+:enterprise_id, 
+:fee_type, 
+:name, 
+:tax_category_id, 
+:inherits_tax_category,
+                 :calculator_type, 
+:enterprise_name, 
+:calculator_description, 
+:calculator_settings
 
       def enterprise_name
         object.enterprise&.name

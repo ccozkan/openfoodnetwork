@@ -101,7 +101,11 @@ json: {
 
     def customer_params
       params.require(:customer).permit(
-        :enterprise_id, :name, :email, :code, :tag_list,
+        :enterprise_id, 
+:name, 
+:email, 
+:code, 
+:tag_list,
         ship_address_attributes: PermittedAttributes::Address.attributes,
         bill_address_attributes: PermittedAttributes::Address.attributes,
       )

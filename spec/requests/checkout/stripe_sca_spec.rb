@@ -82,7 +82,8 @@ body: JSON.generate(
 id: payment_intent_id,
 object: "payment_intent",
 amount: 2000,
-status: "requires_capture", last_payment_error: nil,
+status: "requires_capture", 
+last_payment_error: nil,
 charges: { data: [{ id: "ch_1234", amount: 2000 }] })
     }
   end
@@ -297,7 +298,8 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] })
           cc_type: "master",
           first_name: "Sammy",
           last_name: "Signpost",
-          month: 11, year: 2026
+          month: 11, 
+year: 2026
         )
       end
 

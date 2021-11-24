@@ -6,8 +6,13 @@ module OrderManagement
       class Summarizer
         attr_reader :data
 
-        delegate :fee_type, :enterprise_name, :fee_name, :fee_placement,
-                 :fee_calculated_on_transfer_through_name, :tax_category_name, to: :representation
+        delegate :fee_type, 
+:enterprise_name, 
+:fee_name, 
+:fee_placement,
+                 :fee_calculated_on_transfer_through_name, 
+:tax_category_name, 
+to: :representation
 
         def initialize(data)
           @data = data

@@ -17,7 +17,8 @@ describe "
   it "fills in a setting shows the result on the home page" do
     fill_in "footer_facebook_url", with: ""
     fill_in "footer_twitter_url", with: "http://twitter.com/me"
-    fill_in "footer_links_md", with: \
+    fill_in "footer_links_md", 
+with: \
     "[markdown link](/:/?#@!$&'()*+,;=0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ)"
     click_button "Update"
     expect(page).to have_content "Your content has been successfully updated!"
@@ -30,7 +31,9 @@ describe "
 
     # And markdown is rendered
     # expect(page).to have_link "markdown link" and the correct href
-    expect(page).to have_selector :link, "markdown link", href: \
+    expect(page).to have_selector :link, 
+"markdown link", 
+href: \
     "/:/?#@!$&'()*+,;=0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
   end
 

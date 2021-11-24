@@ -127,7 +127,8 @@ variants_attributes.all?{ |attr|
     end
 
     it "can create a new product" do
-      api_post :create, product: { 
+      api_post :create, 
+product: { 
 name: "The Other Product",
 price: 19.99,
 shipping_category_id: create(:shipping_category).id,
@@ -291,13 +292,17 @@ product.id
 
       it "returns pagination data" do
         api_get :bulk_products, { page: 1, per_page: 15 }, format: :json
-        expect(json_response['pagination']).to eq "results" => 5, "pages" => 1, "page" => 1,
+        expect(json_response['pagination']).to eq "results" => 5, 
+"pages" => 1, 
+"page" => 1,
                                                   "per_page" => 15
       end
 
       it "uses defaults when page and per_page are not supplied" do
         api_get :bulk_products, format: :json
-        expect(json_response['pagination']).to eq "results" => 5, "pages" => 1, "page" => 1,
+        expect(json_response['pagination']).to eq "results" => 5, 
+"pages" => 1, 
+"page" => 1,
                                                   "per_page" => 15
       end
 
@@ -310,13 +315,15 @@ product.id
       end
 
       it "filters results by supplier" do
-        api_get :bulk_products, { page: 1, per_page: 15, q: { supplier_id_eq: supplier.id } },
+        api_get :bulk_products, 
+{ page: 1, per_page: 15, q: { supplier_id_eq: supplier.id } },
                 format: :json
         expect(returned_product_ids).to eq [product2.id, inactive_product.id, product.id]
       end
 
       it "filters results by product category" do
-        api_get :bulk_products, { page: 1, per_page: 15, q: { primary_taxon_id_eq: taxon.id } },
+        api_get :bulk_products, 
+{ page: 1, per_page: 15, q: { primary_taxon_id_eq: taxon.id } },
                 format: :json
         expect(returned_product_ids).to eq [product3.id, product2.id]
       end
@@ -326,7 +333,8 @@ product.id
         product2.variants.first.update_attribute :import_date, 2.days.ago
         product3.variants.first.update_attribute :import_date, 1.day.ago
 
-        api_get :bulk_products, { page: 1, per_page: 15, import_date: 1.day.ago.to_date.to_s },
+        api_get :bulk_products, 
+{ page: 1, per_page: 15, import_date: 1.day.ago.to_date.to_s },
                 format: :json
         expect(returned_product_ids).to eq [product3.id, product.id]
       end

@@ -76,7 +76,8 @@ spree_current_user,
       else
         collection = EnterpriseFee.managed_by(spree_current_user).order(
 'enterprise_id',
-                                                                        'fee_type', 'name')
+                                                                        'fee_type', 
+'name')
         collection = collection.for_enterprise(current_enterprise) if current_enterprise
         collection
       end

@@ -9,35 +9,40 @@ describe OrderTaxAdjustmentsFetcher do
 
     let(:tax_rate10) do
       create(
-:tax_rate, included_in_price: true,
+:tax_rate, 
+included_in_price: true,
            calculator: Calculator::DefaultTax.new,
            amount: 0.1,
            zone: zone)
     end
     let(:tax_rate15) do
       create(
-:tax_rate, included_in_price: true,
+:tax_rate, 
+included_in_price: true,
            calculator: Calculator::DefaultTax.new,
            amount: 0.15,
            zone: zone)
     end
     let(:tax_rate20) do
       create(
-:tax_rate, included_in_price: true,
+:tax_rate, 
+included_in_price: true,
            calculator: Calculator::DefaultTax.new,
            amount: 0.2,
            zone: zone)
     end
     let(:tax_rate25) do
       create(
-:tax_rate, included_in_price: true,
+:tax_rate, 
+included_in_price: true,
            calculator: Calculator::DefaultTax.new,
            amount: 0.25,
            zone: zone)
     end
     let(:tax_rate30) do
       create(
-:tax_rate, included_in_price: false,
+:tax_rate, 
+included_in_price: false,
            calculator: Calculator::DefaultTax.new,
            amount: 0.30,
            zone: zone)
@@ -53,13 +58,17 @@ describe OrderTaxAdjustmentsFetcher do
     end
     let(:enterprise_fee) do
       create(
-:enterprise_fee, enterprise: coordinator,
+:enterprise_fee, 
+enterprise: coordinator,
                  tax_category: tax_category20,
                  calculator: Calculator::FlatRate.new(preferred_amount: 48.0))
     end
     let(:admin_adjustment) do
       create(
-:adjustment, order: order, amount: 50.0, tax_category: tax_category25,
+:adjustment, 
+order: order, 
+amount: 50.0, 
+tax_category: tax_category25,
              label: "Admin Adjustment").tap do |adjustment|
                             Spree::TaxRate.adjust(order, [adjustment])
                           end
@@ -67,7 +76,8 @@ describe OrderTaxAdjustmentsFetcher do
 
     let(:order_cycle) do
       create(
-:simple_order_cycle, coordinator: coordinator,
+:simple_order_cycle, 
+coordinator: coordinator,
                      coordinator_fees: [enterprise_fee],
                      distributors: [coordinator],
                      variants: [variant])
@@ -85,7 +95,8 @@ describe OrderTaxAdjustmentsFetcher do
     end
     let(:shipping_method) do
       create(
-:shipping_method, calculator: Calculator::FlatRate.new(preferred_amount: 46.0),
+:shipping_method, 
+calculator: Calculator::FlatRate.new(preferred_amount: 46.0),
                   tax_category: tax_category15)
     end
     let!(:shipment) do
@@ -93,8 +104,13 @@ describe OrderTaxAdjustmentsFetcher do
     end
     let(:legacy_tax_adjustment) do
       create(
-:adjustment, order: order, adjustable: order, amount: 1.23, originator: tax_rate30,
-             label: "Additional Tax Adjustment", state: "closed")
+:adjustment, 
+order: order, 
+adjustable: order, 
+amount: 1.23, 
+originator: tax_rate30,
+             label: "Additional Tax Adjustment", 
+state: "closed")
     end
 
     before do

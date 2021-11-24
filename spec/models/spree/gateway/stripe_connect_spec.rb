@@ -72,7 +72,8 @@ describe Spree::Gateway::StripeConnect, type: :model do
     it "requests a new token for the customer and card from Stripe, and returns the id of the response" do
       expect(
 subject.send(
-:tokenize_instance_customer_card, customer_id,
+:tokenize_instance_customer_card, 
+customer_id,
                           card_id)).to eq token_mock[:id]
     end
   end
@@ -92,7 +93,8 @@ subject.send(
 
     it "adds the stripe_account to the gateway options hash" do
       expect(provider).to have_received(:refund).with(
-money, response_code,
+money, 
+response_code,
                                                       hash_including(stripe_account: stripe_account_id))
     end
   end

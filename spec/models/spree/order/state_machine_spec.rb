@@ -98,7 +98,8 @@ build(:inventory_unit, variant: variant),
     before do
       allow(order).to receive_messages line_items: [
 build(
-:line_item, variant: variant,
+:line_item, 
+variant: variant,
             quantity: 2)
 ]
       allow(order.line_items).to receive_messages find_by_variant_id: order.line_items.first

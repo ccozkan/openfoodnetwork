@@ -11,7 +11,10 @@ module OpenFoodNetwork
 
     describe "option defaults" do
       let(:report) {
-        XeroInvoicesReport.new user, initial_invoice_number: '', invoice_date: '', due_date: '',
+        XeroInvoicesReport.new user, 
+initial_invoice_number: '', 
+invoice_date: '', 
+due_date: '',
                                      account_code: ''
       }
 
@@ -28,7 +31,10 @@ report_type: 'summary' )
 
     describe "summary rows" do
       let(:report) {
-        XeroInvoicesReport.new user, initial_invoice_number: '', invoice_date: '', due_date: '',
+        XeroInvoicesReport.new user, 
+initial_invoice_number: '', 
+invoice_date: '', 
+due_date: '',
                                      account_code: ''
       }
       let(:order) { double(:order) }

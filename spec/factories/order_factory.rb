@@ -76,7 +76,8 @@ FactoryBot.define do
 
       after(:create) do |order, evaluator|
         line_item = create(
-:line_item_with_shipment, order: order,
+:line_item_with_shipment, 
+order: order,
                           variant: evaluator.variant,
                           shipping_method: evaluator.shipping_method)
         order.shipments << line_item.target_shipment
@@ -91,7 +92,10 @@ FactoryBot.define do
 
       after(:create) do |order, evaluator|
         create(
-:payment, state: "checkout", order: order, amount: order.total,
+:payment, 
+state: "checkout", 
+order: order, 
+amount: order.total,
           payment_method: evaluator.payment_method)
         order.recreate_all_fees!
         order.ship_address = evaluator.ship_address
@@ -113,7 +117,8 @@ FactoryBot.define do
     after(:create) do |order, proxy|
       product = create(:simple_product)
       create(
-:line_item_with_shipment, shipping_fee: proxy.shipping_fee,
+:line_item_with_shipment, 
+shipping_fee: proxy.shipping_fee,
                           order: order,
                           product: product)
       order.reload
@@ -130,7 +135,10 @@ FactoryBot.define do
       after(:create) do |order, evaluator|
         # Ensure order is valid and passes through necessary checkout steps
         create(
-:payment, state: "checkout", order: order, amount: order.total,
+:payment, 
+state: "checkout", 
+order: order, 
+amount: order.total,
           payment_method: evaluator.payment_method)
         order.ship_address = evaluator.ship_address
         break unless order.next! while !order.completed?
@@ -161,7 +169,8 @@ FactoryBot.define do
     after(:create) do |order, proxy|
       order.distributor.update_attribute(:charges_sales_tax, true)
       product = FactoryBot.create(
-:taxed_product, zone: proxy.zone,
+:taxed_product, 
+zone: proxy.zone,
                 price: proxy.product_price,
                 tax_rate_amount: proxy.tax_rate_amount,
                 tax_rate_name: proxy.tax_rate_name)
@@ -180,7 +189,9 @@ FactoryBot.define do
 
     after(:create) do |order, evaluator|
       create(
-:payment, amount: order.total + evaluator.credit_amount, order: order,
+:payment, 
+amount: order.total + evaluator.credit_amount, 
+order: order,
           state: "completed")
       order.reload
     end
@@ -196,7 +207,9 @@ FactoryBot.define do
 
     after(:create) do |order, evaluator|
       create(
-:payment, amount: order.total - evaluator.unpaid_amount, order: order,
+:payment, 
+amount: order.total - evaluator.unpaid_amount, 
+order: order,
           state: "completed")
       order.reload
     end
@@ -220,13 +233,16 @@ FactoryBot.define do
       payment_calculator = build(:calculator_per_item, preferred_amount: evaluator.payment_fee)
       payment_method = create(:payment_method, calculator: payment_calculator)
       create(
-:payment, order: order,
+:payment, 
+order: order,
           amount: order.total,
           payment_method: payment_method,
           state: 'checkout')
 
       create(
-:shipping_method_with, :shipping_fee, shipping_fee: evaluator.shipping_fee,
+:shipping_method_with, 
+:shipping_fee, 
+shipping_fee: evaluator.shipping_fee,
                                       distributors: [order.distributor],
                                       tax_category: evaluator.shipping_tax_category)
 

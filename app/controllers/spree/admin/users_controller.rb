@@ -9,7 +9,8 @@ module Spree
 
       # http://spreecommerce.com/blog/2010/11/02/json-hijacking-vulnerability/
       before_action :check_json_authenticity, only: :index
-      before_action :load_roles, only: [
+      before_action :load_roles, 
+only: [
 :edit, 
 :new, 
 :update, 
@@ -140,7 +141,8 @@ country: { only: :name }
 }
 
           collection.to_json(
-only: [:id, :email], include:
+only: [:id, :email], 
+include:
                              { bill_address: includes, ship_address: includes })
         end
       end

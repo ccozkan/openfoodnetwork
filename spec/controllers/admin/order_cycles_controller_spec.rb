@@ -213,7 +213,8 @@ module Admin
                  anything) { form_mock }
           allow(form_mock).to receive(:save) { true }
 
-          spree_put :update, params
+          spree_put :update, 
+params
             .merge(order_cycle: { preferred_product_selection_from_coordinator_inventory_only: true })
         end
       end
@@ -227,12 +228,20 @@ module Admin
       let(:v) { create(:variant) }
       let!(:incoming_exchange) {
         create(
-:exchange, order_cycle: order_cycle, sender: producer, receiver: coordinator,
-           incoming: true, variants: [v])
+:exchange, 
+order_cycle: order_cycle, 
+sender: producer, 
+receiver: coordinator,
+           incoming: true, 
+variants: [v])
       }
       let!(:outgoing_exchange) {
         create(
-:exchange, order_cycle: order_cycle, sender: coordinator, receiver: hub, incoming: false,
+:exchange, 
+order_cycle: order_cycle, 
+sender: coordinator, 
+receiver: hub, 
+incoming: false,
            variants: [v])
       }
 
@@ -335,7 +344,9 @@ collection_attributes: {
         let!(:another_distributor) { create(:distributor_enterprise, users: [distributor_owner]) }
 
         it "doesn't update order cycle properties" do
-          spree_put :bulk_update, format: :json, order_cycle_set: { 
+          spree_put :bulk_update, 
+format: :json, 
+order_cycle_set: { 
 collection_attributes: { 
 '0' => {
             id: oc.id,

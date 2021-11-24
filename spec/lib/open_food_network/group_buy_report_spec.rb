@@ -9,7 +9,9 @@ module OpenFoodNetwork
       @orders = []
       bill_address = create(:address)
       distributor_address = create(
-:address, address1: "distributor address", city: 'The Shire',
+:address, 
+address1: "distributor address", 
+city: 'The Shire',
           zipcode: "1234")
       distributor = create(:distributor_enterprise, address: distributor_address)
 
@@ -22,13 +24,17 @@ module OpenFoodNetwork
       shipping_instructions = "pick up on thursday please!"
 
       order1 = create(
-:order, distributor: distributor, bill_address: bill_address,
+:order, 
+distributor: distributor, 
+bill_address: bill_address,
         special_instructions: shipping_instructions)
       line_item11 = create(:line_item, variant: @variant1, order: order1)
       @orders << order1.reload
 
       order2 = create(
-:order, distributor: distributor, bill_address: bill_address,
+:order, 
+distributor: distributor, 
+bill_address: bill_address,
         special_instructions: shipping_instructions)
       line_item21 = create(:line_item, variant: @variant1, order: order2)
 
@@ -45,7 +51,9 @@ module OpenFoodNetwork
       @variant3.product.save!
 
       order3 = create(
-:order, distributor: distributor, bill_address: bill_address,
+:order, 
+distributor: distributor, 
+bill_address: bill_address,
         special_instructions: shipping_instructions)
       line_item31 = create(:line_item, variant: @variant3, order: order3)
       @orders << order3.reload

@@ -12,19 +12,27 @@ module Spree
     include Balance
     include SetUnusedAddressFields
 
-    searchable_attributes :number, :state, :shipment_state, :payment_state, :distributor_id,
-                          :order_cycle_id, :email, :total
+    searchable_attributes :number, 
+:state, 
+:shipment_state, 
+:payment_state, 
+:distributor_id,
+                          :order_cycle_id, 
+:email, 
+:total
     searchable_associations :shipping_method, :bill_address
     searchable_scopes :complete, :incomplete
 
     checkout_flow do
       go_to_state :address
       go_to_state :delivery
-      go_to_state :payment, if: ->(order) {
+      go_to_state :payment, 
+if: ->(order) {
         order.update_totals
         order.payment_required?
       }
-      go_to_state :confirmation, if: ->(_order) {
+      go_to_state :confirmation, 
+if: ->(_order) {
         Flipper.enabled? :split_checkout
       }
       go_to_state :complete
@@ -44,12 +52,16 @@ module Spree
     alias_attribute :shipping_address, :ship_address
 
     has_many :state_changes, as: :stateful
-    has_many :line_items, -> {
+    has_many :line_items, 
+-> {
                             order('created_at ASC')
-                          }, class_name: "Spree::LineItem", dependent: :destroy
+                          }, 
+class_name: "Spree::LineItem", 
+dependent: :destroy
     has_many :payments, dependent: :destroy
     has_many :return_authorizations, dependent: :destroy, inverse_of: :order
-    has_many :adjustments, -> { order "#{Spree::Adjustment.table_name}.created_at ASC" },
+    has_many :adjustments, 
+-> { order "#{Spree::Adjustment.table_name}.created_at ASC" },
              as: :adjustable,
              dependent: :destroy
 
@@ -77,8 +89,12 @@ module Spree
 
     delegate :admin_and_handling_total, :payment_fee, :ship_total, to: :adjustments_fetcher
     delegate :update_totals, to: :updater
-    delegate :create_line_item_fees!, :create_order_fees!, :update_order_fees!,
-             :update_line_item_fees!, :recreate_all_fees!, to: :fee_handler
+    delegate :create_line_item_fees!, 
+:create_order_fees!, 
+:update_order_fees!,
+             :update_line_item_fees!, 
+:recreate_all_fees!, 
+to: :fee_handler
 
     # Needs to happen before save_permalink is called
     before_validation :set_currency
@@ -91,11 +107,13 @@ module Spree
     after_create :create_tax_charge!
 
     validates :customer, presence: true, if: :require_customer?
-    validate :products_available_from_new_distribution, if: lambda {
+    validate :products_available_from_new_distribution, 
+if: lambda {
       distributor_id_changed? || order_cycle_id_changed?
     }
     validate :disallow_guest_order
-    validates :email, presence: true,
+    validates :email, 
+presence: true,
                       format: /\A([\w.%+\-']+)@([\w\-]+\.)+(\w{2,})\z/i,
                       if: :require_email
 
@@ -105,11 +123,13 @@ module Spree
     before_save :update_payment_fees!, if: :complete?
 
     # -- Scopes
-    scope :not_empty, -> {
+    scope :not_empty, 
+-> {
       left_outer_joins(:line_items).where.not(spree_line_items: { id: nil })
     }
 
-    scope :managed_by, lambda { |user|
+    scope :managed_by, 
+lambda { |user|
       if user.has_spree_role?('admin')
         where(nil)
       else
@@ -124,7 +144,8 @@ module Spree
       end
     }
 
-    scope :distributed_by_user, lambda { |user|
+    scope :distributed_by_user, 
+lambda { |user|
       if user.has_spree_role?('admin')
         where(nil)
       else
@@ -132,7 +153,8 @@ module Spree
       end
     }
 
-    scope :with_line_items_variants_and_products_outer, lambda {
+    scope :with_line_items_variants_and_products_outer, 
+lambda {
       joins('LEFT OUTER JOIN spree_line_items ON (spree_line_items.order_id = spree_orders.id)')
         .joins('LEFT OUTER JOIN spree_variants ON (spree_variants.id = spree_line_items.variant_id)')
         .joins('LEFT OUTER JOIN spree_products ON (spree_products.id = spree_variants.product_id)')

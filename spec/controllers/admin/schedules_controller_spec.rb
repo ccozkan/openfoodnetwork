@@ -97,7 +97,9 @@ uncoordinated_order_cycle,
         end
 
         it "allows me to update basic information" do
-          spree_put :update, format: :json, id: coordinated_schedule.id,
+          spree_put :update, 
+format: :json, 
+id: coordinated_schedule.id,
                              schedule: { name: "my awesome schedule" }
           expect(JSON.parse(response.body)["id"]).to eq coordinated_schedule.id
           expect(JSON.parse(response.body)["name"]).to eq "my awesome schedule"
@@ -111,12 +113,15 @@ coordinated_order_cycle2.id,
 uncoordinated_order_cycle2.id,
                              uncoordinated_order_cycle3.id
 ]
-          spree_put :update, format: :json, id: coordinated_schedule.id,
+          spree_put :update, 
+format: :json, 
+id: coordinated_schedule.id,
                              order_cycle_ids: order_cycle_ids
           expect(assigns(:schedule)).to eq coordinated_schedule
           # coordinated_order_cycle2 is added, uncoordinated_order_cycle is NOT removed
           expect(coordinated_schedule.reload.order_cycles).to include coordinated_order_cycle2,
-                                                                      uncoordinated_order_cycle, uncoordinated_order_cycle3
+                                                                      uncoordinated_order_cycle, 
+uncoordinated_order_cycle3
           # coordinated_order_cycle is removed, uncoordinated_order_cycle2 is NOT added
           expect(coordinated_schedule.reload.order_cycles).to_not include coordinated_order_cycle,
                                                                           uncoordinated_order_cycle2
@@ -127,13 +132,19 @@ uncoordinated_order_cycle2.id,
           allow(OrderManagement::Subscriptions::ProxyOrderSyncer).to receive(:new) { syncer_mock }
           expect(syncer_mock).to receive(:sync!).exactly(2).times
 
-          spree_put :update, format: :json, id: coordinated_schedule.id,
+          spree_put :update, 
+format: :json, 
+id: coordinated_schedule.id,
                              order_cycle_ids: [coordinated_order_cycle.id, coordinated_order_cycle2.id]
           reset_controller_environment
-          spree_put :update, format: :json, id: coordinated_schedule.id,
+          spree_put :update, 
+format: :json, 
+id: coordinated_schedule.id,
                              order_cycle_ids: [coordinated_order_cycle.id]
           reset_controller_environment
-          spree_put :update, format: :json, id: coordinated_schedule.id,
+          spree_put :update, 
+format: :json, 
+id: coordinated_schedule.id,
                              order_cycle_ids: [coordinated_order_cycle.id]
         end
       end
@@ -144,7 +155,9 @@ uncoordinated_order_cycle2.id,
         end
 
         it "prevents me from updating the schedule" do
-          spree_put :update, format: :json, id: coordinated_schedule.id,
+          spree_put :update, 
+format: :json, 
+id: coordinated_schedule.id,
                              schedule: { name: "my awesome schedule" }
           expect(response).to redirect_to unauthorized_path
           expect(assigns(:schedule)).to eq nil

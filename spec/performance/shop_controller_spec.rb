@@ -31,7 +31,8 @@ describe ShopController, type: :controller, performance: true do
         p.set_property 'Organic Certified', 'NASAA 12345'
         v1 = create(:variant, product: p)
         v2 = create(:variant, product: p)
-        Spree::Image.create! viewable_id: p.master.id, viewable_type: 'Spree::Variant',
+        Spree::Image.create! viewable_id: p.master.id, 
+viewable_type: 'Spree::Variant',
                              attachment: image
 
         exchange.variants << [v1, v2]

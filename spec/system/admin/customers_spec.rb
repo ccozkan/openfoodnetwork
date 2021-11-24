@@ -27,7 +27,8 @@ describe 'Customers' do
       it "passes the smoke test" do
         # Prompts for a hub for a list of my managed enterprises
         expect(page).to have_select2 "shop_id",
-                                     with_options: [managed_distributor1.name, managed_distributor2.name], without_options: [unmanaged_distributor.name]
+                                     with_options: [managed_distributor1.name, managed_distributor2.name], 
+without_options: [unmanaged_distributor.name]
 
         select2_select managed_distributor2.name, from: "shop_id"
 
@@ -108,18 +109,33 @@ describe 'Customers' do
       describe "for a shop with multiple customers" do
         let!(:order1) {
           create(
-:order, total: 0, payment_total: 88, distributor: managed_distributor1, user: nil,
-        state: 'complete', customer: customer1)
+:order, 
+total: 0, 
+payment_total: 88, 
+distributor: managed_distributor1, 
+user: nil,
+        state: 'complete', 
+customer: customer1)
         }
         let!(:order2) {
           create(
-:order, total: 99, payment_total: 0, distributor: managed_distributor1, user: nil,
-        state: 'complete', customer: customer2)
+:order, 
+total: 99, 
+payment_total: 0, 
+distributor: managed_distributor1, 
+user: nil,
+        state: 'complete', 
+customer: customer2)
         }
         let!(:order3) {
           create(
-:order, total: 0,  payment_total: 0, distributor: managed_distributor1, user: nil,
-        state: 'complete', customer: customer4)
+:order, 
+total: 0,  
+payment_total: 0, 
+distributor: managed_distributor1, 
+user: nil,
+        state: 'complete', 
+customer: customer4)
         }
 
         let!(:payment_method) {
@@ -127,8 +143,12 @@ describe 'Customers' do
         }
         let!(:payment1) {
           create(
-:payment, order: order1, state: 'completed', payment_method: payment_method,
-          response_code: 'pi_123', amount: 88.00)
+:payment, 
+order: order1, 
+state: 'completed', 
+payment_method: payment_method,
+          response_code: 'pi_123', 
+amount: 88.00)
         }
 
         before do
@@ -158,8 +178,12 @@ describe 'Customers' do
         context "with an additional negative payment (or refund)" do
           let!(:payment2) {
             create(
-:payment, order: order1, state: 'completed', payment_method: payment_method,
-          response_code: 'pi_123', amount: -25.00)
+:payment, 
+order: order1, 
+state: 'completed', 
+payment_method: payment_method,
+          response_code: 'pi_123', 
+amount: -25.00)
           }
 
           before do

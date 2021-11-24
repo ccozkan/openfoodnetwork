@@ -54,7 +54,8 @@ FactoryBot.define do
     after(:create) do |oc|
       oc.variants.each do |variant|
         create(
-:variant_override, variant: variant,
+:variant_override, 
+variant: variant,
                    hub: oc.distributors.first,
                    price: variant.price + 100)
       end
@@ -79,7 +80,8 @@ FactoryBot.define do
       # Incoming Exchanges
       proxy.suppliers.each.with_index do |supplier, i|
         ex = create(
-:exchange, order_cycle: oc,
+:exchange, 
+order_cycle: oc,
            sender: supplier,
            receiver: oc.coordinator,
            incoming: true,
@@ -90,7 +92,8 @@ FactoryBot.define do
       # Outgoing Exchanges
       proxy.distributors.each.with_index do |distributor, i|
         ex = create(
-:exchange, order_cycle: oc,
+:exchange, 
+order_cycle: oc,
            sender: oc.coordinator,
            receiver: distributor,
            incoming: false,

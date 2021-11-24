@@ -7,7 +7,10 @@ describe Api::Admin::VariantOverrideSerializer do
   let(:count_on_hand) { 11_111 }
   let(:variant_override) {
     create(
-:variant_override, variant: variant, hub: hub, price: price,
+:variant_override, 
+variant: variant, 
+hub: hub, 
+price: price,
                    count_on_hand: count_on_hand)
   }
 

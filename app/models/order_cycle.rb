@@ -4,8 +4,17 @@ require 'open_food_network/scope_variant_to_hub'
 
 class OrderCycle < ApplicationRecord
   searchable_attributes :orders_open_at, :orders_close_at, :coordinator_id
-  searchable_scopes :active, :inactive, :active_or_complete, :upcoming, :closed, :not_closed,
-                    :dated, :undated, :soonest_opening, :soonest_closing, :most_recently_closed
+  searchable_scopes :active, 
+:inactive, 
+:active_or_complete, 
+:upcoming, 
+:closed, 
+:not_closed,
+                    :dated, 
+:undated, 
+:soonest_opening, 
+:soonest_closing, 
+:most_recently_closed
 
   belongs_to :coordinator, class_name: 'Enterprise'
 
@@ -33,24 +42,28 @@ class OrderCycle < ApplicationRecord
 
   preference :product_selection_from_coordinator_inventory_only, :boolean, default: false
 
-  scope :active, lambda {
+  scope :active, 
+lambda {
     where(
 'order_cycles.orders_open_at <= ? AND order_cycles.orders_close_at >= ?',
           Time.zone.now,
           Time.zone.now)
   }
   scope :active_or_complete, lambda { where('order_cycles.orders_open_at <= ?', Time.zone.now) }
-  scope :inactive, lambda {
+  scope :inactive, 
+lambda {
     where(
 'order_cycles.orders_open_at > ? OR order_cycles.orders_close_at < ?',
           Time.zone.now,
           Time.zone.now)
   }
   scope :upcoming, lambda { where('order_cycles.orders_open_at > ?', Time.zone.now) }
-  scope :not_closed, lambda {
+  scope :not_closed, 
+lambda {
     where('order_cycles.orders_close_at > ? OR order_cycles.orders_close_at IS NULL', Time.zone.now)
   }
-  scope :closed, lambda {
+  scope :closed, 
+lambda {
     where(
 'order_cycles.orders_close_at < ?',
           Time.zone.now).order("order_cycles.orders_close_at DESC")
@@ -66,11 +79,13 @@ class OrderCycle < ApplicationRecord
 
   scope :by_name, -> { order('name') }
 
-  scope :with_distributor, lambda { |distributor|
+  scope :with_distributor, 
+lambda { |distributor|
     joins(:exchanges).merge(Exchange.outgoing).merge(Exchange.to_enterprise(distributor))
   }
 
-  scope :managed_by, lambda { |user|
+  scope :managed_by, 
+lambda { |user|
     if user.has_spree_role?('admin')
       where(nil)
     else
@@ -79,7 +94,8 @@ class OrderCycle < ApplicationRecord
   }
 
   # Return order cycles that user coordinates, sends to or receives from
-  scope :visible_by, lambda { |user|
+  scope :visible_by, 
+lambda { |user|
     if user.has_spree_role?('admin')
       where(nil)
     else
@@ -91,13 +107,15 @@ class OrderCycle < ApplicationRecord
     end
   }
 
-  scope :with_exchanging_enterprises_outer, lambda {
+  scope :with_exchanging_enterprises_outer, 
+lambda {
     joins("LEFT OUTER JOIN exchanges ON (exchanges.order_cycle_id = order_cycles.id)")
       .joins("LEFT OUTER JOIN enterprises
           ON (enterprises.id = exchanges.sender_id OR enterprises.id = exchanges.receiver_id)")
   }
 
-  scope :involving_managed_distributors_of, lambda { |user|
+  scope :involving_managed_distributors_of, 
+lambda { |user|
     enterprises = Enterprise.managed_by(user)
 
     # Order cycles where I managed an enterprise at either end of an outgoing exchange
@@ -109,7 +127,8 @@ class OrderCycle < ApplicationRecord
       .select('DISTINCT order_cycles.*')
   }
 
-  scope :involving_managed_producers_of, lambda { |user|
+  scope :involving_managed_producers_of, 
+lambda { |user|
     enterprises = Enterprise.managed_by(user)
 
     # Order cycles where I managed an enterprise at either end of an incoming exchange

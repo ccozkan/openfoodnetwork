@@ -49,7 +49,8 @@ only: [:customers, :products_and_inventory, :order_cycle_management]
       def customers
         @report_types = report_types[:customers]
         @report_type = params[:report_type]
-        @report = OpenFoodNetwork::CustomersReport.new spree_current_user, raw_params,
+        @report = OpenFoodNetwork::CustomersReport.new spree_current_user, 
+raw_params,
                                                        render_content?
         render_report(@report.header, @report.table, params[:csv], "customers_#{timestamp}.csv")
       end
@@ -67,7 +68,9 @@ only: [:customers, :products_and_inventory, :order_cycle_management]
         @table = @report.table_items
 
         render_report(
-@report.header, @table, params[:csv],
+@report.header, 
+@table, 
+params[:csv],
                       "order_cycle_management_#{timestamp}.csv")
       end
 
@@ -83,7 +86,8 @@ only: [:customers, :products_and_inventory, :order_cycle_management]
       def sales_tax
         @distributors = my_distributors
         @report_type = params[:report_type]
-        @report = OpenFoodNetwork::SalesTaxReport.new spree_current_user, raw_params,
+        @report = OpenFoodNetwork::SalesTaxReport.new spree_current_user, 
+raw_params,
                                                       render_content?
         render_report(@report.header, @report.table, params[:csv], "sales_tax.csv")
       end
@@ -94,7 +98,8 @@ only: [:customers, :products_and_inventory, :order_cycle_management]
         @report_type = params[:report_type]
 
         # -- Build Report with Order Grouper
-        @report = OpenFoodNetwork::PaymentsReport.new spree_current_user, raw_params,
+        @report = OpenFoodNetwork::PaymentsReport.new spree_current_user, 
+raw_params,
                                                       render_content?
         @table = order_grouper_table
         csv_file_name = "payments_#{timestamp}.csv"
@@ -142,7 +147,9 @@ only: [:customers, :products_and_inventory, :order_cycle_management]
       def users_and_enterprises
         @report = OpenFoodNetwork::UsersAndEnterprisesReport.new raw_params, render_content?
         render_report(
-@report.header, @report.table, params[:csv],
+@report.header, 
+@report.table, 
+params[:csv],
                       "users_and_enterprises_#{timestamp}.csv")
       end
 

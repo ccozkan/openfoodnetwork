@@ -16,8 +16,11 @@ describe "full-page cart", js: true do
     let(:supplier) { create(:supplier_enterprise) }
     let!(:order_cycle) {
       create(
-:simple_order_cycle, suppliers: [supplier], distributors: [distributor],
-                     coordinator: create(:distributor_enterprise), variants: [product_with_tax.variants.first, product_with_fee.variants.first])
+:simple_order_cycle, 
+suppliers: [supplier], 
+distributors: [distributor],
+                     coordinator: create(:distributor_enterprise), 
+variants: [product_with_tax.variants.first, product_with_fee.variants.first])
     }
     let(:enterprise_fee) {
       create(:enterprise_fee, amount: 11.00, tax_category: product_with_tax.tax_category)
@@ -99,8 +102,10 @@ describe "full-page cart", js: true do
       context "when there are fees" do
         let(:handling_fee) {
           create(
-:enterprise_fee, calculator: Calculator::FlatRate.new(preferred_amount: 1),
-                 enterprise: order_cycle.coordinator, fee_type: 'admin')
+:enterprise_fee, 
+calculator: Calculator::FlatRate.new(preferred_amount: 1),
+                 enterprise: order_cycle.coordinator, 
+fee_type: 'admin')
         }
 
         before do
@@ -141,8 +146,10 @@ describe "full-page cart", js: true do
       context "order with 2 line items" do
         let(:admin_fee) {
           create(
-:enterprise_fee, calculator: Calculator::Weight.new(preferred_per_unit: 1, preferred_unit_from_list: "kg"),
-                 enterprise: order_cycle.coordinator, fee_type: 'admin')
+:enterprise_fee, 
+calculator: Calculator::Weight.new(preferred_per_unit: 1, preferred_unit_from_list: "kg"),
+                 enterprise: order_cycle.coordinator, 
+fee_type: 'admin')
         }
 
         before do
@@ -283,12 +290,16 @@ product_with_tax.variants.first.id => 3
       let(:user) { create(:user, bill_address: address, ship_address: address) }
       let!(:prev_order1) {
         create(
-:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
+:completed_order_with_totals, 
+order_cycle: order_cycle, 
+distributor: distributor,
                               user: user)
       }
       let!(:prev_order2) {
         create(
-:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
+:completed_order_with_totals, 
+order_cycle: order_cycle, 
+distributor: distributor,
                               user: user)
       }
 

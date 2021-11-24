@@ -195,7 +195,9 @@ display_as: "pc"
   context "when variant_unit is 'items'" do
     let(:product) {
       build_stubbed(
-:product, variant_unit: 'items', variant_unit_scale: nil,
+:product, 
+variant_unit: 'items', 
+variant_unit_scale: nil,
           variant_unit_name: "bunch")
     }
     let(:line_item) { build_stubbed(:line_item, variant: variant, quantity: 1) }
@@ -224,7 +226,10 @@ display_as: "pc"
     context "when unit_value is nil and variant.weight is present" do
       let(:variant) {
         build_stubbed(
-:variant, product: product, unit_description: "bunches", unit_value: nil,
+:variant, 
+product: product, 
+unit_description: "bunches", 
+unit_value: nil,
           weight: 10.0)
       }
 
@@ -238,7 +243,10 @@ display_as: "pc"
     context "when unit_value is nil and variant.weight is nil" do
       let(:variant) {
         build_stubbed(
-:variant, product: product, unit_description: "bunches", unit_value: nil,
+:variant, 
+product: product, 
+unit_description: "bunches", 
+unit_value: nil,
           weight: nil)
       }
 

@@ -5,7 +5,8 @@ require 'system_helper'
 describe '
     As an administrator
     I want to create/update complex order cycles with a specific time
-', js: true do
+', 
+js: true do
   include AdminHelper
   include AuthenticationHelper
   include WebHelper
@@ -21,18 +22,25 @@ describe '
     v1 = create(:variant, product: product)
     v2 = create(:variant, product: product)
     distributor = create(
-:distributor_enterprise, name: 'My distributor',
+:distributor_enterprise, 
+name: 'My distributor',
                          with_payment_and_shipping: true)
 
     # Relationships required for interface to work
     create(
-:enterprise_relationship, parent: supplier, child: coordinator,
+:enterprise_relationship, 
+parent: supplier, 
+child: coordinator,
                           permissions_list: [:add_to_order_cycle])
     create(
-:enterprise_relationship, parent: distributor, child: coordinator,
+:enterprise_relationship, 
+parent: distributor, 
+child: coordinator,
                           permissions_list: [:add_to_order_cycle])
     create(
-:enterprise_relationship, parent: supplier, child: distributor,
+:enterprise_relationship, 
+parent: supplier, 
+child: distributor,
                           permissions_list: [:add_to_order_cycle])
 
     # And some enterprise fees
@@ -140,9 +148,11 @@ describe '
 
     expect(page).to have_input "oc#{oc.id}[name]", value: "Plums & Avos"
     expect(page).to have_input "oc#{oc.id}[orders_open_at]",
-                               value: Time.zone.at(order_cycle_opening_time), visible: false
+                               value: Time.zone.at(order_cycle_opening_time), 
+visible: false
     expect(page).to have_input "oc#{oc.id}[orders_close_at]",
-                               value: Time.zone.at(order_cycle_closing_time), visible: false
+                               value: Time.zone.at(order_cycle_closing_time), 
+visible: false
     expect(page).to have_content "My coordinator"
 
     expect(page).to have_selector 'td.producers', text: 'My supplier'

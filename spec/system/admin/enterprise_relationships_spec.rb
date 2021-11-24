@@ -5,7 +5,8 @@ require 'system_helper'
 describe '
   As an Administrator
   I want to manage relationships between enterprises
-', js: true do
+', 
+js: true do
   include WebHelper
   include AuthenticationHelper
 
@@ -20,11 +21,15 @@ create(:enterprise),
 create(:enterprise),
 create(:enterprise)
       create(
-:enterprise_relationship, parent: e1, child: e2,
+:enterprise_relationship, 
+parent: e1, 
+child: e2,
                           permissions_list: [:add_to_order_cycle])
       create(:enterprise_relationship, parent: e2, child: e3, permissions_list: [:manage_products])
       create(
-:enterprise_relationship, parent: e3, child: e4,
+:enterprise_relationship, 
+parent: e3, 
+child: e4,
                           permissions_list: [:add_to_order_cycle, :manage_products])
 
       # When I go to the relationships page
@@ -57,7 +62,8 @@ create(:enterprise)
 
       # Wait for row to appear since have_relationship doesn't wait
       expect(page).to have_selector 'tr', count: 2
-      expect_relationship_with_permissions e1, e2,
+      expect_relationship_with_permissions e1, 
+e2,
                                            ['to add to order cycle', 'to add products to inventory', 'to edit profile']
       er = EnterpriseRelationship.where(parent_id: e1, child_id: e2).first
       expect(er).to be_present
@@ -89,7 +95,9 @@ create(:enterprise)
       e1 = create(:enterprise, name: 'One')
       e2 = create(:enterprise, name: 'Two')
       er = create(
-:enterprise_relationship, parent: e1, child: e2,
+:enterprise_relationship, 
+parent: e1, 
+child: e2,
                           permissions_list: [:add_to_order_cycle])
 
       visit admin_enterprise_relationships_path

@@ -60,7 +60,9 @@ on_demand: false
         context "and the producer has granted VO permission" do
           before do
             create(
-:enterprise_relationship, parent: variant.product.supplier, child: hub,
+:enterprise_relationship, 
+parent: variant.product.supplier, 
+child: hub,
                           permissions_list: [:create_variant_overrides])
           end
 
@@ -135,12 +137,20 @@ on_demand: nil
       let(:variant2) { create(:variant, product: product) }
       let!(:variant_override1) {
         create(
-:variant_override, hub: hub, variant: variant1, count_on_hand: 5, default_stock: 7,
+:variant_override, 
+hub: hub, 
+variant: variant1, 
+count_on_hand: 5, 
+default_stock: 7,
                    resettable: true)
       }
       let!(:variant_override2) {
         create(
-:variant_override, hub: hub, variant: variant2, count_on_hand: 2, default_stock: 1,
+:variant_override, 
+hub: hub, 
+variant: variant2, 
+count_on_hand: 2, 
+default_stock: 1,
                    resettable: false)
       }
 
@@ -174,7 +184,9 @@ on_demand: nil
         context "where the producer has granted create_variant_overrides permission to the hub" do
           let!(:er1) {
             create(
-:enterprise_relationship, parent: producer, child: hub,
+:enterprise_relationship, 
+parent: producer, 
+child: hub,
                           permissions_list: [:create_variant_overrides])
           }
 
@@ -201,12 +213,18 @@ on_demand: nil
             let(:variant3) { create(:variant, product: product) }
             let!(:variant_override3) {
               create(
-:variant_override, hub: hub2, variant: variant3, count_on_hand: 1, default_stock: 13,
+:variant_override, 
+hub: hub2, 
+variant: variant3, 
+count_on_hand: 1, 
+default_stock: 13,
                    resettable: true)
             }
             let!(:er2) {
               create(
-:enterprise_relationship, parent: producer, child: hub2,
+:enterprise_relationship, 
+parent: producer, 
+child: hub2,
                           permissions_list: [:create_variant_overrides])
             }
 

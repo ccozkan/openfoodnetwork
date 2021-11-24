@@ -9,8 +9,12 @@ describe "checking out an order that initially fails", type: :request do
   let!(:order_cycle) { create(:simple_order_cycle) }
   let!(:exchange) {
     create(
-:exchange, order_cycle: order_cycle, sender: order_cycle.coordinator, receiver: shop,
-           incoming: false, pickup_time: "Monday")
+:exchange, 
+order_cycle: order_cycle, 
+sender: order_cycle.coordinator, 
+receiver: shop,
+           incoming: false, 
+pickup_time: "Monday")
   }
   let!(:address) { create(:address) }
   let!(:line_item) { create(:line_item, order: order, quantity: 3, price: 5.00) }
@@ -31,11 +35,25 @@ order: {
       shipping_method_id: shipping_method.id,
       payments_attributes: [{ payment_method_id: payment_method.id }],
       bill_address_attributes: address.attributes.slice(
-"firstname", "lastname", "address1",
-                                                        "address2", "phone", "city", "zipcode", "state_id", "country_id"),
+"firstname", 
+"lastname", 
+"address1",
+                                                        "address2", 
+"phone", 
+"city", 
+"zipcode", 
+"state_id", 
+"country_id"),
       ship_address_attributes: address.attributes.slice(
-"firstname", "lastname", "address1",
-                                                        "address2", "phone", "city", "zipcode", "state_id", "country_id")
+"firstname", 
+"lastname", 
+"address1",
+                                                        "address2", 
+"phone", 
+"city", 
+"zipcode", 
+"state_id", 
+"country_id")
     } 
 }
   end

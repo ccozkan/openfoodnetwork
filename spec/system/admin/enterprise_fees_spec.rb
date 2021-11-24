@@ -5,7 +5,8 @@ require 'system_helper'
 describe '
     As an administrator
     I want to manage enterprise fees
-', js: true do
+', 
+js: true do
   include WebHelper
   include AuthenticationHelper
 
@@ -13,7 +14,9 @@ describe '
 
   it "listing enterprise fees" do
     fee = create(
-:enterprise_fee, name: '$0.50 / kg', fee_type: 'packing',
+:enterprise_fee, 
+name: '$0.50 / kg', 
+fee_type: 'packing',
                  tax_category: tax_category_gst)
     amount = fee.calculator.preferred_amount
 

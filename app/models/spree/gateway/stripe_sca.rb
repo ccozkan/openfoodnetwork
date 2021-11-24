@@ -89,7 +89,8 @@ payment_intent_id,
           provider.void(response_code, gateway_options)
         else
           provider.refund(
-refundable_amount(payment_intent_response), response_code,
+refundable_amount(payment_intent_response), 
+response_code,
                           gateway_options)
         end
       end

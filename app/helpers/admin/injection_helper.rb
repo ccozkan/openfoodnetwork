@@ -131,7 +131,8 @@ can_manage_enterprise_fees: can?(:manage_enterprise_fees, @enterprise)
     end
 
     def admin_inject_hub_permissions
-      render partial: "admin/json/injection_ams", locals: { 
+      render partial: "admin/json/injection_ams", 
+locals: { 
 ngModule: "admin.variantOverrides",
 name: "hubPermissions",
 json: @hub_permissions.to_json 

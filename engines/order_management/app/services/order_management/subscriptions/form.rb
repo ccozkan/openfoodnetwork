@@ -5,8 +5,12 @@ require 'order_management/subscriptions/proxy_order_syncer'
 module OrderManagement
   module Subscriptions
     class Form
-      attr_accessor :subscription, :subscription_params, :order_update_issues,
-                    :validator, :order_syncer, :estimator
+      attr_accessor :subscription, 
+:subscription_params, 
+:order_update_issues,
+                    :validator, 
+:order_syncer, 
+:estimator
 
       delegate :json_errors, :valid?, to: :validator
       delegate :order_update_issues, to: :order_syncer

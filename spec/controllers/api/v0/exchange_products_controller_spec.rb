@@ -36,7 +36,10 @@ module Api
 
         describe "when an exchange id param is provided" do
           it "uses exchange order_cycle, incoming and enterprise to fetch products" do
-            api_get :index, exchange_id: exchange.id, order_cycle_id: 666, enterprise_id: 666,
+            api_get :index, 
+exchange_id: exchange.id, 
+order_cycle_id: 666, 
+enterprise_id: 666,
                             incoming: false
             expect(json_response["products"].first["supplier_name"]).to eq exchange.variants.first.product.supplier.name
           end
@@ -44,7 +47,9 @@ module Api
 
         describe "when an exchange id param is not provided" do
           it "uses params order_cycle, incoming and enterprise to fetch products" do
-            api_get :index, order_cycle_id: order_cycle.id, enterprise_id: exchange.sender_id,
+            api_get :index, 
+order_cycle_id: order_cycle.id, 
+enterprise_id: exchange.sender_id,
                             incoming: true
             expect(json_response["products"].first["supplier_name"]).to eq exchange.variants.first.product.supplier.name
           end

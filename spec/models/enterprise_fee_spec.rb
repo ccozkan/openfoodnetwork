@@ -120,7 +120,8 @@ describe EnterpriseFee do
       order = create(:order)
       enterprise_fee = create(:enterprise_fee)
       enterprise_fee_aplicator = OpenFoodNetwork::EnterpriseFeeApplicator.new(
-enterprise_fee, nil,
+enterprise_fee, 
+nil,
                                                                               'coordinator')
       enterprise_fee_aplicator.create_order_adjustment(order)
 

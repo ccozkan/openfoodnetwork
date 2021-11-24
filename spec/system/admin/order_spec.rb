@@ -5,7 +5,8 @@ require "system_helper"
 describe '
     As an administrator
     I want to create and edit orders
-', js: true do
+', 
+js: true do
   include WebHelper
   include AuthenticationHelper
 
@@ -14,14 +15,19 @@ describe '
   let(:distributor) { create(:distributor_enterprise, owner: user, charges_sales_tax: true) }
   let(:order_cycle) do
     create(
-:simple_order_cycle, name: 'One', distributors: [distributor],
+:simple_order_cycle, 
+name: 'One', 
+distributors: [distributor],
                      variants: [product.variants.first])
   end
 
   let(:order) do
     create(
-:order_with_totals_and_distribution, user: user, distributor: distributor,
-                                     order_cycle: order_cycle, state: 'complete',
+:order_with_totals_and_distribution, 
+user: user, 
+distributor: distributor,
+                                     order_cycle: order_cycle, 
+state: 'complete',
                                      payment_state: 'balance_due')
   end
   let(:customer) { order.customer }
@@ -180,7 +186,9 @@ describe '
   context "creating a new order with a variant override" do
     let!(:override) {
       create(
-:variant_override, hub: distributor, variant: product.variants.first,
+:variant_override, 
+hub: distributor, 
+variant: product.variants.first,
                    count_on_hand: 100)
     }
 
@@ -312,8 +320,11 @@ describe '
       end
       let!(:order) do
         create(
-:order_with_taxes, distributor: distributor1, ship_address: create(:address),
-                   product_price: 110, tax_rate_amount: 0.1,
+:order_with_taxes, 
+distributor: distributor1, 
+ship_address: create(:address),
+                   product_price: 110, 
+tax_rate_amount: 0.1,
                    tax_rate_name: "Tax 1").tap do |order|
                                     order.create_tax_charge!
                                     order.update_shipping_fees!
@@ -393,7 +404,8 @@ describe '
                                        with_options: [
                                          shipping_method_for_distributor1.name,
                                          different_shipping_method_for_distributor1.name
-                                       ], without_options: [shipping_method_for_distributor2.name]
+                                       ], 
+without_options: [shipping_method_for_distributor2.name]
           select2_select different_shipping_method_for_distributor1.name,
                          from: 'selected_shipping_rate_id'
           find('.save-method').click

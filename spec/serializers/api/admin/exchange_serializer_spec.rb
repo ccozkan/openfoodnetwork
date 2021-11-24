@@ -15,7 +15,9 @@ describe Api::Admin::ExchangeSerializer do
     let(:exchange) { create(:exchange, incoming: true, variants: [v1, v2, v3]) }
     let!(:inventory_item) {
       create(
-:inventory_item, enterprise: exchange.order_cycle.coordinator, variant: v1,
+:inventory_item, 
+enterprise: exchange.order_cycle.coordinator, 
+variant: v1,
                  visible: true)
     }
 

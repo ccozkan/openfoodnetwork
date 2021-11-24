@@ -19,7 +19,8 @@ module Spree
     has_one :product, through: :variant
     has_many :adjustments, as: :adjustable, dependent: :destroy
 
-    has_and_belongs_to_many :option_values, join_table: 'spree_option_values_line_items',
+    has_and_belongs_to_many :option_values, 
+join_table: 'spree_option_values_line_items',
                                             class_name: 'Spree::OptionValue'
 
     before_validation :adjust_quantity
@@ -27,7 +28,8 @@ module Spree
     before_validation :copy_tax_category
 
     validates :variant, presence: true
-    validates :quantity, numericality: {
+    validates :quantity, 
+numericality: {
       only_integer: true,
       greater_than: -1,
       message: Spree.t('validation.must_be_int')
@@ -36,7 +38,8 @@ module Spree
     validates_with Stock::AvailabilityValidator
 
     before_save :update_inventory
-    before_save :calculate_final_weight_volume, if: :quantity_changed?,
+    before_save :calculate_final_weight_volume, 
+if: :quantity_changed?,
                                                 unless: :final_weight_volume_changed?
     after_save :update_order
     after_save :update_units
@@ -48,7 +51,8 @@ module Spree
     attr_accessor :skip_stock_check, :target_shipment # Allows manual skipping of Stock::AvailabilityValidator
 
     # -- Scopes
-    scope :managed_by, lambda { |user|
+    scope :managed_by, 
+lambda { |user|
       if user.has_spree_role?('admin')
         where(nil)
       else
@@ -56,17 +60,20 @@ module Spree
         joins(variant: :product)
           .joins(:order)
           .where('spree_orders.distributor_id IN (?) OR spree_products.supplier_id IN (?)',
-                user.enterprises, user.enterprises)
+                user.enterprises, 
+user.enterprises)
           .select('spree_line_items.*')
       end
     }
 
-    scope :in_orders, lambda { |orders|
+    scope :in_orders, 
+lambda { |orders|
       where(order_id: orders)
     }
 
     # Find line items that are from order sorted by variant name and unit value
-    scope :sorted_by_name_and_unit_value, -> {
+    scope :sorted_by_name_and_unit_value, 
+-> {
       joins(variant: :product)
         .reorder(Arel.sql(
 "
@@ -75,7 +82,8 @@ module Spree
             spree_variants.unit_value asc"))
     }
 
-    scope :from_order_cycle, lambda { |order_cycle|
+    scope :from_order_cycle, 
+lambda { |order_cycle|
       joins(order: :order_cycle)
         .where('order_cycles.id = ?', order_cycle)
     }
@@ -83,20 +91,23 @@ module Spree
     # Here we are simply joining the line item to its variant and product
     # We dont use joins here to avoid the default scopes,
     #   and with that, include deleted variants and deleted products
-    scope :supplied_by_any, lambda { |enterprises|
+    scope :supplied_by_any, 
+lambda { |enterprises|
       product_ids = Spree::Product.unscoped.where(supplier_id: enterprises).select(:id)
       variant_ids = Spree::Variant.unscoped.where(product_id: product_ids).select(:id)
       where("spree_line_items.variant_id IN (?)", variant_ids)
     }
 
-    scope :with_tax, -> {
+    scope :with_tax, 
+-> {
       joins(:adjustments)
         .where('spree_adjustments.originator_type = ?', 'Spree::TaxRate')
         .select('DISTINCT spree_line_items.*')
     }
 
     # Line items without a Spree::TaxRate-originated adjustment
-    scope :without_tax, -> {
+    scope :without_tax, 
+-> {
       joins(
 "
         LEFT OUTER JOIN spree_adjustments

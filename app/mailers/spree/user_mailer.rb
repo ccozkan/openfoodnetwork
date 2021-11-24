@@ -25,7 +25,8 @@ module Spree
       @user = user
       I18n.with_locale valid_locale(@user) do
         mail(
-to: user.email, from: from_address,
+to: user.email, 
+from: from_address,
 subject: t(:welcome_to) + ' ' + Spree::Config[:site_name])
       end
     end

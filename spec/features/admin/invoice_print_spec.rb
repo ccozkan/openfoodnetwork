@@ -5,7 +5,8 @@ require "spec_helper"
 describe '
     As an administrator
     I want to print a invoice as PDF
-', js: false do
+', 
+js: false do
   include WebHelper
   include AuthenticationHelper
 
@@ -14,14 +15,19 @@ describe '
   let(:distributor) { create(:distributor_enterprise, owner: user, charges_sales_tax: true) }
   let(:order_cycle) do
     create(
-:simple_order_cycle, name: 'One', distributors: [distributor],
+:simple_order_cycle, 
+name: 'One', 
+distributors: [distributor],
                      variants: [product.variants.first])
   end
 
   let(:order) do
     create(
-:order_with_totals_and_distribution, user: user, distributor: distributor,
-                                     order_cycle: order_cycle, state: 'complete',
+:order_with_totals_and_distribution, 
+user: user, 
+distributor: distributor,
+                                     order_cycle: order_cycle, 
+state: 'complete',
                                      payment_state: 'balance_due')
   end
 
@@ -61,11 +67,17 @@ describe '
       before do
         order.update payments: []
         order.payments << create(
-:payment, order: order, state: 'completed',
-          payment_method: payment_method1, created_at: 1.day.ago)
+:payment, 
+order: order, 
+state: 'completed',
+          payment_method: payment_method1, 
+created_at: 1.day.ago)
         order.payments << create(
-:payment, order: order, state: 'failed',
-          payment_method: payment_method2, created_at: 2.days.ago)
+:payment, 
+order: order, 
+state: 'failed',
+          payment_method: payment_method2, 
+created_at: 2.days.ago)
         order.save!
       end
 
@@ -81,11 +93,17 @@ describe '
       before do
         order.update payments: []
         order.payments << create(
-:payment, order: order, state: 'completed',
-          payment_method: payment_method1, created_at: 2.days.ago)
+:payment, 
+order: order, 
+state: 'completed',
+          payment_method: payment_method1, 
+created_at: 2.days.ago)
         order.payments << create(
-:payment, order: order, state: 'completed',
-          payment_method: payment_method2, created_at: 1.day.ago)
+:payment, 
+order: order, 
+state: 'completed',
+          payment_method: payment_method2, 
+created_at: 1.day.ago)
         order.save!
       end
 

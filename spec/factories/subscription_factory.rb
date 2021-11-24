@@ -27,7 +27,8 @@ FactoryBot.define do
 sender_id: subscription.shop_id,
 receiver_id: subscription.shop_id)
           ex ||= create(
-:exchange, order_cycle: oc,
+:exchange, 
+order_cycle: oc,
            sender: subscription.shop,
            receiver: subscription.shop,
            incoming: false,
@@ -40,7 +41,8 @@ receiver_id: subscription.shop_id)
       if proxy.with_proxy_orders
         subscription.order_cycles.each do |oc|
           subscription.proxy_orders << create(
-:proxy_order, subscription: subscription,
+:proxy_order, 
+subscription: subscription,
               order_cycle: oc)
         end
       end

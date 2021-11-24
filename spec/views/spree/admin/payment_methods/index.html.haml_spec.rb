@@ -18,7 +18,8 @@ describe "spree/admin/payment_methods/index.html.haml" do
     end
 
     assign(
-:payment_methods, [
+:payment_methods, 
+[
              create(:payment_method),
              create(:payment_method)
            ])

@@ -30,7 +30,8 @@ class EnterpriseFee < ApplicationRecord
   scope :for_enterprise, lambda { |enterprise| where(enterprise_id: enterprise) }
   scope :for_enterprises, lambda { |enterprises| where(enterprise_id: enterprises) }
 
-  scope :managed_by, lambda { |user|
+  scope :managed_by, 
+lambda { |user|
     if user.has_spree_role?('admin')
       where(nil)
     else
@@ -38,10 +39,12 @@ class EnterpriseFee < ApplicationRecord
     end
   }
 
-  scope :per_item, lambda {
+  scope :per_item, 
+lambda {
     joins(:calculator).where('spree_calculators.type NOT IN (?)', PER_ORDER_CALCULATORS)
   }
-  scope :per_order, lambda {
+  scope :per_order, 
+lambda {
     joins(:calculator).where('spree_calculators.type IN (?)', PER_ORDER_CALCULATORS)
   }
 

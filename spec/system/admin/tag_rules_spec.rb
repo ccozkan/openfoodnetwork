@@ -102,28 +102,43 @@ describe 'Tag Rules', js: true do
   context "updating" do
     let!(:default_fsm_tag_rule) {
       create(
-:filter_shipping_methods_tag_rule, enterprise: enterprise,
-                                   preferred_matched_shipping_methods_visibility: "visible", is_default: true, preferred_shipping_method_tags: "local" )
+:filter_shipping_methods_tag_rule, 
+enterprise: enterprise,
+                                   preferred_matched_shipping_methods_visibility: "visible", 
+is_default: true, 
+preferred_shipping_method_tags: "local" )
     }
     let!(:fp_tag_rule) {
       create(
-:filter_products_tag_rule, enterprise: enterprise,
-                           preferred_matched_variants_visibility: "visible", preferred_customer_tags: "member", preferred_variant_tags: "member" )
+:filter_products_tag_rule, 
+enterprise: enterprise,
+                           preferred_matched_variants_visibility: "visible", 
+preferred_customer_tags: "member", 
+preferred_variant_tags: "member" )
     }
     let!(:fpm_tag_rule) {
       create(
-:filter_payment_methods_tag_rule, enterprise: enterprise,
-                                  preferred_matched_payment_methods_visibility: "hidden", preferred_customer_tags: "trusted", preferred_payment_method_tags: "trusted" )
+:filter_payment_methods_tag_rule, 
+enterprise: enterprise,
+                                  preferred_matched_payment_methods_visibility: "hidden", 
+preferred_customer_tags: "trusted", 
+preferred_payment_method_tags: "trusted" )
     }
     let!(:foc_tag_rule) {
       create(
-:filter_order_cycles_tag_rule, enterprise: enterprise,
-                               preferred_matched_order_cycles_visibility: "visible", preferred_customer_tags: "wholesale", preferred_exchange_tags: "wholesale" )
+:filter_order_cycles_tag_rule, 
+enterprise: enterprise,
+                               preferred_matched_order_cycles_visibility: "visible", 
+preferred_customer_tags: "wholesale", 
+preferred_exchange_tags: "wholesale" )
     }
     let!(:fsm_tag_rule) {
       create(
-:filter_shipping_methods_tag_rule, enterprise: enterprise,
-                                   preferred_matched_shipping_methods_visibility: "hidden", preferred_customer_tags: "local", preferred_shipping_method_tags: "local" )
+:filter_shipping_methods_tag_rule, 
+enterprise: enterprise,
+                                   preferred_matched_shipping_methods_visibility: "hidden", 
+preferred_customer_tags: "local", 
+preferred_shipping_method_tags: "local" )
     }
 
     before do
@@ -134,13 +149,17 @@ describe 'Tag Rules', js: true do
       # Tag groups exist
       expect(page).to have_selector '.customer_tag .header', text: "For customers tagged:", count: 4
       expect(page).to have_selector '.customer_tag .header tags-input .tag-list ti-tag-item',
-                                    text: "member", count: 1
+                                    text: "member", 
+count: 1
       expect(page).to have_selector '.customer_tag .header tags-input .tag-list ti-tag-item',
-                                    text: "local", count: 1
+                                    text: "local", 
+count: 1
       expect(page).to have_selector '.customer_tag .header tags-input .tag-list ti-tag-item',
-                                    text: "wholesale", count: 1
+                                    text: "wholesale", 
+count: 1
       expect(page).to have_selector '.customer_tag .header tags-input .tag-list ti-tag-item',
-                                    text: "trusted", count: 1
+                                    text: "trusted", 
+count: 1
       all(:css, ".customer_tag .header tags-input").each do |node|
         node.find("li.tag-item a.remove-button").click
         within(:xpath, node.path) { fill_in_tag "volunteer", ".tags input" }

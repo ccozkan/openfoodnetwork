@@ -111,7 +111,9 @@ describe 'Enterprises Index' do
     let(:enterprise_manager) { create(:user) }
     let!(:er) {
       create(
-:enterprise_relationship, parent: distributor3, child: distributor1,
+:enterprise_relationship, 
+parent: distributor3, 
+child: distributor1,
                           permissions_list: [:edit_profile])
     }
 

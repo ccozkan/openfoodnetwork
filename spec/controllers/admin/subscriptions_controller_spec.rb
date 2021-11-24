@@ -137,8 +137,11 @@ describe Admin::SubscriptionsController, type: :controller do
         it 'returns errors' do
           expect{ spree_post :create, params }.to_not change{ Subscription.count }
           json_response = JSON.parse(response.body)
-          expect(json_response['errors'].keys).to include 'schedule', 'customer', 'payment_method',
-                                                          'shipping_method', 'begins_at'
+          expect(json_response['errors'].keys).to include 'schedule', 
+'customer', 
+'payment_method',
+                                                          'shipping_method', 
+'begins_at'
         end
       end
 
@@ -172,8 +175,11 @@ describe Admin::SubscriptionsController, type: :controller do
         it 'returns errors' do
           expect{ spree_post :create, params }.to_not change{ Subscription.count }
           json_response = JSON.parse(response.body)
-          expect(json_response['errors'].keys).to include 'schedule', 'customer', 'payment_method',
-                                                          'shipping_method', 'ends_at'
+          expect(json_response['errors'].keys).to include 'schedule', 
+'customer', 
+'payment_method',
+                                                          'shipping_method', 
+'ends_at'
         end
       end
 
@@ -208,7 +214,10 @@ describe Admin::SubscriptionsController, type: :controller do
         context 'where the specified variants are available from the shop' do
           let!(:exchange) {
             create(
-:exchange, order_cycle: order_cycle, incoming: false, receiver: shop,
+:exchange, 
+order_cycle: order_cycle, 
+incoming: false, 
+receiver: shop,
            variants: [variant])
           }
 
@@ -271,12 +280,16 @@ describe Admin::SubscriptionsController, type: :controller do
     let!(:enterprise_fee) { create(:enterprise_fee, amount: 1.75) }
     let!(:order_cycle) {
       create(
-:simple_order_cycle, coordinator: shop, orders_open_at: 2.days.from_now,
+:simple_order_cycle, 
+coordinator: shop, 
+orders_open_at: 2.days.from_now,
                      orders_close_at: 7.days.from_now)
     }
     let!(:outgoing_exchange) {
       order_cycle.exchanges.create(
-sender: shop, receiver: shop, variants: [variant1],
+sender: shop, 
+receiver: shop, 
+variants: [variant1],
 enterprise_fees: [enterprise_fee])
     }
     let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
@@ -292,7 +305,8 @@ enterprise_fees: [enterprise_fee])
              shipping_method: shipping_method,
              subscription_line_items: [
 create(
-:subscription_line_item, variant: variant1,
+:subscription_line_item, 
+variant: variant1,
                          quantity: 2)
 ])
     }

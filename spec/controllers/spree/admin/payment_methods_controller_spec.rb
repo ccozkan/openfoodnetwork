@@ -12,7 +12,8 @@ module Spree
       let!(:enterprise) { create(:distributor_enterprise, owner: user) }
       let(:payment_method) {
         GatewayWithPassword.create!(
-name: "Bogus", preferred_password: "haxme",
+name: "Bogus", 
+preferred_password: "haxme",
 distributor_ids: [enterprise.id])
       }
       let!(:user) { create(:user) }
@@ -21,7 +22,8 @@ distributor_ids: [enterprise.id])
 
       it "does not clear password on update" do
         expect(payment_method.preferred_password).to eq "haxme"
-        spree_put :update, id: payment_method.id,
+        spree_put :update, 
+id: payment_method.id,
                            payment_method: { type: payment_method.class.to_s, preferred_password: "" }
         expect(response).to redirect_to spree.edit_admin_payment_method_path(payment_method)
 
@@ -121,7 +123,8 @@ distributor_ids: [enterprise.id]
         let!(:enterprise2) { create(:distributor_enterprise, owner: create(:user)) }
         let!(:payment_method) {
           create(
-:stripe_connect_payment_method, distributor_ids: [enterprise1.id, enterprise2.id],
+:stripe_connect_payment_method, 
+distributor_ids: [enterprise1.id, enterprise2.id],
                                 preferred_enterprise_id: enterprise2.id)
         }
 
@@ -185,7 +188,9 @@ distributor_ids: [enterprise.id]
       let(:enterprise) { create(:distributor_enterprise) }
       let(:user) do
         new_user = create(
-:user, email: 'enterprise@hub.com', password: 'blahblah',
+:user, 
+email: 'enterprise@hub.com', 
+password: 'blahblah',
        password_confirmation: 'blahblah', )
         new_user.spree_roles = [] # for some reason unbeknown to me, this new user gets admin permissions by default.
         new_user.enterprise_roles.build(enterprise: enterprise).save

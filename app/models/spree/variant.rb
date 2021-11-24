@@ -19,9 +19,17 @@ module Spree
 
     belongs_to :product, -> { with_deleted }, touch: true, class_name: 'Spree::Product'
 
-    delegate_belongs_to :product, :name, :description, :permalink, :available_on,
-                        :tax_category_id, :shipping_category_id, :meta_description,
-                        :meta_keywords, :tax_category, :shipping_category
+    delegate_belongs_to :product, 
+:name, 
+:description, 
+:permalink, 
+:available_on,
+                        :tax_category_id, 
+:shipping_category_id, 
+:meta_description,
+                        :meta_keywords, 
+:tax_category, 
+:shipping_category
 
     has_many :inventory_units, inverse_of: :variant
     has_many :line_items, inverse_of: :variant
@@ -32,7 +40,9 @@ module Spree
 
     has_and_belongs_to_many :option_values, join_table: :spree_option_values_variants
 
-    has_many :images, -> { order(:position) }, as: :viewable,
+    has_many :images, 
+-> { order(:position) }, 
+as: :viewable,
                                                dependent: :destroy,
                                                class_name: "Spree::Image"
     accepts_nested_attributes_for :images
@@ -44,8 +54,12 @@ module Spree
     has_many :prices,
              class_name: 'Spree::Price',
              dependent: :destroy
-    delegate_belongs_to :default_price, :display_price, :display_amount,
-                        :price, :price=, :currency
+    delegate_belongs_to :default_price, 
+:display_price, 
+:display_amount,
+                        :price, 
+:price=, 
+:currency
 
     has_many :exchange_variants
     has_many :exchanges, through: :exchange_variants
@@ -55,17 +69,22 @@ module Spree
     localize_number :price, :weight
 
     validate :check_price
-    validates :price, numericality: { greater_than_or_equal_to: 0 },
+    validates :price, 
+numericality: { greater_than_or_equal_to: 0 },
                       presence: true,
                       if: proc { Spree::Config[:require_master_price] }
 
-    validates :unit_value, presence: true, if: ->(variant) {
+    validates :unit_value, 
+presence: true, 
+if: ->(variant) {
       %w(weight volume).include?(variant.product&.variant_unit)
     }
 
     validates :unit_value, numericality: { greater_than: 0 }
 
-    validates :unit_description, presence: true, if: ->(variant) {
+    validates :unit_description, 
+presence: true, 
+if: ->(variant) {
       variant.product&.variant_unit.present? && variant.unit_value.nil?
     }
 
@@ -87,27 +106,32 @@ module Spree
     scope :with_order_cycles_inner, -> { joins(exchanges: :order_cycle) }
 
     scope :not_master, -> { where(is_master: false) }
-    scope :in_order_cycle, lambda { |order_cycle|
+    scope :in_order_cycle, 
+lambda { |order_cycle|
       with_order_cycles_inner
         .merge(Exchange.outgoing)
         .where('order_cycles.id = ?', order_cycle)
         .select('DISTINCT spree_variants.*')
     }
 
-    scope :in_schedule, lambda { |schedule|
+    scope :in_schedule, 
+lambda { |schedule|
       joins(exchanges: { order_cycle: :schedules })
         .merge(Exchange.outgoing)
         .where(schedules: { id: schedule })
         .select('DISTINCT spree_variants.*')
     }
 
-    scope :for_distribution, lambda { |order_cycle, distributor|
+    scope :for_distribution, 
+lambda { |order_cycle, distributor|
       where(
-'spree_variants.id IN (?)', order_cycle.variants_distributed_by(distributor)
+'spree_variants.id IN (?)', 
+order_cycle.variants_distributed_by(distributor)
         .select(&:id))
     }
 
-    scope :visible_for, lambda { |enterprise|
+    scope :visible_for, 
+lambda { |enterprise|
       joins(:inventory_items)
         .where(
           'inventory_items.enterprise_id = (?) AND inventory_items.visible = (?)',
@@ -116,7 +140,8 @@ module Spree
         )
     }
 
-    scope :not_hidden_for, lambda { |enterprise|
+    scope :not_hidden_for, 
+lambda { |enterprise|
       enterprise_id = enterprise&.id.to_i
       return none if enterprise_id < 1
 
@@ -130,7 +155,8 @@ module Spree
         .where("o_inventory_items.id IS NULL OR o_inventory_items.visible = (?)", true)
     }
 
-    scope :stockable_by, lambda { |enterprise|
+    scope :stockable_by, 
+lambda { |enterprise|
       return where("1=0") if enterprise.blank?
 
       joins(:product)
@@ -154,7 +180,8 @@ id: ExchangeVariant.select(:variant_id)
       # "where(id:" is necessary so that the returned relation has no includes
       # The relation without includes will not be readonly and allow updates on it
       where(
-"spree_variants.id in (?)", joins(:prices)
+"spree_variants.id in (?)", 
+joins(:prices)
                                           .where(deleted_at: nil)
                                           .where('spree_prices.currency' =>
                                             currency || Spree::Config[:currency])

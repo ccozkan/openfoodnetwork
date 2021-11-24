@@ -412,7 +412,8 @@ module Spree
         let(:distributor) { create(:distributor_enterprise) }
         let!(:oc) {
           create(
-:simple_order_cycle, distributors: [distributor],
+:simple_order_cycle, 
+distributors: [distributor],
                      variants: [product.variants.first])
         }
 
@@ -504,12 +505,14 @@ module Spree
         let!(:product4) { create(:product) }
         let!(:order_cycle1) {
           create(
-:order_cycle, distributors: [distributor1],
+:order_cycle, 
+distributors: [distributor1],
               variants: [product1.variants.first, product2.variants.first])
         }
         let!(:order_cycle2) {
           create(
-:order_cycle, distributors: [distributor2],
+:order_cycle, 
+distributors: [distributor2],
               variants: [product3.variants.first])
         }
 
@@ -565,10 +568,14 @@ module Spree
           p1 = create(:product)
           p2 = create(:product)
           oc1 = create(
-:simple_order_cycle, suppliers: [s], distributors: [d1],
+:simple_order_cycle, 
+suppliers: [s], 
+distributors: [d1],
                      variants: [p1.master])
           oc2 = create(
-:simple_order_cycle, suppliers: [s], distributors: [d2],
+:simple_order_cycle, 
+suppliers: [s], 
+distributors: [d2],
                      variants: [p2.master])
           expect(Product.in_order_cycle(oc1)).to eq([p1])
         end
@@ -583,11 +590,18 @@ module Spree
           p2 = create(:product)
           p3 = create(:product)
           oc2 = create(
-:simple_order_cycle, suppliers: [s], distributors: [d2],
-                     variants: [p2.master], orders_open_at: 8.days.ago, orders_close_at: 1.day.ago)
+:simple_order_cycle, 
+suppliers: [s], 
+distributors: [d2],
+                     variants: [p2.master], 
+orders_open_at: 8.days.ago, 
+orders_close_at: 1.day.ago)
           oc2 = create(
-:simple_order_cycle, suppliers: [s], distributors: [d3],
-                     variants: [p3.master], orders_close_at: Date.tomorrow)
+:simple_order_cycle, 
+suppliers: [s], 
+distributors: [d3],
+                     variants: [p3.master], 
+orders_close_at: Date.tomorrow)
           expect(Product.in_an_active_order_cycle).to eq([p3])
         end
       end
@@ -658,10 +672,14 @@ module Spree
 
         before do
           create(
-:enterprise_relationship, parent: add_to_oc_producer, child: shop,
+:enterprise_relationship, 
+parent: add_to_oc_producer, 
+child: shop,
                           permissions_list: [:add_to_order_cycle])
           create(
-:enterprise_relationship, parent: other_producer, child: shop,
+:enterprise_relationship, 
+parent: other_producer, 
+child: shop,
                           permissions_list: [:manage_products])
         end
 

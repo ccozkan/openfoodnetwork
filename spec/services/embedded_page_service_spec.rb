@@ -13,12 +13,15 @@ describe EmbeddedPageService do
       { 
 'HTTP_HOST' => 'ofn-instance.com',
 'HTTP_REFERER' => 'https://embedding-enterprise.com' 
-}, nil, nil
+}, 
+nil, 
+nil
     )
   }
   let(:response) {
     ActionDispatch::TestResponse.new(
-200, 'X-Frame-Options' => 'DENY',
+200, 
+'X-Frame-Options' => 'DENY',
      'Content-Security-Policy' => "frame-ancestors 'none'")
   }
   let(:service) { EmbeddedPageService.new(params, session, request, response) }

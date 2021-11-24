@@ -194,7 +194,9 @@ describe '
       @new_user.enterprise_roles.build(enterprise: @supplier2).save
       @new_user.enterprise_roles.build(enterprise: @distributors[0]).save
       create(
-:enterprise_relationship, parent: @supplier_permitted, child: @supplier2,
+:enterprise_relationship, 
+parent: @supplier_permitted, 
+child: @supplier2,
                           permissions_list: [:manage_products])
 
       login_as @new_user
@@ -540,7 +542,10 @@ spree.new_admin_product_image_path(
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       image_object = Spree::Image.create(
 viewable_id: product.master.id,
-viewable_type: 'Spree::Variant', alt: "position 1", attachment: image, position: 1)
+viewable_type: 'Spree::Variant', 
+alt: "position 1", 
+attachment: image, 
+position: 1)
 
       visit spree.admin_product_images_path(product, filter)
 
@@ -549,7 +554,8 @@ viewable_type: 'Spree::Variant', alt: "position 1", attachment: image, position:
       uri = URI.parse(current_url)
       expect("#{uri.path}?#{uri.query}").to eq spree.edit_admin_product_image_path(
 product,
-                                                                                   image_object, filter)
+                                                                                   image_object, 
+filter)
 
       expected_cancel_link = Regexp.new(
 Regexp.escape(
@@ -565,7 +571,10 @@ product,
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       image_object = Spree::Image.create(
 viewable_id: product.master.id,
-viewable_type: 'Spree::Variant', alt: "position 1", attachment: image, position: 1)
+viewable_type: 'Spree::Variant', 
+alt: "position 1", 
+attachment: image, 
+position: 1)
 
       file_path = Rails.root + "spec/support/fixtures/thinking-cat.jpg"
 
@@ -586,8 +595,11 @@ viewable_type: 'Spree::Variant', alt: "position 1", attachment: image, position:
 
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       Spree::Image.create(
-viewable_id: product.master.id, viewable_type: 'Spree::Variant',
-alt: "position 1", attachment: image, position: 1)
+viewable_id: product.master.id, 
+viewable_type: 'Spree::Variant',
+alt: "position 1", 
+attachment: image, 
+position: 1)
 
       visit spree.admin_product_images_path(product)
       page.find('a#new_image_link').click
@@ -602,8 +614,11 @@ alt: "position 1", attachment: image, position: 1)
       product = create(:simple_product, supplier: @supplier2)
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       Spree::Image.create(
-viewable_id: product.master.id, viewable_type: 'Spree::Variant',
-alt: "position 1", attachment: image, position: 1)
+viewable_id: product.master.id, 
+viewable_type: 'Spree::Variant',
+alt: "position 1", 
+attachment: image, 
+position: 1)
 
       visit spree.admin_product_images_path(product)
       expect(page).to have_selector "table.index td img"
@@ -621,8 +636,11 @@ alt: "position 1", attachment: image, position: 1)
       product = create(:simple_product, supplier: @supplier2)
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       Spree::Image.create(
-viewable_id: product.master.id, viewable_type: 'Spree::Variant',
-alt: "position 1", attachment: image, position: 1)
+viewable_id: product.master.id, 
+viewable_type: 'Spree::Variant',
+alt: "position 1", 
+attachment: image, 
+position: 1)
 
       visit spree.admin_product_images_path(product, filter)
 
@@ -658,21 +676,37 @@ alt: "position 1", attachment: image, position: 1)
       end
 
       describe 'a shared example' do
-        it_behaves_like 'selecting a unit from dropdown', 'Weight (g)', var_unit: 'weight',
+        it_behaves_like 'selecting a unit from dropdown', 
+'Weight (g)', 
+var_unit: 'weight',
                                                                         var_unit_scale: 1
-        it_behaves_like 'selecting a unit from dropdown', 'Weight (kg)', var_unit: 'weight',
+        it_behaves_like 'selecting a unit from dropdown', 
+'Weight (kg)', 
+var_unit: 'weight',
                                                                          var_unit_scale: 1000
-        it_behaves_like 'selecting a unit from dropdown', 'Weight (T)', var_unit: 'weight',
+        it_behaves_like 'selecting a unit from dropdown', 
+'Weight (T)', 
+var_unit: 'weight',
                                                                         var_unit_scale: 1_000_000
-        it_behaves_like 'selecting a unit from dropdown', 'Weight (oz)', var_unit: 'weight',
+        it_behaves_like 'selecting a unit from dropdown', 
+'Weight (oz)', 
+var_unit: 'weight',
                                                                          var_unit_scale: 28.35
-        it_behaves_like 'selecting a unit from dropdown', 'Weight (lb)', var_unit: 'weight',
+        it_behaves_like 'selecting a unit from dropdown', 
+'Weight (lb)', 
+var_unit: 'weight',
                                                                          var_unit_scale: 453.6
-        it_behaves_like 'selecting a unit from dropdown', 'Volume (mL)', var_unit: 'volume',
+        it_behaves_like 'selecting a unit from dropdown', 
+'Volume (mL)', 
+var_unit: 'volume',
                                                                          var_unit_scale: 0.001
-        it_behaves_like 'selecting a unit from dropdown', 'Volume (L)', var_unit: 'volume',
+        it_behaves_like 'selecting a unit from dropdown', 
+'Volume (L)', 
+var_unit: 'volume',
                                                                         var_unit_scale: 1
-        it_behaves_like 'selecting a unit from dropdown', 'Volume (kL)', var_unit: 'volume',
+        it_behaves_like 'selecting a unit from dropdown', 
+'Volume (kL)', 
+var_unit: 'volume',
                                                                          var_unit_scale: 1000
       end
     end

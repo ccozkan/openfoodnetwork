@@ -24,8 +24,10 @@ module Spree
         let(:adjustable) { instance_double(LineItem) }
 
         before do
-          allow(adjustment).to receive_messages originator: originator, label: 'adjustment',
-                                                adjustable: adjustable, amount: 0
+          allow(adjustment).to receive_messages originator: originator, 
+label: 'adjustment',
+                                                adjustable: adjustable, 
+amount: 0
         end
 
         it "should do nothing when closed" do
@@ -325,7 +327,10 @@ module Spree
         let(:zone)             { create(:zone_with_member) }
         let(:fee_tax_rate)     {
           create(
-:tax_rate, included_in_price: true, calculator: ::Calculator::DefaultTax.new, zone: zone,
+:tax_rate, 
+included_in_price: true, 
+calculator: ::Calculator::DefaultTax.new, 
+zone: zone,
            amount: 0.1)
         }
         let(:fee_tax_category) { create(:tax_category, tax_rates: [fee_tax_rate]) }
@@ -334,13 +339,18 @@ module Spree
         let(:variant)     { create(:variant, product: create(:product, tax_category: nil)) }
         let(:order_cycle) {
           create(
-:simple_order_cycle, coordinator: coordinator, coordinator_fees: [enterprise_fee],
-                     distributors: [coordinator], variants: [variant])
+:simple_order_cycle, 
+coordinator: coordinator, 
+coordinator_fees: [enterprise_fee],
+                     distributors: [coordinator], 
+variants: [variant])
         }
         let(:line_item)   { create(:line_item, variant: variant) }
         let(:order)       {
           create(
-:order, line_items: [line_item], order_cycle: order_cycle,
+:order, 
+line_items: [line_item], 
+order_cycle: order_cycle,
         distributor: coordinator)
         }
         let(:fee)         { order.all_adjustments.reload.enterprise_fee.first }
@@ -354,7 +364,9 @@ module Spree
           context "when enterprise fees are taxed per-order" do
             let(:enterprise_fee) {
               create(
-:enterprise_fee, enterprise: coordinator, tax_category: fee_tax_category,
+:enterprise_fee, 
+enterprise: coordinator, 
+tax_category: fee_tax_category,
                  calculator: ::Calculator::FlatRate.new(preferred_amount: 50.0))
             }
 
@@ -394,7 +406,9 @@ module Spree
           context "when enterprise fees are taxed per-item" do
             let(:enterprise_fee) {
               create(
-:enterprise_fee, enterprise: coordinator, tax_category: fee_tax_category,
+:enterprise_fee, 
+enterprise: coordinator, 
+tax_category: fee_tax_category,
                  calculator: ::Calculator::PerItem.new(preferred_amount: 50.0))
             }
 
@@ -420,8 +434,11 @@ module Spree
         context "when enterprise fees inherit their tax_category from the product they are applied to" do
           let(:product_tax_rate) {
             create(
-:tax_rate, included_in_price: true, calculator: ::Calculator::DefaultTax.new,
-           zone: zone, amount: 0.2)
+:tax_rate, 
+included_in_price: true, 
+calculator: ::Calculator::DefaultTax.new,
+           zone: zone, 
+amount: 0.2)
           }
           let(:product_tax_category) { create(:tax_category, tax_rates: [product_tax_rate]) }
 
@@ -433,7 +450,9 @@ module Spree
           context "when enterprise fees are taxed per-order" do
             let(:enterprise_fee) {
               create(
-:enterprise_fee, enterprise: coordinator, inherits_tax_category: true,
+:enterprise_fee, 
+enterprise: coordinator, 
+inherits_tax_category: true,
                  calculator: ::Calculator::FlatRate.new(preferred_amount: 50.0))
             }
 
@@ -465,7 +484,9 @@ module Spree
           context "when enterprise fees are taxed per-item" do
             let(:enterprise_fee) {
               create(
-:enterprise_fee, enterprise: coordinator, inherits_tax_category: true,
+:enterprise_fee, 
+enterprise: coordinator, 
+inherits_tax_category: true,
                  calculator: ::Calculator::PerItem.new(preferred_amount: 50.0))
             }
 
@@ -510,7 +531,9 @@ module Spree
       let(:included_in_price) { true }
       let(:tax_rate) {
         create(
-:tax_rate, included_in_price: included_in_price, zone: zone,
+:tax_rate, 
+included_in_price: included_in_price, 
+zone: zone,
            calculator: ::Calculator::FlatRate.new(preferred_amount: 0.1))
       }
       let(:product) { create(:product, tax_category: tax_category) }
@@ -567,8 +590,11 @@ module Spree
       let(:order) { return_authorization.order }
       let!(:return_adjustment) {
         create(
-:adjustment, originator: return_authorization, order: order,
-             adjustable: order, amount: 456)
+:adjustment, 
+originator: return_authorization, 
+order: order,
+             adjustable: order, 
+amount: 456)
       }
 
       describe "#update_adjustment!" do

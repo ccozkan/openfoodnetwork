@@ -41,18 +41,22 @@ describe OrderCycle do
 
   it "finds order cycles in various stages of their lifecycle" do
     oc_active = create(
-:simple_order_cycle, orders_open_at: 1.week.ago,
+:simple_order_cycle, 
+orders_open_at: 1.week.ago,
                      orders_close_at: 1.week.from_now)
     oc_not_yet_open = create(
-:simple_order_cycle, orders_open_at: 1.week.from_now,
+:simple_order_cycle, 
+orders_open_at: 1.week.from_now,
                      orders_close_at: 2.weeks.from_now)
     oc_already_closed = create(
-:simple_order_cycle, orders_open_at: 2.weeks.ago,
+:simple_order_cycle, 
+orders_open_at: 2.weeks.ago,
                      orders_close_at: 1.week.ago)
     oc_undated = create(:simple_order_cycle, orders_open_at: nil, orders_close_at: nil)
     oc_undated_open = create(:simple_order_cycle, orders_open_at: 1.week.ago, orders_close_at: nil)
     oc_undated_close = create(
-:simple_order_cycle, orders_open_at: nil,
+:simple_order_cycle, 
+orders_open_at: nil,
                      orders_close_at: 1.week.from_now)
 
     expect(OrderCycle.active).to eq([oc_active])
@@ -134,11 +138,17 @@ oc_undated_open,
     oc = create(:simple_order_cycle)
 
     e1 = create(
-:exchange, incoming: true,
-           order_cycle: oc, receiver: oc.coordinator, sender: create(:enterprise))
+:exchange, 
+incoming: true,
+           order_cycle: oc, 
+receiver: oc.coordinator, 
+sender: create(:enterprise))
     e2 = create(
-:exchange, incoming: true,
-           order_cycle: oc, receiver: oc.coordinator, sender: create(:enterprise))
+:exchange, 
+incoming: true,
+           order_cycle: oc, 
+receiver: oc.coordinator, 
+sender: create(:enterprise))
 
     expect(oc.suppliers).to match_array [e1.sender, e2.sender]
   end
@@ -147,11 +157,17 @@ oc_undated_open,
     oc = create(:simple_order_cycle)
 
     e1 = create(
-:exchange, incoming: false,
-           order_cycle: oc, sender: oc.coordinator, receiver: create(:enterprise))
+:exchange, 
+incoming: false,
+           order_cycle: oc, 
+sender: oc.coordinator, 
+receiver: create(:enterprise))
     e2 = create(
-:exchange, incoming: false,
-           order_cycle: oc, sender: oc.coordinator, receiver: create(:enterprise))
+:exchange, 
+incoming: false,
+           order_cycle: oc, 
+sender: oc.coordinator, 
+receiver: create(:enterprise))
 
     expect(oc.distributors).to match_array [e1.receiver, e2.receiver]
   end
@@ -181,30 +197,41 @@ oc_undated_open,
     let(:d2) { create(:enterprise) }
     let!(:e0) {
       create(
-:exchange, incoming: true,
-           order_cycle: oc, sender: create(:enterprise), receiver: oc.coordinator)
+:exchange, 
+incoming: true,
+           order_cycle: oc, 
+sender: create(:enterprise), 
+receiver: oc.coordinator)
     }
     let!(:e1) {
       create(
-:exchange, incoming: false,
-           order_cycle: oc, sender: oc.coordinator, receiver: d1)
+:exchange, 
+incoming: false,
+           order_cycle: oc, 
+sender: oc.coordinator, 
+receiver: d1)
     }
     let!(:e2) {
       create(
-:exchange, incoming: false,
-           order_cycle: oc, sender: oc.coordinator, receiver: d2)
+:exchange, 
+incoming: false,
+           order_cycle: oc, 
+sender: oc.coordinator, 
+receiver: d2)
     }
     let!(:p0) { create(:simple_product) }
     let!(:p1) { create(:simple_product) }
     let!(:p1_v_deleted) { create(:variant, product: p1) }
     let!(:p1_v_visible) {
       create(
-:variant, product: p1,
+:variant, 
+product: p1,
           inventory_items: [create(:inventory_item, enterprise: d2, visible: true)])
     }
     let!(:p1_v_hidden) {
       create(
-:variant, product: p1,
+:variant, 
+product: p1,
           inventory_items: [create(:inventory_item, enterprise: d2, visible: false)])
     }
     let!(:p2) { create(:simple_product) }
@@ -306,14 +333,26 @@ p1_v_visible,
       @d2 = create(:enterprise, next_collection_at: '2-8pm Friday')
 
       @e0 = create(
-:exchange, order_cycle: @oc, sender: create(:enterprise),
-           receiver: @oc.coordinator, incoming: true)
+:exchange, 
+order_cycle: @oc, 
+sender: create(:enterprise),
+           receiver: @oc.coordinator, 
+incoming: true)
       @e1 = create(
-:exchange, order_cycle: @oc, sender: @oc.coordinator, receiver: @d1,
-           incoming: false, pickup_time: '5pm Tuesday', pickup_instructions: "Come get it!")
+:exchange, 
+order_cycle: @oc, 
+sender: @oc.coordinator, 
+receiver: @d1,
+           incoming: false, 
+pickup_time: '5pm Tuesday', 
+pickup_instructions: "Come get it!")
       @e2 = create(
-:exchange, order_cycle: @oc, sender: @oc.coordinator, receiver: @d2,
-           incoming: false, pickup_time: nil)
+:exchange, 
+order_cycle: @oc, 
+sender: @oc.coordinator, 
+receiver: @d2,
+           incoming: false, 
+pickup_time: nil)
     end
 
     it "finds the exchange for a distributor" do
@@ -405,7 +444,8 @@ p1_v_visible,
     coordinator = create(:enterprise);
     oc = create(
 :simple_order_cycle,
-                coordinator_fees: [create(:enterprise_fee, enterprise: coordinator)], preferred_product_selection_from_coordinator_inventory_only: true)
+                coordinator_fees: [create(:enterprise_fee, enterprise: coordinator)], 
+preferred_product_selection_from_coordinator_inventory_only: true)
     ex1 = create(:exchange, order_cycle: oc)
     ex2 = create(:exchange, order_cycle: oc)
     oc.clone!
@@ -433,8 +473,11 @@ p1_v_visible,
     it "should give the most recently closed order cycle for a distributor" do
       distributor = create(:distributor_enterprise)
       oc = create(
-:simple_order_cycle, name: 'oc 1', distributors: [distributor],
-                     orders_open_at: 10.days.ago, orders_close_at: 9.days.ago)
+:simple_order_cycle, 
+name: 'oc 1', 
+distributors: [distributor],
+                     orders_open_at: 10.days.ago, 
+orders_close_at: 9.days.ago)
       expect(OrderCycle.most_recently_closed_for(distributor)).to eq(oc)
     end
 
@@ -448,8 +491,11 @@ p1_v_visible,
     it "should give the soonest opening order cycle for a distributor" do
       distributor = create(:distributor_enterprise)
       oc = create(
-:simple_order_cycle, name: 'oc 1', distributors: [distributor],
-                     orders_open_at: 10.days.from_now, orders_close_at: 11.days.from_now)
+:simple_order_cycle, 
+name: 'oc 1', 
+distributors: [distributor],
+                     orders_open_at: 10.days.from_now, 
+orders_close_at: 11.days.from_now)
       expect(OrderCycle.first_opening_for(distributor)).to eq(oc)
     end
 
@@ -463,11 +509,17 @@ p1_v_visible,
     it "should give the soonest closing order cycle for a distributor" do
       distributor = create(:distributor_enterprise)
       oc = create(
-:simple_order_cycle, name: 'oc 1', distributors: [distributor],
-                     orders_open_at: 1.day.ago, orders_close_at: 11.days.from_now)
+:simple_order_cycle, 
+name: 'oc 1', 
+distributors: [distributor],
+                     orders_open_at: 1.day.ago, 
+orders_close_at: 11.days.from_now)
       oc2 = create(
-:simple_order_cycle, name: 'oc 2', distributors: [distributor],
-                     orders_open_at: 2.days.ago, orders_close_at: 12.days.from_now)
+:simple_order_cycle, 
+name: 'oc 2', 
+distributors: [distributor],
+                     orders_open_at: 2.days.ago, 
+orders_close_at: 12.days.from_now)
       expect(OrderCycle.first_closing_for(distributor)).to eq(oc)
     end
   end
@@ -500,7 +552,9 @@ p1_v_visible,
     }
     let!(:order_from_other_hub) {
       create(
-:completed_order_with_totals, distributor: create(:enterprise), user: user,
+:completed_order_with_totals, 
+distributor: create(:enterprise), 
+user: user,
                               order_cycle: oc)
     }
     let!(:order_from_other_user) {
@@ -508,7 +562,9 @@ p1_v_visible,
     }
     let!(:order_from_other_oc) {
       create(
-:completed_order_with_totals, distributor: shop, user: user,
+:completed_order_with_totals, 
+distributor: shop, 
+user: user,
                               order_cycle: create(:order_cycle))
     }
     let!(:order_cancelled) {

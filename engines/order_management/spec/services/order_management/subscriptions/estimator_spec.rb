@@ -81,7 +81,8 @@ module OrderManagement
       describe "updating estimates for shipping and payment fees" do
         let(:subscription) {
           create(
-:subscription, with_items: true,
+:subscription, 
+with_items: true,
                payment_method: payment_method,
                shipping_method: shipping_method)
         }

@@ -66,7 +66,9 @@ module Api
 
       context "with property filters" do
         it "filters by product property" do
-          api_get :products, id: order_cycle.id, distributor: distributor.id,
+          api_get :products, 
+id: order_cycle.id, 
+distributor: distributor.id,
                              q: { properties_id_or_supplier_properties_id_in_any: [property1.id, property2.id] }
 
           expect(product_ids).to include product1.id, product2.id
@@ -76,7 +78,9 @@ module Api
 
       context "with taxon filters" do
         it "filters by taxon" do
-          api_get :products, id: order_cycle.id, distributor: distributor.id,
+          api_get :products, 
+id: order_cycle.id, 
+distributor: distributor.id,
                              q: { primary_taxon_id_in_any: [taxon2.id] }
 
           expect(product_ids).to include product2.id, product3.id
@@ -208,7 +212,8 @@ module Api
           properties = json_response.map{ |property| property['name'] }
 
           expect(json_response.length).to be 3
-          expect(properties).to include property1.presentation, property2.presentation,
+          expect(properties).to include property1.presentation, 
+property2.presentation,
                                         producer_property.property.presentation
         end
       end

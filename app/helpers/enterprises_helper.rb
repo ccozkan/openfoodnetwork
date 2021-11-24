@@ -20,7 +20,8 @@ module EnterprisesHelper
 
     applicator = OpenFoodNetwork::TagRuleApplicator.new(
 current_distributor,
-                                                        "FilterShippingMethods", current_customer&.tag_list)
+                                                        "FilterShippingMethods", 
+current_customer&.tag_list)
     applicator.filter!(shipping_methods)
 
     shipping_methods.uniq
@@ -36,7 +37,8 @@ current_distributor,
 
     applicator = OpenFoodNetwork::TagRuleApplicator.new(
 current_distributor,
-                                                        "FilterPaymentMethods", current_customer&.tag_list)
+                                                        "FilterPaymentMethods", 
+current_customer&.tag_list)
     applicator.filter!(payment_methods)
 
     payment_methods

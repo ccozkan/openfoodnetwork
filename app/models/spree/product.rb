@@ -55,24 +55,41 @@ module Spree
             class_name: 'Spree::Variant',
             dependent: :destroy
 
-    has_many :variants, -> {
+    has_many :variants, 
+-> {
       where(is_master: false).order("spree_variants.position ASC")
-    }, class_name: 'Spree::Variant'
+    }, 
+class_name: 'Spree::Variant'
 
     has_many :variants_including_master,
              -> { order("spree_variants.position ASC") },
              class_name: 'Spree::Variant',
              dependent: :destroy
 
-    has_many :prices, -> {
+    has_many :prices, 
+-> {
       order('spree_variants.position, spree_variants.id, currency')
-    }, through: :variants
+    }, 
+through: :variants
 
     has_many :stock_items, through: :variants
 
-    delegate_belongs_to :master, :sku, :price, :currency, :display_amount, :display_price, :weight,
-                        :height, :width, :depth, :is_master, :cost_currency,
-                        :price_in, :amount_in, :unit_value, :unit_description
+    delegate_belongs_to :master, 
+:sku, 
+:price, 
+:currency, 
+:display_amount, 
+:display_price, 
+:weight,
+                        :height, 
+:width, 
+:depth, 
+:is_master, 
+:cost_currency,
+                        :price_in, 
+:amount_in, 
+:unit_value, 
+:unit_description
     delegate :images_attributes=, :display_as=, to: :master
 
     after_create :set_master_variant_defaults
@@ -82,7 +99,9 @@ module Spree
     delegate :images, to: :master, prefix: true
     alias_method :images, :master_images
 
-    has_many :variant_images, -> { order(:position) }, source: :images,
+    has_many :variant_images, 
+-> { order(:position) }, 
+source: :images,
                                                        through: :variants_including_master
 
     accepts_nested_attributes_for :variants, allow_destroy: true
@@ -94,7 +113,8 @@ module Spree
 
     validates :supplier, presence: true
     validates :primary_taxon, presence: true
-    validates :tax_category, presence: true,
+    validates :tax_category, 
+presence: true,
                              if: proc { Spree::Config[:products_require_tax_category] }
 
     validates :variant_unit, presence: true
@@ -126,7 +146,8 @@ module Spree
     before_destroy :punch_permalink
 
     # -- Joins
-    scope :with_order_cycles_outer, -> {
+    scope :with_order_cycles_outer, 
+-> {
       joins(
 "
         LEFT OUTER JOIN spree_variants AS o_spree_variants
@@ -142,7 +163,8 @@ module Spree
             ON (o_order_cycles.id = o_exchanges.order_cycle_id)")
     }
 
-    scope :imported_on, lambda { |import_date|
+    scope :imported_on, 
+lambda { |import_date|
       import_date = Time.zone.parse import_date if import_date.is_a? String
       import_date = import_date.to_date
       joins(:variants).merge(
@@ -150,11 +172,13 @@ Spree::Variant
         .where(import_date: import_date.beginning_of_day..import_date.end_of_day))
     }
 
-    scope :with_order_cycles_inner, -> {
+    scope :with_order_cycles_inner, 
+-> {
       joins(variants_including_master: { exchanges: :order_cycle })
     }
 
-    scope :visible_for, lambda { |enterprise|
+    scope :visible_for, 
+lambda { |enterprise|
       joins(
 '
         LEFT OUTER JOIN spree_variants AS o_spree_variants
@@ -170,7 +194,8 @@ Spree::Variant
     scope :in_supplier, lambda { |supplier| where(supplier_id: supplier) }
 
     # Products distributed via the given distributor through an OC
-    scope :in_distributor, lambda { |distributor|
+    scope :in_distributor, 
+lambda { |distributor|
       distributor = distributor.respond_to?(:id) ? distributor.id : distributor.to_i
 
       with_order_cycles_outer
@@ -178,32 +203,39 @@ Spree::Variant
         .select('distinct spree_products.*')
     }
 
-    scope :in_distributors, lambda { |distributors|
+    scope :in_distributors, 
+lambda { |distributors|
       with_order_cycles_outer
         .where('(o_exchanges.incoming = ? AND o_exchanges.receiver_id IN (?))', false, distributors)
         .distinct
     }
 
     # Products supplied by a given enterprise or distributed via that enterprise through an OC
-    scope :in_supplier_or_distributor, lambda { |enterprise|
+    scope :in_supplier_or_distributor, 
+lambda { |enterprise|
       enterprise = enterprise.respond_to?(:id) ? enterprise.id : enterprise.to_i
 
       with_order_cycles_outer
         .where("
           spree_products.supplier_id = ?
           OR (o_exchanges.incoming = ? AND o_exchanges.receiver_id = ?)
-        ", enterprise, false, enterprise)
+        ", 
+enterprise, 
+false, 
+enterprise)
         .select('distinct spree_products.*')
     }
 
     # Products distributed by the given order cycle
-    scope :in_order_cycle, lambda { |order_cycle|
+    scope :in_order_cycle, 
+lambda { |order_cycle|
       with_order_cycles_inner
         .merge(Exchange.outgoing)
         .where('order_cycles.id = ?', order_cycle)
     }
 
-    scope :in_an_active_order_cycle, lambda {
+    scope :in_an_active_order_cycle, 
+lambda {
       with_order_cycles_inner
         .merge(OrderCycle.active)
         .merge(Exchange.outgoing)
@@ -213,7 +245,8 @@ Spree::Variant
     scope :by_producer, -> { joins(:supplier).order('enterprises.name') }
     scope :by_name, -> { order('name') }
 
-    scope :managed_by, lambda { |user|
+    scope :managed_by, 
+lambda { |user|
       if user.has_spree_role?('admin')
         where(nil)
       else
@@ -221,7 +254,8 @@ Spree::Variant
       end
     }
 
-    scope :stockable_by, lambda { |enterprise|
+    scope :stockable_by, 
+lambda { |enterprise|
       return where('1=0') if enterprise.blank?
 
       permitted_producer_ids = EnterpriseRelationship.joins(:parent).permitting(enterprise.id)
@@ -231,7 +265,8 @@ Spree::Variant
       return where('spree_products.supplier_id IN (?)', [enterprise.id] | permitted_producer_ids)
     }
 
-    scope :active, lambda {
+    scope :active, 
+lambda {
       where("spree_products.deleted_at IS NULL AND spree_products.available_on <= ?", Time.zone.now)
     }
 
@@ -369,7 +404,8 @@ presentation: option_type_presentation)
         touch_distributors
 
         ExchangeVariant
-          .where('exchange_variants.variant_id IN (?)', variants_including_master.with_deleted
+          .where('exchange_variants.variant_id IN (?)', 
+variants_including_master.with_deleted
           .select(:id)).destroy_all
 
         super

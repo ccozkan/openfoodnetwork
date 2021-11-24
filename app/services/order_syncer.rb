@@ -14,7 +14,8 @@ class OrderSyncer
   def sync!
     orders_in_order_cycles_not_closed.all? do |order|
       order.assign_attributes(
-customer_id: customer_id, email: customer&.email,
+customer_id: customer_id, 
+email: customer&.email,
 distributor_id: shop_id)
       update_associations_for(order)
       line_item_syncer.sync!(order)
@@ -29,8 +30,11 @@ distributor_id: shop_id)
 
   delegate :orders, :bill_address, :ship_address, :subscription_line_items, to: :subscription
   delegate :shop_id, :customer, :customer_id, to: :subscription
-  delegate :shipping_method, :shipping_method_id,
-           :payment_method, :payment_method_id, to: :subscription
+  delegate :shipping_method, 
+:shipping_method_id,
+           :payment_method, 
+:payment_method_id, 
+to: :subscription
   delegate :shipping_method_id_changed?, :shipping_method_id_was, to: :subscription
   delegate :payment_method_id_changed?, :payment_method_id_was, to: :subscription
 

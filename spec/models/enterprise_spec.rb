@@ -349,8 +349,12 @@ describe Enterprise do
         d = create(:distributor_enterprise)
         p = create(:product)
         create(
-:simple_order_cycle, orders_open_at: 10.days.from_now,
-                     orders_close_at: 17.days.from_now, suppliers: [s], distributors: [d], variants: [p.master])
+:simple_order_cycle, 
+orders_open_at: 10.days.from_now,
+                     orders_close_at: 17.days.from_now, 
+suppliers: [s], 
+distributors: [d], 
+variants: [p.master])
         expect(Enterprise.distributors_with_active_order_cycles).not_to include d
       end
     end
@@ -395,7 +399,8 @@ describe Enterprise do
 
       it "returns enterprises distributing via an order cycle" do
         order_cycle = create(
-:simple_order_cycle, distributors: [distributor],
+:simple_order_cycle, 
+distributors: [distributor],
                      variants: [product.master])
         expect(Enterprise.distributing_products(product.id)).to eq([distributor])
       end
@@ -403,7 +408,8 @@ describe Enterprise do
       it "does not return duplicate enterprises" do
         another_product = create(:product)
         order_cycle = create(
-:simple_order_cycle, distributors: [distributor],
+:simple_order_cycle, 
+distributors: [distributor],
                      variants: [product.master, another_product.master])
         expect(
 Enterprise.distributing_products(
@@ -458,9 +464,11 @@ product.id,
         it "creates links from the new producer to all hubs owned by the same user, granting add_to_order_cycle and create_variant_overrides permissions" do
           producer1
 
-          should_have_enterprise_relationship from: producer1, to: hub1,
+          should_have_enterprise_relationship from: producer1, 
+to: hub1,
                                               with: [:add_to_order_cycle, :create_variant_overrides]
-          should_have_enterprise_relationship from: producer1, to: hub2,
+          should_have_enterprise_relationship from: producer1, 
+to: hub2,
                                               with: [:add_to_order_cycle, :create_variant_overrides]
         end
 
@@ -477,9 +485,11 @@ product.id,
           producer2
           hub1
 
-          should_have_enterprise_relationship from: producer1, to: hub1,
+          should_have_enterprise_relationship from: producer1, 
+to: hub1,
                                               with: [:add_to_order_cycle, :create_variant_overrides]
-          should_have_enterprise_relationship from: producer2, to: hub1,
+          should_have_enterprise_relationship from: producer2, 
+to: hub1,
                                               with: [:add_to_order_cycle, :create_variant_overrides]
         end
 

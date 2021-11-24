@@ -144,7 +144,10 @@ describe OrderSyncer do
     let!(:distributor) { create(:distributor_enterprise, address: distributor_address) }
     let(:subscription) do
       create(
-:subscription, shop: distributor, shipping_method: shipping_method, with_items: true,
+:subscription, 
+shop: distributor, 
+shipping_method: shipping_method, 
+with_items: true,
                with_proxy_orders: true)
     end
     let!(:order) { subscription.proxy_orders.first.initialise_order! }
@@ -259,7 +262,10 @@ phone: "1123581321"
     let!(:distributor) { create(:distributor_enterprise, address: distributor_address) }
     let!(:subscription) do
       create(
-:subscription, shop: distributor, shipping_method: shipping_method, with_items: true,
+:subscription, 
+shop: distributor, 
+shipping_method: shipping_method, 
+with_items: true,
                with_proxy_orders: true)
     end
     let!(:order) { subscription.proxy_orders.first.initialise_order! }
@@ -305,16 +311,20 @@ phone: "1123581321"
           let!(:original_bill_address) { create(:address, :randomized) }
           let!(:original_ship_address) do
             create(
-:address, firstname: original_bill_address.firstname,
+:address, 
+firstname: original_bill_address.firstname,
           lastname: original_bill_address.lastname,
           address1: distributor_address.address1,
           phone: original_bill_address.phone)
           end
           let(:subscription) do
             create(
-:subscription, shop: distributor, bill_address: original_bill_address,
+:subscription, 
+shop: distributor, 
+bill_address: original_bill_address,
                ship_address: original_ship_address,
-               shipping_method: shipping_method, with_items: true,
+               shipping_method: shipping_method, 
+with_items: true,
                with_proxy_orders: true)
           end
 

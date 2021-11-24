@@ -15,7 +15,8 @@ module Admin
     def import
       @filepath = save_uploaded_file(params[:file])
       @importer = ProductImport::ProductImporter.new(
-File.new(@filepath), spree_current_user,
+File.new(@filepath), 
+spree_current_user,
                                                      params[:settings])
       @original_filename = params[:file].try(:original_filename)
       @non_updatable_fields = ProductImport::EntryValidator.non_updatable_fields
@@ -40,7 +41,11 @@ File.new(@filepath), spree_current_user,
     def reset_absent_products
       @importer = ProductImport::ProductImporter.new(
 File.new(params[:filepath]),
-                                                     spree_current_user, import_into: params[:import_into], enterprises_to_reset: params[:enterprises_to_reset], updated_ids: params[:updated_ids], settings: params[:settings])
+                                                     spree_current_user, 
+import_into: params[:import_into], 
+enterprises_to_reset: params[:enterprises_to_reset], 
+updated_ids: params[:updated_ids], 
+settings: params[:settings])
 
       if params.key?(:enterprises_to_reset) && params.key?(:updated_ids)
         @importer.reset_absent(params[:updated_ids])
@@ -60,7 +65,10 @@ File.new(params[:filepath]),
     def process_data(method)
       @importer = ProductImport::ProductImporter.new(
 File.new(params[:filepath]),
-                                                     spree_current_user, start: params[:start], end: params[:end], settings: params[:settings])
+                                                     spree_current_user, 
+start: params[:start], 
+end: params[:end], 
+settings: params[:settings])
 
       begin
         @importer.public_send("#{method}_entries")

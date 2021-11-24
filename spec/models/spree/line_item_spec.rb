@@ -450,8 +450,12 @@ module Spree
       let(:tax_rate)    { create(:tax_rate, calculator: ::Calculator::DefaultTax.new) }
       let!(:adjustment) {
         create(
-:adjustment, adjustable: li_tax, originator: tax_rate, label: "TR",
-             amount: 10.00, included: true)
+:adjustment, 
+adjustable: li_tax, 
+originator: tax_rate, 
+label: "TR",
+             amount: 10.00, 
+included: true)
       }
 
       context "checking if a line item has tax included" do
@@ -479,7 +483,9 @@ module Spree
       describe "inheriting units" do
         let!(:p) {
           create(
-:product, variant_unit: "weight", variant_unit_scale: 1,
+:product, 
+variant_unit: "weight", 
+variant_unit_scale: 1,
           master: create(:variant, unit_value: 1000 ))
         }
         let!(:v) { p.variants.first }

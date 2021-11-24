@@ -21,18 +21,33 @@ module Api
       let!(:order_cycle2) { create(:simple_order_cycle, coordinator: coordinator2) }
       let!(:order1) do
         create(
-:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
-        distributor: distributor, billing_address: create(:address), total: 5.0)
+:order, 
+order_cycle: order_cycle, 
+state: 'complete', 
+completed_at: Time.zone.now,
+        distributor: distributor, 
+billing_address: create(:address), 
+total: 5.0)
       end
       let!(:order2) do
         create(
-:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
-        distributor: distributor2, billing_address: create(:address), total: 10.0)
+:order, 
+order_cycle: order_cycle, 
+state: 'complete', 
+completed_at: Time.zone.now,
+        distributor: distributor2, 
+billing_address: create(:address), 
+total: 10.0)
       end
       let!(:order3) do
         create(
-:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
-        distributor: distributor, billing_address: create(:address), total: 1.0 )
+:order, 
+order_cycle: order_cycle, 
+state: 'complete', 
+completed_at: Time.zone.now,
+        distributor: distributor, 
+billing_address: create(:address), 
+total: 1.0 )
       end
       let!(:order4) do
         create(:completed_order_with_fees, order_cycle: order_cycle2, distributor: distributor2, total: 15.0)
@@ -40,22 +55,26 @@ module Api
       let!(:order5) { create(:order, state: 'cart', completed_at: nil) }
       let!(:line_item1) do
         create(
-:line_item_with_shipment, order: order1,
+:line_item_with_shipment, 
+order: order1,
                           product: create(:product, supplier: supplier))
       end
       let!(:line_item2) do
         create(
-:line_item_with_shipment, order: order2,
+:line_item_with_shipment, 
+order: order2,
                           product: create(:product, supplier: supplier))
       end
       let!(:line_item3) do
         create(
-:line_item_with_shipment, order: order2,
+:line_item_with_shipment, 
+order: order2,
                           product: create(:product, supplier: supplier))
       end
       let!(:line_item4) do
         create(
-:line_item_with_shipment, order: order3,
+:line_item_with_shipment, 
+order: order3,
                           product: create(:product, supplier: supplier))
       end
 
@@ -123,7 +142,8 @@ module Api
         end
 
         it 'can show only completed orders' do
-          get :index, params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
+          get :index, 
+params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
                       as: :json
 
           expect(json_response['orders']).to eq serialized_orders([order4, order3, order2, order1])
@@ -136,7 +156,8 @@ module Api
         end
 
         it 'can sort orders by total' do
-          get :index, params: { q: { completed_at_not_null: true, s: 'total desc' } },
+          get :index, 
+params: { q: { completed_at_not_null: true, s: 'total desc' } },
                       as: :json
 
           expect(json_response['orders']).to eq serialized_orders([order4, order2, order1, order3])
@@ -278,13 +299,17 @@ module Api
       let(:order_cycle) {
         create(
 :simple_order_cycle,
-               distributors: [distributor], variants: [product.variants.first])
+               distributors: [distributor], 
+variants: [product.variants.first])
       }
       let!(:order) {
         create(
 :order_with_totals_and_distribution,
-               user: user, distributor: distributor, order_cycle: order_cycle,
-               state: 'complete', payment_state: 'balance_due')
+               user: user, 
+distributor: distributor, 
+order_cycle: order_cycle,
+               state: 'complete', 
+payment_state: 'balance_due')
       }
 
       before do

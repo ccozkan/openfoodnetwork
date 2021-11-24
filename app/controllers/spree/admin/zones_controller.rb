@@ -27,7 +27,10 @@ module Spree
 
       def permitted_resource_params
         params.require(:zone).permit(
-          :name, :description, :default_tax, :kind,
+          :name, 
+:description, 
+:default_tax, 
+:kind,
           zone_members_attributes: [:id, :zoneable_id, :zoneable_type, :_destroy]
         )
       end

@@ -67,7 +67,9 @@ module OpenFoodNetwork
 
         it "only available items considering overrides" do
           create(
-:exchange, incoming: false, receiver_id: hub.id,
+:exchange, 
+incoming: false, 
+receiver_id: hub.id,
            variants: [variant, variant2, variant3])
           # create the overrides
           variant2_override

@@ -5,7 +5,8 @@ require "system_helper"
 describe '
     As an administrator
     I want to manage orders
-', js: true do
+', 
+js: true do
   include AuthenticationHelper
   include WebHelper
 
@@ -17,16 +18,21 @@ describe '
   let(:distributor4) { create(:distributor_enterprise, owner: user, charges_sales_tax: true) }
   let(:order_cycle) do
     create(
-:simple_order_cycle, name: 'One', distributors: [distributor, distributor2, distributor3, distributor4],
+:simple_order_cycle, 
+name: 'One', 
+distributors: [distributor, distributor2, distributor3, distributor4],
                      variants: [product.variants.first])
   end
 
   context "with a complete order" do
     let(:order) do
       create(
-:order_with_totals_and_distribution, user: user, distributor: distributor,
+:order_with_totals_and_distribution, 
+user: user, 
+distributor: distributor,
                                      order_cycle: order_cycle,
-                                     state: 'complete', payment_state: 'balance_due')
+                                     state: 'complete', 
+payment_state: 'balance_due')
     end
 
     let!(:order_cycle2) {
@@ -41,17 +47,24 @@ describe '
 
     let!(:order2) {
       create(
-:order_with_credit_payment, user: user, distributor: distributor2,
-                            order_cycle: order_cycle2, completed_at: 2.days.ago)
+:order_with_credit_payment, 
+user: user, 
+distributor: distributor2,
+                            order_cycle: order_cycle2, 
+completed_at: 2.days.ago)
     }
     let!(:order3) {
       create(
-:order_with_credit_payment, user: user, distributor: distributor3,
+:order_with_credit_payment, 
+user: user, 
+distributor: distributor3,
                             order_cycle: order_cycle3)
     }
     let!(:order4) {
       create(
-:order_with_credit_payment, user: user, distributor: distributor4,
+:order_with_credit_payment, 
+user: user, 
+distributor: distributor4,
                             order_cycle: order_cycle4)
     }
 
@@ -168,8 +181,10 @@ find(
   context "with incomplete order" do
     it "can edit order" do
       incomplete_order = create(
-:order_with_line_items, distributor: distributor,
-                        order_cycle: order_cycle, line_items_count: 1)
+:order_with_line_items, 
+distributor: distributor,
+                        order_cycle: order_cycle, 
+line_items_count: 1)
 
       login_as_admin_and_visit spree.admin_orders_path
       uncheck 'Only show complete orders'
@@ -184,8 +199,10 @@ find(
   context "test the 'Only show the complete orders' checkbox" do
     it "display or not incomplete order" do
       incomplete_order = create(
-:order_with_line_items, distributor: distributor,
-                        order_cycle: order_cycle, line_items_count: 1)
+:order_with_line_items, 
+distributor: distributor,
+                        order_cycle: order_cycle, 
+line_items_count: 1)
       complete_order = create(
         :order_with_line_items,
         distributor: distributor,

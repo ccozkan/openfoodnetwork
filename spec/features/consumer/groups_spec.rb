@@ -64,12 +64,14 @@ describe 'Groups', js: true do
       }
       let!(:order_cycle) {
         create(
-:simple_order_cycle, distributors: [d1, d2, d3],
+:simple_order_cycle, 
+distributors: [d1, d2, d3],
                      coordinator: create(:distributor_enterprise))
       }
       let!(:closed_order_cycle) {
         create(
-:closed_order_cycle, distributors: [d4],
+:closed_order_cycle, 
+distributors: [d4],
                      coordinator: create(:distributor_enterprise))
       }
       let(:producer) { create(:supplier_enterprise) }

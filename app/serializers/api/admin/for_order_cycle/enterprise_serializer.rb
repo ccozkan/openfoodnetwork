@@ -6,9 +6,14 @@ module Api
   module Admin
     module ForOrderCycle
       class EnterpriseSerializer < ActiveModel::Serializer
-        attributes :id, :name, :managed,
-                   :issues_summary_supplier, :issues_summary_distributor,
-                   :is_primary_producer, :is_distributor, :sells
+        attributes :id, 
+:name, 
+:managed,
+                   :issues_summary_supplier, 
+:issues_summary_distributor,
+                   :is_primary_producer, 
+:is_distributor, 
+:sells
 
         def issues_summary_supplier
           issues =

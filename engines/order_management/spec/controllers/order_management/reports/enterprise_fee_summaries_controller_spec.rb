@@ -25,7 +25,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummariesController, type: :cont
   describe "#create" do
     context "when the parameters are valid" do
       it "sends the generated report in the correct format" do
-        post :create, params: {
+        post :create, 
+params: {
           report: { start_at: "2018-10-09 07:30:00" }, report_format: "csv"
         }
 
@@ -37,7 +38,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummariesController, type: :cont
 
     context "when the parameters are invalid" do
       it "renders the report form with an error" do
-        post :create, params: {
+        post :create, 
+params: {
           report: { start_at: "invalid date" }, report_format: "csv"
         }
 
@@ -53,7 +55,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummariesController, type: :cont
       let(:current_user) { distributor.owner }
 
       it "renders the report form with an error" do
-        post :create, params: {
+        post :create, 
+params: {
           report: { distributor_ids: [other_distributor.id] }, report_format: "csv"
         }
 

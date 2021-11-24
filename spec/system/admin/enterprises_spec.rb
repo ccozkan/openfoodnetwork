@@ -302,7 +302,9 @@ describe '
     let(:enterprise_user) { create(:user, enterprise_limit: 1) }
     let!(:er) {
       create(
-:enterprise_relationship, parent: distributor3, child: distributor1,
+:enterprise_relationship, 
+parent: distributor3, 
+child: distributor1,
                           permissions_list: [:edit_profile])
     }
 

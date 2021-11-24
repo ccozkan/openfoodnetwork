@@ -22,8 +22,11 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
   context "viewing the report" do
     let!(:order) do
       create(
-:completed_order_with_totals, line_items_count: 1, user: customer.user,
-                              customer: customer, distributor: distributor)
+:completed_order_with_totals, 
+line_items_count: 1, 
+user: customer.user,
+                              customer: customer, 
+distributor: distributor)
     end
 
     it "generates the report" do
@@ -72,8 +75,11 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
     }
     let!(:order) do
       create(
-:completed_order_with_totals, line_items_count: 1, user: customer.user,
-                              customer: customer, distributor: distributor)
+:completed_order_with_totals, 
+line_items_count: 1, 
+user: customer.user,
+                              customer: customer, 
+distributor: distributor)
     end
 
     before do
@@ -91,8 +97,10 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
     context "with both failed and completed payments present" do
       let!(:order) {
         create(
-:order_ready_to_ship, user: customer.user,
-                      customer: customer, distributor: distributor)
+:order_ready_to_ship, 
+user: customer.user,
+                      customer: customer, 
+distributor: distributor)
       }
       let(:completed_payment) { order.payments.completed.first }
       let!(:failed_payment) { create(:payment, order: order, state: "failed") }
@@ -112,8 +120,11 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
   context 'when a variant override applies' do
     let!(:order) do
       create(
-:completed_order_with_totals, line_items_count: 1, user: customer.user,
-                              customer: customer, distributor: distributor)
+:completed_order_with_totals, 
+line_items_count: 1, 
+user: customer.user,
+                              customer: customer, 
+distributor: distributor)
     end
     let(:overidden_sku) { 'magical_sku' }
 

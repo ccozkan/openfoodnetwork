@@ -44,7 +44,8 @@ json: {
     def index
       respond_to do |format|
         format.json do
-          render_as_json @collection, ams_prefix: params[:ams_prefix],
+          render_as_json @collection, 
+ams_prefix: params[:ams_prefix],
                                       editable_schedule_ids: permissions.editable_schedules.pluck(:id)
         end
       end

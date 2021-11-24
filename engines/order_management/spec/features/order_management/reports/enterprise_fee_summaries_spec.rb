@@ -65,7 +65,8 @@ feature "enterprise fee summaries", js: true do
     context "when logged in as enterprise user" do
       let!(:order) do
         create(
-:completed_order_with_fees, order_cycle: order_cycle,
+:completed_order_with_fees, 
+order_cycle: order_cycle,
                             distributor: distributor)
       end
       let(:current_user) { distributor.owner }
@@ -89,7 +90,8 @@ feature "enterprise fee summaries", js: true do
       context "when logged in as admin" do
         let!(:order) do
           create(
-:completed_order_with_fees, order_cycle: order_cycle,
+:completed_order_with_fees, 
+order_cycle: order_cycle,
                             distributor: distributor)
         end
         let(:current_user) { create(:admin_user) }
@@ -106,12 +108,14 @@ feature "enterprise fee summaries", js: true do
       context "when logged in as enterprise user" do
         let!(:order) do
           create(
-:completed_order_with_fees, order_cycle: order_cycle,
+:completed_order_with_fees, 
+order_cycle: order_cycle,
                             distributor: distributor)
         end
         let!(:other_order) do
           create(
-:completed_order_with_fees, order_cycle: other_order_cycle,
+:completed_order_with_fees, 
+order_cycle: other_order_cycle,
                             distributor: other_distributor)
         end
         let(:current_user) { distributor.owner }
@@ -134,12 +138,14 @@ feature "enterprise fee summaries", js: true do
 
       let!(:order) do
         create(
-:completed_order_with_fees, order_cycle: order_cycle,
+:completed_order_with_fees, 
+order_cycle: order_cycle,
                             distributor: distributor)
       end
       let!(:second_order) do
         create(
-:completed_order_with_fees, order_cycle: second_order_cycle,
+:completed_order_with_fees, 
+order_cycle: second_order_cycle,
                             distributor: second_distributor)
       end
 

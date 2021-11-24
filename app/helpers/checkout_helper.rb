@@ -115,7 +115,10 @@ module CheckoutHelper
       "ng-class" => "{error: !fieldValid('#{path}')}"
     }.merge args
 
-    render "shared/validated_select", name: name, path: path, options: options,
+    render "shared/validated_select", 
+name: name, 
+path: path, 
+options: options,
                                       attributes: attributes
   end
 

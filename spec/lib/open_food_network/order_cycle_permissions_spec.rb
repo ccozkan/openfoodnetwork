@@ -41,7 +41,9 @@ module OpenFoodNetwork
         context "where P-OC has been granted to the coordinator by other enterprises" do
           before do
             create(
-:enterprise_relationship, parent: hub, child: coordinator,
+:enterprise_relationship, 
+parent: hub, 
+child: coordinator,
                           permissions_list: [:add_to_order_cycle])
           end
 
@@ -66,12 +68,18 @@ module OpenFoodNetwork
           context "where the other enterprise are already in the order cycle" do
             let!(:ex_incoming) {
               create(
-:exchange, order_cycle: oc, sender: producer, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer, 
+receiver: coordinator,
            incoming: true)
             }
             let!(:ex_outgoing) {
               create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
             }
 
@@ -108,14 +116,19 @@ module OpenFoodNetwork
         context "that has granted P-OC to the coordinator" do
           before do
             create(
-:enterprise_relationship, parent: hub, child: coordinator,
+:enterprise_relationship, 
+parent: hub, 
+child: coordinator,
                           permissions_list: [:add_to_order_cycle])
           end
 
           context "where my hub is in the order cycle" do
             let!(:ex_outgoing) {
               create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
             }
 
@@ -128,14 +141,19 @@ module OpenFoodNetwork
             context "and has been granted P-OC by a producer" do
               before do
                 create(
-:enterprise_relationship, parent: producer, child: hub,
+:enterprise_relationship, 
+parent: producer, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
               end
 
               context "where the producer is in the order cycle" do
                 let!(:ex_incoming) {
                   create(
-:exchange, order_cycle: oc, sender: producer, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer, 
+receiver: coordinator,
            incoming: true)
                 }
 
@@ -158,14 +176,19 @@ module OpenFoodNetwork
             context "and has granted P-OC to a producer" do
               before do
                 create(
-:enterprise_relationship, parent: hub, child: producer,
+:enterprise_relationship, 
+parent: hub, 
+child: producer,
                           permissions_list: [:add_to_order_cycle])
               end
 
               context "where the producer is in the order cycle" do
                 let!(:ex_incoming) {
                   create(
-:exchange, order_cycle: oc, sender: producer, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer, 
+receiver: coordinator,
            incoming: true)
                 }
 
@@ -205,7 +228,10 @@ module OpenFoodNetwork
           context "but is already in the order cycle" do
             let!(:ex) {
               create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
             }
 
@@ -239,14 +265,19 @@ module OpenFoodNetwork
         context "which has granted P-OC to the coordinator" do
           before do
             create(
-:enterprise_relationship, parent: producer, child: coordinator,
+:enterprise_relationship, 
+parent: producer, 
+child: coordinator,
                           permissions_list: [:add_to_order_cycle])
           end
 
           context "where my producer is in the order cycle" do
             let!(:ex_incoming) {
               create(
-:exchange, order_cycle: oc, sender: producer, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer, 
+receiver: coordinator,
            incoming: true)
             }
 
@@ -259,14 +290,19 @@ module OpenFoodNetwork
             context "and has been granted P-OC by a hub" do
               before do
                 create(
-:enterprise_relationship, parent: hub, child: producer,
+:enterprise_relationship, 
+parent: hub, 
+child: producer,
                           permissions_list: [:add_to_order_cycle])
               end
 
               context "where the hub is also in the order cycle" do
                 let!(:ex_outgoing) {
                   create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
                 }
 
@@ -290,14 +326,19 @@ module OpenFoodNetwork
             context "and has granted P-OC to a hub" do
               before do
                 create(
-:enterprise_relationship, parent: producer, child: hub,
+:enterprise_relationship, 
+parent: producer, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
               end
 
               context "where the hub is also in the order cycle" do
                 let!(:ex_outgoing) {
                   create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
                 }
 
@@ -338,7 +379,10 @@ module OpenFoodNetwork
           context "but is already in the order cycle" do
             let!(:ex_incoming) {
               create(
-:exchange, order_cycle: oc, sender: producer, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer, 
+receiver: coordinator,
            incoming: true)
             }
 
@@ -352,7 +396,10 @@ module OpenFoodNetwork
             context "and has variants distributed by an outgoing hub" do
               let!(:ex_outgoing) {
                 create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
               }
               before {
@@ -377,7 +424,10 @@ module OpenFoodNetwork
       describe "as the manager of the coordinator" do
         let!(:ex_in) {
           create(
-:exchange, order_cycle: oc, sender: producer, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer, 
+receiver: coordinator,
            incoming: true)
         }
         let!(:ex_out) {
@@ -398,7 +448,10 @@ module OpenFoodNetwork
       describe "as the manager of a hub" do
         let!(:ex_in) {
           create(
-:exchange, order_cycle: oc, sender: producer, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer, 
+receiver: coordinator,
            incoming: true)
         }
 
@@ -418,7 +471,9 @@ module OpenFoodNetwork
           context "where my hub has been granted P-OC by an incoming producer" do
             before do
               create(
-:enterprise_relationship, parent: producer, child: hub,
+:enterprise_relationship, 
+parent: producer, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
             end
 
@@ -469,7 +524,10 @@ module OpenFoodNetwork
         context "where my producer supplies to the order cycle" do
           let!(:ex_in) {
             create(
-:exchange, order_cycle: oc, sender: producer, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer, 
+receiver: coordinator,
            incoming: true)
           }
 
@@ -480,7 +538,9 @@ module OpenFoodNetwork
           context "my producer has granted P-OC to an outgoing hub" do
             before do
               create(
-:enterprise_relationship, parent: producer, child: hub,
+:enterprise_relationship, 
+parent: producer, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
             end
 
@@ -512,7 +572,10 @@ module OpenFoodNetwork
             context "where my producer supplies to the order cycle" do
               let!(:ex_in) {
                 create(
-:exchange, order_cycle: oc, sender: producer, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer, 
+receiver: coordinator,
            incoming: true)
               }
 
@@ -570,14 +633,19 @@ module OpenFoodNetwork
           before do
             allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
             create(
-:enterprise_relationship, parent: producer1, child: hub,
+:enterprise_relationship, 
+parent: producer1, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
           end
 
           context "where the hub is in the order cycle" do
             let!(:ex) {
               create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
             }
 
@@ -606,7 +674,9 @@ module OpenFoodNetwork
                                     Enterprise.where(id: [coordinator])
                                   }
             create(
-:enterprise_relationship, parent: producer1, child: hub,
+:enterprise_relationship, 
+parent: producer1, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
           end
 
@@ -636,7 +706,10 @@ module OpenFoodNetwork
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
             let!(:ex) {
               create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
             }
 
@@ -654,7 +727,9 @@ module OpenFoodNetwork
           before do
             allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
             create(
-:enterprise_relationship, parent: producer1, child: hub,
+:enterprise_relationship, 
+parent: producer1, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
           end
 
@@ -678,7 +753,10 @@ module OpenFoodNetwork
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
             let!(:ex) {
               create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
             }
 
@@ -698,14 +776,19 @@ module OpenFoodNetwork
                                     Enterprise.where(id: [producer1])
                                   }
             create(
-:enterprise_relationship, parent: producer1, child: hub,
+:enterprise_relationship, 
+parent: producer1, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
           end
 
           context "where my producer is in the order cycle" do
             let!(:ex) {
               create(
-:exchange, order_cycle: oc, sender: producer1, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer1, 
+receiver: coordinator,
            incoming: true)
             }
 
@@ -732,7 +815,9 @@ module OpenFoodNetwork
                                     Enterprise.where(id: [producer2])
                                   }
             create(
-:enterprise_relationship, parent: producer1, child: hub,
+:enterprise_relationship, 
+parent: producer1, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
           end
 
@@ -744,7 +829,10 @@ module OpenFoodNetwork
           context "but which has variants already in the exchange" do
             let!(:ex) {
               create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
             }
             # This one won't be in the exchange, and so shouldn't be visible
@@ -801,7 +889,9 @@ module OpenFoodNetwork
           before do
             allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
             create(
-:enterprise_relationship, parent: producer1, child: hub,
+:enterprise_relationship, 
+parent: producer1, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
           end
 
@@ -819,7 +909,9 @@ module OpenFoodNetwork
                                     Enterprise.where(id: [coordinator])
                                   }
             create(
-:enterprise_relationship, parent: producer1, child: hub,
+:enterprise_relationship, 
+parent: producer1, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
           end
 
@@ -849,7 +941,10 @@ module OpenFoodNetwork
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
             let!(:ex) {
               create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
             }
 
@@ -867,7 +962,9 @@ module OpenFoodNetwork
           before do
             allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
             create(
-:enterprise_relationship, parent: producer1, child: hub,
+:enterprise_relationship, 
+parent: producer1, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
           end
 
@@ -891,7 +988,10 @@ module OpenFoodNetwork
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
             let!(:ex) {
               create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
             }
 
@@ -911,21 +1011,28 @@ module OpenFoodNetwork
                                     Enterprise.where(id: [producer1])
                                   }
             create(
-:enterprise_relationship, parent: producer1, child: hub,
+:enterprise_relationship, 
+parent: producer1, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
           end
 
           context "where my producer is in the order cycle" do
             let!(:ex) {
               create(
-:exchange, order_cycle: oc, sender: producer1, receiver: coordinator,
+:exchange, 
+order_cycle: oc, 
+sender: producer1, 
+receiver: coordinator,
            incoming: true)
             }
 
             context "where the outgoing hub has granted P-OC to my producer" do
               before do
                 create(
-:enterprise_relationship, parent: hub, child: producer1,
+:enterprise_relationship, 
+parent: hub, 
+child: producer1,
                           permissions_list: [:add_to_order_cycle])
               end
 
@@ -962,7 +1069,9 @@ module OpenFoodNetwork
                                     Enterprise.where(id: [producer2])
                                   }
             create(
-:enterprise_relationship, parent: producer1, child: hub,
+:enterprise_relationship, 
+parent: producer1, 
+child: hub,
                           permissions_list: [:add_to_order_cycle])
           end
 
@@ -974,7 +1083,10 @@ module OpenFoodNetwork
           context "but which has variants already in the exchange" do
             let!(:ex) {
               create(
-:exchange, order_cycle: oc, sender: coordinator, receiver: hub,
+:exchange, 
+order_cycle: oc, 
+sender: coordinator, 
+receiver: hub,
            incoming: false)
             }
             # This one won't be in the exchange, and so shouldn't be visible

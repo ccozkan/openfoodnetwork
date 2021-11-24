@@ -6,7 +6,8 @@ class EnterpriseRelationship < ApplicationRecord
   has_many :permissions, class_name: 'EnterpriseRelationshipPermission', dependent: :destroy
 
   validates :parent, :child, presence: true
-  validates :child_id, uniqueness: {
+  validates :child_id, 
+uniqueness: {
     scope: :parent_id,
     message: I18n.t('validation_msg_relationship_already_established')
   }
@@ -14,7 +15,8 @@ class EnterpriseRelationship < ApplicationRecord
   after_save :update_permissions_of_child_variant_overrides
   before_destroy :revoke_all_child_variant_overrides
 
-  scope :with_enterprises, -> {
+  scope :with_enterprises, 
+-> {
     joins(
 "
       LEFT JOIN enterprises AS parent_enterprises
@@ -24,14 +26,16 @@ class EnterpriseRelationship < ApplicationRecord
           ON child_enterprises.id = enterprise_relationships.child_id")
   }
 
-  scope :involving_enterprises, ->(enterprises) {
+  scope :involving_enterprises, 
+->(enterprises) {
     where('parent_id IN (?) OR child_id IN (?)', enterprises.select(&:id), enterprises.select(&:id))
   }
 
   scope :permitting, ->(enterprise_ids) { where('child_id IN (?)', enterprise_ids) }
   scope :permitted_by, ->(enterprise_ids) { where('parent_id IN (?)', enterprise_ids) }
 
-  scope :with_permission, ->(permission) {
+  scope :with_permission, 
+->(permission) {
     joins(:permissions)
       .where('enterprise_relationship_permissions.name = ?', permission)
   }
