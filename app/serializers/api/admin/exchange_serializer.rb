@@ -18,7 +18,7 @@ module Api
 
       def variants
         variants = object.incoming? ? visible_incoming_variants : visible_outgoing_variants
-        Hash[object.variants.merge(variants).map { |v| [v.id, true] }]
+        object.variants.merge(variants).map { |v| [v.id, true] }.to_h
       end
 
       private

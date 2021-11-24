@@ -83,7 +83,7 @@ visible: nil
               expect { spree_post :create, bad_params }
 .to change { InventoryItem.count }
 .by(0)
-              expect(response.body).to eq Hash[:errors, ["Visible must be true or false"]].to_json
+              expect(response.body).to eq {:errors => ["Visible must be true or false"]}.to_json()
             end
           end
         end
@@ -155,7 +155,7 @@ child: enterprise,
               expect { spree_put :update, bad_params }
 .to change { InventoryItem.count }
 .by(0)
-              expect(response.body).to eq Hash[:errors, ["Visible must be true or false"]].to_json
+              expect(response.body).to eq {:errors => ["Visible must be true or false"]}.to_json()
             end
           end
         end

@@ -158,16 +158,14 @@ lambda { |user|
   # Find the earliest closing times for each distributor in an active order cycle, and return
   # them in the format {distributor_id => closing_time, ...}
   def self.earliest_closing_times
-    Hash[
-      Exchange
+    Exchange
         .outgoing
         .joins(:order_cycle)
         .merge(OrderCycle.active)
         .group('exchanges.receiver_id')
         .select("exchanges.receiver_id AS receiver_id,
                 MIN(order_cycles.orders_close_at) AS earliest_close_at")
-        .map { |ex| [ex.receiver_id, ex.earliest_close_at.to_time] }
-    ]
+        .map { |ex| [ex.receiver_id, ex.earliest_close_at.to_time] }.to_h
   end
 
   def clone!

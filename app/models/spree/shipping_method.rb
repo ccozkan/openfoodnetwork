@@ -96,15 +96,13 @@ lambda { |distributor|
     # Return the services (pickup, delivery) that different distributors provide, in the format:
     # {distributor_id => {pickup: true, delivery: false}, ...}
     def self.services
-      Hash[
-        Spree::ShippingMethod
+      Spree::ShippingMethod
           .joins(:distributor_shipping_methods)
           .group('distributor_id')
           .select("distributor_id")
           .select("BOOL_OR(spree_shipping_methods.require_ship_address = 'f') AS pickup")
           .select("BOOL_OR(spree_shipping_methods.require_ship_address = 't') AS delivery")
-          .map { |sm| [sm.distributor_id.to_i, { pickup: sm.pickup, delivery: sm.delivery }] }
-      ]
+          .map { |sm| [sm.distributor_id.to_i, { pickup: sm.pickup, delivery: sm.delivery }] }.to_h
     end
 
     def self.on_backend_query

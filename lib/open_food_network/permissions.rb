@@ -43,13 +43,11 @@ module OpenFoodNetwork
       hubs = variant_override_hubs
 
       # Permissions granted by create_variant_overrides relationship from producer to hub
-      permissions = Hash[
-           EnterpriseRelationship
+      permissions = EnterpriseRelationship
              .permitting(hubs.select("enterprises.id"))
              .with_permission(:create_variant_overrides)
              .group_by(&:child_id)
-             .map { |child_id, ers| [child_id, ers.map(&:parent_id)] }
-          ]
+             .map { |child_id, ers| [child_id, ers.map(&:parent_id)] }.to_h
 
       # Allow a producer hub to override it's own products without explicit permission
       hubs.is_primary_producer.each do |hub|
