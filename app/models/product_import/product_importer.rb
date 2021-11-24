@@ -250,6 +250,7 @@ module ProductImport
     def add_malformed_csv_error(error_message)
       unless errors.added?(:importer, I18n.t('admin.product_import.model.malformed_csv',
                                              error_message: error_message))
+
         errors.add(:importer, I18n.t('admin.product_import.model.malformed_csv',
                                      error_message: error_message))
       end

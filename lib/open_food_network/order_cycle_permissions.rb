@@ -126,6 +126,7 @@ module OpenFoodNetwork
     def visible_variants_for_incoming_exchanges_from(producer)
       if @order_cycle &&
          (user_manages_coordinator_or(producer) || user_is_permitted_add_to_oc_by(producer))
+
         all_variants_supplied_by(producer)
       else
         no_variants

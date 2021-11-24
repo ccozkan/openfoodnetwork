@@ -18,6 +18,7 @@ module ActionController
       if (defined_response = collector.response) &&
          !ApplicationController.spree_responders[self.class.to_s.to_sym].try(:[],
                                                                              action_name.to_sym)
+
         if action = options.delete(:action)
           render action: action
         else

@@ -403,6 +403,7 @@ module Spree
             )
           )
         )
+
         master.save!
       end
 

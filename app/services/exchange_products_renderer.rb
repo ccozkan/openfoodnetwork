@@ -39,6 +39,7 @@ class ExchangeProductsRenderer
   def filter_visible(relation)
     if @order_cycle.present? &&
        @order_cycle.prefers_product_selection_from_coordinator_inventory_only?
+
       relation = relation.visible_for(@order_cycle.coordinator)
     end
 

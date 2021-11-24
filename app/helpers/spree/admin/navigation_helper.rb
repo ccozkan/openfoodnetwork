@@ -115,6 +115,7 @@ module Spree
         if html_options[:method] &&
            html_options[:method].to_s.downcase != 'get' &&
            !html_options[:remote]
+
           form_tag(url, method: html_options.delete(:method)) do
             button(text, html_options.delete(:icon), nil, html_options)
           end

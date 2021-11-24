@@ -323,6 +323,7 @@ module ProductImport
       products.flat_map(&:variants).each do |existing_variant|
         if entry_matches_existing_variant?(entry, existing_variant) &&
            existing_variant.deleted_at.nil?
+
           return mark_as_existing_variant(entry, existing_variant)
         end
       end
@@ -365,6 +366,7 @@ module ProductImport
       EntryValidator.non_updatable_fields.each do |display_name, attribute|
         next if attributes_match?(attribute, existing_product, entry) ||
                 attributes_blank?(attribute, existing_product, entry)
+
         next if ignore_when_updating_product?(attribute)
 
         mark_as_invalid(entry, attribute: display_name,

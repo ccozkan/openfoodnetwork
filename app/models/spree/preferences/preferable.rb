@@ -127,6 +127,7 @@ module Spree
              value == 0 ||
              (value.is_a?(String) && value =~ /^(f|false|0)$/i) ||
              (value.respond_to?(:empty?) && value.empty?)
+
             false
           else
             true
