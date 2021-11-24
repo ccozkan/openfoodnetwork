@@ -23,7 +23,7 @@ module Api
       end
 
       def calculator_settings
-        return nil unless options[:include_calculators]
+        return unless options[:include_calculators]
 
         result = nil
 

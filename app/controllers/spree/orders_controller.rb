@@ -169,7 +169,7 @@ module Spree
     # changes are allowed and the user has access. Return nil if not.
     def changeable_order_from_number
       order = Spree::Order.complete.find_by(number: params[:id])
-      return nil unless order&.changes_allowed? && can?(:update, order)
+      return unless order&.changes_allowed? && can?(:update, order)
 
       order
     end

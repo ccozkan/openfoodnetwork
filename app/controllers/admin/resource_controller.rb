@@ -142,7 +142,7 @@ module Admin
     end
 
     def parent
-      return nil if parent_data.blank?
+      return if parent_data.blank?
 
       @parent ||= parent_data[:model_class]
         .public_send("find_by", parent_data[:find_by] => params["#{model_name}_id"])

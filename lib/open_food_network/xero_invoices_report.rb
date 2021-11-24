@@ -219,7 +219,7 @@ opts
 
     def row(order, sku, description, quantity, amount, invoice_number, tax_type, opts = {})
       
-      return nil if amount == 0
+      return if amount == 0
       
 
       [

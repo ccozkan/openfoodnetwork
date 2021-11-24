@@ -50,7 +50,7 @@ module Spree
     end
 
     def self.parse(number)
-      return nil if number.blank?
+      return if number.blank?
       return number.to_d unless number.is_a?(String)
 
       number = number.gsub(/[^\d.,-]/, '') # Replace all Currency Symbols, Letters and -- from the string

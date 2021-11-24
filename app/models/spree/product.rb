@@ -325,7 +325,7 @@ lambda {
     end
 
     def property(property_name)
-      return nil unless prop = properties.find_by(name: property_name)
+      return unless prop = properties.find_by(name: property_name)
 
       product_properties.find_by(property: prop).try(:value)
     end

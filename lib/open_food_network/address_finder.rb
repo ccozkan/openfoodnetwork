@@ -74,7 +74,7 @@ module OpenFoodNetwork
     end
 
     def last_used_bill_address
-      return nil unless allow_search_by_email?
+      return unless allow_search_by_email?
 
       Spree::Order.joins(:bill_address).order('id DESC')
         .complete.where(email: email)
@@ -82,7 +82,7 @@ module OpenFoodNetwork
     end
 
     def last_used_ship_address
-      return nil unless allow_search_by_email?
+      return unless allow_search_by_email?
 
       Spree::Order.complete.joins(:ship_address, shipments: :shipping_methods).order('id DESC')
         .where(email: email, spree_shipping_methods: { require_ship_address: true })

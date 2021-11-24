@@ -102,7 +102,7 @@ inverse_of: :owner
     end
 
     def customer_of(enterprise)
-      return nil unless enterprise
+      return unless enterprise
 
       customers.find_by(enterprise_id: enterprise)
     end

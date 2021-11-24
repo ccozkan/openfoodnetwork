@@ -45,7 +45,7 @@ class WeightsAndMeasures
   #   to >= 1 when expressed in it.
   # If there is none available where this is true, use the smallest available unit.
   def find_largest_unit(scales, product_scale_system)
-    return nil unless scales
+    return unless scales
 
     largest_unit = scales.select do |scale, unit_info|
       unit_info['system'] == product_scale_system &&

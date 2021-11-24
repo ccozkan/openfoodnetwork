@@ -8,7 +8,7 @@ module EnterprisesHelper
   end
 
   def current_customer
-    return nil unless spree_current_user && current_distributor
+    return unless spree_current_user && current_distributor
 
     @current_customer ||= spree_current_user.customer_of(current_distributor)
   end

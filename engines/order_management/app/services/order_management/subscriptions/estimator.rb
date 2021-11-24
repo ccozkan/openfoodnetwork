@@ -43,7 +43,7 @@ module OrderManagement
         return @fee_calculator unless @fee_calculator.nil?
 
         next_oc = subscription.schedule&.current_or_next_order_cycle
-        return nil unless shop && next_oc
+        return unless shop && next_oc
 
         @fee_calculator = OpenFoodNetwork::EnterpriseFeeCalculator.new(shop, next_oc)
       end
