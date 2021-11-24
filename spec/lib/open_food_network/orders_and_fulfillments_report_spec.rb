@@ -263,7 +263,7 @@ price: nil,
         row_data = items[4]
         expect(totals_row?(row_data)).to eq(true)
         expect(customer_name(row_data)).to eq(address.full_name)
-        expect(amount(row_data)).to eq(fuji.price * 5 + gala.price * 2)
+        expect(amount(row_data)).to eq((fuji.price * 5) + (gala.price * 2))
       end
     end
 
