@@ -28,7 +28,7 @@ in: proc { |p|
       stored_preference = stored_preferences.find_by(column_name: column_name)
       if stored_preference
         stored_preference.assign_attributes(
-default_attributes.select{ |k, _v|
+default_attributes.select { |k, _v|
                                               stored_preference[k].nil?
                                             } 
 )
@@ -50,8 +50,8 @@ column_name: column_name
 
   def self.known_actions
     OpenFoodNetwork::ColumnPreferenceDefaults.private_instance_methods
-      .select{ |m| m.to_s.end_with?("_columns") }
-.map{ |m| m.to_s.sub /_columns$/, '' }
+      .select { |m| m.to_s.end_with?("_columns") }
+.map { |m| m.to_s.sub /_columns$/, '' }
   end
 
   # Arbitrary filtering of default_preferences

@@ -81,7 +81,7 @@ module OrderManagement
       def insert_values
         now = Time.now.utc.iso8601
         not_closed_in_range_order_cycles
-          .map{ |oc| "(#{subscription.id},#{oc.id},'#{now}','#{now}')" }
+          .map { |oc| "(#{subscription.id},#{oc.id},'#{now}','#{now}')" }
           .join(",")
       end
 

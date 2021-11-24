@@ -81,7 +81,7 @@ receiver_id: hub.id,
           allow(report).to receive(:params) { { distributor_id: hub.id } }
           rows = report.table
           expect(rows.count).to eq 2
-          expect(rows.map{ |row| row[0] }).to include variant.product.name, variant2.product.name
+          expect(rows.map { |row| row[0] }).to include variant.product.name, variant2.product.name
         end
       end
     end

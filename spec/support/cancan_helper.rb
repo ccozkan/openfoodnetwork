@@ -13,7 +13,7 @@ module Spree
       ability_hash    = { ability_hash => true } if ability_hash.is_a? Symbol # e.g.: :create => {:create => true}
       if ability_hash.is_a? Array
         ability_hash =
- ability_hash.inject({}){ |member, i|
+ ability_hash.inject({}) { |member, i|
           member.merge(i => true)
         }
       end
@@ -29,7 +29,7 @@ module Spree
       ability_hash = { ability_hash => true } if ability_hash.is_a? Symbol # e.g.: :create
       if ability_hash.is_a? Array
         ability_hash =
- ability_hash.inject({}){ |member, i|
+ ability_hash.inject({}) { |member, i|
           member.merge(i => true)
         }
       end

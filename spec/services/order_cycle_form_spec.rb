@@ -52,7 +52,7 @@ describe OrderCycleForm do
         it "returns false" do
           expect do
             expect(form.save).to be false
-          end.to_not change{ order_cycle.reload.name }
+          end.to_not change { order_cycle.reload.name }
         end
       end
     end

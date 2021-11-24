@@ -129,7 +129,7 @@ module Spree
       let(:add_distributor) { shipping_method.distributors << distributor }
 
       it "is touched when applied to a distributor" do
-        expect{ add_distributor }
+        expect { add_distributor }
 .to change { shipping_method.reload.updated_at }
       end
     end
@@ -171,7 +171,7 @@ module Spree
     end
 
     context 'factory' do
-      let(:shipping_method){ create :shipping_method }
+      let(:shipping_method) { create :shipping_method }
 
       it "should set calculable correctly" do
         expect(shipping_method.calculator.calculable).to eq(shipping_method)

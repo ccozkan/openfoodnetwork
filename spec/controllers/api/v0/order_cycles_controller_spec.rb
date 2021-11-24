@@ -55,7 +55,7 @@ module Api
         it "returns results scoped with variant overrides" do
           api_get :products, id: order_cycle.id, distributor: distributor.id
 
-          overidden_product = json_response.select{ |product| product['id'] == product1.id }
+          overidden_product = json_response.select { |product| product['id'] == product1.id }
           expect(overidden_product[0]['variants'][0]['price']).to eq vo1.price.to_s
         end
 
@@ -192,7 +192,7 @@ distributor: distributor.id,
       it "loads taxons for distributed products in the order cycle" do
         api_get :taxons, id: order_cycle.id, distributor: distributor.id
 
-        taxons = json_response.map{ |taxon| taxon['name'] }
+        taxons = json_response.map { |taxon| taxon['name'] }
 
         expect(json_response.length).to be 2
         expect(taxons).to include taxon1.name, taxon2.name
@@ -203,7 +203,7 @@ distributor: distributor.id,
       it "loads properties for distributed products in the order cycle" do
         api_get :properties, id: order_cycle.id, distributor: distributor.id
 
-        properties = json_response.map{ |property| property['name'] }
+        properties = json_response.map { |property| property['name'] }
 
         expect(json_response.length).to be 2
         expect(properties).to include property1.presentation, property2.presentation
@@ -218,7 +218,7 @@ distributor: distributor.id,
         it "loads producer properties for distributed products in the order cycle" do
           api_get :properties, id: order_cycle.id, distributor: distributor.id
 
-          properties = json_response.map{ |property| property['name'] }
+          properties = json_response.map { |property| property['name'] }
 
           expect(json_response.length).to be 3
           expect(properties).to include property1.presentation, 
@@ -279,7 +279,7 @@ product1.id
     private
 
     def product_ids
-      json_response.map{ |product| product['id'] }
+      json_response.map { |product| product['id'] }
     end
   end
 end

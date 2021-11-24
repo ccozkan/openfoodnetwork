@@ -204,7 +204,7 @@ joins(:prices)
     end
 
     def price_in(currency)
-      prices.select{ |price| price.currency == currency }
+      prices.select { |price| price.currency == currency }
 .first ||
         Spree::Price.new(variant_id: id, currency: currency)
     end

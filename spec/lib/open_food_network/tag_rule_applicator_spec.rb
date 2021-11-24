@@ -70,13 +70,13 @@ preferred_matched_shipping_methods_visibility: "visible"
     describe "initialisation" do
       context "when enterprise is nil" do
         let(:applicator) { OpenFoodNetwork::TagRuleApplicator.new(nil, "FilterProducts", ["tag1"]) }
-        it { expect{ applicator }
+        it { expect { applicator }
 .to raise_error "Enterprise cannot be nil" }
       end
 
       context "when rule_type is nil" do
         let(:applicator) { OpenFoodNetwork::TagRuleApplicator.new(enterprise, nil, ["tag1"]) }
-        it { expect{ applicator }
+        it { expect { applicator }
 .to raise_error "Rule Type cannot be nil" }
       end
 
@@ -84,7 +84,7 @@ preferred_matched_shipping_methods_visibility: "visible"
         let(:applicator) {
           OpenFoodNetwork::TagRuleApplicator.new(enterprise, "FilterSomething", ["tag1"])
         }
-        it { expect{ applicator }
+        it { expect { applicator }
 .to raise_error NameError }
       end
 
@@ -183,7 +183,7 @@ product_tag_rule2,
           let(:children) { [child1, child2] }
           let(:rule_class) { double(:rule_class, tagged_children_for: children) }
 
-          before{ allow(applicator).to receive(:rule_class) { rule_class } }
+          before { allow(applicator).to receive(:rule_class) { rule_class } }
 
           context "when reject? returns true only for some children" do
             before do
@@ -221,7 +221,7 @@ product_tag_rule2,
         context "when rule_class doesn't respond to tagged_children_for" do
           let(:rule_class) { double(:rule_class) }
 
-          before{ allow(applicator).to receive(:rule_class) { rule_class } }
+          before { allow(applicator).to receive(:rule_class) { rule_class } }
 
           context "when reject? returns false for the element" do
             before do
@@ -260,11 +260,11 @@ product_tag_rule2,
       }
       let(:dummy) { double(:dummy) }
 
-      before{ allow(applicator).to receive(:customer_rules) { [customer_rule] } }
-      before{ allow(applicator).to receive(:default_rules) { [default_rule] } }
+      before { allow(applicator).to receive(:customer_rules) { [customer_rule] } }
+      before { allow(applicator).to receive(:default_rules) { [default_rule] } }
 
       context "when a customer rule matches the tags of the element" do
-        before{ allow(customer_rule).to receive(:tags_match?).with(dummy) { true } }
+        before { allow(customer_rule).to receive(:tags_match?).with(dummy) { true } }
 
         it "returns the value of customer_rule.reject_matched?" do
           expect(applicator.send(:reject?, dummy)).to eq "customer_rule.reject_matched?"
@@ -272,10 +272,10 @@ product_tag_rule2,
       end
 
       context "when no customer rules match the tags of the element" do
-        before{ allow(customer_rule).to receive(:tags_match?) { false } }
+        before { allow(customer_rule).to receive(:tags_match?) { false } }
 
         context "when a default rule matches the tags of the element" do
-          before{ allow(default_rule).to receive(:tags_match?) { true } }
+          before { allow(default_rule).to receive(:tags_match?) { true } }
 
           it "returns the value of the default_rule.reject_matched?" do
             expect(applicator.send(:reject?, dummy)).to eq "default_rule.reject_matched?"
@@ -283,7 +283,7 @@ product_tag_rule2,
         end
 
         context "when a default rule matches the tags of the element" do
-          before{ allow(default_rule).to receive(:tags_match?) { false } }
+          before { allow(default_rule).to receive(:tags_match?) { false } }
 
           it "returns false" do
             expect(applicator.send(:reject?, dummy)).to be false

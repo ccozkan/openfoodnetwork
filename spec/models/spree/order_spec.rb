@@ -1068,8 +1068,8 @@ distributors: [new_distributor],
 
         it "links the customer customer to the order" do
           expect(order.customer).to be_nil
-          expect{ order.send(:ensure_customer) }
-.to_not change{ Customer.count }
+          expect { order.send(:ensure_customer) }
+.to_not change { Customer.count }
           expect(order.customer).to eq customer
         end
       end
@@ -1098,7 +1098,7 @@ distributors: [new_distributor],
           it "creates a new customer with defaut name and addresses" do
             expect(order.customer).to be_nil
             expect { order.send(:ensure_customer) }
-.to change{ Customer.count }
+.to change { Customer.count }
 .by 1
 
             expect(order.customer.name).to eq order.bill_address.full_name
@@ -1125,7 +1125,7 @@ distributors: [new_distributor],
     end
 
     it "returns a validation error" do
-      expect{ order.next }
+      expect { order.next }
 .to change(order.errors, :count).from(0).to(1)
       expect(order.errors.messages[:email]).to eq [I18n.t('devise.failure.already_registered')]
       expect(order.state).to eq 'cart'

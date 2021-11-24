@@ -93,13 +93,13 @@ class ProductTagRulesFilterer
 
   def customer_applicable_rules
     # Rules which apply specifically to the current customer
-    @customer_applicable_rules ||= non_default_rules.select{ |rule| customer_tagged?(rule) }
+    @customer_applicable_rules ||= non_default_rules.select { |rule| customer_tagged?(rule) }
   end
 
   def hide_rules
     @hide_rules ||=
  customer_applicable_rules
-   .select{ |rule| rule.preferred_matched_variants_visibility == 'hidden' }
+   .select { |rule| rule.preferred_matched_variants_visibility == 'hidden' }
   end
 
   def show_rules

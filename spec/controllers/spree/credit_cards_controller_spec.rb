@@ -37,7 +37,7 @@ describe Spree::CreditCardsController, type: :controller do
       it "saves the card locally" do
         spree_post :new_from_token, params
 
-        expect{ spree_post :new_from_token, params }
+        expect { spree_post :new_from_token, params }
 .to change(Spree::CreditCard, :count).by(1)
 
         card = Spree::CreditCard.last
@@ -53,7 +53,7 @@ describe Spree::CreditCardsController, type: :controller do
         end
 
         it "renders a flash error" do
-          expect{ spree_post :new_from_token, params }
+          expect { spree_post :new_from_token, params }
 .to_not change(Spree::CreditCard, :count)
 
           json_response = JSON.parse(response.body)
@@ -69,7 +69,7 @@ describe Spree::CreditCardsController, type: :controller do
     context "when the request to store the customer/card with Stripe fails" do
       let(:response_mock) { { status: 402, body: JSON.generate(error: { message: "Bup-bow..." }) } }
       it "doesn't save the card locally, and renders a flash error" do
-        expect{ spree_post :new_from_token, params }
+        expect { spree_post :new_from_token, params }
 .to_not change(Spree::CreditCard, :count)
 
         json_response = JSON.parse(response.body)
@@ -107,7 +107,7 @@ describe Spree::CreditCardsController, type: :controller do
 
         context "when the update completes successfully" do
           it "renders a serialized copy of the updated card" do
-            expect{ spree_put :update, params }
+            expect { spree_put :update, params }
 .to change { card.reload.is_default }
 .to(true)
             json_response = JSON.parse(response.body)
@@ -183,7 +183,7 @@ describe Spree::CreditCardsController, type: :controller do
           end
 
           it "doesn't delete the card" do
-            expect{ spree_delete :destroy, params }
+            expect { spree_delete :destroy, params }
 .to_not change(Spree::CreditCard, :count)
             expect(flash[:error]).to eq I18n.t(:card_could_not_be_removed)
             expect(response).to redirect_to spree.account_path(anchor: 'cards')
@@ -197,7 +197,7 @@ describe Spree::CreditCardsController, type: :controller do
           end
 
           it "deletes the card and redirects to account_path" do
-            expect{ spree_delete :destroy, params }
+            expect { spree_delete :destroy, params }
 .to change(Spree::CreditCard, :count).by(-1)
             expect(flash[:success]).to eq I18n.t(
 :card_has_been_removed,

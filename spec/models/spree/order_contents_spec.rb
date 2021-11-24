@@ -53,7 +53,7 @@ describe Spree::OrderContents do
       it 'should remove line item' do
         subject.add(variant, 3)
 
-        expect{
+        expect {
           subject.remove(variant)
         }.to change(Spree::LineItem, :count).by(-1)
       end

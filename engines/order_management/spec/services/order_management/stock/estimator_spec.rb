@@ -35,7 +35,7 @@ module OrderManagement
 
         context "the order's ship address is in a different zone" do
           it "still returns shipping rates from a shipping method" do
-            shipping_method.zones.each{ |z| z.members.delete_all }
+            shipping_method.zones.each { |z| z.members.delete_all }
             shipping_rates = subject.shipping_rates(package)
             expect(shipping_rates.first.cost).to eq 4.00
           end

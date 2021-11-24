@@ -44,7 +44,7 @@ module Spree
       let!(:product) { create(:simple_product, primary_taxon: taxon1, taxons: [taxon1, taxon2]) }
 
       it "is touched when a taxon is applied to a product" do
-        expect{ product.taxons << taxon3 }
+        expect { product.taxons << taxon3 }
 .to change { taxon3.reload.updated_at }
       end
 

@@ -59,7 +59,7 @@ skip_stock_check: skip_stock_check?(order)
   end
 
   def changed_subscription_line_items
-    subscription_line_items.select{ |sli| sli.changed? && sli.persisted? }
+    subscription_line_items.select { |sli| sli.changed? && sli.persisted? }
   end
 
   def new_subscription_line_items

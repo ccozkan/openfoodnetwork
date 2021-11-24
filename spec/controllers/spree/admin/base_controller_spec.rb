@@ -93,7 +93,7 @@ controller.send(
 
       context "and the prefix does not appear in the whitelist" do
         it "raises an error" do
-          expect{ controller.send(:serializer, 'other_prefix') }
+          expect { controller.send(:serializer, 'other_prefix') }
 .to raise_error RuntimeError
         end
       end

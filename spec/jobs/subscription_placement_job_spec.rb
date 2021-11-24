@@ -161,7 +161,7 @@ orders_open_at: 10.minutes.ago,
         end
 
         it "does not enqueue confirmation emails" do
-          expect{ service.call }
+          expect { service.call }
             .to_not have_enqueued_mail(Spree::OrderMailer, :confirm_email_for_customer)
 
           expect(service).to have_received(:send_placement_email).once

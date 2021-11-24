@@ -54,9 +54,9 @@ describe Api::V0::ProductsController, type: :controller do
       product.set_property("spree", "rocks")
       api_get :show, id: product.to_param
 
-      expect(all_attributes.all?{ |attr| json_response.keys.include? attr }).to eq(true)
+      expect(all_attributes.all? { |attr| json_response.keys.include? attr }).to eq(true)
       expect(
-variants_attributes.all?{ |attr|
+variants_attributes.all? { |attr|
                json_response['variants'].first.keys.include? attr
              } 
 ).to eq(true)
@@ -142,7 +142,7 @@ variant_unit_name: "things",
 unit_description: "things" 
 }
 
-      expect(all_attributes.all?{ |attr| json_response.keys.include? attr }).to eq(true)
+      expect(all_attributes.all? { |attr| json_response.keys.include? attr }).to eq(true)
       expect(response.status).to eq(201)
     end
 
@@ -354,6 +354,6 @@ product.id
   end
 
   def returned_product_ids
-    json_response['products'].map{ |obj| obj['id'] }
+    json_response['products'].map { |obj| obj['id'] }
   end
 end

@@ -237,7 +237,7 @@ child: hub2,
             it "does not reset count_on_hand for variant_overrides not in params" do
               expect {
                 put :bulk_reset, params: params
-              }.to_not change{ variant_override3.reload.count_on_hand }
+              }.to_not change { variant_override3.reload.count_on_hand }
             end
           end
         end

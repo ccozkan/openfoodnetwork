@@ -541,7 +541,7 @@ for: Spree::Admin::ReportsController
 
         context "where the enterprise is in an order_cycle" do
           let!(:order_cycle) { create(:simple_order_cycle) }
-          let!(:exchange){
+          let!(:exchange) {
             create(
 :exchange, 
 incoming: true, 
@@ -811,7 +811,7 @@ for: Spree::Admin::ReportsController
 
       context "for a given order_cycle" do
         let!(:order_cycle) { create(:simple_order_cycle, coordinator: d2) }
-        let!(:exchange){
+        let!(:exchange) {
           create(
 :exchange, 
 incoming: false, 

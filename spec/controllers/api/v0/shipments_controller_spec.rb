@@ -99,7 +99,7 @@ format: :json
       allow_any_instance_of(Spree::Order).to receive_messages(paid?: true, complete?: true)
       api_put :ready, order_id: shipment.order.to_param, id: shipment.to_param
 
-      expect(attributes.all?{ |attr| json_response.key? attr.to_s }).to be_truthy
+      expect(attributes.all? { |attr| json_response.key? attr.to_s }).to be_truthy
       expect(json_response["state"]).to eq("ready")
       expect(shipment.reload.state).to eq("ready")
     end
@@ -237,7 +237,7 @@ distributors: [distributor],
         create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor)
       }
       let(:new_shipping_rate) {
-        order.shipment.shipping_rates.select{ |sr| sr.shipping_method == shipping_method2 }
+        order.shipment.shipping_rates.select { |sr| sr.shipping_method == shipping_method2 }
 .first
       }
       let(:params) {
@@ -321,7 +321,7 @@ order_id: shipment.order.to_param,
                        id: shipment.to_param,
                        shipment: { tracking: "123123" }
 
-        expect(attributes.all?{ |attr| json_response.key? attr.to_s }).to be_truthy
+        expect(attributes.all? { |attr| json_response.key? attr.to_s }).to be_truthy
         expect(json_response["state"]).to eq("shipped")
       end
     end
@@ -411,7 +411,7 @@ order_id: shipment.order.to_param,
 
     def expect_valid_response
       expect(response.status).to eq 200
-      attributes.all?{ |attr| json_response.key? attr.to_s }
+      attributes.all? { |attr| json_response.key? attr.to_s }
     end
 
     def make_order_contents_fail

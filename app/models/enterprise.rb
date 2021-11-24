@@ -423,7 +423,7 @@ id
  existing.map do |p|
         p.slice!(/^#{test_permalink}/)
         p.match(/^\d+$/).to_s.to_i
-      end.select{ |p| p }
+      end.select { |p| p }
       options = (1..existing.length).to_a - used_indices
       test_permalink + options.first.to_s
     else

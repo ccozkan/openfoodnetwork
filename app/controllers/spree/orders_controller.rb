@@ -181,7 +181,7 @@ module Spree
 
       items =
  params[:order][:line_items_attributes]
-        &.select{ |_k, attrs| attrs["quantity"].to_i > 0 }
+        &.select { |_k, attrs| attrs["quantity"].to_i > 0 }
 
       if items.empty?
         flash[:error] = I18n.t(:orders_cannot_remove_the_final_item)

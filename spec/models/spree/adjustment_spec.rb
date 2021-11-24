@@ -81,7 +81,7 @@ amount: 0
           expect {
             line_item.delete
             adjustment.reload.update_adjustment!
-          }.to change{ Spree::Adjustment.count }
+          }.to change { Spree::Adjustment.count }
 .by(-1)
         end
       end

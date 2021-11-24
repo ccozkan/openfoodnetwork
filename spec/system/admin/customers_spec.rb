@@ -89,7 +89,7 @@ without_options: [unmanaged_distributor.name]
 
         # Deleting
         create(:order, customer: customer1)
-        expect{
+        expect {
           within "tr#c_#{customer1.id}" do
             accept_alert do
               find("a.delete-customer").click
@@ -98,16 +98,16 @@ without_options: [unmanaged_distributor.name]
           expect(page).to have_selector "#info-dialog .text",
                                         text: I18n.t('admin.customers.destroy.has_associated_orders')
           click_button "OK"
-        }.to_not change{ Customer.count }
+        }.to_not change { Customer.count }
 
-        expect{
+        expect {
           within "tr#c_#{customer2.id}" do
             accept_alert do
               find("a.delete-customer").click
             end
           end
           expect(page).to have_no_selector "tr#c_#{customer2.id}"
-        }.to change{ Customer.count }
+        }.to change { Customer.count }
 .by(-1)
       end
 
@@ -387,35 +387,35 @@ amount: -25.00
 
           it "creates customers when the email provided is valid" do
             # When an invalid email without domain is used it is checked by a regex, in the UI
-            expect{
+            expect {
               click_link('New Customer')
               fill_in 'email', with: "email_with_no_domain@"
               click_button 'Add Customer'
               expect(page).to have_selector "#new-customer-dialog .error",
                                             text: "Please enter a valid email address"
-            }.to_not change{ Customer.of(managed_distributor1).count }
+            }.to_not change { Customer.of(managed_distributor1).count }
 
             # When an invalid email with domain is used it is checked by the "valid_email2" gem #7886
-            expect{
+            expect {
               fill_in 'email', with: "invalid_email_with_no_complete_domain@incomplete"
               click_button 'Add Customer'
               expect(page).to have_selector "#new-customer-dialog .error", text: "Email is invalid"
-            }.to_not change{ Customer.of(managed_distributor1).count }
+            }.to_not change { Customer.of(managed_distributor1).count }
 
             # When an existing email is used
-            expect{
+            expect {
               fill_in 'email', with: customer1.email
               click_button 'Add Customer'
               expect(page).to have_selector "#new-customer-dialog .error",
                                             text: "Email is associated with an existing customer"
-            }.to_not change{ Customer.of(managed_distributor1).count }
+            }.to_not change { Customer.of(managed_distributor1).count }
 
             # When a new valid email is used
-            expect{
+            expect {
               fill_in 'email', with: "new@email.com"
               click_button 'Add Customer'
               expect(page).not_to have_selector "#new-customer-dialog"
-            }.to change{ Customer.of(managed_distributor1).count }
+            }.to change { Customer.of(managed_distributor1).count }
 .from(2).to(3)
           end
         end

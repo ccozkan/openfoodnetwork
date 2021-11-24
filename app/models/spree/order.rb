@@ -310,7 +310,7 @@ created_by_id: created_by_id
     def generate_order_number
       record = true
       while record
-        random = "R#{Array.new(9){ rand(9) }
+        random = "R#{Array.new(9) { rand(9) }
 .join}"
         record = self.class.find_by(number: random)
       end

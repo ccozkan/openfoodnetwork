@@ -68,7 +68,7 @@ module DelegateBelongsTo
       association_klass = reflect_on_association(association).klass
       methods = association_klass.column_names
       if without_default_rejected_delegate_columns
-        methods.reject!{ |x| default_rejected_delegate_columns.include?(x.to_s) }
+        methods.reject! { |x| default_rejected_delegate_columns.include?(x.to_s) }
       end
       methods
     rescue StandardError

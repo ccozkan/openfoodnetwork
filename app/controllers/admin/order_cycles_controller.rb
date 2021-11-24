@@ -83,7 +83,7 @@ edit_path: main_app.admin_order_cycle_incoming_path(@order_cycle)
                        current_user: spree_current_user,
                        subscriptions_count: OrderManagement::Subscriptions::Count.new(@collection)
       else
-        order_cycle = order_cycle_set.collection.find{ |oc| oc.errors.present? }
+        order_cycle = order_cycle_set.collection.find { |oc| oc.errors.present? }
         render json: { errors: order_cycle.errors.full_messages }, status: :unprocessable_entity
       end
     end
@@ -229,7 +229,7 @@ orders_close_at_null: true
     def order_cycles_from_set
       return if authorized_order_cycles.blank?
 
-      OrderCycle.where(id: authorized_order_cycles.map{ |_k, v| v[:id] })
+      OrderCycle.where(id: authorized_order_cycles.map { |_k, v| v[:id] })
     end
 
     def order_cycle_set

@@ -339,7 +339,7 @@ module Spree
         end
 
         context "saving a new product" do
-          let!(:product){ Spree::Product.new }
+          let!(:product) { Spree::Product.new }
 
           before do
             create(:stock_location)
@@ -363,8 +363,8 @@ module Spree
           it "only duplicates master with after_save when no standard variants exist" do
             expect(product).to receive :ensure_standard_variant
             product.name = "Something else"
-            expect{ product.save! }
-.to_not change{ product.variants.count }
+            expect { product.save! }
+.to_not change { product.variants.count }
           end
         end
 

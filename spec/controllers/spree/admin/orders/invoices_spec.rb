@@ -45,7 +45,7 @@ bill_address: create(:address),
           it "should allow me to send order invoices" do
             expect do
               spree_get :invoice, params
-            end.to_not change{ Spree::OrderMailer.deliveries.count }
+            end.to_not change { Spree::OrderMailer.deliveries.count }
             expect(response).to redirect_to spree.edit_admin_order_path(order)
             expect(flash[:error]).to eq "#{distributor.name} must have a valid ABN before invoices can be sent."
           end

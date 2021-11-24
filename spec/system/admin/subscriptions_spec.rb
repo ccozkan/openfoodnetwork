@@ -325,7 +325,7 @@ enterprise_fees: [enterprise_fee]
         click_button('Next')
 
         # Attempting to submit without a product
-        expect{
+        expect {
           click_button('Create Subscription')
           expect(page).to have_content 'Please add at least one product'
         }.to_not change(Subscription, :count)
@@ -344,7 +344,7 @@ enterprise_fees: [enterprise_fee]
 
         click_button('Next')
 
-        expect{
+        expect {
           click_button('Create Subscription')
           expect(page).to have_current_path admin_subscriptions_path
         }.to change(Subscription, :count).by(1)

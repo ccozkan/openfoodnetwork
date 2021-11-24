@@ -346,7 +346,7 @@ distributor: distributor,
         end
 
         it "doesn't throw an error" do
-          expect{ visit main_app.cart_path }
+          expect { visit main_app.cart_path }
 .to_not raise_error
         end
       end

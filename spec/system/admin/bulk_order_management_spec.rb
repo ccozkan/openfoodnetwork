@@ -773,11 +773,11 @@ shipment_state: 'ready',
 
       it "displays a checkbox to which toggles the 'checked' state of all checkboxes" do
         check "toggle_bulk"
-        page.all("input[type='checkbox'][name='bulk']").each{ |checkbox|
+        page.all("input[type='checkbox'][name='bulk']").each { |checkbox|
           expect(checkbox.checked?).to be true
         }
         uncheck "toggle_bulk"
-        page.all("input[type='checkbox'][name='bulk']").each{ |checkbox|
+        page.all("input[type='checkbox'][name='bulk']").each { |checkbox|
           expect(checkbox.checked?).to be false
         }
       end

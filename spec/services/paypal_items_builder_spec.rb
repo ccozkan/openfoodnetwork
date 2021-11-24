@@ -117,7 +117,7 @@ state: "closed"
     end
 
     it "lists the payment fee adjustment" do
-      payment_fee = items.find{ |i| i[:Name] == I18n.t('payment_method_fee') }
+      payment_fee = items.find { |i| i[:Name] == I18n.t('payment_method_fee') }
 
       expect(payment_fee[:Quantity]).to eq 1
       expect(payment_fee[:Amount]).to eq(
@@ -127,7 +127,7 @@ value: order.all_adjustments.payment_fee.first.amount
     end
 
     it "lists admin adjustments" do
-      admin_item = items.find{ |i| i[:Name] == admin_adjustment.label }
+      admin_item = items.find { |i| i[:Name] == admin_adjustment.label }
 
       expect(order.all_adjustments.admin.count).to eq 1
       expect(admin_item[:Quantity]).to eq 1
@@ -138,8 +138,8 @@ value: order.all_adjustments.admin.first.amount
     end
 
     it "lists enterprise fee adjustments" do
-      line_item_fee = items.find{ |i| i[:Name] == line_item_enterprise_fee.label }
-      order_fee = items.find{ |i| i[:Name] == order_enterprise_fee.label }
+      line_item_fee = items.find { |i| i[:Name] == line_item_enterprise_fee.label }
+      order_fee = items.find { |i| i[:Name] == order_enterprise_fee.label }
 
       expect(order.all_adjustments.enterprise_fee.count).to eq 2
 
@@ -167,14 +167,14 @@ value: order_enterprise_fee.amount
     end
 
     it "does not list the shipping fee" do
-      shipping_fee_item = items.find{ |i| i[:Name] == I18n.t('shipping') }
+      shipping_fee_item = items.find { |i| i[:Name] == I18n.t('shipping') }
 
       expect(order.all_adjustments.shipping.count).to eq 1
       expect(shipping_fee_item).to be_nil
     end
 
     it "does not list ineligible adjustments" do
-      ineligible_item = items.detect{ |i| i[:Name] == ineligible_adjustment.label }
+      ineligible_item = items.detect { |i| i[:Name] == ineligible_adjustment.label }
 
       expect(order.adjustments.where(eligible: false).count).to eq 1
       expect(ineligible_item).to be_nil

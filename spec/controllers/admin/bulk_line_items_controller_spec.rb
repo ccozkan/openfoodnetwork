@@ -73,7 +73,7 @@ distributor: dist1,
 
         it "retrieves a list of line_items with appropriate attributes, including line items with appropriate attributes" do
           keys = json_response['line_items'].first.keys.map(&:to_sym)
-          expect(line_item_attributes.all?{ |attr| keys.include? attr }).to eq(true)
+          expect(line_item_attributes.all? { |attr| keys.include? attr }).to eq(true)
         end
 
         it "sorts line_items in ascending id line_item" do
@@ -83,17 +83,17 @@ distributor: dist1,
 
         it "formats final_weight_volume as a float" do
           expect(
-json_response['line_items'].map{ |line_item|
+json_response['line_items'].map { |line_item|
                    line_item['final_weight_volume']
-                 }.all?{ |fwv| fwv.is_a?(Float) }
+                 }.all? { |fwv| fwv.is_a?(Float) }
 ).to eq(true)
         end
 
         it "returns distributor object with id key" do
           expect(
-json_response['line_items'].map{ |line_item|
+json_response['line_items'].map { |line_item|
                    line_item['supplier']
-                 }.all?{ |d| d.key?('id') }
+                 }.all? { |d| d.key?('id') }
 ).to eq(true)
         end
       end
@@ -186,7 +186,7 @@ order: order2,
 
         it "retrieves a list of line_items" do
           keys = json_response['line_items'].first.keys.map(&:to_sym)
-          expect(line_item_attributes.all?{ |attr| keys.include? attr }).to eq(true)
+          expect(line_item_attributes.all? { |attr| keys.include? attr }).to eq(true)
         end
       end
 
@@ -198,7 +198,7 @@ order: order2,
 
         it "retrieves a list of line_items" do
           keys = json_response['line_items'].first.keys.map(&:to_sym)
-          expect(line_item_attributes.all?{ |attr| keys.include? attr }).to eq(true)
+          expect(line_item_attributes.all? { |attr| keys.include? attr }).to eq(true)
         end
       end
     end
@@ -536,6 +536,6 @@ amount: order.total,
   private
 
   def line_item_ids
-    json_response['line_items'].map{ |line_item| line_item['id'] }
+    json_response['line_items'].map { |line_item| line_item['id'] }
   end
 end

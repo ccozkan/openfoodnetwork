@@ -119,7 +119,7 @@ describe SubscriptionMailer, type: :mailer do
 
     it "sends the email" do
       expect { email.deliver_now }
-.to change{ SubscriptionMailer.deliveries.count }
+.to change { SubscriptionMailer.deliveries.count }
 .by(1)
 
       body = SubscriptionMailer.deliveries.last.body.encoded
@@ -171,7 +171,7 @@ describe SubscriptionMailer, type: :mailer do
     before do
       expect do
         SubscriptionMailer.empty_email(order, {}).deliver_now
-      end.to change{ SubscriptionMailer.deliveries.count }
+      end.to change { SubscriptionMailer.deliveries.count }
 .by(1)
     end
 
@@ -193,7 +193,7 @@ describe SubscriptionMailer, type: :mailer do
 
       expect do
         SubscriptionMailer.failed_payment_email(order).deliver_now
-      end.to change{ SubscriptionMailer.deliveries.count }
+      end.to change { SubscriptionMailer.deliveries.count }
 .by(1)
     end
 

@@ -56,8 +56,8 @@ child: enterprise,
 
           context "with acceptable data" do
             it "allows me to create the inventory item" do
-              expect{ spree_post :create, params }
-.to change{ InventoryItem.count }
+              expect { spree_post :create, params }
+.to change { InventoryItem.count }
 .by(1)
               inventory_item = InventoryItem.last
               expect(inventory_item.enterprise).to eq enterprise
@@ -80,8 +80,8 @@ visible: nil
             }
 
             it "returns an error message" do
-              expect{ spree_post :create, bad_params }
-.to change{ InventoryItem.count }
+              expect { spree_post :create, bad_params }
+.to change { InventoryItem.count }
 .by(0)
               expect(response.body).to eq Hash[:errors, ["Visible must be true or false"]].to_json
             end
@@ -152,8 +152,8 @@ child: enterprise,
             }
 
             it "returns an error message" do
-              expect{ spree_put :update, bad_params }
-.to change{ InventoryItem.count }
+              expect { spree_put :update, bad_params }
+.to change { InventoryItem.count }
 .by(0)
               expect(response.body).to eq Hash[:errors, ["Visible must be true or false"]].to_json
             end

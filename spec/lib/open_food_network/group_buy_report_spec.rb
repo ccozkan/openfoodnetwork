@@ -85,7 +85,7 @@ bill_address: bill_address,
       table = subject.table
 
       line_items =
- @orders.map(&:line_items).flatten.select{ |li|
+ @orders.map(&:line_items).flatten.select { |li|
         li.product.supplier == @supplier1 && li.variant == @variant1
       }
 

@@ -50,7 +50,7 @@ module OpenFoodNetwork
     def customer_rules
       return @customer_matched_rules unless @customer_matched_rules.nil?
 
-      @customer_matched_rules = rules.select{ |rule| customer_tags_match?(rule) }
+      @customer_matched_rules = rules.select { |rule| customer_tags_match?(rule) }
     end
 
     def default_rules

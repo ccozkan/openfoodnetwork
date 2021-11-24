@@ -63,7 +63,7 @@ module Spree
     end
 
     def returnable_inventory
-      order.shipped_shipments.collect{ |s| s.inventory_units.to_a }
+      order.shipped_shipments.collect { |s| s.inventory_units.to_a }
 .flatten
     end
 
@@ -85,7 +85,7 @@ module Spree
 
       record = true
       while record
-        random = "RMA#{Array.new(9){ rand(9) }
+        random = "RMA#{Array.new(9) { rand(9) }
 .join}"
         record = self.class.find_by(number: random)
       end

@@ -121,7 +121,7 @@ count_on_hand: nil,
             context "when count_on_hand is set" do
               it "should return validation error on save" do
                 scoper.scope v
-                expect{ vo.save! }
+                expect { vo.save! }
 .to raise_error ActiveRecord::RecordInvalid
               end
             end

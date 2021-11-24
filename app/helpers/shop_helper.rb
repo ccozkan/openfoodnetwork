@@ -25,7 +25,7 @@ module ShopHelper
       { name: 'producers', title: t(:shopping_tabs_producers), show: true },
       { name: 'contact', title: t(:shopping_tabs_contact), show: true },
       { name: 'groups', title: t(:shopping_tabs_groups), show: current_distributor.groups.any? },
-    ].select{ |tab| tab[:show] }
+    ].select { |tab| tab[:show] }
   end
 
   def shop_tab_names

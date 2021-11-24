@@ -151,8 +151,8 @@ describe OrderFactory do
     end
 
     def expect_new_order
-      expect{ order }
-.to change{ Spree::Order.count }
+      expect { order }
+.to change { Spree::Order.count }
 .by(1)
       expect(order).to be_a Spree::Order
     end

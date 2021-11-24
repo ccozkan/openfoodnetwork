@@ -70,7 +70,7 @@ describe Admin::SubscriptionsController, type: :controller do
           get :index, params: params
           json_response = JSON.parse(response.body)
           expect(json_response.count).to be 2
-          expect(json_response.map{ |so| so['id'] }).to include subscription.id, subscription2.id
+          expect(json_response.map { |so| so['id'] }).to include subscription.id, subscription2.id
         end
 
         context "when ransack predicates are submitted" do
@@ -80,7 +80,7 @@ describe Admin::SubscriptionsController, type: :controller do
             get :index, params: params
             json_response = JSON.parse(response.body)
             expect(json_response.count).to be 1
-            ids = json_response.map{ |so| so['id'] }
+            ids = json_response.map { |so| so['id'] }
             expect(ids).to include subscription2.id
             expect(ids).to_not include subscription.id
           end
@@ -135,8 +135,8 @@ describe Admin::SubscriptionsController, type: :controller do
 
       context 'when I submit insufficient params' do
         it 'returns errors' do
-          expect{ spree_post :create, params }
-.to_not change{ Subscription.count }
+          expect { spree_post :create, params }
+.to_not change { Subscription.count }
           json_response = JSON.parse(response.body)
           expect(json_response['errors'].keys).to include 'schedule', 
 'customer', 
@@ -175,8 +175,8 @@ describe Admin::SubscriptionsController, type: :controller do
         end
 
         it 'returns errors' do
-          expect{ spree_post :create, params }
-.to_not change{ Subscription.count }
+          expect { spree_post :create, params }
+.to_not change { Subscription.count }
           json_response = JSON.parse(response.body)
           expect(json_response['errors'].keys).to include 'schedule', 
 'customer', 
@@ -208,8 +208,8 @@ describe Admin::SubscriptionsController, type: :controller do
 
         context 'where the specified variants are not available from the shop' do
           it 'returns an error' do
-            expect{ spree_post :create, params }
-.to_not change{ Subscription.count }
+            expect { spree_post :create, params }
+.to_not change { Subscription.count }
             json_response = JSON.parse(response.body)
             expect(json_response['errors']['subscription_line_items']).to eq ["#{variant.product.name} - #{variant.full_name} is not available from the selected schedule"]
           end
@@ -227,8 +227,8 @@ receiver: shop,
           }
 
           it 'creates subscription line items for the subscription' do
-            expect{ spree_post :create, params }
-.to change{ Subscription.count }
+            expect { spree_post :create, params }
+.to change { Subscription.count }
 .by(1)
             subscription = Subscription.last
             expect(subscription.schedule).to eq schedule
@@ -373,8 +373,8 @@ create( :subscription_line_item, variant: variant1, quantity: 2 )
         end
 
         it 'returns errors' do
-          expect{ spree_post :update, params }
-.to_not change{ Subscription.count }
+          expect { spree_post :update, params }
+.to_not change { Subscription.count }
           json_response = JSON.parse(response.body)
           expect(json_response['errors'].keys).to include 'payment_method', 'shipping_method'
           subscription.reload
@@ -419,8 +419,8 @@ create( :subscription_line_item, variant: variant1, quantity: 2 )
 
           context 'where the specified variants are not available from the shop' do
             it 'returns an error' do
-              expect{ spree_post :update, params }
-.to_not change{
+              expect { spree_post :update, params }
+.to_not change {
                                                             subscription.subscription_line_items.count
                                                           }
               json_response = JSON.parse(response.body)
@@ -432,8 +432,8 @@ create( :subscription_line_item, variant: variant1, quantity: 2 )
             before { outgoing_exchange.update(variants: [variant1, variant2]) }
 
             it 'creates subscription line items for the subscription' do
-              expect{ spree_post :update, params }
-.to change{
+              expect { spree_post :update, params }
+.to change {
                                                         subscription.subscription_line_items.count
                                                       }.by(1)
               subscription.reload

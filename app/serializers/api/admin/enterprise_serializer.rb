@@ -65,7 +65,7 @@ module Api
 tag_groups, 
 tag_rule.preferred_customer_tags
                                                .split(",")
-                                               .map{ |t| { text: t } }
+                                               .map { |t| { text: t } }
 )
           if tag_group[:rules].blank?
             tag_groups << tag_group

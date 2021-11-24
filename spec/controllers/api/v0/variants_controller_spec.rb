@@ -41,7 +41,7 @@ describe Api::V0::VariantsController, type: :controller do
       get :index, format: :json
 
       keys = json_response.first.keys.map(&:to_sym)
-      expect(attributes.all?{ |attr| keys.include? attr }).to eq(true)
+      expect(attributes.all? { |attr| keys.include? attr }).to eq(true)
     end
 
     it 'can query the results through a parameter' do
@@ -73,7 +73,7 @@ describe Api::V0::VariantsController, type: :controller do
       api_get :show, id: variant.to_param
 
       keys = json_response.keys.map(&:to_sym)
-      expect(attributes.all?{ |attr| keys.include? attr }).to eq(true)
+      expect(attributes.all? { |attr| keys.include? attr }).to eq(true)
     end
 
     it "cannot create a new variant if not an admin" do
@@ -149,7 +149,7 @@ describe Api::V0::VariantsController, type: :controller do
 variant: { sku: "12345", unit_value: "1", unit_description: "L" },
                         product_id: variant.product.to_param
 
-      expect(attributes.all?{ |attr| json_response.include? attr.to_s }).to eq(true)
+      expect(attributes.all? { |attr| json_response.include? attr.to_s }).to eq(true)
       expect(response.status).to eq(201)
       expect(json_response["sku"]).to eq("12345")
       expect(variant.product.variants.count).to eq(original_number_of_variants + 1)

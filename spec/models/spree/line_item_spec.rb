@@ -340,8 +340,8 @@ module Spree
 
           it "draws stock from the variant override" do
             expect(vo.reload.count_on_hand).to eq 3
-            expect{ line_item.increment!(:quantity) }
-.to_not change{
+            expect { line_item.increment!(:quantity) }
+.to_not change {
                                                                Spree::Variant.find(variant.id).on_hand
                                                              }
             expect(vo.reload.count_on_hand).to eq 2
@@ -350,8 +350,8 @@ module Spree
 
         context "when a variant override does not apply" do
           it "draws stock from the variant" do
-            expect{ line_item.increment!(:quantity) }
-.to change{
+            expect { line_item.increment!(:quantity) }
+.to change {
                                                            Spree::Variant.find(variant.id).on_hand
                                                          }.by(-1)
           end
@@ -371,16 +371,16 @@ module Spree
 
           it "restores stock to the variant override" do
             expect(vo.reload.count_on_hand).to eq 3
-            expect{ line_item.destroy }
-.to_not change{ Spree::Variant.find(variant.id).on_hand }
+            expect { line_item.destroy }
+.to_not change { Spree::Variant.find(variant.id).on_hand }
             expect(vo.reload.count_on_hand).to eq 4
           end
         end
 
         context "when a variant override does not apply" do
           it "restores stock to the variant" do
-            expect{ line_item.destroy }
-.to change{ Spree::Variant.find(variant.id).on_hand }
+            expect { line_item.destroy }
+.to change { Spree::Variant.find(variant.id).on_hand }
 .by(1)
           end
         end

@@ -15,7 +15,7 @@ module VariantUnits
                  # Don't trigger N+1 queries if option_values are already eager-loaded.
                  # For best results, use: `Spree::Variant.includes(option_values: :option_type)`
                  # or: `Spree::Product.includes(variant: {option_values: :option_type})`
-                 option_values.sort_by{ |o| o.option_type.position }
+                 option_values.sort_by { |o| o.option_type.position }
                else
                  option_values.joins(:option_type)
                    .order("#{Spree::OptionType.table_name}.position asc")

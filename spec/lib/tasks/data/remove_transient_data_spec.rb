@@ -55,26 +55,26 @@ describe RemoveTransientData do
       it 'deletes cart orders and related objects older than retention_period' do
         RemoveTransientData.new.call
 
-        expect{ cart.reload }
+        expect { cart.reload }
 .to_not raise_error
-        expect{ line_item.reload }
+        expect { line_item.reload }
 .to_not raise_error
-        expect{ adjustment.reload }
+        expect { adjustment.reload }
 .to_not raise_error
 
-        expect{ old_cart.reload }
+        expect { old_cart.reload }
 .to raise_error ActiveRecord::RecordNotFound
-        expect{ old_line_item.reload }
+        expect { old_line_item.reload }
 .to raise_error ActiveRecord::RecordNotFound
-        expect{ old_adjustment.reload }
+        expect { old_adjustment.reload }
 .to raise_error ActiveRecord::RecordNotFound
       end
 
       it "removes any defunct line item option value records" do
         line_item.delete
 
-        expect{ RemoveTransientData.new.call }
-.to change{ Spree::OptionValuesLineItem.count }
+        expect { RemoveTransientData.new.call }
+.to change { Spree::OptionValuesLineItem.count }
 .by(-1)
       end
     end

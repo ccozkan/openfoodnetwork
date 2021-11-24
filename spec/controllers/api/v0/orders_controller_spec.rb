@@ -375,7 +375,7 @@ payment_state: 'balance_due'
 
     def returns_orders(response)
       keys = response['orders'].first.keys.map(&:to_sym)
-      expect(order_attributes.all?{ |attr| keys.include? attr }).to be_truthy
+      expect(order_attributes.all? { |attr| keys.include? attr }).to be_truthy
     end
 
     def order_attributes

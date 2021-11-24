@@ -5,7 +5,7 @@ module Admin
     def subscriptions_setup_complete?(shops)
       return false unless shops.any?
 
-      shops = shops.select{ |shop| shipping_and_payment_methods_ok?(shop) && customers_ok?(shop) }
+      shops = shops.select { |shop| shipping_and_payment_methods_ok?(shop) && customers_ok?(shop) }
       Schedule.joins(:order_cycles).where(order_cycles: { coordinator_id: shops }).any?
     end
 

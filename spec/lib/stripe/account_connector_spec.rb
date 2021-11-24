@@ -35,7 +35,7 @@ module Stripe
         context "when params have no 'code' key" do
           it "raises a StripeError" do
             expect do
-              expect{ connector.create_account }
+              expect { connector.create_account }
 .to raise_error StripeError
             end.to_not change(StripeAccount, :count)
           end
@@ -47,7 +47,7 @@ module Stripe
           context "and the decoded state param doesn't contain an 'enterprise_id' key" do
             it "raises an AccessDenied error" do
               expect do
-                expect{ connector.create_account }
+                expect { connector.create_account }
 .to raise_error CanCan::AccessDenied
               end.to_not change(StripeAccount, :count)
             end
@@ -69,7 +69,7 @@ module Stripe
               it "makes a request to cancel the Stripe connection and raises an error" do
                 expect(OAuth).to receive(:deauthorize).with(stripe_user_id: "some_user_id")
                 expect do
-                  expect{ connector.create_account }
+                  expect { connector.create_account }
 .to raise_error CanCan::AccessDenied
                 end.to_not change(StripeAccount, :count)
               end
@@ -86,7 +86,7 @@ module Stripe
               end
 
               it "allows creations of a new Stripe Account from the callback params" do
-                expect{ connector.create_account }
+                expect { connector.create_account }
 .to change(StripeAccount, :count).by(1)
                 account = StripeAccount.last
                 expect(account.stripe_user_id).to eq "some_user_id"
@@ -103,7 +103,7 @@ module Stripe
               end
 
               it "allows creations of a new Stripe Account from the callback params" do
-                expect{ connector.create_account }
+                expect { connector.create_account }
 .to change(StripeAccount, :count).by(1)
                 account = StripeAccount.last
                 expect(account.stripe_user_id).to eq "some_user_id"

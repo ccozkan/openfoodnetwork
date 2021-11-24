@@ -648,7 +648,7 @@ to: hub1,
       expect(Enterprise).to receive(:find_available_permalink).with("Name To Turn Into A Permalink")
       expect(
         lambda { enterprise.send(:initialize_permalink) }
-      ).to change{
+      ).to change {
         enterprise.permalink
       }.to(
         "available_permalink"

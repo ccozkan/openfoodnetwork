@@ -238,21 +238,21 @@ shipments: [],
     describe "allow_search_by_email?" do
       let(:finder) { AddressFinder.new }
       context "when an email address has been provided" do
-        before{ allow(finder).to receive(:email) { "email@email.com" } }
+        before { allow(finder).to receive(:email) { "email@email.com" } }
 
         context "when a customer has been provided" do
           let(:customer) { double(:customer) }
-          before{ allow(finder).to receive(:customer) { customer } }
+          before { allow(finder).to receive(:customer) { customer } }
 
           context "when the customer email matches the raw email" do
-            before{ allow(customer).to receive(:email) { "email@email.com" } }
+            before { allow(customer).to receive(:email) { "email@email.com" } }
             it "returns true" do
               expect(finder.send(:allow_search_by_email?)).to be true
             end
           end
 
           context "when the customer email does not match the raw email" do
-            before{ allow(customer).to receive(:email) { "nah@email.com" } }
+            before { allow(customer).to receive(:email) { "nah@email.com" } }
             it "returns false" do
               expect(finder.send(:allow_search_by_email?)).to be false
             end
@@ -261,17 +261,17 @@ shipments: [],
 
         context "when a user has been provided" do
           let(:user) { double(:user) }
-          before{ allow(finder).to receive(:user) { user } }
+          before { allow(finder).to receive(:user) { user } }
 
           context "when the user email matches the raw email" do
-            before{ allow(user).to receive(:email) { "email@email.com" } }
+            before { allow(user).to receive(:email) { "email@email.com" } }
             it "returns true" do
               expect(finder.send(:allow_search_by_email?)).to be true
             end
           end
 
           context "when the user email does not match the raw email" do
-            before{ allow(user).to receive(:email) { "nah@email.com" } }
+            before { allow(user).to receive(:email) { "nah@email.com" } }
             it "returns false" do
               expect(finder.send(:allow_search_by_email?)).to be false
             end
