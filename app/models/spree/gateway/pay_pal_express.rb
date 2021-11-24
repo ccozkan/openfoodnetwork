@@ -60,9 +60,13 @@ module Spree
           express_checkout.update_column(:transaction_id, transaction_id)
           # This is rather hackish, required for payment/processing handle_response code.
           Class.new do
-            def success?; true; end
+            def success?; 
+              true; 
+            end
 
-            def authorization; nil; end
+            def authorization; 
+              nil; 
+            end
           end.new
         else
           class << pp_response

@@ -10,11 +10,17 @@ describe "spree/admin/payment_methods/index.html.haml" do
 
   before do
     ActionView::Base.class_eval do
-      def new_object_url() "" end
+      def new_object_url() 
+        "" 
+      end
 
-      def edit_object_url(_object, _options = {}) "" end
+      def edit_object_url(_object, _options = {}) 
+        "" 
+      end
 
-      def object_url(_object = nil, _options = {}) "" end
+      def object_url(_object = nil, _options = {}) 
+        "" 
+      end
     end
 
     assign(:payment_methods, [create(:payment_method), create(:payment_method)])

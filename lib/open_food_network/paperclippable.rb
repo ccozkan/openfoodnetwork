@@ -26,11 +26,17 @@ module OpenFoodNetwork
       self
     end
 
-    def valid?()      true end
+    def valid?()      
+      true 
+    end
 
-    def new_record?() true end
+    def new_record?() 
+      true 
+    end
 
-    def destroyed?()  true end
+    def destroyed?()  
+      true 
+    end
 
     def save
       run_callbacks(:save) do
@@ -40,11 +46,17 @@ module OpenFoodNetwork
 
     def errors
       obj = Object.new
-      def obj.[](_key) [] end
+      def obj.[](_key) 
+        [] 
+      end
 
-      def obj.full_messages() [] end
+      def obj.full_messages() 
+        [] 
+      end
 
-      def obj.any?() false end
+      def obj.any?() 
+        false 
+      end
       obj
     end
   end

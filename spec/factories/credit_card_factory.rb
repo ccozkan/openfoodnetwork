@@ -2,7 +2,9 @@
 
 # allows credit card info to be saved to the database which is needed for factories to work properly
 class TestCard < Spree::CreditCard
-  def remove_readonly_attributes(attributes) attributes; end
+  def remove_readonly_attributes(attributes) 
+    attributes; 
+  end
 end
 
 FactoryBot.define do
