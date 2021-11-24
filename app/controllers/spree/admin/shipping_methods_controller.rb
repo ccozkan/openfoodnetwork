@@ -55,7 +55,7 @@ module Spree
         
         @hubs =
  Enterprise.managed_by(spree_current_user).is_distributor.to_a.sort_by! do |d|
-          [(@shipping_method.has_distributor?(d)) ? 0 : 1, d.name]
+          [@shipping_method.has_distributor?(d) ? 0 : 1, d.name]
         end
         
       end

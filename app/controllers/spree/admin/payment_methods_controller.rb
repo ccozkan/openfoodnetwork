@@ -119,7 +119,7 @@ module Spree
         
         @hubs =
  Enterprise.managed_by(spree_current_user).is_distributor.to_a.sort_by! do |d|
-          [(@payment_method.has_distributor?(d)) ? 0 : 1, d.name]
+          [@payment_method.has_distributor?(d) ? 0 : 1, d.name]
         end
         
       end

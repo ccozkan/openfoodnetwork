@@ -203,11 +203,11 @@ ams_prefix: params[:ams_prefix] || 'basic',
       
       @payment_methods =
  Spree::PaymentMethod.managed_by(spree_current_user).to_a.sort_by! do |pm|
-        [(enterprise_payment_methods.include?(pm)) ? 0 : 1, pm.name]
+        [enterprise_payment_methods.include?(pm) ? 0 : 1, pm.name]
       end
       @shipping_methods =
  Spree::ShippingMethod.managed_by(spree_current_user).to_a.sort_by! do |sm|
-        [(enterprise_shipping_methods.include?(sm)) ? 0 : 1, sm.name]
+        [enterprise_shipping_methods.include?(sm) ? 0 : 1, sm.name]
       end
       
 

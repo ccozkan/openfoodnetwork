@@ -16,7 +16,7 @@ RSpec::Matchers.define(:have_select2) do |id, options = {}|
 
     results << node.has_selector?(from)
 
-    if results.all? && (options.key?(:selected))
+    if results.all? && options.key?(:selected)
       results << selected_option_is(from, options[:selected])
     end
 
@@ -52,7 +52,7 @@ RSpec::Matchers.define(:have_select2) do |id, options = {}|
     #   results << selected_option_is(from, options[:selected]) if options.key? :selected
     # end
 
-    if results.none? && (options.key?(:with_options))
+    if results.none? && options.key?(:with_options)
       results << all_options_absent(from, options[:with_options])
       # results << exact_options_present(from, options[:options]) if options.key? :options
       # results << no_options_present(from, options[:without_options]) if options.key? :without_options
