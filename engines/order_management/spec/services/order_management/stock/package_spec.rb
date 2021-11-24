@@ -49,8 +49,10 @@ module OrderManagement
           subject.add variant, 4, :on_hand
           subject.add variant, 2, :backordered
           flattened = subject.flattened
-          expect(flattened.select { |i| i.state == :on_hand }.size).to eq 4
-          expect(flattened.select { |i| i.state == :backordered }.size).to eq 2
+          expect(flattened.select { |i| i.state == :on_hand }
+.size).to eq 4
+          expect(flattened.select { |i| i.state == :backordered }
+.size).to eq 2
         end
 
         it 'set contents from flattened' do

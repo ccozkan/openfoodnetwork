@@ -100,7 +100,8 @@ module Spree
  if Rails.env.dev? || Rails.env.test?
                        Gateway.providers.sort_by(&:name)
                      else
-                       Gateway.providers.reject{ |p| p.name.include? "Bogus" }.sort_by(&:name)
+                       Gateway.providers.reject{ |p| p.name.include? "Bogus" }
+.sort_by(&:name)
                      end
         @providers.reject!{ |provider| stripe_provider?(provider) } unless show_stripe?
         @calculators = PaymentMethod.calculators.sort_by(&:name)

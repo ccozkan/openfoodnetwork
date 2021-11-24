@@ -186,7 +186,8 @@ module Spree
           product.save
           product.reload
           expect(product.property('the_prop_new')).to eq 'value'
-        }.to change { product.properties.length }.by(1)
+        }.to change { product.properties.length }
+.by(1)
       end
 
       # Regression test for #2455
@@ -227,7 +228,8 @@ module Spree
 
       it "doesnt raise ReadOnlyRecord error" do
         Spree::StockMovement.create!(stock_item: stock_item, quantity: 1)
-        expect { product.destroy }.not_to raise_error
+        expect { product.destroy }
+.not_to raise_error
       end
     end
 
@@ -361,7 +363,8 @@ module Spree
           it "only duplicates master with after_save when no standard variants exist" do
             expect(product).to receive :ensure_standard_variant
             product.name = "Something else"
-            expect{ product.save! }.to_not change{ product.variants.count }
+            expect{ product.save! }
+.to_not change{ product.variants.count }
           end
         end
 
@@ -419,15 +422,18 @@ distributors: [distributor],
         }
 
         it "touches the supplier" do
-          expect { product.destroy }.to change { supplier.reload.updated_at }
+          expect { product.destroy }
+.to change { supplier.reload.updated_at }
         end
 
         it "touches all distributors" do
-          expect { product.destroy }.to change { distributor.reload.updated_at }
+          expect { product.destroy }
+.to change { distributor.reload.updated_at }
         end
 
         it "removes variants from order cycles" do
-          expect { product.destroy }.to change { ExchangeVariant.count }
+          expect { product.destroy }
+.to change { ExchangeVariant.count }
         end
       end
 

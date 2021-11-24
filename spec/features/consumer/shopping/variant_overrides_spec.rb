@@ -212,8 +212,10 @@ product4_variant1
       expect do
         expect do
           complete_checkout
-        end.to change { product1_variant3.reload.on_hand }.by(0)
-      end.to change { product1_variant3_override.reload.count_on_hand }.by(-2)
+        end.to change { product1_variant3.reload.on_hand }
+.by(0)
+      end.to change { product1_variant3_override.reload.count_on_hand }
+.by(-2)
     end
 
     it "subtracts stock from stock-overridden on_demand variants" do
@@ -223,8 +225,10 @@ product4_variant1
       expect do
         expect do
           complete_checkout
-        end.to change { product3_variant2.reload.on_hand }.by(0)
-      end.to change { product3_variant2_override.reload.count_on_hand }.by(-2)
+        end.to change { product3_variant2.reload.on_hand }
+.by(0)
+      end.to change { product3_variant2_override.reload.count_on_hand }
+.by(-2)
     end
 
     it "does not subtract stock from overrides that do not override count_on_hand" do
@@ -232,7 +236,8 @@ product4_variant1
       click_checkout
       expect do
         complete_checkout
-      end.to change { product1_variant1.reload.on_hand }.by(-2)
+      end.to change { product1_variant1.reload.on_hand }
+.by(-2)
       expect(product1_variant1_override.reload.count_on_hand).to be_nil
     end
 
@@ -241,7 +246,8 @@ product4_variant1
       click_checkout
       expect do
         complete_checkout
-      end.to change { product4_variant1.reload.on_hand }.by(0)
+      end.to change { product4_variant1.reload.on_hand }
+.by(0)
       expect(product4_variant1_override.reload.count_on_hand).to be_nil
     end
 

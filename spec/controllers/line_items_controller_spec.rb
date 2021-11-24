@@ -94,7 +94,8 @@ distributors: [distributor],
               it "deletes the line item" do
                 delete :destroy, params: params
                 expect(response.status).to eq 204
-                expect { item.reload }.to raise_error ActiveRecord::RecordNotFound
+                expect { item.reload }
+.to raise_error ActiveRecord::RecordNotFound
               end
 
               context "after a payment is captured" do

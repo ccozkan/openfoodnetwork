@@ -18,7 +18,8 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
 
   context "as anonymous user" do
     it "is redirected to login page when attempting to access product listing" do
-      expect { visit spree.admin_products_path }.not_to raise_error
+      expect { visit spree.admin_products_path }
+.not_to raise_error
     end
   end
 

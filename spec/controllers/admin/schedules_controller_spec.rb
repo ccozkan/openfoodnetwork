@@ -190,7 +190,8 @@ id: coordinated_schedule.id,
 
         context "where no order cycles ids are provided" do
           it "does not allow me to create the schedule" do
-            expect { create_schedule params }.to_not change(Schedule, :count)
+            expect { create_schedule params }
+.to_not change(Schedule, :count)
           end
         end
 
@@ -205,7 +206,8 @@ coordinated_order_cycle.id,
           end
 
           it "allows me to create the schedule, adding only order cycles that I manage" do
-            expect { create_schedule params }.to change(Schedule, :count).by(1)
+            expect { create_schedule params }
+.to change(Schedule, :count).by(1)
             schedule = Schedule.last
             expect(schedule.order_cycles).to include coordinated_order_cycle
             expect(schedule.order_cycles).to_not include uncoordinated_order_cycle
@@ -226,7 +228,8 @@ coordinated_order_cycle.id,
           end
 
           it "prevents me from creating the schedule" do
-            expect { create_schedule params }.to_not change(Schedule, :count)
+            expect { create_schedule params }
+.to_not change(Schedule, :count)
           end
         end
       end
@@ -243,7 +246,8 @@ coordinated_order_cycle.id,
         end
 
         it "allows me to create a schedule" do
-          expect { create_schedule params }.to change(Schedule, :count).by(1)
+          expect { create_schedule params }
+.to change(Schedule, :count).by(1)
           schedule = Schedule.last
           expect(schedule.order_cycles).to include coordinated_order_cycle,
                                                    uncoordinated_order_cycle
@@ -274,7 +278,8 @@ coordinated_order_cycle.id,
 
           context "when no dependent subscriptions are present" do
             it "allows me to destroy the schedule" do
-              expect { spree_delete :destroy, params }.to change(Schedule, :count).by(-1)
+              expect { spree_delete :destroy, params }
+.to change(Schedule, :count).by(-1)
             end
           end
 
@@ -282,7 +287,8 @@ coordinated_order_cycle.id,
             let!(:subscription) { create(:subscription, schedule: coordinated_schedule) }
 
             it "returns an error message and prevents me from deleting the schedule" do
-              expect { spree_delete :destroy, params }.to_not change(Schedule, :count)
+              expect { spree_delete :destroy, params }
+.to_not change(Schedule, :count)
               json_response = JSON.parse(response.body)
               expect(json_response["errors"]).to include I18n.t('admin.schedules.destroy.associated_subscriptions_error')
             end
@@ -293,7 +299,8 @@ coordinated_order_cycle.id,
           before { params.merge!(id: uncoordinated_schedule.id) }
 
           it "prevents me from destroying the schedule" do
-            expect { spree_delete :destroy, params }.to_not change(Schedule, :count)
+            expect { spree_delete :destroy, params }
+.to_not change(Schedule, :count)
           end
         end
       end

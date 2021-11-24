@@ -50,7 +50,8 @@ bill_address_attributes: address_params,
 ship_address_attributes: address_params 
 },
                               order_id: order.number
-        }.to change { order.reload.state }.from("cart").to("payment")
+        }.to change { order.reload.state }
+.from("cart").to("payment")
       end
 
       context "when adding details of a registered user" do

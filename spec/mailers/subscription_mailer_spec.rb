@@ -22,7 +22,9 @@ describe SubscriptionMailer, type: :mailer do
       before { changes[order.line_items.first.id] = 2 }
 
       it "sends the email, which notifies the customer of changes made" do
-        expect { email.deliver_now }.to change { SubscriptionMailer.deliveries.count }.by(1)
+        expect { email.deliver_now }
+.to change { SubscriptionMailer.deliveries.count }
+.by(1)
 
         body = SubscriptionMailer.deliveries.last.body.encoded
 
@@ -33,7 +35,9 @@ describe SubscriptionMailer, type: :mailer do
 
     context "and changes have not been made to the order" do
       it "sends the email" do
-        expect { email.deliver_now }.to change { SubscriptionMailer.deliveries.count }.by(1)
+        expect { email.deliver_now }
+.to change { SubscriptionMailer.deliveries.count }
+.by(1)
 
         body = SubscriptionMailer.deliveries.last.body.encoded
 
@@ -114,7 +118,9 @@ describe SubscriptionMailer, type: :mailer do
     let(:user) { order.user }
 
     it "sends the email" do
-      expect { email.deliver_now }.to change{ SubscriptionMailer.deliveries.count }.by(1)
+      expect { email.deliver_now }
+.to change{ SubscriptionMailer.deliveries.count }
+.by(1)
 
       body = SubscriptionMailer.deliveries.last.body.encoded
       expect(body).to include "This order was automatically placed for you"
@@ -165,7 +171,8 @@ describe SubscriptionMailer, type: :mailer do
     before do
       expect do
         SubscriptionMailer.empty_email(order, {}).deliver_now
-      end.to change{ SubscriptionMailer.deliveries.count }.by(1)
+      end.to change{ SubscriptionMailer.deliveries.count }
+.by(1)
     end
 
     it "sends the email" do
@@ -186,7 +193,8 @@ describe SubscriptionMailer, type: :mailer do
 
       expect do
         SubscriptionMailer.failed_payment_email(order).deliver_now
-      end.to change{ SubscriptionMailer.deliveries.count }.by(1)
+      end.to change{ SubscriptionMailer.deliveries.count }
+.by(1)
     end
 
     it "sends the email" do

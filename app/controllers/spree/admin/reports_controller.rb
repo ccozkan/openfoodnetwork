@@ -273,7 +273,8 @@ spree_current_user,
           :packing
         ]
         reports = all_reports.select { |action| can? action, Spree::Admin::ReportsController }
-        reports.map { |report| [report, describe_report(report)] }.to_h
+        reports.map { |report| [report, describe_report(report)] }
+.to_h
       end
 
       def describe_report(report)

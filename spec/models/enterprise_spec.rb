@@ -511,7 +511,8 @@ to: hub1,
         it "does not create any other links" do
           producer1
           producer2
-          expect { hub1 }.to change(EnterpriseRelationship, :count).by(2) # 2 producer links
+          expect { hub1 }
+.to change(EnterpriseRelationship, :count).by(2) # 2 producer links
           expect {
             hub2
           }.to change(EnterpriseRelationship, :count).by(3) # 2 producer links + 1 hub link

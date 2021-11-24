@@ -90,7 +90,8 @@ bill_address: bill_address,
       }
 
       sum_quantities = line_items.map(&:quantity).sum
-      sum_max_quantities = line_items.map { |li| li.max_quantity || 0 }.sum
+      sum_max_quantities = line_items.map { |li| li.max_quantity || 0 }
+.sum
 
       expect(table[0]).to eq(
 [

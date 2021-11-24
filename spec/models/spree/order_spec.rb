@@ -75,7 +75,8 @@ describe Spree::Order do
 
       expect do
         order.associate_user!(user)
-      end.to change { [order.user, order.email] }.from([nil, nil]).to([user, user.email])
+      end.to change { [order.user, order.email] }
+.from([nil, nil]).to([user, user.email])
     end
 
     it "should not persist an invalid address" do
@@ -85,7 +86,8 @@ describe Spree::Order do
       order.ship_address = address
       expect do
         order.associate_user!(user)
-      end.not_to change { address.persisted? }.from(false)
+      end.not_to change { address.persisted? }
+.from(false)
     end
   end
 
@@ -1066,7 +1068,8 @@ distributors: [new_distributor],
 
         it "links the customer customer to the order" do
           expect(order.customer).to be_nil
-          expect{ order.send(:ensure_customer) }.to_not change{ Customer.count }
+          expect{ order.send(:ensure_customer) }
+.to_not change{ Customer.count }
           expect(order.customer).to eq customer
         end
       end
@@ -1094,7 +1097,9 @@ distributors: [new_distributor],
         context "and the customer is valid" do
           it "creates a new customer with defaut name and addresses" do
             expect(order.customer).to be_nil
-            expect { order.send(:ensure_customer) }.to change{ Customer.count }.by 1
+            expect { order.send(:ensure_customer) }
+.to change{ Customer.count }
+.by 1
 
             expect(order.customer.name).to eq order.bill_address.full_name
             expect(order.customer.bill_address.same_as?(order.bill_address)).to be true
@@ -1120,7 +1125,8 @@ distributors: [new_distributor],
     end
 
     it "returns a validation error" do
-      expect{ order.next }.to change(order.errors, :count).from(0).to(1)
+      expect{ order.next }
+.to change(order.errors, :count).from(0).to(1)
       expect(order.errors.messages[:email]).to eq [I18n.t('devise.failure.already_registered')]
       expect(order.state).to eq 'cart'
     end
@@ -1304,7 +1310,9 @@ product.variants.first,
       it "advances to payment state" do
         advance_to_delivery_state(order)
 
-        expect { order.next! }.to change { order.state }.from("delivery").to("payment")
+        expect { order.next! }
+.to change { order.state }
+.from("delivery").to("payment")
       end
 
       # Regression test for https://github.com/openfoodfoundation/openfoodnetwork/issues/3924
@@ -1313,7 +1321,9 @@ product.variants.first,
         order.next!
         order.payments << create(:payment, order: order)
 
-        expect { order.next! }.to change { order.state }.from("payment").to("complete")
+        expect { order.next! }
+.to change { order.state }
+.from("payment").to("complete")
       end
     end
 
@@ -1347,7 +1357,9 @@ product.variants.first,
         it "skips the payment state" do
           advance_to_delivery_state(order)
 
-          expect { order.next! }.to change { order.state }.from("delivery").to("complete")
+          expect { order.next! }
+.to change { order.state }
+.from("delivery").to("complete")
         end
       end
     end
@@ -1375,7 +1387,8 @@ product.variants.first,
       end
 
       it 'raises' do
-        expect { order.restart_checkout! }.to raise_error(StateMachines::InvalidTransition)
+        expect { order.restart_checkout! }
+.to raise_error(StateMachines::InvalidTransition)
       end
     end
 

@@ -106,7 +106,8 @@ describe "Managing users" do
         fill_in "Confirm Password", with: "user1Secret"
         expect do
           click_button "Create"
-        end.to change { Spree::User.count }.by 1
+        end.to change { Spree::User.count }
+.by 1
         expect(page).to have_text "Created Successfully"
         expect(page).to have_text "Email confirmation is pending"
       end

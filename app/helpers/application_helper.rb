@@ -10,7 +10,8 @@ module ApplicationHelper
 
     return "" unless obj && obj.errors[method].present?
 
-    errors = obj.errors[method].map { |err| h(err) }.join('<br />').html_safe
+    errors = obj.errors[method].map { |err| h(err) }
+.join('<br />').html_safe
 
     if options[:standalone]
       content_tag(

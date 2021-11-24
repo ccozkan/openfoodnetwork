@@ -306,7 +306,8 @@ if: lambda { |shipment|
 
       record = true
       while record
-        random = "H#{Array.new(11) { rand(9) }.join}"
+        random = "H#{Array.new(11) { rand(9) }
+.join}"
         record = self.class.default_scoped.find_by(number: random)
       end
       self.number = random

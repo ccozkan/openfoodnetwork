@@ -17,7 +17,8 @@ describe Checkout::StripeRedirect do
       it "raises an error if payment method does not exist" do
         params[:order][:payments_attributes] = [{ payment_method_id: "123" }]
 
-        expect { redirect.path }.to raise_error ActiveRecord::RecordNotFound
+        expect { redirect.path }
+.to raise_error ActiveRecord::RecordNotFound
       end
 
       describe "when payment method provided exists" do

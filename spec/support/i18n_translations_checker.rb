@@ -32,7 +32,8 @@ module Spree
   def self.check_missing_translations
     self.missing_translation_messages = []
     self.used_translations ||= []
-    used_translations.map { |a| a.split('.') }.each do |translation_keys|
+    used_translations.map { |a| a.split('.') }
+.each do |translation_keys|
       root = translations
       processed_keys = []
       translation_keys.each do |key|

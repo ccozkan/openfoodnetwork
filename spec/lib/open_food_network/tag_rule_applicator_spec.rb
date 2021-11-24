@@ -70,19 +70,22 @@ preferred_matched_shipping_methods_visibility: "visible"
     describe "initialisation" do
       context "when enterprise is nil" do
         let(:applicator) { OpenFoodNetwork::TagRuleApplicator.new(nil, "FilterProducts", ["tag1"]) }
-        it { expect{ applicator }.to raise_error "Enterprise cannot be nil" }
+        it { expect{ applicator }
+.to raise_error "Enterprise cannot be nil" }
       end
 
       context "when rule_type is nil" do
         let(:applicator) { OpenFoodNetwork::TagRuleApplicator.new(enterprise, nil, ["tag1"]) }
-        it { expect{ applicator }.to raise_error "Rule Type cannot be nil" }
+        it { expect{ applicator }
+.to raise_error "Rule Type cannot be nil" }
       end
 
       context "when rule_type does not match an existing rule type" do
         let(:applicator) {
           OpenFoodNetwork::TagRuleApplicator.new(enterprise, "FilterSomething", ["tag1"])
         }
-        it { expect{ applicator }.to raise_error NameError }
+        it { expect{ applicator }
+.to raise_error NameError }
       end
 
       context "when enterprise and rule_type are present" do

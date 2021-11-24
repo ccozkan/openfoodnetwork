@@ -207,7 +207,8 @@ format: :json,
           end
 
           it "allows me to create the customer" do
-            expect { create_customer enterprise }.to change(Customer, :count).by(1)
+            expect { create_customer enterprise }
+.to change(Customer, :count).by(1)
           end
         end
 
@@ -217,7 +218,8 @@ format: :json,
           end
 
           it "prevents me from creating the customer" do
-            expect { create_customer enterprise }.to change(Customer, :count).by(0)
+            expect { create_customer enterprise }
+.to change(Customer, :count).by(0)
           end
         end
 
@@ -227,7 +229,8 @@ format: :json,
           end
 
           it "allows admins to create the customer" do
-            expect { create_customer enterprise }.to change(Customer, :count).by(1)
+            expect { create_customer enterprise }
+.to change(Customer, :count).by(1)
           end
         end
       end

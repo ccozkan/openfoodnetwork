@@ -24,7 +24,8 @@ describe Spree::Admin::PaymentsController, type: :controller do
       it "advances the order state" do
         expect {
           spree_post :create, payment: params, order_id: order.number
-        }.to change { order.reload.state }.from("payment").to("complete")
+        }.to change { order.reload.state }
+.from("payment").to("complete")
       end
     end
 

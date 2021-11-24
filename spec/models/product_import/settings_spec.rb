@@ -150,7 +150,8 @@ describe ProductImport::Settings do
       let(:import_settings) { {} }
 
       it 'raises' do
-        expect { settings.reset_all_absent? }.to raise_error(NoMethodError)
+        expect { settings.reset_all_absent? }
+.to raise_error(NoMethodError)
       end
     end
 

@@ -85,7 +85,8 @@ module Catalog
               end
 
               it 'returns correct number of resetted variants' do
-                expect { products_reset.reset(supplier_ids) }.to raise_error RuntimeError
+                expect { products_reset.reset(supplier_ids) }
+.to raise_error RuntimeError
               end
             end
 

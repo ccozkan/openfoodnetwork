@@ -131,7 +131,8 @@ authorization: '12345'
         record = true
         prefix = success ? 'BGS' : 'FAIL'
         while record
-          random = "#{prefix}-#{Array.new(6){ rand(6) }.join}"
+          random = "#{prefix}-#{Array.new(6){ rand(6) }
+.join}"
           record = CreditCard.find_by(gateway_customer_profile_id: random)
         end
         random

@@ -52,7 +52,8 @@ ship_address_attributes: new_ship_address.dup.attributes.except!( 'created_at', 
       it "enforces the limit on the number of enterprise owned" do
         expect(u2.owned_enterprises.reload).to eq []
         u2.owned_enterprises << e1
-        expect { u2.save! }.to_not raise_error
+        expect { u2.save! }
+.to_not raise_error
         expect do
           u2.owned_enterprises << e2
           u2.save!
@@ -193,7 +194,8 @@ ship_address_attributes: new_ship_address.dup.attributes.except!( 'created_at', 
       order.save
       user = order.user
 
-      expect { user.destroy }.to raise_exception(Spree::User::DestroyWithOrdersError)
+      expect { user.destroy }
+.to raise_exception(Spree::User::DestroyWithOrdersError)
     end
   end
 

@@ -33,6 +33,7 @@ locale: nil
 
     expect {
       spree_post :testmail
-    }.to change { ActionMailer::Base.deliveries.size }.by(1)
+    }.to change { ActionMailer::Base.deliveries.size }
+.by(1)
   end
 end

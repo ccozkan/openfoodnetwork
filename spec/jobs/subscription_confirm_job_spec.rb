@@ -106,7 +106,8 @@ order_cycle: order_cycle1,
       end
 
       it "marks confirmable proxy_orders as processed by setting confirmed_at" do
-        expect{ job.perform }.to change{ proxy_order.reload.confirmed_at }
+        expect{ job.perform }
+.to change{ proxy_order.reload.confirmed_at }
         expect(proxy_order.confirmed_at).to be_within(5.seconds).of Time.zone.now
       end
 

@@ -99,7 +99,8 @@ module Admin
     # This is useful for compiling a list of errors on any generic collection
     def collection_errors
       errors = ActiveModel::Errors.new self
-      full_messages = @collection.map { |element| element.errors.full_messages }.flatten
+      full_messages = @collection.map { |element| element.errors.full_messages }
+.flatten
       full_messages.each { |fm| errors.add(:base, fm) }
       errors
     end

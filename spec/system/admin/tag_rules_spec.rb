@@ -276,7 +276,8 @@ count: 1
           within "#tr_0" do first("a.delete-tag-rule").click end
         end
         expect(page).to have_no_selector "#tr_0"
-      end.to change{ TagRule.count }.by(-2)
+      end.to change{ TagRule.count }
+.by(-2)
 
       # After deleting tags, the form is dirty and we need to confirm leaving
       # the page. If we don't do it here, Capybara may timeout waiting for the

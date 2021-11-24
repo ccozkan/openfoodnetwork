@@ -28,7 +28,8 @@ describe PlaceProxyOrder do
 
     it "marks placeable proxy_orders as processed by setting placed_at" do
       freeze_time do
-        expect { subject.call }.to change { proxy_order.reload.placed_at }
+        expect { subject.call }
+.to change { proxy_order.reload.placed_at }
         expect(proxy_order.placed_at).to eq(Time.zone.now)
       end
     end
@@ -59,7 +60,8 @@ describe PlaceProxyOrder do
         ActionMailer::Base.deliveries.clear
 
         expect(summarizer).to receive(:record_issue).with(:complete, order).once
-        expect { subject.call }.to_not change { order.reload.state }
+        expect { subject.call }
+.to_not change { order.reload.state }
         expect(order.payments.first.state).to eq "checkout"
         expect(ActionMailer::Base.deliveries.count).to be 0
       end

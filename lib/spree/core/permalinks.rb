@@ -38,7 +38,8 @@ module Spree
       end
 
       def generate_permalink
-        "#{self.class.permalink_prefix}#{Array.new(9) { rand(9) }.join}"
+        "#{self.class.permalink_prefix}#{Array.new(9) { rand(9) }
+.join}"
       end
 
       def save_permalink(permalink_value = to_param)
@@ -54,7 +55,8 @@ module Spree
 
             # Find the existing permalink with the highest number, and increment that number.
             # (If none of the existing permalinks have a number, this will evaluate to 1.)
-            number = other.map { |o| o.__send__(field)[/-(\d+)$/, 1].to_i }.max + 1
+            number = other.map { |o| o.__send__(field)[/-(\d+)$/, 1].to_i }
+.max + 1
             permalink_value += "-#{number}"
           end
           write_attribute(field, permalink_value)

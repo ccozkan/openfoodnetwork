@@ -97,7 +97,8 @@ success?: true,
 
         it "should invalidate if payment method doesnt support source" do
           expect(payment.payment_method).to receive(:supports?).with(payment.source).and_return(false)
-          expect { payment.process! }.to raise_error(Spree::Core::GatewayError)
+          expect { payment.process! }
+.to raise_error(Spree::Core::GatewayError)
           expect(payment.state).to eq('invalid')
         end
 
@@ -149,7 +150,8 @@ success?: true,
         context "when gateway does not match the environment" do
           it "should raise an exception" do
             gateway.stub environment: "foo"
-            expect { payment.authorize! }.to raise_error(Spree::Core::GatewayError)
+            expect { payment.authorize! }
+.to raise_error(Spree::Core::GatewayError)
           end
         end
 
@@ -221,7 +223,8 @@ card,
         context "when gateway does not match the environment" do
           it "should raise an exception" do
             gateway.stub environment: "foo"
-            expect { payment.purchase! }.to raise_error(Spree::Core::GatewayError)
+            expect { payment.purchase! }
+.to raise_error(Spree::Core::GatewayError)
           end
         end
 
@@ -249,7 +252,8 @@ card,
             gateway.stub(:purchase).and_return(failed_response)
             expect(payment).to receive(:failure)
             expect(payment).not_to receive(:pend)
-            expect { payment.purchase! }.to raise_error(Spree::Core::GatewayError)
+            expect { payment.purchase! }
+.to raise_error(Spree::Core::GatewayError)
           end
         end
       end
@@ -286,7 +290,8 @@ card,
               gateway.stub capture: failed_response
               expect(payment).to receive(:failure)
               expect(payment).to_not receive(:complete)
-              expect { payment.capture! }.to raise_error(Spree::Core::GatewayError)
+              expect { payment.capture! }
+.to raise_error(Spree::Core::GatewayError)
             end
           end
         end
@@ -338,7 +343,8 @@ card,
           it "should raise an exception" do
             payment = build_stubbed(:payment, payment_method: gateway)
             gateway.stub environment: "foo"
-            expect { payment.void_transaction! }.to raise_error(Spree::Core::GatewayError)
+            expect { payment.void_transaction! }
+.to raise_error(Spree::Core::GatewayError)
           end
         end
 
@@ -355,7 +361,8 @@ card,
           it "should not void the payment" do
             gateway.stub void: failed_response
             expect(payment).to_not receive(:void)
-            expect { payment.void_transaction! }.to raise_error(Spree::Core::GatewayError)
+            expect { payment.void_transaction! }
+.to raise_error(Spree::Core::GatewayError)
           end
         end
 
@@ -427,7 +434,8 @@ card,
           it "should raise an exception" do
             payment = build_stubbed(:payment, payment_method: gateway)
             gateway.stub environment: "foo"
-            expect { payment.credit! }.to raise_error(Spree::Core::GatewayError)
+            expect { payment.credit! }
+.to raise_error(Spree::Core::GatewayError)
           end
         end
 
@@ -474,7 +482,8 @@ card,
       it "should not create a payment" do
         gateway.stub credit: failed_response
         Spree::Payment.should_not_receive(:create)
-        expect { payment.credit! }.to raise_error(Spree::Core::GatewayError)
+        expect { payment.credit! }
+.to raise_error(Spree::Core::GatewayError)
       end
     end
 
@@ -505,7 +514,8 @@ card,
         specify do
           payment = build_stubbed(:payment, source: nil, payment_method: gateway)
           payment.payment_method.stub(source_required?: false)
-          expect { payment.process! }.not_to raise_error
+          expect { payment.process! }
+.not_to raise_error
         end
       end
     end

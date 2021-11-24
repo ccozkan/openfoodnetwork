@@ -30,7 +30,9 @@ describe Admin::TagRulesController, type: :controller do
           allow(controller).to receive(:spree_current_user) { enterprise.owner }
         end
 
-        it { expect{ spree_delete :destroy, params }.to change{ TagRule.count }.by(-1) }
+        it { expect{ spree_delete :destroy, params }
+.to change{ TagRule.count }
+.by(-1) }
       end
     end
   end

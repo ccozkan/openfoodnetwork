@@ -21,7 +21,8 @@ describe DefaultShippingCategory do
       end
 
       it 'does not create another category' do
-        expect { described_class.find_or_create }.not_to change(Spree::ShippingCategory, :count)
+        expect { described_class.find_or_create }
+.not_to change(Spree::ShippingCategory, :count)
       end
     end
 

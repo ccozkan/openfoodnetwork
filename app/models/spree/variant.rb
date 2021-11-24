@@ -199,11 +199,13 @@ joins(:prices)
     end
 
     def option_value(opt_name)
-      option_values.detect { |o| o.option_type.name == opt_name }.try(:presentation)
+      option_values.detect { |o| o.option_type.name == opt_name }
+.try(:presentation)
     end
 
     def price_in(currency)
-      prices.select{ |price| price.currency == currency }.first ||
+      prices.select{ |price| price.currency == currency }
+.first ||
         Spree::Price.new(variant_id: id, currency: currency)
     end
 

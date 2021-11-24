@@ -168,7 +168,8 @@ module Spree
 
       context "#associations" do
         it "should be able to access its payments" do
-          expect { credit_card.payments.to_a }.not_to raise_error
+          expect { credit_card.payments.to_a }
+.not_to raise_error
         end
       end
 

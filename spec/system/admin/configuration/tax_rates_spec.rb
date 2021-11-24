@@ -17,7 +17,8 @@ describe "Tax Rates" do
   # Regression test for Spree #535
   it "can see a tax rate in the list if the tax category has been deleted" do
     tax_rate.tax_category.update_column(:deleted_at, Time.zone.now)
-    expect { click_link "Tax Rates" }.not_to raise_error
+    expect { click_link "Tax Rates" }
+.not_to raise_error
     within("table tbody td:nth-child(3)") do
       expect(page).to have_content("N/A")
     end

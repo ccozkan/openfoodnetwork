@@ -63,7 +63,8 @@ module Spree
     end
 
     def returnable_inventory
-      order.shipped_shipments.collect{ |s| s.inventory_units.to_a }.flatten
+      order.shipped_shipments.collect{ |s| s.inventory_units.to_a }
+.flatten
     end
 
     # Used when Adjustment#update_adjustment! wants to update the related adjustment
@@ -84,7 +85,8 @@ module Spree
 
       record = true
       while record
-        random = "RMA#{Array.new(9){ rand(9) }.join}"
+        random = "RMA#{Array.new(9){ rand(9) }
+.join}"
         record = self.class.find_by(number: random)
       end
       self.number = random

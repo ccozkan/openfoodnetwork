@@ -46,7 +46,8 @@ module OpenFoodNetwork
 
       orders = search.result
 
-      orders.select{ |order| orders_with_hidden_details(orders).include? order }.each do |order|
+      orders.select{ |order| orders_with_hidden_details(orders).include? order }
+.each do |order|
         OrderDataMasker.new(order).call
       end
 

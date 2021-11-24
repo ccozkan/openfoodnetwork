@@ -26,7 +26,9 @@ describe DefaultStockLocation do
     it "removes all stock locations named 'default'" do
       create(:stock_location)
 
-      expect { described_class.destroy_all }.to change { Spree::StockLocation.count }.to(0)
+      expect { described_class.destroy_all }
+.to change { Spree::StockLocation.count }
+.to(0)
     end
   end
 
@@ -43,7 +45,8 @@ describe DefaultStockLocation do
       end
 
       it 'does not create any other location' do
-        expect { described_class.find_or_create }.not_to change(Spree::StockLocation, :count)
+        expect { described_class.find_or_create }
+.not_to change(Spree::StockLocation, :count)
       end
     end
 

@@ -379,7 +379,8 @@ order: order1,
       it 'destroys the line item' do
         expect {
           spree_delete :destroy, params
-        }.to change { Spree::LineItem.where(id: line_item1).count }.from(1).to(0)
+        }.to change { Spree::LineItem.where(id: line_item1).count }
+.from(1).to(0)
       end
 
       it 'returns an empty JSON response' do

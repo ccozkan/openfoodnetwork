@@ -55,7 +55,8 @@ describe Reporting::ReportLoader do
         let(:report_subtypes) { [] }
 
         it "raises an error" do
-          expect{ service.report_class }.to raise_error(Reporting::Errors::ReportNotFound)
+          expect{ service.report_class }
+.to raise_error(Reporting::Errors::ReportNotFound)
         end
       end
     end
@@ -84,7 +85,8 @@ describe Reporting::ReportLoader do
       let(:report_subtypes) { [] }
 
       it "raises an error" do
-        expect{ service.report_class }.to raise_error(Reporting::Errors::ReportNotFound)
+        expect{ service.report_class }
+.to raise_error(Reporting::Errors::ReportNotFound)
       end
     end
   end

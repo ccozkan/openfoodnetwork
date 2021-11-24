@@ -107,7 +107,8 @@ without_options: [unmanaged_distributor.name]
             end
           end
           expect(page).to have_no_selector "tr#c_#{customer2.id}"
-        }.to change{ Customer.count }.by(-1)
+        }.to change{ Customer.count }
+.by(-1)
       end
 
       describe "for a shop with multiple customers" do
@@ -414,7 +415,8 @@ amount: -25.00
               fill_in 'email', with: "new@email.com"
               click_button 'Add Customer'
               expect(page).not_to have_selector "#new-customer-dialog"
-            }.to change{ Customer.of(managed_distributor1).count }.from(2).to(3)
+            }.to change{ Customer.of(managed_distributor1).count }
+.from(2).to(3)
           end
         end
       end

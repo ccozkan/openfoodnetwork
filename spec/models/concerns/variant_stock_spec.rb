@@ -56,7 +56,8 @@ describe VariantStock do
       let(:variant) { build_stubbed(:variant) }
 
       it 'raises' do
-        expect { variant.on_hand = 3 }.to raise_error(StandardError)
+        expect { variant.on_hand = 3 }
+.to raise_error(StandardError)
       end
     end
   end
@@ -132,7 +133,8 @@ describe VariantStock do
       let(:variant) { build_stubbed(:variant) }
 
       it 'raises' do
-        expect { variant.on_demand = 3 }.to raise_error(StandardError)
+        expect { variant.on_demand = 3 }
+.to raise_error(StandardError)
       end
     end
   end

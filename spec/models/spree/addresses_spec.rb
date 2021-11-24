@@ -12,7 +12,8 @@ describe Spree::Address do
 
   describe "destroy" do
     it "can be deleted" do
-      expect { address.destroy }.to_not raise_error
+      expect { address.destroy }
+.to_not raise_error
     end
 
     it "cannot be deleted with associated enterprise" do

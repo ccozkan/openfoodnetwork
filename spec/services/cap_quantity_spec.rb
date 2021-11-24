@@ -78,7 +78,8 @@ describe CapQuantity do
 
           it "removes the unavailable items from the shipment" do
             expect { CapQuantity.new.call(order) }
-              .to change { order.reload.shipment.manifest.size }.from(2).to(1)
+              .to change { order.reload.shipment.manifest.size }
+.from(2).to(1)
           end
         end
       end

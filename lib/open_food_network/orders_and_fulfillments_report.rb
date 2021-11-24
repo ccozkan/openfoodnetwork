@@ -87,7 +87,8 @@ module OpenFoodNetwork
     end
 
     def not_all_have_unit?(line_items)
-      line_items.map { |li| li.unit_value.nil? }.any?
+      line_items.map { |li| li.unit_value.nil? }
+.any?
     end
 
     def scale_factor(product)

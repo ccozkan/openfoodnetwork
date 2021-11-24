@@ -300,7 +300,8 @@ variant: product.variants.first,
     let!(:supplier2) { order_cycle1.suppliers.last }
     let!(:distributor1) { order_cycle1.distributors.first }
     let!(:distributor2) do
-      order_cycle1.distributors.reject{ |d| d == distributor1 }.last # ensure d1 != d2
+      order_cycle1.distributors.reject{ |d| d == distributor1 }
+.last # ensure d1 != d2
     end
     let(:product) { order_cycle1.products.first }
 

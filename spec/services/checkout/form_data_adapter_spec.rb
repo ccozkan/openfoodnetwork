@@ -80,7 +80,8 @@ adapter.params[:order][:payments_attributes]
           let(:credit_card) { create(:credit_card) }
 
           it "raises exception if credit card provided doesnt belong to the current user" do
-            expect { adapter.params[:order] }.to raise_error Spree::Core::GatewayError
+            expect { adapter.params[:order] }
+.to raise_error Spree::Core::GatewayError
           end
         end
       end

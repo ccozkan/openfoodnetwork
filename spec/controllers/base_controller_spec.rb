@@ -25,7 +25,8 @@ describe BaseController, type: :controller do
 
       expect {
         get :index
-      }.to change { Spree::Order.count }.by(1)
+      }.to change { Spree::Order.count }
+.by(1)
 
       expect(user.orders.count).to eq 1
     end
@@ -87,7 +88,8 @@ describe BaseController, type: :controller do
 
       expect {
         get :index
-      }.to change { Spree::Order.count }.by(1)
+      }.to change { Spree::Order.count }
+.by(1)
 
       expect(session[:order_id]).to_not eq just_completed_order.id
       expect(session[:order_id]).to_not eq last_cart.id

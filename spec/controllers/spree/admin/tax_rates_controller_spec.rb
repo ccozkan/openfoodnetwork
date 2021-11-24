@@ -47,7 +47,8 @@ zone: default_tax_zone
                 spree_put :update, 
 id: tax_rate.id,
                                    tax_rate: { name: "Changed Rate", amount: "0.5" }
-              }.to change{ Spree::TaxRate.with_deleted.count }.by(1)
+              }.to change{ Spree::TaxRate.with_deleted.count }
+.by(1)
 
               expect(response).to redirect_to spree.admin_tax_rates_url
 
@@ -69,7 +70,8 @@ id: tax_rate.id,
                 spree_put :update, 
 id: tax_rate.id,
                                    tax_rate: { name: "Changed Rate", included_in_price: "1" }
-              }.to change{ Spree::TaxRate.with_deleted.count }.by(1)
+              }.to change{ Spree::TaxRate.with_deleted.count }
+.by(1)
 
               expect(response).to redirect_to spree.admin_tax_rates_url
 

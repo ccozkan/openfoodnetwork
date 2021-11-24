@@ -21,7 +21,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
       let(:params) { { distributor_ids: ["1", "3"] } }
 
       it "does not raise error" do
-        expect { authorizer.authorize! }.not_to raise_error
+        expect { authorizer.authorize! }
+.not_to raise_error
       end
     end
 
@@ -46,7 +47,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
       let(:params) { { producer_ids: ["1", "3"] } }
 
       it "does not raise error" do
-        expect { authorizer.authorize! }.not_to raise_error
+        expect { authorizer.authorize! }
+.not_to raise_error
       end
     end
 
@@ -71,7 +73,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
       let(:params) { { order_cycle_ids: ["1", "3"] } }
 
       it "does not raise error" do
-        expect { authorizer.authorize! }.not_to raise_error
+        expect { authorizer.authorize! }
+.not_to raise_error
       end
     end
 
@@ -96,7 +99,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
       let(:params) { { enterprise_fee_ids: ["1", "3"] } }
 
       it "does not raise error" do
-        expect { authorizer.authorize! }.not_to raise_error
+        expect { authorizer.authorize! }
+.not_to raise_error
       end
     end
 
@@ -121,7 +125,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
       let(:params) { { shipping_method_ids: ["1", "3"] } }
 
       it "does not raise error" do
-        expect { authorizer.authorize! }.not_to raise_error
+        expect { authorizer.authorize! }
+.not_to raise_error
       end
     end
 
@@ -146,7 +151,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
       let(:params) { { payment_method_ids: ["1", "3"] } }
 
       it "does not raise error" do
-        expect { authorizer.authorize! }.not_to raise_error
+        expect { authorizer.authorize! }
+.not_to raise_error
       end
     end
 

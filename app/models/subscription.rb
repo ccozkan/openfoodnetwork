@@ -53,7 +53,8 @@ class Subscription < ApplicationRecord
   def cancel(keep_ids = [])
     transaction do
       update_column(:canceled_at, Time.zone.now)
-      proxy_orders.reject{ |o| keep_ids.include? o.id }.each(&:cancel)
+      proxy_orders.reject{ |o| keep_ids.include? o.id }
+.each(&:cancel)
       true
     end
   end

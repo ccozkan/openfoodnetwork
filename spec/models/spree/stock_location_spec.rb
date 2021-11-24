@@ -66,7 +66,8 @@ module Spree
       variant.on_demand = false
       expect {
         subject.move variant, 5
-      }.to change { subject.stock_movements.where(stock_item_id: stock_item).count }.by(1)
+      }.to change { subject.stock_movements.where(stock_item_id: stock_item).count }
+.by(1)
     end
 
     context 'fill_status' do

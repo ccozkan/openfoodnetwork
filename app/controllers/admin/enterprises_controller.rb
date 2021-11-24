@@ -230,7 +230,8 @@ ams_prefix: params[:ams_prefix] || 'basic',
       # methods that are specific to each class do not become available until after the
       # record is persisted. This problem is compounded by the use of calculators.
       @object.transaction do
-        tag_rules_attributes.select{ |_i, attrs| attrs[:type].present? }.each do |_i, attrs|
+        tag_rules_attributes.select{ |_i, attrs| attrs[:type].present? }
+.each do |_i, attrs|
           rule = @object.tag_rules.find_by(id: attrs.delete(:id)) ||
                  attrs[:type].constantize.new(enterprise: @object)
 

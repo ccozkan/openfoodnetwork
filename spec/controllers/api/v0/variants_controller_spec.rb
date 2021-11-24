@@ -92,7 +92,8 @@ describe Api::V0::VariantsController, type: :controller do
       api_delete :destroy, id: variant.to_param
 
       assert_unauthorized!
-      expect { variant.reload }.not_to raise_error
+      expect { variant.reload }
+.not_to raise_error
       expect(variant.deleted_at).to be_nil
     end
   end
@@ -109,7 +110,8 @@ describe Api::V0::VariantsController, type: :controller do
       api_delete :destroy, id: variant.to_param
 
       expect(response.status).to eq(204)
-      expect { variant.reload }.not_to raise_error
+      expect { variant.reload }
+.not_to raise_error
       expect(variant.deleted_at).to be_present
     end
 
@@ -117,7 +119,8 @@ describe Api::V0::VariantsController, type: :controller do
       api_delete :destroy, id: variant_other.to_param
 
       assert_unauthorized!
-      expect { variant_other.reload }.not_to raise_error
+      expect { variant_other.reload }
+.not_to raise_error
       expect(variant_other.deleted_at).to be_nil
     end
   end
@@ -162,7 +165,8 @@ variant: { sku: "12345", unit_value: "1", unit_description: "L" },
       api_delete :destroy, id: variant.to_param
 
       expect(response.status).to eq(204)
-      expect { variant.reload }.not_to raise_error
+      expect { variant.reload }
+.not_to raise_error
       expect(variant.deleted_at).not_to be_nil
     end
 

@@ -73,7 +73,9 @@ describe CheckoutController, type: :controller do
           "shipping_method_id" => shipping_method.id
         }
       }
-      expect { post :update, params: params }.to change { Customer.count }.by(1)
+      expect { post :update, params: params }
+.to change { Customer.count }
+.by(1)
       expect(order.completed?).to be true
       expect(response).to redirect_to order_path(order)
     end
@@ -221,7 +223,8 @@ describe CheckoutController, type: :controller do
 
           expect {
             get :edit, params: { payment_intent: "pi_123" }
-          }.to change { Customer.count }.by(1)
+          }.to change { Customer.count }
+.by(1)
         end
       end
     end

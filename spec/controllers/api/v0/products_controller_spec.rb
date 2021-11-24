@@ -107,7 +107,8 @@ variants_attributes.all?{ |attr|
       api_delete :destroy, id: product.to_param
 
       expect(response.status).to eq(204)
-      expect { product.reload }.not_to raise_error
+      expect { product.reload }
+.not_to raise_error
       expect(product.deleted_at).not_to be_nil
     end
 
@@ -116,7 +117,8 @@ variants_attributes.all?{ |attr|
       api_delete :destroy, id: product_other_supplier.to_param
 
       assert_unauthorized!
-      expect { product_other_supplier.reload }.not_to raise_error
+      expect { product_other_supplier.reload }
+.not_to raise_error
       expect(product_other_supplier.deleted_at).to be_nil
     end
   end

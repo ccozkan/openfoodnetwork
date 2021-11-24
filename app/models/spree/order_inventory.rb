@@ -34,7 +34,8 @@ module Spree
     end
 
     def inventory_units_for(variant)
-      units = order.shipments.collect{ |s| s.inventory_units.to_a }.flatten
+      units = order.shipments.collect{ |s| s.inventory_units.to_a }
+.flatten
       units.group_by(&:variant_id)[variant.id] || []
     end
 

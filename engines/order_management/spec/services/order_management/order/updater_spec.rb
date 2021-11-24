@@ -170,7 +170,8 @@ module OrderManagement
           it "returns requires_authorization" do
             expect {
               updater.update_payment_state
-            }.to change { order.payment_state }.to 'requires_authorization'
+            }.to change { order.payment_state }
+.to 'requires_authorization'
           end
         end
 
@@ -191,7 +192,8 @@ module OrderManagement
 
             expect {
               updater.update_payment_state
-            }.to change { order.payment_state }.to 'credit_owed'
+            }.to change { order.payment_state }
+.to 'credit_owed'
           end
         end
 
@@ -202,7 +204,8 @@ module OrderManagement
 
             expect {
               updater.update_payment_state
-            }.to change { order.payment_state }.to 'balance_due'
+            }.to change { order.payment_state }
+.to 'balance_due'
           end
         end
 
@@ -213,7 +216,8 @@ module OrderManagement
 
             expect {
               updater.update_payment_state
-            }.to change { order.payment_state }.to 'paid'
+            }.to change { order.payment_state }
+.to 'paid'
           end
         end
 
@@ -227,7 +231,8 @@ module OrderManagement
 
               expect {
                 updater.update_payment_state
-              }.to change { order.payment_state }.to 'void'
+              }.to change { order.payment_state }
+.to 'void'
             end
           end
 
@@ -243,7 +248,8 @@ module OrderManagement
 
               expect {
                 updater.update_payment_state
-              }.to change { order.payment_state }.to 'credit_owed'
+              }.to change { order.payment_state }
+.to 'credit_owed'
             end
           end
 
@@ -256,7 +262,8 @@ module OrderManagement
 
               expect {
                 updater.update_payment_state
-              }.to change { order.payment_state }.to 'void'
+              }.to change { order.payment_state }
+.to 'void'
             end
           end
         end
@@ -265,7 +272,8 @@ module OrderManagement
           before { order.payment_state = 'paid' }
 
           it 'does not create any state_change' do
-            expect { updater.update_payment_state }.not_to change { order.state_changes.size }
+            expect { updater.update_payment_state }
+.not_to change { order.state_changes.size }
           end
         end
 
@@ -276,7 +284,9 @@ module OrderManagement
             before { allow(order).to receive(:persisted?) { true } }
 
             it 'creates a new state_change for the order' do
-              expect { updater.update_payment_state }.to change { order.state_changes.size }.by(1)
+              expect { updater.update_payment_state }
+.to change { order.state_changes.size }
+.by(1)
             end
           end
 
@@ -284,7 +294,8 @@ module OrderManagement
             before { allow(order).to receive(:persisted?) { false } }
 
             it 'creates a new state_change for the order' do
-              expect { updater.update_payment_state }.not_to change { order.state_changes.size }
+              expect { updater.update_payment_state }
+.not_to change { order.state_changes.size }
             end
           end
         end

@@ -54,7 +54,8 @@ distributor: distributor,
       end
 
       it "raises error" do
-        expect { service.complete! }.to raise_error(StateMachines::InvalidTransition)
+        expect { service.complete! }
+.to raise_error(StateMachines::InvalidTransition)
       end
     end
   end

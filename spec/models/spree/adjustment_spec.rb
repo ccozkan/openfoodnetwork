@@ -81,7 +81,8 @@ amount: 0
           expect {
             line_item.delete
             adjustment.reload.update_adjustment!
-          }.to change{ Spree::Adjustment.count }.by(-1)
+          }.to change{ Spree::Adjustment.count }
+.by(-1)
         end
       end
     end
@@ -610,7 +611,8 @@ amount: 456
       describe "#update_adjustment!" do
         it "sets a negative value equal to the return authorization amount" do
           expect { return_adjustment.update_adjustment! }
-            .to change { return_adjustment.reload.amount }.to(-123)
+            .to change { return_adjustment.reload.amount }
+.to(-123)
         end
       end
     end

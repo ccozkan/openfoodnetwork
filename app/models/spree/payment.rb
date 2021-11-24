@@ -225,7 +225,8 @@ foreign_key: :source_id
     end
 
     def generate_identifier
-      Array.new(8){ IDENTIFIER_CHARS.sample }.join
+      Array.new(8){ IDENTIFIER_CHARS.sample }
+.join
     end
   end
 end

@@ -13,7 +13,8 @@ EnterpriseRelationshipPermission,
                               attrs
 )
 
-      expect { ms.save }.to change(EnterpriseRelationshipPermission, :count).by(2)
+      expect { ms.save }
+.to change(EnterpriseRelationshipPermission, :count).by(2)
 
       expect(EnterpriseRelationshipPermission.where(name: ['s1', 's2']).count).to eq(2)
     end
@@ -31,7 +32,8 @@ collection_attributes: {
 
       ms = Sets::ModelSet.new(EnterpriseGroup, EnterpriseGroup.all, attrs)
 
-      expect { ms.save }.to change(EnterpriseGroup, :count).by(0)
+      expect { ms.save }
+.to change(EnterpriseGroup, :count).by(0)
 
       expect(EnterpriseGroup.where(name: ['e1zz', 'e2yy']).count).to eq(2)
     end
@@ -55,7 +57,8 @@ nil,
                               proc { |attrs| attrs['name'] == 'deleteme' }
 )
 
-      expect { ms.save }.to change(Enterprise, :count).by(-1)
+      expect { ms.save }
+.to change(Enterprise, :count).by(-1)
 
       expect(Enterprise.where(id: e1.id)).to be_empty
       expect(Enterprise.where(id: e2.id)).to be_present
@@ -72,7 +75,8 @@ nil,
                               proc { |attrs| attrs[:name] == 'deleteme' }
 )
 
-      expect { ms.save }.to change(Enterprise, :count).by(0)
+      expect { ms.save }
+.to change(Enterprise, :count).by(0)
     end
   end
 end

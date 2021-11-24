@@ -118,7 +118,8 @@ only: [
         json_format = params[:json_format] || 'default'
         case json_format
         when 'basic'
-          collection.map { |u| { 'id' => u.id, 'name' => u.email } }.to_json
+          collection.map { |u| { 'id' => u.id, 'name' => u.email } }
+.to_json
         else
           address_fields = [
 :firstname, 

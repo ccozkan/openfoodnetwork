@@ -134,26 +134,30 @@ format: :json
           expect {
             api_put :add, params.merge(variant_id: new_variant.to_param)
             expect(response.status).to eq(200)
-          }.to change { inventory_units_for(new_variant).size }.by(2)
+          }.to change { inventory_units_for(new_variant).size }
+.by(2)
         end
 
         it 'adjusts stock when adding a variant' do
           expect {
             api_put :add, params.merge(variant_id: new_variant.to_param)
-          }.to change { new_variant.reload.on_hand }.by(-2)
+          }.to change { new_variant.reload.on_hand }
+.by(-2)
         end
 
         it 'removes a variant from a shipment' do
           expect {
             api_put :remove, params.merge(variant_id: existing_variant.to_param)
             expect(response.status).to eq(200)
-          }.to change { inventory_units_for(existing_variant).size }.by(-2)
+          }.to change { inventory_units_for(existing_variant).size }
+.by(-2)
         end
 
         it 'adjusts stock when removing a variant' do
           expect {
             api_put :remove, params.merge(variant_id: existing_variant.to_param)
-          }.to change { existing_variant.reload.on_hand }.by(2)
+          }.to change { existing_variant.reload.on_hand }
+.by(2)
         end
       end
 
@@ -204,7 +208,8 @@ distributors: [distributor],
           it "updates the shipping fee" do
             expect {
               api_put :add, params.merge(variant_id: new_variant.to_param)
-            }.to change { order.reload.shipment.adjustments.first.amount }.by(20)
+            }.to change { order.reload.shipment.adjustments.first.amount }
+.by(20)
           end
         end
 
@@ -212,7 +217,8 @@ distributors: [distributor],
           it "updates the shipping fee" do
             expect {
               api_put :remove, params.merge(variant_id: existing_variant.to_param)
-            }.to change { order.reload.shipment.adjustments.first.amount }.by(-20)
+            }.to change { order.reload.shipment.adjustments.first.amount }
+.by(-20)
           end
         end
       end
@@ -231,7 +237,8 @@ distributors: [distributor],
         create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor)
       }
       let(:new_shipping_rate) {
-        order.shipment.shipping_rates.select{ |sr| sr.shipping_method == shipping_method2 }.first
+        order.shipment.shipping_rates.select{ |sr| sr.shipping_method == shipping_method2 }
+.first
       }
       let(:params) {
         {

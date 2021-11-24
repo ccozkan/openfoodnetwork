@@ -74,7 +74,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Parameters do
 
     it "does not raise error when the parameters are allowed" do
       parameters = described_class.new(order_cycle_ids: [order_cycle.id.to_s])
-      expect { parameters.authorize!(permissions) }.not_to raise_error
+      expect { parameters.authorize!(permissions) }
+.not_to raise_error
     end
 
     it "raises error when the parameters are not allowed" do

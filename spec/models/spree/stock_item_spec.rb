@@ -114,7 +114,8 @@ inventory_unit,
       before { Spree::StockMovement.create(stock_item: subject, quantity: 1) }
 
       it "doesnt raise ReadOnlyRecord error" do
-        expect { subject.destroy }.not_to raise_error
+        expect { subject.destroy }
+.not_to raise_error
       end
     end
   end

@@ -44,7 +44,8 @@ describe Subscription, type: :model do
 
       it "aborts the transaction" do
         # ie. canceled_at remains as nil, #cancel not called on second subscription order
-        expect{ subscription.cancel }.to raise_error "Some error"
+        expect{ subscription.cancel }
+.to raise_error "Some error"
         expect(subscription.reload.canceled_at).to be nil
         expect(proxy_order1).to have_received(:cancel)
         expect(proxy_order2).to_not have_received(:cancel)
