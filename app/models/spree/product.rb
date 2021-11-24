@@ -419,7 +419,7 @@ variants_including_master.with_deleted
     def build_variants_from_option_values_hash
       ensure_option_types_exist_for_values_hash
       values = option_values_hash.values
-      values = values.inject(values.shift) { |memo, value| memo.product(value).map(&:flatten) }
+      values = values.inject(values.shift) { |acc, elem| acc.product(elem).map(&:flatten) }
 
       values.each do |ids|
         variants.create(
