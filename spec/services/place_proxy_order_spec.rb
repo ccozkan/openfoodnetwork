@@ -53,7 +53,7 @@ describe PlaceProxyOrder do
 
       before do
         proxy_order.initialise_order!
-        break unless order.next! while !order.completed?
+        break unless order.next! until order.completed?
       end
 
       it "records an issue and ignores it" do

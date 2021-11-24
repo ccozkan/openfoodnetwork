@@ -119,7 +119,7 @@ ship_address: create(:address),
           allow(Spree::OrderMailer).to(receive(:cancel_email) {
                                          double(:email, deliver_later: true)
                                        })
-          break unless order.next! while !order.completed?
+          break unless order.next! until order.completed?
           order.cancel
         end
 
@@ -132,7 +132,7 @@ ship_address: create(:address),
       end
 
       context "and the order has not been cancelled" do
-        before { break unless order.next! while !order.completed? }
+        before { break unless order.next! until order.completed? }
 
         it "returns true and clears canceled_at" do
           expect(proxy_order.resume).to(be(true))
@@ -161,7 +161,7 @@ ship_address: create(:address),
           allow(Spree::OrderMailer).to(receive(:cancel_email) {
                                          double(:email, deliver_later: true)
                                        })
-          break unless order.next! while !order.completed?
+          break unless order.next! until order.completed?
           order.cancel
         end
 
@@ -174,7 +174,7 @@ ship_address: create(:address),
       end
 
       context "and the order has not been cancelled" do
-        before { break unless order.next! while !order.completed? }
+        before { break unless order.next! until order.completed? }
 
         it "returns false and does nothing" do
           expect(proxy_order.resume).to(eq(false))

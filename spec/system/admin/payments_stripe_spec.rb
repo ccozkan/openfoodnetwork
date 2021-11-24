@@ -91,7 +91,7 @@ describe ' As an hub manager I want to make Stripe payments ' do
         stub_payment_intents_post_request order: order, stripe_account_header: true
         stub_successful_capture_request order: order
 
-        break unless order.next! while !order.payment?
+        break unless order.next! until order.payment?
       end
 
       it "adds a payment with state complete" do

@@ -101,10 +101,10 @@ amount: order.total,
 )
         order.recreate_all_fees!
         order.ship_address = evaluator.ship_address
-        break unless a = order.next! while !order.delivery?
+        break unless a = order.next! until order.delivery?
         order.select_shipping_method(evaluator.shipping_method.id)
 
-        break unless a = order.next! while !order.completed?
+        break unless a = order.next! until order.completed?
       end
     end
   end
@@ -145,7 +145,7 @@ amount: order.total,
           payment_method: evaluator.payment_method
 )
         order.ship_address = evaluator.ship_address
-        break unless order.next! while !order.completed?
+        break unless order.next! until order.completed?
 
         order.update_columns(completed_at: evaluator.completed_at, state: evaluator.state)
       end
@@ -253,7 +253,7 @@ shipping_fee: evaluator.shipping_fee,
 )
 
       order.reload
-      break unless order.next! while !order.completed?
+      break unless order.next! until order.completed?
       order.reload
     end
   end

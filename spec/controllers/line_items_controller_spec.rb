@@ -16,7 +16,7 @@ distributor: distributor,
                               order_cycle: order_cycle,
 line_items_count: 1
 )
-      break unless order.next! while !order.completed?
+      break unless order.next! until order.completed?
       order
     end
 
@@ -40,7 +40,7 @@ line_items_count: 1
       let(:item) do
         order = create(:completed_order_with_totals)
         item = create(:line_item, order: order)
-        break unless order.next! while !order.completed?
+        break unless order.next! until order.completed?
         item
       end
 
@@ -206,7 +206,7 @@ line_items_count: 2
 )
         order.reload.line_items.first.update(variant_id: variant1.id)
         order.line_items.last.update(variant_id: variant2.id)
-        break unless order.next! while !order.completed?
+        break unless order.next! until order.completed?
         order.recreate_all_fees!
         order
       end

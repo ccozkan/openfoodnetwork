@@ -492,7 +492,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             end
             let!(:order) { proxy_order.initialise_order! }
 
-            before { break unless order.next! while !order.completed? }
+            before { break unless order.next! until order.completed? }
 
             context "when no 'open_orders' directive has been provided" do
               it "renders an error, asking what to do" do
@@ -593,7 +593,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             end
             let!(:order) { proxy_order.initialise_order! }
 
-            before { break unless order.next! while !order.completed? }
+            before { break unless order.next! until order.completed? }
 
             context "when no 'open_orders' directive has been provided" do
               it "renders an error, asking what to do" do
@@ -696,7 +696,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             end
             let!(:order) { proxy_order.initialise_order! }
 
-            before { break unless order.next! while !order.completed? }
+            before { break unless order.next! until order.completed? }
 
             context "when no associated orders are 'canceled'" do
               it 'renders the unpaused subscription as json, leaves the order untouched' do

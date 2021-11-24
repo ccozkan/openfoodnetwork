@@ -106,7 +106,7 @@ order_cycle: order_cycle
 )
           order.reload.line_items.first.update(variant_id: variant1.id)
           order.line_items.last.update(variant_id: variant2.id)
-          break unless order.next! while !order.completed?
+          break unless order.next! until order.completed?
           order.recreate_all_fees!
           order
         end
