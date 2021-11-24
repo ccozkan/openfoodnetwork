@@ -55,7 +55,8 @@ module Spree
     end
 
     def pretty_name
-      ancestor_chain = ancestors.inject("") do |name, ancestor|
+      ancestor_chain =
+ ancestors.inject("") do |name, ancestor|
         name += "#{ancestor.name} -> "
       end
       ancestor_chain + name.to_s

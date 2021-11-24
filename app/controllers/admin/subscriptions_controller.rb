@@ -116,7 +116,8 @@ module Admin
     # Wrap :subscription_line_items_attributes in :subscription root
     def wrap_nested_attrs
       if raw_params[:subscription_line_items].is_a? Array
-        attributes = raw_params[:subscription_line_items].map do |sli|
+        attributes =
+ raw_params[:subscription_line_items].map do |sli|
           sli.slice(*SubscriptionLineItem.attribute_names + ["_destroy"])
         end
         subscription_params[:subscription_line_items_attributes] = attributes

@@ -512,7 +512,8 @@ entry, attribute: attribute,
     end
 
     def all_entries_by_product
-      @all_entries_by_product ||= @all_entries.group_by do |entry|
+      @all_entries_by_product ||=
+ @all_entries.group_by do |entry|
         entries_by_product_key(entry)
       end
     end

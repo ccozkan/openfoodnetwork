@@ -150,7 +150,8 @@ class CheckoutController < ::BaseController
   end
 
   def valid_payment_intent_provided?
-    @valid_payment_intent_provided ||= begin
+    @valid_payment_intent_provided ||=
+ begin
       return false unless params["payment_intent"]&.starts_with?("pi_")
 
       last_payment = OrderPaymentFinder.new(@order).last_payment

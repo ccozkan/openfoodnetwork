@@ -3,7 +3,8 @@
 module OpenFoodNetwork
   module ControllerHelper
     def controller_login_as_admin
-      @admin_user ||= begin
+      @admin_user ||=
+ begin
         user = create(:user)
         user.spree_roles << Spree::Role.find_or_create_by!(name: 'admin')
         user
@@ -13,7 +14,8 @@ module OpenFoodNetwork
     end
 
     def controller_login_as_enterprise_user(enterprises)
-      @enterprise_user ||= begin
+      @enterprise_user ||=
+ begin
         user = create(:user)
         user.spree_roles = []
         enterprises.each do |enterprise|

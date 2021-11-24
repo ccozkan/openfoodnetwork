@@ -39,7 +39,8 @@ describe ShopController, type: :controller, performance: true do
     end
 
     it "returns products via json" do
-      results = multi_benchmark(3, cache_key_patterns: cache_key_patterns) do
+      results =
+ multi_benchmark(3, cache_key_patterns: cache_key_patterns) do
         get :products, xhr: true
         expect(response.status).to eq 200
       end

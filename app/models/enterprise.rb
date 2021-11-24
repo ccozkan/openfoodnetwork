@@ -381,7 +381,8 @@ class Enterprise < ApplicationRecord
       .map(&:permalink)
 
     if existing.include?(test_permalink)
-      used_indices = existing.map do |p|
+      used_indices =
+ existing.map do |p|
         p.slice!(/^#{test_permalink}/)
         p.match(/^\d+$/).to_s.to_i
       end.select{ |p| p }

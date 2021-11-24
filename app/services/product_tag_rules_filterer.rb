@@ -97,7 +97,8 @@ class ProductTagRulesFilterer
   end
 
   def hide_rules
-    @hide_rules ||= customer_applicable_rules
+    @hide_rules ||=
+ customer_applicable_rules
       .select{ |rule| rule.preferred_matched_variants_visibility == 'hidden' }
   end
 

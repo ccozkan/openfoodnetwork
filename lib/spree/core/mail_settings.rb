@@ -20,7 +20,8 @@ module Spree
       private
 
       def mail_server_settings
-        settings = if need_authentication?
+        settings =
+ if need_authentication?
                      basic_settings.merge(user_credentials)
                    else
                      basic_settings

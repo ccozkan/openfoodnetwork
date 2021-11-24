@@ -71,7 +71,8 @@ module OpenFoodNetwork
 
       table = subject.table
 
-      line_items = @orders.map(&:line_items).flatten.select{ |li|
+      line_items =
+ @orders.map(&:line_items).flatten.select{ |li|
         li.product.supplier == @supplier1 && li.variant == @variant1
       }
 
@@ -106,10 +107,12 @@ sum_max_quantities
 
       table_row_objects = subject.variants_and_quantities
 
-      variant_rows = table_row_objects.select { |r|
+      variant_rows =
+ table_row_objects.select { |r|
         r.instance_of?(OpenFoodNetwork::GroupBuyVariantRow)
       }
-      product_rows = table_row_objects.select { |r|
+      product_rows =
+ table_row_objects.select { |r|
         r.instance_of?(OpenFoodNetwork::GroupBuyProductRow)
       }
 

@@ -34,7 +34,8 @@ products,
   def products
     return unless order_cycle
 
-    @products ||= begin
+    @products ||=
+ begin
       results = distributed_products
         .products_relation
         .order(Arel.sql(products_order))
@@ -85,7 +86,8 @@ products,
   end
 
   def variants_for_shop
-    @variants_for_shop ||= begin
+    @variants_for_shop ||=
+ begin
       scoper = OpenFoodNetwork::ScopeVariantToHub.new(distributor)
 
       distributed_products.variants_relation

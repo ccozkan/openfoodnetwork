@@ -17,7 +17,8 @@ module OrderManagement
       end
 
       it 'keeps a single package' do
-        package1 = pack do |package|
+        package1 =
+ pack do |package|
           package.add variant1, 1, :on_hand
           package.add variant2, 1, :on_hand
         end
@@ -29,11 +30,13 @@ module OrderManagement
       end
 
       it 'removes duplicate packages' do
-        package1 = pack do |package|
+        package1 =
+ pack do |package|
           package.add variant1, 1, :on_hand
           package.add variant2, 1, :on_hand
         end
-        package2 = pack do |package|
+        package2 =
+ pack do |package|
           package.add variant1, 1, :on_hand
           package.add variant2, 1, :on_hand
         end
@@ -45,10 +48,12 @@ module OrderManagement
       end
 
       it 'split over 2 packages' do
-        package1 = pack do |package|
+        package1 =
+ pack do |package|
           package.add variant1, 1, :on_hand
         end
-        package2 = pack do |package|
+        package2 =
+ pack do |package|
           package.add variant2, 1, :on_hand
         end
 
@@ -60,10 +65,12 @@ module OrderManagement
 
       it '1st has some, 2nd has remaining' do
         allow(order.line_items[0]).to receive_messages(quantity: 5)
-        package1 = pack do |package|
+        package1 =
+ pack do |package|
           package.add variant1, 2, :on_hand
         end
-        package2 = pack do |package|
+        package2 =
+ pack do |package|
           package.add variant1, 5, :on_hand
         end
 
@@ -77,10 +84,12 @@ module OrderManagement
 
       it '1st has backorder, 2nd has some' do
         allow(order.line_items[0]).to receive_messages(quantity: 5)
-        package1 = pack do |package|
+        package1 =
+ pack do |package|
           package.add variant1, 5, :backordered
         end
-        package2 = pack do |package|
+        package2 =
+ pack do |package|
           package.add variant1, 2, :on_hand
         end
 
@@ -94,11 +103,13 @@ module OrderManagement
 
       it '1st has backorder, 2nd has all' do
         allow(order.line_items[0]).to receive_messages(quantity: 5)
-        package1 = pack do |package|
+        package1 =
+ pack do |package|
           package.add variant1, 3, :backordered
           package.add variant2, 1, :on_hand
         end
-        package2 = pack do |package|
+        package2 =
+ pack do |package|
           package.add variant1, 5, :on_hand
         end
 

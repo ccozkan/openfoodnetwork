@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module OpenFoodNetwork
-  GroupBuyVariantRow = Struct.new(:variant, :sum_quantities, :sum_max_quantities) do
+  GroupBuyVariantRow =
+ Struct.new(:variant, :sum_quantities, :sum_max_quantities) do
     def to_row
       [
 variant.product.supplier.name, 
@@ -15,7 +16,8 @@ sum_max_quantities
     end
   end
 
-  GroupBuyProductRow = Struct.new(:product, :sum_quantities, :sum_max_quantities) do
+  GroupBuyProductRow =
+ Struct.new(:product, :sum_quantities, :sum_max_quantities) do
     def to_row
       [
 product.supplier.name, 
@@ -65,7 +67,8 @@ variant, sum_quantities,
 
           # Sum quantities for each product (Total line)
           sum_quantities = line_items_by_product.sum { |li| (li.variant.weight || 0) * li.quantity }
-          sum_max_quantities = line_items_by_product.sum { |li|
+          sum_max_quantities =
+ line_items_by_product.sum { |li|
             (li.variant.weight || 0) * (li.max_quantity || 0)
           }
           variants_and_quantities << GroupBuyProductRow.new(

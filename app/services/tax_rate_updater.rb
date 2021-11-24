@@ -12,7 +12,8 @@ class TaxRateUpdater
   end
 
   def updated_rate
-    @updated_rate ||= begin
+    @updated_rate ||=
+ begin
       clone = clone_tax_rate!
       clone.assign_attributes(permitted_params)
       clone

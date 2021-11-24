@@ -97,7 +97,8 @@ params[:product_id],
       def collection
         @deleted = params.key?(:deleted) && params[:deleted] == "on" ? "checked" : ""
 
-        @collection ||= if @deleted.blank?
+        @collection ||=
+ if @deleted.blank?
                           super
                         else
                           Variant.unscoped.where(product_id: parent.id).deleted

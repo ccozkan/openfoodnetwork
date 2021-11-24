@@ -32,7 +32,8 @@ module CheckoutHelper
       }
     end
 
-    enterprise_fee_adjustments = adjustments.select { |a|
+    enterprise_fee_adjustments =
+ adjustments.select { |a|
       a.originator_type == 'EnterpriseFee' && a.adjustable_type != 'Spree::LineItem'
     }
     adjustments.reject! { |a|

@@ -55,7 +55,8 @@ module Api
 
       def scope
         if @product
-          variants = if current_api_user.has_spree_role?("admin") || params[:show_deleted]
+          variants =
+ if current_api_user.has_spree_role?("admin") || params[:show_deleted]
                        @product.variants_including_master.with_deleted
                      else
                        @product.variants_including_master

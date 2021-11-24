@@ -9,7 +9,8 @@ module JobLogger
   end
 
   def self.logger
-    @logger ||= begin
+    @logger ||=
+ begin
       logger = Rails.logger.clone
       logger.formatter = Formatter.new
       logger

@@ -3,7 +3,8 @@
 module Admin
   class ContentsController < Spree::Admin::BaseController
     def edit
-      @preference_sections = preference_sections.map do |preference_section|
+      @preference_sections =
+ preference_sections.map do |preference_section|
         { name: preference_section.name, preferences: preference_section.preferences }
       end
     end

@@ -519,7 +519,8 @@ describe "
   context "as the manager of a farm shop" do
     it "shows more than 100 products in my inventory" do
       supplier = create(:supplier_enterprise, sells: "own")
-      inventory_items = (1..101).map do
+      inventory_items =
+ (1..101).map do
         product = create(:simple_product, supplier: supplier)
         InventoryItem.create!(
           enterprise: supplier,

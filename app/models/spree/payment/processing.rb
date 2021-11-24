@@ -53,7 +53,8 @@ module Spree
         protect_from_connection_error do
           check_environment
 
-          response = if payment_method.payment_profiles_supported?
+          response =
+ if payment_method.payment_profiles_supported?
                        # Gateways supporting payment profiles will need access to credit
                        # card object because this stores the payment profile information
                        # so supply the authorization itself as well as the credit card,
@@ -81,7 +82,8 @@ module Spree
 
           credit_amount = calculate_refund_amount(credit_amount)
 
-          response = if payment_method.payment_profiles_supported?
+          response =
+ if payment_method.payment_profiles_supported?
                        payment_method.credit(
                          (credit_amount * 100).round,
                          source,
@@ -120,7 +122,8 @@ module Spree
 
           refund_amount = calculate_refund_amount(refund_amount)
 
-          response = if payment_method.payment_profiles_supported?
+          response =
+ if payment_method.payment_profiles_supported?
                        payment_method.refund(
                          (refund_amount * 100).round,
                          source,
@@ -207,7 +210,8 @@ shipping_address: order.ship_address.try(:active_merchant_hash) })
       end
 
       def calculate_refund_amount(refund_amount = nil)
-        refund_amount ||= if credit_allowed >= order.outstanding_balance.abs
+        refund_amount ||=
+ if credit_allowed >= order.outstanding_balance.abs
                             order.outstanding_balance.abs
                           else
                             credit_allowed.abs
@@ -263,7 +267,8 @@ shipping_address: order.ship_address.try(:active_merchant_hash) })
       end
 
       def gateway_error(error)
-        text = if error.is_a? ActiveMerchant::Billing::Response
+        text =
+ if error.is_a? ActiveMerchant::Billing::Response
                  error_text(error)
                elsif error.is_a? ActiveMerchant::ConnectionError
                  Spree.t(:unable_to_connect_to_gateway)

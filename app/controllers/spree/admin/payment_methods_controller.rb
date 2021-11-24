@@ -52,7 +52,8 @@ module Spree
       def collection
         return parent.public_send(controller_name) if parent_data.present?
 
-        collection = if model_class.respond_to?(:accessible_by) &&
+        collection =
+ if model_class.respond_to?(:accessible_by) &&
                         !current_ability.has_block?(params[:action], model_class)
 
                        model_class.accessible_by(current_ability, action)
@@ -101,7 +102,8 @@ module Spree
       end
 
       def load_data
-        @providers = if Rails.env.dev? || Rails.env.test?
+        @providers =
+ if Rails.env.dev? || Rails.env.test?
                        Gateway.providers.sort_by(&:name)
                      else
                        Gateway.providers.reject{ |p| p.name.include? "Bogus" }.sort_by(&:name)
@@ -120,7 +122,8 @@ module Spree
 
       def load_hubs
         # rubocop:disable Style/TernaryParentheses
-        @hubs = Enterprise.managed_by(spree_current_user).is_distributor.to_a.sort_by! do |d|
+        @hubs =
+ Enterprise.managed_by(spree_current_user).is_distributor.to_a.sort_by! do |d|
           [(@payment_method.has_distributor? d) ? 0 : 1, d.name]
         end
         # rubocop:enable Style/TernaryParentheses
@@ -167,7 +170,8 @@ module Spree
       # Merge payment method params with gateway params like :gateway_stripe_connect
       # Also, remove password if present and blank
       def update_params
-        @update_params ||= begin
+        @update_params ||=
+ begin
           params_for_update = base_params.merge(gateway_params)
 
           params_for_update.each do |key, value|

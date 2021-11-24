@@ -971,7 +971,8 @@ enterprise_id: enterprise2.id).first.visible
 
   describe "handling enterprise permissions" do
     it "only allows product import into enterprises the user is permitted to manage" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -1023,7 +1024,8 @@ enterprise2.name,
     end
 
     it "allows creating inventories for producers that a user's hub has permission for" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << ["name", "producer", "distributor", "on_hand", "price", "units", "unit_type"]
         csv << ["Beans", enterprise.name, enterprise2.name, "777", "3.20", "500", "g"]
       end
@@ -1049,7 +1051,8 @@ hub_id: enterprise2.id).first
     end
 
     it "does not allow creating inventories for producers that a user's hubs don't have permission for" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << ["name", "producer", "on_hand", "price", "units", "unit_type"]
         csv << ["Beans", enterprise.name, "5", "3.20", "500", "g"]
         csv << ["Sprouts", enterprise.name, "6", "6.50", "500", "g"]
@@ -1073,7 +1076,8 @@ hub_id: enterprise2.id).first
 
   describe "applying settings and defaults on import" do
     it "can reset all products for an enterprise that are not present in the uploaded file to zero stock" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -1138,7 +1142,8 @@ enterprise.name,
     end
 
     it "can reset all inventory items for an enterprise that are not present in the uploaded file to zero stock" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << ["name", "distributor", "producer", "on_hand", "price", "units", "unit_type"]
         csv << ["Beans", enterprise2.name, enterprise.name, "6", "3.20", "500", "g"]
         csv << ["Sprouts", enterprise2.name, enterprise.name, "7", "6.50", "500", "g"]

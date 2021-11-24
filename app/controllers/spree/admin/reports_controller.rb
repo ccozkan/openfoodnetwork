@@ -122,7 +122,8 @@ only: [:customers, :products_and_inventory, :order_cycle_management]
 
       def products_and_inventory
         @report_types = report_types[:products_and_inventory]
-        @report = if params[:report_type] != 'lettuce_share'
+        @report =
+ if params[:report_type] != 'lettuce_share'
                     OpenFoodNetwork::ProductsAndInventoryReport.new spree_current_user,
                                                                     raw_params,
                                                                     render_content?
@@ -273,7 +274,8 @@ spree_current_user,
 
       def describe_report(report)
         name = I18n.t(:name, scope: [:admin, :reports, report])
-        description = begin
+        description =
+ begin
           I18n.t!(:description, scope: [:admin, :reports, report])
         rescue I18n::MissingTranslationData
           render_to_string(

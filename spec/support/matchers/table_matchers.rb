@@ -27,7 +27,8 @@ end
 # find("#my-table").should match_table [[...]]
 RSpec::Matchers.define :match_table do |expected_table|
   match do |node|
-    rows = node
+    rows =
+ node
       .all("tr")
       .map { |r| r.all("th,td").map { |c| c.text.strip } }
 

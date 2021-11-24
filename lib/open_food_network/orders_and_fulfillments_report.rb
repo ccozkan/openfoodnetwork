@@ -52,7 +52,8 @@ module OpenFoodNetwork
     def total_units(line_items)
       return " " if not_all_have_unit?(line_items)
 
-      total_units = line_items.sum do |li|
+      total_units =
+ line_items.sum do |li|
         product = li.variant.product
         li.quantity * li.unit_value / scale_factor(product)
       end

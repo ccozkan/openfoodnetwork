@@ -92,7 +92,8 @@ module Spree
       def clone
         @new = @product.duplicate
 
-        flash[:success] = if @new.save
+        flash[:success] =
+ if @new.save
                             Spree.t('notice_messages.product_cloned')
                           else
                             Spree.t('notice_messages.product_not_cloned')

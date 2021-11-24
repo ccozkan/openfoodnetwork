@@ -5,7 +5,8 @@ module Spree
     def available_countries
       checkout_zone = Zone.find_by(name: Spree::Config[:checkout_zone])
 
-      countries = if checkout_zone && checkout_zone.kind == 'country'
+      countries =
+ if checkout_zone && checkout_zone.kind == 'country'
                     checkout_zone.countries
                   else
                     Country.includes(:states).all

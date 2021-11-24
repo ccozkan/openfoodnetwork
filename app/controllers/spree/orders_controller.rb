@@ -179,7 +179,8 @@ module Spree
     def check_at_least_one_line_item
       return unless order_to_update&.complete?
 
-      items = params[:order][:line_items_attributes]
+      items =
+ params[:order][:line_items_attributes]
         &.select{ |_k, attrs| attrs["quantity"].to_i > 0 }
 
       if items.empty?

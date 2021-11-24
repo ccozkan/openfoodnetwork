@@ -82,7 +82,8 @@ class ProxyOrder < ApplicationRecord
     attrs[:order_cycle_id] = order_cycle_id
     attrs[:bill_address_attributes] = subscription.bill_address.attributes.except("id")
     attrs[:ship_address_attributes] = subscription.ship_address.attributes.except("id")
-    attrs[:line_items] = subscription.subscription_line_items.map do |sli|
+    attrs[:line_items] =
+ subscription.subscription_line_items.map do |sli|
       { variant_id: sli.variant_id, quantity: sli.quantity }
     end
     attrs

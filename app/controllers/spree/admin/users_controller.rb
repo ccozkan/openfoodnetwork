@@ -54,7 +54,8 @@ module Spree
             @user.spree_roles = roles.reject(&:blank?).collect{ |r| Spree::Role.find(r) }
           end
 
-          message = if new_email_unconfirmed?
+          message =
+ if new_email_unconfirmed?
                       Spree.t(:email_updated)
                     else
                       Spree.t(:account_updated)

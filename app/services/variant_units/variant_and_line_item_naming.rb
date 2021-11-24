@@ -10,7 +10,8 @@ module VariantUnits
   module VariantAndLineItemNaming
     # Copied and modified from Spree::Variant
     def options_text
-      values = if option_values_eager_loaded?
+      values =
+ if option_values_eager_loaded?
                  # Don't trigger N+1 queries if option_values are already eager-loaded.
                  # For best results, use: `Spree::Variant.includes(option_values: :option_type)`
                  # or: `Spree::Product.includes(variant: {option_values: :option_type})`

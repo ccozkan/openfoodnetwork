@@ -36,7 +36,8 @@ module Admin
     def assign_view_data
       @report_type = report_type
       @report_subtype = report_subtype || report_loader.default_report_subtype
-      @report_subtypes = report_class.report_subtypes.map do |subtype|
+      @report_subtypes =
+ report_class.report_subtypes.map do |subtype|
         [t("packing.#{subtype}_report", scope: i18n_scope), subtype]
       end
     end

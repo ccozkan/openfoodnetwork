@@ -241,7 +241,8 @@ module Spree
 
     def to_package
       package = OrderManagement::Stock::Package.new(stock_location, order)
-      grouped_inventory_units = inventory_units.includes(:variant).group_by do |iu|
+      grouped_inventory_units =
+ inventory_units.includes(:variant).group_by do |iu|
         [iu.variant, iu.state_name]
       end
       grouped_inventory_units.each do |(variant, state_name), inventory_units|

@@ -66,7 +66,8 @@ class ApplicationController < ActionController::Base
     referer_path = OpenFoodNetwork::RefererParser.path(request.referer)
     if referer_path
       is_checkout_path_the_referer = [main_app.checkout_path].include?(referer_path)
-      session["spree_user_return_to"] = if is_checkout_path_the_referer
+      session["spree_user_return_to"] =
+ if is_checkout_path_the_referer
                                           referer_path
                                         else
                                           main_app.root_path

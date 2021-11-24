@@ -66,7 +66,8 @@ describe "Product Import", js: true do
     after { File.delete('/tmp/test.csv') }
 
     it "validates entries and saves them if they are all valid and allows viewing new items in Bulk Products" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -136,7 +137,8 @@ describe "Product Import", js: true do
     end
 
     it "displays info about invalid entries but no save button if all items are invalid" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -198,7 +200,8 @@ describe "Product Import", js: true do
     end
 
     it "handles saving of named tax and shipping categories" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -247,7 +250,8 @@ shipping_category.name
     end
 
     it "records a timestamp on import that can be viewed and filtered under Bulk Edit Products" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -320,7 +324,8 @@ shipping_category.name
     end
 
     it "can reset product stock to zero for products not present in the CSV" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -365,7 +370,8 @@ shipping_category.name
     end
 
     it "can save a new product and variant of that product at the same time, add variant to existing product" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -442,7 +448,8 @@ nil,
     end
 
     it "can import items into inventory" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << ["name", "distributor", "producer", "category", "on_hand", "price", "units"]
         csv << ["Beans", "Another Enterprise", "User Enterprise", "Vegetables", "5", "3.20", "500"]
         csv << [
@@ -522,7 +529,8 @@ hub_id: enterprise2.id).first
       product = create(
 :simple_product, supplier: enterprise, on_hand: 100, name: 'Beets',
                  unit_value: '1000', variant_unit_scale: 1000)
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "distributor", 
@@ -577,7 +585,8 @@ nil,
       product = create(
 :simple_product, supplier: enterprise, on_hand: nil, name: 'Aubergine',
                  unit_value: '1', variant_unit_scale: nil, variant_unit: "items", variant_unit_name: "Bag")
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "distributor", 
@@ -627,7 +636,8 @@ nil,
     end
 
     it "handles on_demand and on_hand validations with inventory" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "distributor", 
@@ -712,7 +722,8 @@ hub_id: enterprise2.id).first
     end
 
     it "imports lines with all allowed units" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -774,7 +785,8 @@ hub_id: enterprise2.id).first
     end
 
     it "imports lines with item products" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -831,7 +843,8 @@ hub_id: enterprise2.id).first
     end
 
     it "does not allow import for lines with unknown units" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 
@@ -935,7 +948,8 @@ I18n.t(
     after { File.delete('/tmp/test.csv') }
 
     it "only allows product import into enterprises the user is permitted to manage" do
-      csv_data = CSV.generate do |csv|
+      csv_data =
+ CSV.generate do |csv|
         csv << [
 "name", 
 "producer", 

@@ -66,7 +66,8 @@ module Api
         has_hub = current_api_user.owned_enterprises.is_hub.any?
         new_enterprise_is_producer = !!enterprise_params[:is_primary_producer]
 
-        enterprise_params[:sells] = if has_hub && !new_enterprise_is_producer
+        enterprise_params[:sells] =
+ if has_hub && !new_enterprise_is_producer
                                       'any'
                                     else
                                       'unspecified'

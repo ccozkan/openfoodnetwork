@@ -82,7 +82,8 @@ field, options_for_select(list_values, selected_value),
       end
 
       def preference_field_options(options)
-        field_options = case options[:type]
+        field_options =
+ case options[:type]
                         when :integer
                           { 
 size: 10,

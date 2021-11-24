@@ -8,7 +8,8 @@ module Api
       skip_authorization_check only: [:index, :show, :jstree]
 
       def index
-        @taxons = if taxonomy
+        @taxons =
+ if taxonomy
                     taxonomy.root.children
                   elsif params[:ids]
                     Spree::Taxon.where(id: raw_params[:ids].split(","))

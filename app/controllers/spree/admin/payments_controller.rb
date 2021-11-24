@@ -127,7 +127,8 @@ module Spree
           .available(:back_end)
           .for_distributor(@order.distributor)
 
-        @payment_method = if @payment&.payment_method
+        @payment_method =
+ if @payment&.payment_method
                             @payment.payment_method
                           else
                             @payment_methods.first

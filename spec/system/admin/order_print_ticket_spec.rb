@@ -39,7 +39,8 @@ describe '
 
         find("#links-dropdown .ofn-drop-down").click
 
-        ticket_window = window_opened_by do
+        ticket_window =
+ window_opened_by do
           within('#links-dropdown') do
             click_link('Print Ticket')
           end

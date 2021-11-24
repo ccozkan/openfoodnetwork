@@ -38,7 +38,8 @@ options[:label],
           link = link_to(titleized_label, destination_url)
         end
 
-        selected = if options[:match_path]
+        selected =
+ if options[:match_path]
                      PathChecker
                        .new(request.fullpath, self)
                        .active_path?(options[:match_path], options[:except_paths])

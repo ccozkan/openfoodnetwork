@@ -27,7 +27,8 @@ module Spree
     delegate :name, to: :state, prefix: true, allow_nil: true
 
     def self.default
-      country = begin
+      country =
+ begin
         DefaultCountry.country
       rescue StandardError
         Spree::Country.first

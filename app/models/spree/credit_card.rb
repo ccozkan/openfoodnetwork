@@ -32,7 +32,8 @@ module Spree
     end
 
     def number=(num)
-      @number = begin
+      @number =
+ begin
         num.gsub(/[^0-9]/, '')
       rescue StandardError
         nil
@@ -42,7 +43,8 @@ module Spree
     # cc_type is set by jquery.payment, which helpfully provides different
     # types from Active Merchant. Converting them is necessary.
     def cc_type=(type)
-      real_type = case type
+      real_type =
+ case type
                   when 'mastercard', 'maestro'
                     'master'
                   when 'amex'

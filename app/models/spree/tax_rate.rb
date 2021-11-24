@@ -41,7 +41,8 @@ module Spree
       applicable_rates = match(order)
       applicable_tax_categories = applicable_rates.map(&:tax_category)
 
-      relevant_items, non_relevant_items = items.partition do |item|
+      relevant_items, non_relevant_items =
+ items.partition do |item|
         applicable_tax_categories.include?(item.tax_category)
       end
 

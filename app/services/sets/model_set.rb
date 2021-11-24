@@ -23,7 +23,8 @@ module Sets
     def collection_attributes=(collection_attributes)
       collection_attributes.each do |_k, attributes|
         # attributes == {:id => 123, :next_collection_at => '...'}
-        found_element = @collection.detect do |element|
+        found_element =
+ @collection.detect do |element|
           element.id.to_s == attributes[:id].to_s && !element.id.nil?
         end
 

@@ -110,7 +110,8 @@ value: order_enterprise_fee.amount)
     end
 
     it "does not list tax adjustments" do
-      tax_adjustment_items = items.select do |i|
+      tax_adjustment_items =
+ items.select do |i|
         i[:Name].in? [additional_tax_adjustment.label, included_tax_adjustment.label]
       end
 

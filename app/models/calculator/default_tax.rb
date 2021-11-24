@@ -45,7 +45,8 @@ order.distributor,
     end
 
     def line_items_total(order)
-      matched_line_items = order.line_items.select do |line_item|
+      matched_line_items =
+ order.line_items.select do |line_item|
         line_item.product.tax_category == rate.tax_category
       end
 
