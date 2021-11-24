@@ -9,7 +9,8 @@
 #     end
 RSpec::Matchers.define(:validate_date_time_format_of) do |attribute|
   match do |instance|
-    @instance, @attribute = instance, attribute
+    @instance = instance
+    @attribute = attribute
 
     invalid_format_message = I18n.t("validators.date_time_string_validator.invalid_format_error")
 

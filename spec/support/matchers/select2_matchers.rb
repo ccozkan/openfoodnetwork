@@ -6,7 +6,9 @@ RSpec::Matchers.define(:have_select2) do |id, options = {}|
   # TODO: Instead of passing in id, use a more general locator
 
   match do |node|
-    @id, @options, @node = id, options, node
+    @id = id
+    @options = options
+    @node = node
 
     from = "#s2id_#{id}"
 
@@ -36,7 +38,9 @@ RSpec::Matchers.define(:have_select2) do |id, options = {}|
   end
 
   match_when_negated do |node|
-    @id, @options, @node = id, options, node
+    @id = id
+    @options = options
+    @node = node
 
     from = "#s2id_#{id}"
 

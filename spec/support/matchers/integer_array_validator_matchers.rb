@@ -9,7 +9,8 @@
 #     end
 RSpec::Matchers.define(:validate_integer_array) do |attribute|
   match do |instance|
-    @instance, @attribute = instance, attribute
+    @instance = instance
+    @attribute = attribute
 
     invalid_format_message = I18n.t("validators.integer_array_validator.invalid_element_error")
 

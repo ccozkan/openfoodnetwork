@@ -2,7 +2,8 @@
 
 RSpec::Matchers.define(:have_flash_message) do |message|
   match do |node|
-    @message, @node = message, node
+    @message = message
+    @node = node
 
     # Ignore leading and trailing whitespace. Later versions of Capybara have :exact_text option.
     # The :exact option is not supported in has_selector?.
@@ -15,7 +16,8 @@ RSpec::Matchers.define(:have_flash_message) do |message|
   end
 
   match_when_negated do |node|
-    @message, @node = message, node
+    @message = message
+    @node = node
 
     # Ignore leading and trailing whitespace. Later versions of Capybara have :exact_text option.
     # The :exact option is not supported in has_selector?.

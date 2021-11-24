@@ -11,11 +11,10 @@ describe ' As an Administrator I want to manage relationships between enterprise
 
     it "listing relationships" do
       # Given some enterprises with relationships
-      e1, e2, e3, e4 =
-create(:enterprise),
-create(:enterprise),
-create(:enterprise),
-create(:enterprise)
+      e1 = create(:enterprise)
+      e2 = create(:enterprise)
+      e3 = create(:enterprise)
+      e4 = create(:enterprise)
       create(
 :enterprise_relationship,
 parent: e1,

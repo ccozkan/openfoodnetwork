@@ -16,12 +16,12 @@ js: true do
 
     it "listing relationships" do
       # Given some users and enterprises with relationships
-      u1, u2 = create(:user), create(:user)
-      e1, e2, e3, e4 =
-create(:enterprise),
-create(:enterprise),
-create(:enterprise),
-create(:enterprise)
+      u1 = create(:user)
+      u2 = create(:user)
+      e1 = create(:enterprise)
+      e2 = create(:enterprise)
+      e3 = create(:enterprise)
+      e4 = create(:enterprise)
       create(:enterprise_role, user: u1, enterprise: e1)
       create(:enterprise_role, user: u1, enterprise: e2)
       create(:enterprise_role, user: u2, enterprise: e3)

@@ -9,7 +9,10 @@ module Sets
     attr_accessor :collection
 
     def initialize(klass, collection, attributes = {}, reject_if = nil, delete_if = nil)
-      @klass, @collection, @reject_if, @delete_if = klass, collection, reject_if, delete_if
+      @klass = klass
+      @collection = collection
+      @reject_if = reject_if
+      @delete_if = delete_if
 
       # Set here first, to ensure that we apply collection_attributes to the right collection
       @collection = attributes[:collection] if attributes[:collection]
