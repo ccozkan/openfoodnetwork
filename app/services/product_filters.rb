@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ProductFilters
-  PRODUCT_FILTERS = [
-    'query', 'producerFilter', 'categoryFilter', 'sorting', 'importDateFilter'
+  PRODUCT_FILTERS = %w[
+    query producerFilter categoryFilter sorting importDateFilter
   ].freeze
 
   def extract(params)

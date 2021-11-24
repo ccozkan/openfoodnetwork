@@ -64,10 +64,10 @@ e2,
                                            ['to add to order cycle', 'to add products to inventory', 'to edit profile']
       er = EnterpriseRelationship.where(parent_id: e1, child_id: e2).first
       expect(er).to(be_present)
-      expect(er.permissions.map(&:name)).to(match_array([
-'add_to_order_cycle',
-'edit_profile',
-                                                         'create_variant_overrides'
+      expect(er.permissions.map(&:name)).to(match_array(%w[
+add_to_order_cycle
+edit_profile
+                                                         create_variant_overrides
 ]))
     end
 

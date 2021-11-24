@@ -88,15 +88,15 @@ hub: enterprise,
     it 'validates entries and saves them if they are all valid and allows viewing new items in Bulk Products' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'shipping_category_id'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                shipping_category_id
 ]
         csv << [
 'Carrots',
@@ -159,15 +159,15 @@ hub: enterprise,
     it 'displays info about invalid entries but no save button if all items are invalid' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'shipping_category_id'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                shipping_category_id
 ]
         csv << [
 'Carrots',
@@ -222,16 +222,16 @@ hub: enterprise,
     it 'handles saving of named tax and shipping categories' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'tax_category',
-'shipping_category'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                tax_category
+shipping_category
 ]
         csv << [
 'Carrots',
@@ -272,15 +272,15 @@ shipping_category.name
     it 'records a timestamp on import that can be viewed and filtered under Bulk Edit Products' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'shipping_category_id'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                shipping_category_id
 ]
         csv << [
 'Carrots',
@@ -346,15 +346,15 @@ shipping_category.name
     it 'can reset product stock to zero for products not present in the CSV' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'shipping_category_id'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                shipping_category_id
 ]
         csv << [
 'Carrots',
@@ -392,16 +392,16 @@ shipping_category.name
     it 'can save a new product and variant of that product at the same time, add variant to existing product' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'display_name',
-'shipping_category_id'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                display_name
+shipping_category_id
 ]
         csv << [
 'Potatoes',
@@ -470,7 +470,7 @@ nil,
     it 'can import items into inventory' do
       csv_data =
  CSV.generate do |csv|
-        csv << ['name', 'distributor', 'producer', 'category', 'on_hand', 'price', 'units']
+        csv << %w[name distributor producer category on_hand price units]
         csv << ['Beans', 'Another Enterprise', 'User Enterprise', 'Vegetables', '5', '3.20', '500']
         csv << [
 'Sprouts',
@@ -559,16 +559,16 @@ variant_unit_scale: 1000
 )
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'distributor',
-'producer',
-'category',
-'on_hand',
-'price',
-'unit_type',
-                'units',
-'on_demand'
+        csv << %w[
+name
+distributor
+producer
+category
+on_hand
+price
+unit_type
+                units
+on_demand
 ]
         csv << [
 'Beets',
@@ -622,17 +622,17 @@ variant_unit_name: 'Bag'
 )
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'distributor',
-'producer',
-'category',
-'on_hand',
-'price',
-'unit_type',
-                'units',
-'on_demand',
-'variant_unit_name'
+        csv << %w[
+name
+distributor
+producer
+category
+on_hand
+price
+unit_type
+                units
+on_demand
+variant_unit_name
 ]
         csv << [
 'Aubergine',
@@ -673,15 +673,15 @@ variant_unit_name: 'Bag'
     it 'handles on_demand and on_hand validations with inventory' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'distributor',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-                'on_demand'
+        csv << %w[
+name
+distributor
+producer
+category
+on_hand
+price
+units
+                on_demand
 ]
         csv << [
 'Beans',
@@ -762,15 +762,15 @@ hub_id: enterprise2.id
     it 'imports lines with all allowed units' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'shipping_category_id'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                shipping_category_id
 ]
         csv << [
 'Carrots',
@@ -825,16 +825,16 @@ hub_id: enterprise2.id
     it 'imports lines with item products' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'variant_unit_name',
-'shipping_category_id'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                variant_unit_name
+shipping_category_id
 ]
         csv << [
 'Cupcake',
@@ -883,15 +883,15 @@ hub_id: enterprise2.id
     it 'does not allow import for lines with unknown units' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'shipping_category_id'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                shipping_category_id
 ]
         csv << [
 'Heavy Carrots',
@@ -990,15 +990,15 @@ I18n.t(
     it 'only allows product import into enterprises the user is permitted to manage' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'shipping_category_id'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                shipping_category_id
 ]
         csv << [
 'My Carrots',

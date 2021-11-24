@@ -12,8 +12,8 @@ module Spree
     class StripeSCA < Gateway
       include FullUrlHelper
 
-      VOIDABLE_STATES = [
-        'requires_payment_method', 'requires_capture', 'requires_confirmation', 'requires_action'
+      VOIDABLE_STATES = %w[
+        requires_payment_method requires_capture requires_confirmation requires_action
       ].freeze
 
       preference :enterprise_id, :integer

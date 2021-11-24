@@ -528,11 +528,11 @@ expect do
         er = EnterpriseRelationship.where(parent_id: opts[:from], child_id: opts[:to]).last
         expect(er).not_to(be_nil)
         if opts[:with] == :all_permissions
-          expect(er.permissions.map(&:name)).to(match_array([
-'add_to_order_cycle',
-                                                             'manage_products',
-'edit_profile',
-'create_variant_overrides'
+          expect(er.permissions.map(&:name)).to(match_array(%w[
+add_to_order_cycle
+                                                             manage_products
+edit_profile
+create_variant_overrides
 ]))
         elsif opts.key?(:with)
           expect(er.permissions.map(&:name)).to(match_array(opts[:with].map(&:to_s)))

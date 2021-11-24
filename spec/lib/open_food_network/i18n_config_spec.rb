@@ -25,11 +25,11 @@ module OpenFoodNetwork
       end
 
       it 'provides the default selectable locales' do
-        expect(I18nConfig.selectable_locales).to(eq(['en', 'es']))
+        expect(I18nConfig.selectable_locales).to(eq(%w[en es]))
       end
 
       it 'provides the default available locales' do
-        expect(I18nConfig.available_locales).to(eq(['en', 'es']))
+        expect(I18nConfig.available_locales).to(eq(%w[en es]))
       end
     end
 
@@ -77,7 +77,7 @@ module OpenFoodNetwork
       end
 
       it 'provides the default available locales' do
-        expect(I18nConfig.available_locales).to(eq(['en_GB', 'en']))
+        expect(I18nConfig.available_locales).to(eq(%w[en_GB en]))
       end
     end
 
@@ -88,11 +88,11 @@ module OpenFoodNetwork
       end
 
       it 'provides the default selectable locales' do
-        expect(I18nConfig.selectable_locales).to(eq(['es', 'fr', 'de']))
+        expect(I18nConfig.selectable_locales).to(eq(%w[es fr de]))
       end
 
       it 'provides the default available locales' do
-        expect(I18nConfig.available_locales).to(eq(['es', 'fr', 'de', 'en']))
+        expect(I18nConfig.available_locales).to(eq(%w[es fr de en]))
       end
     end
   end

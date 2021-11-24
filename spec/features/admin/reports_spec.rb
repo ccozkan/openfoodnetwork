@@ -479,7 +479,7 @@ product1.group_buy_unit_size.to_s,
 
       expect(table.sort).to(eq(
 [
-        ['User', 'Relationship', 'Enterprise'],
+        %w[User Relationship Enterprise],
         [enterprise1.owner.email, 'owns', enterprise1.name],
         [enterprise1.owner.email, 'manages', enterprise1.name],
         [enterprise2.owner.email, 'owns', enterprise2.name],
@@ -502,7 +502,7 @@ product1.group_buy_unit_size.to_s,
 
       expect(table.sort).to(eq(
 [
-        ['User', 'Relationship', 'Enterprise'],
+        %w[User Relationship Enterprise],
         [enterprise1.owner.email, 'manages', enterprise3.name]
       ].sort
 ))

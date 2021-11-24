@@ -15,23 +15,23 @@ describe Api::V0::ProductsController, type: :controller do
   let(:product_other_supplier) { create(:product, supplier: supplier2) }
   let(:product_with_image) { create(:product_with_image, supplier: supplier) }
   let(:attributes) do
-    ['id', 'name', 'supplier', 'price', 'on_hand', 'available_on', 'permalink_live']
+    %w[id name supplier price on_hand available_on permalink_live]
   end
-  let(:all_attributes) { ['id', 'name', 'price', 'available_on', 'variants'] }
+  let(:all_attributes) { %w[id name price available_on variants] }
   let(:variants_attributes) do
-    [
-'id',
-'options_text',
-'unit_value',
-'unit_description',
-'unit_to_display',
-'on_demand',
-     'display_as',
-'display_name',
-'name_to_display',
-'sku',
-'on_hand',
-'price'
+    %w[
+id
+options_text
+unit_value
+unit_description
+unit_to_display
+on_demand
+     display_as
+display_name
+name_to_display
+sku
+on_hand
+price
 ]
   end
 
@@ -153,13 +153,13 @@ unit_description: 'things'
       expect(json_response['error']).to(eq('Invalid resource. Please fix errors and try again.'))
       errors = json_response['errors']
       expect(errors.keys).to(match_array(
-[
-'name',
-'price',
-'primary_taxon',
-'shipping_category',
-                                          'supplier',
-'variant_unit'
+%w[
+name
+price
+primary_taxon
+shipping_category
+                                          supplier
+variant_unit
 ]
 ))
     end

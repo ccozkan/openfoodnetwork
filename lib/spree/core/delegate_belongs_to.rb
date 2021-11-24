@@ -21,18 +21,18 @@ module DelegateBelongsTo
   extend ActiveSupport::Concern
 
   module ClassMethods
-    @@default_rejected_delegate_columns = [
-'created_at',
-'created_on',
-'updated_at',
-                                           'updated_on',
-'lock_version',
-'type',
-'id',
-                                           'position',
-'parent_id',
-'lft',
-'rgt'
+    @@default_rejected_delegate_columns = %w[
+created_at
+created_on
+updated_at
+                                           updated_on
+lock_version
+type
+id
+                                           position
+parent_id
+lft
+rgt
 ]
     mattr_accessor :default_rejected_delegate_columns
 

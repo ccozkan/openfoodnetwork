@@ -51,7 +51,7 @@ orders_close_at: 5.weeks.ago
     # Then the order cycles should be ordered correctly
     expect(page).to(have_selector('#listing_order_cycles tr td:first-child', count: 7))
 
-    order_cycle_names = ['oc0', 'oc1', 'oc2', 'oc3', 'oc4', 'oc5', 'oc6']
+    order_cycle_names = %w[oc0 oc1 oc2 oc3 oc4 oc5 oc6]
     expect(all('#listing_order_cycles tr td:first-child input').map(&:value)).to(eq(order_cycle_names))
 
     # And the rows should have the correct classes

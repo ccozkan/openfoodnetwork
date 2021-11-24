@@ -40,7 +40,7 @@ module ReportsActions
   end
 
   def export_spreadsheet?
-    ['xlsx', 'ods', 'csv'].include?(report_format)
+    %w[xlsx ods csv].include?(report_format)
   end
 
   def form_options_required?

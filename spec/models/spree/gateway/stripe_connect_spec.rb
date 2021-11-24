@@ -17,7 +17,7 @@ describe Spree::Gateway::StripeConnect, type: :model do
   before do
     Stripe.api_key = 'sk_test_123456'
     allow(subject).to(receive(:stripe_account_id) { stripe_account_id })
-    allow(subject).to(receive(:options_for_purchase_or_auth).and_return(['money', 'cc', 'opts']))
+    allow(subject).to(receive(:options_for_purchase_or_auth).and_return(%w[money cc opts]))
     allow(subject).to(receive(:provider).and_return(provider))
   end
 

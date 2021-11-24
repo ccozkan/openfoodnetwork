@@ -28,7 +28,7 @@ class OrderWorkflow
   end
 
   def advance_checkout(options = {})
-    advance_to = order.state.in?(['cart', 'address', 'delivery']) ? 'payment' : 'confirmation'
+    advance_to = order.state.in?(%w[cart address delivery]) ? 'payment' : 'confirmation'
 
     advance_to_state(advance_to, advance_order_options.merge(options))
   end

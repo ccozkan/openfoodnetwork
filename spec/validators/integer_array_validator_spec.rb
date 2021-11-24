@@ -46,7 +46,7 @@ describe IntegerArrayValidator do
     end
 
     it 'does not add error when array of integers as String' do
-      instance.ids = ['1', '2', '3']
+      instance.ids = %w[1 2 3]
       expect(instance).to(be_valid)
     end
 

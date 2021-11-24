@@ -221,17 +221,17 @@ hub: enterprise,
   describe 'importing products from a spreadsheet' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'variant_unit_name',
-'on_demand',
-'shipping_category'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                variant_unit_name
+on_demand
+shipping_category
 ]
         csv << [
 'Carrots',
@@ -373,15 +373,15 @@ enterprise.name,
   describe 'when uploading a spreadsheet with some invalid entries' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'shipping_category'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                shipping_category
 ]
         csv << [
 'Good Carrots',
@@ -450,17 +450,17 @@ I18n.t(
   describe 'when shipping category is missing' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'variant_unit_name',
-'on_demand',
-'shipping_category'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                variant_unit_name
+on_demand
+shipping_category
 ]
         csv << [
 'Shipping Test',
@@ -489,7 +489,7 @@ nil,
   describe 'when enterprises are not valid' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << ['name', 'producer', 'category', 'on_hand', 'price', 'units', 'unit_type']
+        csv << %w[name producer category on_hand price units unit_type]
         csv << ['Product 1', 'Non-existent Enterprise', 'Vegetables', '5', '5.50', '500', 'g']
         csv << ['Product 2', enterprise4.name, 'Vegetables', '5', '5.50', '500', 'g']
       end
@@ -508,16 +508,16 @@ nil,
   describe 'adding new variants to existing products and updating exiting products' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'display_name',
-'shipping_category'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                display_name
+shipping_category
 ]
         csv << [
 'Hypothetical Cake',
@@ -580,17 +580,17 @@ shipping_category.name
   describe 'updating an exiting variant' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'description',
-'category',
-'on_hand',
-'price',
-'units',
-                'unit_type',
-'display_name',
-'shipping_category'
+        csv << %w[
+name
+producer
+description
+category
+on_hand
+price
+units
+                unit_type
+display_name
+shipping_category
 ]
         csv << [
 'Hypothetical Cake',
@@ -621,16 +621,16 @@ shipping_category.name
   describe 'adding new product and sub-variant at the same time' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'display_name',
-'shipping_category'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                display_name
+shipping_category
 ]
         csv << [
 'Potatoes',
@@ -729,17 +729,17 @@ enterprise.name,
   describe 'updating various fields' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'on_demand',
-'sku',
-'shipping_category'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                on_demand
+sku
+shipping_category
 ]
         csv << [
 'Beetroot',
@@ -800,7 +800,7 @@ enterprise3.name,
   describe 'updating non-updatable fields on existing products' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << ['name', 'producer', 'category', 'on_hand', 'price', 'units', 'unit_type']
+        csv << %w[name producer category on_hand price units unit_type]
         csv << ['Beetroot', enterprise3.name, 'Meat', '5', '3.50', '500', 'g']
         csv << ['Tomato', enterprise3.name, 'Vegetables', '6', '5.50', '500', 'Kg']
       end
@@ -823,17 +823,17 @@ enterprise3.name,
   describe 'when more than one product of the same name already exists with multiple variants each' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'description',
-'on_hand',
-'price',
-'units',
-                'unit_type',
-'display_name',
-'shipping_category'
+        csv << %w[
+name
+producer
+category
+description
+on_hand
+price
+units
+                unit_type
+display_name
+shipping_category
 ]
         csv << ['Oats', enterprise.name, 'Cereal', '', '50', '3.50', '500', 'g', 'Rolled Oats', shipping_category.name]   # Update
         csv << ['Oats', enterprise.name, 'Cereal', '', '80', '3.75', '500', 'g', 'Flaked Oats', shipping_category.name]   # Update
@@ -870,16 +870,16 @@ enterprise3.name,
   describe 'when importer processes create and update across multiple stages' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'display_name',
-'shipping_category'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                display_name
+shipping_category
 ]
         csv << ['Bag of Oats', enterprise.name, 'Cereal', '60', '5.50', '500', 'g', 'Magic Oats', shipping_category.name]     # Add
         csv << ['Bag of Oats', enterprise.name, 'Cereal', '70', '8.50', '500', 'g', 'French Oats', shipping_category.name]    # Add
@@ -946,15 +946,15 @@ enterprise3.name,
     describe 'creating and updating inventory' do
       let(:csv_data) do
         CSV.generate do |csv|
-          csv << [
-'name',
-'distributor',
-'producer',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                  'variant_unit_name'
+          csv << %w[
+name
+distributor
+producer
+on_hand
+price
+units
+unit_type
+                  variant_unit_name
 ]
           csv << ['Beans', enterprise2.name, enterprise.name, '5', '3.20', '500', 'g', '']
           csv << ['Sprouts', enterprise2.name, enterprise.name, '6', '6.50', '500', 'g', '']
@@ -1008,7 +1008,7 @@ hub_id: enterprise2.id
     describe 'updating existing inventory referenced by display_name' do
       let(:csv_data) do
         CSV.generate do |csv|
-          csv << ['name', 'display_name', 'distributor', 'producer', 'on_hand', 'price', 'units']
+          csv << %w[name display_name distributor producer on_hand price units]
           csv << ['Oats', 'Porridge Oats', enterprise2.name, enterprise.name, '900', '', '500']
         end
       end
@@ -1040,14 +1040,14 @@ visible: false
       end
       let(:csv_data) do
         CSV.generate do |csv|
-          csv << [
-'name',
-'distributor',
-'producer',
-'on_hand',
-'price',
-'units',
-                  'variant_unit_name'
+          csv << %w[
+name
+distributor
+producer
+on_hand
+price
+units
+                  variant_unit_name
 ]
           csv << ['Cabbage', enterprise2.name, enterprise.name, '900', '', '1', 'Whole']
         end
@@ -1078,15 +1078,15 @@ enterprise_id: enterprise2.id
     it 'only allows product import into enterprises the user is permitted to manage' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'shipping_category'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                shipping_category
 ]
         csv << [
 'My Carrots',
@@ -1131,7 +1131,7 @@ enterprise2.name,
     it "allows creating inventories for producers that a user's hub has permission for" do
       csv_data =
  CSV.generate do |csv|
-        csv << ['name', 'producer', 'distributor', 'on_hand', 'price', 'units', 'unit_type']
+        csv << %w[name producer distributor on_hand price units unit_type]
         csv << ['Beans', enterprise.name, enterprise2.name, '777', '3.20', '500', 'g']
       end
       importer = import_data(csv_data, import_into: 'inventories')
@@ -1159,7 +1159,7 @@ hub_id: enterprise2.id
     it "does not allow creating inventories for producers that a user's hubs don't have permission for" do
       csv_data =
  CSV.generate do |csv|
-        csv << ['name', 'producer', 'on_hand', 'price', 'units', 'unit_type']
+        csv << %w[name producer on_hand price units unit_type]
         csv << ['Beans', enterprise.name, '5', '3.20', '500', 'g']
         csv << ['Sprouts', enterprise.name, '6', '6.50', '500', 'g']
       end
@@ -1184,15 +1184,15 @@ hub_id: enterprise2.id
     it 'can reset all products for an enterprise that are not present in the uploaded file to zero stock' do
       csv_data =
  CSV.generate do |csv|
-        csv << [
-'name',
-'producer',
-'category',
-'on_hand',
-'price',
-'units',
-'unit_type',
-                'shipping_category'
+        csv << %w[
+name
+producer
+category
+on_hand
+price
+units
+unit_type
+                shipping_category
 ]
         csv << [
 'Carrots',
@@ -1252,7 +1252,7 @@ updated_ids: updated_ids,
     it 'can reset all inventory items for an enterprise that are not present in the uploaded file to zero stock' do
       csv_data =
  CSV.generate do |csv|
-        csv << ['name', 'distributor', 'producer', 'on_hand', 'price', 'units', 'unit_type']
+        csv << %w[name distributor producer on_hand price units unit_type]
         csv << ['Beans', enterprise2.name, enterprise.name, '6', '3.20', '500', 'g']
         csv << ['Sprouts', enterprise2.name, enterprise.name, '7', '6.50', '500', 'g']
       end
@@ -1340,9 +1340,9 @@ def filter(type, entries)
 
     valid_count += 1 if type == 'valid' && (validates_as != '')
     valid_count += 1 if type == 'invalid' && (validates_as == '')
-    valid_count += 1 if type == 'create_product' && [
-'new_product',
-                                                     'new_variant'
+    valid_count += 1 if type == 'create_product' && %w[
+new_product
+                                                     new_variant
 ].include?(validates_as)
 
     valid_count += 1 if type == 'update_product' && validates_as == 'existing_variant'

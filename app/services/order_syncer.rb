@@ -96,7 +96,7 @@ to: :subscription
   end
 
   def relevant_address_attrs
-    ['firstname', 'lastname', 'address1', 'zipcode', 'city', 'state_id', 'country_id', 'phone']
+    %w[firstname lastname address1 zipcode city state_id country_id phone]
   end
 
   def addresses_match?(order_address, subscription_address)

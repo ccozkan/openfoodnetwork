@@ -85,11 +85,11 @@ describe ' As an administrator I want to manage enterprise groups ' do
 
     click_link 'Groups'
 
-    expect(page.all('td.name').map(&:text)).to(eq(['A', 'B']))
+    expect(page.all('td.name').map(&:text)).to(eq(%w[A B]))
     all('a.move-down').first.click
-    expect(page.all('td.name').map(&:text)).to(eq(['B', 'A']))
+    expect(page.all('td.name').map(&:text)).to(eq(%w[B A]))
     all('a.move-up').last.click
-    expect(page.all('td.name').map(&:text)).to(eq(['A', 'B']))
+    expect(page.all('td.name').map(&:text)).to(eq(%w[A B]))
   end
 
   it 'deleting an enterprise group', js: true do

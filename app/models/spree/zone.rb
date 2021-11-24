@@ -48,7 +48,7 @@ allow_destroy: true,
    .order('zone_members_count', 'created_at')
    .select { |zone| zone.include?(address) }
 
-      ['state', 'country'].each do |zone_kind|
+      %w[state country].each do |zone_kind|
         if match = matches.detect { |zone| zone_kind == zone.kind }
           return match
         end

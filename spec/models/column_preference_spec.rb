@@ -6,7 +6,7 @@ describe ColumnPreference, type: :model do
   describe 'finding stored preferences for a user and action' do
     before do
       allow(ColumnPreference).to(receive(:known_actions) { ['some_action'] })
-      allow(ColumnPreference).to(receive(:valid_columns_for) { ['col1', 'col2', 'col3'] })
+      allow(ColumnPreference).to(receive(:valid_columns_for) { %w[col1 col2 col3] })
     end
 
     let(:user) { create(:user) }
@@ -69,7 +69,7 @@ visible: false
 
       it 'uses defaults where no stored preference exists' do
         expect(preferences.all?(&:new_record?)).to(be(true))
-        expect(preferences.map(&:column_name)).to(eq(['col1', 'col2', 'col3']))
+        expect(preferences.map(&:column_name)).to(eq(%w[col1 col2 col3]))
         expect(preferences.map(&:visible)).to(eq([false, true, false]))
       end
     end

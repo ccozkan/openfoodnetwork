@@ -72,7 +72,7 @@ numcode: '148'
       fill_in 'enterprise_zipcode', with: '3070'
       expect(page).to(have_select(
 'enterprise_country',
-options: ['Albania', 'Australia'],
+options: %w[Albania Australia],
                       selected: 'Australia'
 ))
       select 'Vic', from: 'enterprise_state'

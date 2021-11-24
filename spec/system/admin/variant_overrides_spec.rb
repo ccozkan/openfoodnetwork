@@ -266,7 +266,7 @@ hub: hub,
 price: 77.77,
                                default_stock: 1000,
 resettable: true,
-tag_list: ['tag1', 'tag2', 'tag3']
+tag_list: %w[tag1 tag2 tag3]
 )
           end
           let!(:vo_no_auth) do
@@ -538,7 +538,7 @@ placeholder: ''))
                                         text: 'There are 1 new products available to add to your inventory.'))
           click_button 'Review Now'
 
-          expect(page).to(have_table_row(['PRODUCER', 'PRODUCT', 'VARIANT', 'ADD', 'HIDE']))
+          expect(page).to(have_table_row(%w[PRODUCER PRODUCT VARIANT ADD HIDE]))
           expect(page).to(have_selector("table#new-products tr#v_#{variant1.id}"))
           expect(page).to(have_selector("table#new-products tr#v_#{variant2.id}"))
           within "table#new-products tr#v_#{variant1.id}" do click_button 'Add' end

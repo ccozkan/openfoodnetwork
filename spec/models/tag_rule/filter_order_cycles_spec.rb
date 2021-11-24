@@ -17,7 +17,7 @@ describe TagRule::FilterOrderCycles, type: :model do
     end
 
     context 'when the exchange is not nil' do
-      let(:exchange_object) { double(:exchange, tag_list: ['member', 'local', 'volunteer']) }
+      let(:exchange_object) { double(:exchange, tag_list: %w[member local volunteer]) }
 
       before do
         allow(tag_rule).to(receive(:exchange_for) { exchange_object })

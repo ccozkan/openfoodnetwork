@@ -15,7 +15,7 @@ module Calculator
     end
 
     def set_preference(name, value)
-      if name == :unit_from_list && !['kg', 'lb'].include?(value)
+      if name == :unit_from_list && !%w[kg lb].include?(value)
         calculable.errors.add(:preferred_unit_from_list, I18n.t(:calculator_preferred_unit_error))
       else
         __send__(self.class.preference_setter_method(name), value)
@@ -28,7 +28,7 @@ module Calculator
     end
 
     def preferred_unit_from_list_values
-      ['kg', 'lb']
+      %w[kg lb]
     end
 
     private
@@ -83,7 +83,7 @@ module Calculator
     end
 
     def convert_weight(value)
-      return 0 unless value && ['kg', 'lb'].include?(preferences[:unit_from_list])
+      return 0 unless value && %w[kg lb].include?(preferences[:unit_from_list])
 
       if preferences[:unit_from_list] == 'kg'
         value / 1000

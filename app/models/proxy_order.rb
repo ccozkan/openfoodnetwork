@@ -18,7 +18,7 @@ class ProxyOrder < ApplicationRecord
   scope :not_canceled, -> { where('proxy_orders.canceled_at IS NULL') }
   scope :placed_and_open,
 lambda {
-                            joins(:order).not_closed.where(spree_orders: { state: ['complete', 'resumed'] })
+                            joins(:order).not_closed.where(spree_orders: { state: %w[complete resumed] })
                           }
 
   def state

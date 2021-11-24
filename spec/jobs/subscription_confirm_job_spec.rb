@@ -184,7 +184,7 @@ order_cycle: order_cycle1,
 
         before do
           allow_any_instance_of(Stripe::CreditCardCloner).to(receive(:find_or_clone) {
-                                                               ['cus_123', 'pm_1234']
+                                                               %w[cus_123 pm_1234]
                                                              })
           allow(order).to(receive(:pending_payments) { [stripe_sca_payment] })
           allow(stripe_sca_payment_method).to(receive(:provider) { provider })

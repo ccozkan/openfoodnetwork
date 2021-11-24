@@ -30,32 +30,32 @@ namespace :ofn do
     end
 
     def enterprise_header
-      [
-'name',
-'description',
-'long_description',
-'is_primary_producer',
-'is_distributor',
-       'contact_name',
-'phone',
-'email',
-'website',
-'twitter',
-'abn',
-'acn',
-'pickup_times',
-'next_collection_at',
-'distributor_info',
-'visible',
-'facebook',
-'instagram',
-'linkedin',
-'address1',
-'address2',
-'city',
-'zipcode',
-'state',
-'country'
+      %w[
+name
+description
+long_description
+is_primary_producer
+is_distributor
+       contact_name
+phone
+email
+website
+twitter
+abn
+acn
+pickup_times
+next_collection_at
+distributor_info
+visible
+facebook
+instagram
+linkedin
+address1
+address2
+city
+zipcode
+state
+country
 ]
     end
 

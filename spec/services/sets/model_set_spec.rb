@@ -16,7 +16,7 @@ EnterpriseRelationshipPermission,
       expect { ms.save }
 .to(change(EnterpriseRelationshipPermission, :count).by(2))
 
-      expect(EnterpriseRelationshipPermission.where(name: ['s1', 's2']).count).to(eq(2))
+      expect(EnterpriseRelationshipPermission.where(name: %w[s1 s2]).count).to(eq(2))
     end
 
     it 'updates existing models' do
@@ -35,7 +35,7 @@ collection_attributes: {
       expect { ms.save }
 .to(change(EnterpriseGroup, :count).by(0))
 
-      expect(EnterpriseGroup.where(name: ['e1zz', 'e2yy']).count).to(eq(2))
+      expect(EnterpriseGroup.where(name: %w[e1zz e2yy]).count).to(eq(2))
     end
 
     it 'destroys deleted models' do

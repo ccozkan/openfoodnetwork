@@ -3,8 +3,8 @@
 module Spree
   module Core
     class MailSettings
-      MAIL_AUTH = ['None', 'plain', 'login', 'cram_md5'].freeze
-      SECURE_CONNECTION_TYPES = ['None', 'SSL', 'TLS'].freeze
+      MAIL_AUTH = %w[None plain login cram_md5].freeze
+      SECURE_CONNECTION_TYPES = %w[None SSL TLS].freeze
 
       # Override the Rails application mail settings based on preferences
       def self.init

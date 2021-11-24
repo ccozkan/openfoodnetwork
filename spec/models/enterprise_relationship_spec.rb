@@ -37,9 +37,9 @@ describe EnterpriseRelationship do
         it 'creates a new permission for each item in the list' do
           er = EnterpriseRelationship.create!(parent: e1,
 child: e2,
-                                              permissions_list: ['one', 'two'])
+                                              permissions_list: %w[one two])
           er.reload
-          expect(er.permissions.map(&:name)).to(match_array(['one', 'two']))
+          expect(er.permissions.map(&:name)).to(match_array(%w[one two]))
         end
 
         it 'does nothing when the list is nil' do
@@ -55,7 +55,7 @@ child: e2,
 :enterprise_relationship,
 parent: e1,
 child: e2,
-                          permissions_list: ['one', 'two', 'three']
+                          permissions_list: %w[one two three]
 )
         end
         it 'creates a new permission for each item in the list that has no existing permission' do
@@ -66,15 +66,15 @@ child: e2,
         end
 
         it 'does not duplicate existing permissions' do
-          er.permissions_list = ['one', 'two', 'three']
+          er.permissions_list = %w[one two three]
           er.save!
           er.reload
           expect(er.permissions.map(&:name).count).to(eq(3))
-          expect(er.permissions.map(&:name)).to(match_array(['one', 'two', 'three']))
+          expect(er.permissions.map(&:name)).to(match_array(%w[one two three]))
         end
 
         it 'removes permissions that are not in the list' do
-          er.permissions_list = ['one', 'three']
+          er.permissions_list = %w[one three]
           er.save!
           er.reload
           expect(er.permissions.map(&:name)).to(include('one', 'three'))
@@ -109,19 +109,19 @@ child: e2,
 :enterprise_relationship,
 parent: e1,
 child: e2,
-                          permissions_list: ['one', 'two']
+                          permissions_list: %w[one two]
 )
       er2 = create(
 :enterprise_relationship,
 parent: e2,
 child: e3,
-                          permissions_list: ['two', 'three']
+                          permissions_list: %w[two three]
 )
       er3 = create(
 :enterprise_relationship,
 parent: e3,
 child: e1,
-                          permissions_list: ['three', 'four']
+                          permissions_list: %w[three four]
 )
 
       expect(EnterpriseRelationship.with_permission('two')).to(match_array([er1, er2]))

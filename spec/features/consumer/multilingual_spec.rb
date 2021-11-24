@@ -12,7 +12,7 @@ describe 'Multilingual', js: true do
   it 'has three locales available' do
     expect(Rails.application.config.i18n[:default_locale]).to(eq('en'))
     expect(Rails.application.config.i18n[:locale]).to(eq('en'))
-    expect(Rails.application.config.i18n[:available_locales]).to(eq(['en', 'es', 'pt']))
+    expect(Rails.application.config.i18n[:available_locales]).to(eq(%w[en es pt]))
   end
 
   it '18n-js fallsback to default language' do # in backend it doesn't until we change enforce_available_locales to `true`

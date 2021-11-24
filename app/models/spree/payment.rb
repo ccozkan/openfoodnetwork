@@ -140,7 +140,7 @@ foreign_key: :source_id
     end
 
     def ensure_correct_adjustment
-      revoke_adjustment_eligibility if ['failed', 'invalid'].include?(state)
+      revoke_adjustment_eligibility if %w[failed invalid].include?(state)
       return if adjustment.try(:finalized?)
 
       if adjustment

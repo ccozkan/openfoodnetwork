@@ -13,7 +13,7 @@ describe TagRule::FilterPaymentMethods, type: :model do
     end
 
     context 'when the payment method is not nil' do
-      let(:payment_method) { create(:payment_method, tag_list: ['member', 'local', 'volunteer']) }
+      let(:payment_method) { create(:payment_method, tag_list: %w[member local volunteer]) }
 
       context 'when the rule has no preferred payment method tags specified' do
         before { allow(tag_rule).to(receive(:preferred_payment_method_tags) { '' }) }

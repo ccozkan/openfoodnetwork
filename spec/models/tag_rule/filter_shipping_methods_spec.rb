@@ -14,7 +14,7 @@ describe TagRule::FilterShippingMethods, type: :model do
 
     context 'when the shipping method is not nil' do
       let(:shipping_method) do
-        build_stubbed(:shipping_method, tag_list: ['member', 'local', 'volunteer'])
+        build_stubbed(:shipping_method, tag_list: %w[member local volunteer])
       end
 
       context 'when the rule has no preferred shipping method tags specified' do

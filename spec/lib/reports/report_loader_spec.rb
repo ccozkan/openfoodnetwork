@@ -17,7 +17,7 @@ end
 describe Reporting::ReportLoader do
   let(:service) { Reporting::ReportLoader.new(*arguments) }
   let(:report_base_class) { Reporting::Reports::Bananas::Base }
-  let(:report_subtypes) { ['green', 'yellow'] }
+  let(:report_subtypes) { %w[green yellow] }
 
   before do
     allow(report_base_class).to(receive(:report_subtypes).and_return(report_subtypes))
@@ -25,7 +25,7 @@ describe Reporting::ReportLoader do
 
   describe '#report_class' do
     describe 'given report type and subtype' do
-      let(:arguments) { ['bananas', 'yellow'] }
+      let(:arguments) { %w[bananas yellow] }
 
       it 'returns a report class when given type and subtype' do
         expect(service.report_class).to(eq(Reporting::Reports::Bananas::Yellow))

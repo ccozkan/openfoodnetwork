@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Api::Admin::CustomerSerializer do
-  let(:tag_list) { ['one', 'two', 'three'] }
+  let(:tag_list) { %w[one two three] }
   let(:customer) { create(:customer, tag_list: tag_list) }
   let!(:tag_rule) do
     create(

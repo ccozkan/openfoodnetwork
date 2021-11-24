@@ -40,16 +40,16 @@ describe 'checking out an order with a Stripe Connect payment method', type: :re
     }
   end
   let(:allowed_address_attributes) do
-    [
-      'firstname',
-      'lastname',
-      'address1',
-      'address2',
-      'phone',
-      'city',
-      'zipcode',
-      'state_id',
-      'country_id'
+    %w[
+      firstname
+      lastname
+      address1
+      address2
+      phone
+      city
+      zipcode
+      state_id
+      country_id
     ]
   end
   let(:params) do

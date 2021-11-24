@@ -5,8 +5,8 @@
 class ContentSanitizer
   include ActionView::Helpers::SanitizeHelper
 
-  ALLOWED_TAGS = ['p', 'b', 'strong', 'em', 'i', 'a', 'u'].freeze
-  ALLOWED_ATTRIBUTES = ['href', 'target'].freeze
+  ALLOWED_TAGS = %w[p b strong em i a u].freeze
+  ALLOWED_ATTRIBUTES = %w[href target].freeze
   FILTERED_CHARACTERS = { '&amp;amp;' => '&', '&amp;' => '&', '&nbsp;' => ' ' }.freeze
 
   def strip_content(content)

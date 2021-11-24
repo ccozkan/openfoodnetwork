@@ -155,7 +155,7 @@ describe I18nHelper, type: :helper do
       original_default_locale = I18n.default_locale
       original_available_locales = Rails.application.config.i18n.available_locales
       I18n.default_locale = 'es'
-      Rails.application.config.i18n.available_locales = ['es', 'pt']
+      Rails.application.config.i18n.available_locales = %w[es pt]
       example.run
       I18n.default_locale = original_default_locale
       Rails.application.config.i18n.available_locales = original_available_locales

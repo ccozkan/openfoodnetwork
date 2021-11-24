@@ -98,22 +98,22 @@ describe EnterpriseGroup do
       it 'adds unique number to existing permalinks' do
         existing = ['permalink']
         expect(EnterpriseGroup.find_available_value(existing, 'permalink')).to(eq('permalink1'))
-        existing = ['permalink', 'permalink1']
+        existing = %w[permalink permalink1]
         expect(EnterpriseGroup.find_available_value(existing, 'permalink')).to(eq('permalink2'))
       end
 
       it 'ignores permalinks with characters after the index value' do
-        existing = ['permalink', 'permalink1', 'permalink2xxx']
+        existing = %w[permalink permalink1 permalink2xxx]
         expect(EnterpriseGroup.find_available_value(existing, 'permalink')).to(eq('permalink2'))
       end
 
       it 'finds gaps in the indices of existing permalinks' do
-        existing = ['permalink', 'permalink1', 'permalink3']
+        existing = %w[permalink permalink1 permalink3]
         expect(EnterpriseGroup.find_available_value(existing, 'permalink')).to(eq('permalink2'))
       end
 
       it 'finds available indexed permalink' do
-        existing = ['permalink', 'permalink1']
+        existing = %w[permalink permalink1]
         expect(EnterpriseGroup.find_available_value(existing, 'permalink1')).to(eq('permalink11'))
       end
     end

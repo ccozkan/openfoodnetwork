@@ -49,49 +49,49 @@ module ProductImport
 :enterprise,
 :enterprise_id
 
-    NON_DISPLAY_ATTRIBUTES = [
-'id',
-'product_id',
-'unscaled_units',
-'variant_id',
-'enterprise',
-                              'enterprise_id',
-'producer_id',
-'distributor_id',
-'primary_taxon',
-                              'primary_taxon_id',
-'category_id',
-'shipping_category_id',
-                              'tax_category_id',
-'variant_unit_scale',
-'variant_unit',
-                              'unit_value'
+    NON_DISPLAY_ATTRIBUTES = %w[
+id
+product_id
+unscaled_units
+variant_id
+enterprise
+                              enterprise_id
+producer_id
+distributor_id
+primary_taxon
+                              primary_taxon_id
+category_id
+shipping_category_id
+                              tax_category_id
+variant_unit_scale
+variant_unit
+                              unit_value
 ].freeze
 
-    NON_PRODUCT_ATTRIBUTES = [
-'line_number',
-'valid',
-'errors',
-'product_object',
-                              'product_validations',
-'inventory_validations',
-'validates_as',
-                              'save_type',
-'on_hand_nil',
-'has_overrides'
+    NON_PRODUCT_ATTRIBUTES = %w[
+line_number
+valid
+errors
+product_object
+                              product_validations
+inventory_validations
+validates_as
+                              save_type
+on_hand_nil
+has_overrides
 ].freeze
 
-    NON_ASSIGNABLE_ATTRIBUTES = [
-'producer',
-'producer_id',
-'category',
-'shipping_category',
-                                 'tax_category',
-'units',
-'unscaled_units',
-'unit_type',
-                                 'enterprise',
-'enterprise_id'
+    NON_ASSIGNABLE_ATTRIBUTES = %w[
+producer
+producer_id
+category
+shipping_category
+                                 tax_category
+units
+unscaled_units
+unit_type
+                                 enterprise
+enterprise_id
 ].freeze
 
     def initialize(attrs)

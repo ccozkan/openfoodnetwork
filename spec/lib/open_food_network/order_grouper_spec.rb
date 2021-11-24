@@ -162,7 +162,7 @@ proc { |is|
         expect(@column1).to(receive(:call))
         expect(@column2).to(receive(:call))
 
-        expect(subject.build_table(@items1)).to(eq([['Column1', 'Column2']]))
+        expect(subject.build_table(@items1)).to(eq([%w[Column1 Column2]]))
       end
 
       it 'should return a row for each key-value pair when given a Hash' do
@@ -173,7 +173,7 @@ proc { |is|
         # subject.should_receive(:build_table).exactly(2).times
 
         expected_return = []
-        groups.length.times { expected_return << ['Column1', 'Column2'] }
+        groups.length.times { expected_return << %w[Column1 Column2] }
         expect(subject.build_table(groups)).to(eq(expected_return))
       end
 
@@ -190,9 +190,9 @@ summary_row: { items: { items2: @items2, items3: @items3 }, columns: @sumcols }
         expected_return = []
         groups.each do |key, _group|
           expected_return << if key == :summary_row
-                               ['SumColumn1', 'SumColumn2']
+                               %w[SumColumn1 SumColumn2]
                              else
-                               ['Column1', 'Column2']
+                               %w[Column1 Column2]
                              end
         end
         expect(subject.build_table(groups)).to(eq(expected_return))

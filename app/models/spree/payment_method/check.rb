@@ -9,7 +9,7 @@ module Spree
 
       # Indicates whether its possible to capture the payment
       def can_capture?(payment)
-        ['checkout', 'pending'].include?(payment.state)
+        %w[checkout pending].include?(payment.state)
       end
 
       # Indicates whether its possible to void the payment.

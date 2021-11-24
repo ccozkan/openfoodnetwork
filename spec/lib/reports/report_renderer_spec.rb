@@ -17,7 +17,7 @@ describe Reporting::ReportRenderer do
 
   describe '#table_headers' do
     it "returns the report's table headers" do
-      expect(service.table_headers).to(eq(['id', 'name', 'quantity']))
+      expect(service.table_headers).to(eq(%w[id name quantity]))
     end
   end
 
@@ -36,7 +36,7 @@ describe Reporting::ReportRenderer do
   describe '#as_arrays' do
     it "returns the report's data as arrays" do
       expect(service.as_arrays).to(eq([
-        ['id', 'name', 'quantity'],
+        %w[id name quantity],
         [1, 'carrots', 3],
         [2, 'onions', 6]
       ]))

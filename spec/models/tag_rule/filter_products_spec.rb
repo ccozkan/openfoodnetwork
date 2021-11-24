@@ -13,7 +13,7 @@ describe TagRule::FilterProducts, type: :model do
     end
 
     context 'when the variant is not nil' do
-      let(:variant_object) { { 'tag_list' => ['member', 'local', 'volunteer'] } }
+      let(:variant_object) { { 'tag_list' => %w[member local volunteer] } }
 
       context 'when the rule has no preferred variant tags specified' do
         before { allow(tag_rule).to(receive(:preferred_variant_tags) { '' }) }
