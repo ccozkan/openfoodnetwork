@@ -15,7 +15,7 @@ describe 'Shops', js: true do
   let!(:order_cycle) {
     create(
 :simple_order_cycle, distributors: [distributor],
-                                coordinator: create(:distributor_enterprise))
+                     coordinator: create(:distributor_enterprise))
   }
   let!(:producer) { create(:supplier_enterprise) }
   let!(:er) { create(:enterprise_relationship, parent: distributor, child: producer) }
@@ -82,7 +82,7 @@ describe 'Shops', js: true do
     let!(:order_cycle) {
       create(
 :simple_order_cycle, distributors: [d1, d2],
-                                  coordinator: create(:distributor_enterprise))
+                     coordinator: create(:distributor_enterprise))
     }
     let!(:p1) { create(:simple_product, supplier: producer) }
     let!(:p2) { create(:simple_product, supplier: create(:supplier_enterprise)) }
@@ -151,7 +151,7 @@ describe 'Shops', js: true do
     let!(:order_cycle) {
       create(
 :simple_order_cycle, distributors: [distributor],
-                                  coordinator: create(:distributor_enterprise), variants: [product.variants.first])
+                     coordinator: create(:distributor_enterprise), variants: [product.variants.first])
     }
     let(:product) { create(:simple_product, supplier: producer) }
 
@@ -181,7 +181,7 @@ describe 'Shops', js: true do
     let!(:order_cycle) {
       create(
 :simple_order_cycle, distributors: [distributor],
-                                  coordinator: create(:distributor_enterprise), variants: [product.variants.first])
+                     coordinator: create(:distributor_enterprise), variants: [product.variants.first])
     }
 
     it "shows hub producer modals" do

@@ -228,12 +228,12 @@ module Admin
       let!(:incoming_exchange) {
         create(
 :exchange, order_cycle: order_cycle, sender: producer, receiver: coordinator,
-                          incoming: true, variants: [v])
+           incoming: true, variants: [v])
       }
       let!(:outgoing_exchange) {
         create(
 :exchange, order_cycle: order_cycle, sender: coordinator, receiver: hub, incoming: false,
-                          variants: [v])
+           variants: [v])
       }
 
       let(:allowed) { { incoming_exchanges: [], outgoing_exchanges: [] } }

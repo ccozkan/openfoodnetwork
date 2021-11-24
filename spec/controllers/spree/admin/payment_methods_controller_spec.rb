@@ -13,7 +13,7 @@ module Spree
       let(:payment_method) {
         GatewayWithPassword.create!(
 name: "Bogus", preferred_password: "haxme",
-                                    distributor_ids: [enterprise.id])
+distributor_ids: [enterprise.id])
       }
       let!(:user) { create(:user) }
 
@@ -42,7 +42,7 @@ name: "Bogus", preferred_password: "haxme",
           spree_post :create,
                      payment_method: { 
 name: "Test Method", type: "Spree::Gateway::Bogus",
-                                       distributor_ids: [enterprise.id] }
+distributor_ids: [enterprise.id] }
         }.to change(Spree::PaymentMethod, :count).by(1)
 
         expect(response).to be_redirect
@@ -54,7 +54,7 @@ name: "Test Method", type: "Spree::Gateway::Bogus",
           spree_post :create,
                      payment_method: { 
 name: "Invalid Payment Method", type: "Spree::InvalidType",
-                                       distributor_ids: [enterprise.id] }
+distributor_ids: [enterprise.id] }
         }.to change(Spree::PaymentMethod, :count).by(0)
 
         expect(response).to be_redirect
@@ -118,7 +118,7 @@ name: "Invalid Payment Method", type: "Spree::InvalidType",
         let!(:payment_method) {
           create(
 :stripe_connect_payment_method, distributor_ids: [enterprise1.id, enterprise2.id],
-                                                 preferred_enterprise_id: enterprise2.id)
+                                preferred_enterprise_id: enterprise2.id)
         }
 
         before { allow(controller).to receive(:spree_current_user) { user } }
@@ -182,7 +182,7 @@ name: "Invalid Payment Method", type: "Spree::InvalidType",
       let(:user) do
         new_user = create(
 :user, email: 'enterprise@hub.com', password: 'blahblah',
-                                 password_confirmation: 'blahblah', )
+       password_confirmation: 'blahblah', )
         new_user.spree_roles = [] # for some reason unbeknown to me, this new user gets admin permissions by default.
         new_user.enterprise_roles.build(enterprise: enterprise).save
         new_user.save

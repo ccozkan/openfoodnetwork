@@ -36,10 +36,10 @@ describe Api::V0::ShipmentsController, type: :controller do
     let(:params) do
       { 
 quantity: 2,
-        variant_id: variant.to_param,
-        order_id: order.number,
-        stock_location_id: stock_location.to_param,
-        format: :json }
+variant_id: variant.to_param,
+order_id: order.number,
+stock_location_id: stock_location.to_param,
+format: :json }
     end
     let(:error_message) { "broken shipments creation" }
 
@@ -182,7 +182,7 @@ quantity: 2,
         let!(:shipping_method_with_fee) {
           create(
 :shipping_method_with, :shipping_fee, distributors: [distributor],
-                                                       shipping_fee: fee_amount)
+                                      shipping_fee: fee_amount)
         }
         let!(:order_cycle) { create(:order_cycle, distributors: [distributor]) }
         let!(:order) {

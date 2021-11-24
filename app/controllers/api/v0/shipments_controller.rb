@@ -53,7 +53,7 @@ module Api
           else
             render(
 json: { error: I18n.t(:cannot_ready, scope: "spree.api.shipment") },
-                   status: :unprocessable_entity) && return
+status: :unprocessable_entity) && return
           end
         end
         render json: @shipment, serializer: Api::ShipmentSerializer, status: :ok

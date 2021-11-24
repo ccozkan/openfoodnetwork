@@ -52,7 +52,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Renderers::CsvRenderer 
     allow(service).to receive(:list) { enterprise_fee_type_totals }
     allow(request).to receive_messages(
 variant: double(Spree::Variant),
-                                       should_apply_vary_header?: true)
+should_apply_vary_header?: true)
   end
 
   it "generates CSV header" do

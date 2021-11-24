@@ -177,7 +177,7 @@ describe Calculator::Weight do
       let!(:product_attributes) {
         { 
 variant_unit: "items", variant_unit_scale: nil, variant_unit_name: "pc",
-          display_as: "pc" }
+display_as: "pc" }
       }
       let!(:variant_attributes) { { unit_value: 3.0, weight: 2.5, display_as: "pc" } }
 
@@ -193,7 +193,7 @@ variant_unit: "items", variant_unit_scale: nil, variant_unit_name: "pc",
     let(:product) {
       build_stubbed(
 :product, variant_unit: 'items', variant_unit_scale: nil,
-                              variant_unit_name: "bunch")
+          variant_unit_name: "bunch")
     }
     let(:line_item) { build_stubbed(:line_item, variant: variant, quantity: 1) }
 
@@ -222,7 +222,7 @@ variant_unit: "items", variant_unit_scale: nil, variant_unit_name: "pc",
       let(:variant) {
         build_stubbed(
 :variant, product: product, unit_description: "bunches", unit_value: nil,
-                                weight: 10.0)
+          weight: 10.0)
       }
 
       it "uses the variant weight" do
@@ -236,7 +236,7 @@ variant_unit: "items", variant_unit_scale: nil, variant_unit_name: "pc",
       let(:variant) {
         build_stubbed(
 :variant, product: product, unit_description: "bunches", unit_value: nil,
-                                weight: nil)
+          weight: nil)
       }
 
       it "uses zero weight" do

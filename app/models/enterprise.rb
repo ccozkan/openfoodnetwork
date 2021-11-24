@@ -441,7 +441,7 @@ class Enterprise < ApplicationRecord
       errors.add(
 :owner, I18n.t(
 :enterprise_owner_error, email: owner.email,
-                                                         enterprise_limit: owner.enterprise_limit ))
+                         enterprise_limit: owner.enterprise_limit ))
     end
   end
 
@@ -463,8 +463,8 @@ class Enterprise < ApplicationRecord
     enterprises.is_hub.each do |enterprise|
       EnterpriseRelationship.create!(
 parent: self,
-                                     child: enterprise,
-                                     permissions_list: hub_permissions)
+child: enterprise,
+permissions_list: hub_permissions)
     end
 
     # All pre-existing producers grant permission to new hubs
@@ -472,8 +472,8 @@ parent: self,
       enterprises.is_primary_producer.each do |enterprise|
         EnterpriseRelationship.create!(
 parent: enterprise,
-                                       child: self,
-                                       permissions_list: [
+child: self,
+permissions_list: [
 :add_to_order_cycle,
                                                           :create_variant_overrides])
       end

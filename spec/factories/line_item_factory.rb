@@ -26,7 +26,7 @@ FactoryBot.define do
         end
         shipment = create(
 :shipment_with, :shipping_method, shipping_method: shipping_method,
-                                                            order: line_item.order)
+                                  order: line_item.order)
       end
       line_item.target_shipment = shipment
     end

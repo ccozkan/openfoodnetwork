@@ -350,7 +350,7 @@ describe Enterprise do
         p = create(:product)
         create(
 :simple_order_cycle, orders_open_at: 10.days.from_now,
-                                    orders_close_at: 17.days.from_now, suppliers: [s], distributors: [d], variants: [p.master])
+                     orders_close_at: 17.days.from_now, suppliers: [s], distributors: [d], variants: [p.master])
         expect(Enterprise.distributors_with_active_order_cycles).not_to include d
       end
     end
@@ -396,7 +396,7 @@ describe Enterprise do
       it "returns enterprises distributing via an order cycle" do
         order_cycle = create(
 :simple_order_cycle, distributors: [distributor],
-                                                  variants: [product.master])
+                     variants: [product.master])
         expect(Enterprise.distributing_products(product.id)).to eq([distributor])
       end
 
@@ -404,7 +404,7 @@ describe Enterprise do
         another_product = create(:product)
         order_cycle = create(
 :simple_order_cycle, distributors: [distributor],
-                                                  variants: [product.master, another_product.master])
+                     variants: [product.master, another_product.master])
         expect(
 Enterprise.distributing_products(
 [

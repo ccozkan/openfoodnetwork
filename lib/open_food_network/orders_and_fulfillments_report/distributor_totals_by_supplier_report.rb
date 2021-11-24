@@ -75,7 +75,7 @@ proc { |line_items| line_items.first.order.distributor.name },
         [
 { 
 order: [:distributor, :adjustments, { shipments: { shipping_rates: :shipping_method } }],
-           variant: [{ option_values: :option_type }, { product: :supplier }] }]
+variant: [{ option_values: :option_type }, { product: :supplier }] }]
       end
     end
   end

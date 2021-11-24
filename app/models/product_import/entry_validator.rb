@@ -176,7 +176,7 @@ entry,
       unless entry.units&.present?
         mark_as_invalid(
 entry, attribute: 'units',
-                               error: I18n.t('admin.product_import.model.blank'))
+       error: I18n.t('admin.product_import.model.blank'))
       end
 
       return if import_into_inventory?
@@ -187,7 +187,7 @@ entry, attribute: 'units',
         unless unit_types.include?(unit_type)
           mark_as_invalid(
 entry, attribute: 'unit_type',
-                                 error: I18n.t('admin.product_import.model.incorrect_value'))
+       error: I18n.t('admin.product_import.model.incorrect_value'))
         end
         return
       end
@@ -197,7 +197,7 @@ entry, attribute: 'unit_type',
 
       mark_as_invalid(
 entry, attribute: 'variant_unit_name',
-                             error: I18n.t('admin.product_import.model.conditional_blank'))
+       error: I18n.t('admin.product_import.model.conditional_blank'))
     end
 
     def variant_of_product_validation(entry)
@@ -231,7 +231,7 @@ entry, attribute: 'variant_unit_name',
       if producer_name.blank?
         mark_as_invalid(
 entry, attribute: "producer",
-                               error: I18n.t('admin.product_import.model.blank'))
+       error: I18n.t('admin.product_import.model.blank'))
         return
       end
 
@@ -239,7 +239,7 @@ entry, attribute: "producer",
         model_not_found = I18n.t('admin.product_import.model.not_found')
         mark_as_invalid(
 entry, attribute: "producer",
-                               error: "\"#{producer_name}\" #{model_not_found}")
+       error: "\"#{producer_name}\" #{model_not_found}")
         return
       end
 
@@ -251,7 +251,7 @@ entry, attribute: "producer",
         inventory_no_permission = I18n.t('admin.product_import.model.inventory_no_permission')
         mark_as_invalid(
 entry, attribute: "producer",
-                               error: "\"#{producer_name}\": #{inventory_no_permission}")
+       error: "\"#{producer_name}\": #{inventory_no_permission}")
         return
       end
 
@@ -261,13 +261,13 @@ entry, attribute: "producer",
     def inventory_validation(entry)
       products = Spree::Product.where(
 supplier_id: entry.producer_id,
-                                      name: entry.name,
-                                      deleted_at: nil)
+name: entry.name,
+deleted_at: nil)
 
       if products.empty?
         mark_as_invalid(
 entry, attribute: 'name',
-                               error: I18n.t('admin.product_import.model.no_product'))
+       error: I18n.t('admin.product_import.model.no_product'))
         return
       end
 
@@ -284,7 +284,7 @@ entry, attribute: 'name',
 
       mark_as_invalid(
 entry, attribute: 'product',
-                             error: I18n.t('admin.product_import.model.not_found'))
+       error: I18n.t('admin.product_import.model.not_found'))
     end
 
     def entry_matches_existing_variant?(entry, existing_variant)
@@ -305,7 +305,7 @@ entry, attribute: 'product',
       else
         mark_as_invalid(
 entry, attribute: "category",
-                               error: I18n.t(
+       error: I18n.t(
 :error_not_found_in_database,
                                              name: category_name))
       end
@@ -319,7 +319,7 @@ entry, attribute: "category",
       else
         mark_as_invalid(
 entry, attribute: "#{type}_category",
-                               error: I18n.t('admin.product_import.model.not_found'))
+       error: I18n.t('admin.product_import.model.not_found'))
       end
     end
 
@@ -328,14 +328,14 @@ entry, attribute: "#{type}_category",
 
       mark_as_invalid(
 entry, attribute: "shipping_category",
-                             error: I18n.t(:error_required))
+       error: I18n.t(:error_required))
     end
 
     def product_validation(entry)
       products = Spree::Product.where(
 supplier_id: entry.enterprise_id,
-                                      name: entry.name,
-                                      deleted_at: nil)
+name: entry.name,
+deleted_at: nil)
 
       if products.empty?
         mark_as_new_product(entry)
@@ -396,7 +396,7 @@ supplier_id: entry.enterprise_id,
 
         mark_as_invalid(
 entry, attribute: display_name,
-                               error: I18n.t('admin.product_import.model.not_updatable'))
+       error: I18n.t('admin.product_import.model.not_updatable'))
       end
     end
 
@@ -449,7 +449,7 @@ entry, attribute: display_name,
     def mark_as_not_updatable(entry, attribute)
       mark_as_invalid(
 entry, attribute: attribute,
-                             error: I18n.t("admin.product_import.model.not_updatable"))
+       error: I18n.t("admin.product_import.model.not_updatable"))
     end
 
     def import_into_inventory?

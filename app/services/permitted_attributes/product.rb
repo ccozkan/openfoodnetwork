@@ -11,8 +11,8 @@ module PermittedAttributes
         :meta_keywords, :meta_description, :notes, :inherits_properties,
         { 
 product_properties_attributes: [:id, :property_name, :value],
-          variants_attributes: [PermittedAttributes::Variant.attributes],
-          images_attributes: [:attachment] }
+variants_attributes: [PermittedAttributes::Variant.attributes],
+images_attributes: [:attachment] }
       ]
     end
   end

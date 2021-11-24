@@ -11,7 +11,7 @@ describe "Packing Reports" do
     let(:order) {
       create(
 :completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
-                                           line_items_count: 0)
+                              line_items_count: 0)
     }
     let(:line_item) { build(:line_item_with_shipment) }
     let(:user) { create(:admin_user) }
@@ -54,8 +54,8 @@ describe "Packing Reports" do
       let(:order2) {
         create(
 :completed_order_with_totals, distributor: distributor,
-                                             bill_address: create(:address),
-                                             ship_address: create(:address))
+                              bill_address: create(:address),
+                              ship_address: create(:address))
       }
       let(:line_item2) {
         build(:line_item_with_shipment, product: create(:simple_product, name: "visible", supplier: supplier1))
@@ -81,7 +81,7 @@ describe "Packing Reports" do
         before do
           create(
 :enterprise_relationship, parent: supplier1, child: distributor,
-                                           permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
         end
 
         it "shows line items supplied by my producers, with names hidden" do
@@ -116,7 +116,7 @@ describe "Packing Reports" do
       let(:order3) {
         create(
 :completed_order_with_totals, distributor: distributor2,
-                                             line_items_count: 0)
+                              line_items_count: 0)
       }
       let(:line_item3) { build(:line_item_with_shipment) }
 
@@ -136,7 +136,7 @@ describe "Packing Reports" do
         let(:order4) {
           create(
 :completed_order_with_totals, distributor: distributor, order_cycle: order_cycle2,
-                                               line_items_count: 0)
+                              line_items_count: 0)
         }
         let(:line_item4) { build(:line_item_with_shipment) }
         let(:params) { { order_cycle_id_in: order_cycle.id } }
@@ -158,7 +158,7 @@ describe "Packing Reports" do
       let(:order2) {
         create(
 :completed_order_with_totals, order_cycle: order_cycle, distributor: distributor2,
-                                             line_items_count: 2)
+                              line_items_count: 2)
       }
 
       before do

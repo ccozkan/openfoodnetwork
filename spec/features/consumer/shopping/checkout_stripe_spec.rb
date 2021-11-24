@@ -18,19 +18,19 @@ describe "Check out with Stripe", js: true do
   let(:order) {
     create(
 :order, order_cycle: order_cycle, distributor: distributor, bill_address_id: nil,
-                   ship_address_id: nil)
+        ship_address_id: nil)
   }
 
   let(:shipping_with_fee) {
     create(
 :shipping_method, require_ship_address: false, name: "Donkeys",
-                             calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
+                  calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
   }
   let(:free_shipping) { create(:shipping_method) }
   let!(:check_with_fee) {
     create(
 :payment_method, distributors: [distributor],
-                            calculator: Calculator::FlatRate.new(preferred_amount: 5.67))
+                 calculator: Calculator::FlatRate.new(preferred_amount: 5.67))
   }
 
   before do
@@ -257,7 +257,7 @@ describe "Check out with Stripe", js: true do
           # Prepare a second order
           new_order = create(
 :order, user: user, order_cycle: order_cycle,
-                                     distributor: distributor, bill_address_id: nil, ship_address_id: nil)
+        distributor: distributor, bill_address_id: nil, ship_address_id: nil)
           set_order(new_order)
           add_product_to_cart(new_order, product, quantity: 10)
           stub_payment_intents_post_request order: new_order

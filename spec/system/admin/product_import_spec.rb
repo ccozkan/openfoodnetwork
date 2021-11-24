@@ -16,7 +16,7 @@ describe "Product Import", js: true do
   let!(:relationship) {
     create(
 :enterprise_relationship, parent: enterprise, child: enterprise2,
-                                     permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides])
   }
 
   let!(:category) { create(:taxon, name: 'Vegetables') }
@@ -29,12 +29,12 @@ describe "Product Import", js: true do
   let!(:variant) {
     create(
 :variant, product_id: product.id, price: '8.50', on_hand: 100, unit_value: '500',
-                     display_name: 'Preexisting Banana')
+          display_name: 'Preexisting Banana')
   }
   let!(:product2) {
     create(
 :simple_product, supplier: enterprise, on_hand: 100, name: 'Beans', unit_value: '500',
-                            description: '', primary_taxon_id: category.id)
+                 description: '', primary_taxon_id: category.id)
   }
   let!(:product3) {
     create(:simple_product, supplier: enterprise, on_hand: 100, name: 'Sprouts', unit_value: '500')
@@ -48,12 +48,12 @@ describe "Product Import", js: true do
   let!(:variant_override) {
     create(
 :variant_override, variant_id: product4.variants.first.id, hub: enterprise2,
-                              count_on_hand: 42)
+                   count_on_hand: 42)
   }
   let!(:variant_override2) {
     create(
 :variant_override, variant_id: product5.variants.first.id, hub: enterprise,
-                              count_on_hand: 96)
+                   count_on_hand: 96)
   }
 
   let(:shipping_category_id_str) { Spree::ShippingCategory.all.first.id.to_s }
@@ -345,13 +345,13 @@ describe "Product Import", js: true do
 
       beans_override = VariantOverride.where(
 variant_id: product2.variants.first.id,
-                                             hub_id: enterprise2.id).first
+hub_id: enterprise2.id).first
       sprouts_override = VariantOverride.where(
 variant_id: product3.variants.first.id,
-                                               hub_id: enterprise2.id).first
+hub_id: enterprise2.id).first
       cabbage_override = VariantOverride.where(
 variant_id: product4.variants.first.id,
-                                               hub_id: enterprise2.id).first
+hub_id: enterprise2.id).first
 
       expect(Float(beans_override.price)).to eq 3.20
       expect(beans_override.count_on_hand).to eq 5
@@ -377,7 +377,7 @@ variant_id: product4.variants.first.id,
     it "handles a unit of kg for inventory import" do
       product = create(
 :simple_product, supplier: enterprise, on_hand: 100, name: 'Beets',
-                                        unit_value: '1000', variant_unit_scale: 1000)
+                 unit_value: '1000', variant_unit_scale: 1000)
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "distributor", "producer", "category", "on_hand", "price", "unit_type",
@@ -416,7 +416,7 @@ variant_id: product4.variants.first.id,
     it "handles the Items unit for inventory import" do
       product = create(
 :simple_product, supplier: enterprise, on_hand: nil, name: 'Aubergine',
-                                        unit_value: '1', variant_unit_scale: nil, variant_unit: "items", variant_unit_name: "Bag")
+                 unit_value: '1', variant_unit_scale: nil, variant_unit: "items", variant_unit_name: "Bag")
       csv_data = CSV.generate do |csv|
         csv << [
 "name", "distributor", "producer", "category", "on_hand", "price", "unit_type",
@@ -484,13 +484,13 @@ variant_id: product4.variants.first.id,
 
       beans_override = VariantOverride.where(
 variant_id: product2.variants.first.id,
-                                             hub_id: enterprise2.id).first
+hub_id: enterprise2.id).first
       sprouts_override = VariantOverride.where(
 variant_id: product3.variants.first.id,
-                                               hub_id: enterprise2.id).first
+hub_id: enterprise2.id).first
       cabbage_override = VariantOverride.where(
 variant_id: product4.variants.first.id,
-                                               hub_id: enterprise2.id).first
+hub_id: enterprise2.id).first
 
       expect(Float(beans_override.price)).to eq 3.20
       expect(beans_override.count_on_hand).to be_nil

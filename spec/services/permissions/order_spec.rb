@@ -24,7 +24,7 @@ module Permissions
     let(:order_from_last_year) {
       create(
 :completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
-                                           completed_at: Time.zone.now - 1.year)
+                              completed_at: Time.zone.now - 1.year)
     }
 
     before { allow(OpenFoodNetwork::Permissions).to receive(:new) { basic_permissions } }
@@ -85,7 +85,7 @@ module Permissions
                                       }
           create(
 :enterprise_relationship, parent: producer, child: distributor,
-                                           permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
         end
 
         context "which contains my products" do
@@ -164,7 +164,7 @@ module Permissions
                                       }
           create(
 :enterprise_relationship, parent: producer, child: distributor,
-                                           permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
 
           line_item1.product.supplier = producer
           line_item1.product.save

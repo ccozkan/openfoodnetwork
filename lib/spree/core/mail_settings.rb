@@ -32,15 +32,15 @@ module Spree
       def user_credentials
         { 
 user_name: Config.smtp_username,
-          password: Config.smtp_password }
+password: Config.smtp_password }
       end
 
       def basic_settings
         { 
 address: Config.mail_host,
-          domain: Config.mail_domain,
-          port: Config.mail_port,
-          authentication: Config.mail_auth_type }
+domain: Config.mail_domain,
+port: Config.mail_port,
+authentication: Config.mail_auth_type }
       end
 
       def need_authentication?

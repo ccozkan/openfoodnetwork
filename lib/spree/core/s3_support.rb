@@ -15,8 +15,8 @@ module Spree
 
           s3_creds = { 
 access_key_id: config[:s3_access_key],
-                       secret_access_key: config[:s3_secret],
-                       bucket: config[:s3_bucket] }
+secret_access_key: config[:s3_secret],
+bucket: config[:s3_bucket] }
           attachment_definitions[field][:storage] = :s3
           attachment_definitions[field][:s3_credentials] = s3_creds
           attachment_definitions[field][:s3_headers] = ActiveSupport::JSON

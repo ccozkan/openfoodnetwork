@@ -136,7 +136,7 @@ module Spree
         let!(:shipment) {
           create(
 :shipment_with, :shipping_method, order: order, cost: 50,
-                                                   shipping_method: shipping_method)
+                                  shipping_method: shipping_method)
         }
 
         before do
@@ -151,7 +151,7 @@ module Spree
           let!(:legacy_tax_adjustment) {
             create(
 :adjustment, order: order, adjustable: order, included: false,
-                                label: "legacy", originator_type: "Spree::TaxRate")
+             label: "legacy", originator_type: "Spree::TaxRate")
           }
 
           it "removes any legacy tax adjustments on order" do

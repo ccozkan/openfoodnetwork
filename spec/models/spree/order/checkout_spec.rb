@@ -19,7 +19,7 @@ describe Spree::Order::Checkout do
       transitions.each do |transition|
         transition = Spree::Order.find_transition(
 from: transition.keys.first,
-                                                  to: transition.values.first)
+to: transition.values.first)
         expect(transition).to_not be_nil
       end
     end

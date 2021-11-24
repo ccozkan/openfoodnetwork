@@ -10,7 +10,7 @@ describe ProcessPaymentIntent do
     let(:order) {
       create(
 :order_with_totals, customer: customer, distributor: customer.enterprise,
-                                 state: "payment")
+                    state: "payment")
     }
     let(:payment_method) { create(:stripe_sca_payment_method) }
 

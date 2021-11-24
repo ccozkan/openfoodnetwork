@@ -123,8 +123,8 @@ json: {
         .where(taggings:
                 { 
 taggable_type: 'Customer',
-                  taggable_id: Customer.of(managed_enterprise_id),
-                  context: 'tags' })
+taggable_id: Customer.of(managed_enterprise_id),
+context: 'tags' })
 
       customer_tags.each_with_object({}) do |tag, indexed_hash|
         tag.taggings.each do |tagging|

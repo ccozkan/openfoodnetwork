@@ -208,7 +208,7 @@ I18n.t(:report_header_hub), I18n.t(:report_header_customer), I18n.t(:report_head
         [
 { 
 variant: [{ option_values: :option_type }, { product: :supplier }],
-           order: [
+order: [
 :bill_address, :ship_address, :order_cycle, :adjustments, :payments,
                    :user, :distributor, :shipments] }]
       end

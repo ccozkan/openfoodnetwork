@@ -27,7 +27,7 @@ xdescribe '
     supplier = create(:supplier_enterprise, name: 'My supplier')
     distributor = create(
 :distributor_enterprise, name: 'My distributor',
-                                                  with_payment_and_shipping: true)
+                         with_payment_and_shipping: true)
     product = create(:product, supplier: supplier)
     v1 = create(:variant, product: product)
     v2 = create(:variant, product: product)
@@ -35,13 +35,13 @@ xdescribe '
     # Relationships required for interface to work
     create(
 :enterprise_relationship, parent: supplier, child: coordinator,
-                                     permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
     create(
 :enterprise_relationship, parent: distributor, child: coordinator,
-                                     permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
     create(
 :enterprise_relationship, parent: supplier, child: distributor,
-                                     permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
 
     # And some enterprise fees
     supplier_fee1 = create(:enterprise_fee, enterprise: supplier, name: 'Supplier fee 1')
@@ -175,11 +175,11 @@ v1.id,
     expect(
 oc.exchanges.where(
 pickup_time: 'New time 0',
-                              pickup_instructions: 'New instructions 0')).to be_present
+pickup_instructions: 'New instructions 0')).to be_present
     expect(
 oc.exchanges.where(
 pickup_time: 'New time 1',
-                              pickup_instructions: 'New instructions 1')).to be_present
+pickup_instructions: 'New instructions 1')).to be_present
   end
 
   private

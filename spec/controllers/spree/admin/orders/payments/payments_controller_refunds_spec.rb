@@ -28,7 +28,7 @@ describe Spree::Admin::PaymentsController, type: :controller do
         let!(:payment) do
           create(
 :payment, order: order, state: 'completed', payment_method: payment_method,
-                           response_code: 'ch_1a2b3c', amount: order.total)
+          response_code: 'ch_1a2b3c', amount: order.total)
         end
 
         before do
@@ -40,7 +40,7 @@ describe Spree::Admin::PaymentsController, type: :controller do
             stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds")
               .with(basic_auth: ["sk_test_12345", ""])
               .to_return(status: 200,
-                        body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
+                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
           end
 
           it "voids the payment" do
@@ -88,7 +88,7 @@ describe Spree::Admin::PaymentsController, type: :controller do
         let!(:payment) do
           create(
 :payment, order: order, state: 'completed', payment_method: payment_method,
-                           response_code: 'ch_1a2b3c', amount: order.total + 5)
+          response_code: 'ch_1a2b3c', amount: order.total + 5)
         end
 
         before do
@@ -100,7 +100,7 @@ describe Spree::Admin::PaymentsController, type: :controller do
             stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds")
               .with(basic_auth: ["sk_test_12345", ""])
               .to_return(status: 200,
-                        body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
+                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
           end
 
           it "partially refunds the payment" do
@@ -150,7 +150,7 @@ describe Spree::Admin::PaymentsController, type: :controller do
         let!(:payment) do
           create(
 :payment, order: order, state: 'completed', payment_method: payment_method,
-                           response_code: 'pi_123', amount: order.total)
+          response_code: 'pi_123', amount: order.total)
         end
         let(:stripe_account) { create(:stripe_account, enterprise: shop) }
 
@@ -167,7 +167,7 @@ describe Spree::Admin::PaymentsController, type: :controller do
               stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
                 .with(basic_auth: ["sk_test_12345", ""])
                 .to_return(status: 200,
-                          body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
+                           body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
             end
 
             it "voids the payment" do
@@ -208,11 +208,11 @@ describe Spree::Admin::PaymentsController, type: :controller do
               stub_payment_intent_get_request(
 response: { 
 intent_status: "succeeded",
-                                                          amount_refunded: 200 })
+amount_refunded: 200 })
               stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
                 .with(basic_auth: ["sk_test_12345", ""])
                 .to_return(status: 200,
-                          body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
+                           body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
             end
 
             it "can still void the payment" do
@@ -234,9 +234,9 @@ intent_status: "succeeded",
             stub_request(:post, "https://api.stripe.com/v1/payment_intents/pi_123/cancel")
               .with(basic_auth: ["sk_test_12345", ""])
               .to_return(status: 200,
-                        body: JSON.generate(
+                         body: JSON.generate(
 id: 'pi_123', object: 'payment_intent',
-                                            status: 'canceled') )
+status: 'canceled') )
           end
 
           it "voids the payment" do
@@ -264,7 +264,7 @@ id: 'pi_123', object: 'payment_intent',
         let!(:payment) do
           create(
 :payment, order: order, state: 'completed', payment_method: payment_method,
-                           response_code: 'pi_123', amount: order.total + 5)
+          response_code: 'pi_123', amount: order.total + 5)
         end
 
         before do
@@ -278,7 +278,7 @@ id: 'pi_123', object: 'payment_intent',
             stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
               .with(basic_auth: ["sk_test_12345", ""])
               .to_return(status: 200,
-                        body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
+                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
           end
 
           it "partially refunds the payment" do

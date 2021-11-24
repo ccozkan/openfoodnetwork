@@ -148,12 +148,12 @@ describe '
     let!(:schedule) {
       create(
 :schedule, name: 'Schedule1',
-                        order_cycles: [create(:simple_order_cycle, coordinator: distributor_managed)])
+           order_cycles: [create(:simple_order_cycle, coordinator: distributor_managed)])
     }
     let!(:schedule_of_other_managed_distributor) {
       create(
 :schedule, name: 'Other Schedule',
-                        order_cycles: [create(:simple_order_cycle, coordinator: other_distributor_managed)])
+           order_cycles: [create(:simple_order_cycle, coordinator: other_distributor_managed)])
     }
 
     before do
@@ -161,23 +161,23 @@ describe '
       # Both suppliers allow both managed distributor to distribute their products (and add them to the order cycle)
       create(
 :enterprise_relationship, parent: supplier_managed, child: distributor_managed,
-                                       permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
       create(
 :enterprise_relationship, parent: supplier_permitted, child: distributor_managed,
-                                       permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
 
       # Both suppliers allow permitted distributor to distribute their products
       create(
 :enterprise_relationship, parent: supplier_managed, child: distributor_permitted,
-                                       permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
       create(
 :enterprise_relationship, parent: supplier_permitted, child: distributor_permitted,
-                                       permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
 
       # Permitted distributor can be added to the order cycle
       create(
 :enterprise_relationship, parent: distributor_permitted, child: distributor_managed,
-                                       permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
     end
 
     context "that is a manager of the coordinator" do
@@ -196,7 +196,7 @@ describe '
                                       suppliers: [supplier_managed, supplier_unmanaged], coordinator: distributor_managed, distributors: [distributor_managed, distributor_unmanaged], name: 'Order Cycle 1' )
         oc_for_other_user = create(
 :simple_order_cycle, coordinator: supplier_unmanaged,
-                                                        name: 'Order Cycle 2' )
+                     name: 'Order Cycle 2' )
 
         visit spree.admin_dashboard_path
         click_link "Order Cycles"
@@ -354,13 +354,13 @@ distributor_unmanaged.name, supplier_managed.name,
         # Incoming exchange
         ex_in = oc.exchanges.where(
 sender_id: supplier_managed, receiver_id: distributor_managed,
-                                   incoming: true).first
+incoming: true).first
         ex_in.update(variant_ids: [v1.id, v2.id])
 
         # Outgoing exchange
         ex_out = oc.exchanges.where(
 sender_id: distributor_managed,
-                                    receiver_id: distributor_managed, incoming: false).first
+receiver_id: distributor_managed, incoming: false).first
         ex_out.update(variant_ids: [v1.id, v2.id])
 
         # Stub editable_variants_for_outgoing_exchanges method so we can test permissions
@@ -420,7 +420,7 @@ distributor_managed, distributor_permitted,
       before do
         create(
 :enterprise_relationship, parent: supplier_managed, child: my_distributor,
-                                         permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
 
         new_user.enterprise_roles.build(enterprise: my_distributor).save
         login_to_admin_as new_user
@@ -436,13 +436,13 @@ distributor_managed, distributor_permitted,
         # Incoming exchange
         ex_in = oc.exchanges.where(
 sender_id: supplier_managed, receiver_id: distributor_managed,
-                                   incoming: true).first
+incoming: true).first
         ex_in.update(variant_ids: [v1.id, v2.id])
 
         # Outgoing exchange
         ex_out = oc.exchanges.where(
 sender_id: distributor_managed, receiver_id: my_distributor,
-                                    incoming: false).first
+incoming: false).first
         ex_out.update(variant_ids: [v1.id, v2.id])
 
         # Stub editable_variants_for_incoming_exchanges method so we can test permissions
@@ -591,7 +591,7 @@ my_distributor, distributor_managed,
       fee = create(:enterprise_fee, name: 'my fee', enterprise: enterprise)
       oc = create(
 :simple_order_cycle, suppliers: [enterprise], coordinator: enterprise,
-                                       distributors: [enterprise], variants: [v1], coordinator_fees: [fee])
+                     distributors: [enterprise], variants: [v1], coordinator_fees: [fee])
       ex = oc.exchanges.outgoing.first
       ex.update! pickup_time: 'pickup time', pickup_instructions: 'pickup instructions'
 
@@ -628,7 +628,7 @@ my_distributor, distributor_managed,
       fee2 = create(:enterprise_fee, name: 'that fee', enterprise: enterprise)
       oc = create(
 :simple_order_cycle, suppliers: [enterprise], coordinator: enterprise,
-                                       distributors: [enterprise], variants: [v1], coordinator_fees: [fee1])
+                     distributors: [enterprise], variants: [v1], coordinator_fees: [fee1])
       ex = oc.exchanges.outgoing.first
       ex.update! pickup_time: 'pickup time', pickup_instructions: 'pickup instructions'
 

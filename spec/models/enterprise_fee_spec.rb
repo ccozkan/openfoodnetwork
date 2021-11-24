@@ -135,9 +135,9 @@ enterprise_fee, nil,
       order.adjustments.create(
 { 
 amount: 12.34,
-                                 originator: tax_rate,
-                                 state: 'closed',
-                                 label: 'hello' })
+originator: tax_rate,
+state: 'closed',
+label: 'hello' })
 
       expect do
         EnterpriseFee.clear_all_adjustments order

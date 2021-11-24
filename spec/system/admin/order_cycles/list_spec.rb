@@ -14,24 +14,24 @@ describe '
     # Given some order cycles (created in an arbitrary order)
     oc4 = create(
 :simple_order_cycle, name: 'oc4',
-                                      orders_open_at: 2.days.from_now, orders_close_at: 1.month.from_now)
+                     orders_open_at: 2.days.from_now, orders_close_at: 1.month.from_now)
     oc2 = create(:simple_order_cycle, name: 'oc2', orders_close_at: 1.month.from_now)
     oc6 = create(
 :simple_order_cycle, name: 'oc6',
-                                      orders_open_at: 1.month.ago, orders_close_at: 3.weeks.ago)
+                     orders_open_at: 1.month.ago, orders_close_at: 3.weeks.ago)
     oc3 = create(
 :simple_order_cycle, name: 'oc3',
-                                      orders_open_at: 1.day.from_now, orders_close_at: 1.month.from_now)
+                     orders_open_at: 1.day.from_now, orders_close_at: 1.month.from_now)
     oc5 = create(
 :simple_order_cycle, name: 'oc5',
-                                      orders_open_at: 1.month.ago, orders_close_at: 2.weeks.ago)
+                     orders_open_at: 1.month.ago, orders_close_at: 2.weeks.ago)
     oc1 = create(:order_cycle, name: 'oc1')
     oc0 = create(
 :simple_order_cycle, name: 'oc0',
-                                      orders_open_at: nil, orders_close_at: nil)
+                     orders_open_at: nil, orders_close_at: nil)
     oc7 = create(
 :simple_order_cycle, name: 'oc7',
-                                      orders_open_at: 2.months.ago, orders_close_at: 5.weeks.ago)
+                     orders_open_at: 2.months.ago, orders_close_at: 5.weeks.ago)
     schedule1 = create(:schedule, name: 'Schedule1', order_cycles: [oc1, oc3])
     create(:proxy_order, subscription: create(:subscription, schedule: schedule1), order_cycle: oc1)
 

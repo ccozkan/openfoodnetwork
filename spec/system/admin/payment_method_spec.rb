@@ -44,12 +44,12 @@ describe '
       let!(:valid_stripe_account) {
         create(
 :stripe_account, enterprise: connected_enterprise,
-                                stripe_user_id: "acc_connected123")
+                 stripe_user_id: "acc_connected123")
       }
       let!(:disconnected_stripe_account) {
         create(
 :stripe_account, enterprise: revoked_account_enterprise,
-                                stripe_user_id: "acc_revoked123")
+                 stripe_user_id: "acc_revoked123")
       }
       let!(:stripe_account_mock) {
         { id: "acc_connected123", business_name: "My Org", charges_enabled: true }
@@ -123,7 +123,7 @@ missing_account_enterprise,
   it "updating a payment method", js: true do
     payment_method = create(
 :payment_method, distributors: [@distributors[0]],
-                                             calculator: build(:calculator_flat_rate))
+                 calculator: build(:calculator_flat_rate))
     login_as_admin_and_visit spree.edit_admin_payment_method_path payment_method
 
     fill_in 'payment_method_name', with: 'New PM Name'

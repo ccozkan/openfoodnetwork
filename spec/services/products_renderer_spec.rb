@@ -102,12 +102,12 @@ describe ProductsRenderer do
     let!(:v3) {
       create(
 :variant, product: p, unit_value: 7,
-                       inventory_items: [create(:inventory_item, enterprise: hub, visible: true)])
+          inventory_items: [create(:inventory_item, enterprise: hub, visible: true)])
     }
     let!(:v4) {
       create(
 :variant, product: p, unit_value: 9,
-                       inventory_items: [create(:inventory_item, enterprise: hub, visible: false)])
+          inventory_items: [create(:inventory_item, enterprise: hub, visible: false)])
     }
     let(:products_renderer) { ProductsRenderer.new(hub, oc, customer) }
     let(:variants) { products_renderer.send(:variants_for_shop_by_id) }

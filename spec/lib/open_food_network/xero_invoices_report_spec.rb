@@ -20,9 +20,9 @@ module OpenFoodNetwork
       it "uses defaults when blank params are passed" do
         expect(report.instance_variable_get(:@opts)).to eq( 
 invoice_date: Date.civil(2015, 5, 5),
-                                                            due_date: Date.civil(2015, 6, 5),
-                                                            account_code: 'food sales',
-                                                            report_type: 'summary' )
+due_date: Date.civil(2015, 6, 5),
+account_code: 'food sales',
+report_type: 'summary' )
       end
     end
 

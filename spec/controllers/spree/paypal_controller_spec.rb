@@ -65,8 +65,8 @@ module Spree
       let(:provider_mock) {
         double(
 :provider, build_set_express_checkout: true,
-                          set_express_checkout: response_mock,
-                          express_checkout_url: provider_success_url)
+           set_express_checkout: response_mock,
+           express_checkout_url: provider_success_url)
       }
 
       before do

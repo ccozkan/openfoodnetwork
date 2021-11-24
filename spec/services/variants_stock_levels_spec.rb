@@ -57,19 +57,19 @@ describe VariantsStockLevels do
     let!(:order_cycle) {
       create(
 :simple_order_cycle, suppliers: [supplier], distributors: [distributor],
-                                  variants: [variant_in_the_order, variant_not_in_the_order])
+                     variants: [variant_in_the_order, variant_not_in_the_order])
     }
     let!(:variant_override_in_order) {
       create(
 :variant_override, hub: distributor,
-                                variant: variant_in_the_order,
-                                count_on_hand: 200)
+                   variant: variant_in_the_order,
+                   count_on_hand: 200)
     }
     let!(:variant_override_not_in_order) {
       create(
 :variant_override, hub: distributor,
-                                variant: variant_not_in_the_order,
-                                count_on_hand: 201)
+                   variant: variant_not_in_the_order,
+                   count_on_hand: 201)
     }
 
     before do

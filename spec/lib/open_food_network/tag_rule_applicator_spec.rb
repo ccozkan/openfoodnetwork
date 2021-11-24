@@ -9,32 +9,32 @@ module OpenFoodNetwork
     let!(:oc_tag_rule) {
       create(
 :filter_order_cycles_tag_rule, enterprise: enterprise, priority: 6,
-                                            preferred_customer_tags: "tag1", preferred_exchange_tags: "tag1", preferred_matched_order_cycles_visibility: "visible" )
+                               preferred_customer_tags: "tag1", preferred_exchange_tags: "tag1", preferred_matched_order_cycles_visibility: "visible" )
     }
     let!(:product_tag_rule1) {
       create(
 :filter_products_tag_rule, enterprise: enterprise, priority: 5,
-                                        preferred_customer_tags: "tag1", preferred_variant_tags: "tag1", preferred_matched_variants_visibility: "visible" )
+                           preferred_customer_tags: "tag1", preferred_variant_tags: "tag1", preferred_matched_variants_visibility: "visible" )
     }
     let!(:product_tag_rule2) {
       create(
 :filter_products_tag_rule, enterprise: enterprise, priority: 4,
-                                        preferred_customer_tags: "tag1", preferred_variant_tags: "tag3", preferred_matched_variants_visibility: "hidden" )
+                           preferred_customer_tags: "tag1", preferred_variant_tags: "tag3", preferred_matched_variants_visibility: "hidden" )
     }
     let!(:product_tag_rule3) {
       create(
 :filter_products_tag_rule, enterprise: enterprise, priority: 3,
-                                        preferred_customer_tags: "tag2", preferred_variant_tags: "tag1", preferred_matched_variants_visibility: "visible" )
+                           preferred_customer_tags: "tag2", preferred_variant_tags: "tag1", preferred_matched_variants_visibility: "visible" )
     }
     let!(:default_product_tag_rule) {
       create(
 :filter_products_tag_rule, enterprise: enterprise, priority: 2, is_default: true,
-                                        preferred_variant_tags: "tag1", preferred_matched_variants_visibility: "hidden" )
+                           preferred_variant_tags: "tag1", preferred_matched_variants_visibility: "hidden" )
     }
     let!(:sm_tag_rule) {
       create(
 :filter_shipping_methods_tag_rule, enterprise: enterprise, priority: 1,
-                                                preferred_customer_tags: "tag1", preferred_shipping_method_tags: "tag1", preferred_matched_shipping_methods_visibility: "visible" )
+                                   preferred_customer_tags: "tag1", preferred_shipping_method_tags: "tag1", preferred_matched_shipping_methods_visibility: "visible" )
     }
 
     describe "initialisation" do
@@ -263,7 +263,7 @@ default_product_tag_rule, product_tag_rule3, product_tag_rule2,
       let(:product2) {
         { 
 :id => 2, :name => 'product 2',
-          "variants" => [{ :id => 5, "tag_list" => ["tag1"] }, { :id => 9, "tag_list" => ["tag2"] }] }
+"variants" => [{ :id => 5, "tag_list" => ["tag1"] }, { :id => 9, "tag_list" => ["tag2"] }] }
       }
       let(:product3) {
         { :id => 3, :name => 'product 3', "variants" => [{ :id => 6, "tag_list" => ["tag3"] }] }
@@ -280,7 +280,7 @@ default_product_tag_rule, product_tag_rule3, product_tag_rule2,
           expect(products_array).to eq [
             { 
 :id => 2, :name => 'product 2',
-              "variants" => [{ :id => 9, "tag_list" => ["tag2"] }] }, product3
+"variants" => [{ :id => 9, "tag_list" => ["tag2"] }] }, product3
           ]
         end
       end

@@ -302,7 +302,7 @@ describe '
     let!(:er) {
       create(
 :enterprise_relationship, parent: distributor3, child: distributor1,
-                                       permissions_list: [:edit_profile])
+                          permissions_list: [:edit_profile])
     }
 
     before(:each) do

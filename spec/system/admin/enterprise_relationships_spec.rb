@@ -19,11 +19,11 @@ create(:enterprise), create(:enterprise), create(:enterprise),
 create(:enterprise)
       create(
 :enterprise_relationship, parent: e1, child: e2,
-                                       permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
       create(:enterprise_relationship, parent: e2, child: e3, permissions_list: [:manage_products])
       create(
 :enterprise_relationship, parent: e3, child: e4,
-                                       permissions_list: [:add_to_order_cycle, :manage_products])
+                          permissions_list: [:add_to_order_cycle, :manage_products])
 
       # When I go to the relationships page
       visit spree.admin_dashboard_path
@@ -86,7 +86,7 @@ create(:enterprise)
       e2 = create(:enterprise, name: 'Two')
       er = create(
 :enterprise_relationship, parent: e1, child: e2,
-                                            permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
 
       visit admin_enterprise_relationships_path
       expect(page).to have_relationship e1, e2, 'to add to order cycle'

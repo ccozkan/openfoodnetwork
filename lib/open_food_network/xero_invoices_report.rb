@@ -9,9 +9,9 @@ module OpenFoodNetwork
         .symbolize_keys
         .reject { |_k, v| v.blank? }
         .reverse_merge( report_type: 'summary',
-                       invoice_date: Time.zone.today,
-                       due_date: Time.zone.today + 1.month,
-                       account_code: 'food sales' )
+                        invoice_date: Time.zone.today,
+                        due_date: Time.zone.today + 1.month,
+                        account_code: 'food sales' )
       @compile_table = compile_table
     end
 

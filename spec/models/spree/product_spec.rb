@@ -413,7 +413,7 @@ module Spree
         let!(:oc) {
           create(
 :simple_order_cycle, distributors: [distributor],
-                                      variants: [product.variants.first])
+                     variants: [product.variants.first])
         }
 
         it "touches the supplier" do
@@ -505,12 +505,12 @@ module Spree
         let!(:order_cycle1) {
           create(
 :order_cycle, distributors: [distributor1],
-                               variants: [product1.variants.first, product2.variants.first])
+              variants: [product1.variants.first, product2.variants.first])
         }
         let!(:order_cycle2) {
           create(
 :order_cycle, distributors: [distributor2],
-                               variants: [product3.variants.first])
+              variants: [product3.variants.first])
         }
 
         it "returns distributed products for a given Enterprise AR relation" do
@@ -566,10 +566,10 @@ module Spree
           p2 = create(:product)
           oc1 = create(
 :simple_order_cycle, suppliers: [s], distributors: [d1],
-                                            variants: [p1.master])
+                     variants: [p1.master])
           oc2 = create(
 :simple_order_cycle, suppliers: [s], distributors: [d2],
-                                            variants: [p2.master])
+                     variants: [p2.master])
           expect(Product.in_order_cycle(oc1)).to eq([p1])
         end
       end
@@ -584,10 +584,10 @@ module Spree
           p3 = create(:product)
           oc2 = create(
 :simple_order_cycle, suppliers: [s], distributors: [d2],
-                                            variants: [p2.master], orders_open_at: 8.days.ago, orders_close_at: 1.day.ago)
+                     variants: [p2.master], orders_open_at: 8.days.ago, orders_close_at: 1.day.ago)
           oc2 = create(
 :simple_order_cycle, suppliers: [s], distributors: [d3],
-                                            variants: [p3.master], orders_close_at: Date.tomorrow)
+                     variants: [p3.master], orders_close_at: Date.tomorrow)
           expect(Product.in_an_active_order_cycle).to eq([p3])
         end
       end
@@ -659,10 +659,10 @@ module Spree
         before do
           create(
 :enterprise_relationship, parent: add_to_oc_producer, child: shop,
-                                           permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
           create(
 :enterprise_relationship, parent: other_producer, child: shop,
-                                           permissions_list: [:manage_products])
+                          permissions_list: [:manage_products])
         end
 
         it 'shows products produced by the enterprise and any producers granting P-OC' do
@@ -694,7 +694,7 @@ module Spree
 [
 { 
 id: property.id,
-                                                                name: "Organic Certified", value: 'NASAA 12345' }])
+name: "Organic Certified", value: 'NASAA 12345' }])
       end
 
       it "returns producer properties as a hash" do
@@ -708,7 +708,7 @@ id: property.id,
 [
 { 
 id: property.id,
-                                                                name: "Organic Certified", value: 'NASAA 54321' }])
+name: "Organic Certified", value: 'NASAA 54321' }])
       end
 
       it "overrides producer properties with product properties" do
@@ -723,7 +723,7 @@ id: property.id,
 [
 { 
 id: property.id,
-                                                                name: "Organic Certified", value: 'NASAA 12345' }])
+name: "Organic Certified", value: 'NASAA 12345' }])
       end
 
       context "when product has an inherit_properties value set to true" do
@@ -738,7 +738,7 @@ id: property.id,
 [
 { 
 id: property.id,
-                                                                  name: "Organic Certified", value: 'NASAA 54321' }])
+name: "Organic Certified", value: 'NASAA 54321' }])
         end
       end
 

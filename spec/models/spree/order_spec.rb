@@ -643,22 +643,22 @@ create(:line_item, price: 1.0, quantity: 2),
     let!(:fee_adjustment) {
       create(
 :adjustment, adjustable: order, originator: enterprise_fee,
-                          amount: 100, order: order, state: "closed")
+             amount: 100, order: order, state: "closed")
     }
     let!(:fee_tax1) {
       create(
 :adjustment, adjustable: fee_adjustment, originator_type: "Spree::TaxRate",
-                          amount: 12.3, order: order, state: "closed")
+             amount: 12.3, order: order, state: "closed")
     }
     let!(:fee_tax2) {
       create(
 :adjustment, adjustable: fee_adjustment, originator_type: "Spree::TaxRate",
-                          amount: 4.5, order: order, state: "closed")
+             amount: 4.5, order: order, state: "closed")
     }
     let!(:admin_adjustment) {
       create(
 :adjustment, adjustable: order, originator: nil,
-                          amount: 6.7, order: order, state: "closed")
+             amount: 6.7, order: order, state: "closed")
     }
 
     it "returns a sum of all taxes on enterprise fees" do
@@ -678,17 +678,17 @@ create(:line_item, price: 1.0, quantity: 2),
     let!(:fee) {
       create(
 :adjustment, adjustable: order, originator: enterprise_fee, label: "EF", amount: 20,
-                          order: order)
+             order: order)
     }
     let!(:fee_tax) {
       create(
 :adjustment, adjustable: fee, originator: fee_tax_rate,
-                          amount: 2, order: order, state: "closed")
+             amount: 2, order: order, state: "closed")
     }
     let!(:shipping_tax) {
       create(
 :adjustment, adjustable: shipment, originator: shipping_tax_rate,
-                          amount: 10, order: order, state: "closed")
+             amount: 10, order: order, state: "closed")
     }
 
     before do
@@ -815,7 +815,7 @@ create(:line_item, price: 1.0, quantity: 2),
     before do
       subject.order_cycle = create(
 :simple_order_cycle, distributors: [distributor],
-                                                        variants: [variant1, variant2])
+                     variants: [variant1, variant2])
       subject.distributor = distributor
 
       line_item1 = create(:line_item, order: subject, variant: variant1)
@@ -828,7 +828,7 @@ create(:line_item, price: 1.0, quantity: 2),
       new_distributor = create(:enterprise)
       new_order_cycle = create(
 :simple_order_cycle, distributors: [new_distributor],
-                                                    variants: [variant1, variant2])
+                     variants: [variant1, variant2])
 
       subject.distributor = new_distributor
       expect(subject).not_to be_valid
@@ -1093,8 +1093,8 @@ create(:line_item, price: 1.0, quantity: 2),
     let(:order) {
       create(
 :completed_order_with_fees, distributor: distributor, shipping_fee: shipping_fee,
-                                         payment_fee: payment_fee,
-                                         shipping_tax_category: shipping_tax_category)
+                            payment_fee: payment_fee,
+                            shipping_tax_category: shipping_tax_category)
     }
     let(:shipping_fee) { 3 }
     let(:payment_fee) { 5 }
@@ -1203,12 +1203,12 @@ create(
       let!(:prev_order) {
         create(
 :completed_order_with_totals, distributor: distributor, order_cycle: order_cycle,
-                                             user: order.user)
+                              user: order.user)
       }
       let!(:prev_order2) {
         create(
 :completed_order_with_totals, distributor: distributor, order_cycle: order_cycle,
-                                             user: order.user)
+                              user: order.user)
       }
       let(:product) { create(:product) }
 

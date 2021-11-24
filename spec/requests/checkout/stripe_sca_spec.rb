@@ -69,18 +69,18 @@ describe "checking out an order with a Stripe SCA payment method", type: :reques
     {
       status: 200, body: JSON.generate(
 object: "payment_intent",
-                                       amount: 2000,
-                                       charges: { data: [{ id: "ch_1234", amount: 2000 }] })
+amount: 2000,
+charges: { data: [{ id: "ch_1234", amount: 2000 }] })
     }
   end
   let(:payment_intent_authorize_response_mock) do
     {
       status: 200, body: JSON.generate(
 id: payment_intent_id,
-                                       object: "payment_intent",
-                                       amount: 2000,
-                                       status: "requires_capture", last_payment_error: nil,
-                                       charges: { data: [{ id: "ch_1234", amount: 2000 }] })
+object: "payment_intent",
+amount: 2000,
+status: "requires_capture", last_payment_error: nil,
+charges: { data: [{ id: "ch_1234", amount: 2000 }] })
     }
   end
 
@@ -341,12 +341,12 @@ id: payment_intent_id,
           { 
 status: 200, body: JSON.generate(
 id: payment_intent_id,
-                                             object: "payment_intent",
-                                             next_source_action: {
+object: "payment_intent",
+next_source_action: {
                                                type: "authorize_with_url",
                                                authorize_with_url: { url: stripe_redirect_url }
                                              },
-                                             status: "requires_source_action") }
+status: "requires_source_action") }
         end
 
         it "redirects the user to the authorization stripe url" do

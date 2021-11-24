@@ -34,9 +34,9 @@ module OpenFoodNetwork
       it "should build a table from a list of variants" do
         variant = double(
 :variant, sku: "sku",
-                                   full_name: "Variant Name",
-                                   count_on_hand: 10,
-                                   price: 100)
+          full_name: "Variant Name",
+          count_on_hand: 10,
+          price: 100)
         allow(variant).to receive_message_chain(:product, :supplier, :name).and_return("Supplier")
         allow(variant).to receive_message_chain(
 :product, :supplier, :address,
@@ -137,7 +137,7 @@ double(name: "taxon1"),
           product2 = create(:simple_product, supplier: supplier)
           order_cycle = create(
 :simple_order_cycle, suppliers: [supplier],
-                                                    distributors: [distributor], variants: [product2.variants.first])
+                     distributors: [distributor], variants: [product2.variants.first])
 
           allow(subject).to receive(:params).and_return(distributor_id: distributor.id)
           expect(subject.filter(variants)).to eq([product2.variants.first])
@@ -149,7 +149,7 @@ double(name: "taxon1"),
           variant = product.variants.first
           order_cycle = create(
 :simple_order_cycle, suppliers: [supplier],
-                                                    distributors: [distributor], variants: [product.variants.first])
+                     distributors: [distributor], variants: [product.variants.first])
           create(:variant_override, hub: distributor, variant: variant, price: 2)
 
           result = subject.filter(variants)
@@ -163,7 +163,7 @@ double(name: "taxon1"),
           variant = product.variants.first
           order_cycle = create(
 :simple_order_cycle, suppliers: [supplier],
-                                                    distributors: [distributor], variants: [product.variants.first])
+                     distributors: [distributor], variants: [product.variants.first])
           create(:variant_override, hub: distributor, variant: variant, price: 2)
 
           allow(subject).to receive(:params).and_return(distributor_id: distributor.id)
@@ -178,7 +178,7 @@ double(name: "taxon1"),
           product2 = create(:simple_product, supplier: supplier)
           order_cycle = create(
 :simple_order_cycle, suppliers: [supplier],
-                                                    distributors: [distributor], variants: [product1.variants.first])
+                     distributors: [distributor], variants: [product1.variants.first])
 
           allow(subject).to receive(:params).and_return(order_cycle_id: order_cycle.id)
           expect(subject.filter(variants)).to eq([product1.variants.first])
@@ -202,7 +202,7 @@ double(name: "taxon1"),
                                                 supplier: other_supplier).variants.first
           variant_filtered_by_stock = create(
 :simple_product, supplier: supplier,
-                                                              on_hand: 0).variants.first
+                 on_hand: 0).variants.first
 
           # This OC contains all products except the one that should be filtered
           # by order cycle. We create a separate OC further down to proof that

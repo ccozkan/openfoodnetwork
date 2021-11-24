@@ -13,12 +13,12 @@ describe SubscriptionPlacementJob do
     let(:order_cycle1) {
       create(
 :simple_order_cycle, coordinator: shop, orders_open_at: 1.minute.ago,
-                                  orders_close_at: 10.minutes.from_now)
+                     orders_close_at: 10.minutes.from_now)
     }
     let(:order_cycle2) {
       create(
 :simple_order_cycle, coordinator: shop, orders_open_at: 10.minutes.ago,
-                                  orders_close_at: 1.minute.ago)
+                     orders_close_at: 1.minute.ago)
     }
     let(:schedule) { create(:schedule, order_cycles: [order_cycle1, order_cycle2]) }
     let(:subscription) { create(:subscription, shop: shop, schedule: schedule) }

@@ -15,12 +15,12 @@ describe "As a consumer, I want to checkout my order", js: true do
   let!(:order_cycle) {
     create(
 :simple_order_cycle, suppliers: [supplier], distributors: [distributor],
-                                coordinator: create(:distributor_enterprise), variants: [variant])
+                     coordinator: create(:distributor_enterprise), variants: [variant])
   }
   let(:order) {
     create(
 :order, order_cycle: order_cycle, distributor: distributor, bill_address_id: nil,
-                   ship_address_id: nil)
+        ship_address_id: nil)
   }
 
   let(:fee_tax_rate) { create(:tax_rate, amount: 0.10, zone: zone, included_in_price: true) }
@@ -30,15 +30,15 @@ describe "As a consumer, I want to checkout my order", js: true do
   let(:free_shipping) {
     create(
 :shipping_method, require_ship_address: true, name: "Free Shipping", description: "yellow",
-                             calculator: Calculator::FlatRate.new(preferred_amount: 0.00))
+                  calculator: Calculator::FlatRate.new(preferred_amount: 0.00))
   }
   let(:shipping_tax_rate) { create(:tax_rate, amount: 0.25, zone: zone, included_in_price: true) }
   let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
   let(:shipping_with_fee) {
     create(
 :shipping_method, require_ship_address: false, tax_category: shipping_tax_category,
-                             name: "Shipping with Fee", description: "blue",
-                             calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
+                  name: "Shipping with Fee", description: "blue",
+                  calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
   }
   let!(:payment_method) { create(:payment_method, distributors: [distributor]) }
 

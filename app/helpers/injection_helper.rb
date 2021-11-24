@@ -23,7 +23,7 @@ module InjectionHelper
       "groups",
       EnterpriseGroup.on_front_page.by_position.select(select_only)
         .includes(enterprises: [:shipping_methods, { address: [:state, :country] }],
-                 address: :state)
+                  address: :state)
         .all,
       Api::GroupListSerializer
     )

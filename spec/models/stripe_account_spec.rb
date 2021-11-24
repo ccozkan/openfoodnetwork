@@ -24,7 +24,7 @@ describe StripeAccount do
           .with(body: { "client_id" => client_id, "stripe_user_id" => stripe_user_id })
           .to_return(status: 400, body: JSON.generate(
 error: 'invalid_grant',
-                                                     error_description: "Some Message"))
+error_description: "Some Message"))
       end
 
       it "destroys the record and notifies Bugsnag" do

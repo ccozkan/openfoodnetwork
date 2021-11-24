@@ -38,7 +38,7 @@ describe EnterprisesHelper, type: :helper do
       it "does not return 'back office only' shipping method" do
         backoffice_only_shipping_method = create(
 :shipping_method, require_ship_address: false,
-                                                                   distributors: [distributor], display_on: 'back_end')
+                  distributors: [distributor], display_on: 'back_end')
 
         expect(helper.available_shipping_methods).to_not include backoffice_only_shipping_method
         expect(helper.available_shipping_methods).to_not include other_distributor_shipping_method
@@ -274,12 +274,12 @@ describe EnterprisesHelper, type: :helper do
       let!(:pm3) {
         create(
 :stripe_connect_payment_method, distributors: [distributor],
-                                               preferred_enterprise_id: distributor.id)
+                                preferred_enterprise_id: distributor.id)
       }
       let!(:pm4) {
         create(
 :stripe_connect_payment_method, distributors: [distributor],
-                                               preferred_enterprise_id: some_other_distributor.id)
+                                preferred_enterprise_id: some_other_distributor.id)
       }
       let(:available_payment_methods) { helper.available_payment_methods }
 

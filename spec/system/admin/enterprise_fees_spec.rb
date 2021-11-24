@@ -14,7 +14,7 @@ describe '
   it "listing enterprise fees" do
     fee = create(
 :enterprise_fee, name: '$0.50 / kg', fee_type: 'packing',
-                                  tax_category: tax_category_gst)
+                 tax_category: tax_category_gst)
     amount = fee.calculator.preferred_amount
 
     login_as_admin_and_visit spree.edit_admin_general_settings_path

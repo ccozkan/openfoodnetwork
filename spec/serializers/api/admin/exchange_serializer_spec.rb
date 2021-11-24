@@ -16,7 +16,7 @@ describe Api::Admin::ExchangeSerializer do
     let!(:inventory_item) {
       create(
 :inventory_item, enterprise: exchange.order_cycle.coordinator, variant: v1,
-                              visible: true)
+                 visible: true)
     }
 
     before do

@@ -15,7 +15,7 @@ class OrderSyncer
     orders_in_order_cycles_not_closed.all? do |order|
       order.assign_attributes(
 customer_id: customer_id, email: customer&.email,
-                              distributor_id: shop_id)
+distributor_id: shop_id)
       update_associations_for(order)
       line_item_syncer.sync!(order)
       order.update_order!

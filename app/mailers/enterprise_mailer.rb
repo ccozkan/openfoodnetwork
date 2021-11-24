@@ -14,8 +14,8 @@ class EnterpriseMailer < Spree::BaseMailer
                   sitename: Spree::Config[:site_name])
       mail(
 to: enterprise.contact.email,
-           from: from_address,
-           subject: subject)
+from: from_address,
+subject: subject)
     end
   end
 
@@ -28,8 +28,8 @@ to: enterprise.contact.email,
       subject = t('enterprise_mailer.invite_manager.subject', enterprise: @enterprise.name)
       mail(
 to: user.email,
-           from: from_address,
-           subject: subject)
+from: from_address,
+subject: subject)
     end
   end
 

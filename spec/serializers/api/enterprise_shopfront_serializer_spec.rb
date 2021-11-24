@@ -19,7 +19,7 @@ describe Api::EnterpriseShopfrontSerializer do
   let!(:ex) {
     create(
 :exchange, order_cycle: oc, incoming: false,
-                      sender: producer, receiver: hub)
+           sender: producer, receiver: hub)
   }
 
   let(:serializer) { Api::EnterpriseShopfrontSerializer.new hub }

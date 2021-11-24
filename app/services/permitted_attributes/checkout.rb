@@ -16,8 +16,8 @@ payments_attributes: [
             :payment_method_id,
             { source_attributes: PermittedAttributes::PaymentSource.attributes }
           ],
-            ship_address_attributes: PermittedAttributes::Address.attributes,
-            bill_address_attributes: PermittedAttributes::Address.attributes }
+ship_address_attributes: PermittedAttributes::Address.attributes,
+bill_address_attributes: PermittedAttributes::Address.attributes }
         ],
         payment_source: PermittedAttributes::PaymentSource.attributes
       )

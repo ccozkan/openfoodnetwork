@@ -15,14 +15,14 @@ describe '
   let(:order_cycle) do
     create(
 :simple_order_cycle, name: 'One', distributors: [distributor],
-                                variants: [product.variants.first])
+                     variants: [product.variants.first])
   end
 
   let(:order) do
     create(
 :order_with_totals_and_distribution, user: user, distributor: distributor,
-                                                order_cycle: order_cycle, state: 'complete',
-                                                payment_state: 'balance_due')
+                                     order_cycle: order_cycle, state: 'complete',
+                                     payment_state: 'balance_due')
   end
   let(:customer) { order.customer }
 
@@ -181,7 +181,7 @@ describe '
     let!(:override) {
       create(
 :variant_override, hub: distributor, variant: product.variants.first,
-                                count_on_hand: 100)
+                   count_on_hand: 100)
     }
 
     before do
@@ -313,8 +313,8 @@ describe '
       let!(:order) do
         create(
 :order_with_taxes, distributor: distributor1, ship_address: create(:address),
-                                  product_price: 110, tax_rate_amount: 0.1,
-                                  tax_rate_name: "Tax 1").tap do |order|
+                   product_price: 110, tax_rate_amount: 0.1,
+                   tax_rate_name: "Tax 1").tap do |order|
                                     order.create_tax_charge!
                                     order.update_shipping_fees!
                                   end

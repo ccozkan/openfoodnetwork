@@ -17,7 +17,7 @@ describe Admin::VariantOverridesController, type: :controller do
         [
 { 
 id: variant_override.id, price: 123.45, count_on_hand: 321, sku: "MySKU",
-           on_demand: false }]
+on_demand: false }]
       }
 
       context "where I don't manage the variant override hub" do
@@ -56,7 +56,7 @@ id: variant_override.id, price: 123.45, count_on_hand: 321, sku: "MySKU",
           before do
             create(
 :enterprise_relationship, parent: variant.product.supplier, child: hub,
-                                             permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides])
           end
 
           it "loads data" do
@@ -82,7 +82,7 @@ id: variant_override.id, price: 123.45, count_on_hand: 321, sku: "MySKU",
               [
 { 
 id: variant_override.id, price: "", count_on_hand: "", default_stock: nil, resettable: nil,
-                 sku: nil, on_demand: nil }]
+sku: nil, on_demand: nil }]
             }
 
             it "destroys the variant override" do
@@ -124,12 +124,12 @@ id: variant_override.id, price: "", count_on_hand: "", default_stock: nil, reset
       let!(:variant_override1) {
         create(
 :variant_override, hub: hub, variant: variant1, count_on_hand: 5, default_stock: 7,
-                                  resettable: true)
+                   resettable: true)
       }
       let!(:variant_override2) {
         create(
 :variant_override, hub: hub, variant: variant2, count_on_hand: 2, default_stock: 1,
-                                  resettable: false)
+                   resettable: false)
       }
 
       let(:params) { { format: format, hub_id: hub.id } }
@@ -163,7 +163,7 @@ id: variant_override.id, price: "", count_on_hand: "", default_stock: nil, reset
           let!(:er1) {
             create(
 :enterprise_relationship, parent: producer, child: hub,
-                                             permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides])
           }
 
           it "loads data" do
@@ -190,12 +190,12 @@ id: variant_override.id, price: "", count_on_hand: "", default_stock: nil, reset
             let!(:variant_override3) {
               create(
 :variant_override, hub: hub2, variant: variant3, count_on_hand: 1, default_stock: 13,
-                                        resettable: true)
+                   resettable: true)
             }
             let!(:er2) {
               create(
 :enterprise_relationship, parent: producer, child: hub2,
-                                               permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides])
             }
 
             it "does not reset count_on_hand for variant_overrides not in params" do

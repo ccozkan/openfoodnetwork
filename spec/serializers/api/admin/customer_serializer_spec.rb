@@ -8,7 +8,7 @@ describe Api::Admin::CustomerSerializer do
   let!(:tag_rule) {
     create(
 :filter_order_cycles_tag_rule, enterprise: customer.enterprise,
-                                          preferred_customer_tags: "two")
+                               preferred_customer_tags: "two")
   }
 
   it "serializes a customer with tags" do

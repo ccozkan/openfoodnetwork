@@ -23,7 +23,7 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
     let!(:order) do
       create(
 :completed_order_with_totals, line_items_count: 1, user: customer.user,
-                                           customer: customer, distributor: distributor)
+                              customer: customer, distributor: distributor)
     end
 
     it "generates the report" do
@@ -73,7 +73,7 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
     let!(:order) do
       create(
 :completed_order_with_totals, line_items_count: 1, user: customer.user,
-                                           customer: customer, distributor: distributor)
+                              customer: customer, distributor: distributor)
     end
 
     before do
@@ -92,7 +92,7 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
       let!(:order) {
         create(
 :order_ready_to_ship, user: customer.user,
-                                     customer: customer, distributor: distributor)
+                      customer: customer, distributor: distributor)
       }
       let(:completed_payment) { order.payments.completed.first }
       let!(:failed_payment) { create(:payment, order: order, state: "failed") }
@@ -113,7 +113,7 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
     let!(:order) do
       create(
 :completed_order_with_totals, line_items_count: 1, user: customer.user,
-                                           customer: customer, distributor: distributor)
+                              customer: customer, distributor: distributor)
     end
     let(:overidden_sku) { 'magical_sku' }
 

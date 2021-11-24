@@ -118,13 +118,13 @@ variants_attributes.all?{ |attr|
     it "can create a new product" do
       api_post :create, product: { 
 name: "The Other Product",
-                                   price: 19.99,
-                                   shipping_category_id: create(:shipping_category).id,
-                                   supplier_id: supplier.id,
-                                   primary_taxon_id: FactoryBot.create(:taxon).id,
-                                   variant_unit: "items",
-                                   variant_unit_name: "things",
-                                   unit_description: "things" }
+price: 19.99,
+shipping_category_id: create(:shipping_category).id,
+supplier_id: supplier.id,
+primary_taxon_id: FactoryBot.create(:taxon).id,
+variant_unit: "items",
+variant_unit_name: "things",
+unit_description: "things" }
 
       expect(all_attributes.all?{ |attr| json_response.keys.include? attr }).to eq(true)
       expect(response.status).to eq(201)

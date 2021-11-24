@@ -8,7 +8,7 @@ describe Sets::ModelSet do
       attrs = { 
 collection_attributes: { 
 '1' => { name: 's1' },
-                                         '2' => { name: 's2' } } }
+'2' => { name: 's2' } } }
 
       ms = Sets::ModelSet.new(
 EnterpriseRelationshipPermission,
@@ -27,7 +27,7 @@ EnterpriseRelationshipPermission,
       attrs = { 
 collection_attributes: { 
 '1' => { id: e1.id, name: 'e1zz', description: 'foo' },
-                                         '2' => { id: e2.id, name: 'e2yy', description: 'bar' } } }
+'2' => { id: e2.id, name: 'e2yy', description: 'bar' } } }
 
       ms = Sets::ModelSet.new(EnterpriseGroup, EnterpriseGroup.all, attrs)
 
@@ -43,7 +43,7 @@ collection_attributes: {
       attributes = { 
 collection_attributes: { 
 '1' => { id: e1.id, name: 'deleteme' },
-                                              '2' => { id: e2.id, name: 'e2' } } }
+'2' => { id: e2.id, name: 'e2' } } }
 
       ms = Sets::ModelSet.new(
 Enterprise, Enterprise.all, attributes, nil,

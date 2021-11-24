@@ -26,12 +26,12 @@ describe '
       let!(:d1o1) {
         create(
 :completed_order_with_totals, distributor: distributor1, user: user, total: 10_000,
-                                             order_cycle: order_cycle)
+                              order_cycle: order_cycle)
       }
       let!(:d1o2) {
         create(
 :order_without_full_payment, distributor: distributor1, user: user, total: 5000,
-                                            order_cycle: order_cycle)
+                             order_cycle: order_cycle)
       }
       let!(:d2o1) { create(:completed_order_with_totals, distributor: distributor2, user: user) }
       let!(:credit_order) {

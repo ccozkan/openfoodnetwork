@@ -10,7 +10,7 @@ describe CheckoutHelper, type: :helper do
       path: "foo",
       attributes: { 
 :required => true, :type => :email, :name => "foo", :id => "foo",
-                    "ng-model" => "foo", "ng-class" => "{error: !fieldValid('foo')}" }
+"ng-model" => "foo", "ng-class" => "{error: !fieldValid('foo')}" }
     )
 
     helper.validated_input("test", "foo", type: :email)
@@ -43,7 +43,7 @@ Spree::Money.new(
     let!(:fee_adjustment) {
       create(
 :adjustment, originator: enterprise_fee, adjustable: order,
-                          order: order)
+             order: order)
     }
 
     before do
@@ -69,7 +69,7 @@ Spree::Money.new(
       let!(:line_item_fee_adjustment) {
         create(
 :adjustment, originator: enterprise_fee, adjustable: order.line_items.first,
-                            order: order)
+             order: order)
       }
       let!(:order_tax_adjustment) {
         create(
@@ -99,7 +99,7 @@ Spree::Money.new(
       let!(:return_adjustment) {
         create(
 :adjustment, originator_type: 'Spree::ReturnAuthorization', adjustable: order,
-                            order: order)
+             order: order)
       }
 
       it "includes return adjustments" do

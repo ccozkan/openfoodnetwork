@@ -141,8 +141,8 @@ module OpenFoodNetwork
         it "should do all the filters at once" do
           allow(subject).to receive(:params).and_return(
 order_cycle_id: oc1.id,
-                                                        shipping_method_name: sm1.name,
-                                                        payment_method_name: pm1.name)
+shipping_method_name: sm1.name,
+payment_method_name: pm1.name)
           expect(subject.filter(orders)).to eq([order1])
         end
       end

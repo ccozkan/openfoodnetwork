@@ -12,12 +12,12 @@ describe EnterprisesController, type: :controller do
     let!(:order_cycle1) {
       create(
 :simple_order_cycle, distributors: [distributor], orders_open_at: 2.days.ago,
-                                  orders_close_at: 3.days.from_now, variants: [line_item.variant] )
+                     orders_close_at: 3.days.from_now, variants: [line_item.variant] )
     }
     let!(:order_cycle2) {
       create(
 :simple_order_cycle, distributors: [distributor], orders_open_at: 3.days.ago,
-                                  orders_close_at: 4.days.from_now )
+                     orders_close_at: 4.days.from_now )
     }
 
     before do
@@ -59,7 +59,7 @@ describe EnterprisesController, type: :controller do
       let!(:order_cycle3) {
         create(
 :simple_order_cycle, distributors: [distributor], orders_open_at: 3.days.ago,
-                                    orders_close_at: 4.days.from_now)
+                     orders_close_at: 4.days.from_now)
       }
       let!(:oc3_exchange) { order_cycle3.exchanges.outgoing.to_enterprise(distributor).first }
       let(:customer) { create(:customer, user: user, enterprise: distributor) }

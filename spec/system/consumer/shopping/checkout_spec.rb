@@ -15,7 +15,7 @@ describe "As a consumer I want to check out my cart", js: true do
   let!(:order_cycle) {
     create(
 :simple_order_cycle, suppliers: [supplier], distributors: [distributor],
-                                coordinator: create(:distributor_enterprise), variants: [variant])
+                     coordinator: create(:distributor_enterprise), variants: [variant])
   }
   let(:enterprise_fee) { create(:enterprise_fee, amount: 1.23, tax_category: fee_tax_category) }
   let(:fee_tax_rate) { create(:tax_rate, amount: 0.10, zone: zone, included_in_price: true) }
@@ -27,7 +27,7 @@ describe "As a consumer I want to check out my cart", js: true do
   let(:order) {
     create(
 :order, order_cycle: order_cycle, distributor: distributor, bill_address_id: nil,
-                   ship_address_id: nil)
+        ship_address_id: nil)
   }
   let(:shipping_tax_rate) { create(:tax_rate, amount: 0.25, zone: zone, included_in_price: true) }
   let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
@@ -35,13 +35,13 @@ describe "As a consumer I want to check out my cart", js: true do
   let(:free_shipping) {
     create(
 :shipping_method, require_ship_address: true, name: "Frogs", description: "yellow",
-                             calculator: Calculator::FlatRate.new(preferred_amount: 0.00))
+                  calculator: Calculator::FlatRate.new(preferred_amount: 0.00))
   }
   let(:shipping_with_fee) {
     create(
 :shipping_method, require_ship_address: false, tax_category: shipping_tax_category,
-                             name: "Donkeys", description: "blue",
-                             calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
+                  name: "Donkeys", description: "blue",
+                  calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
   }
   let(:tagged_shipping) {
     create(:shipping_method, require_ship_address: false, name: "Local", tag_list: "local")
@@ -49,17 +49,17 @@ describe "As a consumer I want to check out my cart", js: true do
   let!(:check_without_fee) {
     create(
 :payment_method, distributors: [distributor], name: "Roger rabbit",
-                            type: "Spree::PaymentMethod::Check")
+                 type: "Spree::PaymentMethod::Check")
   }
   let!(:check_with_fee) {
     create(
 :payment_method, distributors: [distributor],
-                            calculator: Calculator::FlatRate.new(preferred_amount: 5.67))
+                 calculator: Calculator::FlatRate.new(preferred_amount: 5.67))
   }
   let!(:paypal) do
     Spree::Gateway::PayPalExpress.create!(
 name: "Paypal", environment: 'test',
-                                          distributor_ids: [distributor.id]).tap do |pm|
+distributor_ids: [distributor.id]).tap do |pm|
       pm.preferred_login = 'devnull-facilitator_api1.rohanmitchell.com'
       pm.preferred_password = '1406163716'
       pm.preferred_signature = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AaTntNJ-AjvUJkWf4dgJIvcLsf1V'
@@ -300,7 +300,7 @@ name: "Paypal", environment: 'test',
       let!(:prev_order) {
         create(
 :completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
-                                             user: order.user)
+                              user: order.user)
       }
 
       before do
@@ -575,7 +575,7 @@ name: "Paypal", environment: 'test',
               let!(:check_without_fee) {
                 create(
 :payment_method, distributors: [distributor], name: "Roger rabbit",
-                                        type: gateway_type)
+                 type: gateway_type)
               }
 
               it "takes us to the order confirmation page when submitted with a valid credit card" do

@@ -54,19 +54,19 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::ReportService do
     let!(:variant) do
       prepare_variant(
 incoming_exchange_fees: variant_incoming_exchange_fees,
-                      outgoing_exchange_fees: variant_outgoing_exchange_fees)
+outgoing_exchange_fees: variant_outgoing_exchange_fees)
     end
 
     let!(:order_cycle_fees) do
       [
         create(
 :enterprise_fee, :per_item, name: "Coordinator Fee 1", enterprise: coordinator,
-                                           fee_type: "admin", amount: 512.0,
-                                           tax_category: coordinator_tax_category),
+                            fee_type: "admin", amount: 512.0,
+                            tax_category: coordinator_tax_category),
         create(
 :enterprise_fee, :per_item, name: "Coordinator Fee 2", enterprise: coordinator,
-                                           fee_type: "sales", amount: 1024.0,
-                                           inherits_tax_category: true)
+                            fee_type: "sales", amount: 1024.0,
+                            inherits_tax_category: true)
       ]
     end
     let!(:coordinator_tax_category) { create(:tax_category, name: "Sample Coordinator Tax") }
@@ -75,12 +75,12 @@ incoming_exchange_fees: variant_incoming_exchange_fees,
       [
         create(
 :enterprise_fee, :per_item, name: "Producer Fee 1", enterprise: producer,
-                                           fee_type: "sales", amount: 64.0,
-                                           tax_category: producer_tax_category),
+                            fee_type: "sales", amount: 64.0,
+                            tax_category: producer_tax_category),
         create(
 :enterprise_fee, :per_item, name: "Producer Fee 2", enterprise: producer,
-                                           fee_type: "sales", amount: 128.0,
-                                           inherits_tax_category: true)
+                            fee_type: "sales", amount: 128.0,
+                            inherits_tax_category: true)
       ]
     end
     let!(:producer_tax_category) { create(:tax_category, name: "Sample Producer Tax") }
@@ -89,12 +89,12 @@ incoming_exchange_fees: variant_incoming_exchange_fees,
       [
         create(
 :enterprise_fee, :per_item, name: "Distributor Fee 1", enterprise: distributor,
-                                           fee_type: "admin", amount: 4.0,
-                                           tax_category: distributor_tax_category),
+                            fee_type: "admin", amount: 4.0,
+                            tax_category: distributor_tax_category),
         create(
 :enterprise_fee, :per_item, name: "Distributor Fee 2", enterprise: distributor,
-                                           fee_type: "sales", amount: 8.0,
-                                           inherits_tax_category: true)
+                            fee_type: "sales", amount: 8.0,
+                            inherits_tax_category: true)
       ]
     end
     let!(:distributor_tax_category) { create(:tax_category, name: "Sample Distributor Tax") }
@@ -210,7 +210,7 @@ incoming_exchange_fees: variant_incoming_exchange_fees,
       let!(:enterprise_fee) do
         create(
 :enterprise_fee, :per_item, name: "Sample Enterprise Fee", enterprise: distributor,
-                                           fee_type: "admin", amount: 0)
+                            fee_type: "admin", amount: 0)
       end
 
       let!(:customer_order) { prepare_order(customer: customer) }
@@ -274,7 +274,7 @@ incoming_exchange_fees: variant_incoming_exchange_fees,
       let!(:variant) do
         prepare_variant(
 incoming_exchange_fees: variant_incoming_exchange_fees,
-                        outgoing_exchange_fees: variant_outgoing_exchange_fees)
+outgoing_exchange_fees: variant_outgoing_exchange_fees)
       end
       let!(:variant_incoming_exchange_fees) { [coordinator_fee, distributor_fee] }
       let!(:variant_outgoing_exchange_fees) { [producer_fee, coordinator_fee] }
@@ -283,22 +283,22 @@ incoming_exchange_fees: variant_incoming_exchange_fees,
         tax_category = create(:tax_category, name: "Sample Producer Tax")
         create(
 :enterprise_fee, :per_item, name: "Sample Producer Fee", enterprise: producer,
-                                           fee_type: "sales", amount: 64.0,
-                                           tax_category: tax_category)
+                            fee_type: "sales", amount: 64.0,
+                            tax_category: tax_category)
       end
       let!(:coordinator_fee) do
         tax_category = create(:tax_category, name: "Sample Coordinator Tax")
         create(
 :enterprise_fee, :per_item, name: "Sample Coordinator Fee", enterprise: coordinator,
-                                           fee_type: "admin", amount: 512.0,
-                                           tax_category: tax_category)
+                            fee_type: "admin", amount: 512.0,
+                            tax_category: tax_category)
       end
       let!(:distributor_fee) do
         tax_category = create(:tax_category, name: "Sample Distributor Tax")
         create(
 :enterprise_fee, :per_item, name: "Sample Distributor Fee", enterprise: distributor,
-                                           fee_type: "admin", amount: 4.0,
-                                           tax_category: tax_category)
+                            fee_type: "admin", amount: 4.0,
+                            tax_category: tax_category)
       end
 
       let!(:customer_order) { prepare_order(customer: customer) }
@@ -340,33 +340,33 @@ incoming_exchange_fees: variant_incoming_exchange_fees,
         tax_category = create(:tax_category, name: "Producer Tax A")
         create(
 :enterprise_fee, :flat_rate, name: "Producer Fee A", enterprise: producer,
-                                            fee_type: "sales", tax_category: tax_category,
-                                            amount: 10)
+                             fee_type: "sales", tax_category: tax_category,
+                             amount: 10)
       end
       let!(:coordinator_fee) do
         tax_category = create(:tax_category, name: "Coordinator Tax A")
         create(
 :enterprise_fee, :flat_rate, name: "Coordinator Fee A", enterprise: coordinator,
-                                            fee_type: "admin", tax_category: tax_category,
-                                            amount: 15)
+                             fee_type: "admin", tax_category: tax_category,
+                             amount: 15)
       end
       let!(:coordinator_fee_inheriting_product_tax_category) do
         create(
 :enterprise_fee, :flat_rate, name: "Coordinator Fee B", enterprise: coordinator,
-                                            fee_type: "admin", inherits_tax_category: true,
-                                            amount: 20)
+                             fee_type: "admin", inherits_tax_category: true,
+                             amount: 20)
       end
       let!(:coordinator_fee_without_tax) do
         create(
 :enterprise_fee, :flat_rate, name: "Coordinator Fee C", enterprise: coordinator,
-                                            fee_type: "admin", inherits_tax_category: false,
-                                            amount: 25)
+                             fee_type: "admin", inherits_tax_category: false,
+                             amount: 25)
       end
       let!(:distributor_fee) do
         create(
 :enterprise_fee, :flat_rate, name: "Distributor Fee A", enterprise: distributor,
-                                            fee_type: "admin", inherits_tax_category: false,
-                                            amount: 30)
+                             fee_type: "admin", inherits_tax_category: false,
+                             amount: 30)
       end
 
       let!(:coordinator_fees) do
@@ -387,7 +387,7 @@ incoming_exchange_fees: variant_incoming_exchange_fees,
       let!(:variant) do
         prepare_variant(
 incoming_exchange_fees: variant_incoming_exchange_fees,
-                        outgoing_exchange_fees: variant_outgoing_exchange_fees)
+outgoing_exchange_fees: variant_outgoing_exchange_fees)
       end
 
       let!(:customer_order) { prepare_order(customer: customer) }
@@ -449,12 +449,12 @@ incoming_exchange_fees: variant_incoming_exchange_fees,
     let!(:distributor_a) do
       create(
 :distributor_enterprise, name: "Distributor A", payment_methods: [payment_method],
-                                      shipping_methods: [shipping_method])
+                         shipping_methods: [shipping_method])
     end
     let!(:distributor_b) do
       create(
 :distributor_enterprise, name: "Distributor B", payment_methods: [payment_method],
-                                      shipping_methods: [shipping_method])
+                         shipping_methods: [shipping_method])
     end
 
     let!(:order_cycle_a) { create(:simple_order_cycle, coordinator: coordinator) }
@@ -547,17 +547,17 @@ incoming_exchange_fees: variant_incoming_exchange_fees,
       let!(:distributor_a) do
         create(
 :distributor_enterprise, name: "Distributor A", payment_methods: [payment_method],
-                                        shipping_methods: [shipping_method])
+                         shipping_methods: [shipping_method])
       end
       let!(:distributor_b) do
         create(
 :distributor_enterprise, name: "Distributor B", payment_methods: [payment_method],
-                                        shipping_methods: [shipping_method])
+                         shipping_methods: [shipping_method])
       end
       let!(:distributor_c) do
         create(
 :distributor_enterprise, name: "Distributor C", payment_methods: [payment_method],
-                                        shipping_methods: [shipping_method])
+                         shipping_methods: [shipping_method])
       end
 
       let!(:order_a) { prepare_order(distributor: distributor_a) }
@@ -617,17 +617,17 @@ incoming_exchange_fees: variant_incoming_exchange_fees,
       let!(:distributor_a) do
         create(
 :distributor_enterprise, name: "Distributor A", payment_methods: [payment_method],
-                                        shipping_methods: [shipping_method])
+                         shipping_methods: [shipping_method])
       end
       let!(:distributor_b) do
         create(
 :distributor_enterprise, name: "Distributor B", payment_methods: [payment_method],
-                                        shipping_methods: [shipping_method])
+                         shipping_methods: [shipping_method])
       end
       let!(:distributor_c) do
         create(
 :distributor_enterprise, name: "Distributor C", payment_methods: [payment_method],
-                                        shipping_methods: [shipping_method])
+                         shipping_methods: [shipping_method])
       end
 
       let!(:order_cycle_a) { create(:simple_order_cycle, coordinator: coordinator) }
@@ -761,7 +761,7 @@ total.fee_type, total.enterprise_name, total.fee_name,
   def default_order_options
     { 
 customer: customer, distributor: distributor, order_cycle: order_cycle,
-      shipping_method: shipping_method, variant: variant }
+shipping_method: shipping_method, variant: variant }
   end
 
   def prepare_incomplete_order(options = {})
@@ -778,7 +778,7 @@ customer: customer, distributor: distributor, order_cycle: order_cycle,
   def default_variant_options
     { 
 product: product, producer: producer, is_master: false, coordinator: coordinator,
-      distributor: distributor, order_cycle: order_cycle }
+distributor: distributor, order_cycle: order_cycle }
   end
 
   def prepare_variant(options = {})

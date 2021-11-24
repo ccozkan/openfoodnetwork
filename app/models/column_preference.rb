@@ -32,7 +32,7 @@ default_attributes.select{ |k, _v|
       else
         attributes = default_attributes.merge(
 user_id: user.id, action_name: action_name,
-                                              column_name: column_name)
+column_name: column_name)
         preferences << ColumnPreference.new(attributes)
       end
     end

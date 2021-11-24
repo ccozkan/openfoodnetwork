@@ -26,7 +26,7 @@ module OpenFoodNetwork
           order = double(:order, email: "test@test.com")
           address = double(
 :billing_address, firstname: "Firsty",
-                                             lastname: "Lasty", city: "Suburbia")
+                  lastname: "Lasty", city: "Suburbia")
           allow(order).to receive(:billing_address).and_return address
           allow(subject).to receive(:orders).and_return [order]
 

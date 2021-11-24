@@ -26,12 +26,12 @@ module OpenFoodNetwork
             let!(:exchange1) {
               create(
 :exchange, order_cycle: order_cycle, sender: supplier1, receiver: coordinator, incoming: true,
-                                enterprise_fees: [enterprise_fee1], variants: [product1.master])
+           enterprise_fees: [enterprise_fee1], variants: [product1.master])
             }
             let!(:exchange2) {
               create(
 :exchange, order_cycle: order_cycle, sender: supplier2, receiver: coordinator, incoming: true,
-                                enterprise_fees: [enterprise_fee2], variants: [product2.master])
+           enterprise_fees: [enterprise_fee2], variants: [product2.master])
             }
 
             it "calculates via regular computation" do
@@ -61,7 +61,7 @@ distributor,
             let!(:exchange) {
               create(
 :exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor, incoming: false,
-                                enterprise_fees: [], variants: [product1.master])
+           enterprise_fees: [], variants: [product1.master])
             }
 
             before do
@@ -87,7 +87,7 @@ distributor,
             let!(:exchange) {
               create(
 :exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor, incoming: false,
-                                enterprise_fees: [enterprise_fee1, enterprise_fee2, enterprise_fee3], variants: [product1.master])
+           enterprise_fees: [enterprise_fee1, enterprise_fee2, enterprise_fee3], variants: [product1.master])
             }
 
             it "sums via regular computation" do
@@ -110,12 +110,12 @@ distributor,
           let!(:enterprise_fee1) {
             create(
 :enterprise_fee, amount: 20, fee_type: "admin",
-                                    calculator: ::Calculator::FlatPercentPerItem.new(preferred_flat_percent: 20))
+                 calculator: ::Calculator::FlatPercentPerItem.new(preferred_flat_percent: 20))
           }
           let!(:exchange) {
             create(
 :exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor, incoming: false,
-                              enterprise_fees: [enterprise_fee1], variants: [product1.master])
+           enterprise_fees: [enterprise_fee1], variants: [product1.master])
           }
 
           it "sums via regular computation" do
@@ -143,9 +143,9 @@ distributor,
         let!(:exchange) {
           create(
 :exchange, order_cycle: order_cycle,
-                            sender: coordinator, receiver: distributor, incoming: false,
-                            enterprise_fees: [ef_admin, ef_sales, ef_packing, ef_transport, ef_fundraising],
-                            variants: [product1.master])
+           sender: coordinator, receiver: distributor, incoming: false,
+           enterprise_fees: [ef_admin, ef_sales, ef_packing, ef_transport, ef_fundraising],
+           variants: [product1.master])
         }
 
         describe "regular computation" do
@@ -155,7 +155,7 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                order_cycle).fees_by_type_for(product1.master)).to eq(
 admin: 1.23, sales: 4.56, packing: 7.89,
-                                                                                                     transport: 0.12, fundraising: 3.45)
+transport: 0.12, fundraising: 3.45)
           end
 
           it "filters out zero fees" do
@@ -165,7 +165,7 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                order_cycle).fees_by_type_for(product1.master)).to eq(
 sales: 4.56, packing: 7.89, transport: 0.12,
-                                                                                                     fundraising: 3.45)
+fundraising: 3.45)
           end
         end
 
@@ -176,7 +176,7 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                order_cycle).indexed_fees_by_type_for(product1.master)).to eq(
 admin: 1.23, sales: 4.56,
-                                                                                                             packing: 7.89, transport: 0.12, fundraising: 3.45)
+packing: 7.89, transport: 0.12, fundraising: 3.45)
           end
 
           it "filters out zero fees" do
@@ -186,7 +186,7 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                order_cycle).indexed_fees_by_type_for(product1.master)).to eq(
 sales: 4.56, packing: 7.89,
-                                                                                                             transport: 0.12, fundraising: 3.45)
+transport: 0.12, fundraising: 3.45)
           end
         end
       end
@@ -201,7 +201,7 @@ sales: 4.56, packing: 7.89,
         let!(:exchange) {
           create(
 :exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor,
-                            incoming: false, variants: [product1.master])
+           incoming: false, variants: [product1.master])
         }
 
         before { order.reload }
@@ -240,7 +240,7 @@ distributor,
       let!(:exchange) {
         create(
 :exchange, sender: order_cycle.coordinator, receiver: distributor,
-                          order_cycle: order_cycle, enterprise_fees: [ef_exchange], variants: [v])
+           order_cycle: order_cycle, enterprise_fees: [ef_exchange], variants: [v])
       }
       let(:v) { create(:variant) }
       let(:indexed_variants) { { v.id => v } }
@@ -262,7 +262,7 @@ distributor,
         it "does not include outgoing exchanges to other distributors" do
           create(
 :exchange, order_cycle: order_cycle, sender: order_cycle.coordinator,
-                            receiver: distributor_other, enterprise_fees: [ef_other_distributor], variants: [v])
+           receiver: distributor_other, enterprise_fees: [ef_other_distributor], variants: [v])
 
           expect(subject.send(:per_item_enterprise_fees_with_exchange_details)).to eq([ef_exchange])
         end

@@ -86,12 +86,12 @@ create(
         let!(:visible_inventory_item) {
           create(
 :inventory_item, enterprise: order_cycle.coordinator,
-                                  variant: exchange_with_visible_variant.variants.first, visible: true)
+                 variant: exchange_with_visible_variant.variants.first, visible: true)
         }
         let!(:hidden_inventory_item) {
           create(
 :inventory_item, enterprise: order_cycle.coordinator,
-                                  variant: exchange_with_hidden_variant.variants.first, visible: false)
+                 variant: exchange_with_hidden_variant.variants.first, visible: false)
         }
 
         before do

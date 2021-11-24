@@ -88,9 +88,9 @@ describe ProxyOrder, type: :model do
     let(:order) {
       create(
 :order_with_totals, ship_address: create(:address),
-                                 shipments: [shipment],
-                                 payments: [create(:payment)],
-                                 distributor: shipment.shipping_method.distributors.first)
+                    shipments: [shipment],
+                    payments: [create(:payment)],
+                    distributor: shipment.shipping_method.distributors.first)
     }
     let(:proxy_order) { create(:proxy_order, order: order, canceled_at: Time.zone.now) }
     let(:order_cycle) { proxy_order.order_cycle }

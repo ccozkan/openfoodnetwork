@@ -75,7 +75,7 @@ I18n.t(:report_header_producer), I18n.t(:report_header_product),
         [
 { 
 order: :distributor,
-           variant: [{ option_values: :option_type }, { product: :supplier }] }]
+variant: [{ option_values: :option_type }, { product: :supplier }] }]
       end
     end
   end

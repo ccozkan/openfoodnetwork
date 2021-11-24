@@ -333,7 +333,7 @@ describe Spree::Ability do
     let(:er_ps) {
       create(
 :enterprise_relationship, parent: s_related, child: s1,
-                                       permissions_list: [:manage_products])
+                          permissions_list: [:manage_products])
     }
 
     subject { user }
@@ -499,7 +499,7 @@ describe Spree::Ability do
           let!(:exchange){
             create(
 :exchange, incoming: true, order_cycle: order_cycle, receiver: order_cycle.coordinator,
-                              sender: s1)
+           sender: s1)
           }
 
           it "should be able to access read/update order cycle actions" do
@@ -550,7 +550,7 @@ describe Spree::Ability do
         let!(:er_pd) {
           create(
 :enterprise_relationship, parent: d_related, child: d1,
-                                           permissions_list: [:edit_profile])
+                          permissions_list: [:edit_profile])
         }
 
         it "should be able to edit enterprises it manages" do
@@ -593,7 +593,7 @@ describe Spree::Ability do
         let!(:er1) {
           create(
 :enterprise_relationship, parent: s1, child: d1,
-                                           permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides])
         }
 
         it "should be able to access variant overrides page" do
@@ -720,7 +720,7 @@ describe Spree::Ability do
         let!(:exchange){
           create(
 :exchange, incoming: false, order_cycle: order_cycle, receiver: d1,
-                            sender: order_cycle.coordinator)
+           sender: order_cycle.coordinator)
         }
 
         it "should be able to access read and update order cycle actions" do
@@ -880,7 +880,7 @@ describe Spree::Ability do
         create(:enterprise, sells: "any").tap do |record|
           create(
 :enterprise_relationship, parent: producer, child: record,
-                                           permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle])
         end
       end
       let(:user) { unauthorized_enterprise.owner }
@@ -895,7 +895,7 @@ describe Spree::Ability do
         create(:enterprise, sells: "any").tap do |record|
           create(
 :enterprise_relationship, parent: producer, child: record,
-                                           permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides])
         end
       end
       let(:user) { authorized_enterprise.owner }
@@ -909,7 +909,7 @@ describe Spree::Ability do
           create(:enterprise, sells: "none").tap do |record|
             create(
 :enterprise_relationship, parent: producer, child: record,
-                                             permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides])
           end
         end
 

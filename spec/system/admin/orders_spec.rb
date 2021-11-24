@@ -18,15 +18,15 @@ describe '
   let(:order_cycle) do
     create(
 :simple_order_cycle, name: 'One', distributors: [distributor, distributor2, distributor3, distributor4],
-                                variants: [product.variants.first])
+                     variants: [product.variants.first])
   end
 
   context "with a complete order" do
     let(:order) do
       create(
 :order_with_totals_and_distribution, user: user, distributor: distributor,
-                                                  order_cycle: order_cycle,
-                                                  state: 'complete', payment_state: 'balance_due')
+                                     order_cycle: order_cycle,
+                                     state: 'complete', payment_state: 'balance_due')
     end
 
     let!(:order_cycle2) {
@@ -42,17 +42,17 @@ describe '
     let!(:order2) {
       create(
 :order_with_credit_payment, user: user, distributor: distributor2,
-                                         order_cycle: order_cycle2, completed_at: 2.days.ago)
+                            order_cycle: order_cycle2, completed_at: 2.days.ago)
     }
     let!(:order3) {
       create(
 :order_with_credit_payment, user: user, distributor: distributor3,
-                                         order_cycle: order_cycle3)
+                            order_cycle: order_cycle3)
     }
     let!(:order4) {
       create(
 :order_with_credit_payment, user: user, distributor: distributor4,
-                                         order_cycle: order_cycle4)
+                            order_cycle: order_cycle4)
     }
 
     it "order cycles appear in descending order by close date on orders page" do
@@ -169,7 +169,7 @@ find(
     it "can edit order" do
       incomplete_order = create(
 :order_with_line_items, distributor: distributor,
-                                                        order_cycle: order_cycle, line_items_count: 1)
+                        order_cycle: order_cycle, line_items_count: 1)
 
       login_as_admin_and_visit spree.admin_orders_path
       uncheck 'Only show complete orders'
@@ -185,7 +185,7 @@ find(
     it "display or not incomplete order" do
       incomplete_order = create(
 :order_with_line_items, distributor: distributor,
-                                                        order_cycle: order_cycle, line_items_count: 1)
+                        order_cycle: order_cycle, line_items_count: 1)
       complete_order = create(
         :order_with_line_items,
         distributor: distributor,

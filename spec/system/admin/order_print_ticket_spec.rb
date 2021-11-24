@@ -17,8 +17,8 @@ describe '
     let!(:order) do
       create(
 :order_with_taxes, distributor: distributor, ship_address: create(:address),
-                                product_price: 110, tax_rate_amount: 0.1,
-                                tax_rate_name: "Tax 1").tap do |order|
+                   product_price: 110, tax_rate_amount: 0.1,
+                   tax_rate_name: "Tax 1").tap do |order|
                                   order.create_tax_charge!
                                   order.update_shipping_fees!
                                 end
@@ -71,7 +71,7 @@ line_item.quantity.to_s,
            line_item.product.name,
            line_item.single_display_amount_with_adjustments.format(
 symbol: false,
-                                                                   with_currency: false),
+with_currency: false),
            line_item.display_amount_with_adjustments.format(symbol: false, with_currency: false)]
         }
       end

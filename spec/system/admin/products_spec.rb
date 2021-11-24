@@ -195,7 +195,7 @@ describe '
       @new_user.enterprise_roles.build(enterprise: @distributors[0]).save
       create(
 :enterprise_relationship, parent: @supplier_permitted, child: @supplier2,
-                                       permissions_list: [:manage_products])
+                          permissions_list: [:manage_products])
 
       login_as @new_user
     end
@@ -540,7 +540,7 @@ spree.new_admin_product_image_path(
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       image_object = Spree::Image.create(
 viewable_id: product.master.id,
-                                         viewable_type: 'Spree::Variant', alt: "position 1", attachment: image, position: 1)
+viewable_type: 'Spree::Variant', alt: "position 1", attachment: image, position: 1)
 
       visit spree.admin_product_images_path(product, filter)
 
@@ -565,7 +565,7 @@ product,
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       image_object = Spree::Image.create(
 viewable_id: product.master.id,
-                                         viewable_type: 'Spree::Variant', alt: "position 1", attachment: image, position: 1)
+viewable_type: 'Spree::Variant', alt: "position 1", attachment: image, position: 1)
 
       file_path = Rails.root + "spec/support/fixtures/thinking-cat.jpg"
 
@@ -587,7 +587,7 @@ viewable_id: product.master.id,
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       Spree::Image.create(
 viewable_id: product.master.id, viewable_type: 'Spree::Variant',
-                          alt: "position 1", attachment: image, position: 1)
+alt: "position 1", attachment: image, position: 1)
 
       visit spree.admin_product_images_path(product)
       page.find('a#new_image_link').click
@@ -603,7 +603,7 @@ viewable_id: product.master.id, viewable_type: 'Spree::Variant',
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       Spree::Image.create(
 viewable_id: product.master.id, viewable_type: 'Spree::Variant',
-                          alt: "position 1", attachment: image, position: 1)
+alt: "position 1", attachment: image, position: 1)
 
       visit spree.admin_product_images_path(product)
       expect(page).to have_selector "table.index td img"
@@ -622,7 +622,7 @@ viewable_id: product.master.id, viewable_type: 'Spree::Variant',
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       Spree::Image.create(
 viewable_id: product.master.id, viewable_type: 'Spree::Variant',
-                          alt: "position 1", attachment: image, position: 1)
+alt: "position 1", attachment: image, position: 1)
 
       visit spree.admin_product_images_path(product, filter)
 

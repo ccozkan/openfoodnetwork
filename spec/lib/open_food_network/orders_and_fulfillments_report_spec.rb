@@ -213,7 +213,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
       let!(:second_order) do
         create(
 :order, completed_at: 1.day.ago, order_cycle: order_cycle, distributor: distributor,
-                       bill_address: second_address)
+        bill_address: second_address)
       end
 
       before do
@@ -222,7 +222,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
 
         second_order.line_items << build(
 :line_item_with_shipment, variant: fuji, price: nil,
-                                                                   quantity: 8)
+                          quantity: 8)
       end
 
       it "groups line items by variant and order" do

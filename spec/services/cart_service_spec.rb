@@ -20,7 +20,7 @@ describe CartService do
     let(:order_cycle) {
       create(
 :simple_order_cycle, distributors: [distributor],
-                                  variants: [variant])
+                     variants: [variant])
     }
     let(:cart_service) { CartService.new(order) }
     let(:variant) { create(:variant) }

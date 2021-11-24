@@ -25,14 +25,14 @@ FactoryBot.define do
         subscription.order_cycles.each do |oc|
           ex = oc.exchanges.outgoing.find_by(
 sender_id: subscription.shop_id,
-                                             receiver_id: subscription.shop_id)
+receiver_id: subscription.shop_id)
           ex ||= create(
 :exchange, order_cycle: oc,
-                                   sender: subscription.shop,
-                                   receiver: subscription.shop,
-                                   incoming: false,
-                                   pickup_time: 'time',
-                                   pickup_instructions: 'instructions')
+           sender: subscription.shop,
+           receiver: subscription.shop,
+           incoming: false,
+           pickup_time: 'time',
+           pickup_instructions: 'instructions')
           subscription.subscription_line_items.each { |sli| ex.variants << sli.variant }
         end
       end
@@ -41,7 +41,7 @@ sender_id: subscription.shop_id,
         subscription.order_cycles.each do |oc|
           subscription.proxy_orders << create(
 :proxy_order, subscription: subscription,
-                                                            order_cycle: oc)
+              order_cycle: oc)
         end
       end
     end

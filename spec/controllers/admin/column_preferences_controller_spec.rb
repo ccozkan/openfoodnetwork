@@ -14,20 +14,20 @@ describe Admin::ColumnPreferencesController, type: :controller do
       let!(:column_preference) {
         ColumnPreference.create(
 user_id: user1.id, action_name: 'enterprises_index', column_name: "name",
-                                visible: true)
+visible: true)
       }
 
       let(:column_preference_params) {
         [
           { 
 id: column_preference.id, user_id: user1.id, action_name: "enterprises_index",
-            column_name: 'name', visible: false },
+column_name: 'name', visible: false },
           { 
 id: nil, user_id: user1.id, action_name: "enterprises_index", column_name: 'producer',
-            visible: true },
+visible: true },
           { 
 id: nil, user_id: user1.id, action_name: "enterprises_index", column_name: 'status',
-            visible: true }
+visible: true }
         ]
       }
 
@@ -54,7 +54,7 @@ id: nil, user_id: user1.id, action_name: "enterprises_index", column_name: 'stat
           expect(
 ColumnPreference.where(
 user_id: user1.id,
-                                        action_name: 'enterprises_index').count).to be 3
+action_name: 'enterprises_index').count).to be 3
         end
       end
     end

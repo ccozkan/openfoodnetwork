@@ -85,7 +85,7 @@ describe Spree::UsersController, type: :controller do
            params: { 
 user: { 
 email: 'foobar@example.com', password: 'foobar123',
-                             password_confirmation: 'foobar123' } }
+password_confirmation: 'foobar123' } }
       expect(assigns[:user].new_record?).to be_falsey
     end
   end

@@ -344,7 +344,7 @@ module OrderManagement
               let!(:legacy_tax_adjustment) {
                 create(
 :adjustment, order: order, adjustable: order, included: false,
-                                    originator_type: "Spree::TaxRate")
+             originator_type: "Spree::TaxRate")
               }
 
               it "re-applies order taxes" do

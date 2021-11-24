@@ -25,7 +25,7 @@ module PermittedAttributes
     def attributes
       self.class.basic_attributes + [
 incoming_exchanges: permitted_exchange_attributes,
-                                     outgoing_exchanges: permitted_exchange_attributes]
+outgoing_exchanges: permitted_exchange_attributes]
     end
 
     def permitted_exchange_attributes
@@ -36,8 +36,8 @@ incoming_exchanges: permitted_exchange_attributes,
         :tag_list,
         { 
 tags: [:text],
-          enterprise_fee_ids: [],
-          variants: {} }
+enterprise_fee_ids: [],
+variants: {} }
       ]
     end
   end

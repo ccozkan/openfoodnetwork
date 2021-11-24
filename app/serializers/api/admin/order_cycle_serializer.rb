@@ -34,7 +34,7 @@ module Api
 
         ActiveModel::ArraySerializer
           .new(scoped_exchanges, each_serializer: Api::Admin::ExchangeSerializer,
-                                current_user: options[:current_user])
+                                 current_user: options[:current_user])
       end
 
       def editable_variants_for_incoming_exchanges

@@ -40,8 +40,8 @@ class LineItemSyncer
     new_subscription_line_items.each do |sli|
       new_line_item = order.line_items.create(
 variant_id: sli.variant_id,
-                                              quantity: sli.quantity,
-                                              skip_stock_check: skip_stock_check?(order))
+quantity: sli.quantity,
+skip_stock_check: skip_stock_check?(order))
       next if skip_stock_check?(order) || new_line_item.sufficient_stock?
 
       order.line_items.delete(new_line_item)
@@ -69,7 +69,7 @@ variant_id: sli.variant_id,
     if line_item.quantity == sli.quantity_was
       return line_item.update(
 quantity: sli.quantity,
-                              skip_stock_check: skip_stock_check?(line_item.order))
+skip_stock_check: skip_stock_check?(line_item.order))
     end
     line_item.quantity == sli.quantity
   end

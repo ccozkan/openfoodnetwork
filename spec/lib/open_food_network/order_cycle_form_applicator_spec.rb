@@ -15,11 +15,11 @@ module OpenFoodNetwork
 
         incoming_exchange = { 
 enterprise_id: supplier_id, incoming: true,
-                              variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions' }
+variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions' }
 
         oc = double(
 :order_cycle, coordinator_id: coordinator_id, exchanges: [],
-                                  incoming_exchanges: [incoming_exchange], outgoing_exchanges: [])
+              incoming_exchanges: [incoming_exchange], outgoing_exchanges: [])
 
         applicator = OrderCycleFormApplicator.new(oc, user)
 
@@ -44,11 +44,11 @@ supplier_id, coordinator_id, true,
 
         outgoing_exchange = { 
 enterprise_id: distributor_id, incoming: false,
-                              variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale' }
+variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale' }
 
         oc = double(
 :order_cycle, coordinator_id: coordinator_id, exchanges: [],
-                                  incoming_exchanges: [], outgoing_exchanges: [outgoing_exchange])
+              incoming_exchanges: [], outgoing_exchanges: [outgoing_exchange])
 
         applicator = OrderCycleFormApplicator.new(oc, user)
 
@@ -73,7 +73,7 @@ coordinator_id, distributor_id, false,
 
         incoming_exchange = { 
 enterprise_id: supplier_id, incoming: true,
-                              variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions' }
+variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions' }
 
         oc = double(
 :order_cycle,
@@ -81,7 +81,7 @@ enterprise_id: supplier_id, incoming: true,
                     exchanges: [
 double(
 :exchange, sender_id: supplier_id,
-                                                  receiver_id: coordinator_id, incoming: true)],
+           receiver_id: coordinator_id, incoming: true)],
                     incoming_exchanges: [incoming_exchange],
                     outgoing_exchanges: [])
 
@@ -108,7 +108,7 @@ supplier_id, coordinator_id, true,
 
         outgoing_exchange = { 
 enterprise_id: distributor_id, incoming: false,
-                              variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale' }
+variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale' }
 
         oc = double(
 :order_cycle,
@@ -116,7 +116,7 @@ enterprise_id: distributor_id, incoming: false,
                     exchanges: [
 double(
 :exchange, sender_id: coordinator_id,
-                                                  receiver_id: distributor_id, incoming: false)],
+           receiver_id: distributor_id, incoming: false)],
                     incoming_exchanges: [],
                     outgoing_exchanges: [outgoing_exchange])
 
@@ -143,7 +143,7 @@ coordinator_id, distributor_id, false,
           supplier_id = 456
           exchange = double(
 :exchange, id: 1, sender_id: supplier_id, receiver_id: coordinator_id,
-                                       incoming: true)
+           incoming: true)
 
           oc = double(
 :order_cycle,
@@ -210,7 +210,7 @@ coordinator_id, distributor_id, false,
         let!(:exchange) {
           create(
 :exchange, incoming: false,
-                            variant_ids: [v3.id, v4.id, v5.id, v6.id, v7.id, v8.id])
+           variant_ids: [v3.id, v4.id, v5.id, v6.id, v7.id, v8.id])
         }
         let!(:oc) { exchange.order_cycle }
         let!(:enterprise) { exchange.receiver }
@@ -447,7 +447,7 @@ applicator.send(
         let!(:exchange) {
           create(
 :exchange, order_cycle: oc, sender: sender, receiver: receiver, incoming: incoming,
-                            variant_ids: [variant1.id, variant2.id], enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id])
+           variant_ids: [variant1.id, variant2.id], enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id])
         }
 
         context "as a manager of the coorindator" do
@@ -538,7 +538,7 @@ applicator.send(
         incoming = true
         exchange = FactoryBot.create(
 :exchange, order_cycle: oc, sender: sender,
-                                                receiver: receiver, incoming: incoming)
+           receiver: receiver, incoming: incoming)
         variant1 = FactoryBot.create(:variant)
 
         applicator.send(:touched_exchanges=, [])

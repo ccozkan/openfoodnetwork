@@ -51,7 +51,7 @@ module Admin
         flash[:notice] = I18n.t(:order_cycles_create_notice)
         render json: { 
 success: true,
-                       edit_path: main_app.admin_order_cycle_incoming_path(@order_cycle) }
+edit_path: main_app.admin_order_cycle_incoming_path(@order_cycle) }
       else
         render json: { errors: @order_cycle.errors.full_messages }, status: :unprocessable_entity
       end
@@ -163,8 +163,8 @@ success: true,
           g: [
 raw_params.delete(:q) || {}, { 
 m: 'or',
-                                             orders_close_at_gt: orders_close_at_gt,
-                                             orders_close_at_null: true }]
+orders_close_at_gt: orders_close_at_gt,
+orders_close_at_null: true }]
         }
         @collection = collection
       end

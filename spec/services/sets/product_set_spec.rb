@@ -91,8 +91,8 @@ describe Sets::ProductSet do
           let!(:order_cycle) {
             create(
 :simple_order_cycle, variants: [product.variants.first],
-                                        coordinator: distributor,
-                                        distributors: [distributor])
+                     coordinator: distributor,
+                     distributors: [distributor])
           }
 
           it 'updates the product and removes the product from order cycles' do

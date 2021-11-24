@@ -26,9 +26,9 @@ describe Spree::Payment do
     let(:success_response) do
       double(
 'success_response', success?: true,
-                                 authorization: '123',
-                                 avs_result: { 'code' => 'avs-code' },
-                                 cvv_result: { code: nil, message: nil })
+                    authorization: '123',
+                    avs_result: { 'code' => 'avs-code' },
+                    cvv_result: { code: nil, message: nil })
     end
 
     let(:failed_response) { double('gateway_response', success?: false) }
@@ -175,7 +175,7 @@ describe Spree::Payment do
             allow(success_response).to receive(:cvv_result) {
               { 
 'code' => "123",
-                'message' => "https://stripe.com/redirect" }
+'message' => "https://stripe.com/redirect" }
             }
             expect(payment.payment_method).to receive(:authorize).with(
               amount_in_cents, card, anything
@@ -674,7 +674,7 @@ amount_in_cents, card,
       it "should build the payment's source" do
         params = { 
 amount: 100, payment_method: gateway,
-                   source_attributes: {
+source_attributes: {
                      expiry: "1 / 99",
                      number: '1234567890123',
                      verification_value: '123'
@@ -688,7 +688,7 @@ amount: 100, payment_method: gateway,
       it "errors when payment source not valid" do
         params = { 
 amount: 100, payment_method: gateway,
-                   source_attributes: { expiry: "1 / 12" } }
+source_attributes: { expiry: "1 / 12" } }
 
         payment = Spree::Payment.new(params)
         expect(payment).not_to be_valid
@@ -891,7 +891,7 @@ amount: 100, payment_method: gateway,
           it "creates adjustment" do
             payment = create(
 :payment, order: order, payment_method: payment_method,
-                                       amount: order.total)
+          amount: order.total)
             expect(payment.adjustment).to be_present
             expect(payment.adjustment.amount).not_to eq(0)
           end
@@ -914,7 +914,7 @@ amount: 100, payment_method: gateway,
         let(:payment_method) {
           create(
 :stripe_connect_payment_method, distributor_ids: [create(:distributor_enterprise).id],
-                                                 preferred_enterprise_id: shop.id)
+                                preferred_enterprise_id: shop.id)
         }
         let(:payment) {
           create(:payment, order: order, payment_method: payment_method, amount: order.total)

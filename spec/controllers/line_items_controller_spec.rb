@@ -11,7 +11,7 @@ describe LineItemsController, type: :controller do
     let!(:completed_order) do
       order = create(
 :completed_order_with_totals, user: user, distributor: distributor,
-                                                   order_cycle: order_cycle, line_items_count: 1)
+                              order_cycle: order_cycle, line_items_count: 1)
       break unless order.next! while !order.completed?
       order
     end
@@ -44,7 +44,7 @@ describe LineItemsController, type: :controller do
       let(:order_cycle) {
         create(
 :simple_order_cycle, distributors: [distributor],
-                                    variants: [order.line_item_variants])
+                     variants: [order.line_item_variants])
       }
 
       before { allow(controller).to receive_messages spree_current_user: item.order.user }
@@ -115,9 +115,9 @@ describe LineItemsController, type: :controller do
       let(:shipping_tax_rate) do
         create(
 :tax_rate, included_in_price: true,
-                          calculator: Calculator::DefaultTax.new,
-                          amount: 0.25,
-                          zone: zone)
+           calculator: Calculator::DefaultTax.new,
+           amount: 0.25,
+           zone: zone)
       end
       let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
       let(:shipping_fee) { 3 }
@@ -126,8 +126,8 @@ describe LineItemsController, type: :controller do
       let(:order) {
         create(
 :completed_order_with_fees, distributor: distributor_with_taxes,
-                                           shipping_fee: shipping_fee, payment_fee: payment_fee,
-                                           shipping_tax_category: shipping_tax_category)
+                            shipping_fee: shipping_fee, payment_fee: payment_fee,
+                            shipping_tax_category: shipping_tax_category)
       }
 
       before do
@@ -169,18 +169,18 @@ describe LineItemsController, type: :controller do
       let(:calculator) {
         Calculator::PriceSack.new(
 preferred_minimal_amount: 15, preferred_normal_amount: 22,
-                                  preferred_discount_amount: 11)
+preferred_discount_amount: 11)
       }
       let(:enterprise_fee) { create(:enterprise_fee, calculator: calculator) }
       let!(:exchange) {
         create(
 :exchange, incoming: true, sender: variant1.product.supplier,
-                          receiver: order_cycle.coordinator, variants: [variant1, variant2], enterprise_fees: [enterprise_fee])
+           receiver: order_cycle.coordinator, variants: [variant1, variant2], enterprise_fees: [enterprise_fee])
       }
       let!(:order) do
         order = create(
 :completed_order_with_totals, user: user, distributor: distributor,
-                                                     order_cycle: order_cycle, line_items_count: 2)
+                              order_cycle: order_cycle, line_items_count: 2)
         order.reload.line_items.first.update(variant_id: variant1.id)
         order.line_items.last.update(variant_id: variant2.id)
         break unless order.next! while !order.completed?

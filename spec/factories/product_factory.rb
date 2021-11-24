@@ -47,8 +47,8 @@ FactoryBot.define do
       image = File.open(Rails.root.join('app', 'assets', 'images', 'logo-white.png'))
       Spree::Image.create(
 attachment: image,
-                          viewable_id: product.master.id,
-                          viewable_type: 'Spree::Variant')
+viewable_id: product.master.id,
+viewable_type: 'Spree::Variant')
     end
   end
 
@@ -79,11 +79,11 @@ attachment: image,
 
       create(
 :tax_rate, amount: proxy.tax_rate_amount,
-                        tax_category: product.tax_category,
-                        included_in_price: true,
-                        calculator: Calculator::DefaultTax.new,
-                        zone: proxy.zone,
-                        name: proxy.tax_rate_name)
+           tax_category: product.tax_category,
+           included_in_price: true,
+           calculator: Calculator::DefaultTax.new,
+           zone: proxy.zone,
+           name: proxy.tax_rate_name)
     end
   end
 end

@@ -127,7 +127,7 @@ module ShopWorkflow
     if oc.exchanges.from_enterprise(supplier).incoming.empty?
       create(
 :exchange, order_cycle: oc, incoming: true,
-                        sender: supplier, receiver: oc.coordinator)
+           sender: supplier, receiver: oc.coordinator)
     end
   end
 end

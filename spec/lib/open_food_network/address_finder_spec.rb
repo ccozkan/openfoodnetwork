@@ -91,7 +91,7 @@ module OpenFoodNetwork
       let(:order) {
         create(
 :completed_order_with_totals, user: nil, email: email, distributor: distributor,
-                                             bill_address: nil)
+                              bill_address: nil)
       }
       let(:finder) { AddressFinder.new(email) }
 
@@ -154,7 +154,7 @@ module OpenFoodNetwork
           let(:order) {
             create(
 :shipped_order, user: nil, email: email, distributor: distributor, shipments: [],
-                                   ship_address: address)
+                ship_address: address)
           }
 
           before do
@@ -176,7 +176,7 @@ module OpenFoodNetwork
           let(:order) {
             create(
 :shipped_order, user: nil, email: email, distributor: distributor, shipments: [],
-                                   ship_address: address)
+                ship_address: address)
           }
 
           context "and the shipping method requires an address" do
@@ -200,7 +200,7 @@ module OpenFoodNetwork
           let!(:order) {
             create(
 :shipped_order, user: nil, email: email, distributor: distributor, shipments: [],
-                                   ship_address: nil)
+                ship_address: nil)
           }
 
           it "return nil" do

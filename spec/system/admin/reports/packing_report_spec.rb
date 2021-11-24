@@ -21,12 +21,12 @@ describe "Packing Reports", js: true do
     let(:order1) {
       create(
 :completed_order_with_totals, line_items_count: 0, distributor: distributor,
-                                           bill_address: bill_address1)
+                              bill_address: bill_address1)
     }
     let(:order2) {
       create(
 :completed_order_with_totals, line_items_count: 0, distributor: distributor,
-                                           bill_address: bill_address2)
+                              bill_address: bill_address2)
     }
     let(:supplier) { create(:supplier_enterprise, name: "Supplier") }
     let(:product1) { create(:simple_product, name: "Product 1", supplier: supplier ) }
@@ -105,7 +105,7 @@ describe "Packing Reports", js: true do
     let(:order) {
       create(
 :completed_order_with_totals, line_items_count: 0, completed_at: 1.day.ago,
-                                           order_cycle: oc, distributor: distributor)
+                              order_cycle: oc, distributor: distributor)
     }
     let(:li1) { build(:line_item_with_shipment) }
     let(:li2) { build(:line_item_with_shipment) }

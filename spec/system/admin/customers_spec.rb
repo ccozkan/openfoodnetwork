@@ -109,17 +109,17 @@ describe 'Customers' do
         let!(:order1) {
           create(
 :order, total: 0, payment_total: 88, distributor: managed_distributor1, user: nil,
-                         state: 'complete', customer: customer1)
+        state: 'complete', customer: customer1)
         }
         let!(:order2) {
           create(
 :order, total: 99, payment_total: 0, distributor: managed_distributor1, user: nil,
-                         state: 'complete', customer: customer2)
+        state: 'complete', customer: customer2)
         }
         let!(:order3) {
           create(
 :order, total: 0,  payment_total: 0, distributor: managed_distributor1, user: nil,
-                         state: 'complete', customer: customer4)
+        state: 'complete', customer: customer4)
         }
 
         let!(:payment_method) {
@@ -128,7 +128,7 @@ describe 'Customers' do
         let!(:payment1) {
           create(
 :payment, order: order1, state: 'completed', payment_method: payment_method,
-                           response_code: 'pi_123', amount: 88.00)
+          response_code: 'pi_123', amount: 88.00)
         }
 
         before do
@@ -159,7 +159,7 @@ describe 'Customers' do
           let!(:payment2) {
             create(
 :payment, order: order1, state: 'completed', payment_method: payment_method,
-                             response_code: 'pi_123', amount: -25.00)
+          response_code: 'pi_123', amount: -25.00)
           }
 
           before do

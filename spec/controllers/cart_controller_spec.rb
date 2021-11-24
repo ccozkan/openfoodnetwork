@@ -52,12 +52,12 @@ describe CartController, type: :controller do
     let!(:variant_override_in_the_order) {
       create(
 :variant_override, hub: hub, variant: variant_in_the_order, price: 55.55,
-                                count_on_hand: 20, default_stock: nil, resettable: false)
+                   count_on_hand: 20, default_stock: nil, resettable: false)
     }
     let!(:variant_override_not_in_the_order) {
       create(
 :variant_override, hub: hub, variant: variant_not_in_the_order, count_on_hand: 7,
-                                default_stock: nil, resettable: false)
+                   default_stock: nil, resettable: false)
     }
 
     let(:order_cycle) {

@@ -56,7 +56,7 @@ new_payment_method.id,
       Stripe::PaymentMethod.create(
 { 
 customer: customer_id,
-                                     payment_method: platform_acct_payment_method_id },
+payment_method: platform_acct_payment_method_id },
                                    stripe_account: @stripe_account)
     end
 

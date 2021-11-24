@@ -128,17 +128,17 @@ describe '
     let!(:shipping_method) {
       create(
 :shipping_method_with, :expensive_name, distributors: [distributor1],
-                                                     tax_category: shipping_tax_category)
+                                        tax_category: shipping_tax_category)
     }
     let(:enterprise_fee) {
       create(
 :enterprise_fee, enterprise: user1.enterprises.first, tax_category: product2.tax_category,
-                              calculator: Calculator::FlatRate.new(preferred_amount: 120.0))
+                 calculator: Calculator::FlatRate.new(preferred_amount: 120.0))
     }
     let(:order_cycle) {
       create(
 :simple_order_cycle, coordinator: distributor1, coordinator_fees: [enterprise_fee],
-                                  distributors: [distributor1], variants: [product1.variants.first, product2.variants.first])
+                     distributors: [distributor1], variants: [product1.variants.first, product2.variants.first])
     }
 
     let!(:zone) { create(:zone_with_member) }
@@ -146,7 +146,7 @@ describe '
     let(:order1) {
       create(
 :order, order_cycle: order_cycle, distributor: user1.enterprises.first,
-                     ship_address: address, bill_address: address)
+        ship_address: address, bill_address: address)
     }
     let(:product1) { create(:taxed_product, zone: zone, price: 12.54, tax_rate_amount: 0) }
     let(:product2) { create(:taxed_product, zone: zone, price: 500.15, tax_rate_amount: 0.2) }
@@ -157,7 +157,7 @@ describe '
     let!(:line_item2) {
       create(
 :line_item, variant: product2.variants.first, price: 500.15, quantity: 3,
-                         order: order1)
+            order: order1)
     }
 
     before do
@@ -168,7 +168,7 @@ describe '
       break unless order1.next! until order1.payment?
       create(
 :payment, state: "checkout", order: order1, amount: order1.reload.total,
-                       payment_method: create(:payment_method, distributors: [distributor1]))
+          payment_method: create(:payment_method, distributors: [distributor1]))
       break unless order1.next! until order1.complete?
 
       login_as_admin_and_visit spree.admin_reports_path
@@ -224,12 +224,12 @@ describe '
       let(:order1) {
         create(
 :order, distributor: distributor, bill_address: bill_address,
-                       special_instructions: shipping_instructions)
+        special_instructions: shipping_instructions)
       }
       let(:order2) {
         create(
 :order, distributor: distributor, bill_address: bill_address,
-                       special_instructions: shipping_instructions)
+        special_instructions: shipping_instructions)
       }
 
       before do
@@ -258,7 +258,7 @@ describe '
       distributor = create(:distributor_enterprise)
       oc = create(
 :simple_order_cycle, name: "My Order Cycle", distributors: [distributor],
-                                       orders_open_at: Time.zone.now, orders_close_at: nil)
+                     orders_open_at: Time.zone.now, orders_close_at: nil)
       o = create(:order, order_cycle: oc, distributor: distributor)
 
       login_as_admin_and_visit spree.orders_and_fulfillment_admin_reports_path
@@ -273,12 +273,12 @@ describe '
     let(:product1) {
       create(
 :simple_product, name: "Product Name", price: 100, supplier: supplier,
-                              primary_taxon: taxon)
+                 primary_taxon: taxon)
     }
     let(:product2) {
       create(
 :simple_product, name: "Product 2", price: 99.0, variant_unit: 'weight',
-                              variant_unit_scale: 1, unit_value: '100', supplier: supplier, primary_taxon: taxon, sku: "product_sku")
+                 variant_unit_scale: 1, unit_value: '100', supplier: supplier, primary_taxon: taxon, sku: "product_sku")
     }
     let(:variant1) { product1.variants.first }
     let(:variant2) { create(:variant, product: product1, price: 80.0) }
@@ -399,29 +399,29 @@ product2.supplier.name, product1.supplier.address.city,
     let(:enterprise_fee1) {
       create(
 :enterprise_fee, enterprise: user1.enterprises.first, tax_category: product2.tax_category,
-                              calculator: Calculator::FlatRate.new(preferred_amount: 10))
+                 calculator: Calculator::FlatRate.new(preferred_amount: 10))
     }
     let(:enterprise_fee2) {
       create(
 :enterprise_fee, enterprise: user1.enterprises.first, tax_category: product2.tax_category,
-                              calculator: Calculator::FlatRate.new(preferred_amount: 20))
+                 calculator: Calculator::FlatRate.new(preferred_amount: 20))
     }
     let(:order_cycle) {
       create(
 :simple_order_cycle, coordinator: distributor1,
-                                  coordinator_fees: [enterprise_fee1, enterprise_fee2], distributors: [distributor1], variants: [product1.master])
+                     coordinator_fees: [enterprise_fee1, enterprise_fee2], distributors: [distributor1], variants: [product1.master])
     }
 
     let!(:zone) { create(:zone_with_member) }
     let(:bill_address) {
       create(
 :address, firstname: 'Customer', lastname: 'Name', address1: 'customer l1',
-                       address2: '', city: 'customer city', zipcode: 1234)
+          address2: '', city: 'customer city', zipcode: 1234)
     }
     let(:order1) {
       create(
 :order, order_cycle: order_cycle, distributor: user1.enterprises.first,
-                     shipments: [shipment], bill_address: bill_address)
+        shipments: [shipment], bill_address: bill_address)
     }
     let(:product1) {
       create(:taxed_product, zone: zone, price: 12.54, tax_rate_amount: 0, sku: 'sku1')
@@ -434,12 +434,12 @@ product2.supplier.name, product1.supplier.address.city,
       let!(:line_item1) {
         create(
 :line_item, variant: product1.variants.first, price: 12.54, quantity: 1,
-                           order: order1)
+            order: order1)
       }
       let!(:line_item2) {
         create(
 :line_item, variant: product2.variants.first, price: 500.15, quantity: 3,
-                           order: order1)
+            order: order1)
       }
 
       let!(:tax_category) { create(:tax_category) }
@@ -447,32 +447,32 @@ product2.supplier.name, product1.supplier.address.city,
       let!(:adj_shipping) {
         create(
 :adjustment, order: order1, adjustable: order1, label: "Shipping",
-                            originator: shipping_method, amount: 100.55)
+             originator: shipping_method, amount: 100.55)
       }
       let!(:adj_fee1) {
         create(
 :adjustment, order: order1, adjustable: order1, originator: enterprise_fee1,
-                            label: "Enterprise fee untaxed", amount: 10)
+             label: "Enterprise fee untaxed", amount: 10)
       }
       let!(:adj_fee2) {
         create(
 :adjustment, order: order1, adjustable: order1, originator: enterprise_fee2,
-                            label: "Enterprise fee taxed", amount: 20, tax_category: tax_category)
+             label: "Enterprise fee taxed", amount: 20, tax_category: tax_category)
       }
       let!(:adj_fee2_tax) {
         create(
 :adjustment, order: order1, adjustable: adj_fee2, originator: tax_rate, amount: 3,
-                            state: "closed")
+             state: "closed")
       }
       let!(:adj_admin1) {
         create(
 :adjustment, order: order1, adjustable: order1, originator: nil,
-                            label: "Manual adjustment", amount: 30)
+             label: "Manual adjustment", amount: 30)
       }
       let!(:adj_admin2) {
         create(
 :adjustment, order: order1, adjustable: order1, originator: nil,
-                            label: "Manual adjustment", amount: 40, tax_category: tax_category)
+             label: "Manual adjustment", amount: 40, tax_category: tax_category)
       }
 
       before do
@@ -528,7 +528,7 @@ product2.supplier.name, product1.supplier.address.city,
 
         opts = { 
 invoice_number: '5', invoice_date: '2015-02-12', due_date: '2015-03-12',
-                 account_code: 'abc123' }
+account_code: 'abc123' }
 
         expect(xero_invoice_table).to match_table [
           xero_invoice_header,
@@ -611,7 +611,7 @@ invoice_number: '5', invoice_date: '2015-02-12', due_date: '2015-03-12',
     def xero_invoice_row(sku, description, amount, quantity, tax_type, opts = {})
       opts.reverse_merge!(
 customer_name: 'Customer Name', address1: 'customer l1',
-                          city: 'customer city', state: 'Victoria', zipcode: '1234', country: 'Australia', invoice_number: order1.number, order_number: order1.number, invoice_date: '2015-04-26', due_date: '2015-05-26', account_code: 'food sales')
+city: 'customer city', state: 'Victoria', zipcode: '1234', country: 'Australia', invoice_number: order1.number, order_number: order1.number, invoice_date: '2015-04-26', due_date: '2015-05-26', account_code: 'food sales')
 
       [
 opts[:customer_name], 'customer@email.com', opts[:address1], '', '', '', opts[:city], opts[:state], opts[:zipcode], opts[:country], opts[:invoice_number], opts[:order_number], opts[:invoice_date], opts[:due_date],

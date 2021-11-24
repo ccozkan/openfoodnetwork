@@ -69,13 +69,13 @@ exchange[:enterprise_id], @order_cycle.coordinator_id, true,
     def exchange_exists?(sender_id, receiver_id, incoming)
       @order_cycle.exchanges.where(
 sender_id: sender_id, receiver_id: receiver_id,
-                                   incoming: incoming).present?
+incoming: incoming).present?
     end
 
     def add_exchange(sender_id, receiver_id, incoming, attrs = {})
       attrs = attrs.reverse_merge(
 sender_id: sender_id, receiver_id: receiver_id,
-                                  incoming: incoming)
+incoming: incoming)
       variant_ids = attrs.delete :variant_ids
       exchange = @order_cycle.exchanges.build attrs
 
@@ -90,7 +90,7 @@ sender_id: sender_id, receiver_id: receiver_id,
     def update_exchange(sender_id, receiver_id, incoming, attrs = {})
       exchange = @order_cycle.exchanges.where(
 sender_id: sender_id, receiver_id: receiver_id,
-                                              incoming: incoming).first
+incoming: incoming).first
       return unless permission_for(exchange)
 
       remove_unauthorized_exchange_attributes(exchange, attrs)

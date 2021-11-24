@@ -209,7 +209,7 @@ describe Admin::SubscriptionsController, type: :controller do
           let!(:exchange) {
             create(
 :exchange, order_cycle: order_cycle, incoming: false, receiver: shop,
-                              variants: [variant])
+           variants: [variant])
           }
 
           it 'creates subscription line items for the subscription' do
@@ -272,12 +272,12 @@ describe Admin::SubscriptionsController, type: :controller do
     let!(:order_cycle) {
       create(
 :simple_order_cycle, coordinator: shop, orders_open_at: 2.days.from_now,
-                                  orders_close_at: 7.days.from_now)
+                     orders_close_at: 7.days.from_now)
     }
     let!(:outgoing_exchange) {
       order_cycle.exchanges.create(
 sender: shop, receiver: shop, variants: [variant1],
-                                   enterprise_fees: [enterprise_fee])
+enterprise_fees: [enterprise_fee])
     }
     let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
     let!(:payment_method) { create(:payment_method, distributors: [shop]) }
@@ -293,7 +293,7 @@ sender: shop, receiver: shop, variants: [variant1],
              subscription_line_items: [
 create(
 :subscription_line_item, variant: variant1,
-                                                                       quantity: 2)])
+                         quantity: 2)])
     }
     let(:subscription_line_item1) { subscription.subscription_line_items.first }
     let(:params) { { format: :json, id: subscription.id, subscription: {} } }

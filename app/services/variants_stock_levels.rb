@@ -33,9 +33,9 @@ class VariantsStockLevels
 variant.id,
          { 
 quantity: line_item.quantity,
-           max_quantity: line_item.max_quantity,
-           on_hand: variant.on_hand,
-           on_demand: variant.on_demand }]
+max_quantity: line_item.max_quantity,
+on_hand: variant.on_hand,
+on_demand: variant.on_demand }]
       end
     ]
   end

@@ -83,7 +83,7 @@ class OrderFactory
     @order.recreate_all_fees!
     @order.payments.create(
 payment_method_id: attrs[:payment_method_id],
-                           amount: @order.reload.total)
+amount: @order.reload.total)
   end
 
   def stock_limited_quantity(variant_on_demand, variant_on_hand, requested)

@@ -301,7 +301,7 @@ Spree::Variant
         property = Property.where(name: property_name).first_or_create!(presentation: property_name)
         product_property = ProductProperty.where(
 product: self,
-                                                 property: property).first_or_initialize
+property: property).first_or_initialize
         product_property.value = property_value
         product_property.save!
       end
@@ -357,7 +357,7 @@ product: self,
       Spree::OptionType.find_by(name: option_type_name) ||
         Spree::OptionType.create!(
 name: option_type_name,
-                                  presentation: option_type_presentation)
+presentation: option_type_presentation)
     end
 
     def self.all_variant_unit_option_types

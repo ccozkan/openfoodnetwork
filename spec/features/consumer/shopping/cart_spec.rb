@@ -17,7 +17,7 @@ describe "full-page cart", js: true do
     let!(:order_cycle) {
       create(
 :simple_order_cycle, suppliers: [supplier], distributors: [distributor],
-                                  coordinator: create(:distributor_enterprise), variants: [product_with_tax.variants.first, product_with_fee.variants.first])
+                     coordinator: create(:distributor_enterprise), variants: [product_with_tax.variants.first, product_with_fee.variants.first])
     }
     let(:enterprise_fee) {
       create(:enterprise_fee, amount: 11.00, tax_category: product_with_tax.tax_category)
@@ -100,7 +100,7 @@ describe "full-page cart", js: true do
         let(:handling_fee) {
           create(
 :enterprise_fee, calculator: Calculator::FlatRate.new(preferred_amount: 1),
-                                  enterprise: order_cycle.coordinator, fee_type: 'admin')
+                 enterprise: order_cycle.coordinator, fee_type: 'admin')
         }
 
         before do
@@ -142,7 +142,7 @@ describe "full-page cart", js: true do
         let(:admin_fee) {
           create(
 :enterprise_fee, calculator: Calculator::Weight.new(preferred_per_unit: 1, preferred_unit_from_list: "kg"),
-                                  enterprise: order_cycle.coordinator, fee_type: 'admin')
+                 enterprise: order_cycle.coordinator, fee_type: 'admin')
         }
 
         before do
@@ -155,7 +155,7 @@ describe "full-page cart", js: true do
           cart_service.populate(
 variants: { 
 product_with_fee.variants.first.id => 3,
-                                            product_with_tax.variants.first.id => 3 })
+product_with_tax.variants.first.id => 3 })
           order.recreate_all_fees!
 
           visit main_app.cart_path
@@ -283,12 +283,12 @@ product_with_fee.variants.first.id => 3,
       let!(:prev_order1) {
         create(
 :completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
-                                             user: user)
+                              user: user)
       }
       let!(:prev_order2) {
         create(
 :completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
-                                             user: user)
+                              user: user)
       }
 
       before do

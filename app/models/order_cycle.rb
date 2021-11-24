@@ -263,9 +263,9 @@ class OrderCycle < ApplicationRecord
     #   it does not ensure state is "complete"
     orders = Spree::Order.complete.where(
 state: "complete",
-                                         user_id: user,
-                                         distributor_id: distributor,
-                                         order_cycle_id: self)
+user_id: user,
+distributor_id: distributor,
+order_cycle_id: self)
     scoper = OpenFoodNetwork::ScopeVariantToHub.new(distributor)
     items = Spree::LineItem.includes(:variant).joins(:order).merge(orders).to_a
     items.each { |li| scoper.scope(li.variant) }

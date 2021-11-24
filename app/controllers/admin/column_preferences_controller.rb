@@ -39,7 +39,7 @@ module Admin
     def collection
       ColumnPreference.where(
 user_id: spree_current_user,
-                             action_name: permitted_params[:action_name])
+action_name: permitted_params[:action_name])
     end
 
     def collection_actions

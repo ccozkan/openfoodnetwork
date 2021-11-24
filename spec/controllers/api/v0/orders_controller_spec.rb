@@ -22,17 +22,17 @@ module Api
       let!(:order1) do
         create(
 :order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
-                       distributor: distributor, billing_address: create(:address), total: 5.0)
+        distributor: distributor, billing_address: create(:address), total: 5.0)
       end
       let!(:order2) do
         create(
 :order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
-                       distributor: distributor2, billing_address: create(:address), total: 10.0)
+        distributor: distributor2, billing_address: create(:address), total: 10.0)
       end
       let!(:order3) do
         create(
 :order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
-                       distributor: distributor, billing_address: create(:address), total: 1.0 )
+        distributor: distributor, billing_address: create(:address), total: 1.0 )
       end
       let!(:order4) do
         create(:completed_order_with_fees, order_cycle: order_cycle2, distributor: distributor2, total: 15.0)
@@ -41,22 +41,22 @@ module Api
       let!(:line_item1) do
         create(
 :line_item_with_shipment, order: order1,
-                                         product: create(:product, supplier: supplier))
+                          product: create(:product, supplier: supplier))
       end
       let!(:line_item2) do
         create(
 :line_item_with_shipment, order: order2,
-                                         product: create(:product, supplier: supplier))
+                          product: create(:product, supplier: supplier))
       end
       let!(:line_item3) do
         create(
 :line_item_with_shipment, order: order2,
-                                         product: create(:product, supplier: supplier))
+                          product: create(:product, supplier: supplier))
       end
       let!(:line_item4) do
         create(
 :line_item_with_shipment, order: order3,
-                                         product: create(:product, supplier: supplier))
+                          product: create(:product, supplier: supplier))
       end
 
       context 'as a regular user' do

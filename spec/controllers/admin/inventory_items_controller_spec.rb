@@ -15,7 +15,7 @@ describe Admin::InventoryItemsController, type: :controller do
       let(:params) {
         { 
 format: format,
-          inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible: false } }
+inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible: false } }
       }
 
       context "where I don't manage the inventory item enterprise" do
@@ -47,7 +47,7 @@ format: format,
           before do
             create(
 :enterprise_relationship, parent: variant.product.supplier, child: enterprise,
-                                             permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides])
           end
 
           context "with acceptable data" do
@@ -65,9 +65,9 @@ format: format,
             let!(:bad_params) {
               { 
 format: format,
-                inventory_item: { 
+inventory_item: { 
 enterprise_id: enterprise.id, variant_id: variant.id,
-                                  visible: nil } }
+visible: nil } }
             }
 
             it "returns an error message" do
@@ -120,7 +120,7 @@ enterprise_id: enterprise.id, variant_id: variant.id,
           before do
             create(
 :enterprise_relationship, parent: variant.product.supplier, child: enterprise,
-                                             permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides])
           end
 
           context "with acceptable data" do

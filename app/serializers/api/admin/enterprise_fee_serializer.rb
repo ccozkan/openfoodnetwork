@@ -22,7 +22,7 @@ module Api
         options[:controller].__send__(:with_format, :html) do
           result = options[:controller]
             .render_to_string(partial: 'admin/enterprise_fees/calculator_settings',
-                             locals: { enterprise_fee: object })
+                              locals: { enterprise_fee: object })
         end
 
         result.gsub('[0]', '[{{ $index }}]').gsub('_0_', '_{{ $index }}_')

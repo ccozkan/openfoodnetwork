@@ -184,7 +184,7 @@ describe Spree::Admin::ProductsController, type: :controller do
       let!(:order_cycle) {
         create(
 :simple_order_cycle, variants: [product.variants.first], coordinator: distributor,
-                                    distributors: [distributor])
+                     distributors: [distributor])
       }
 
       it "should remove product from existing Order Cycles" do

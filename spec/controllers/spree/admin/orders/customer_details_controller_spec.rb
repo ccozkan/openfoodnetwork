@@ -45,7 +45,7 @@ describe Spree::Admin::Orders::CustomerDetailsController, type: :controller do
         expect {
           spree_post :update, order: { 
 email: user.email, bill_address_attributes: address_params,
-                                       ship_address_attributes: address_params },
+ship_address_attributes: address_params },
                               order_id: order.number
         }.to change { order.reload.state }.from("cart").to("payment")
       end

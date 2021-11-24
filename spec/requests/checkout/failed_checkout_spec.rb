@@ -10,7 +10,7 @@ describe "checking out an order that initially fails", type: :request do
   let!(:exchange) {
     create(
 :exchange, order_cycle: order_cycle, sender: order_cycle.coordinator, receiver: shop,
-                      incoming: false, pickup_time: "Monday")
+           incoming: false, pickup_time: "Monday")
   }
   let!(:address) { create(:address) }
   let!(:line_item) { create(:line_item, order: order, quantity: 3, price: 5.00) }
