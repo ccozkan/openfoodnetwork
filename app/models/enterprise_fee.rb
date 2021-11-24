@@ -27,8 +27,8 @@ class EnterpriseFee < ApplicationRecord
 
   before_save :ensure_valid_tax_category_settings
 
-  scope :for_enterprise, lambda { |enterprise| where(enterprise_id: enterprise) }
-  scope :for_enterprises, lambda { |enterprises| where(enterprise_id: enterprises) }
+  scope :for_enterprise, ->(enterprise) { where(enterprise_id: enterprise) }
+  scope :for_enterprises, ->(enterprises) { where(enterprise_id: enterprises) }
 
   scope :managed_by,
 lambda { |user|

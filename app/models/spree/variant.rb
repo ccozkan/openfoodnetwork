@@ -69,7 +69,7 @@ numericality: { greater_than_or_equal_to: 0 },
 
     validates :unit_value,
 presence: true,
-if: ->(variant) {
+if: lambda { |variant|
       %w(weight volume).include?(variant.product&.variant_unit)
     }
 
@@ -77,7 +77,7 @@ if: ->(variant) {
 
     validates :unit_description,
 presence: true,
-if: ->(variant) {
+if: lambda { |variant|
       variant.product&.variant_unit.present? && variant.unit_value.nil?
     }
 
@@ -94,7 +94,7 @@ if: ->(variant) {
     around_destroy :destruction
 
     # default variant scope only lists non-deleted variants
-    scope :deleted, lambda { where('deleted_at IS NOT NULL') }
+    scope :deleted, -> { where('deleted_at IS NOT NULL') }
 
     scope :with_order_cycles_inner, -> { joins(exchanges: :order_cycle) }
 

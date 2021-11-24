@@ -6,14 +6,14 @@ module Spree
     belongs_to :shipping_method, class_name: 'Spree::ShippingMethod', inverse_of: :shipping_rates
 
     scope :frontend,
-          -> {
+          lambda {
             includes(:shipping_method)
               .where(ShippingMethod.on_frontend_query)
               .references(:shipping_method)
               .order("cost ASC")
           }
     scope :backend,
-          -> {
+          lambda {
             includes(:shipping_method)
               .where(ShippingMethod.on_backend_query)
               .references(:shipping_method)

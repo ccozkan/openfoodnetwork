@@ -50,7 +50,7 @@ lambda {
           Time.zone.now
 )
   }
-  scope :active_or_complete, lambda { where('order_cycles.orders_open_at <= ?', Time.zone.now) }
+  scope :active_or_complete, -> { where('order_cycles.orders_open_at <= ?', Time.zone.now) }
   scope :inactive,
 lambda {
     where(
@@ -59,7 +59,7 @@ lambda {
           Time.zone.now
 )
   }
-  scope :upcoming, lambda { where('order_cycles.orders_open_at > ?', Time.zone.now) }
+  scope :upcoming, -> { where('order_cycles.orders_open_at > ?', Time.zone.now) }
   scope :not_closed,
 lambda {
     where('order_cycles.orders_close_at > ? OR order_cycles.orders_close_at IS NULL', Time.zone.now)
@@ -74,11 +74,11 @@ lambda {
   scope :undated, -> { where('order_cycles.orders_open_at IS NULL OR orders_close_at IS NULL') }
   scope :dated, -> { where('orders_open_at IS NOT NULL AND orders_close_at IS NOT NULL') }
 
-  scope :soonest_closing,      lambda { active.order('order_cycles.orders_close_at ASC') }
+  scope :soonest_closing,      -> { active.order('order_cycles.orders_close_at ASC') }
   # This scope returns all the closed orders
-  scope :most_recently_closed, lambda { closed.order('order_cycles.orders_close_at DESC') }
+  scope :most_recently_closed, -> { closed.order('order_cycles.orders_close_at DESC') }
 
-  scope :soonest_opening,      lambda { upcoming.order('order_cycles.orders_open_at ASC') }
+  scope :soonest_opening,      -> { upcoming.order('order_cycles.orders_open_at ASC') }
 
   scope :by_name, -> { order('name') }
 

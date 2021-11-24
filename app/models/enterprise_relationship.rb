@@ -16,7 +16,7 @@ uniqueness: {
   before_destroy :revoke_all_child_variant_overrides
 
   scope :with_enterprises,
--> {
+lambda {
     joins(
 "
       LEFT JOIN enterprises AS parent_enterprises
@@ -28,7 +28,7 @@ uniqueness: {
   }
 
   scope :involving_enterprises,
-->(enterprises) {
+lambda { |enterprises|
     where('parent_id IN (?) OR child_id IN (?)', enterprises.select(&:id), enterprises.select(&:id))
   }
 
@@ -36,7 +36,7 @@ uniqueness: {
   scope :permitted_by, ->(enterprise_ids) { where('parent_id IN (?)', enterprise_ids) }
 
   scope :with_permission,
-->(permission) {
+lambda { |permission|
     joins(:permissions)
       .where('enterprise_relationship_permissions.name = ?', permission)
   }

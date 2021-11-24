@@ -53,7 +53,7 @@ module Spree
     has_one :master, -> { where is_master: true }, class_name: 'Spree::Variant', dependent: :destroy
 
     has_many :variants,
--> {
+lambda {
       where(is_master: false).order("spree_variants.position ASC")
     },
 class_name: 'Spree::Variant'
@@ -64,7 +64,7 @@ class_name: 'Spree::Variant'
              dependent: :destroy
 
     has_many :prices,
--> {
+lambda {
       order('spree_variants.position, spree_variants.id, currency')
     },
 through: :variants
@@ -124,7 +124,7 @@ presence: true,
 
     accepts_nested_attributes_for :product_properties,
                                   allow_destroy: true,
-                                  reject_if: lambda { |pp| pp[:property_name].blank? }
+                                  reject_if: ->(pp) { pp[:property_name].blank? }
 
     make_permalink order: :name
 
@@ -143,7 +143,7 @@ presence: true,
 
     # -- Joins
     scope :with_order_cycles_outer,
--> {
+lambda {
       joins(
 "
         LEFT OUTER JOIN spree_variants AS o_spree_variants
@@ -171,7 +171,7 @@ Spree::Variant
     }
 
     scope :with_order_cycles_inner,
--> {
+lambda {
       joins(variants_including_master: { exchanges: :order_cycle })
     }
 
@@ -190,7 +190,7 @@ lambda { |enterprise|
     }
 
     # -- Scopes
-    scope :in_supplier, lambda { |supplier| where(supplier_id: supplier) }
+    scope :in_supplier, ->(supplier) { where(supplier_id: supplier) }
 
     # Products distributed via the given distributor through an OC
     scope :in_distributor,

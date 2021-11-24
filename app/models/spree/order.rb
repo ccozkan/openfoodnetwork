@@ -27,12 +27,12 @@ module Spree
       go_to_state :address
       go_to_state :delivery
       go_to_state :payment,
-if: ->(order) {
+if: lambda { |order|
         order.update_totals
         order.payment_required?
       }
       go_to_state :confirmation,
-if: ->(_order) {
+if: lambda { |_order|
         Flipper.enabled? :split_checkout
       }
       go_to_state :complete
@@ -53,7 +53,7 @@ if: ->(_order) {
 
     has_many :state_changes, as: :stateful
     has_many :line_items,
--> {
+lambda {
                             order('created_at ASC')
                           },
 class_name: "Spree::LineItem",
@@ -124,7 +124,7 @@ presence: true,
 
     # -- Scopes
     scope :not_empty,
--> {
+lambda {
       left_outer_joins(:line_items).where.not(spree_line_items: { id: nil })
     }
 
@@ -166,8 +166,8 @@ lambda {
     scope :finalized, -> { where(state: FINALIZED_STATES) }
     scope :complete, -> { where.not(completed_at: nil) }
     scope :incomplete, -> { where(completed_at: nil) }
-    scope :by_state, lambda { |state| where(state: state) }
-    scope :not_state, lambda { |state| where.not(state: state) }
+    scope :by_state, ->(state) { where(state: state) }
+    scope :not_state, ->(state) { where.not(state: state) }
 
     def initialize(*_args)
       @checkout_processing = nil

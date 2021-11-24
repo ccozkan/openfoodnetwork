@@ -114,11 +114,11 @@ allow_destroy: true,
   validates :permalink, uniqueness: true, presence: true
   validate :shopfront_taxons
   validate :shopfront_producers
-  validate :enforce_ownership_limit, if: lambda { owner_id_changed? && !owner_id.nil? }
+  validate :enforce_ownership_limit, if: -> { owner_id_changed? && !owner_id.nil? }
 
-  before_validation :initialize_permalink, if: lambda { permalink.nil? }
+  before_validation :initialize_permalink, if: -> { permalink.nil? }
   before_validation :set_unused_address_fields
-  after_validation :ensure_owner_is_manager, if: lambda { owner_id_changed? && !owner_id.nil? }
+  after_validation :ensure_owner_is_manager, if: -> { owner_id_changed? && !owner_id.nil? }
 
   after_touch :touch_distributors
   after_create :set_default_contact
@@ -162,7 +162,7 @@ lambda { |variants|
   }
 
   scope :with_order_cycles_as_supplier_outer,
--> {
+lambda {
     joins(
 "
       LEFT OUTER JOIN exchanges
@@ -172,7 +172,7 @@ lambda { |variants|
   }
 
   scope :with_order_cycles_as_distributor_outer,
--> {
+lambda {
     joins(
 "
       LEFT OUTER JOIN exchanges
@@ -182,7 +182,7 @@ lambda { |variants|
   }
 
   scope :with_order_cycles_outer,
--> {
+lambda {
     joins(
 "
       LEFT OUTER JOIN exchanges
@@ -192,7 +192,7 @@ lambda { |variants|
   }
 
   scope :with_order_cycles_and_exchange_variants_outer,
--> {
+lambda {
     with_order_cycles_as_distributor_outer
       .joins("LEFT OUTER JOIN exchange_variants ON (exchange_variants.exchange_id = exchanges.id)")
       .joins("LEFT OUTER JOIN spree_variants ON (spree_variants.id = exchange_variants.variant_id)")

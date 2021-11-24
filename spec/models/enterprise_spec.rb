@@ -649,7 +649,7 @@ expect do
       allow(Enterprise).to receive(:find_available_permalink).and_return("available_permalink")
       expect(Enterprise).to receive(:find_available_permalink).with("Name To Turn Into A Permalink")
       expect(
-        lambda { enterprise.send(:initialize_permalink) }
+        -> { enterprise.send(:initialize_permalink) }
       ).to change {
         enterprise.permalink
       }.to(

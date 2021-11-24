@@ -45,7 +45,7 @@ lambda { |user|
     }
 
     scope :for_distributors,
-->(distributors) {
+lambda { |distributors|
       non_unique_matches = unscoped.joins(:distributors).where(enterprises: { id: distributors })
       where(id: non_unique_matches.map(&:id))
     }
@@ -57,7 +57,7 @@ lambda { |distributor|
 
     scope :by_name, -> { order('spree_shipping_methods.name ASC') }
     scope :display_on_checkout,
--> {
+lambda {
       where("spree_shipping_methods.display_on is null OR spree_shipping_methods.display_on = ''")
     }
 

@@ -35,7 +35,7 @@ lambda { |user|
     }
 
     scope :for_distributors,
-->(distributors) {
+lambda { |distributors|
       non_unique_matches = unscoped.joins(:distributors).where(enterprises: { id: distributors })
       where(id: non_unique_matches.map(&:id))
     }

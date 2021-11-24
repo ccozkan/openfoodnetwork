@@ -12,12 +12,12 @@ class_name: "Spree::ReturnAuthorization",
     scope :backordered, -> { where state: 'backordered' }
     scope :shipped, -> { where state: 'shipped' }
     scope :backordered_per_variant,
-->(stock_item) do
+lambda { |stock_item|
       includes(:shipment)
         .where("spree_shipments.state != 'canceled'").references(:shipment)
         .where(variant_id: stock_item.variant_id)
         .backordered.order("#{table_name}.created_at ASC")
-    end
+    }
 
     # state machine (see http://github.com/pluginaweek/state_machine/tree/master for details)
     state_machine initial: :on_hand do

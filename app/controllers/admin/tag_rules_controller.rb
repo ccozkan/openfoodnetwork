@@ -6,7 +6,7 @@ module Admin
 
     respond_override destroy: {
 json: {
-      success: lambda { render body: nil, status: :no_content }
+      success: -> { render body: nil, status: :no_content }
     }
 }
 

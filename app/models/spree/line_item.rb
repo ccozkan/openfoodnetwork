@@ -73,7 +73,7 @@ lambda { |orders|
 
     # Find line items that are from order sorted by variant name and unit value
     scope :sorted_by_name_and_unit_value,
--> {
+lambda {
       joins(variant: :product)
         .reorder(Arel.sql(
 "
@@ -100,7 +100,7 @@ lambda { |enterprises|
     }
 
     scope :with_tax,
--> {
+lambda {
       joins(:adjustments)
         .where('spree_adjustments.originator_type = ?', 'Spree::TaxRate')
         .select('DISTINCT spree_line_items.*')
@@ -108,7 +108,7 @@ lambda { |enterprises|
 
     # Line items without a Spree::TaxRate-originated adjustment
     scope :without_tax,
--> {
+lambda {
       joins(
 "
         LEFT OUTER JOIN spree_adjustments

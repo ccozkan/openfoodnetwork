@@ -32,13 +32,13 @@ class Subscription < ApplicationRecord
   accepts_nested_attributes_for :bill_address, :ship_address
 
   scope :not_ended,
--> {
+lambda {
                       where('subscriptions.ends_at > (?) OR subscriptions.ends_at IS NULL', Time.zone.now)
                     }
   scope :not_canceled, -> { where('subscriptions.canceled_at IS NULL') }
   scope :not_paused, -> { where('subscriptions.paused_at IS NULL') }
   scope :active,
--> {
+lambda {
                    not_canceled.not_ended.not_paused.where('subscriptions.begins_at <= (?)', Time.zone.now)
                  }
 
