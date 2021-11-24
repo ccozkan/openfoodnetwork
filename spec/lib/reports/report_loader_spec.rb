@@ -6,7 +6,9 @@ module Reporting
   module Reports
     module Bananas
       class Base; end
+
       class Green; end
+
       class Yellow; end
     end
   end
