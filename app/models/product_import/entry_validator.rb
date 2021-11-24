@@ -11,7 +11,8 @@ module ProductImport
     # rubocop:disable Metrics/ParameterLists
     def initialize(
       current_user, import_time, spreadsheet_data, editable_enterprises,
-                   inventory_permissions, reset_counts, import_settings, all_entries)
+                   inventory_permissions, reset_counts, import_settings, all_entries
+)
       @current_user = current_user
       @import_time = import_time
       @spreadsheet_data = spreadsheet_data
