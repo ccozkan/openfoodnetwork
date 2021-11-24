@@ -54,7 +54,7 @@ module Spree
 
         collection =
  if model_class.respond_to?(:accessible_by) &&
-                        !current_ability.has_block?(params[:action], model_class)
+    !current_ability.has_block?(params[:action], model_class)
 
                        model_class.accessible_by(current_ability, action)
 
