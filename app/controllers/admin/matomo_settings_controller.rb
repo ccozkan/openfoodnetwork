@@ -15,7 +15,7 @@ module Admin
     private
 
     def preferences_params
-      params.require(:preferences).permit(:matomo_url, :matomo_site_id, :matomo_tag_manager_url,)
+      params.require(:preferences).permit(:matomo_url, :matomo_site_id, :matomo_tag_manager_url)
     end
   end
 end

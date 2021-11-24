@@ -20,7 +20,7 @@ describe Spree::Admin::Orders::CustomerDetailsController, type: :controller do
           user: nil,
           email: nil,
           bill_address: nil,
-          ship_address: nil,
+          ship_address: nil
         )
       end
       let(:address_params) do

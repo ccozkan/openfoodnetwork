@@ -106,7 +106,7 @@ json: {
 :code,
 :tag_list,
         ship_address_attributes: PermittedAttributes::Address.attributes,
-        bill_address_attributes: PermittedAttributes::Address.attributes,
+        bill_address_attributes: PermittedAttributes::Address.attributes
       )
     end
 

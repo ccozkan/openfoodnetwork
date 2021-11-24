@@ -18,7 +18,7 @@ module Admin
       params.require(:preferences).permit(
         :enable_invoices?,
         :invoice_style2?,
-        :enable_receipt_printing?,
+        :enable_receipt_printing?
       )
     end
   end

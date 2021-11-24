@@ -262,7 +262,7 @@ distributor_ids: [distributor.id]
         before do
           TermsOfServiceFile.create!(
             attachment: File.open(Rails.root.join('public/Terms-of-service.pdf')),
-            updated_at: 1.day.ago,
+            updated_at: 1.day.ago
           )
           customer = create(:customer, enterprise: order.distributor, user: user)
           customer.update(terms_and_conditions_accepted_at: Time.zone.now)

@@ -18,7 +18,7 @@ class ImageImporter
     Spree::Image.create(
       attachment: file,
       viewable_id: product.master.id,
-      viewable_type: Spree::Variant,
+      viewable_type: Spree::Variant
     )
   end
 end

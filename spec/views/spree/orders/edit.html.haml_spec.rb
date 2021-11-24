@@ -21,7 +21,7 @@ describe 'spree/orders/edit.html.haml' do
       order: order,
       current_order: order,
       pickup_time: 'time',
-      spree_current_user: create(:user),
+      spree_current_user: create(:user)
     ))
   end
 

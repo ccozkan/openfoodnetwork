@@ -38,7 +38,7 @@ exchange[:enterprise_id],
 true,
                        variant_ids: variant_ids,
 enterprise_fee_ids: enterprise_fee_ids,
-                       receival_instructions: exchange[:receival_instructions],
+                       receival_instructions: exchange[:receival_instructions]
 )
         end
       end

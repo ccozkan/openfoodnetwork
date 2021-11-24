@@ -14,7 +14,7 @@ describe 'spree/admin/orders/invoice.html.haml' do
       city: 'Thornbury',
       zipcode: '3071',
       state_id: 1,
-      state_name: 'Victoria',
+      state_name: 'Victoria'
     )
   end
   let(:adas_address_display) { '2 Mahome St, Thornbury, 3071, Victoria' }
@@ -32,7 +32,7 @@ describe 'spree/admin/orders/invoice.html.haml' do
       user: order.user,
       email: order.user.email,
       enterprise: order.distributor,
-      code: 'Money Penny',
+      code: 'Money Penny'
     )
     render
     expect(rendered).to(have_content('Code: Money Penny'))
@@ -47,7 +47,7 @@ describe 'spree/admin/orders/invoice.html.haml' do
   end
 
   it 'displays shipping info' do
-    order.shipping_method.update!(name: 'Home delivery', require_ship_address: true,)
+    order.shipping_method.update!(name: 'Home delivery', require_ship_address: true)
     order.ship_address = adas_address
 
     render
@@ -65,7 +65,7 @@ describe 'spree/admin/orders/invoice.html.haml' do
 
   it 'hides billing address for pickups' do
     order.ship_address = adas_address
-    order.shipping_method.update!(name: 'Pickup', require_ship_address: false,)
+    order.shipping_method.update!(name: 'Pickup', require_ship_address: false)
 
     render
     expect(rendered).to(have_content('Shipping: Pickup'))

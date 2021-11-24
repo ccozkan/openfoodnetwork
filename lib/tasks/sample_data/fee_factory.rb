@@ -24,7 +24,7 @@ module SampleData
       fee = enterprise.enterprise_fees.new(
         fee_type: 'sales',
         name: 'markup',
-        inherits_tax_category: true,
+        inherits_tax_category: true
       )
       fee.calculator = calculator
       fee.save!

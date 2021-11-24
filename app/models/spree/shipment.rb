@@ -335,7 +335,7 @@ if: lambda { |shipment|
 
     def update_order_shipment_state
       new_state = order.updater.update_shipment_state
-      order.update_columns(shipment_state: new_state, updated_at: Time.zone.now,)
+      order.update_columns(shipment_state: new_state, updated_at: Time.zone.now)
     end
 
     def send_shipped_email

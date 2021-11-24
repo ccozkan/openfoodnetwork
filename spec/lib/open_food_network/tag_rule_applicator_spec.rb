@@ -174,7 +174,7 @@ product_tag_rule2,
       end
 
       context 'when subject is an array' do
-        let(:element) { double(:element,) }
+        let(:element) { double(:element) }
         let(:subject) { [element] }
 
         context 'when rule_class reponds to tagged_children_for' do

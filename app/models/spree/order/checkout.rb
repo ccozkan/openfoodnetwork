@@ -131,7 +131,7 @@ module Spree
           end
 
           def restart_checkout_flow
-            update_columns(state: checkout_steps.first, updated_at: Time.zone.now,)
+            update_columns(state: checkout_steps.first, updated_at: Time.zone.now)
           end
 
           private

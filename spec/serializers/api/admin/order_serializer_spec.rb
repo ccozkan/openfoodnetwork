@@ -59,7 +59,7 @@ describe Api::Admin::OrderSerializer do
           :payment,
           order: order,
           state: 'pending',
-          amount: 123.45,
+          amount: 123.45
         )
       end
 

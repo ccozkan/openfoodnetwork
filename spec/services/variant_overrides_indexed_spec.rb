@@ -11,7 +11,7 @@ describe VariantOverridesIndexed do
     create(
       :variant_override,
       hub: vo_distributor,
-      variant: vo_variant,
+      variant: vo_variant
     )
   end
 

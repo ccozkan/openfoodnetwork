@@ -17,7 +17,7 @@ describe OrderCompletionReset do
     double(
       :new_order,
       set_distributor!: true,
-      tokenized_permission: tokenized_permission,
+      tokenized_permission: tokenized_permission
     )
   end
   let(:controller) do

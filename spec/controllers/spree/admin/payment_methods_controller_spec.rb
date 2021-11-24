@@ -193,7 +193,7 @@ distributor_ids: [enterprise1.id, enterprise2.id],
 :user,
 email: 'enterprise@hub.com',
 password: 'blahblah',
-       password_confirmation: 'blahblah',
+       password_confirmation: 'blahblah'
 )
         new_user.spree_roles = [] # for some reason unbeknown to me, this new user gets admin permissions by default.
         new_user.enterprise_roles.build(enterprise: enterprise).save

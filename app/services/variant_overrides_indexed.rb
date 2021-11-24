@@ -26,7 +26,7 @@ class VariantOverridesIndexed
       .preload(:variant)
       .where(
         hub_id: distributor_ids,
-        variant_id: variant_ids,
+        variant_id: variant_ids
       )
   end
 
