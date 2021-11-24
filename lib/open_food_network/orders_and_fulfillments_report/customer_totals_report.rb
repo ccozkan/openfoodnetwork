@@ -231,7 +231,8 @@ order: [
                    :user, 
 :distributor, 
 :shipments
-] }
+] 
+}
 ]
       end
 

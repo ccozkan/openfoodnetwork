@@ -209,7 +209,8 @@ status: 'succeeded') )
               stub_payment_intent_get_request(
 response: { 
 intent_status: "succeeded",
-amount_refunded: 200 })
+amount_refunded: 200 
+})
               stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
                 .with(basic_auth: ["sk_test_12345", ""])
                 .to_return(status: 200,

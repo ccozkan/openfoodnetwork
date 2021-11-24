@@ -26,7 +26,8 @@ json: {
                  render json: { errors: @schedule.errors.full_messages },
                         status: :unprocessable_entity
                }
-    } }
+    } 
+}
     respond_override update: { 
 json: {
       success: lambda {
@@ -37,7 +38,8 @@ json: {
                  render json: { errors: @schedule.errors.full_messages },
                         status: :unprocessable_entity
                }
-    } }
+    } 
+}
 
     def index
       respond_to do |format|

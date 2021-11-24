@@ -19,7 +19,8 @@ payments_attributes: [
             { source_attributes: PermittedAttributes::PaymentSource.attributes }
           ],
 ship_address_attributes: PermittedAttributes::Address.attributes,
-bill_address_attributes: PermittedAttributes::Address.attributes }
+bill_address_attributes: PermittedAttributes::Address.attributes 
+}
         ],
         payment_source: PermittedAttributes::PaymentSource.attributes
       )

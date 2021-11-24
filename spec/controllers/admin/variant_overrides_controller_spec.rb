@@ -17,7 +17,8 @@ describe Admin::VariantOverridesController, type: :controller do
         [
 { 
 id: variant_override.id, price: 123.45, count_on_hand: 321, sku: "MySKU",
-on_demand: false }
+on_demand: false 
+}
 ]
       }
 
@@ -83,7 +84,8 @@ on_demand: false }
               [
 { 
 id: variant_override.id, price: "", count_on_hand: "", default_stock: nil, resettable: nil,
-sku: nil, on_demand: nil }
+sku: nil, on_demand: nil 
+}
 ]
             }
 

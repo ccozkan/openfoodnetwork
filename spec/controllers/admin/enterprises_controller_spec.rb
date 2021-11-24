@@ -26,7 +26,9 @@ describe Admin::EnterprisesController, type: :controller do
       { 
 enterprise: { 
 name: 'zzz', permalink: 'zzz', is_primary_producer: '0',
-address_attributes: address_params } }
+address_attributes: address_params 
+} 
+}
     }
 
     it "grants management permission if the current user is an enterprise user" do
@@ -162,7 +164,9 @@ user_ids: [
 distributor_owner.id, 
 distributor_manager.id,
                                                    user.id
-] } }
+] 
+} 
+}
         spree_post :update, update_params
 
         distributor.reload
@@ -173,7 +177,8 @@ distributor_manager.id,
         allow(controller).to receive_messages spree_current_user: distributor_manager
         update_params = { 
 id: distributor,
-enterprise: { show_customer_names_to_suppliers: "1" } }
+enterprise: { show_customer_names_to_suppliers: "1" } 
+}
         spree_post :update, update_params
 
         distributor.reload
@@ -294,7 +299,9 @@ user_ids: [
 distributor_owner.id, 
 distributor_manager.id,
                                                    user.id
-] } }
+] 
+} 
+}
         spree_post :update, update_params
 
         distributor.reload
@@ -330,7 +337,9 @@ user_ids: [
 distributor_owner.id, 
 distributor_manager.id,
                                                    user.id
-] } }
+] 
+} 
+}
         spree_post :update, update_params
 
         distributor.reload
@@ -456,8 +465,11 @@ sets_enterprise_set: {
 collection_attributes: {
           '0' => { 
 id: profile_enterprise1.id, sells: 'any',
-owner_id: new_owner.id }, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
-        } } }
+owner_id: new_owner.id 
+}, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
+        } 
+} 
+}
 
         spree_put :bulk_update, bulk_enterprise_params
         profile_enterprise1.reload
@@ -477,7 +489,10 @@ sets_enterprise_set: {
 collection_attributes: { 
 '0' => {
           id: profile_enterprise1.id, visible: 'false'
-        } } } }
+        } 
+} 
+} 
+}
         spree_put :bulk_update, bulk_enterprise_params
         expect(assigns(:enterprise_set).collection).to eq [profile_enterprise1]
       end
@@ -491,8 +506,11 @@ sets_enterprise_set: {
 collection_attributes: {
           '0' => { 
 id: profile_enterprise1.id, sells: 'any',
-owner_id: new_owner.id }, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
-        } } }
+owner_id: new_owner.id 
+}, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
+        } 
+} 
+}
 
         spree_put :bulk_update, bulk_enterprise_params
         profile_enterprise1.reload
@@ -514,8 +532,11 @@ sets_enterprise_set: {
 collection_attributes: {
           '0' => { 
 id: profile_enterprise1.id, sells: 'any',
-owner_id: new_owner.id }, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
-        } } }
+owner_id: new_owner.id 
+}, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
+        } 
+} 
+}
 
         spree_put :bulk_update, bulk_enterprise_params
         profile_enterprise1.reload

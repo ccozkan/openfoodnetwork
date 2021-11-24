@@ -346,7 +346,8 @@ next_source_action: {
                                                type: "authorize_with_url",
                                                authorize_with_url: { url: stripe_redirect_url }
                                              },
-status: "requires_source_action") }
+status: "requires_source_action") 
+}
         end
 
         it "redirects the user to the authorization stripe url" do

@@ -35,7 +35,11 @@ number: {
 currency: { 
 format: { 
 delimiter: '.',
-separator: ',' } } } })
+separator: ',' 
+} 
+} 
+} 
+})
       end
 
       after do

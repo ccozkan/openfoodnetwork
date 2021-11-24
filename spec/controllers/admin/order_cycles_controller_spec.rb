@@ -280,7 +280,10 @@ collection_attributes: {
             name: "Updated Order Cycle",
             orders_open_at: Date.current - 21.days,
             orders_close_at: Date.current + 21.days,
-          } } } }
+          } 
+} 
+} 
+}
         end
 
         before { create(:enterprise_role, user: distributor_owner, enterprise: coordinator) }
@@ -311,7 +314,10 @@ collection_attributes: {
               name: "Updated Order Cycle",
               orders_open_at: Date.current + 25.days,
               orders_close_at: Date.current + 21.days,
-            } } } }
+            } 
+} 
+} 
+}
           end
 
           it "returns an error message" do
@@ -334,7 +340,9 @@ collection_attributes: {
             name: "Updated Order Cycle",
             orders_open_at: Date.current - 21.days,
             orders_close_at: Date.current + 21.days,
-          } } }
+          } 
+} 
+}
 
           oc.reload
           expect(oc.name).to_not eq "Updated Order Cycle"

@@ -338,7 +338,8 @@ describe CheckoutController, type: :controller do
       expect(response.body).to eq(
 { 
 errors: assigns[:order].errors,
-flash: { error: order.errors.full_messages.to_sentence } }.to_json)
+flash: { error: order.errors.full_messages.to_sentence } 
+}.to_json)
     end
 
     it "returns errors and flash if order.next fails" do
@@ -348,7 +349,8 @@ flash: { error: order.errors.full_messages.to_sentence } }.to_json)
       expect(response.body).to eq(
 { 
 errors: assigns[:order].errors,
-flash: { error: "Payment could not be processed, please check the details you entered" } }.to_json)
+flash: { error: "Payment could not be processed, please check the details you entered" } 
+}.to_json)
     end
 
     it "returns order confirmation url on success" do
@@ -371,7 +373,8 @@ flash: { error: "Payment could not be processed, please check the details you en
       expect(response.body).to eq(
 { 
 errors: {},
-flash: { error: I18n.t("checkout.failed") } }.to_json)
+flash: { error: I18n.t("checkout.failed") } 
+}.to_json)
     end
 
     it "returns a specific error on Spree::Core::GatewayError" do

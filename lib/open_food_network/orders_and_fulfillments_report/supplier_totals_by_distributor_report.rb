@@ -80,7 +80,8 @@ I18n.t(:report_header_shipping_method)
         [
 { 
 order: :distributor,
-variant: [{ option_values: :option_type }, { product: :supplier }] }
+variant: [{ option_values: :option_type }, { product: :supplier }] 
+}
 ]
       end
     end

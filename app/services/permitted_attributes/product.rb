@@ -31,7 +31,8 @@ module PermittedAttributes
         { 
 product_properties_attributes: [:id, :property_name, :value],
 variants_attributes: [PermittedAttributes::Variant.attributes],
-images_attributes: [:attachment] }
+images_attributes: [:attachment] 
+}
       ]
     end
   end

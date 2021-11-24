@@ -610,7 +610,8 @@ product1.group_buy_unit_size.to_s,
 
         opts = { 
 invoice_number: '5', invoice_date: '2015-02-12', due_date: '2015-03-12',
-account_code: 'abc123' }
+account_code: 'abc123' 
+}
 
         expect(xero_invoice_table).to match_table [
           xero_invoice_header,

@@ -175,7 +175,8 @@ describe Spree::Payment do
             allow(success_response).to receive(:cvv_result) {
               { 
 'code' => "123",
-'message' => "https://stripe.com/redirect" }
+'message' => "https://stripe.com/redirect" 
+}
             }
             expect(payment.payment_method).to receive(:authorize).with(
               amount_in_cents, card, anything
@@ -678,7 +679,8 @@ source_attributes: {
                      expiry: "1 / 99",
                      number: '1234567890123',
                      verification_value: '123'
-                   } }
+                   } 
+}
 
         payment = Spree::Payment.new(params)
         expect(payment).to be_valid
@@ -688,7 +690,8 @@ source_attributes: {
       it "errors when payment source not valid" do
         params = { 
 amount: 100, payment_method: gateway,
-source_attributes: { expiry: "1 / 12" } }
+source_attributes: { expiry: "1 / 12" } 
+}
 
         payment = Spree::Payment.new(params)
         expect(payment).not_to be_valid

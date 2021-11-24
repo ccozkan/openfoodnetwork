@@ -17,7 +17,8 @@ json: {
                  render json: { errors: @customer.errors.full_messages },
                         status: :unprocessable_entity
                }
-    } }
+    } 
+}
 
     def index
       respond_to do |format|
@@ -124,7 +125,8 @@ json: {
                 { 
 taggable_type: 'Customer',
 taggable_id: Customer.of(managed_enterprise_id),
-context: 'tags' })
+context: 'tags' 
+})
 
       customer_tags.each_with_object({}) do |tag, indexed_hash|
         tag.taggings.each do |tagging|

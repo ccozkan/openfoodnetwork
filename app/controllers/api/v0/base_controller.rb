@@ -87,7 +87,8 @@ status: :unprocessable_entity) && return
         render(
 json: { 
 error: I18n.t(:invalid_resource, scope: "spree.api"),
-errors: @resource.errors },
+errors: @resource.errors 
+},
 status: :unprocessable_entity)
       end
 

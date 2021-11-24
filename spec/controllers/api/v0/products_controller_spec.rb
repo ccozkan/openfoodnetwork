@@ -135,7 +135,8 @@ supplier_id: supplier.id,
 primary_taxon_id: FactoryBot.create(:taxon).id,
 variant_unit: "items",
 variant_unit_name: "things",
-unit_description: "things" }
+unit_description: "things" 
+}
 
       expect(all_attributes.all?{ |attr| json_response.keys.include? attr }).to eq(true)
       expect(response.status).to eq(201)

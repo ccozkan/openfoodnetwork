@@ -308,7 +308,9 @@ order: {
 line_items_attributes: {
           "0" => { quantity: "0", id: "9999" },
           "1" => { quantity: "99", id: li.id }
-        } } }
+        } 
+} 
+}
         expect(response.status).to eq(302)
         expect(li.reload.quantity).to eq(99)
       end
@@ -337,7 +339,9 @@ line_items_attributes: {
 order: { 
 line_items_attributes: {
         "1" => { quantity: "99", id: line_item.id }
-      } } }
+      } 
+} 
+}
 
       expect(adjustment.state).to eq('open')
     end
@@ -386,7 +390,8 @@ line_items_attributes: {
 line_items_attributes: {
                      "0" => { id: line_item1.id, quantity: 1 },
                      "1" => { id: line_item2.id, quantity: 0 }
-                   } }
+                   } 
+}
 
         expect(order.reload.line_items.count).to eq 1
         expect(order.adjustment_total).to eq(1 * (shipping_fee + payment_fee))
@@ -422,7 +427,9 @@ line_items_attributes: {
 order: { 
 line_items_attributes: {
           "0" => { id: order.line_items.first.id, quantity: 2 }
-        } } }
+        } 
+} 
+}
       }
 
       before do
@@ -448,7 +455,9 @@ order: {
 line_items_attributes: {
             "0" => { id: order.line_items.first.id, quantity: 0 },
             "1" => { id: order.line_items.last.id, quantity: 1 }
-          } } }
+          } 
+} 
+}
         }
 
         it "updates the fees" do
@@ -473,7 +482,9 @@ order: {
 line_items_attributes: {
         "0" => { id: order.line_items.first.id, quantity: 1 },
         "1" => { id: order.line_items.second.id, quantity: 0 }
-      } } }
+      } 
+} 
+}
     }
 
     before { allow(subject).to receive(:order_to_update) { order } }

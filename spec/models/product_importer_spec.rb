@@ -1202,7 +1202,8 @@ def import_data(csv_data, args = {})
   enterprises_to_reset = args[:enterprises_to_reset] || nil
   settings = args[:settings] || { 
 'import_into' => import_into,
-'reset_all_absent' => reset_all_absent }
+'reset_all_absent' => reset_all_absent 
+}
 
   File.write('/tmp/test-m.csv', csv_data)
   @file ||= File.new('/tmp/test-m.csv')

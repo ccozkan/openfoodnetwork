@@ -111,7 +111,8 @@ amount: 2000,
 amount_received: 2000,
 status: options[:intent_status] || "requires_capture",
 last_payment_error: nil,
-charges: { data: chargedata }) }
+charges: { data: chargedata }) 
+}
   end
 
   def payment_intent_redirect_response_mock(redirect_url)
@@ -123,7 +124,8 @@ next_source_action: {
                                          type: "authorize_with_url",
                                          authorize_with_url: { url: redirect_url }
                                        },
-status: "requires_source_action") }
+status: "requires_source_action") 
+}
   end
 
   def payment_successful_capture_mock(options)
@@ -132,7 +134,8 @@ status: options[:code] || 200,
 body: JSON.generate(
 object: "payment_intent",
 amount: 2000,
-charges: { data: [{ id: "ch_1234", amount: 2000 }] }) }
+charges: { data: [{ id: "ch_1234", amount: 2000 }] }) 
+}
   end
 
   def payment_failed_capture_mock(options)
@@ -141,13 +144,16 @@ status: options[:code] || 402,
 body: JSON.generate(
 error: { 
 message:
-                                     options[:message] || "payment-method-failure" }) }
+                                     options[:message] || "payment-method-failure" 
+}) 
+}
   end
 
   def hub_payment_method_response_mock(options)
     { 
 status: options[:code] || 200,
-body: JSON.generate(id: options[:pm_id] || "pm_456", customer: "cus_A123") }
+body: JSON.generate(id: options[:pm_id] || "pm_456", customer: "cus_A123") 
+}
   end
 
   def customers_response_mock(options)
@@ -156,7 +162,8 @@ body: JSON.generate(id: options[:pm_id] || "pm_456", customer: "cus_A123") }
 status: 200,
 body: JSON.generate(
 id: customer_id,
-sources: { data: [id: customer_id] }) }
+sources: { data: [id: customer_id] }) 
+}
   end
 
   def payment_successful_refund_mock
@@ -165,7 +172,8 @@ status: 200,
 body: JSON.generate(
 object: "refund",
 amount: 2000,
-charge: "ch_1234") }
+charge: "ch_1234") 
+}
   end
 
   def retrieve_payment_method_response_mock(options)
@@ -173,13 +181,15 @@ charge: "ch_1234") }
 status: options[:code] || 200,
 body: JSON.generate(
         id: options[:pm_id] || "pm_456", customer: "cus_A123", card: { fingerprint: "12345" }
-      ) }
+      ) 
+}
   end
 
   def list_customers_response_mock(options)
     { 
 status: options[:code] || 200,
-body: JSON.generate(has_more: false, data: [{ id: "cus_A456" }]) }
+body: JSON.generate(has_more: false, data: [{ id: "cus_A456" }]) 
+}
   end
 
   def get_customer_payment_methods_response_mock(options)
@@ -189,12 +199,14 @@ body: JSON.generate(has_more: false, data: [{ id: "cus_A456" }]) }
 status: options[:code] || 200,
 body: JSON.generate(
         has_more: false, data: [{ id: payment_method, card: { fingerprint: fingerprint } }]
-      ) }
+      ) 
+}
   end
 
   def add_metadata_response_mock(options)
     { 
 status: options[:code] || 200,
-body: JSON.generate({}) }
+body: JSON.generate({}) 
+}
   end
 end

@@ -7,7 +7,8 @@ module Admin
     respond_override destroy: { 
 json: {
       success: lambda { render body: nil, status: :no_content }
-    } }
+    } 
+}
 
     def map_by_tag
       respond_to do |format|

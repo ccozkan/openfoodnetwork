@@ -48,7 +48,8 @@ outgoing_exchanges: permitted_exchange_attributes
         { 
 tags: [:text],
 enterprise_fee_ids: [],
-variants: {} }
+variants: {} 
+}
       ]
     end
   end

@@ -266,7 +266,8 @@ product_tag_rule2,
       let(:product2) {
         { 
 :id => 2, :name => 'product 2',
-"variants" => [{ :id => 5, "tag_list" => ["tag1"] }, { :id => 9, "tag_list" => ["tag2"] }] }
+"variants" => [{ :id => 5, "tag_list" => ["tag1"] }, { :id => 9, "tag_list" => ["tag2"] }] 
+}
       }
       let(:product3) {
         { :id => 3, :name => 'product 3', "variants" => [{ :id => 6, "tag_list" => ["tag3"] }] }
@@ -283,7 +284,8 @@ product_tag_rule2,
           expect(products_array).to eq [
             { 
 :id => 2, :name => 'product 2',
-"variants" => [{ :id => 9, "tag_list" => ["tag2"] }] }, 
+"variants" => [{ :id => 9, "tag_list" => ["tag2"] }] 
+}, 
 product3
           ]
         end

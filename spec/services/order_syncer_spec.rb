@@ -155,7 +155,9 @@ describe OrderSyncer do
       { 
 bill_address_attributes: { 
 id: bill_address_attrs["id"], firstname: "Bill",
-address1: "123 abc st", phone: "1123581321" } }
+address1: "123 abc st", phone: "1123581321" 
+} 
+}
     }
     let(:syncer) { OrderSyncer.new(subscription) }
 
@@ -266,7 +268,9 @@ address1: "123 abc st", phone: "1123581321" } }
       { 
 ship_address_attributes: { 
 id: ship_address_attrs["id"], firstname: "Ship",
-address1: "123 abc st", phone: "1123581321" } }
+address1: "123 abc st", phone: "1123581321" 
+} 
+}
     }
     let(:syncer) { OrderSyncer.new(subscription) }
 
@@ -567,7 +571,8 @@ subscription_line_items_attributes: [
 {
   id: subscription.subscription_line_items.last.id, quantity: 2
 }
-] }
+] 
+}
             subscription.assign_attributes(params)
             expect(syncer.sync!).to be true
 

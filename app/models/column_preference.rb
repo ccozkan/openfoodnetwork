@@ -15,7 +15,8 @@ class ColumnPreference < ApplicationRecord
   validates :column_name, presence: true, inclusion: { 
 in: proc { |p|
                                                              valid_columns_for(p.action_name)
-                                                           } }
+                                                           } 
+}
 
   def self.for(user, action_name)
     stored_preferences = where(user_id: user.id, action_name: action_name)

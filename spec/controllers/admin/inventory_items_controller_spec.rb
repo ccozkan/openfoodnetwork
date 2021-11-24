@@ -15,7 +15,8 @@ describe Admin::InventoryItemsController, type: :controller do
       let(:params) {
         { 
 format: format,
-inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible: false } }
+inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible: false } 
+}
       }
 
       context "where I don't manage the inventory item enterprise" do
@@ -67,7 +68,9 @@ inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible:
 format: format,
 inventory_item: { 
 enterprise_id: enterprise.id, variant_id: variant.id,
-visible: nil } }
+visible: nil 
+} 
+}
             }
 
             it "returns an error message" do

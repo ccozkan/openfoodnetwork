@@ -44,7 +44,9 @@ id: order,
 order: { 
 number: order.number,
 distributor_id: order.distributor_id,
-order_cycle_id: order.order_cycle_id } }
+order_cycle_id: order.order_cycle_id 
+} 
+}
     end
 
     before { controller_login_as_admin }

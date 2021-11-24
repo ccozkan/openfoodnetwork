@@ -22,7 +22,9 @@ module Stripe
 "status" => "requires_source_action",
 "next_source_action" => { 
 "type" => "authorize_with_url",
-"authorize_with_url" => { "url" => "https://www.stripe.com/authorize" } } }
+"authorize_with_url" => { "url" => "https://www.stripe.com/authorize" } 
+} 
+}
         }
 
         it "patches response.cvv_result.message with the url in the response" do

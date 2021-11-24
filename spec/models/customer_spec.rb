@@ -34,7 +34,8 @@ city: "Melbourne",
 state_id: 1,
 phone: "455500146",
 address1: "U 3/32 Florence Road Surrey Hills2",
-country_id: 1 }
+country_id: 1 
+}
       customer.update!(ship_address_attributes: ship_address)
 
       expect(customer.ship_address.city).to eq 'Melbourne'

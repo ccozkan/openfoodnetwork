@@ -155,7 +155,8 @@ describe "full-page cart", js: true do
           cart_service.populate(
 variants: { 
 product_with_fee.variants.first.id => 3,
-product_with_tax.variants.first.id => 3 })
+product_with_tax.variants.first.id => 3 
+})
           order.recreate_all_fees!
 
           visit main_app.cart_path

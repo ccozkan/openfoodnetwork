@@ -137,7 +137,8 @@ enterprise_fee, nil,
 amount: 12.34,
 originator: tax_rate,
 state: 'closed',
-label: 'hello' })
+label: 'hello' 
+})
 
       expect do
         EnterpriseFee.clear_all_adjustments order

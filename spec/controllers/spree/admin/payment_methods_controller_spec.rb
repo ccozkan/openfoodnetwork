@@ -42,7 +42,8 @@ distributor_ids: [enterprise.id])
           spree_post :create,
                      payment_method: { 
 name: "Test Method", type: "Spree::Gateway::Bogus",
-distributor_ids: [enterprise.id] }
+distributor_ids: [enterprise.id] 
+}
         }.to change(Spree::PaymentMethod, :count).by(1)
 
         expect(response).to be_redirect
@@ -54,7 +55,8 @@ distributor_ids: [enterprise.id] }
           spree_post :create,
                      payment_method: { 
 name: "Invalid Payment Method", type: "Spree::InvalidType",
-distributor_ids: [enterprise.id] }
+distributor_ids: [enterprise.id] 
+}
         }.to change(Spree::PaymentMethod, :count).by(0)
 
         expect(response).to be_redirect

@@ -18,7 +18,9 @@ module Spree
 flash: { 
 error: I18n.t(
 :spree_gateway_error_flash_for_checkout,
-                                              error: message) } },
+                                              error: message) 
+} 
+},
                status: :bad_request
       end
     rescue Stripe::CardError => e
@@ -26,7 +28,9 @@ error: I18n.t(
 flash: { 
 error: I18n.t(
 :spree_gateway_error_flash_for_checkout,
-                                            error: e.message) } },
+                                            error: e.message) 
+} 
+},
              status: :bad_request
     end
 

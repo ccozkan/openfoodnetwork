@@ -11,7 +11,8 @@ json: {
                  render json: { errors: @inventory_item.errors.full_messages },
                         status: :unprocessable_entity
                }
-    } }
+    } 
+}
 
     respond_override create: { 
 json: {
@@ -20,7 +21,8 @@ json: {
                  render json: { errors: @inventory_item.errors.full_messages },
                         status: :unprocessable_entity
                }
-    } }
+    } 
+}
 
     private
 

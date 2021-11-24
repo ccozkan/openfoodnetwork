@@ -10,7 +10,8 @@ describe CheckoutHelper, type: :helper do
       path: "foo",
       attributes: { 
 :required => true, :type => :email, :name => "foo", :id => "foo",
-"ng-model" => "foo", "ng-class" => "{error: !fieldValid('foo')}" }
+"ng-model" => "foo", "ng-class" => "{error: !fieldValid('foo')}" 
+}
     )
 
     helper.validated_input("test", "foo", type: :email)

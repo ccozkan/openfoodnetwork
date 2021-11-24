@@ -124,7 +124,8 @@ module Admin
         { 
 can_manage_shipping_methods: can?(:manage_shipping_methods, @enterprise),
 can_manage_payment_methods: can?(:manage_payment_methods, @enterprise),
-can_manage_enterprise_fees: can?(:manage_enterprise_fees, @enterprise) }
+can_manage_enterprise_fees: can?(:manage_enterprise_fees, @enterprise) 
+}
 
       admin_inject_json "admin.enterprises", "enterprisePermissions", permissions
     end
@@ -133,7 +134,8 @@ can_manage_enterprise_fees: can?(:manage_enterprise_fees, @enterprise) }
       render partial: "admin/json/injection_ams", locals: { 
 ngModule: "admin.variantOverrides",
 name: "hubPermissions",
-json: @hub_permissions.to_json }
+json: @hub_permissions.to_json 
+}
     end
 
     def admin_inject_tax_categories(opts = { module: 'ofn.admin' })
@@ -169,7 +171,8 @@ json: @hub_permissions.to_json }
              locals: { 
 ngModule: 'admin.orderCycles',
 name: 'ocInstance',
-json: "{coordinator_id: '#{@order_cycle.coordinator.id}'}" }
+json: "{coordinator_id: '#{@order_cycle.coordinator.id}'}" 
+}
     end
 
     def admin_inject_order_cycles
@@ -185,7 +188,8 @@ json: "{coordinator_id: '#{@order_cycle.coordinator.id}'}" }
              locals: { 
 ngModule: 'admin.indexUtils',
 name: 'SpreeApiKey',
-json: "'#{@spree_api_key}'" }
+json: "'#{@spree_api_key}'" 
+}
     end
 
     def admin_inject_available_units
@@ -200,7 +204,8 @@ json: "'#{@spree_api_key}'" }
              locals: { 
 ngModule: ng_module,
 name: name,
-json: json }
+json: json 
+}
     end
 
     def admin_inject_json_ams(ng_module, name, data, serializer, opts = {})
@@ -209,7 +214,8 @@ json: json }
              locals: { 
 ngModule: ng_module,
 name: name,
-json: json }
+json: json 
+}
     end
 
     def admin_inject_json_ams_array(ng_module, name, data, serializer, opts = {})
@@ -220,7 +226,8 @@ json: json }
              locals: { 
 ngModule: ng_module,
 name: name,
-json: json }
+json: json 
+}
     end
   end
 end

@@ -39,7 +39,8 @@ quantity: 2,
 variant_id: variant.to_param,
 order_id: order.number,
 stock_location_id: stock_location.to_param,
-format: :json }
+format: :json 
+}
     end
     let(:error_message) { "broken shipments creation" }
 

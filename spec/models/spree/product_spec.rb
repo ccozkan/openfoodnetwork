@@ -694,7 +694,8 @@ module Spree
 [
 { 
 id: property.id,
-name: "Organic Certified", value: 'NASAA 12345' }
+name: "Organic Certified", value: 'NASAA 12345' 
+}
 ])
       end
 
@@ -709,7 +710,8 @@ name: "Organic Certified", value: 'NASAA 12345' }
 [
 { 
 id: property.id,
-name: "Organic Certified", value: 'NASAA 54321' }
+name: "Organic Certified", value: 'NASAA 54321' 
+}
 ])
       end
 
@@ -725,7 +727,8 @@ name: "Organic Certified", value: 'NASAA 54321' }
 [
 { 
 id: property.id,
-name: "Organic Certified", value: 'NASAA 12345' }
+name: "Organic Certified", value: 'NASAA 12345' 
+}
 ])
       end
 
@@ -741,7 +744,8 @@ name: "Organic Certified", value: 'NASAA 12345' }
 [
 { 
 id: property.id,
-name: "Organic Certified", value: 'NASAA 54321' }
+name: "Organic Certified", value: 'NASAA 54321' 
+}
 ])
         end
       end

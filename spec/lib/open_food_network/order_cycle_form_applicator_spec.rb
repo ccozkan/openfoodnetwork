@@ -15,7 +15,8 @@ module OpenFoodNetwork
 
         incoming_exchange = { 
 enterprise_id: supplier_id, incoming: true,
-variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions' }
+variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions' 
+}
 
         oc = double(
 :order_cycle, coordinator_id: coordinator_id, exchanges: [],
@@ -44,7 +45,8 @@ supplier_id, coordinator_id, true,
 
         outgoing_exchange = { 
 enterprise_id: distributor_id, incoming: false,
-variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale' }
+variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale' 
+}
 
         oc = double(
 :order_cycle, coordinator_id: coordinator_id, exchanges: [],
@@ -73,7 +75,8 @@ coordinator_id, distributor_id, false,
 
         incoming_exchange = { 
 enterprise_id: supplier_id, incoming: true,
-variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions' }
+variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions' 
+}
 
         oc = double(
 :order_cycle,
@@ -109,7 +112,8 @@ supplier_id, coordinator_id, true,
 
         outgoing_exchange = { 
 enterprise_id: distributor_id, incoming: false,
-variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale' }
+variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale' 
+}
 
         oc = double(
 :order_cycle,

@@ -36,7 +36,8 @@ order: {
       ship_address_attributes: address.attributes.slice(
 "firstname", "lastname", "address1",
                                                         "address2", "phone", "city", "zipcode", "state_id", "country_id")
-    } }
+    } 
+}
   end
 
   before do

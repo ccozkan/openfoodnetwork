@@ -21,13 +21,16 @@ visible: true)
         [
           { 
 id: column_preference.id, user_id: user1.id, action_name: "enterprises_index",
-column_name: 'name', visible: false },
+column_name: 'name', visible: false 
+},
           { 
 id: nil, user_id: user1.id, action_name: "enterprises_index", column_name: 'producer',
-visible: true },
+visible: true 
+},
           { 
 id: nil, user_id: user1.id, action_name: "enterprises_index", column_name: 'status',
-visible: true }
+visible: true 
+}
         ]
       }
 

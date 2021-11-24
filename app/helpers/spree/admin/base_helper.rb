@@ -87,26 +87,31 @@ field, options_for_select(list_values, selected_value),
                         when :integer
                           { 
 size: 10,
-class: 'input_integer' }
+class: 'input_integer' 
+}
                         when :boolean
                           {}
                         when :string
                           { 
 size: 10,
-class: 'input_string fullwidth' }
+class: 'input_string fullwidth' 
+}
                         when :password
                           { 
 size: 10,
-class: 'password_string fullwidth' }
+class: 'password_string fullwidth' 
+}
                         when :text
                           { 
 rows: 15,
 cols: 85,
-class: 'fullwidth' }
+class: 'fullwidth' 
+}
                         else
                           { 
 size: 10,
-class: 'input_string fullwidth' }
+class: 'input_string fullwidth' 
+}
                         end
 
         field_options.merge!(
@@ -155,7 +160,8 @@ class: 'input_string fullwidth' }
         html_options = { 
 class: "remove_fields #{options[:class]}",
 data: { action: 'remove' },
-title: t(:remove) }
+title: t(:remove) 
+}
         html_options.merge!(options[:html]) if options.key? :html
 
         link_to_with_icon('icon-trash', name, '#', html_options) + form.hidden_field(:_destroy)

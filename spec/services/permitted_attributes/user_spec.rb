@@ -12,7 +12,8 @@ module PermittedAttributes
           ActionController::Parameters.new(
 user: { 
 name: "John",
-email: "email@example.com" } )
+email: "email@example.com" 
+} )
         }
 
         it "keeps permitted and removes not permitted" do
@@ -37,7 +38,8 @@ email: "email@example.com" } )
         ActionController::Parameters.new(
 spree_user: { 
 name: "John",
-email: "email@example.com" } )
+email: "email@example.com" 
+} )
       }
 
       it "keeps permitted and removes not permitted" do

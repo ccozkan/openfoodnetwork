@@ -30,11 +30,13 @@ proc { |_is|
 proc { |is|
                                                                          is.sum(&:property1)
                                                                        }
-] },
+] 
+},
                  { 
 group_by: proc { |sentence| sentence.paragraph }, sort_by: proc { |paragraph|
                                                                                 paragraph.name
-                                                                              } }
+                                                                              } 
+}
 ]
         columns = [
 proc { |is| is.first.paragraph.chapter.name }, 
@@ -173,7 +175,8 @@ proc { |is|
       it "should return an extra row when a :summary_row key appears in a given Hash" do
         groups = { 
 items1: @items1, items2: @items2, items3: @items3,
-summary_row: { items: { items2: @items2, items3: @items3 }, columns: @sumcols } }
+summary_row: { items: { items2: @items2, items3: @items3 }, columns: @sumcols } 
+}
 
         subject = OrderGrouper.new @rules, @columns
 

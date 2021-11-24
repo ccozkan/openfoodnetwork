@@ -95,7 +95,8 @@ describe Spree::OrderContents do
       { 
 line_items_attributes: {
         "0" => { id: line_item.id, quantity: 3 }
-      } }
+      } 
+}
     end
 
     it "changes item quantity" do
@@ -114,7 +115,8 @@ line_items_attributes: {
         { 
 line_items_attributes: {
           "0" => { id: line_item.id, quantity: 0 }
-        } }
+        } 
+}
       end
 
       it "removes item from order" do
