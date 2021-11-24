@@ -18,7 +18,7 @@ module OpenFoodNetwork
 I18n.t(:report_header_order_number),
          I18n.t(:report_header_total_excl_vat, currency_symbol: currency_symbol)
 ] +
-          relevant_rates.map { |rate| "%.1f%% (%s)" % [rate.amount.to_f * 100, currency_symbol] } +
+          relevant_rates.map { |rate| format("%.1f%% (%s)", rate.amount.to_f * 100, currency_symbol) } +
           [
 I18n.t(:report_header_total_tax, currency_symbol: currency_symbol),
            I18n.t(:report_header_total_incl_vat, currency_symbol: currency_symbol)
