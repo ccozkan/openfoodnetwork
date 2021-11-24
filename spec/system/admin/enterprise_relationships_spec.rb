@@ -14,7 +14,8 @@ describe '
 
     it "listing relationships" do
       # Given some enterprises with relationships
-      e1, e2, e3, e4 = create(:enterprise), create(:enterprise), create(:enterprise),
+      e1, e2, e3, e4 = 
+create(:enterprise), create(:enterprise), create(:enterprise),
 create(:enterprise)
       create(:enterprise_relationship, parent: e1, child: e2,
                                        permissions_list: [:add_to_order_cycle])
@@ -56,7 +57,8 @@ create(:enterprise)
                                            ['to add to order cycle', 'to add products to inventory', 'to edit profile']
       er = EnterpriseRelationship.where(parent_id: e1, child_id: e2).first
       expect(er).to be_present
-      expect(er.permissions.map(&:name)).to match_array ['add_to_order_cycle', 'edit_profile',
+      expect(er.permissions.map(&:name)).to match_array [
+'add_to_order_cycle', 'edit_profile',
                                                          'create_variant_overrides']
     end
 

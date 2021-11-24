@@ -113,37 +113,53 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::ReportService do
       # * total_amount
 
       expected_result = [
-        ["Admin", "Sample Coordinator", "Coordinator Fee 1", "Another Customer",
+        [
+"Admin", "Sample Coordinator", "Coordinator Fee 1", "Another Customer",
          "Coordinator", "All", "Sample Coordinator Tax", "512.00"],
-        ["Admin", "Sample Coordinator", "Coordinator Fee 1", "Sample Customer",
+        [
+"Admin", "Sample Coordinator", "Coordinator Fee 1", "Sample Customer",
          "Coordinator", "All", "Sample Coordinator Tax", "1024.00"],
-        ["Admin", "Sample Distributor", "Distributor Fee 1", "Another Customer",
+        [
+"Admin", "Sample Distributor", "Distributor Fee 1", "Another Customer",
          "Outgoing", "Sample Distributor", "Sample Distributor Tax", "4.00"],
-        ["Admin", "Sample Distributor", "Distributor Fee 1", "Sample Customer",
+        [
+"Admin", "Sample Distributor", "Distributor Fee 1", "Sample Customer",
          "Outgoing", "Sample Distributor", "Sample Distributor Tax", "8.00"],
-        ["Payment Transaction", "Sample Distributor", "Sample Payment Method", "Another Customer",
+        [
+"Payment Transaction", "Sample Distributor", "Sample Payment Method", "Another Customer",
          nil, nil, nil, "2.00"],
-        ["Payment Transaction", "Sample Distributor", "Sample Payment Method", "Sample Customer",
+        [
+"Payment Transaction", "Sample Distributor", "Sample Payment Method", "Sample Customer",
          nil, nil, nil, "4.00"],
-        ["Sales", "Sample Coordinator", "Coordinator Fee 2", "Another Customer",
+        [
+"Sales", "Sample Coordinator", "Coordinator Fee 2", "Another Customer",
          "Coordinator", "All", "Various", "1024.00"],
-        ["Sales", "Sample Coordinator", "Coordinator Fee 2", "Sample Customer",
+        [
+"Sales", "Sample Coordinator", "Coordinator Fee 2", "Sample Customer",
          "Coordinator", "All", "Various", "2048.00"],
-        ["Sales", "Sample Distributor", "Distributor Fee 2", "Another Customer",
+        [
+"Sales", "Sample Distributor", "Distributor Fee 2", "Another Customer",
          "Outgoing", "Sample Distributor", "Sample Product Tax", "8.00"],
-        ["Sales", "Sample Distributor", "Distributor Fee 2", "Sample Customer",
+        [
+"Sales", "Sample Distributor", "Distributor Fee 2", "Sample Customer",
          "Outgoing", "Sample Distributor", "Sample Product Tax", "16.00"],
-        ["Sales", "Sample Producer", "Producer Fee 1", "Another Customer",
+        [
+"Sales", "Sample Producer", "Producer Fee 1", "Another Customer",
          "Incoming", "Sample Producer", "Sample Producer Tax", "64.00"],
-        ["Sales", "Sample Producer", "Producer Fee 1", "Sample Customer",
+        [
+"Sales", "Sample Producer", "Producer Fee 1", "Sample Customer",
          "Incoming", "Sample Producer", "Sample Producer Tax", "128.00"],
-        ["Sales", "Sample Producer", "Producer Fee 2", "Another Customer",
+        [
+"Sales", "Sample Producer", "Producer Fee 2", "Another Customer",
          "Incoming", "Sample Producer", "Sample Product Tax", "128.00"],
-        ["Sales", "Sample Producer", "Producer Fee 2", "Sample Customer",
+        [
+"Sales", "Sample Producer", "Producer Fee 2", "Sample Customer",
          "Incoming", "Sample Producer", "Sample Product Tax", "256.00"],
-        ["Shipment", "Sample Distributor", "Sample Shipping Method", "Another Customer",
+        [
+"Shipment", "Sample Distributor", "Sample Shipping Method", "Another Customer",
          nil, nil, "Platform Rate", "1.00"],
-        ["Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
+        [
+"Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
          nil, nil, "Platform Rate", "2.00"]
       ]
 
@@ -170,7 +186,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::ReportService do
         expect(totals.length).to eq(1)
 
         expected_result = [
-          ["Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
+          [
+"Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
            nil, nil, "Platform Rate", "1.00"]
         ]
 
@@ -205,9 +222,11 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::ReportService do
         expect(totals.length).to eq(2)
 
         expected_result = [
-          ["Payment Transaction", "Sample Distributor", "Sample Payment Method", "Sample Customer",
+          [
+"Payment Transaction", "Sample Distributor", "Sample Payment Method", "Sample Customer",
            nil, nil, nil, "2.00"],
-          ["Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
+          [
+"Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
            nil, nil, "Platform Rate", "1.00"]
         ]
 
@@ -230,7 +249,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::ReportService do
         expect(totals.length).to eq(1)
 
         expected_result = [
-          ["Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
+          [
+"Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
            nil, nil, "Platform Rate", "1.00"]
         ]
 
@@ -277,17 +297,23 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::ReportService do
         expect(totals.length).to eq(6)
 
         expected_result = [
-          ["Admin", "Sample Coordinator", "Sample Coordinator Fee", "Sample Customer",
+          [
+"Admin", "Sample Coordinator", "Sample Coordinator Fee", "Sample Customer",
            "Incoming", "Sample Producer", "Sample Coordinator Tax", "512.00"],
-          ["Admin", "Sample Coordinator", "Sample Coordinator Fee", "Sample Customer",
+          [
+"Admin", "Sample Coordinator", "Sample Coordinator Fee", "Sample Customer",
            "Outgoing", "Sample Distributor", "Sample Coordinator Tax", "512.00"],
-          ["Admin", "Sample Distributor", "Sample Distributor Fee", "Sample Customer",
+          [
+"Admin", "Sample Distributor", "Sample Distributor Fee", "Sample Customer",
            "Incoming", "Sample Producer", "Sample Distributor Tax", "4.00"],
-          ["Payment Transaction", "Sample Distributor", "Sample Payment Method", "Sample Customer",
+          [
+"Payment Transaction", "Sample Distributor", "Sample Payment Method", "Sample Customer",
            nil, nil, nil, "2.00"],
-          ["Sales", "Sample Producer", "Sample Producer Fee", "Sample Customer",
+          [
+"Sales", "Sample Producer", "Sample Producer Fee", "Sample Customer",
            "Outgoing", "Sample Distributor", "Sample Producer Tax", "64.00"],
-          ["Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
+          [
+"Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
            nil, nil, "Platform Rate", "1.00"]
         ]
 
@@ -358,27 +384,38 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::ReportService do
         various_tax_categories_text = i18n_translate("tax_category_various")
 
         expected_result = [
-          ["Admin", "Sample Coordinator", "Coordinator Fee A", "Sample Customer",
+          [
+"Admin", "Sample Coordinator", "Coordinator Fee A", "Sample Customer",
            "Coordinator", "All", "Coordinator Tax A", "15.00"],
-          ["Admin", "Sample Coordinator", "Coordinator Fee A", "Sample Customer",
+          [
+"Admin", "Sample Coordinator", "Coordinator Fee A", "Sample Customer",
            "Incoming", entire_orders_text, "Coordinator Tax A", "15.00"],
-          ["Admin", "Sample Coordinator", "Coordinator Fee A", "Sample Customer",
+          [
+"Admin", "Sample Coordinator", "Coordinator Fee A", "Sample Customer",
            "Outgoing", entire_orders_text, "Coordinator Tax A", "15.00"],
-          ["Admin", "Sample Coordinator", "Coordinator Fee B", "Sample Customer",
+          [
+"Admin", "Sample Coordinator", "Coordinator Fee B", "Sample Customer",
            "Coordinator", "All", various_tax_categories_text, "20.00"],
-          ["Admin", "Sample Coordinator", "Coordinator Fee C", "Sample Customer",
+          [
+"Admin", "Sample Coordinator", "Coordinator Fee C", "Sample Customer",
            "Coordinator", "All", nil, "25.00"],
-          ["Admin", "Sample Distributor", "Distributor Fee A", "Sample Customer",
+          [
+"Admin", "Sample Distributor", "Distributor Fee A", "Sample Customer",
            "Incoming", entire_orders_text, various_tax_categories_text, "30.00"],
-          ["Admin", "Sample Distributor", "Distributor Fee A", "Sample Customer",
+          [
+"Admin", "Sample Distributor", "Distributor Fee A", "Sample Customer",
            "Outgoing", entire_orders_text, various_tax_categories_text, "30.00"],
-          ["Payment Transaction", "Sample Distributor", "Sample Payment Method", "Sample Customer",
+          [
+"Payment Transaction", "Sample Distributor", "Sample Payment Method", "Sample Customer",
            nil, nil, nil, "2.00"],
-          ["Sales", "Sample Producer", "Producer Fee A", "Sample Customer",
+          [
+"Sales", "Sample Producer", "Producer Fee A", "Sample Customer",
            "Incoming", entire_orders_text, "Producer Tax A", "10.00"],
-          ["Sales", "Sample Producer", "Producer Fee A", "Sample Customer",
+          [
+"Sales", "Sample Producer", "Producer Fee A", "Sample Customer",
            "Outgoing", entire_orders_text, "Producer Tax A", "10.00"],
-          ["Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
+          [
+"Shipment", "Sample Distributor", "Sample Shipping Method", "Sample Customer",
            nil, nil, "Platform Rate", "1.00"]
         ]
 
@@ -682,7 +719,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::ReportService do
   end
 
   def expect_total_attributes(total, expected_attribute_list)
-    actual_attribute_list = [total.fee_type, total.enterprise_name, total.fee_name,
+    actual_attribute_list = [
+total.fee_type, total.enterprise_name, total.fee_name,
                              total.customer_name, total.fee_placement,
                              total.fee_calculated_on_transfer_through_name, total.tax_category_name,
                              total.total_amount]

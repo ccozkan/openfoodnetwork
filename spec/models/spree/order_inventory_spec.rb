@@ -102,7 +102,8 @@ describe Spree::OrderInventory do
       end
 
       it 'should destroy backordered units first' do
-        allow(shipment).to receive_messages(inventory_units_for: [build(:inventory_unit, variant_id: variant.id, state: 'backordered'),
+        allow(shipment).to receive_messages(inventory_units_for: [
+build(:inventory_unit, variant_id: variant.id, state: 'backordered'),
                                                                   build(:inventory_unit,
                                                                         variant_id: variant.id, state: 'on_hand'),
                                                                   build(:inventory_unit,
@@ -116,7 +117,8 @@ describe Spree::OrderInventory do
       end
 
       it 'should destroy unshipped units first' do
-        allow(shipment).to receive_messages(inventory_units_for: [build(:inventory_unit, variant_id: variant.id, state: 'shipped'),
+        allow(shipment).to receive_messages(inventory_units_for: [
+build(:inventory_unit, variant_id: variant.id, state: 'shipped'),
                                                                   build(:inventory_unit,
                                                                         variant_id: variant.id, state: 'on_hand')] )
 
@@ -127,7 +129,8 @@ describe Spree::OrderInventory do
       end
 
       it 'only attempts to destroy as many units as are eligible, and return amount destroyed' do
-        allow(shipment).to receive_messages(inventory_units_for: [build(:inventory_unit, variant_id: variant.id, state: 'shipped'),
+        allow(shipment).to receive_messages(inventory_units_for: [
+build(:inventory_unit, variant_id: variant.id, state: 'shipped'),
                                                                   build(:inventory_unit,
                                                                         variant_id: variant.id, state: 'on_hand')] )
 

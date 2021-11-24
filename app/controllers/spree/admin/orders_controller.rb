@@ -8,7 +8,8 @@ module Spree
       include OpenFoodNetwork::SpreeApiKeyLoader
       helper CheckoutHelper
 
-      before_action :load_order, only: [:edit, :update, :fire, :resend,
+      before_action :load_order, only: [
+:edit, :update, :fire, :resend,
                                         :invoice, :print, :print_ticket]
       before_action :load_distribution_choices, only: [:new, :edit, :update]
 

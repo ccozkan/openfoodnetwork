@@ -681,7 +681,8 @@ module Spree
         product.set_property 'Organic Certified', 'NASAA 12345'
         property = product.properties.last
 
-        expect(product.properties_including_inherited).to eq([{ id: property.id,
+        expect(product.properties_including_inherited).to eq([
+{ id: property.id,
                                                                 name: "Organic Certified", value: 'NASAA 12345' }])
       end
 
@@ -692,7 +693,8 @@ module Spree
         supplier.set_producer_property 'Organic Certified', 'NASAA 54321'
         property = supplier.properties.last
 
-        expect(product.properties_including_inherited).to eq([{ id: property.id,
+        expect(product.properties_including_inherited).to eq([
+{ id: property.id,
                                                                 name: "Organic Certified", value: 'NASAA 54321' }])
       end
 
@@ -704,7 +706,8 @@ module Spree
         supplier.set_producer_property 'Organic Certified', 'NASAA 54321'
         property = product.properties.last
 
-        expect(product.properties_including_inherited).to eq([{ id: property.id,
+        expect(product.properties_including_inherited).to eq([
+{ id: property.id,
                                                                 name: "Organic Certified", value: 'NASAA 12345' }])
       end
 
@@ -716,7 +719,8 @@ module Spree
           supplier.set_producer_property 'Organic Certified', 'NASAA 54321'
           property = supplier.properties.last
 
-          expect(product.properties_including_inherited).to eq([{ id: property.id,
+          expect(product.properties_including_inherited).to eq([
+{ id: property.id,
                                                                   name: "Organic Certified", value: 'NASAA 54321' }])
         end
       end
@@ -745,7 +749,8 @@ module Spree
         supplier.producer_properties.create!({ property_id: pb.id, value: '2', position: 2 })
 
         expect(product.properties_including_inherited).to eq(
-          [{ id: pa.id, name: "A", value: '1' },
+          [
+{ id: pa.id, name: "A", value: '1' },
            { id: pb.id, name: "B", value: '2' },
            { id: pc.id, name: "C", value: '3' }]
         )

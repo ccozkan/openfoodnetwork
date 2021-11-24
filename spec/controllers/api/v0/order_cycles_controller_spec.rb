@@ -230,7 +230,8 @@ module Api
 
       it "displays products in new order" do
         api_get :products, id: order_cycle.id, distributor: distributor.id
-        expect(product_ids).to eq [product7.id, product8.id, product2.id, product3.id, product5.id,
+        expect(product_ids).to eq [
+product7.id, product8.id, product2.id, product3.id, product5.id,
                                    product6.id, product1.id]
       end
 

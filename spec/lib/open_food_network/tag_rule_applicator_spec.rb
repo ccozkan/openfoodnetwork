@@ -94,7 +94,8 @@ module OpenFoodNetwork
           end
 
           it "selects only rules of the specified type, in order of priority" do
-            expect(rules).to eq [default_product_tag_rule, product_tag_rule3, product_tag_rule2,
+            expect(rules).to eq [
+default_product_tag_rule, product_tag_rule3, product_tag_rule2,
                                  product_tag_rule1]
           end
 

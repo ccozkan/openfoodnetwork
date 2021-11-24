@@ -107,17 +107,23 @@ describe ProductImport::ProductImporter do
   describe "importing products from a spreadsheet" do
     let(:csv_data) {
       CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type",
+        csv << [
+"name", "producer", "category", "on_hand", "price", "units", "unit_type",
                 "variant_unit_name", "on_demand", "shipping_category"]
-        csv << ["Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g", "", "",
+        csv << [
+"Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g", "", "",
                 shipping_category.name]
-        csv << ["Potatoes", enterprise.name, "Vegetables", "6", "6.50", "2", "kg", "", "",
+        csv << [
+"Potatoes", enterprise.name, "Vegetables", "6", "6.50", "2", "kg", "", "",
                 shipping_category.name]
-        csv << ["Pea Soup", enterprise.name, "Vegetables", "8", "5.50", "750", "ml", "", "0",
+        csv << [
+"Pea Soup", enterprise.name, "Vegetables", "8", "5.50", "750", "ml", "", "0",
                 shipping_category.name]
-        csv << ["Salad", enterprise.name, "Vegetables", "7", "4.50", "1", "", "bags", "",
+        csv << [
+"Salad", enterprise.name, "Vegetables", "7", "4.50", "1", "", "bags", "",
                 shipping_category.name]
-        csv << ["Hot Cross Buns", enterprise.name, "Cake", "7", "3.50", "1", "", "buns", "1",
+        csv << [
+"Hot Cross Buns", enterprise.name, "Cake", "7", "3.50", "1", "", "buns", "1",
                 shipping_category.name]
       end
     }
@@ -199,9 +205,11 @@ describe ProductImport::ProductImporter do
   describe "when uploading a spreadsheet with some invalid entries" do
     let(:csv_data) {
       CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type",
+        csv << [
+"name", "producer", "category", "on_hand", "price", "units", "unit_type",
                 "shipping_category"]
-        csv << ["Good Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g",
+        csv << [
+"Good Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g",
                 shipping_category.name]
         csv << ["Bad Potatoes", "", "Vegetables", "6", "6.50", "1", "", shipping_category.name]
       end
@@ -247,7 +255,8 @@ describe ProductImport::ProductImporter do
     # an unquoted \n will create a non valid line which will fail entry validation hence why we are only testing with \r
     it "should raise an unquoted field error if data include unquoted field with \r character" do
       expect(importer.errors.messages.values).to include(
-        [I18n.t('admin.product_import.model.malformed_csv',
+        [
+I18n.t('admin.product_import.model.malformed_csv',
                 error_message: "Unquoted fields do not allow new line <\"\\r\"> in line 3.")]
       )
     end
@@ -256,9 +265,11 @@ describe ProductImport::ProductImporter do
   describe "when shipping category is missing" do
     let(:csv_data) {
       CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type",
+        csv << [
+"name", "producer", "category", "on_hand", "price", "units", "unit_type",
                 "variant_unit_name", "on_demand", "shipping_category"]
-        csv << ["Shipping Test", enterprise.name, "Vegetables", "5", "3.20", "500", "g", "", nil,
+        csv << [
+"Shipping Test", enterprise.name, "Vegetables", "5", "3.20", "500", "g", "", nil,
                 nil]
       end
     }
@@ -294,11 +305,14 @@ describe ProductImport::ProductImporter do
   describe "adding new variants to existing products and updating exiting products" do
     let(:csv_data) {
       CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type",
+        csv << [
+"name", "producer", "category", "on_hand", "price", "units", "unit_type",
                 "display_name", "shipping_category"]
-        csv << ["Hypothetical Cake", enterprise2.name, "Cake", "5", "5.50", "500", "g",
+        csv << [
+"Hypothetical Cake", enterprise2.name, "Cake", "5", "5.50", "500", "g",
                 "Preexisting Banana", shipping_category.name]
-        csv << ["Hypothetical Cake", enterprise2.name, "Cake", "6", "3.50", "500", "g",
+        csv << [
+"Hypothetical Cake", enterprise2.name, "Cake", "6", "3.50", "500", "g",
                 "Emergent Coffee", shipping_category.name]
       end
     }
@@ -339,9 +353,11 @@ describe ProductImport::ProductImporter do
   describe "updating an exiting variant" do
     let(:csv_data) {
       CSV.generate do |csv|
-        csv << ["name", "producer", "description", "category", "on_hand", "price", "units",
+        csv << [
+"name", "producer", "description", "category", "on_hand", "price", "units",
                 "unit_type", "display_name", "shipping_category"]
-        csv << ["Hypothetical Cake", enterprise2.name, "New Description", "Cake", "5", "5.50",
+        csv << [
+"Hypothetical Cake", enterprise2.name, "New Description", "Cake", "5", "5.50",
                 "500", "g", "Preexisting Banana", shipping_category.name]
       end
     }
@@ -360,17 +376,23 @@ describe ProductImport::ProductImporter do
   describe "adding new product and sub-variant at the same time" do
     let(:csv_data) {
       CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type",
+        csv << [
+"name", "producer", "category", "on_hand", "price", "units", "unit_type",
                 "display_name", "shipping_category"]
-        csv << ["Potatoes", enterprise.name, "Vegetables", "5", "3.50", "500", "g", "Small Bag",
+        csv << [
+"Potatoes", enterprise.name, "Vegetables", "5", "3.50", "500", "g", "Small Bag",
                 shipping_category.name]
-        csv << ["Chives", enterprise.name, "Vegetables", "6", "4.50", "500", "g", "Bunch",
+        csv << [
+"Chives", enterprise.name, "Vegetables", "6", "4.50", "500", "g", "Bunch",
                 shipping_category.name]
-        csv << ["Potatoes", enterprise.name, "Vegetables", "6", "5.50", "2", "kg", "Big Bag",
+        csv << [
+"Potatoes", enterprise.name, "Vegetables", "6", "5.50", "2", "kg", "Big Bag",
                 shipping_category.name]
-        csv << ["Potatoes", enterprise.name, "Vegetables", "6", "22.00", "10000", "g",
+        csv << [
+"Potatoes", enterprise.name, "Vegetables", "6", "22.00", "10000", "g",
                 "Small Sack", shipping_category.name]
-        csv << ["Potatoes", enterprise.name, "Vegetables", "6", "60.00", "30000", "", "Big Sack",
+        csv << [
+"Potatoes", enterprise.name, "Vegetables", "6", "60.00", "30000", "", "Big Sack",
                 shipping_category.name]
       end
     }
@@ -414,11 +436,14 @@ describe ProductImport::ProductImporter do
   describe "updating various fields" do
     let(:csv_data) {
       CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type",
+        csv << [
+"name", "producer", "category", "on_hand", "price", "units", "unit_type",
                 "on_demand", "sku", "shipping_category"]
-        csv << ["Beetroot", enterprise3.name, "Vegetables", "5", "3.50", "500", "g", "0", nil,
+        csv << [
+"Beetroot", enterprise3.name, "Vegetables", "5", "3.50", "500", "g", "0", nil,
                 shipping_category.name]
-        csv << ["Tomato", enterprise3.name, "Vegetables", "6", "5.50", "500", "g", "1", "TOMS",
+        csv << [
+"Tomato", enterprise3.name, "Vegetables", "6", "5.50", "500", "g", "1", "TOMS",
                 shipping_category.name]
       end
     }
@@ -478,7 +503,8 @@ describe ProductImport::ProductImporter do
   describe "when more than one product of the same name already exists with multiple variants each" do
     let(:csv_data) {
       CSV.generate do |csv|
-        csv << ["name", "producer", "category", "description", "on_hand", "price", "units",
+        csv << [
+"name", "producer", "category", "description", "on_hand", "price", "units",
                 "unit_type", "display_name", "shipping_category"]
         csv << ["Oats", enterprise.name, "Cereal", "", "50", "3.50", "500", "g", "Rolled Oats", shipping_category.name]   # Update
         csv << ["Oats", enterprise.name, "Cereal", "", "80", "3.75", "500", "g", "Flaked Oats", shipping_category.name]   # Update
@@ -515,7 +541,8 @@ describe ProductImport::ProductImporter do
   describe "when importer processes create and update across multiple stages" do
     let(:csv_data) {
       CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type",
+        csv << [
+"name", "producer", "category", "on_hand", "price", "units", "unit_type",
                 "display_name", "shipping_category"]
         csv << ["Bag of Oats", enterprise.name, "Cereal", "60", "5.50", "500", "g", "Magic Oats", shipping_category.name]     # Add
         csv << ["Bag of Oats", enterprise.name, "Cereal", "70", "8.50", "500", "g", "French Oats", shipping_category.name]    # Add
@@ -582,7 +609,8 @@ describe ProductImport::ProductImporter do
     describe "creating and updating inventory" do
       let(:csv_data) {
         CSV.generate do |csv|
-          csv << ["name", "distributor", "producer", "on_hand", "price", "units", "unit_type",
+          csv << [
+"name", "distributor", "producer", "on_hand", "price", "units", "unit_type",
                   "variant_unit_name"]
           csv << ["Beans", enterprise2.name, enterprise.name, "5", "3.20", "500", "g", ""]
           csv << ["Sprouts", enterprise2.name, enterprise.name, "6", "6.50", "500", "g", ""]
@@ -657,7 +685,8 @@ describe ProductImport::ProductImporter do
       }
       let(:csv_data) {
         CSV.generate do |csv|
-          csv << ["name", "distributor", "producer", "on_hand", "price", "units",
+          csv << [
+"name", "distributor", "producer", "on_hand", "price", "units",
                   "variant_unit_name"]
           csv << ["Cabbage", enterprise2.name, enterprise.name, "900", "", "1", "Whole"]
         end
@@ -683,11 +712,14 @@ describe ProductImport::ProductImporter do
   describe "handling enterprise permissions" do
     it "only allows product import into enterprises the user is permitted to manage" do
       csv_data = CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type",
+        csv << [
+"name", "producer", "category", "on_hand", "price", "units", "unit_type",
                 "shipping_category"]
-        csv << ["My Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g",
+        csv << [
+"My Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g",
                 shipping_category.name]
-        csv << ["Your Potatoes", enterprise2.name, "Vegetables", "6", "6.50", "1", "kg",
+        csv << [
+"Your Potatoes", enterprise2.name, "Vegetables", "6", "6.50", "1", "kg",
                 shipping_category.name]
       end
       importer = import_data csv_data, import_user: user
@@ -760,11 +792,14 @@ describe ProductImport::ProductImporter do
   describe "applying settings and defaults on import" do
     it "can reset all products for an enterprise that are not present in the uploaded file to zero stock" do
       csv_data = CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type",
+        csv << [
+"name", "producer", "category", "on_hand", "price", "units", "unit_type",
                 "shipping_category"]
-        csv << ["Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g",
+        csv << [
+"Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g",
                 shipping_category.name]
-        csv << ["Beans", enterprise.name, "Vegetables", "6", "6.50", "500", "g",
+        csv << [
+"Beans", enterprise.name, "Vegetables", "6", "6.50", "500", "g",
                 shipping_category.name]
       end
       importer = import_data csv_data, reset_all_absent: true
@@ -874,7 +909,8 @@ def filter(type, entries)
 
     valid_count += 1 if type == 'valid' && (validates_as != '')
     valid_count += 1 if type == 'invalid' && (validates_as == '')
-    valid_count += 1 if type == 'create_product' && ['new_product',
+    valid_count += 1 if type == 'create_product' && [
+'new_product',
                                                      'new_variant'].include?(validates_as)
 
     valid_count += 1 if type == 'update_product' && validates_as == 'existing_variant'

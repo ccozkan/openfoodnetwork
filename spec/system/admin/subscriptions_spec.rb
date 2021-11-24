@@ -397,7 +397,8 @@ describe 'Subscriptions' do
                schedule: schedule,
                payment_method: payment_method,
                shipping_method: shipping_method,
-               subscription_line_items: [create(:subscription_line_item, variant: variant1,
+               subscription_line_items: [
+create(:subscription_line_item, variant: variant1,
                                                                          quantity: 2, price_estimate: 13.75)],
                with_proxy_orders: true)
       }

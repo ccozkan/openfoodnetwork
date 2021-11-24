@@ -19,7 +19,8 @@ module OpenFoodNetwork
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/MethodLength
       def header
-        [I18n.t(:report_header_hub), I18n.t(:report_header_customer), I18n.t(:report_header_email),
+        [
+I18n.t(:report_header_hub), I18n.t(:report_header_customer), I18n.t(:report_header_email),
          I18n.t(:report_header_phone), I18n.t(:report_header_producer),
          I18n.t(:report_header_product), I18n.t(:report_header_variant),
          I18n.t(:report_header_quantity),
@@ -204,8 +205,10 @@ module OpenFoodNetwork
       # rubocop:enable Metrics/PerceivedComplexity
 
       def line_item_includes
-        [{ variant: [{ option_values: :option_type }, { product: :supplier }],
-           order: [:bill_address, :ship_address, :order_cycle, :adjustments, :payments,
+        [
+{ variant: [{ option_values: :option_type }, { product: :supplier }],
+           order: [
+:bill_address, :ship_address, :order_cycle, :adjustments, :payments,
                    :user, :distributor, :shipments] }]
       end
 

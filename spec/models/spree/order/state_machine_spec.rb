@@ -83,7 +83,8 @@ describe Spree::Order do
   context "#cancel" do
     let!(:variant) { build(:variant) }
     let!(:inventory_units) {
-      [build(:inventory_unit, variant: variant),
+      [
+build(:inventory_unit, variant: variant),
        build(:inventory_unit, variant: variant)]
     }
     let!(:shipment) do
@@ -94,7 +95,8 @@ describe Spree::Order do
     end
 
     before do
-      allow(order).to receive_messages line_items: [build(:line_item, variant: variant,
+      allow(order).to receive_messages line_items: [
+build(:line_item, variant: variant,
                                                                       quantity: 2)]
       allow(order.line_items).to receive_messages find_by_variant_id: order.line_items.first
 

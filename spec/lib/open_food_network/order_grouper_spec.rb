@@ -11,11 +11,13 @@ module OpenFoodNetwork
 
     context "constructing the table" do
       it "should build a tree then build a table" do
-        rules = [{ group_by: proc { |sentence|
+        rules = [
+{ group_by: proc { |sentence|
                                sentence.paragraph.chapter
                              }, sort_by: proc { |chapter|
                                            chapter.name
-                                         }, summary_columns: [proc { |is|
+                                         }, summary_columns: [
+proc { |is|
                                                                 is.first.paragraph.chapter.name
                                                               }, proc { |_is|
                                                                    "TOTAL"
@@ -27,7 +29,8 @@ module OpenFoodNetwork
                  { group_by: proc { |sentence| sentence.paragraph }, sort_by: proc { |paragraph|
                                                                                 paragraph.name
                                                                               } }]
-        columns = [proc { |is| is.first.paragraph.chapter.name }, proc { |is|
+        columns = [
+proc { |is| is.first.paragraph.chapter.name }, proc { |is|
                                                                     is.first.paragraph.name
                                                                   }, proc { |is|
                                                                        is.first.name

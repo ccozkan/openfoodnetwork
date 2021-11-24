@@ -66,7 +66,8 @@ module OpenFoodNetwork
 
         oc = double(:order_cycle,
                     coordinator_id: coordinator_id,
-                    exchanges: [double(:exchange, sender_id: supplier_id,
+                    exchanges: [
+double(:exchange, sender_id: supplier_id,
                                                   receiver_id: coordinator_id, incoming: true)],
                     incoming_exchanges: [incoming_exchange],
                     outgoing_exchanges: [])
@@ -94,7 +95,8 @@ module OpenFoodNetwork
 
         oc = double(:order_cycle,
                     coordinator_id: coordinator_id,
-                    exchanges: [double(:exchange, sender_id: coordinator_id,
+                    exchanges: [
+double(:exchange, sender_id: coordinator_id,
                                                   receiver_id: distributor_id, incoming: false)],
                     incoming_exchanges: [],
                     outgoing_exchanges: [outgoing_exchange])

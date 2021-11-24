@@ -65,7 +65,8 @@ describe '
 
       def line_items_in_print_data
         order.line_items.map { |line_item|
-          [line_item.quantity.to_s,
+          [
+line_item.quantity.to_s,
            line_item.product.name,
            line_item.single_display_amount_with_adjustments.format(symbol: false,
                                                                    with_currency: false),
@@ -77,14 +78,16 @@ describe '
         checkout_adjustments_for(order, exclude: [:line_item])
           .reject { |a| a.amount.zero? }
           .map do |adjustment|
-            [raw(adjustment.label),
+            [
+raw(adjustment.label),
              display_adjustment_amount(adjustment).format(symbol: false, with_currency: false)]
           end
       end
 
       def taxes_in_print_data
         display_checkout_taxes_hash(order).map { |tax_rate, tax_value|
-          [tax_rate,
+          [
+tax_rate,
            tax_value.format(with_currency: false)]
         }
       end

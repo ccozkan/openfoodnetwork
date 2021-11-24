@@ -68,7 +68,8 @@ module OpenFoodNetwork
 
     def query_helper(query, email_user, relationship_type)
       query.order("enterprises.created_at DESC")
-        .select(["enterprises.name",
+        .select([
+"enterprises.name",
                  "enterprises.sells",
                  "enterprises.visible",
                  "enterprises.is_primary_producer",

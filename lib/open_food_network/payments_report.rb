@@ -14,16 +14,19 @@ module OpenFoodNetwork
       case params[:report_type]
       when "payments_by_payment_type"
         I18n.t(:report_header_payment_type)
-        [I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor), I18n.t(:report_header_payment_type),
+        [
+I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor), I18n.t(:report_header_payment_type),
          I18n.t(:report_header_total_price, currency: currency_symbol)]
       when "itemised_payment_totals"
-        [I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor),
+        [
+I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor),
          I18n.t(:report_header_product_total_price, currency: currency_symbol),
          I18n.t(:report_header_shipping_total_price, currency: currency_symbol),
          I18n.t(:report_header_outstanding_balance_price, currency: currency_symbol),
          I18n.t(:report_header_total_price, currency: currency_symbol)]
       when "payment_totals"
-        [I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor),
+        [
+I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor),
          I18n.t(:report_header_product_total_price, currency: currency_symbol),
          I18n.t(:report_header_shipping_total_price, currency: currency_symbol),
          I18n.t(:report_header_total_price, currency: currency_symbol),
@@ -31,7 +34,8 @@ module OpenFoodNetwork
          I18n.t(:report_header_paypal_price, currency: currency_symbol),
          I18n.t(:report_header_outstanding_balance_price, currency: currency_symbol)]
       else
-        [I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor), I18n.t(:report_header_payment_type),
+        [
+I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor), I18n.t(:report_header_payment_type),
          I18n.t(:report_header_total_price, currency: currency_symbol)]
       end
     end
@@ -63,24 +67,28 @@ module OpenFoodNetwork
     def rules
       case params[:report_type]
       when "payments_by_payment_type"
-        [{ group_by: proc { |payment| payment.order.payment_state },
+        [
+{ group_by: proc { |payment| payment.order.payment_state },
            sort_by: proc { |payment_state| payment_state } },
          { group_by: proc { |payment| payment.order.distributor },
            sort_by: proc { |distributor| distributor.name } },
          { group_by: proc { |payment| Spree::PaymentMethod.unscoped { payment.payment_method } },
            sort_by: proc { |method| method.name } }]
       when "itemised_payment_totals"
-        [{ group_by: proc { |order| order.payment_state },
+        [
+{ group_by: proc { |order| order.payment_state },
            sort_by: proc { |payment_state| payment_state } },
          { group_by: proc { |order| order.distributor },
            sort_by: proc { |distributor| distributor.name } }]
       when "payment_totals"
-        [{ group_by: proc { |order| order.payment_state },
+        [
+{ group_by: proc { |order| order.payment_state },
            sort_by: proc { |payment_state| payment_state } },
          { group_by: proc { |order| order.distributor },
            sort_by: proc { |distributor| distributor.name } }]
       else
-        [{ group_by: proc { |payment| payment.order.payment_state },
+        [
+{ group_by: proc { |payment| payment.order.payment_state },
            sort_by: proc { |payment_state| payment_state } },
          { group_by: proc { |payment| payment.order.distributor },
            sort_by: proc { |distributor| distributor.name } },
@@ -92,19 +100,22 @@ module OpenFoodNetwork
     def columns
       case params[:report_type]
       when "payments_by_payment_type"
-        [proc { |payments| payments.first.order.payment_state },
+        [
+proc { |payments| payments.first.order.payment_state },
          proc { |payments| payments.first.order.distributor.name },
          proc { |payments| payments.first.payment_method.name },
          proc { |payments| payments.sum(&:amount) }]
       when "itemised_payment_totals"
-        [proc { |orders| orders.first.payment_state },
+        [
+proc { |orders| orders.first.payment_state },
          proc { |orders| orders.first.distributor.name },
          proc { |orders| orders.to_a.sum(&:item_total) },
          proc { |orders| orders.sum(&:ship_total) },
          proc { |orders| orders.sum{ |order| order.outstanding_balance.to_f } },
          proc { |orders| orders.map(&:total).sum }]
       when "payment_totals"
-        [proc { |orders| orders.first.payment_state },
+        [
+proc { |orders| orders.first.payment_state },
          proc { |orders| orders.first.distributor.name },
          proc { |orders| orders.to_a.sum(&:item_total) },
          proc { |orders| orders.sum(&:ship_total) },
@@ -127,7 +138,8 @@ module OpenFoodNetwork
          },
          proc { |orders| orders.sum{ |order| order.outstanding_balance.to_f } }]
       else
-        [proc { |payments| payments.first.order.payment_state },
+        [
+proc { |payments| payments.first.order.payment_state },
          proc { |payments| payments.first.order.distributor.name },
          proc { |payments| payments.first.payment_method.name },
          proc { |payments| payments.sum(&:amount) }]

@@ -22,7 +22,8 @@ module Spree
     end
 
     def xero_report_types
-      [[I18n.t(:summary), 'summary'],
+      [
+[I18n.t(:summary), 'summary'],
        [I18n.t(:detailed), 'detailed']]
     end
 

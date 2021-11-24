@@ -50,7 +50,8 @@ module OpenFoodNetwork
     it "should return a header row describing the report" do
       subject = GroupBuyReport.new [@order1]
       header = subject.header
-      expect(header).to eq(["Supplier", "Product", "Unit Size", "Variant", "Weight",
+      expect(header).to eq([
+"Supplier", "Product", "Unit Size", "Variant", "Weight",
                             "Total Ordered", "Total Max"])
     end
 
@@ -66,7 +67,8 @@ module OpenFoodNetwork
       sum_quantities = line_items.map(&:quantity).sum
       sum_max_quantities = line_items.map { |li| li.max_quantity || 0 }.sum
 
-      expect(table[0]).to eq([@variant1.product.supplier.name, @variant1.product.name, "UNITSIZE",
+      expect(table[0]).to eq([
+@variant1.product.supplier.name, @variant1.product.name, "UNITSIZE",
                               @variant1.options_text, @variant1.weight, sum_quantities, sum_max_quantities])
     end
 

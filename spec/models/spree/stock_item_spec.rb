@@ -92,7 +92,8 @@ RSpec.describe Spree::StockItem do
 
       context "adds new items" do
         before {
-          allow(subject).to receive_messages(backordered_inventory_units: [inventory_unit,
+          allow(subject).to receive_messages(backordered_inventory_units: [
+inventory_unit,
                                                                            inventory_unit_2])
         }
 

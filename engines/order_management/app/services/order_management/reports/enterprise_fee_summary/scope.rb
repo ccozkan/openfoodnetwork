@@ -55,7 +55,8 @@ module OrderManagement
         def for_orders
           chain_to_scope do
             where(
-              adjustable_type: ["Spree::Order", "Spree::Shipment", "Spree::LineItem",
+              adjustable_type: [
+"Spree::Order", "Spree::Shipment", "Spree::LineItem",
                                 "Spree::Payment"]
             )
           end
@@ -63,7 +64,8 @@ module OrderManagement
 
         def for_supported_adjustments
           chain_to_scope do
-            where(originator_type: ["EnterpriseFee", "Spree::PaymentMethod",
+            where(originator_type: [
+"EnterpriseFee", "Spree::PaymentMethod",
                                     "Spree::ShippingMethod"])
           end
         end

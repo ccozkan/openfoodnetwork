@@ -462,7 +462,8 @@ class Enterprise < ApplicationRecord
       enterprises.is_primary_producer.each do |enterprise|
         EnterpriseRelationship.create!(parent: enterprise,
                                        child: self,
-                                       permissions_list: [:add_to_order_cycle,
+                                       permissions_list: [
+:add_to_order_cycle,
                                                           :create_variant_overrides])
       end
     end

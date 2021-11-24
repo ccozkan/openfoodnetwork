@@ -56,7 +56,8 @@ describe OrderCycle do
     expect(OrderCycle.upcoming).to eq([oc_not_yet_open])
     expect(OrderCycle.closed).to eq([oc_already_closed])
     expect(OrderCycle.undated).to eq([oc_undated, oc_undated_open, oc_undated_close])
-    expect(OrderCycle.not_closed).to eq([oc_active, oc_not_yet_open, oc_undated, oc_undated_open,
+    expect(OrderCycle.not_closed).to eq([
+oc_active, oc_not_yet_open, oc_undated, oc_undated_open,
                                          oc_undated_close])
     expect(OrderCycle.dated).to eq([oc_active, oc_not_yet_open, oc_already_closed])
   end
@@ -206,7 +207,8 @@ describe OrderCycle do
     end
 
     it "reports on the variants exchanged" do
-      expect(oc.variants).to match_array [p0.master, p1.master, p2.master, p2_v, p1_v_visible,
+      expect(oc.variants).to match_array [
+p0.master, p1.master, p2.master, p2_v, p1_v_visible,
                                           p1_v_hidden]
     end
 
@@ -219,7 +221,8 @@ describe OrderCycle do
     end
 
     it "reports on the variants distributed" do
-      expect(oc.distributed_variants).to match_array [p1.master, p2.master, p2_v, p1_v_visible,
+      expect(oc.distributed_variants).to match_array [
+p1.master, p2.master, p2_v, p1_v_visible,
                                                       p1_v_hidden]
     end
 

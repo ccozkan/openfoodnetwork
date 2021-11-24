@@ -261,7 +261,8 @@ describe Spree::Order do
   context "#amount" do
     before do
       @order = create(:order, user: user)
-      @order.line_items = [create(:line_item, price: 1.0, quantity: 2),
+      @order.line_items = [
+create(:line_item, price: 1.0, quantity: 2),
                            create(:line_item, price: 1.0, quantity: 1)]
     end
     it "should return the correct lum sum of items" do
@@ -1137,7 +1138,8 @@ describe Spree::Order do
       }
 
       it "updates shipping fees" do
-        order.shipments = [create(:shipment_with, :shipping_method,
+        order.shipments = [
+create(:shipment_with, :shipping_method,
                                   shipping_method: shipping_method)]
         order.save
 

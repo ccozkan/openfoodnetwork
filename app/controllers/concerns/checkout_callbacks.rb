@@ -48,7 +48,8 @@ module CheckoutCallbacks
   def load_countries
     @countries = available_countries.map { |c| [c.name, c.id] }
     @countries_with_states = available_countries.map { |c|
-      [c.id, c.states.map { |s|
+      [
+c.id, c.states.map { |s|
                [s.name, s.id]
              }]
     }

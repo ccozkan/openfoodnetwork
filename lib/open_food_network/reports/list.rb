@@ -24,7 +24,8 @@ module OpenFoodNetwork
       def orders_and_fulfillment_report_types
         [
           [i18n_translate("supplier_totals"), :order_cycle_supplier_totals],
-          [i18n_translate("supplier_totals_by_distributor"),
+          [
+i18n_translate("supplier_totals_by_distributor"),
            :order_cycle_supplier_totals_by_distributor],
           [i18n_translate("totals_by_supplier"), :order_cycle_distributor_totals_by_supplier],
           [i18n_translate("customer_totals"), :order_cycle_customer_totals]

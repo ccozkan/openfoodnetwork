@@ -15,7 +15,8 @@ class EnterpriseFee < ApplicationRecord
   has_many :exchanges, through: :exchange_fees
 
   FEE_TYPES = %w(packing transport admin sales fundraising).freeze
-  PER_ORDER_CALCULATORS = ['Calculator::FlatRate',
+  PER_ORDER_CALCULATORS = [
+'Calculator::FlatRate',
                            'Calculator::FlexiRate',
                            'Calculator::PriceSack'].freeze
 

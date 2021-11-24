@@ -31,7 +31,8 @@ describe ExchangeProductsRenderer do
       it "loads products" do
         products = renderer.exchange_products(false, exchange.receiver)
 
-        suppliers = [exchange.variants[0].product.supplier.name,
+        suppliers = [
+exchange.variants[0].product.supplier.name,
                      exchange.variants[1].product.supplier.name]
         expect(suppliers).to include products.first.supplier.name
         expect(suppliers).to include products.second.supplier.name
@@ -57,7 +58,8 @@ describe ExchangeProductsRenderer do
 
         it "loads products from the coordinator inventory" do
           # Add variant already in the exchange to the coordinator's inventory
-          exchange.variants.first.inventory_items = [create(:inventory_item,
+          exchange.variants.first.inventory_items = [
+create(:inventory_item,
                                                             enterprise: order_cycle.coordinator)]
 
           products = renderer.exchange_products(false, exchange.receiver)

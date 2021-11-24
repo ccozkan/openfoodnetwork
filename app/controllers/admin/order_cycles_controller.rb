@@ -159,7 +159,8 @@ module Admin
         #   to limit returned ocs to recent or undated
         orders_close_at_gt = raw_params[:q]&.delete(:orders_close_at_gt) || 31.days.ago
         raw_params[:q] = {
-          g: [raw_params.delete(:q) || {}, { m: 'or',
+          g: [
+raw_params.delete(:q) || {}, { m: 'or',
                                              orders_close_at_gt: orders_close_at_gt,
                                              orders_close_at_null: true }]
         }

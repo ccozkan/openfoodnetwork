@@ -8,7 +8,8 @@ module OrderManagement
       # - Variants of hub
       # - Variants that are in outgoing exchanges where the hub is receiver
       def self.eligible_variants(distributor)
-        variant_conditions = ["spree_products.supplier_id IN (?)",
+        variant_conditions = [
+"spree_products.supplier_id IN (?)",
                               permitted_producer_ids(distributor)]
         exchange_variant_ids = outgoing_exchange_variant_ids(distributor)
         if exchange_variant_ids.present?

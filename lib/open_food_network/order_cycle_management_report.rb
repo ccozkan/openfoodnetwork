@@ -87,7 +87,8 @@ module OpenFoodNetwork
 
     def payment_method_row(order)
       ba = order.billing_address
-      [ba&.firstname,
+      [
+ba&.firstname,
        ba&.lastname,
        order.distributor&.name,
        customer_code(order.email),
@@ -101,7 +102,8 @@ module OpenFoodNetwork
 
     def delivery_row(order)
       sa = order.shipping_address
-      [sa.firstname,
+      [
+sa.firstname,
        sa.lastname,
        order.distributor&.name,
        customer_code(order.email),

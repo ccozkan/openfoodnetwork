@@ -69,7 +69,8 @@ describe CartController, type: :controller do
     before do
       variant_in_the_order.on_hand = 4
       variant_not_in_the_order.on_hand = 2
-      order_cycle.exchanges.outgoing.first.variants = [variant_in_the_order,
+      order_cycle.exchanges.outgoing.first.variants = [
+variant_in_the_order,
                                                        variant_not_in_the_order]
       order.order_cycle = order_cycle
       order.distributor = hub

@@ -29,7 +29,8 @@ module OpenFoodNetwork
           allow(order).to receive(:billing_address).and_return address
           allow(subject).to receive(:orders).and_return [order]
 
-          expect(subject.table).to eq([[
+          expect(subject.table).to eq([
+[
                                         "test@test.com", "Firsty", "Lasty", "Suburbia"
                                       ]])
         end
@@ -41,7 +42,8 @@ module OpenFoodNetwork
         end
 
         it "returns headers for addresses" do
-          expect(subject.header).to eq(["First Name", "Last Name", "Billing Address", "Email",
+          expect(subject.header).to eq([
+"First Name", "Last Name", "Billing Address", "Email",
                                         "Phone", "Hub", "Hub Address", "Shipping Method"])
         end
 
@@ -52,7 +54,8 @@ module OpenFoodNetwork
           o.shipments << create(:shipment)
 
           allow(subject).to receive(:orders).and_return [o]
-          expect(subject.table).to eq([[
+          expect(subject.table).to eq([
+[
                                         a.firstname, a.lastname,
                                         [a.address1, a.address2, a.city].join(" "),
                                         o.email, a.phone, d.name,

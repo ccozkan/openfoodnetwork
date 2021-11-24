@@ -154,7 +154,8 @@ describe Admin::EnterprisesController, type: :controller do
       it "does not allow managers to be changed" do
         allow(controller).to receive_messages spree_current_user: distributor_manager
         update_params = { id: distributor,
-                          enterprise: { user_ids: [distributor_owner.id, distributor_manager.id,
+                          enterprise: { user_ids: [
+distributor_owner.id, distributor_manager.id,
                                                    user.id] } }
         spree_post :update, update_params
 
@@ -280,7 +281,8 @@ describe Admin::EnterprisesController, type: :controller do
       it "allows managers to be changed" do
         allow(controller).to receive_messages spree_current_user: distributor_owner
         update_params = { id: distributor,
-                          enterprise: { user_ids: [distributor_owner.id, distributor_manager.id,
+                          enterprise: { user_ids: [
+distributor_owner.id, distributor_manager.id,
                                                    user.id] } }
         spree_post :update, update_params
 
@@ -311,7 +313,8 @@ describe Admin::EnterprisesController, type: :controller do
       it "allows managers to be changed" do
         allow(controller).to receive_messages spree_current_user: admin_user
         update_params = { id: distributor,
-                          enterprise: { user_ids: [distributor_owner.id, distributor_manager.id,
+                          enterprise: { user_ids: [
+distributor_owner.id, distributor_manager.id,
                                                    user.id] } }
         spree_post :update, update_params
 

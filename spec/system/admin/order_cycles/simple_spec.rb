@@ -65,7 +65,8 @@ describe '
     # Then my details should have been saved
     expect(page).to have_selector "#save-bar", text: "Order cycles have been updated."
     order_cycles = OrderCycle.order("id ASC")
-    expect(order_cycles.map(&:name)).to eq ["Updated Order Cycle 1", "Updated Order Cycle 2",
+    expect(order_cycles.map(&:name)).to eq [
+"Updated Order Cycle 1", "Updated Order Cycle 2",
                                             "Updated Order Cycle 3"]
     expect(order_cycles.map { |oc| oc.orders_open_at.sec }).to eq [0, 0, 4]
     expect(order_cycles.map { |oc| oc.orders_close_at.sec }).to eq [1, 3, 0]
@@ -204,7 +205,8 @@ describe '
         visit admin_order_cycles_path
         click_link 'New Order Cycle'
 
-        [distributor_unmanaged.name, supplier_managed.name,
+        [
+distributor_unmanaged.name, supplier_managed.name,
          supplier_unmanaged.name].each do |enterprise_name|
           expect(page).not_to have_select 'coordinator_id', with_options: [enterprise_name]
         end
@@ -383,10 +385,12 @@ describe '
         expect(page).to have_content "Your order cycle has been updated."
 
         oc.reload
-        expect(oc.suppliers).to match_array [supplier_managed, supplier_permitted,
+        expect(oc.suppliers).to match_array [
+supplier_managed, supplier_permitted,
                                              supplier_unmanaged]
         expect(oc.coordinator).to eq(distributor_managed)
-        expect(oc.distributors).to match_array [distributor_managed, distributor_permitted,
+        expect(oc.distributors).to match_array [
+distributor_managed, distributor_permitted,
                                                 distributor_unmanaged]
       end
     end
@@ -459,10 +463,12 @@ describe '
         expect(page).to have_selector "table.exchanges tr.distributor-#{my_distributor.id} td.tags"
 
         oc.reload
-        expect(oc.suppliers).to match_array [supplier_managed, supplier_permitted,
+        expect(oc.suppliers).to match_array [
+supplier_managed, supplier_permitted,
                                              supplier_unmanaged]
         expect(oc.coordinator).to eq(distributor_managed)
-        expect(oc.distributors).to match_array [my_distributor, distributor_managed,
+        expect(oc.distributors).to match_array [
+my_distributor, distributor_managed,
                                                 distributor_permitted, distributor_unmanaged]
       end
     end

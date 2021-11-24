@@ -64,7 +64,8 @@ module Spree
       # This allows us to use cancan abilities on tab
       def klass_for(name)
         model_name = name.to_s
-        klass = ["Spree::#{model_name.classify}",
+        klass = [
+"Spree::#{model_name.classify}",
                  model_name.classify,
                  model_name.tr('_', '/').classify]
           .find(&:safe_constantize)

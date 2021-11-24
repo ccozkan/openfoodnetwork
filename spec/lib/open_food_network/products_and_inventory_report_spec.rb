@@ -40,15 +40,18 @@ module OpenFoodNetwork
                                                 :city).and_return("A city")
         allow(variant).to receive_message_chain(:product, :name).and_return("Product Name")
         allow(variant).to receive_message_chain(:product,
-                                                :properties).and_return [double(name: "property1"),
+                                                :properties).and_return [
+double(name: "property1"),
                                                                          double(name: "property2")]
         allow(variant).to receive_message_chain(:product,
-                                                :taxons).and_return [double(name: "taxon1"),
+                                                :taxons).and_return [
+double(name: "taxon1"),
                                                                      double(name: "taxon2")]
         allow(variant).to receive_message_chain(:product, :group_buy_unit_size).and_return(21)
         allow(subject).to receive(:variants).and_return [variant]
 
-        expect(subject.table).to eq([[
+        expect(subject.table).to eq([
+[
                                       "Supplier",
                                       "A city",
                                       "Product Name",

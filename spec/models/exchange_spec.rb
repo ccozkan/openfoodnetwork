@@ -180,21 +180,26 @@ describe Exchange do
 
       it "finds exchanges coming from any of a number of enterprises" do
         expect(Exchange.from_enterprises([coordinator])).to eq([outgoing_exchange])
-        expect(Exchange.from_enterprises([supplier,
-                                          coordinator])).to match_array [incoming_exchange,
+        expect(Exchange.from_enterprises([
+supplier,
+                                          coordinator])).to match_array [
+incoming_exchange,
                                                                          outgoing_exchange]
       end
 
       it "finds exchanges going to any of a number of enterprises" do
         expect(Exchange.to_enterprises([coordinator])).to eq([incoming_exchange])
-        expect(Exchange.to_enterprises([coordinator,
-                                        distributor])).to match_array [incoming_exchange,
+        expect(Exchange.to_enterprises([
+coordinator,
+                                        distributor])).to match_array [
+incoming_exchange,
                                                                        outgoing_exchange]
       end
 
       it "finds exchanges involving any of a number of enterprises" do
         expect(Exchange.involving([supplier])).to eq([incoming_exchange])
-        expect(Exchange.involving([coordinator])).to match_array [incoming_exchange,
+        expect(Exchange.involving([coordinator])).to match_array [
+incoming_exchange,
                                                                   outgoing_exchange]
         expect(Exchange.involving([distributor])).to eq([outgoing_exchange])
       end

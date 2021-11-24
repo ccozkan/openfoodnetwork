@@ -12,12 +12,14 @@ module OpenFoodNetwork
 
     def header
       if is_mailing_list?
-        [I18n.t(:report_header_email),
+        [
+I18n.t(:report_header_email),
          I18n.t(:report_header_first_name),
          I18n.t(:report_header_last_name),
          I18n.t(:report_header_suburb)]
       else
-        [I18n.t(:report_header_first_name),
+        [
+I18n.t(:report_header_first_name),
          I18n.t(:report_header_last_name),
          I18n.t(:report_header_billing_address),
          I18n.t(:report_header_email),
@@ -33,14 +35,16 @@ module OpenFoodNetwork
 
       orders.map do |order|
         if is_mailing_list?
-          [order.email,
+          [
+order.email,
            order.billing_address.firstname,
            order.billing_address.lastname,
            order.billing_address.city]
         else
           ba = order.billing_address
           da = order.distributor&.address
-          [ba.firstname,
+          [
+ba.firstname,
            ba.lastname,
            [ba.address1, ba.address2, ba.city].join(" "),
            order.email,

@@ -8,7 +8,8 @@ module PermittedAttributes
 
     def call
       @params.permit(
-        [:name, :description, :type, :active,
+        [
+:name, :description, :type, :active,
          :environment, :display_on, :tag_list,
          :preferred_enterprise_id, :preferred_server, :preferred_login, :preferred_password,
          :calculator_type, :preferred_api_key,

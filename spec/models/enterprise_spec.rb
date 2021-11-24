@@ -402,7 +402,8 @@ describe Enterprise do
         another_product = create(:product)
         order_cycle = create(:simple_order_cycle, distributors: [distributor],
                                                   variants: [product.master, another_product.master])
-        expect(Enterprise.distributing_products([product.id,
+        expect(Enterprise.distributing_products([
+product.id,
                                                  another_product.id])).to eq([distributor])
       end
     end
@@ -503,7 +504,8 @@ describe Enterprise do
         er = EnterpriseRelationship.where(parent_id: opts[:from], child_id: opts[:to]).last
         expect(er).not_to be_nil
         if opts[:with] == :all_permissions
-          expect(er.permissions.map(&:name)).to match_array ['add_to_order_cycle',
+          expect(er.permissions.map(&:name)).to match_array [
+'add_to_order_cycle',
                                                              'manage_products', 'edit_profile', 'create_variant_overrides']
         elsif opts.key? :with
           expect(er.permissions.map(&:name)).to match_array opts[:with].map(&:to_s)

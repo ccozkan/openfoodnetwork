@@ -57,7 +57,8 @@ describe '
       rows = find("table#listing_customers").all("thead tr")
       table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
       expect(table.sort).to eq([
-        ["First Name", "Last Name", "Billing Address", "Email", "Phone", "Hub", "Hub Address",
+        [
+"First Name", "Last Name", "Billing Address", "Email", "Phone", "Hub", "Hub Address",
          "Shipping Method"]
       ].sort)
     end
@@ -74,7 +75,8 @@ describe '
       rows = find("table#listing_ocm_orders").all("thead tr")
       table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
       expect(table.sort).to eq([
-        ["First Name", "Last Name", "Hub", "Hub Code", "Email", "Phone", "Shipping Method",
+        [
+"First Name", "Last Name", "Hub", "Hub Code", "Email", "Phone", "Shipping Method",
          "Payment Method", "Amount", "Balance"]
       ].sort)
     end
@@ -85,7 +87,8 @@ describe '
       rows = find("table#listing_ocm_orders").all("thead tr")
       table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
       expect(table.sort).to eq([
-        ["First Name", "Last Name", "Hub", "Hub Code", "Delivery Address", "Delivery Postcode",
+        [
+"First Name", "Last Name", "Hub", "Hub Code", "Delivery Address", "Delivery Postcode",
          "Phone", "Shipping Method", "Payment Method", "Amount", "Balance", "Temp Controlled Items?", "Special Instructions"]
       ].sort)
     end
@@ -289,13 +292,17 @@ describe '
       click_link 'Products & Inventory'
       click_button "Go"
       expect(page).to have_content "Supplier"
-      expect(page).to have_table_row ["Supplier", "Producer Suburb", "Product",
+      expect(page).to have_table_row [
+"Supplier", "Producer Suburb", "Product",
                                       "Product Properties", "Taxons", "Variant Value", "Price", "Group Buy Unit Quantity", "Amount", "SKU"].map(&:upcase)
-      expect(page).to have_table_row [product1.supplier.name, product1.supplier.address.city,
+      expect(page).to have_table_row [
+product1.supplier.name, product1.supplier.address.city,
                                       "Product Name", product1.properties.map(&:presentation).join(", "), product1.primary_taxon.name,  "Test",           "100.0",  product1.group_buy_unit_size.to_s, "",       "sku1"]
-      expect(page).to have_table_row [product1.supplier.name, product1.supplier.address.city,
+      expect(page).to have_table_row [
+product1.supplier.name, product1.supplier.address.city,
                                       "Product Name", product1.properties.map(&:presentation).join(", "), product1.primary_taxon.name,  "Something",      "80.0",   product1.group_buy_unit_size.to_s, "",       "sku2"]
-      expect(page).to have_table_row [product2.supplier.name, product1.supplier.address.city,
+      expect(page).to have_table_row [
+product2.supplier.name, product1.supplier.address.city,
                                       "Product 2",    product1.properties.map(&:presentation).join(", "), product2.primary_taxon.name,  "100g",           "99.0",   product1.group_buy_unit_size.to_s, "",       "product_sku"]
     end
 
@@ -304,9 +311,11 @@ describe '
       click_link 'LettuceShare'
       click_button "Go"
 
-      expect(page).to have_table_row ['PRODUCT', 'Description', 'Qty', 'Pack Size', 'Unit',
+      expect(page).to have_table_row [
+'PRODUCT', 'Description', 'Qty', 'Pack Size', 'Unit',
                                       'Unit Price', 'Total', 'GST incl.', 'Grower and growing method', 'Taxon'].map(&:upcase)
-      expect(page).to have_table_row ['Product 2', '100g', '', '100', 'g', '99.0', '', '0',
+      expect(page).to have_table_row [
+'Product 2', '100g', '', '100', 'g', '99.0', '', '0',
                                       'Supplier Name (Organic - NASAA 12345)', 'Taxon Name']
     end
   end
@@ -532,7 +541,8 @@ describe '
     end
 
     def xero_invoice_header
-      %w(*ContactName EmailAddress POAddressLine1 POAddressLine2 POAddressLine3 POAddressLine4
+      %w(
+*ContactName EmailAddress POAddressLine1 POAddressLine2 POAddressLine3 POAddressLine4
          POCity PORegion POPostalCode POCountry *InvoiceNumber Reference *InvoiceDate *DueDate InventoryItemCode *Description *Quantity *UnitAmount Discount *AccountCode *TaxType TrackingName1 TrackingOption1 TrackingName2 TrackingOption2 Currency BrandingTheme Paid?)
     end
 
@@ -555,7 +565,8 @@ describe '
       opts.reverse_merge!(customer_name: 'Customer Name', address1: 'customer l1',
                           city: 'customer city', state: 'Victoria', zipcode: '1234', country: 'Australia', invoice_number: order1.number, order_number: order1.number, invoice_date: '2015-04-26', due_date: '2015-05-26', account_code: 'food sales')
 
-      [opts[:customer_name], 'customer@email.com', opts[:address1], '', '', '', opts[:city], opts[:state], opts[:zipcode], opts[:country], opts[:invoice_number], opts[:order_number], opts[:invoice_date], opts[:due_date],
+      [
+opts[:customer_name], 'customer@email.com', opts[:address1], '', '', '', opts[:city], opts[:state], opts[:zipcode], opts[:country], opts[:invoice_number], opts[:order_number], opts[:invoice_date], opts[:due_date],
 
        sku,
        description,

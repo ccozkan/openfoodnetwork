@@ -51,7 +51,8 @@ describe "Packing Reports", js: true do
         rows = find("table#listing_orders").all("thead tr")
         table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
         expect(table).to eq([
-                              ["Hub", "Code", "First Name", "Last Name", "Supplier",
+                              [
+"Hub", "Code", "First Name", "Last Name", "Supplier",
                                "Product", "Variant", "Quantity", "TempControlled?"].map(&:upcase)
                             ])
         expect(page).to have_selector 'table#listing_orders tbody tr', count: 5 # Totals row per order
@@ -84,7 +85,8 @@ describe "Packing Reports", js: true do
         rows = find("table#listing_orders").all("thead tr")
         table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
         expect(table).to eq([
-                              ["Hub", "Supplier", "Code", "First Name", "Last Name",
+                              [
+"Hub", "Supplier", "Code", "First Name", "Last Name",
                                "Product", "Variant", "Quantity", "TempControlled?"].map(&:upcase)
                             ])
         expect(all('table#listing_orders tbody tr').count).to eq(4) # Totals row per supplier

@@ -54,7 +54,8 @@ module OrderManagement
         end
 
         it 'set contents from flattened' do
-          flattened = [Package::ContentItem.new(variant, 1, :on_hand),
+          flattened = [
+Package::ContentItem.new(variant, 1, :on_hand),
                        Package::ContentItem.new(variant, 1, :on_hand),
                        Package::ContentItem.new(variant, 1, :backordered),
                        Package::ContentItem.new(variant, 1, :backordered)]
@@ -75,7 +76,8 @@ module OrderManagement
           variant2 = create(:variant,
                             shipping_category: shipping_method2.shipping_categories.first)
           variant3 = create(:variant, shipping_category: nil)
-          contents = [Package::ContentItem.new(variant1, 1),
+          contents = [
+Package::ContentItem.new(variant1, 1),
                       Package::ContentItem.new(variant1, 1),
                       Package::ContentItem.new(variant2, 1),
                       Package::ContentItem.new(variant3, 1)]
@@ -85,7 +87,8 @@ module OrderManagement
         end
 
         it "can convert to a shipment" do
-          flattened = [Package::ContentItem.new(variant, 2, :on_hand),
+          flattened = [
+Package::ContentItem.new(variant, 2, :on_hand),
                        Package::ContentItem.new(variant, 1, :backordered)]
           subject.flattened = flattened
 

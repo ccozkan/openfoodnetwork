@@ -284,7 +284,8 @@ describe Admin::SubscriptionsController, type: :controller do
              schedule: schedule,
              payment_method: payment_method,
              shipping_method: shipping_method,
-             subscription_line_items: [create(:subscription_line_item, variant: variant1,
+             subscription_line_items: [
+create(:subscription_line_item, variant: variant1,
                                                                        quantity: 2)])
     }
     let(:subscription_line_item1) { subscription.subscription_line_items.first }
@@ -379,7 +380,8 @@ describe Admin::SubscriptionsController, type: :controller do
 
           before do
             params[:subscription_line_items] =
-              [{ id: subscription_line_item1.id, quantity: 1, variant_id: variant1.id },
+              [
+{ id: subscription_line_item1.id, quantity: 1, variant_id: variant1.id },
                { quantity: 2, variant_id: variant2.id }]
           end
 

@@ -29,7 +29,8 @@ class VariantsStockLevels
       line_items.map do |line_item|
         variant = scoped_variant(line_item.order.distributor, line_item.variant)
 
-        [variant.id,
+        [
+variant.id,
          { quantity: line_item.quantity,
            max_quantity: line_item.max_quantity,
            on_hand: variant.on_hand,

@@ -32,18 +32,21 @@ module OrderManagement
           when "bulk_coop_allocation"
             @allocation_report.header
           when "bulk_coop_packing_sheets"
-            [I18n.t(:report_header_customer),
+            [
+I18n.t(:report_header_customer),
              I18n.t(:report_header_product),
              I18n.t(:report_header_variant),
              I18n.t(:report_header_sum_total)]
           when "bulk_coop_customer_payments"
-            [I18n.t(:report_header_customer),
+            [
+I18n.t(:report_header_customer),
              I18n.t(:report_header_date_of_order),
              I18n.t(:report_header_total_cost),
              I18n.t(:report_header_amount_owing),
              I18n.t(:report_header_amount_paid)]
           else
-            [I18n.t(:report_header_supplier),
+            [
+I18n.t(:report_header_supplier),
              I18n.t(:report_header_product),
              I18n.t(:report_header_product),
              I18n.t(:report_header_bulk_unit_size),
@@ -73,21 +76,25 @@ module OrderManagement
           when "bulk_coop_allocation"
             @allocation_report.rules
           when "bulk_coop_packing_sheets"
-            [{ group_by: proc { |li| li.product },
+            [
+{ group_by: proc { |li| li.product },
                sort_by: proc { |product| product.name } },
              { group_by: proc { |li| li.full_name },
                sort_by: proc { |full_name| full_name } },
              { group_by: proc { |li| li.order },
                sort_by: proc { |order| order.to_s } }]
           when "bulk_coop_customer_payments"
-            [{ group_by: proc { |li| li.order },
+            [
+{ group_by: proc { |li| li.order },
                sort_by: proc { |order| order.completed_at } }]
           else
-            [{ group_by: proc { |li| li.product.supplier },
+            [
+{ group_by: proc { |li| li.product.supplier },
                sort_by: proc { |supplier| supplier.name } },
              { group_by: proc { |li| li.product },
                sort_by: proc { |product| product.name },
-               summary_columns: [proc { |lis| lis.first.product.supplier.name },
+               summary_columns: [
+proc { |lis| lis.first.product.supplier.name },
                                  proc { |lis| lis.first.product.name },
                                  proc { |lis| lis.first.product.group_buy_unit_size || 0.0 },
                                  proc { |_lis| "" },
@@ -107,20 +114,23 @@ module OrderManagement
                                        0
                                      else
                                        ( lis.sum { |li|
-                                           [li.max_quantity || 0,
+                                           [
+li.max_quantity || 0,
                                             li.quantity || 0].max * (li.weight_from_unit_value || 0)
                                          } / lis.first.product.group_buy_unit_size )
                                      end ).floor
                                  },
                                  proc { |lis|
                                    lis.sum { |li|
-                                     [li.max_quantity || 0,
+                                     [
+li.max_quantity || 0,
                                       li.quantity || 0].max * (li.weight_from_unit_value || 0)
                                    } - ( ( if (lis.first.product.group_buy_unit_size || 0).zero?
                                              0
                                            else
                                              ( lis.sum { |li|
-                                                 [li.max_quantity || 0,
+                                                 [
+li.max_quantity || 0,
                                                   li.quantity || 0].max * (li.weight_from_unit_value || 0)
                                                } / lis.first.product.group_buy_unit_size )
                                            end ).floor * (lis.first.product.group_buy_unit_size || 0) )
