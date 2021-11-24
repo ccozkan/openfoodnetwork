@@ -51,7 +51,7 @@ feature "bulk coop" do
     select "Bulk Co-op Packing Sheets", from: "report_report_type"
     click_button 'Generate Report'
 
-    expect(page).to have_table_row [ "Customer", "Product", "Variant", "Sum Total" ]
+    expect(page).to have_table_row ["Customer", "Product", "Variant", "Sum Total"]
   end
 
   scenario "generating Bulk Co-op Customer Payments report" do

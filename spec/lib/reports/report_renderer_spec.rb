@@ -23,7 +23,7 @@ describe Reporting::ReportRenderer do
 
   describe "#table_rows" do
     it "returns the report's table rows" do
-      expect(service.table_rows).to eq [ [1, "carrots", 3], [2, "onions", 6] ]
+      expect(service.table_rows).to eq [[1, "carrots", 3], [2, "onions", 6]]
     end
   end
 

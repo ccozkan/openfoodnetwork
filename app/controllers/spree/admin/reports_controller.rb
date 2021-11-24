@@ -22,7 +22,7 @@ module Spree
       include Spree::ReportsHelper
       helper ::ReportsHelper
 
-      ORDER_MANAGEMENT_ENGINE_REPORTS = [ :bulk_coop, :enterprise_fee_summary ].freeze
+      ORDER_MANAGEMENT_ENGINE_REPORTS = [:bulk_coop, :enterprise_fee_summary].freeze
 
       helper_method :render_content?
 

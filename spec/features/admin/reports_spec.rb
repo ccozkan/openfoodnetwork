@@ -41,7 +41,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
 
       rows = find("table#listing_customers").all("thead tr")
       table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-      expect(table.sort).to eq( [ ["Email", "First Name", "Last Name", "Suburb"] ].sort )
+      expect(table.sort).to eq( [["Email", "First Name", "Last Name", "Suburb"]].sort )
     end
 
     it "customers report" do

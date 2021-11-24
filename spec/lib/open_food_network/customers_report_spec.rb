@@ -33,7 +33,7 @@ city: "Suburbia"
           allow(order).to receive(:billing_address).and_return address
           allow(subject).to receive(:orders).and_return [order]
 
-          expect(subject.table).to eq( [ [ "test@test.com", "Firsty", "Lasty", "Suburbia" ] ] )
+          expect(subject.table).to eq( [["test@test.com", "Firsty", "Lasty", "Suburbia"]] )
         end
       end
 

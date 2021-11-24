@@ -179,7 +179,7 @@ child: distributor,
     # And it should have some variants selected
     selected_initial_variants = initial_variants.take initial_variants.size - 1
     expect(oc.variants.map(&:id)).to match_array(
-(selected_initial_variants.map(&:id) + [ v1.id, v2.id ])
+(selected_initial_variants.map(&:id) + [v1.id, v2.id])
 )
 
     # And the collection details should have been updated
