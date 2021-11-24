@@ -24,7 +24,7 @@ module OpenFoodNetwork
           I18n.t(:report_header_shipping_method),
           I18n.t(:report_header_payment_method),
           I18n.t(:report_header_amount),
-          I18n.t(:report_header_balance),
+          I18n.t(:report_header_balance)
         ]
       else
         [
@@ -40,7 +40,7 @@ module OpenFoodNetwork
           I18n.t(:report_header_amount),
           I18n.t(:report_header_balance),
           I18n.t(:report_header_temp_controlled_items),
-          I18n.t(:report_header_special_instructions),
+          I18n.t(:report_header_special_instructions)
         ]
       end
     end

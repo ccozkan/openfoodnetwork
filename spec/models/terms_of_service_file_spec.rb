@@ -13,7 +13,7 @@ describe TermsOfServiceFile do
     it 'returns the last one' do
       existing = [
         TermsOfServiceFile.create!(attachment: pdf),
-        TermsOfServiceFile.create!(attachment: pdf),
+        TermsOfServiceFile.create!(attachment: pdf)
       ]
 
       expect(TermsOfServiceFile.current).to(eq(existing.last))

@@ -16,7 +16,7 @@ module OrderManagement
             I18n.t(:report_header_sum_total),
             I18n.t(:report_header_units_required),
             I18n.t(:report_header_unallocated),
-            I18n.t(:report_header_max_quantity_excess),
+            I18n.t(:report_header_max_quantity_excess)
           ]
         end
 

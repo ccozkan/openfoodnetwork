@@ -113,7 +113,7 @@ I18n.t(:report_header_billing_postcode),
               proc { |_line_items| '' },
               proc { |_line_items| '' },
               proc { |line_items| line_items.first.order.number },
-              proc { |line_items| line_items.first.order.completed_at.strftime('%F %T') },
+              proc { |line_items| line_items.first.order.completed_at.strftime('%F %T') }
             ]
           },
           {
@@ -210,7 +210,7 @@ I18n.t(:report_header_billing_postcode),
           proc { |line_items| line_items.first.order.bill_address&.zipcode },
           proc { |line_items| line_items.first.order.bill_address&.state },
           proc { |line_items| line_items.first.order.number },
-          proc { |line_items| line_items.first.order.completed_at.strftime('%F %T') },
+          proc { |line_items| line_items.first.order.completed_at.strftime('%F %T') }
         ]
       end
       

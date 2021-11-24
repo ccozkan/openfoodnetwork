@@ -25,13 +25,13 @@ describe Admin::MatomoSettingsController, type: :controller do
         [
           Spree::Config[:matomo_url],
           Spree::Config[:matomo_site_id],
-          Spree::Config[:matomo_tag_manager_url],
+          Spree::Config[:matomo_tag_manager_url]
         ]
       }.to(
         [
           'test url',
           '42',
-          'test manager url',
+          'test manager url'
         ]
       ))
     end

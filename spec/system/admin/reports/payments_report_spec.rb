@@ -90,7 +90,7 @@ describe 'Payments Reports' do
         I18n.t(:report_header_total_price, currency: currency_symbol),
         I18n.t(:report_header_eft_price, currency: currency_symbol),
         I18n.t(:report_header_paypal_price, currency: currency_symbol),
-        I18n.t(:report_header_outstanding_balance_price, currency: currency_symbol),
+        I18n.t(:report_header_outstanding_balance_price, currency: currency_symbol)
       ].join(' ').upcase
 ))
 
@@ -103,7 +103,7 @@ describe 'Payments Reports' do
         order.total.to_f + other_order.total.to_f,
         eft_payment.amount.to_f,
         paypal_payment.amount.to_f,
-        order.outstanding_balance.to_f + other_order.outstanding_balance.to_f,
+        order.outstanding_balance.to_f + other_order.outstanding_balance.to_f
       ].join(' ')
 ))
     end

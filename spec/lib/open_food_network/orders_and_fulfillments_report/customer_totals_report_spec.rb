@@ -50,7 +50,7 @@ distributor: distributor
       expect(order_number_and_date_fields).to(eq(
 [
                                                    order.number,
-                                                   order.completed_at.strftime('%F %T'),
+                                                   order.completed_at.strftime('%F %T')
                                                  ]
 ))
     end
@@ -60,7 +60,7 @@ distributor: distributor
       expect(order_number_and_date_fields).to(eq(
 [
                                                    order.number,
-                                                   order.completed_at.strftime('%F %T'),
+                                                   order.completed_at.strftime('%F %T')
                                                  ]
 ))
     end

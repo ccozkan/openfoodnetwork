@@ -23,7 +23,7 @@ module OpenFoodNetwork
         I18n.t(:report_header_is_producer),
         I18n.t(:report_header_sells),
         I18n.t(:report_header_visible),
-        I18n.t(:report_header_confirmation_date),
+        I18n.t(:report_header_confirmation_date)
       ]
     end
 

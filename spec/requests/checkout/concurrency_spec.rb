@@ -72,7 +72,7 @@ describe 'Concurrent checkouts', concurrency: true, type: :request do
     #    the same checkout action.
     threads = [
       Thread.new { put(update_checkout_path, params: params) },
-      Thread.new { put(update_checkout_path, params: params) },
+      Thread.new { put(update_checkout_path, params: params) }
     ]
 
     # Wait for the first thread to reach the breakpoint:
