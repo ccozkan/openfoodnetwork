@@ -129,7 +129,7 @@ describe Spree::OrderMailer do
     end
 
     it "includes a link to the cancelled order in admin" do
-      expect(mail.body).to match /#{admin_order_link_href}/
+      expect(mail.body).to match(/#{admin_order_link_href}/)
     end
   end
 

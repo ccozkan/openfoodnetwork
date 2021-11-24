@@ -51,7 +51,7 @@ column_name: column_name
   def self.known_actions
     OpenFoodNetwork::ColumnPreferenceDefaults.private_instance_methods
       .select { |m| m.to_s.end_with?("_columns") }
-.map { |m| m.to_s.sub /_columns$/, '' }
+.map { |m| m.to_s.sub(/_columns$/, '') }
   end
 
   # Arbitrary filtering of default_preferences

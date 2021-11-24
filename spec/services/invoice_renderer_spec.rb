@@ -28,7 +28,7 @@ describe InvoiceRenderer do
 
     it 'creates a PDF invoice' do
       result = service.render_to_string(order)
-      expect(result).to match /^%PDF/
+      expect(result).to match(/^%PDF/)
     end
   end
 
@@ -46,7 +46,7 @@ describe InvoiceRenderer do
 
     it 'creates a PDF invoice' do
       result = service.render_to_string(order)
-      expect(result).to match /^%PDF/
+      expect(result).to match(/^%PDF/)
     end
   end
 end

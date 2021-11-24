@@ -691,7 +691,7 @@ unit_description: '(bottle)'
         expect(page).to have_selector "th", text: "ON HAND"
         expect(page).to have_selector "th", text: "AV. ON"
 
-        toggle_columns /^.{0,1}Producer$/
+        toggle_columns(/^.{0,1}Producer$/)
 
         expect(page).to have_no_selector "th", text: "PRODUCER"
         expect(page).to have_selector "th", text: "NAME"

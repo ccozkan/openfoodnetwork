@@ -23,7 +23,7 @@ helper.inject_json_array(
 [enterprise],
                                     Api::IdSerializer
 )
-).to match /#{enterprise.id}/
+).to match(/#{enterprise.id}/)
   end
 
   it "injects enterprises" do

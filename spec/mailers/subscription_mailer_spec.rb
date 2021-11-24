@@ -78,14 +78,14 @@ describe SubscriptionMailer, type: :mailer do
         let(:customer) { create(:customer, enterprise: shop, user: nil) }
 
         it "does not provide link" do
-          expect(body).to_not match /#{order_link_href}/
+          expect(body).to_not match(/#{order_link_href}/)
         end
 
         context "when the distributor does not allow changes to the order" do
           let(:shop) { create(:enterprise, allow_order_changes: false) }
 
           it "does not provide link" do
-            expect(body).to_not match /#{order_link_href}/
+            expect(body).to_not match(/#{order_link_href}/)
           end
         end
       end
@@ -141,7 +141,7 @@ describe SubscriptionMailer, type: :mailer do
         let(:customer) { create(:customer, user: nil) }
 
         it "does not provide link" do
-          expect(email.body).to_not match /#{order_link_href}/
+          expect(email.body).to_not match(/#{order_link_href}/)
         end
       end
     end
@@ -220,7 +220,7 @@ describe SubscriptionMailer, type: :mailer do
         let(:customer) { create(:customer) }
 
         it "provides link to view details" do
-          expect(body).to match /#{order_link_href}/
+          expect(body).to match(/#{order_link_href}/)
         end
       end
 
@@ -228,7 +228,7 @@ describe SubscriptionMailer, type: :mailer do
         let(:customer) { create(:customer, user: nil) }
 
         it "does not provide link" do
-          expect(body).to_not match /#{order_link_href}/
+          expect(body).to_not match(/#{order_link_href}/)
         end
       end
     end
