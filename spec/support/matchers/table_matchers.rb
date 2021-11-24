@@ -29,10 +29,7 @@ RSpec::Matchers.define(:match_table) do |expected_table|
   match do |node|
     rows = node.all("tr").map { |r| r.all("th,td").map { |c| c.text.strip } }
 
-    if rows.count != expected_table.count
-      @failure_message = "found table with #{rows.count} rows, expected #{expected_table.count}"
-
-    else
+    if rows.count == expected_table.count
       rows.each_with_index do |row, i|
         expected_row = expected_table[i]
         if row.count != expected_row.count
@@ -49,6 +46,9 @@ RSpec::Matchers.define(:match_table) do |expected_table|
           break if @failure_message
         end
       end
+    else
+      @failure_message = "found table with #{rows.count} rows, expected #{expected_table.count}"
+
     end
 
     @failure_message.nil?
