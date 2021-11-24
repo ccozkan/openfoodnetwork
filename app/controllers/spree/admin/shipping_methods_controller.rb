@@ -106,7 +106,7 @@ distributor_ids: [],
 
         unless shipping_amount.nil? || Float(shipping_amount, exception: false)
           flash[:error] = I18n.t(:calculator_preferred_value_error)
-          return redirect_to(location_after_save)
+          redirect_to(location_after_save)
         end
       end
     end
