@@ -6,7 +6,7 @@ module Api
       respond_to :json
 
       def job_queue
-        render json: { alive: job_queue_alive? }
+        render(json: { alive: job_queue_alive? })
       end
 
       private

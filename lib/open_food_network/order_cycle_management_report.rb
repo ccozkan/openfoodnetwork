@@ -65,14 +65,14 @@ module OpenFoodNetwork
       return [] unless @render_table
 
       if is_payment_methods?
-        orders.map { |o| payment_method_row o }
+        orders.map { |o| payment_method_row(o) }
       else
-        orders.map { |o| delivery_row o }
+        orders.map { |o| delivery_row(o) }
       end
     end
 
     def filter(search_result)
-      filter_to_payment_method filter_to_shipping_method filter_to_order_cycle search_result
+      filter_to_payment_method(filter_to_shipping_method(filter_to_order_cycle(search_result)))
     end
 
     private

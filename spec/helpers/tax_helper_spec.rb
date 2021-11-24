@@ -20,21 +20,21 @@ describe TaxHelper, type: :helper do
     it "displays included tax" do
       expect(
         helper.display_taxes(included_tax_adjustment)
-      ).to eq Spree::Money.new(included_tax_adjustment.included_tax_total)
+      ).to(eq(Spree::Money.new(included_tax_adjustment.included_tax_total)))
     end
 
     it "displays additional tax" do
       expect(
         helper.display_taxes(additional_tax_adjustment)
-      ).to eq Spree::Money.new(additional_tax_adjustment.additional_tax_total)
+      ).to(eq(Spree::Money.new(additional_tax_adjustment.additional_tax_total)))
     end
 
     it "displays formatted 0.00 amount when amount is zero" do
-      expect(helper.display_taxes(no_tax_adjustment)).to eq Spree::Money.new(0.00)
+      expect(helper.display_taxes(no_tax_adjustment)).to(eq(Spree::Money.new(0.00)))
     end
 
     it "optionally displays nothing when amount is zero" do
-      expect(helper.display_taxes(no_tax_adjustment, display_zero: false)).to be_nil
+      expect(helper.display_taxes(no_tax_adjustment, display_zero: false)).to(be_nil)
     end
   end
 
@@ -42,17 +42,17 @@ describe TaxHelper, type: :helper do
     it "displays total with included tax" do
       expect(
         helper.display_total_with_tax(included_tax_adjustment)
-      ).to eq Spree::Money.new(
+      ).to(eq(Spree::Money.new(
         included_tax_adjustment.amount + + included_tax_adjustment.included_tax_total
-      )
+      )))
     end
 
     it "displays total with additional tax" do
       expect(
         helper.display_total_with_tax(additional_tax_adjustment)
-      ).to eq Spree::Money.new(
+      ).to(eq(Spree::Money.new(
         additional_tax_adjustment.amount + additional_tax_adjustment.additional_tax_total
-      )
+      )))
     end
   end
 end

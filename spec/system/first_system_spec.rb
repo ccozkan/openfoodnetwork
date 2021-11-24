@@ -16,8 +16,8 @@ describe "Visit Admin", js: true do
     fill_in "Password", with: user.password
 
     click_login_button
-    expect(page).to have_content "DASHBOARD"
-    expect(page).to have_current_path spree.admin_dashboard_path
-    expect(page).to have_no_content "CONFIGURATION"
+    expect(page).to(have_content("DASHBOARD"))
+    expect(page).to(have_current_path(spree.admin_dashboard_path))
+    expect(page).to(have_no_content("CONFIGURATION"))
   end
 end

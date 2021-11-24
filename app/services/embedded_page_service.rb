@@ -51,8 +51,8 @@ class EmbeddedPageService
   end
 
   def set_response_headers
-    @response.headers.except! 'X-Frame-Options'
-    @response.default_headers.except! 'X-Frame-Options'
+    @response.headers.except!('X-Frame-Options')
+    @response.default_headers.except!('X-Frame-Options')
     @response.headers['Content-Security-Policy'] = "frame-ancestors 'self' #{@embedding_domain}"
   end
 

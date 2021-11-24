@@ -20,7 +20,7 @@ distributor,
 order_cycle,
                                    customer
 ).products_relation
-).to eq([product])
+).to(eq([product]))
       end
     end
 
@@ -40,7 +40,7 @@ distributor,
 order_cycle,
                                    customer
 ).products_relation
-).to_not include product
+).to_not(include(product))
       end
     end
 
@@ -57,7 +57,7 @@ distributor,
 order_cycle,
                                    customer
 ).products_relation
-).to_not include product
+).to_not(include(product))
       end
     end
 
@@ -70,7 +70,7 @@ distributor,
 order_cycle,
                                      customer
 ).products_relation
-).to include product
+).to(include(product))
         end
 
         it "does not return product when variant is out of stock" do
@@ -81,7 +81,7 @@ distributor,
 order_cycle,
                                      customer
 ).products_relation
-).to_not include product
+).to_not(include(product))
         end
       end
 
@@ -97,7 +97,7 @@ distributor,
 order_cycle,
                                      customer
 ).products_relation
-).to_not include product
+).to_not(include(product))
         end
 
         it "returns product when an override is in stock" do
@@ -109,7 +109,7 @@ distributor,
 order_cycle,
                                      customer
 ).products_relation
-).to include product
+).to(include(product))
         end
       end
     end
@@ -127,12 +127,12 @@ order_cycle,
     let(:variants) { described_class.new(distributor, oc, customer).variants_relation }
 
     it "returns variants in the oc" do
-      expect(variants).to include v1
-      expect(variants).to_not include v2
+      expect(variants).to(include(v1))
+      expect(variants).to_not(include(v2))
     end
 
     it "does not return variants where override is out of stock" do
-      expect(variants).to_not include v3
+      expect(variants).to_not(include(v3))
     end
   end
 end

@@ -34,7 +34,7 @@ module OpenFoodNetwork
     end
 
     def filter(variants)
-      filter_on_hand filter_to_distributor filter_to_order_cycle filter_to_supplier variants
+      filter_on_hand(filter_to_distributor(filter_to_order_cycle(filter_to_supplier(variants))))
     end
 
     # Using the `in_stock?` method allows overrides by distributors.
@@ -56,7 +56,7 @@ module OpenFoodNetwork
 
     def filter_to_distributor(variants)
       if params[:distributor_id].to_i > 0
-        distributor = Enterprise.find params[:distributor_id]
+        distributor = Enterprise.find(params[:distributor_id])
         scoper = OpenFoodNetwork::ScopeVariantToHub.new(distributor)
         variants.in_distributor(distributor).each { |v| scoper.scope(v) }
       else
@@ -66,7 +66,7 @@ module OpenFoodNetwork
 
     def filter_to_order_cycle(variants)
       if params[:order_cycle_id].to_i > 0
-        order_cycle = OrderCycle.find params[:order_cycle_id]
+        order_cycle = OrderCycle.find(params[:order_cycle_id])
         variant_ids = Exchange.in_order_cycle(order_cycle)
           .joins("INNER JOIN exchange_variants ON exchanges.id = exchange_variants.exchange_id")
           .select("DISTINCT exchange_variants.variant_id")

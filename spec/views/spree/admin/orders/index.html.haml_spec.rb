@@ -19,7 +19,7 @@ describe "spree/admin/orders/index.html.haml" do
       end
     end
 
-    allow(view).to receive_messages spree_current_user: create(:user)
+    allow(view).to(receive_messages(spree_current_user: create(:user)))
   end
 
   describe "print invoices button" do
@@ -28,7 +28,7 @@ describe "spree/admin/orders/index.html.haml" do
 
       render
 
-      expect(rendered).to have_content("Print Invoices")
+      expect(rendered).to(have_content("Print Invoices"))
     end
 
     it "does not display button when invoices are disabled" do
@@ -36,7 +36,7 @@ describe "spree/admin/orders/index.html.haml" do
 
       render
 
-      expect(rendered).to_not have_content("Print Invoices")
+      expect(rendered).to_not(have_content("Print Invoices"))
     end
   end
 end

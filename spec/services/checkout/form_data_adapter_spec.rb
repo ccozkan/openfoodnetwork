@@ -11,7 +11,7 @@ describe Checkout::FormDataAdapter do
     let(:adapter) { Checkout::FormDataAdapter.new(params, order, user) }
 
     it "returns the :order item in the params provided" do
-      expect(adapter.params[:order]).to eq params["order"]
+      expect(adapter.params[:order]).to(eq(params["order"]))
     end
 
     describe "when payment_attributes are provided" do
@@ -26,7 +26,7 @@ describe Checkout::FormDataAdapter do
           expect(
 adapter.params[:order][:payments_attributes]
                    .first[:source_attributes]
-).to eq source_attributes
+).to(eq(source_attributes))
         end
       end
 
@@ -34,7 +34,7 @@ adapter.params[:order][:payments_attributes]
         before { order.total = "50.0" }
 
         it "sets the payment attributes amount to the order total" do
-          expect(adapter.params[:order][:payments_attributes].first[:amount]).to eq order.total
+          expect(adapter.params[:order][:payments_attributes].first[:amount]).to(eq(order.total))
         end
       end
 
@@ -45,17 +45,17 @@ adapter.params[:order][:payments_attributes]
         end
 
         it "fills in missing credit card brand" do
-          expect(adapter.params[:order][:payments_attributes].first[:source_attributes][:cc_type]).to eq "visa"
+          expect(adapter.params[:order][:payments_attributes].first[:source_attributes][:cc_type]).to(eq("visa"))
         end
 
         it "leaves an existing credit card brand" do
           params["order"]["payments_attributes"].first["source_attributes"]["cc_type"] = "test"
-          expect(adapter.params[:order][:payments_attributes].first[:source_attributes][:cc_type]).to eq "test"
+          expect(adapter.params[:order][:payments_attributes].first[:source_attributes][:cc_type]).to(eq("test"))
         end
 
         it "doesn't touch the credit card brand without a number" do
           params["order"]["payments_attributes"].first["source_attributes"]["number"] = ""
-          expect(adapter.params[:order][:payments_attributes].first[:source_attributes].key?(:cc_type)).to eq false
+          expect(adapter.params[:order][:payments_attributes].first[:source_attributes].key?(:cc_type)).to(eq(false))
         end
       end
 
@@ -68,11 +68,11 @@ adapter.params[:order][:payments_attributes]
           before { params["order"]["existing_card_id"] = credit_card.id }
 
           it "adds card details to payment attributes" do
-            expect(adapter.params[:order][:payments_attributes].first[:source][:id]).to eq credit_card.id
+            expect(adapter.params[:order][:payments_attributes].first[:source][:id]).to(eq(credit_card.id))
             expect(
 adapter.params[:order][:payments_attributes]
                      .first[:source][:last_digits]
-).to eq credit_card.last_digits
+).to(eq(credit_card.last_digits))
           end
         end
 
@@ -81,7 +81,7 @@ adapter.params[:order][:payments_attributes]
 
           it "raises exception if credit card provided doesnt belong to the current user" do
             expect { adapter.params[:order] }
-.to raise_error Spree::Core::GatewayError
+.to(raise_error(Spree::Core::GatewayError))
           end
         end
       end

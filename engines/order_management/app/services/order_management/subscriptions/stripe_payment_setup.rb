@@ -31,11 +31,11 @@ module OrderManagement
         [
 Spree::Gateway::StripeConnect,
          Spree::Gateway::StripeSCA
-].include? @payment.payment_method.class
+].include?(@payment.payment_method.class)
       end
 
       def card_set?
-        @payment.source.is_a? Spree::CreditCard
+        @payment.source.is_a?(Spree::CreditCard)
       end
 
       def saved_credit_card

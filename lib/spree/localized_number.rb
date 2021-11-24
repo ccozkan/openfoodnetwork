@@ -9,7 +9,7 @@ module Spree
     # It also adds a validation on the input format.
     # It accepts as arguments a variable number of attribute as symbols
     def localize_number(*attributes)
-      validate :validate_localizable_number
+      validate(:validate_localizable_number)
 
       attributes.each do |attribute|
         setter = "#{attribute}="

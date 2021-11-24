@@ -29,29 +29,29 @@ on_demand: false
         before do
           user = create(:user)
           user.owned_enterprises << create(:enterprise)
-          allow(controller).to receive(:spree_current_user) { user }
+          allow(controller).to(receive(:spree_current_user) { user })
         end
 
         it "redirects to unauthorized" do
           put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
       context "where I manage the variant override hub" do
         before do
-          allow(controller).to receive(:spree_current_user) { hub.owner }
+          allow(controller).to(receive(:spree_current_user) { hub.owner })
         end
 
         context "but the producer has not granted VO permission" do
           it "redirects to unauthorized" do
             put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
-            expect(response).to redirect_to unauthorized_path
+            expect(response).to(redirect_to(unauthorized_path))
           end
 
           it 'only authorizes the updated variant overrides' do
             other_variant_override = create(:variant_override, hub: hub, variant: create(:variant))
-            expect(controller).not_to receive(:authorize!).with(:update, other_variant_override)
+            expect(controller).not_to(receive(:authorize!).with(:update, other_variant_override))
 
             put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
           end
@@ -69,20 +69,20 @@ child: hub,
 
           it "loads data" do
             put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
-            expect(assigns[:hubs]).to eq [hub]
-            expect(assigns[:producers]).to eq [variant.product.supplier]
-            expect(assigns[:hub_permissions]).to eq({hub.id => [variant.product.supplier.id]})
-            expect(assigns[:inventory_items]).to eq [inventory_item]
+            expect(assigns[:hubs]).to(eq([hub]))
+            expect(assigns[:producers]).to(eq([variant.product.supplier]))
+            expect(assigns[:hub_permissions]).to(eq({hub.id => [variant.product.supplier.id]}))
+            expect(assigns[:inventory_items]).to(eq([inventory_item]))
           end
 
           it "allows me to update the variant override" do
             put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
 
             variant_override.reload
-            expect(variant_override.price).to eq 123.45
-            expect(variant_override.count_on_hand).to eq 321
-            expect(variant_override.sku).to eq "MySKU"
-            expect(variant_override.on_demand).to eq false
+            expect(variant_override.price).to(eq(123.45))
+            expect(variant_override.count_on_hand).to(eq(321))
+            expect(variant_override.sku).to(eq("MySKU"))
+            expect(variant_override.on_demand).to(eq(false))
           end
 
           context "where params for a variant override are blank" do
@@ -102,7 +102,7 @@ on_demand: nil
 
             it "destroys the variant override" do
               put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
-              expect(VariantOverride.find_by(id: variant_override.id)).to be_nil
+              expect(VariantOverride.find_by(id: variant_override.id)).to(be_nil)
             end
           end
 
@@ -112,14 +112,14 @@ on_demand: nil
               create(:variant_override, hub: hub, variant: deleted_variant)
             end
 
-            before { deleted_variant.update_attribute :deleted_at, Time.zone.now }
+            before { deleted_variant.update_attribute(:deleted_at, Time.zone.now) }
 
             it "allows to update other variant overrides" do
               put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
 
-              expect(response).to_not redirect_to unauthorized_path
+              expect(response).to_not(redirect_to(unauthorized_path))
               variant_override.reload
-              expect(variant_override.price).to eq 123.45
+              expect(variant_override.price).to(eq(123.45))
             end
           end
         end
@@ -163,24 +163,24 @@ default_stock: 1,
         before do
           user = create(:user)
           user.owned_enterprises << create(:enterprise)
-          allow(controller).to receive(:spree_current_user) { user }
+          allow(controller).to(receive(:spree_current_user) { user })
         end
 
         it "redirects to unauthorized" do
           put :bulk_reset, params: params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
       context "where I manage the variant override hub" do
         before do
-          allow(controller).to receive(:spree_current_user) { hub.owner }
+          allow(controller).to(receive(:spree_current_user) { hub.owner })
         end
 
         context "where the producer has not granted create_variant_overrides permission to the hub" do
           it "restricts access" do
             put :bulk_reset, params: params
-            expect(response).to redirect_to unauthorized_path
+            expect(response).to(redirect_to(unauthorized_path))
           end
         end
 
@@ -196,18 +196,18 @@ child: hub,
 
           it "loads data" do
             put :bulk_reset, params: params
-            expect(assigns[:hubs]).to eq [hub]
-            expect(assigns[:producers]).to eq [producer]
-            expect(assigns[:hub_permissions]).to eq({hub.id => [producer.id]})
-            expect(assigns[:inventory_items]).to eq []
+            expect(assigns[:hubs]).to(eq([hub]))
+            expect(assigns[:producers]).to(eq([producer]))
+            expect(assigns[:hub_permissions]).to(eq({hub.id => [producer.id]}))
+            expect(assigns[:inventory_items]).to(eq([]))
           end
 
           it "updates stock to default values where reset is enabled" do
-            expect(variant_override1.reload.count_on_hand).to eq 5 # reset enabled
-            expect(variant_override2.reload.count_on_hand).to eq 2 # reset disabled
+            expect(variant_override1.reload.count_on_hand).to(eq(5)) # reset enabled
+            expect(variant_override2.reload.count_on_hand).to(eq(2)) # reset disabled
             put :bulk_reset, params: params
-            expect(variant_override1.reload.count_on_hand).to eq 7 # reset enabled
-            expect(variant_override2.reload.count_on_hand).to eq 2 # reset disabled
+            expect(variant_override1.reload.count_on_hand).to(eq(7)) # reset enabled
+            expect(variant_override2.reload.count_on_hand).to(eq(2)) # reset disabled
           end
 
           context "and the producer has granted create_variant_overrides permission to another hub I manage" do
@@ -236,8 +236,8 @@ child: hub2,
 
             it "does not reset count_on_hand for variant_overrides not in params" do
               expect do
-                put :bulk_reset, params: params
-              end.to_not change { variant_override3.reload.count_on_hand }
+                put(:bulk_reset, params: params)
+              end.to_not(change { variant_override3.reload.count_on_hand })
             end
           end
         end

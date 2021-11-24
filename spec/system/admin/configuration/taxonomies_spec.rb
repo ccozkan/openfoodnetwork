@@ -16,8 +16,8 @@ describe "Taxonomies" do
       create(:taxonomy, name: 'Categories')
       click_link "Taxonomies"
       within("table.index tbody") do
-        expect(page).to have_content("Brand")
-        expect(page).to have_content("Categories")
+        expect(page).to(have_content("Brand"))
+        expect(page).to(have_content("Categories"))
       end
     end
   end
@@ -29,16 +29,16 @@ describe "Taxonomies" do
     end
 
     it "should allow an admin to create a new taxonomy" do
-      expect(page).to have_content("New Taxonomy")
+      expect(page).to(have_content("New Taxonomy"))
       fill_in "taxonomy_name", with: "sports"
       click_button "Create"
-      expect(page).to have_content("successfully created!")
+      expect(page).to(have_content("successfully created!"))
     end
 
     it "should display validation errors" do
       fill_in "taxonomy_name", with: ""
       click_button "Create"
-      expect(page).to have_content("can't be blank")
+      expect(page).to(have_content("can't be blank"))
     end
   end
 
@@ -49,8 +49,8 @@ describe "Taxonomies" do
       within_row(1) { find(".icon-edit").click }
       fill_in "taxonomy_name", with: "sports 99"
       click_button "Update"
-      expect(page).to have_content("successfully updated!")
-      expect(page).to have_content("sports 99")
+      expect(page).to(have_content("successfully updated!"))
+      expect(page).to(have_content("sports 99"))
     end
   end
 end

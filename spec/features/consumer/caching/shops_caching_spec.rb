@@ -26,19 +26,19 @@ describe "Shops caching", js: true, caching: true do
       Timecop.travel(10.minutes.ago) do
         visit shops_path
 
-        expect(page).to have_content distributor.name
+        expect(page).to(have_content(distributor.name))
 
         distributor.name = "New Name"
         distributor.save!
 
         visit shops_path
 
-        expect(page).to_not have_content "New Name" # Displayed name is unchanged
+        expect(page).to_not(have_content("New Name")) # Displayed name is unchanged
       end
 
       # A while later...
       visit shops_path
-      expect(page).to have_content "New Name" # Displayed name is now changed
+      expect(page).to(have_content("New Name")) # Displayed name is now changed
     end
   end
 
@@ -70,8 +70,8 @@ describe "Shops caching", js: true, caching: true do
     it "caches rendered response for taxons and properties, with the provided options" do
       visit enterprise_shop_path(distributor)
 
-      expect(page).to have_content "Cached Taxon"
-      expect(page).to have_content "Cached Property"
+      expect(page).to(have_content("Cached Taxon"))
+      expect(page).to(have_content("Cached Property"))
 
       expect_cached taxons_key, options
       expect_cached properties_key, options
@@ -82,8 +82,8 @@ describe "Shops caching", js: true, caching: true do
       Timecop.travel(10.minutes.ago) do
         visit enterprise_shop_path(distributor)
 
-        expect(page).to have_content taxon.name
-        expect(page).to have_content property.presentation
+        expect(page).to(have_content(taxon.name))
+        expect(page).to(have_content(property.presentation))
 
         product.taxons << taxon2
         product.update_attribute(:primary_taxon, taxon2)
@@ -91,19 +91,19 @@ describe "Shops caching", js: true, caching: true do
 
         visit enterprise_shop_path(distributor)
 
-        expect(page).to have_content taxon.name # Taxon list is unchanged
-        expect(page).to have_content property.presentation # Property list is unchanged
+        expect(page).to(have_content(taxon.name)) # Taxon list is unchanged
+        expect(page).to(have_content(property.presentation)) # Property list is unchanged
       end
 
       # A while later...
       visit enterprise_shop_path(distributor)
 
-      expect(page).to have_content taxon2.name
-      expect(page).to have_content property2.presentation
+      expect(page).to(have_content(taxon2.name))
+      expect(page).to(have_content(property2.presentation))
     end
   end
 
   def expect_cached(key, options = {})
-    expect(Rails.cache.exist?(key, options)).to be true
+    expect(Rails.cache.exist?(key, options)).to(be(true))
   end
 end

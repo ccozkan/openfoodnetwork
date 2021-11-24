@@ -30,16 +30,16 @@ js: true do
   let!(:er) { create(:enterprise_relationship, parent: shop, child: producer1) }
 
   before do
-    product1.set_property 'Organic', 'NASAA 12345'
-    product2.set_property 'Biodynamic', 'ABC123'
+    product1.set_property('Organic', 'NASAA 12345')
+    product2.set_property('Biodynamic', 'ABC123')
 
-    producer1.set_producer_property 'Local', 'Victoria'
-    producer2.set_producer_property 'Fair Trade', 'FT123'
+    producer1.set_producer_property('Local', 'Victoria')
+    producer2.set_producer_property('Fair Trade', 'FT123')
   end
 
   it "searches by URL" do
     visit producers_path(anchor: "/?query=xyzzy")
-    expect(page).to have_content "Sorry, no results found for xyzzy"
+    expect(page).to(have_content("Sorry, no results found for xyzzy"))
   end
 
   context "on the producers page" do
@@ -52,14 +52,14 @@ js: true do
 
       toggle_filter 'Vegetables'
 
-      expect(page).not_to have_content producer1.name
-      expect(page).to     have_content producer2.name
+      expect(page).not_to(have_content(producer1.name))
+      expect(page).to(    have_content(producer2.name))
 
       toggle_filter 'Vegetables'
       toggle_filter 'Fruit'
 
-      expect(page).to     have_content producer1.name
-      expect(page).not_to have_content producer2.name
+      expect(page).to(    have_content(producer1.name))
+      expect(page).not_to(have_content(producer2.name))
     end
 
     describe "filtering by product property" do
@@ -68,36 +68,36 @@ js: true do
 
         toggle_filter 'Organic'
 
-        expect(page).to     have_content producer1.name
-        expect(page).not_to have_content producer2.name
+        expect(page).to(    have_content(producer1.name))
+        expect(page).not_to(have_content(producer2.name))
 
         toggle_filter 'Organic'
         toggle_filter 'Biodynamic'
 
-        expect(page).not_to have_content producer1.name
-        expect(page).to     have_content producer2.name
+        expect(page).not_to(have_content(producer1.name))
+        expect(page).to(    have_content(producer2.name))
       end
     end
 
     it "shows all producers with expandable details" do
-      expect(page).to have_content producer1.name
+      expect(page).to(have_content(producer1.name))
       expand_active_table_node producer1.name
 
       # -- Taxons
-      expect(page).to have_content 'Fruit'
+      expect(page).to(have_content('Fruit'))
 
       # -- Properties
-      expect(page).to have_content 'Organic' # Product property
-      expect(page).to have_content 'Local'   # Producer property
+      expect(page).to(have_content('Organic')) # Product property
+      expect(page).to(have_content('Local'))   # Producer property
     end
 
     it "doesn't show invisible producers" do
-      expect(page).not_to have_content invisible_producer.name
+      expect(page).not_to(have_content(invisible_producer.name))
     end
 
     it "links to places to buy produce" do
       expand_active_table_node producer1.name
-      expect(page).to have_link shop.name
+      expect(page).to(have_link(shop.name))
     end
   end
 end

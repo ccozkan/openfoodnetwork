@@ -16,36 +16,36 @@ describe Enterprise do
         let(:producer_property) { enterprise.producer_properties.last }
 
         before do
-          product.set_property 'Organic', 'NASAA 12345'
-          enterprise.set_producer_property 'Biodynamic', 'ASDF 4321'
+          product.set_property('Organic', 'NASAA 12345')
+          enterprise.set_producer_property('Biodynamic', 'ASDF 4321')
         end
 
         it "touches enterprise when a classification on that product changes" do
           expect do
             classification.save!
             enterprise.reload
-          end.to change { enterprise.updated_at }
+          end.to(change { enterprise.updated_at })
         end
 
         it "touches enterprise when a property on that product changes" do
           expect do
             property.save!
             enterprise.reload
-          end.to change { enterprise.updated_at }
+          end.to(change { enterprise.updated_at })
         end
 
         it "touches enterprise when a producer property on that product changes" do
           expect do
             producer_property.save!
             enterprise.reload
-          end.to change { enterprise.updated_at }
+          end.to(change { enterprise.updated_at })
         end
 
         it "touches enterprise when the supplier of a product changes" do
           expect do
             product.update!(supplier: supplier2)
             enterprise.reload
-          end.to change { enterprise.updated_at }
+          end.to(change { enterprise.updated_at })
         end
       end
 
@@ -64,8 +64,8 @@ distributors: [enterprise],
         let(:producer_property) { supplier.producer_properties.last }
 
         before do
-          product.set_property 'Organic', 'NASAA 12345'
-          supplier.set_producer_property 'Biodynamic', 'ASDF 4321'
+          product.set_property('Organic', 'NASAA 12345')
+          supplier.set_producer_property('Biodynamic', 'ASDF 4321')
         end
 
         context "with an order cycle" do
@@ -75,35 +75,35 @@ distributors: [enterprise],
             expect do
               classification.save!
               enterprise.reload
-            end.to change { enterprise.updated_at }
+            end.to(change { enterprise.updated_at })
           end
 
           it "touches enterprise when a property on that product changes" do
             expect do
               property.save!
               enterprise.reload
-            end.to change { enterprise.updated_at }
+            end.to(change { enterprise.updated_at })
           end
 
           it "touches enterprise when a producer property on that product changes" do
             expect do
               producer_property.save!
               enterprise.reload
-            end.to change { enterprise.updated_at }
+            end.to(change { enterprise.updated_at })
           end
 
           it "touches enterprise when the supplier of a product changes" do
             expect do
               product.update!(supplier: supplier2)
               enterprise.reload
-            end.to change { enterprise.updated_at }
+            end.to(change { enterprise.updated_at })
           end
 
           it "touches enterprise when a relevant exchange is updated" do
             expect do
               oc.exchanges.first.update!(updated_at: Time.zone.now)
               enterprise.reload
-            end.to change { enterprise.updated_at }
+            end.to(change { enterprise.updated_at })
           end
         end
 
@@ -111,7 +111,7 @@ distributors: [enterprise],
           expect do
             oc
             enterprise.reload
-          end.to change { enterprise.updated_at }
+          end.to(change { enterprise.updated_at })
         end
       end
 
@@ -123,7 +123,7 @@ distributors: [enterprise],
           expect do
             er.save!
             enterprise.reload
-          end.to change { enterprise.updated_at }
+          end.to(change { enterprise.updated_at })
         end
       end
 
@@ -138,14 +138,14 @@ distributors: [enterprise],
           expect do
             enterprise.distributor_shipping_methods.first.save!
             enterprise.reload
-          end.to change { enterprise.updated_at }
+          end.to(change { enterprise.updated_at })
         end
 
         it "touches enterprise when shipping method is updated" do
           expect do
             sm.save!
             enterprise.reload
-          end.to change { enterprise.updated_at }
+          end.to(change { enterprise.updated_at })
         end
       end
 
@@ -153,7 +153,7 @@ distributors: [enterprise],
         expect do
           enterprise.address.save!
           enterprise.reload
-        end.to change { enterprise.updated_at }
+        end.to(change { enterprise.updated_at })
       end
     end
   end

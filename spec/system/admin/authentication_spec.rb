@@ -16,14 +16,14 @@ describe "Authentication", js: true do
     fill_in "Email", with: user.email
     fill_in "Password", with: user.password
     click_login_button
-    expect(page).to have_content "DASHBOARD"
-    expect(page).to have_current_path spree.admin_dashboard_path
-    expect(page).to have_no_content "CONFIGURATION"
+    expect(page).to(have_content("DASHBOARD"))
+    expect(page).to(have_current_path(spree.admin_dashboard_path))
+    expect(page).to(have_no_content("CONFIGURATION"))
   end
 
   it "viewing my account" do
     login_to_admin_section
     click_link "Account"
-    expect(page).to have_current_path spree.account_path
+    expect(page).to(have_current_path(spree.account_path))
   end
 end

@@ -43,10 +43,10 @@ numcode: "148"
     it "Allows a logged in user to register a profile" do
       visit registration_path
 
-      expect(Spree::Config.enterprises_require_tos).to eq false
-      expect(URI.parse(current_url).path).to eq registration_auth_path
+      expect(Spree::Config.enterprises_require_tos).to(eq(false))
+      expect(URI.parse(current_url).path).to(eq(registration_auth_path))
 
-      page.has_selector? "dd", text: "Login"
+      page.has_selector?("dd", text: "Login")
       switch_to_login_tab
 
       # Enter Login details
@@ -54,14 +54,14 @@ numcode: "148"
       fill_in "Password", with: user.password
 
       click_button "Login"
-      expect(page).to have_content("Hi there!")
+      expect(page).to(have_content("Hi there!"))
 
-      expect(URI.parse(current_url).path).to eq registration_path
+      expect(URI.parse(current_url).path).to(eq(registration_path))
 
       # Done reading introduction
-      expect(page).to have_text "What do I get?"
+      expect(page).to(have_text("What do I get?"))
       click_button "Let's get started!"
-      expect(page).to have_content 'Woot!'
+      expect(page).to(have_content('Woot!'))
 
       # Filling in details
       fill_in 'enterprise_name', with: "My Awesome Enterprise"
@@ -70,37 +70,37 @@ numcode: "148"
       fill_in 'enterprise_address', with: '123 Abc Street'
       fill_in 'enterprise_city', with: 'Northcote'
       fill_in 'enterprise_zipcode', with: '3070'
-      expect(page).to have_select(
+      expect(page).to(have_select(
 'enterprise_country',
 options: ["Albania", "Australia"],
                       selected: 'Australia'
-)
+))
       select 'Vic', from: 'enterprise_state'
       click_button "Continue"
-      expect(page).to have_content 'Who is responsible for managing My Awesome Enterprise?'
+      expect(page).to(have_content('Who is responsible for managing My Awesome Enterprise?'))
 
       # Filling in Contact Details
       fill_in 'enterprise_contact', with: 'Saskia Munroe'
-      expect(page).to have_field 'enterprise_email_address', with: user.email
+      expect(page).to(have_field('enterprise_email_address', with: user.email))
       fill_in 'enterprise_phone', with: '12 3456 7890'
       click_button "Continue"
-      expect(page).to have_content 'Last step to add My Awesome Enterprise!'
+      expect(page).to(have_content('Last step to add My Awesome Enterprise!'))
 
       # Choosing a type
       click_link "producer-panel"
-      expect(page).to have_selector '#producer-panel.selected'
+      expect(page).to(have_selector('#producer-panel.selected'))
 
       # Next (profile is created at this point)
       click_button "Create Profile"
-      expect(page).to have_content 'Nice one!'
+      expect(page).to(have_content('Nice one!'))
 
       # Enterprise should be created
       e = Enterprise.find_by(name: 'My Awesome Enterprise')
-      expect(e.address.address1).to eq "123 Abc Street"
-      expect(e.sells).to eq "unspecified"
-      expect(e.is_primary_producer).to eq true
-      expect(e.contact.id).to eq e.owner_id
-      expect(e.contact_name).to eq "Saskia Munroe"
+      expect(e.address.address1).to(eq("123 Abc Street"))
+      expect(e.sells).to(eq("unspecified"))
+      expect(e.is_primary_producer).to(eq(true))
+      expect(e.contact.id).to(eq(e.owner_id))
+      expect(e.contact_name).to(eq("Saskia Munroe"))
 
       # Filling in about
       fill_in 'enterprise_description', with: 'Short description'
@@ -109,34 +109,34 @@ options: ["Albania", "Australia"],
       fill_in 'enterprise_acn', with: '54321'
       choose 'Yes' # enterprise_charges_sales_tax
       click_button "Continue"
-      expect(page).to have_content 'Step 1. Select Logo Image'
+      expect(page).to(have_content('Step 1. Select Logo Image'))
 
       # Enterprise should be updated
       e.reload
-      expect(e.description).to eq "Short description"
-      expect(e.long_description).to eq "Long description"
-      expect(e.abn).to eq '12345'
-      expect(e.acn).to eq '54321'
-      expect(e.charges_sales_tax).to be true
+      expect(e.description).to(eq("Short description"))
+      expect(e.long_description).to(eq("Long description"))
+      expect(e.abn).to(eq('12345'))
+      expect(e.acn).to(eq('54321'))
+      expect(e.charges_sales_tax).to(be(true))
 
       # Images
       # Upload logo image
       attach_file "image-select", Rails.root.join("spec/fixtures/files/logo.png"), visible: false
-      expect(page).to have_no_css('#image-placeholder .loading')
-      expect(page.find('#image-placeholder img')['src']).to_not be_empty
+      expect(page).to(have_no_css('#image-placeholder .loading'))
+      expect(page.find('#image-placeholder img')['src']).to_not(be_empty)
 
       # Move from logo page
       click_button "Continue"
-      expect(page).to have_content 'Step 3. Select Promo Image'
+      expect(page).to(have_content('Step 3. Select Promo Image'))
 
       # Upload promo image
       attach_file "image-select", Rails.root.join("spec/fixtures/files/promo.png"), visible: false
-      expect(page).to have_no_css('#image-placeholder .loading')
-      expect(page.find('#image-placeholder img')['src']).to_not be_empty
+      expect(page).to(have_no_css('#image-placeholder .loading'))
+      expect(page.find('#image-placeholder img')['src']).to_not(be_empty)
 
       # Move from promo page
       click_button "Continue"
-      expect(page).to have_content 'How can people find My Awesome Enterprise online?'
+      expect(page).to(have_content('How can people find My Awesome Enterprise online?'))
 
       # Filling in social
       fill_in 'enterprise_website', with: 'www.shop.com'
@@ -145,22 +145,22 @@ options: ["Albania", "Australia"],
       fill_in 'enterprise_twitter', with: '@TwItTeR'
       fill_in 'enterprise_instagram', with: '@InStAgRaM'
       click_button "Continue"
-      expect(page).to have_content 'Finished!'
+      expect(page).to(have_content('Finished!'))
 
       # Done
       e.reload
-      expect(e.website).to eq "www.shop.com"
-      expect(e.facebook).to eq "FaCeBoOk"
-      expect(e.linkedin).to eq "LiNkEdIn"
-      expect(e.twitter).to eq "@TwItTeR"
-      expect(e.instagram).to eq "@InStAgRaM"
+      expect(e.website).to(eq("www.shop.com"))
+      expect(e.facebook).to(eq("FaCeBoOk"))
+      expect(e.linkedin).to(eq("LiNkEdIn"))
+      expect(e.twitter).to(eq("@TwItTeR"))
+      expect(e.instagram).to(eq("@InStAgRaM"))
 
       click_link "Go to Enterprise Dashboard"
-      expect(page).to have_content "CHOOSE YOUR PACKAGE"
+      expect(page).to(have_content("CHOOSE YOUR PACKAGE"))
 
       page.find('.full_hub h3').click
       click_button "Select and Continue"
-      expect(page).to have_content "Your profile live"
+      expect(page).to(have_content("Your profile live"))
     end
 
     context "when the user has no more remaining enterprises" do
@@ -171,14 +171,14 @@ options: ["Albania", "Australia"],
       it "displays the limit reached page" do
         visit registration_path
 
-        expect(page).to have_selector "dd", text: "Login"
+        expect(page).to(have_selector("dd", text: "Login"))
         switch_to_login_tab
 
         # Enter Login details
         fill_in "Email", with: user.email
         fill_in "Password", with: user.password
         click_button 'Login'
-        expect(page).to have_content I18n.t('registration.steps.limit_reached.headline')
+        expect(page).to(have_content(I18n.t('registration.steps.limit_reached.headline')))
       end
     end
   end
@@ -197,7 +197,7 @@ options: ["Albania", "Australia"],
         visit registration_path
 
         click_button "Let's get started!"
-        expect(find("div#progress-bar")).to be_visible
+        expect(find("div#progress-bar")).to(be_visible)
       end
     end
 
@@ -207,24 +207,24 @@ options: ["Albania", "Australia"],
       it "does not allow registration unless checkbox is checked" do
         visit registration_path
 
-        expect(page).to have_content "Terms of Service"
-        expect(page).to have_selector "input.button.primary[disabled]"
+        expect(page).to(have_content("Terms of Service"))
+        expect(page).to(have_selector("input.button.primary[disabled]"))
 
         check "accept_terms"
-        expect(page).to have_no_selector "input.button.primary[disabled]"
+        expect(page).to(have_no_selector("input.button.primary[disabled]"))
 
         click_button "Let's get started!"
-        expect(find("div#progress-bar")).to be_visible
+        expect(find("div#progress-bar")).to(be_visible)
       end
     end
   end
 
   def switch_to_login_tab
     # Link appears to be unresponsive for a while, so keep clicking it until it works
-    using_wait_time 0.5 do
+    using_wait_time(0.5) do
       10.times do
         find("a", text: "Login").click
-        break if page.has_selector? "dd.active", text: "Login"
+        break if page.has_selector?("dd.active", text: "Login")
       end
     end
   end

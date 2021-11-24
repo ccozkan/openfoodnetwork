@@ -52,8 +52,8 @@ module Spree
             .sub("Controller", "")
             .underscore.split('/').last.singularize.to_sym
         end
-        authorize! :admin, record
-        authorize! resource_authorize_action, record
+        authorize!(:admin, record)
+        authorize!(resource_authorize_action, record)
       end
 
       def resource_authorize_action
@@ -89,11 +89,11 @@ module Spree
       end
 
       def render_as_json(data, options = {})
-        ams_prefix = options.delete :ams_prefix
+        ams_prefix = options.delete(:ams_prefix)
         if each_serializer_required?(data)
-          render options.merge(json: data, each_serializer: serializer(ams_prefix))
+          render(options.merge(json: data, each_serializer: serializer(ams_prefix)))
         else
-          render options.merge(json: data, serializer: serializer(ams_prefix))
+          render(options.merge(json: data, serializer: serializer(ams_prefix)))
         end
       end
 
@@ -103,7 +103,7 @@ module Spree
 
       def serializer(ams_prefix)
         unless ams_prefix.nil? || ams_prefix_whitelist.include?(ams_prefix.to_sym)
-          raise "Suffix '#{ams_prefix}' not found in ams_prefix_whitelist for #{self.class.name}."
+          raise("Suffix '#{ams_prefix}' not found in ams_prefix_whitelist for #{self.class.name}.")
         end
 
         prefix = ams_prefix&.classify || ""

@@ -9,10 +9,10 @@ module SampleData
     include Addressing
 
     def create_samples(users)
-      log "Creating enterprises:"
+      log("Creating enterprises:")
       enterprise_data(users).map do |data|
         name = data[:name]
-        log "- #{name}"
+        log("- #{name}")
         data[:long_description] = data[:long_description].strip_heredoc.tr("\n", " ")
         Enterprise.create_with(data).find_or_create_by!(name: name)
       end

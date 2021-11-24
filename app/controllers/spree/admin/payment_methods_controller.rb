@@ -21,7 +21,7 @@ module Spree
 
         if @payment_method.save
           flash[:success] = Spree.t(:successfully_created, resource: Spree.t(:payment_method))
-          redirect_to spree.edit_admin_payment_method_path(@payment_method)
+          redirect_to(spree.edit_admin_payment_method_path(@payment_method))
         else
           respond_with(@payment_method)
         end
@@ -38,7 +38,7 @@ module Spree
 
         if @payment_method.update(update_params)
           flash[:success] = Spree.t(:successfully_updated, resource: Spree.t(:payment_method))
-          redirect_to spree.edit_admin_payment_method_path(@payment_method)
+          redirect_to(spree.edit_admin_payment_method_path(@payment_method))
         else
           respond_with(@payment_method)
         end
@@ -62,8 +62,8 @@ module Spree
         collection = collection.managed_by(spree_current_user).by_name # This line added
 
         # This block added
-        if params.key? :enterprise_id
-          distributor = Enterprise.find params[:enterprise_id]
+        if params.key?(:enterprise_id)
+          distributor = Enterprise.find(params[:enterprise_id])
           collection = collection.for_distributor(distributor)
         end
 
@@ -73,7 +73,7 @@ module Spree
       def show_provider_preferences
         if params[:pm_id].present?
           @payment_method = PaymentMethod.find(params[:pm_id])
-          authorize! :show_provider_preferences, @payment_method
+          authorize!(:show_provider_preferences, @payment_method)
           payment_method_type = params[:provider_type]
           if @payment_method['type'].to_s != payment_method_type
             @payment_method.update_columns(type: payment_method_type, updated_at: Time.zone.now)
@@ -82,7 +82,7 @@ module Spree
         else
           @payment_method = params[:provider_type].constantize.new
         end
-        render partial: 'provider_settings'
+        render(partial: 'provider_settings')
       end
 
       private
@@ -100,7 +100,7 @@ module Spree
  if Rails.env.dev? || Rails.env.test?
                        Gateway.providers.sort_by(&:name)
                      else
-                       Gateway.providers.reject { |p| p.name.include? "Bogus" }
+                       Gateway.providers.reject { |p| p.name.include?("Bogus") }
 .sort_by(&:name)
                      end
         @providers.reject! { |provider| stripe_provider?(provider) } unless show_stripe?
@@ -112,14 +112,14 @@ module Spree
         return if valid_payment_methods.include?(params[:payment_method][:type])
 
         flash[:error] = Spree.t(:invalid_payment_provider)
-        redirect_to spree.new_admin_payment_method_path
+        redirect_to(spree.new_admin_payment_method_path)
       end
 
       def load_hubs
         
         @hubs =
  Enterprise.managed_by(spree_current_user).is_distributor.to_a.sort_by! do |d|
-          [(@payment_method.has_distributor? d) ? 0 : 1, d.name]
+          [(@payment_method.has_distributor?(d)) ? 0 : 1, d.name]
         end
         
       end
@@ -136,7 +136,7 @@ module Spree
         return unless @payment_method.preferred_enterprise_id&.positive?
 
         @stripe_account_holder = Enterprise.find(@payment_method.preferred_enterprise_id)
-        return if spree_current_user.enterprises.include? @stripe_account_holder
+        return if spree_current_user.enterprises.include?(@stripe_account_holder)
 
         update_params[:preferred_enterprise_id] = @stripe_account_holder.id
       end
@@ -145,7 +145,7 @@ module Spree
         [
 "Spree::Gateway::StripeConnect",
          "Spree::Gateway::StripeSCA"
-].include? @payment_method.try(:type)
+].include?(@payment_method.try(:type))
       end
 
       def stripe_provider?(provider)
@@ -183,7 +183,7 @@ module Spree
         end
 
         flash[:error] = I18n.t(:calculator_preferred_value_error)
-        redirect_to spree.edit_admin_payment_method_path(@payment_method)
+        redirect_to(spree.edit_admin_payment_method_path(@payment_method))
       end
 
       def calculator_preferred_values

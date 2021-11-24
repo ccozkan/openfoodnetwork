@@ -12,14 +12,14 @@ class UserPasswordsController < Spree::UserPasswordsController
 
     if resource.errors.empty?
       set_flash_message(:success, :send_instructions) if is_navigational_format?
-      respond_with resource, location: main_app.login_path
+      respond_with(resource, location: main_app.login_path)
     else
       respond_to do |format|
         format.html do
-          respond_with_navigational(resource) { render :new }
+          respond_with_navigational(resource) { render(:new) }
         end
         format.js do
-          render json: { error: t('email_not_found') }, status: :not_found
+          render(json: { error: t('email_not_found') }, status: :not_found)
         end
       end
     end
@@ -32,7 +32,7 @@ class UserPasswordsController < Spree::UserPasswordsController
   end
 
   def render_unconfirmed_response
-    render json: { error: t('email_unconfirmed') }, status: :unauthorized
+    render(json: { error: t('email_unconfirmed') }, status: :unauthorized)
   end
 
   def user_unconfirmed?

@@ -71,11 +71,11 @@ class CheckoutController < ::BaseController
   end
 
   def ensure_checkout_allowed
-    redirect_to main_app.cart_path unless @order.checkout_allowed?
+    redirect_to(main_app.cart_path) unless @order.checkout_allowed?
   end
 
   def ensure_order_not_completed
-    redirect_to main_app.cart_path if @order.completed?
+    redirect_to(main_app.cart_path) if @order.completed?
   end
 
   def load_order
@@ -106,11 +106,11 @@ class CheckoutController < ::BaseController
 
     respond_to do |format|
       format.html do
-        redirect_to main_app.cart_path
+        redirect_to(main_app.cart_path)
       end
 
       format.json do
-        render json: { path: main_app.cart_path }, status: :bad_request
+        render(json: { path: main_app.cart_path }, status: :bad_request)
       end
     end
   end
@@ -191,7 +191,7 @@ class CheckoutController < ::BaseController
     redirect_path = Checkout::StripeRedirect.new(params, @order).path if redirect_path.blank?
     return if redirect_path.blank?
 
-    render json: { path: redirect_path }, status: :ok
+    render(json: { path: redirect_path }, status: :ok)
     true
   end
 
@@ -229,7 +229,7 @@ class CheckoutController < ::BaseController
         respond_with(@order, location: order_path(@order))
       end
       format.json do
-        render json: { path: order_path(@order) }, status: :ok
+        render(json: { path: order_path(@order) }, status: :ok)
       end
     end
   end
@@ -248,11 +248,11 @@ class CheckoutController < ::BaseController
   def action_failed_response
     respond_to do |format|
       format.html do
-        render :edit
+        render(:edit)
       end
       format.json do
         discard_flash_errors
-        render json: { errors: @order.errors, flash: flash.to_hash }.to_json, status: :bad_request
+        render(json: { errors: @order.errors, flash: flash.to_hash }.to_json, status: :bad_request)
       end
     end
   end

@@ -15,13 +15,13 @@ module DfcProvider
       def check_authorization
         return if access_token.present?
 
-        head :unprocessable_entity
+        head(:unprocessable_entity)
       end
 
       def check_user
         return if current_user.present?
 
-        head :unauthorized
+        head(:unauthorized)
       end
 
       def check_enterprise
@@ -57,7 +57,7 @@ module DfcProvider
       end
 
       def not_found
-        head :not_found
+        head(:not_found)
       end
     end
   end

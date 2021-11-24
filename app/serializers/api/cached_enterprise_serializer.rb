@@ -78,16 +78,16 @@ module Api
 
     def taxons
       if active
-        ids_to_objs data.current_distributed_taxons[enterprise.id]
+        ids_to_objs(data.current_distributed_taxons[enterprise.id])
       else
-        ids_to_objs data.all_distributed_taxons[enterprise.id]
+        ids_to_objs(data.all_distributed_taxons[enterprise.id])
       end
     end
 
     def supplied_taxons
       return [] unless enterprise.is_primary_producer
 
-      ids_to_objs data.supplied_taxons[enterprise.id]
+      ids_to_objs(data.supplied_taxons[enterprise.id])
     end
 
     def supplied_properties
@@ -140,7 +140,7 @@ module Api
     end
 
     def active
-      @active ||= data.active_distributor_ids&.include? enterprise.id
+      @active ||= data.active_distributor_ids&.include?(enterprise.id)
     end
 
     # Map svg icons.

@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe CheckoutHelper, type: :helper do
   it "generates html for validated inputs" do
-    expect(helper).to receive(:render).with(
+    expect(helper).to(receive(:render).with(
       "shared/validated_input",
       name: "test",
       path: "foo",
@@ -16,7 +16,7 @@ describe CheckoutHelper, type: :helper do
 "ng-model" => "foo",
 "ng-class" => "{error: !fieldValid('foo')}"
 }
-    )
+    ))
 
     helper.validated_input("test", "foo", type: :email)
   end
@@ -25,23 +25,23 @@ describe CheckoutHelper, type: :helper do
     let(:order) { double(:order, total_tax: 123.45, currency: 'AUD') }
 
     it "retrieves the total tax on the order" do
-      expect(helper.display_checkout_tax_total(order)).to eq(
+      expect(helper.display_checkout_tax_total(order)).to(eq(
 Spree::Money.new(
 123.45,
                                                                               currency: 'AUD'
 )
-)
+))
     end
   end
 
   it "knows if guests can checkout" do
     distributor = create(:distributor_enterprise)
     order = create(:order, distributor: distributor)
-    allow(helper).to receive(:current_order) { order }
-    expect(helper.guest_checkout_allowed?).to be true
+    allow(helper).to(receive(:current_order) { order })
+    expect(helper.guest_checkout_allowed?).to(be(true))
 
     order.distributor.allow_guest_orders = false
-    expect(helper.guest_checkout_allowed?).to be false
+    expect(helper.guest_checkout_allowed?).to(be(false))
   end
 
   describe "#checkout_adjustments_for" do
@@ -59,19 +59,19 @@ adjustable: order,
     before do
       order.update_order!
       # Sanity check initial adjustments state
-      expect(order.shipment_adjustments.count).to eq 1
-      expect(order.adjustments.enterprise_fee.count).to eq 1
+      expect(order.shipment_adjustments.count).to(eq(1))
+      expect(order.adjustments.enterprise_fee.count).to(eq(1))
     end
 
     it "collects adjustments on the order" do
       adjustments = helper.checkout_adjustments_for(order)
 
       shipping_adjustment = order.shipment_adjustments.first
-      expect(adjustments).to include shipping_adjustment
+      expect(adjustments).to(include(shipping_adjustment))
 
       admin_fee_summary = adjustments.last
-      expect(admin_fee_summary.label).to eq I18n.t(:orders_form_admin)
-      expect(admin_fee_summary.amount).to eq 123
+      expect(admin_fee_summary.label).to(eq(I18n.t(:orders_form_admin)))
+      expect(admin_fee_summary.amount).to(eq(123))
     end
 
     context "tax rate adjustments" do
@@ -102,11 +102,11 @@ adjustable: order.line_items.first,
       end
 
       it "removes tax rate adjustments" do
-        expect(order.all_adjustments.tax.count).to eq(2)
+        expect(order.all_adjustments.tax.count).to(eq(2))
 
         adjustments = helper.checkout_adjustments_for(order)
         tax_adjustments = adjustments.select { |a| a.originator_type == "Spree::TaxRate" }
-        expect(tax_adjustments.count).to eq(0)
+        expect(tax_adjustments.count).to(eq(0))
       end
     end
 
@@ -123,7 +123,7 @@ adjustable: order,
       it "includes return adjustments" do
         adjustments = helper.checkout_adjustments_for(order)
 
-        expect(adjustments).to include return_adjustment
+        expect(adjustments).to(include(return_adjustment))
       end
     end
   end

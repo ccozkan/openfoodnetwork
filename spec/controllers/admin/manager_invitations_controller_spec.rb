@@ -16,14 +16,14 @@ module Admin
     describe "#create" do
       context "when given email matches an existing user" do
         before do
-          allow(controller).to receive_messages spree_current_user: admin
+          allow(controller).to(receive_messages(spree_current_user: admin))
         end
 
         it "returns an error" do
           spree_post :create, email: existing_user.email, enterprise_id: enterprise.id
 
-          expect(response.status).to eq 422
-          expect(json_response['errors']).to eq I18n.t('admin.enterprises.invite_manager.user_already_exists')
+          expect(response.status).to(eq(422))
+          expect(json_response['errors']).to(eq(I18n.t('admin.enterprises.invite_manager.user_already_exists')))
         end
       end
 
@@ -31,14 +31,14 @@ module Admin
         let(:mail_mock) { double(:mailer, deliver_later: true) }
 
         before do
-          allow(EnterpriseMailer).to receive(:manager_invitation)
-            .with(enterprise, kind_of(Spree::User)) { mail_mock }
+          allow(EnterpriseMailer).to(receive(:manager_invitation)
+            .with(enterprise, kind_of(Spree::User)) { mail_mock })
 
-          allow(controller).to receive_messages spree_current_user: admin
+          allow(controller).to(receive_messages(spree_current_user: admin))
         end
 
         it 'enqueues an invitation email' do
-          expect(mail_mock).to receive(:deliver_later)
+          expect(mail_mock).to(receive(:deliver_later))
 
           spree_post :create, email: 'un.registered@email.com', enterprise_id: enterprise.id
         end
@@ -47,7 +47,7 @@ module Admin
           spree_post :create, email: 'un.registered@email.com', enterprise_id: enterprise.id
 
           new_user = Spree::User.find_by(email: 'un.registered@email.com')
-          expect(json_response['user']).to eq new_user.id
+          expect(json_response['user']).to(eq(new_user.id))
         end
       end
     end
@@ -56,7 +56,7 @@ module Admin
       context "as user with proper enterprise permissions" do
         before do
           setup_email
-          allow(controller).to receive_messages spree_current_user: enterprise_owner
+          allow(controller).to(receive_messages(spree_current_user: enterprise_owner))
         end
 
         it "returns success code" do
@@ -64,15 +64,15 @@ module Admin
 
           new_user = Spree::User.find_by(email: 'an@email.com')
 
-          expect(new_user.reset_password_token).to_not be_nil
-          expect(json_response['user']).to eq new_user.id
-          expect(response.status).to eq 200
+          expect(new_user.reset_password_token).to_not(be_nil)
+          expect(json_response['user']).to(eq(new_user.id))
+          expect(response.status).to(eq(200))
         end
       end
 
       context "as another enterprise user without permissions for this enterprise" do
         before do
-          allow(controller).to receive_messages spree_current_user: other_enterprise_user
+          allow(controller).to(receive_messages(spree_current_user: other_enterprise_user))
         end
 
         it "returns unauthorized response" do
@@ -80,8 +80,8 @@ module Admin
 
           new_user = Spree::User.find_by(email: 'another@email.com')
 
-          expect(new_user).to be_nil
-          expect(response.status).to eq 302
+          expect(new_user).to(be_nil)
+          expect(response.status).to(eq(302))
         end
       end
     end

@@ -16,7 +16,7 @@ module VariantUnits
       name_fields = []
       name_fields << "#{value}#{separator}#{unit}" if value.present? && unit.present?
       name_fields << @variant.unit_description if @variant.unit_description.present?
-      name_fields.join ' '
+      name_fields.join(' ')
     end
 
     def value
@@ -37,7 +37,7 @@ module VariantUnits
 
     def option_value_value_unit
       if @variant.unit_value.present?
-        if %w(weight volume).include? @variant.product.variant_unit
+        if %w(weight volume).include?(@variant.product.variant_unit)
           value, unit_name = option_value_value_unit_scaled
         else
           value = @variant.unit_value

@@ -22,7 +22,7 @@ spree_current_user,
       @original_filename = params[:file].try(:original_filename)
       @non_updatable_fields = ProductImport::EntryValidator.non_updatable_fields
 
-      return if contains_errors? @importer
+      return if contains_errors?(@importer)
 
       @ams_data = ams_data
     end
@@ -30,13 +30,13 @@ spree_current_user,
     def validate_data
       return unless process_data('validate')
 
-      render json: @importer.import_results, response: 200
+      render(json: @importer.import_results, response: 200)
     end
 
     def save_data
       return unless process_data('save')
 
-      render json: @importer.save_results, response: 200
+      render(json: @importer.save_results, response: 200)
     end
 
     def reset_absent_products
@@ -53,14 +53,14 @@ settings: params[:settings]
         @importer.reset_absent(params[:updated_ids])
       end
 
-      render json: @importer.products_reset_count
+      render(json: @importer.products_reset_count)
     end
 
     private
 
     def validate_upload_presence
       unless params[:file] || (params[:filepath] && File.exist?(params[:filepath]))
-        redirect_to '/admin/product_import', notice: I18n.t(:product_import_file_not_found_notice)
+        redirect_to('/admin/product_import', notice: I18n.t(:product_import_file_not_found_notice))
       end
     end
 
@@ -76,7 +76,7 @@ settings: params[:settings]
       begin
         @importer.public_send("#{method}_entries")
       rescue StandardError => e
-        render json: e.message, response: 500
+        render(json: e.message, response: 500)
         return false
       end
 
@@ -85,24 +85,24 @@ settings: params[:settings]
 
     def contains_errors?(importer)
       if importer.errors.present?
-        redirect_to '/admin/product_import', notice: @importer.errors.full_messages.to_sentence
+        redirect_to('/admin/product_import', notice: @importer.errors.full_messages.to_sentence)
         return true
       end
 
-      check_spreadsheet_has_data importer
+      check_spreadsheet_has_data(importer)
     end
 
     def check_spreadsheet_has_data(importer)
       unless importer.item_count
-        redirect_to '/admin/product_import',
-                    notice: I18n.t(:product_import_no_data_in_spreadsheet_notice)
+        redirect_to('/admin/product_import',
+                    notice: I18n.t(:product_import_no_data_in_spreadsheet_notice))
         true
       end
     end
 
     def save_uploaded_file(upload)
       extension = File.extname(upload.original_filename)
-      directory = Dir.mktmpdir 'product_import'
+      directory = Dir.mktmpdir('product_import')
       File.open(File.join(directory, "import#{extension}"), 'wb') do |f|
         data = UploadSanitizer.new(upload.read).call
         f.write(data)

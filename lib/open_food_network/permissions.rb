@@ -14,17 +14,17 @@ module OpenFoodNetwork
 
     # Enterprises that an admin is allowed to add to an order cycle
     def visible_enterprises_for_order_reports
-      managed_and_related_enterprises_with :add_to_order_cycle
+      managed_and_related_enterprises_with(:add_to_order_cycle)
     end
 
     # Enterprises that the user manages and those that have granted P-OC to managed enterprises
     def visible_enterprises
-      managed_and_related_enterprises_granting :add_to_order_cycle
+      managed_and_related_enterprises_granting(:add_to_order_cycle)
     end
 
     # Enterprises for which an admin is allowed to edit their profile
     def editable_enterprises
-      managed_and_related_enterprises_granting :edit_profile
+      managed_and_related_enterprises_granting(:edit_profile)
     end
 
     def variant_override_hubs
@@ -82,7 +82,7 @@ module OpenFoodNetwork
     end
 
     def managed_product_enterprises
-      managed_and_related_enterprises_granting :manage_products
+      managed_and_related_enterprises_granting(:manage_products)
     end
 
     def manages_one_enterprise?

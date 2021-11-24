@@ -64,9 +64,9 @@ bill_address: bill_address,
     end
 
     it "should return a header row describing the report" do
-      subject = GroupBuyReport.new [@order1]
+      subject = GroupBuyReport.new([@order1])
       header = subject.header
-      expect(header).to eq(
+      expect(header).to(eq(
 [
 "Supplier",
 "Product",
@@ -76,11 +76,11 @@ bill_address: bill_address,
                             "Total Ordered",
 "Total Max"
 ]
-)
+))
     end
 
     it "should provide the required variant and quantity information in a table" do
-      subject = GroupBuyReport.new @orders
+      subject = GroupBuyReport.new(@orders)
 
       table = subject.table
 
@@ -93,7 +93,7 @@ bill_address: bill_address,
       sum_max_quantities = line_items.map { |li| li.max_quantity || 0 }
 .sum
 
-      expect(table[0]).to eq(
+      expect(table[0]).to(eq(
 [
 @variant1.product.supplier.name,
 @variant1.product.name,
@@ -103,22 +103,22 @@ bill_address: bill_address,
 sum_quantities,
 sum_max_quantities
 ]
-)
+))
     end
 
     it "should return a table wherein each rows contains the same number of columns as the heading" do
-      subject = GroupBuyReport.new @orders
+      subject = GroupBuyReport.new(@orders)
 
       table = subject.table
       columns = subject.header.length
 
       table.each do |r|
-        expect(r.length).to eq(columns)
+        expect(r.length).to(eq(columns))
       end
     end
 
     it "should split and group line items from multiple suppliers and of multiple variants" do
-      subject = GroupBuyReport.new @orders
+      subject = GroupBuyReport.new(@orders)
 
       table_row_objects = subject.variants_and_quantities
 
@@ -135,9 +135,9 @@ sum_max_quantities
       variant_groups = variant_rows.group_by(&:variant)
       product_groups = product_rows.group_by(&:product)
 
-      expect(supplier_groups.length).to eq(2)
-      expect(variant_groups.length).to eq(3)
-      expect(product_groups.length).to eq(3)
+      expect(supplier_groups.length).to(eq(2))
+      expect(variant_groups.length).to(eq(3))
+      expect(product_groups.length).to(eq(3))
     end
   end
 end

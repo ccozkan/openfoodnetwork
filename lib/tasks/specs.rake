@@ -10,7 +10,7 @@ namespace :ofn do
       end
 
       def execute_rspec_for_pattern(pattern)
-        system "bundle exec rspec --profile --pattern \"#{pattern}\""
+        system("bundle exec rspec --profile --pattern \"#{pattern}\"")
       end
 
       def execute_rspec_for_spec_folder(folder)
@@ -41,7 +41,7 @@ namespace :ofn do
       end
 
       def execute_rspec_for_engine(engine_path)
-        system "DISABLE_KNAPSACK=true bundle exec rspec #{engine_path.expand_path}/spec"
+        system("DISABLE_KNAPSACK=true bundle exec rspec #{engine_path.expand_path}/spec")
       end
 
       engine_paths = detect_engine_paths

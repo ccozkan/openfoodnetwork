@@ -12,7 +12,7 @@ module Api
     let(:attributes) { [:id, :name] }
 
     before do
-      allow(controller).to receive(:spree_current_user) { current_api_user }
+      allow(controller).to(receive(:spree_current_user) { current_api_user })
 
       taxon2.children << create(:taxon, name: "3.2.2", taxonomy: taxonomy)
       taxon.children << taxon2
@@ -25,9 +25,9 @@ module Api
       it "gets the jstree-friendly version of a taxonomy" do
         api_get :jstree, id: taxonomy.id
 
-        expect(json_response["data"]).to eq(taxonomy.root.name)
-        expect(json_response["attr"]).to eq("id" => taxonomy.root.id, "name" => taxonomy.root.name)
-        expect(json_response["state"]).to eq("closed")
+        expect(json_response["data"]).to(eq(taxonomy.root.name))
+        expect(json_response["attr"]).to(eq("id" => taxonomy.root.id, "name" => taxonomy.root.name))
+        expect(json_response["state"]).to(eq("closed"))
       end
     end
   end

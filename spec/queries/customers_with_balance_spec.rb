@@ -12,8 +12,8 @@ describe CustomersWithBalance do
     let(:outstanding_balance) { instance_double(OutstandingBalance) }
 
     it 'calls CustomersWithBalance#statement' do
-      allow(OutstandingBalance).to receive(:new).and_return(outstanding_balance)
-      expect(outstanding_balance).to receive(:statement)
+      allow(OutstandingBalance).to(receive(:new).and_return(outstanding_balance))
+      expect(outstanding_balance).to(receive(:statement))
 
       customers_with_balance.query
     end
@@ -26,7 +26,7 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(0)
+        expect(customer.balance_value).to(eq(0))
       end
     end
 
@@ -38,7 +38,7 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(0)
+        expect(customer.balance_value).to(eq(0))
       end
     end
 
@@ -50,7 +50,7 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(0)
+        expect(customer.balance_value).to(eq(0))
       end
     end
 
@@ -62,7 +62,7 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(0)
+        expect(customer.balance_value).to(eq(0))
       end
     end
 
@@ -76,7 +76,7 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(-total)
+        expect(customer.balance_value).to(eq(-total))
       end
     end
 
@@ -92,7 +92,7 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(payment_total - total)
+        expect(customer.balance_value).to(eq(payment_total - total))
       end
     end
 
@@ -114,7 +114,7 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(payment_total - non_canceled_orders_total)
+        expect(customer.balance_value).to(eq(payment_total - non_canceled_orders_total))
       end
     end
 
@@ -130,7 +130,7 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(payment_total - total)
+        expect(customer.balance_value).to(eq(payment_total - total))
       end
     end
 
@@ -146,7 +146,7 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(payment_total - total)
+        expect(customer.balance_value).to(eq(payment_total - total))
       end
     end
 
@@ -162,7 +162,7 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(payment_total - total)
+        expect(customer.balance_value).to(eq(payment_total - total))
       end
     end
 
@@ -179,14 +179,14 @@ describe CustomersWithBalance do
 
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(payment_total - non_returned_orders_total)
+        expect(customer.balance_value).to(eq(payment_total - non_returned_orders_total))
       end
     end
 
     context 'when there are no orders' do
       it 'returns the customer balance' do
         customer = customers_with_balance.query.first
-        expect(customer.balance_value).to eq(0)
+        expect(customer.balance_value).to(eq(0))
       end
     end
   end

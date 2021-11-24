@@ -19,15 +19,15 @@ describe "User password confirm/reset page" do
     it "lets the user set a password" do
       visit spree.spree_user_confirmation_path(confirmation_token: user.confirmation_token)
 
-      expect(user.reload.confirmed?).to be true
-      expect(page).to have_text I18n.t(:change_my_password)
+      expect(user.reload.confirmed?).to(be(true))
+      expect(page).to(have_text(I18n.t(:change_my_password)))
 
       fill_in "Password", with: "my secret"
       fill_in "Password Confirmation", with: "my secret"
       click_button
 
-      expect(page).to have_no_text "Reset password token has expired"
-      expect(page).to be_logged_in_as user
+      expect(page).to(have_no_text("Reset password token has expired"))
+      expect(page).to(be_logged_in_as(user))
     end
   end
 
@@ -37,13 +37,13 @@ describe "User password confirm/reset page" do
     it "has the right error when password aren't the same" do
       visit spree.edit_spree_user_password_path(reset_password_token: reset_password_token)
 
-      expect(page).to have_text "Change my password"
+      expect(page).to(have_text("Change my password"))
 
       fill_in "Password", with: "my secret"
       fill_in "Password Confirmation", with: "my secret1"
       click_button
 
-      expect(page).to have_text "Password confirmation doesn't match Password"
+      expect(page).to(have_text("Password confirmation doesn't match Password"))
     end
 
     it "has the right error message whend reset token is invalid" do
@@ -53,7 +53,7 @@ describe "User password confirm/reset page" do
       fill_in "Password Confirmation", with: "my secret"
       click_button
 
-      expect(page).to have_text "Reset password token is invalid"
+      expect(page).to(have_text("Reset password token is invalid"))
     end
 
     it "has the right error message whend reset token is invalid" do
@@ -67,7 +67,7 @@ describe "User password confirm/reset page" do
       fill_in "Password Confirmation", with: "my secret"
       click_button
 
-      expect(page).to have_text "Reset password token has expired, please request a new one"
+      expect(page).to(have_text("Reset password token has expired, please request a new one"))
     end
 
     it "can actually reset its own password" do
@@ -77,7 +77,7 @@ describe "User password confirm/reset page" do
       fill_in "Password Confirmation", with: "my secret"
       click_button
 
-      expect(page).to have_text "Your password has been changed successfully"
+      expect(page).to(have_text("Your password has been changed successfully"))
     end
   end
 end

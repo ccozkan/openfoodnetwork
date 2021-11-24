@@ -10,7 +10,7 @@ class BulkInvoiceJob < ActiveJob::Base
       pdf << CombinePDF.parse(invoice)
     end
 
-    pdf.save filepath
+    pdf.save(filepath)
   end
 
   private

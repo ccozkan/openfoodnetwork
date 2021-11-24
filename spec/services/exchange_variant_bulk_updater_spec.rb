@@ -13,12 +13,12 @@ describe ExchangeVariantBulkUpdater do
     described_class.new(exchange).update!([first_variant.id, second_variant.id])
 
     # Check association cache.
-    expect(exchange.variants).to include(first_variant)
-    expect(exchange.variants).to include(second_variant)
+    expect(exchange.variants).to(include(first_variant))
+    expect(exchange.variants).to(include(second_variant))
     # Check if changes are actually persisted.
     exchange.reload
-    expect(exchange.variants).to include(first_variant)
-    expect(exchange.variants).to include(second_variant)
+    expect(exchange.variants).to(include(first_variant))
+    expect(exchange.variants).to(include(second_variant))
   end
 
   it 'disassociates variants from the exchange' do
@@ -27,19 +27,19 @@ describe ExchangeVariantBulkUpdater do
     described_class.new(exchange).update!([first_variant.id, third_variant.id])
 
     # Check association cache.
-    expect(exchange.variants).to include(first_variant)
-    expect(exchange.variants).to include(third_variant)
+    expect(exchange.variants).to(include(first_variant))
+    expect(exchange.variants).to(include(third_variant))
     # Check if changes are actually persisted.
     exchange.reload
-    expect(exchange.variants).to include(first_variant)
-    expect(exchange.variants).to include(third_variant)
+    expect(exchange.variants).to(include(first_variant))
+    expect(exchange.variants).to(include(third_variant))
 
     described_class.new(exchange).update!([])
 
     # Check association cache.
-    expect(exchange.variants).to be_blank
+    expect(exchange.variants).to(be_blank)
     # Check if changes are actually persisted.
     exchange.reload
-    expect(exchange.variants).to be_blank
+    expect(exchange.variants).to(be_blank)
   end
 end

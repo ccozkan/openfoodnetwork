@@ -39,27 +39,27 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Renderers::HtmlRenderer
   let(:current_user) { nil }
 
   before do
-    allow(service).to receive(:list) { enterprise_fee_type_totals }
+    allow(service).to(receive(:list) { enterprise_fee_type_totals })
   end
 
   it "generates header values" do
     header_row = renderer.header
 
     # Test all header cells have values
-    expect(header_row.length).to eq(8)
-    expect(header_row.all?(&:present?)).to be_truthy
+    expect(header_row.length).to(eq(8))
+    expect(header_row.all?(&:present?)).to(be_truthy)
   end
 
   it "generates data rows" do
     header_row = renderer.header
     result = renderer.data_rows
 
-    expect(result.length).to eq(2)
+    expect(result.length).to(eq(2))
 
     # Test random cells
-    expect(result[0][header_row.index(i18n_translate("header.fee_type"))]).to eq("Fee Type A")
-    expect(result[0][header_row.index(i18n_translate("header.total_amount"))]).to eq("1.00")
-    expect(result[1][header_row.index(i18n_translate("header.total_amount"))]).to eq("2.00")
+    expect(result[0][header_row.index(i18n_translate("header.fee_type"))]).to(eq("Fee Type A"))
+    expect(result[0][header_row.index(i18n_translate("header.total_amount"))]).to(eq("1.00"))
+    expect(result[1][header_row.index(i18n_translate("header.total_amount"))]).to(eq("2.00"))
   end
 
   def i18n_translate(key)

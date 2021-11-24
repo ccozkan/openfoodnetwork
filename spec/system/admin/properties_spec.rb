@@ -12,12 +12,12 @@ describe ' As an admin I want to manage product properties ' do
     fill_in 'property_name', with: 'New property!'
     fill_in 'property_presentation', with: 'New property presentation!'
     click_button 'Create'
-    expect(page).to have_content 'New property!'
+    expect(page).to(have_content('New property!'))
 
     page.find('td.actions a.icon-edit').click
-    expect(page).to have_field 'property_name', with: 'New property!'
+    expect(page).to(have_field('property_name', with: 'New property!'))
     fill_in 'property_name', with: 'New changed property!'
     click_button 'Update'
-    expect(page).to have_content 'New changed property!'
+    expect(page).to(have_content('New changed property!'))
   end
 end

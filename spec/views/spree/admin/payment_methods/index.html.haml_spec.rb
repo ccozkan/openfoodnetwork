@@ -18,57 +18,57 @@ describe "spree/admin/payment_methods/index.html.haml" do
     end
 
     assign(:payment_methods, [create(:payment_method), create(:payment_method)])
-    allow(controller).to receive(:controller_name).and_return("tests")
+    allow(controller).to(receive(:controller_name).and_return("tests"))
   end
 
   describe "payment methods index page" do
     context "when user is not admin" do
       before do
-        allow(view).to receive_messages spree_current_user: create(:user)
+        allow(view).to(receive_messages(spree_current_user: create(:user)))
       end
 
       it "shows only the providers of the existing payment methods" do
         render
 
-        expect(rendered).to have_content "Cash/EFT/etc. (payments for which automatic validation is not required)",
-                                         count: 2
+        expect(rendered).to(have_content("Cash/EFT/etc. (payments for which automatic validation is not required)",
+                                         count: 2))
       end
 
       it "does not show Enviroment column" do
         render
 
-        expect(rendered).not_to have_content "Environment"
+        expect(rendered).not_to(have_content("Environment"))
       end
 
       it "does not show column content" do
         render
 
-        expect(rendered).not_to have_content "Test"
+        expect(rendered).not_to(have_content("Test"))
       end
     end
 
     context "when user is admin" do
       before do
-        allow(view).to receive_messages spree_current_user: create(:admin_user)
+        allow(view).to(receive_messages(spree_current_user: create(:admin_user)))
       end
 
       it "shows only the providers of the existing payment methods" do
         render
 
-        expect(rendered).to have_content "Cash/EFT/etc. (payments for which automatic validation is not required)",
-                                         count: 2
+        expect(rendered).to(have_content("Cash/EFT/etc. (payments for which automatic validation is not required)",
+                                         count: 2))
       end
 
       it "shows the Enviroment column" do
         render
 
-        expect(rendered).to have_content "Environment"
+        expect(rendered).to(have_content("Environment"))
       end
 
       it "shows the column content" do
         render
 
-        expect(rendered).to have_content "Test"
+        expect(rendered).to(have_content("Test"))
       end
     end
   end

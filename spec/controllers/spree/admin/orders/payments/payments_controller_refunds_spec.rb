@@ -12,7 +12,7 @@ describe Spree::Admin::PaymentsController, type: :controller do
   let!(:line_item) { create(:line_item, order: order, price: 5.0) }
 
   before do
-    allow(controller).to receive(:spree_current_user) { user }
+    allow(controller).to(receive(:spree_current_user) { user })
     order.reload.update_totals
   end
 
@@ -50,13 +50,13 @@ amount: order.total
 
           it "voids the payment" do
             order.reload
-            expect(order.payment_total).to_not eq 0
-            expect(order.outstanding_balance.to_f).to eq 0
+            expect(order.payment_total).to_not(eq(0))
+            expect(order.outstanding_balance.to_f).to(eq(0))
             spree_put :fire, params
-            expect(payment.reload.state).to eq 'void'
+            expect(payment.reload.state).to(eq('void'))
             order.reload
-            expect(order.payment_total).to eq 0
-            expect(order.outstanding_balance.to_f).to_not eq 0
+            expect(order.payment_total).to(eq(0))
+            expect(order.outstanding_balance.to_f).to_not(eq(0))
           end
         end
 
@@ -69,14 +69,14 @@ amount: order.total
 
           it "does not void the payment" do
             order.reload
-            expect(order.payment_total).to_not eq 0
-            expect(order.outstanding_balance.to_f).to eq 0
+            expect(order.payment_total).to_not(eq(0))
+            expect(order.outstanding_balance.to_f).to(eq(0))
             spree_put :fire, params
-            expect(payment.reload.state).to eq 'completed'
+            expect(payment.reload.state).to(eq('completed'))
             order.reload
-            expect(order.payment_total).to_not eq 0
-            expect(order.outstanding_balance.to_f).to eq 0
-            expect(flash[:error]).to eq "Bup-bow!"
+            expect(order.payment_total).to_not(eq(0))
+            expect(order.outstanding_balance.to_f).to(eq(0))
+            expect(flash[:error]).to(eq("Bup-bow!"))
           end
         end
       end
@@ -115,13 +115,13 @@ amount: order.total + 5
 
           it "partially refunds the payment" do
             order.reload
-            expect(order.payment_total).to eq order.total + 5
-            expect(order.outstanding_balance.to_f).to eq(-5)
+            expect(order.payment_total).to(eq(order.total + 5))
+            expect(order.outstanding_balance.to_f).to(eq(-5))
             spree_put :fire, params
-            expect(payment.reload.state).to eq 'completed'
+            expect(payment.reload.state).to(eq('completed'))
             order.reload
-            expect(order.payment_total).to eq order.total
-            expect(order.outstanding_balance.to_f).to eq 0
+            expect(order.payment_total).to(eq(order.total))
+            expect(order.outstanding_balance.to_f).to(eq(0))
           end
         end
 
@@ -134,14 +134,14 @@ amount: order.total + 5
 
           it "does not void the payment" do
             order.reload
-            expect(order.payment_total).to eq order.total + 5
-            expect(order.outstanding_balance.to_f).to eq(-5)
+            expect(order.payment_total).to(eq(order.total + 5))
+            expect(order.outstanding_balance.to_f).to(eq(-5))
             spree_put :fire, params
-            expect(payment.reload.state).to eq 'completed'
+            expect(payment.reload.state).to(eq('completed'))
             order.reload
-            expect(order.payment_total).to eq order.total + 5
-            expect(order.outstanding_balance.to_f).to eq(-5)
-            expect(flash[:error]).to eq "Bup-bow!"
+            expect(order.payment_total).to(eq(order.total + 5))
+            expect(order.outstanding_balance.to_f).to(eq(-5))
+            expect(flash[:error]).to(eq("Bup-bow!"))
           end
         end
       end
@@ -171,7 +171,7 @@ amount: order.total
 
         before do
           Stripe.api_key = "sk_test_12345"
-          allow(StripeAccount).to receive(:find_by) { stripe_account }
+          allow(StripeAccount).to(receive(:find_by) { stripe_account })
         end
 
         context "when the payment has been confirmed" do
@@ -189,13 +189,13 @@ status: 'succeeded'))
 
             it "voids the payment" do
               order.reload
-              expect(order.payment_total).to_not eq 0
-              expect(order.outstanding_balance.to_f).to eq 0
+              expect(order.payment_total).to_not(eq(0))
+              expect(order.outstanding_balance.to_f).to(eq(0))
               spree_put :fire, params
-              expect(payment.reload.state).to eq 'void'
+              expect(payment.reload.state).to(eq('void'))
               order.reload
-              expect(order.payment_total).to eq 0
-              expect(order.outstanding_balance.to_f).to_not eq 0
+              expect(order.payment_total).to(eq(0))
+              expect(order.outstanding_balance.to_f).to_not(eq(0))
             end
           end
 
@@ -209,14 +209,14 @@ status: 'succeeded'))
 
             it "does not void the payment" do
               order.reload
-              expect(order.payment_total).to_not eq 0
-              expect(order.outstanding_balance.to_f).to eq 0
+              expect(order.payment_total).to_not(eq(0))
+              expect(order.outstanding_balance.to_f).to(eq(0))
               spree_put :fire, params
-              expect(payment.reload.state).to eq 'completed'
+              expect(payment.reload.state).to(eq('completed'))
               order.reload
-              expect(order.payment_total).to_not eq 0
-              expect(order.outstanding_balance.to_f).to eq 0
-              expect(flash[:error]).to eq "Bup-bow!"
+              expect(order.payment_total).to_not(eq(0))
+              expect(order.outstanding_balance.to_f).to(eq(0))
+              expect(flash[:error]).to(eq("Bup-bow!"))
             end
           end
 
@@ -238,13 +238,13 @@ status: 'succeeded'))
 
             it "can still void the payment" do
               order.reload
-              expect(order.payment_total).to_not eq 0
-              expect(order.outstanding_balance.to_f).to eq 0
+              expect(order.payment_total).to_not(eq(0))
+              expect(order.outstanding_balance.to_f).to(eq(0))
               spree_put :fire, params
-              expect(payment.reload.state).to eq 'void'
+              expect(payment.reload.state).to(eq('void'))
               order.reload
-              expect(order.payment_total).to eq 0
-              expect(order.outstanding_balance.to_f).to_not eq 0
+              expect(order.payment_total).to(eq(0))
+              expect(order.outstanding_balance.to_f).to_not(eq(0))
             end
           end
         end
@@ -264,13 +264,13 @@ status: 'canceled'
 
           it "voids the payment" do
             order.reload
-            expect(order.payment_total).to_not eq 0
-            expect(order.outstanding_balance.to_f).to eq 0
+            expect(order.payment_total).to_not(eq(0))
+            expect(order.outstanding_balance.to_f).to(eq(0))
             spree_put :fire, params
-            expect(payment.reload.state).to eq 'void'
+            expect(payment.reload.state).to(eq('void'))
             order.reload
-            expect(order.payment_total).to eq 0
-            expect(order.outstanding_balance.to_f).to_not eq 0
+            expect(order.payment_total).to(eq(0))
+            expect(order.outstanding_balance.to_f).to_not(eq(0))
           end
         end
       end
@@ -311,13 +311,13 @@ amount: order.total + 5
 
           it "partially refunds the payment" do
             order.reload
-            expect(order.payment_total).to eq order.total + 5
-            expect(order.outstanding_balance.to_f).to eq(-5)
+            expect(order.payment_total).to(eq(order.total + 5))
+            expect(order.outstanding_balance.to_f).to(eq(-5))
             spree_put :fire, params
-            expect(payment.reload.state).to eq 'completed'
+            expect(payment.reload.state).to(eq('completed'))
             order.reload
-            expect(order.payment_total).to eq order.total
-            expect(order.outstanding_balance.to_f).to eq 0
+            expect(order.payment_total).to(eq(order.total))
+            expect(order.outstanding_balance.to_f).to(eq(0))
           end
         end
 
@@ -330,14 +330,14 @@ amount: order.total + 5
 
           it "does not void the payment" do
             order.reload
-            expect(order.payment_total).to eq order.total + 5
-            expect(order.outstanding_balance.to_f).to eq(-5)
+            expect(order.payment_total).to(eq(order.total + 5))
+            expect(order.outstanding_balance.to_f).to(eq(-5))
             spree_put :fire, params
-            expect(payment.reload.state).to eq 'completed'
+            expect(payment.reload.state).to(eq('completed'))
             order.reload
-            expect(order.payment_total).to eq order.total + 5
-            expect(order.outstanding_balance.to_f).to eq(-5)
-            expect(flash[:error]).to eq "Bup-bow!"
+            expect(order.payment_total).to(eq(order.total + 5))
+            expect(order.outstanding_balance.to_f).to(eq(-5))
+            expect(flash[:error]).to(eq("Bup-bow!"))
           end
         end
       end

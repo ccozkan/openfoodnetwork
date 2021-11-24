@@ -5,8 +5,8 @@ require "spec_helper"
 describe Api::Admin::EnterpriseSerializer do
   let(:enterprise) { create(:distributor_enterprise) }
   it "serializes an enterprise" do
-    serializer = Api::Admin::EnterpriseSerializer.new enterprise
-    expect(serializer.to_json).to match enterprise.name
+    serializer = Api::Admin::EnterpriseSerializer.new(enterprise)
+    expect(serializer.to_json).to(match(enterprise.name))
   end
 
   context "for logo" do
@@ -20,8 +20,8 @@ describe Api::Admin::EnterpriseSerializer do
 
       it "includes URLs of image versions" do
         serializer = Api::Admin::EnterpriseSerializer.new(enterprise)
-        expect(serializer.as_json[:logo]).to_not be_blank
-        expect(serializer.as_json[:logo][:medium]).to match(/logo-black.png/)
+        expect(serializer.as_json[:logo]).to_not(be_blank)
+        expect(serializer.as_json[:logo][:medium]).to(match(/logo-black.png/))
       end
     end
 
@@ -30,7 +30,7 @@ describe Api::Admin::EnterpriseSerializer do
 
       it "includes URLs of image versions" do
         serializer = Api::Admin::EnterpriseSerializer.new(enterprise)
-        expect(serializer.as_json[:logo]).to be_blank
+        expect(serializer.as_json[:logo]).to(be_blank)
       end
     end
   end
@@ -46,8 +46,8 @@ describe Api::Admin::EnterpriseSerializer do
 
       it "includes URLs of image versions" do
         serializer = Api::Admin::EnterpriseSerializer.new(enterprise)
-        expect(serializer.as_json[:promo_image]).to_not be_blank
-        expect(serializer.as_json[:promo_image][:medium]).to match(/logo-black.jpg/)
+        expect(serializer.as_json[:promo_image]).to_not(be_blank)
+        expect(serializer.as_json[:promo_image][:medium]).to(match(/logo-black.jpg/))
       end
     end
 
@@ -56,7 +56,7 @@ describe Api::Admin::EnterpriseSerializer do
 
       it "includes URLs of image versions" do
         serializer = Api::Admin::EnterpriseSerializer.new(enterprise)
-        expect(serializer.as_json[:promo_image]).to be_nil
+        expect(serializer.as_json[:promo_image]).to(be_nil)
       end
     end
   end

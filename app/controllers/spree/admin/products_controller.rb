@@ -31,12 +31,12 @@ module Spree
           if @object.save
             flash[:success] = flash_message_for(@object, :successfully_created)
             if params[:button] == "add_another"
-              redirect_to spree.new_admin_product_path
+              redirect_to(spree.new_admin_product_path)
             else
-              redirect_to spree.admin_products_path
+              redirect_to(spree.admin_products_path)
             end
           else
-            render :new
+            render(:new)
           end
         end
       rescue Paperclip::Errors::NotIdentifiedByImageMagickError
@@ -71,21 +71,21 @@ module Spree
 
             flash[:success] = flash_message_for(@object, :successfully_updated)
           end
-          redirect_to spree.edit_admin_product_url(@object, @url_filters)
+          redirect_to(spree.edit_admin_product_url(@object, @url_filters))
         end
       end
 
       def bulk_update
         product_set = product_set_from_params
 
-        product_set.collection.each { |p| authorize! :update, p }
+        product_set.collection.each { |p| authorize!(:update, p) }
 
         if product_set.save
-          redirect_to main_app.bulk_products_api_v0_products_path(bulk_index_query)
+          redirect_to(main_app.bulk_products_api_v0_products_path(bulk_index_query))
         elsif product_set.errors.present?
-          render json: { errors: product_set.errors }, status: :bad_request
+          render(json: { errors: product_set.errors }, status: :bad_request)
         else
-          render body: nil, status: :internal_server_error
+          render(body: nil, status: :internal_server_error)
         end
       end
 
@@ -99,7 +99,7 @@ module Spree
                             Spree.t('notice_messages.product_not_cloned')
                           end
 
-        redirect_to spree.edit_admin_product_url(@new)
+        redirect_to(spree.edit_admin_product_url(@new))
       end
 
       def group_buy_options
@@ -197,8 +197,8 @@ module Spree
 
         names = Spree::Property.pluck(:name)
         params[:product][:product_properties_attributes].each do |key, property|
-          unless names.include? property[:property_name]
-            params[:product][:product_properties_attributes].delete key
+          unless names.include?(property[:property_name])
+            params[:product][:product_properties_attributes].delete(key)
           end
         end
       end
@@ -220,7 +220,7 @@ module Spree
           variant.on_hand = on_hand.to_i if on_hand.present?
         rescue StandardError => e
           notify_bugsnag(e, product, variant)
-          raise e
+          raise(e)
         end
       end
 

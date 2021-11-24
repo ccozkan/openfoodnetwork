@@ -9,7 +9,7 @@ module Api
       def show
         enterprise = Enterprise.find_by(id: params[:id])
 
-        render plain: Api::EnterpriseShopfrontSerializer.new(enterprise).to_json, status: :ok
+        render(plain: Api::EnterpriseShopfrontSerializer.new(enterprise).to_json, status: :ok)
       end
 
       def closed_shops
@@ -22,7 +22,7 @@ module Api
           data: OpenFoodNetwork::EnterpriseInjectionData.new
         )
 
-        render json: serialized_closed_shops
+        render(json: serialized_closed_shops)
       end
     end
   end

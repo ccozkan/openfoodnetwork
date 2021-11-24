@@ -4,11 +4,11 @@ require 'spec_helper'
 
 describe EnterpriseFee do
   describe "associations" do
-    it { is_expected.to belong_to(:enterprise) }
+    it { is_expected.to(belong_to(:enterprise)) }
   end
 
   describe "validations" do
-    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to(validate_presence_of(:name)) }
   end
 
   describe "callbacks" do
@@ -18,7 +18,7 @@ describe EnterpriseFee do
       oc = create(:simple_order_cycle, coordinator_fees: [ef])
 
       ef.destroy
-      expect(oc.reload.coordinator_fee_ids).to be_empty
+      expect(oc.reload.coordinator_fee_ids).to(be_empty)
     end
 
     it "removes itself from order cycle exchange fees when destroyed" do
@@ -26,7 +26,7 @@ describe EnterpriseFee do
       ex = create(:exchange, order_cycle: oc, enterprise_fees: [ef])
 
       ef.destroy
-      expect(ex.reload.exchange_fee_ids).to be_empty
+      expect(ex.reload.exchange_fee_ids).to(be_empty)
     end
 
     describe "for tax_category" do
@@ -40,23 +40,23 @@ describe EnterpriseFee do
         # tax_category is changed, inherits.. set to false
         enterprise_fee.assign_attributes(tax_category_id: tax_category.id)
         enterprise_fee.save!
-        expect(enterprise_fee.tax_category).to eq tax_category
-        expect(enterprise_fee.inherits_tax_category).to be false
+        expect(enterprise_fee.tax_category).to(eq(tax_category))
+        expect(enterprise_fee.inherits_tax_category).to(be(false))
 
         # Changing inherits_tax_category, when tax_category is set
         # tax_category is dropped, inherits.. set to true
         enterprise_fee.assign_attributes(inherits_tax_category: true)
         enterprise_fee.save!
-        expect(enterprise_fee.tax_category).to be nil
-        expect(enterprise_fee.inherits_tax_category).to be true
+        expect(enterprise_fee.tax_category).to(be(nil))
+        expect(enterprise_fee.inherits_tax_category).to(be(true))
 
         # Changing both tax_category and inherits_tax_category
         # tax_category is changed, but inherits.. changes are dropped
         enterprise_fee.assign_attributes(tax_category_id: tax_category.id)
         enterprise_fee.assign_attributes(inherits_tax_category: true)
         enterprise_fee.save!
-        expect(enterprise_fee.tax_category).to eq tax_category
-        expect(enterprise_fee.inherits_tax_category).to be false
+        expect(enterprise_fee.tax_category).to(eq(tax_category))
+        expect(enterprise_fee.inherits_tax_category).to(be(false))
       end
     end
   end
@@ -68,7 +68,7 @@ describe EnterpriseFee do
         create(:enterprise_fee, calculator: Calculator::FlexiRate.new)
         create(:enterprise_fee, calculator: Calculator::PriceSack.new)
 
-        expect(EnterpriseFee.per_item).to be_empty
+        expect(EnterpriseFee.per_item).to(be_empty)
       end
 
       it "returns fees with any other calculator" do
@@ -76,7 +76,7 @@ describe EnterpriseFee do
         ef2 = create(:enterprise_fee, calculator: Calculator::FlatPercentPerItem.new)
         ef3 = create(:enterprise_fee, calculator: Calculator::PerItem.new)
 
-        expect(EnterpriseFee.per_item).to match_array [ef1, ef2, ef3]
+        expect(EnterpriseFee.per_item).to(match_array([ef1, ef2, ef3]))
       end
     end
 
@@ -86,7 +86,7 @@ describe EnterpriseFee do
         ef2 = create(:enterprise_fee, calculator: Calculator::FlexiRate.new)
         ef3 = create(:enterprise_fee, calculator: Calculator::PriceSack.new)
 
-        expect(EnterpriseFee.per_order).to match_array [ef1, ef2, ef3]
+        expect(EnterpriseFee.per_order).to(match_array([ef1, ef2, ef3]))
       end
 
       it "does not return fees with any other calculator" do
@@ -94,7 +94,7 @@ describe EnterpriseFee do
         ef2 = create(:enterprise_fee, calculator: Calculator::FlatPercentPerItem.new)
         ef3 = create(:enterprise_fee, calculator: Calculator::PerItem.new)
 
-        expect(EnterpriseFee.per_order).to be_empty
+        expect(EnterpriseFee.per_order).to(be_empty)
       end
     end
   end
@@ -112,8 +112,8 @@ describe EnterpriseFee do
       order_cycle.exchanges[0].enterprise_fees[0].create_adjustment('foo4', line_item2, true)
 
       expect do
-        EnterpriseFee.clear_all_adjustments order
-      end.to change(order.all_adjustments, :count).by(-4)
+        EnterpriseFee.clear_all_adjustments(order)
+      end.to(change(order.all_adjustments, :count).by(-4))
     end
 
     it "clears adjustments from per-order fees" do
@@ -127,8 +127,8 @@ nil,
       enterprise_fee_aplicator.create_order_adjustment(order)
 
       expect do
-        EnterpriseFee.clear_all_adjustments order
-      end.to change(order.adjustments, :count).by(-1)
+        EnterpriseFee.clear_all_adjustments(order)
+      end.to(change(order.adjustments, :count).by(-1))
     end
 
     it "does not clear adjustments from another originator" do
@@ -144,8 +144,8 @@ label: 'hello'
 )
 
       expect do
-        EnterpriseFee.clear_all_adjustments order
-      end.to change(order.adjustments, :count).by(0)
+        EnterpriseFee.clear_all_adjustments(order)
+      end.to(change(order.adjustments, :count).by(0))
     end
   end
 
@@ -160,12 +160,12 @@ label: 'hello'
     end
 
     it "soft-deletes the enterprise fee" do
-      expect(enterprise_fee.deleted_at).to_not be_nil
+      expect(enterprise_fee.deleted_at).to_not(be_nil)
     end
 
     it "can be accessed by old adjustments" do
-      expect(adjustment.reload.originator).to eq enterprise_fee
-      expect(adjustment.originator.tax_category).to eq enterprise_fee.tax_category
+      expect(adjustment.reload.originator).to(eq(enterprise_fee))
+      expect(adjustment.originator.tax_category).to(eq(enterprise_fee.tax_category))
     end
   end
 end

@@ -9,7 +9,7 @@ module Spree
       end
 
       def authorize(_money, credit_card, _options = {})
-        if VALID_CCS.include? credit_card.number
+        if VALID_CCS.include?(credit_card.number)
           ActiveMerchant::Billing::Response.new(
 true,
 'Bogus Gateway: Forced success',
@@ -29,7 +29,7 @@ false,
       end
 
       def purchase(_money, credit_card, _options = {})
-        if VALID_CCS.include? credit_card.number
+        if VALID_CCS.include?(credit_card.number)
           ActiveMerchant::Billing::Response.new(
 true,
 'Bogus Gateway: Forced success',

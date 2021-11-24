@@ -9,7 +9,7 @@ class Api::EnterpriseSerializer < ActiveModel::Serializer
   
 
   def serializable_hash
-    cached_serializer_hash.merge uncached_serializer_hash
+    cached_serializer_hash.merge(uncached_serializer_hash)
   end
 
   private

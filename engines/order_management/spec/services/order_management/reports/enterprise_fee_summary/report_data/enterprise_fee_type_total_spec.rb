@@ -39,6 +39,6 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::ReportData::EnterpriseF
 
     list = [instance_a, instance_b, instance_c]
 
-    expect(list.sort).to eq([instance_c, instance_a, instance_b])
+    expect(list.sort).to(eq([instance_c, instance_a, instance_b]))
   end
 end

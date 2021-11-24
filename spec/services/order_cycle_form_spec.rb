@@ -15,8 +15,8 @@ describe OrderCycleForm do
 
         it "returns true" do
           expect do
-            expect(form.save).to be true
-          end.to change(OrderCycle, :count).by(1)
+            expect(form.save).to(be(true))
+          end.to(change(OrderCycle, :count).by(1))
         end
       end
 
@@ -25,8 +25,8 @@ describe OrderCycleForm do
 
         it "returns false" do
           expect do
-            expect(form.save).to be false
-          end.to_not change(OrderCycle, :count)
+            expect(form.save).to(be(false))
+          end.to_not(change(OrderCycle, :count))
         end
       end
     end
@@ -41,8 +41,8 @@ describe OrderCycleForm do
 
         it "returns true" do
           expect do
-            expect(form.save).to be true
-          end.to change(order_cycle.reload, :name).to("Test Order Cycle")
+            expect(form.save).to(be(true))
+          end.to(change(order_cycle.reload, :name).to("Test Order Cycle"))
         end
       end
 
@@ -51,8 +51,8 @@ describe OrderCycleForm do
 
         it "returns false" do
           expect do
-            expect(form.save).to be false
-          end.to_not change { order_cycle.reload.name }
+            expect(form.save).to(be(false))
+          end.to_not(change { order_cycle.reload.name })
         end
       end
     end
@@ -82,17 +82,17 @@ describe OrderCycleForm do
       end
 
       before do
-        allow(OrderManagement::Subscriptions::ProxyOrderSyncer).to receive(:new) { syncer_mock }
+        allow(OrderManagement::Subscriptions::ProxyOrderSyncer).to(receive(:new) { syncer_mock })
       end
 
       context "and I add an schedule that I own, and remove another that I own" do
         let(:params) { { schedule_ids: [coordinated_schedule2.id] } }
 
         it "associates the order cycle to the schedule" do
-          expect(form.save).to be true
-          expect(coordinated_order_cycle.reload.schedules).to include coordinated_schedule2
-          expect(coordinated_order_cycle.reload.schedules).to_not include coordinated_schedule
-          expect(syncer_mock).to have_received(:sync!)
+          expect(form.save).to(be(true))
+          expect(coordinated_order_cycle.reload.schedules).to(include(coordinated_schedule2))
+          expect(coordinated_order_cycle.reload.schedules).to_not(include(coordinated_schedule))
+          expect(syncer_mock).to(have_received(:sync!))
         end
       end
 
@@ -100,10 +100,10 @@ describe OrderCycleForm do
         let(:params) { { schedule_ids: [coordinated_schedule.id, uncoordinated_schedule.id] } }
 
         it "ignores the schedule that I don't own" do
-          expect(form.save).to be true
-          expect(coordinated_order_cycle.reload.schedules).to include coordinated_schedule
-          expect(coordinated_order_cycle.reload.schedules).to_not include uncoordinated_schedule
-          expect(syncer_mock).to_not have_received(:sync!)
+          expect(form.save).to(be(true))
+          expect(coordinated_order_cycle.reload.schedules).to(include(coordinated_schedule))
+          expect(coordinated_order_cycle.reload.schedules).to_not(include(uncoordinated_schedule))
+          expect(syncer_mock).to_not(have_received(:sync!))
         end
       end
 
@@ -111,9 +111,9 @@ describe OrderCycleForm do
         let(:params) { { schedule_ids: [coordinated_schedule.id] } }
 
         it "ignores the schedule that I don't own" do
-          expect(form.save).to be true
-          expect(coordinated_order_cycle.reload.schedules).to include coordinated_schedule
-          expect(syncer_mock).to_not have_received(:sync!)
+          expect(form.save).to(be(true))
+          expect(coordinated_order_cycle.reload.schedules).to(include(coordinated_schedule))
+          expect(syncer_mock).to_not(have_received(:sync!))
         end
       end
     end
@@ -127,8 +127,8 @@ describe OrderCycleForm do
     let(:params) { { name: 'Some new name' } }
 
     before do
-      allow(OpenFoodNetwork::OrderCycleFormApplicator).to receive(:new) { form_applicator_mock }
-      allow(form_applicator_mock).to receive(:go!)
+      allow(OpenFoodNetwork::OrderCycleFormApplicator).to(receive(:new) { form_applicator_mock })
+      allow(form_applicator_mock).to(receive(:go!))
     end
 
     context "when exchange params are provided" do
@@ -136,17 +136,17 @@ describe OrderCycleForm do
       before { params.merge!(exchange_params) }
 
       it "runs the OrderCycleFormApplicator, and saves other changes" do
-        expect(form.save).to be true
-        expect(form_applicator_mock).to have_received(:go!)
-        expect(order_cycle.name).to eq 'Some new name'
+        expect(form.save).to(be(true))
+        expect(form_applicator_mock).to(have_received(:go!))
+        expect(order_cycle.name).to(eq('Some new name'))
       end
     end
 
     context "when no exchange params are provided" do
       it "does not run the OrderCycleFormApplicator, but saves other changes" do
-        expect(form.save).to be true
-        expect(form_applicator_mock).to_not have_received(:go!)
-        expect(order_cycle.name).to eq 'Some new name'
+        expect(form.save).to(be(true))
+        expect(form_applicator_mock).to_not(have_received(:go!))
+        expect(order_cycle.name).to(eq('Some new name'))
       end
     end
   end

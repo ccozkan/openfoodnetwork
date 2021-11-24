@@ -5,7 +5,7 @@ require 'rake'
 
 describe 'users.rake' do
   before(:all) do
-    Rake.application.rake_require 'tasks/users'
+    Rake.application.rake_require('tasks/users')
     Rake::Task.define_task(:environment)
   end
 
@@ -15,9 +15,9 @@ describe 'users.rake' do
         max_integer = 2_147_483_647
         user = create(:user)
 
-        Rake.application.invoke_task "ofn:remove_enterprise_limit[#{user.id}]"
+        Rake.application.invoke_task("ofn:remove_enterprise_limit[#{user.id}]")
 
-        expect(user.reload.enterprise_limit).to eq(max_integer)
+        expect(user.reload.enterprise_limit).to(eq(max_integer))
       end
     end
 
@@ -25,7 +25,7 @@ describe 'users.rake' do
       it 'raises' do
         expect do
           RemoveEnterpriseLimit.new(-1).call
-        end.to raise_error(ActiveRecord::RecordNotFound)
+        end.to(raise_error(ActiveRecord::RecordNotFound))
       end
     end
   end

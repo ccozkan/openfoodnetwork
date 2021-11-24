@@ -11,7 +11,7 @@ describe Admin::SubscriptionsController, type: :controller do
     let!(:shop) { create(:distributor_enterprise, enable_subscriptions: true) }
 
     before do
-      allow(controller).to receive(:spree_current_user) { user }
+      allow(controller).to(receive(:spree_current_user) { user })
     end
 
     context 'html' do
@@ -20,7 +20,7 @@ describe Admin::SubscriptionsController, type: :controller do
       context 'as a regular user' do
         it 'redirects to unauthorized' do
           get :index, params: params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
@@ -33,18 +33,18 @@ describe Admin::SubscriptionsController, type: :controller do
 
           it 'renders the index page with appropriate data' do
             get :index, params: params
-            expect(response).to render_template 'index'
-            expect(assigns(:collection)).to eq [] # No collection loaded
-            expect(assigns(:shops)).to eq [shop] # Shops are loaded
+            expect(response).to(render_template('index'))
+            expect(assigns(:collection)).to(eq([])) # No collection loaded
+            expect(assigns(:shops)).to(eq([shop])) # Shops are loaded
           end
         end
 
         context "where I don't manage a shop that is set up for subscriptions" do
           it 'renders the setup_explanation page' do
             get :index, params: params
-            expect(response).to render_template 'setup_explanation'
-            expect(assigns(:collection)).to eq [] # No collection loaded
-            expect(assigns(:shop)).to eq shop # First SO enabled shop is loaded
+            expect(response).to(render_template('setup_explanation'))
+            expect(assigns(:collection)).to(eq([])) # No collection loaded
+            expect(assigns(:shop)).to(eq(shop)) # First SO enabled shop is loaded
           end
         end
       end
@@ -57,7 +57,7 @@ describe Admin::SubscriptionsController, type: :controller do
       context 'as a regular user' do
         it 'redirects to unauthorized' do
           get :index, params: params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
@@ -69,8 +69,8 @@ describe Admin::SubscriptionsController, type: :controller do
         it 'renders the collection as json' do
           get :index, params: params
           json_response = JSON.parse(response.body)
-          expect(json_response.count).to be 2
-          expect(json_response.map { |so| so['id'] }).to include subscription.id, subscription2.id
+          expect(json_response.count).to(be(2))
+          expect(json_response.map { |so| so['id'] }).to(include(subscription.id, subscription2.id))
         end
 
         context "when ransack predicates are submitted" do
@@ -79,10 +79,10 @@ describe Admin::SubscriptionsController, type: :controller do
           it "restricts the list of subscriptions" do
             get :index, params: params
             json_response = JSON.parse(response.body)
-            expect(json_response.count).to be 1
+            expect(json_response.count).to(be(1))
             ids = json_response.map { |so| so['id'] }
-            expect(ids).to include subscription2.id
-            expect(ids).to_not include subscription.id
+            expect(ids).to(include(subscription2.id))
+            expect(ids).to_not(include(subscription.id))
           end
         end
       end
@@ -94,14 +94,14 @@ describe Admin::SubscriptionsController, type: :controller do
     let!(:shop) { create(:distributor_enterprise, owner: user) }
 
     before do
-      allow(controller).to receive(:spree_current_user) { user }
+      allow(controller).to(receive(:spree_current_user) { user })
     end
 
     it 'loads the preloads the necessary data' do
-      expect(controller).to receive(:load_form_data)
+      expect(controller).to(receive(:load_form_data))
       get :new, params: { subscription: { shop_id: shop.id } }
-      expect(assigns(:subscription)).to be_a_new Subscription
-      expect(assigns(:subscription).shop).to eq shop
+      expect(assigns(:subscription)).to(be_a_new(Subscription))
+      expect(assigns(:subscription).shop).to(eq(shop))
     end
   end
 
@@ -117,32 +117,32 @@ describe Admin::SubscriptionsController, type: :controller do
 
     context 'as an non-manager of the specified shop' do
       before do
-        allow(controller).to receive(:spree_current_user) {
+        allow(controller).to(receive(:spree_current_user) {
                                create(:user, enterprises: [create(:enterprise)])
-                             }
+                             })
       end
 
       it 'redirects to unauthorized' do
         spree_post :create, params
-        expect(response).to redirect_to unauthorized_path
+        expect(response).to(redirect_to(unauthorized_path))
       end
     end
 
     context 'as a manager of the specified shop' do
       before do
-        allow(controller).to receive(:spree_current_user) { user }
+        allow(controller).to(receive(:spree_current_user) { user })
       end
 
       context 'when I submit insufficient params' do
         it 'returns errors' do
-          expect { spree_post :create, params }
-.to_not change { Subscription.count }
+          expect { spree_post(:create, params) }
+.to_not(change { Subscription.count })
           json_response = JSON.parse(response.body)
-          expect(json_response['errors'].keys).to include 'schedule',
+          expect(json_response['errors'].keys).to(include('schedule',
 'customer',
 'payment_method',
                                                           'shipping_method',
-'begins_at'
+'begins_at'))
         end
       end
 
@@ -175,14 +175,14 @@ describe Admin::SubscriptionsController, type: :controller do
         end
 
         it 'returns errors' do
-          expect { spree_post :create, params }
-.to_not change { Subscription.count }
+          expect { spree_post(:create, params) }
+.to_not(change { Subscription.count })
           json_response = JSON.parse(response.body)
-          expect(json_response['errors'].keys).to include 'schedule',
+          expect(json_response['errors'].keys).to(include('schedule',
 'customer',
 'payment_method',
                                                           'shipping_method',
-'ends_at'
+'ends_at'))
         end
       end
 
@@ -208,10 +208,10 @@ describe Admin::SubscriptionsController, type: :controller do
 
         context 'where the specified variants are not available from the shop' do
           it 'returns an error' do
-            expect { spree_post :create, params }
-.to_not change { Subscription.count }
+            expect { spree_post(:create, params) }
+.to_not(change { Subscription.count })
             json_response = JSON.parse(response.body)
-            expect(json_response['errors']['subscription_line_items']).to eq ["#{variant.product.name} - #{variant.full_name} is not available from the selected schedule"]
+            expect(json_response['errors']['subscription_line_items']).to(eq(["#{variant.product.name} - #{variant.full_name} is not available from the selected schedule"]))
           end
         end
 
@@ -227,20 +227,20 @@ receiver: shop,
           end
 
           it 'creates subscription line items for the subscription' do
-            expect { spree_post :create, params }
-.to change { Subscription.count }
-.by(1)
+            expect { spree_post(:create, params) }
+.to(change { Subscription.count }
+.by(1))
             subscription = Subscription.last
-            expect(subscription.schedule).to eq schedule
-            expect(subscription.customer).to eq customer
-            expect(subscription.payment_method).to eq payment_method
-            expect(subscription.shipping_method).to eq shipping_method
-            expect(subscription.bill_address.firstname).to eq address.firstname
-            expect(subscription.ship_address.firstname).to eq address.firstname
-            expect(subscription.subscription_line_items.count).to be 1
+            expect(subscription.schedule).to(eq(schedule))
+            expect(subscription.customer).to(eq(customer))
+            expect(subscription.payment_method).to(eq(payment_method))
+            expect(subscription.shipping_method).to(eq(shipping_method))
+            expect(subscription.bill_address.firstname).to(eq(address.firstname))
+            expect(subscription.ship_address.firstname).to(eq(address.firstname))
+            expect(subscription.subscription_line_items.count).to(be(1))
             subscription_line_item = subscription.subscription_line_items.first
-            expect(subscription_line_item.quantity).to be 2
-            expect(subscription_line_item.variant).to eq variant
+            expect(subscription_line_item.quantity).to(be(2))
+            expect(subscription_line_item.variant).to(eq(variant))
           end
         end
       end
@@ -267,13 +267,13 @@ receiver: shop,
     end
 
     before do
-      allow(controller).to receive(:spree_current_user) { user }
+      allow(controller).to(receive(:spree_current_user) { user })
     end
 
     it 'loads the preloads the necessary data' do
-      expect(controller).to receive(:load_form_data)
+      expect(controller).to(receive(:load_form_data))
       get :edit, params: { id: subscription.id }
-      expect(assigns(:subscription)).to eq subscription
+      expect(assigns(:subscription)).to(eq(subscription))
     end
   end
 
@@ -323,20 +323,20 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
 
     context 'as an non-manager of the subscription shop' do
       before do
-        allow(controller).to receive(:spree_current_user) {
+        allow(controller).to(receive(:spree_current_user) {
                                create(:user, enterprises: [create(:enterprise)])
-                             }
+                             })
       end
 
       it 'redirects to unauthorized' do
         spree_post :update, params
-        expect(response).to redirect_to unauthorized_path
+        expect(response).to(redirect_to(unauthorized_path))
       end
     end
 
     context 'as a manager of the subscription shop' do
       before do
-        allow(controller).to receive(:spree_current_user) { user }
+        allow(controller).to(receive(:spree_current_user) { user })
       end
 
       context 'when I submit params containing a new customer or schedule id' do
@@ -350,8 +350,8 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
         it 'does not alter customer_id or schedule_id' do
           spree_post :update, params
           subscription.reload
-          expect(subscription.customer).to eq customer
-          expect(subscription.schedule).to eq schedule
+          expect(subscription.customer).to(eq(customer))
+          expect(subscription.schedule).to(eq(schedule))
         end
       end
 
@@ -373,13 +373,13 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
         end
 
         it 'returns errors' do
-          expect { spree_post :update, params }
-.to_not change { Subscription.count }
+          expect { spree_post(:update, params) }
+.to_not(change { Subscription.count })
           json_response = JSON.parse(response.body)
-          expect(json_response['errors'].keys).to include 'payment_method', 'shipping_method'
+          expect(json_response['errors'].keys).to(include('payment_method', 'shipping_method'))
           subscription.reload
-          expect(subscription.payment_method).to eq payment_method
-          expect(subscription.shipping_method).to eq shipping_method
+          expect(subscription.payment_method).to(eq(payment_method))
+          expect(subscription.shipping_method).to(eq(shipping_method))
         end
       end
 
@@ -397,10 +397,10 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
         it 'updates the subscription' do
           spree_post :update, params
           subscription.reload
-          expect(subscription.schedule).to eq schedule
-          expect(subscription.customer).to eq customer
-          expect(subscription.payment_method).to eq new_payment_method
-          expect(subscription.shipping_method).to eq new_shipping_method
+          expect(subscription.schedule).to(eq(schedule))
+          expect(subscription.customer).to(eq(customer))
+          expect(subscription.payment_method).to(eq(new_payment_method))
+          expect(subscription.shipping_method).to(eq(new_shipping_method))
         end
 
         context 'with subscription_line_items params' do
@@ -419,12 +419,12 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
 
           context 'where the specified variants are not available from the shop' do
             it 'returns an error' do
-              expect { spree_post :update, params }
-.to_not change {
+              expect { spree_post(:update, params) }
+.to_not(change {
                                                             subscription.subscription_line_items.count
-                                                          }
+                                                          })
               json_response = JSON.parse(response.body)
-              expect(json_response['errors']['subscription_line_items']).to eq ["#{product2.name} - #{variant2.full_name} is not available from the selected schedule"]
+              expect(json_response['errors']['subscription_line_items']).to(eq(["#{product2.name} - #{variant2.full_name} is not available from the selected schedule"]))
             end
           end
 
@@ -432,15 +432,15 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             before { outgoing_exchange.update(variants: [variant1, variant2]) }
 
             it 'creates subscription line items for the subscription' do
-              expect { spree_post :update, params }
-.to change {
+              expect { spree_post(:update, params) }
+.to(change {
                                                         subscription.subscription_line_items.count
-                                                      }.by(1)
+                                                      }.by(1))
               subscription.reload
-              expect(subscription.subscription_line_items.count).to be 2
+              expect(subscription.subscription_line_items.count).to(be(2))
               subscription_line_item = subscription.subscription_line_items.last
-              expect(subscription_line_item.quantity).to be 2
-              expect(subscription_line_item.variant).to eq variant2
+              expect(subscription_line_item.quantity).to(be(2))
+              expect(subscription_line_item.variant).to(eq(variant2))
             end
           end
         end
@@ -458,7 +458,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
     end
 
     before do
-      allow(controller).to receive(:spree_current_user) { user }
+      allow(controller).to(receive(:spree_current_user) { user })
     end
 
     context 'json' do
@@ -467,7 +467,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
       context 'as a regular user' do
         it 'redirects to unauthorized' do
           spree_put :cancel, params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
@@ -478,7 +478,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
 
           it 'redirects to unauthorized' do
             spree_put :cancel, params
-            expect(response).to redirect_to unauthorized_path
+            expect(response).to(redirect_to(unauthorized_path))
           end
         end
 
@@ -497,9 +497,9 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             context "when no 'open_orders' directive has been provided" do
               it "renders an error, asking what to do" do
                 spree_put :cancel, params
-                expect(response.status).to be 409
+                expect(response.status).to(be(409))
                 json_response = JSON.parse(response.body)
-                expect(json_response['errors']['open_orders']).to eq I18n.t('admin.subscriptions.confirm_cancel_open_orders_msg')
+                expect(json_response['errors']['open_orders']).to(eq(I18n.t('admin.subscriptions.confirm_cancel_open_orders_msg')))
               end
             end
 
@@ -509,11 +509,11 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
               it 'renders the cancelled subscription as json, and does not cancel the open order' do
                 spree_put :cancel, params
                 json_response = JSON.parse(response.body)
-                expect(json_response['canceled_at']).to_not be nil
-                expect(json_response['id']).to eq subscription.id
-                expect(subscription.reload.canceled_at).to be_within(5.seconds).of Time.zone.now
-                expect(order.reload.state).to eq 'complete'
-                expect(proxy_order.reload.canceled_at).to be nil
+                expect(json_response['canceled_at']).to_not(be(nil))
+                expect(json_response['id']).to(eq(subscription.id))
+                expect(subscription.reload.canceled_at).to(be_within(5.seconds).of(Time.zone.now))
+                expect(order.reload.state).to(eq('complete'))
+                expect(proxy_order.reload.canceled_at).to(be(nil))
               end
             end
 
@@ -522,19 +522,19 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
 
               before do
                 params[:open_orders] = 'cancel'
-                allow(Spree::OrderMailer).to receive(:cancel_email) { mail_mock }
-                allow(mail_mock).to receive(:deliver_later)
+                allow(Spree::OrderMailer).to(receive(:cancel_email) { mail_mock })
+                allow(mail_mock).to(receive(:deliver_later))
               end
 
               it 'renders the cancelled subscription as json, and cancels the open order' do
                 spree_put :cancel, params
                 json_response = JSON.parse(response.body)
-                expect(json_response['canceled_at']).to_not be nil
-                expect(json_response['id']).to eq subscription.id
-                expect(subscription.reload.canceled_at).to be_within(5.seconds).of Time.zone.now
-                expect(order.reload.state).to eq 'canceled'
-                expect(proxy_order.reload.canceled_at).to be_within(5.seconds).of Time.zone.now
-                expect(mail_mock).to have_received(:deliver_later)
+                expect(json_response['canceled_at']).to_not(be(nil))
+                expect(json_response['id']).to(eq(subscription.id))
+                expect(subscription.reload.canceled_at).to(be_within(5.seconds).of(Time.zone.now))
+                expect(order.reload.state).to(eq('canceled'))
+                expect(proxy_order.reload.canceled_at).to(be_within(5.seconds).of(Time.zone.now))
+                expect(mail_mock).to(have_received(:deliver_later))
               end
             end
           end
@@ -543,9 +543,9 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             it 'renders the cancelled subscription as json' do
               spree_put :cancel, params
               json_response = JSON.parse(response.body)
-              expect(json_response['canceled_at']).to_not be nil
-              expect(json_response['id']).to eq subscription.id
-              expect(subscription.reload.canceled_at).to be_within(5.seconds).of Time.zone.now
+              expect(json_response['canceled_at']).to_not(be(nil))
+              expect(json_response['id']).to(eq(subscription.id))
+              expect(subscription.reload.canceled_at).to(be_within(5.seconds).of(Time.zone.now))
             end
           end
         end
@@ -559,7 +559,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
     let!(:subscription) { create(:subscription, shop: shop, with_items: true) }
 
     before do
-      allow(controller).to receive(:spree_current_user) { user }
+      allow(controller).to(receive(:spree_current_user) { user })
     end
 
     context 'json' do
@@ -568,7 +568,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
       context 'as a regular user' do
         it 'redirects to unauthorized' do
           spree_put :pause, params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
@@ -579,7 +579,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
 
           it 'redirects to unauthorized' do
             spree_put :pause, params
-            expect(response).to redirect_to unauthorized_path
+            expect(response).to(redirect_to(unauthorized_path))
           end
         end
 
@@ -598,9 +598,9 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             context "when no 'open_orders' directive has been provided" do
               it "renders an error, asking what to do" do
                 spree_put :pause, params
-                expect(response.status).to be 409
+                expect(response.status).to(be(409))
                 json_response = JSON.parse(response.body)
-                expect(json_response['errors']['open_orders']).to eq I18n.t('admin.subscriptions.confirm_cancel_open_orders_msg')
+                expect(json_response['errors']['open_orders']).to(eq(I18n.t('admin.subscriptions.confirm_cancel_open_orders_msg')))
               end
             end
 
@@ -610,11 +610,11 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
               it 'renders the paused subscription as json, and does not cancel the open order' do
                 spree_put :pause, params
                 json_response = JSON.parse(response.body)
-                expect(json_response['paused_at']).to_not be nil
-                expect(json_response['id']).to eq subscription.id
-                expect(subscription.reload.paused_at).to be_within(5.seconds).of Time.zone.now
-                expect(order.reload.state).to eq 'complete'
-                expect(proxy_order.reload.canceled_at).to be nil
+                expect(json_response['paused_at']).to_not(be(nil))
+                expect(json_response['id']).to(eq(subscription.id))
+                expect(subscription.reload.paused_at).to(be_within(5.seconds).of(Time.zone.now))
+                expect(order.reload.state).to(eq('complete'))
+                expect(proxy_order.reload.canceled_at).to(be(nil))
               end
             end
 
@@ -623,19 +623,19 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
 
               before do
                 params[:open_orders] = 'cancel'
-                allow(Spree::OrderMailer).to receive(:cancel_email) { mail_mock }
-                allow(mail_mock).to receive(:deliver_later)
+                allow(Spree::OrderMailer).to(receive(:cancel_email) { mail_mock })
+                allow(mail_mock).to(receive(:deliver_later))
               end
 
               it 'renders the paused subscription as json, and cancels the open order' do
                 spree_put :pause, params
                 json_response = JSON.parse(response.body)
-                expect(json_response['paused_at']).to_not be nil
-                expect(json_response['id']).to eq subscription.id
-                expect(subscription.reload.paused_at).to be_within(5.seconds).of Time.zone.now
-                expect(order.reload.state).to eq 'canceled'
-                expect(proxy_order.reload.canceled_at).to be_within(5.seconds).of Time.zone.now
-                expect(mail_mock).to have_received(:deliver_later)
+                expect(json_response['paused_at']).to_not(be(nil))
+                expect(json_response['id']).to(eq(subscription.id))
+                expect(subscription.reload.paused_at).to(be_within(5.seconds).of(Time.zone.now))
+                expect(order.reload.state).to(eq('canceled'))
+                expect(proxy_order.reload.canceled_at).to(be_within(5.seconds).of(Time.zone.now))
+                expect(mail_mock).to(have_received(:deliver_later))
               end
             end
           end
@@ -644,9 +644,9 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             it 'renders the paused subscription as json' do
               spree_put :pause, params
               json_response = JSON.parse(response.body)
-              expect(json_response['paused_at']).to_not be nil
-              expect(json_response['id']).to eq subscription.id
-              expect(subscription.reload.paused_at).to be_within(5.seconds).of Time.zone.now
+              expect(json_response['paused_at']).to_not(be(nil))
+              expect(json_response['id']).to(eq(subscription.id))
+              expect(subscription.reload.paused_at).to(be_within(5.seconds).of(Time.zone.now))
             end
           end
         end
@@ -662,7 +662,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
     end
 
     before do
-      allow(controller).to receive(:spree_current_user) { user }
+      allow(controller).to(receive(:spree_current_user) { user })
     end
 
     context 'json' do
@@ -671,7 +671,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
       context 'as a regular user' do
         it 'redirects to unauthorized' do
           spree_put :unpause, params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
@@ -682,7 +682,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
 
           it 'redirects to unauthorized' do
             spree_put :unpause, params
-            expect(response).to redirect_to unauthorized_path
+            expect(response).to(redirect_to(unauthorized_path))
           end
         end
 
@@ -702,11 +702,11 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
               it 'renders the unpaused subscription as json, leaves the order untouched' do
                 spree_put :unpause, params
                 json_response = JSON.parse(response.body)
-                expect(json_response['paused_at']).to be nil
-                expect(json_response['id']).to eq subscription.id
-                expect(subscription.reload.paused_at).to be nil
-                expect(order.reload.state).to eq 'complete'
-                expect(proxy_order.reload.canceled_at).to be nil
+                expect(json_response['paused_at']).to(be(nil))
+                expect(json_response['id']).to(eq(subscription.id))
+                expect(subscription.reload.paused_at).to(be(nil))
+                expect(order.reload.state).to(eq('complete'))
+                expect(proxy_order.reload.canceled_at).to(be(nil))
               end
             end
 
@@ -719,9 +719,9 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
               context "when no 'canceled_orders' directive has been provided" do
                 it "renders a message, informing the user that canceled order can be resumed" do
                   spree_put :unpause, params
-                  expect(response.status).to be 409
+                  expect(response.status).to(be(409))
                   json_response = JSON.parse(response.body)
-                  expect(json_response['errors']['canceled_orders']).to eq I18n.t('admin.subscriptions.resume_canceled_orders_msg')
+                  expect(json_response['errors']['canceled_orders']).to(eq(I18n.t('admin.subscriptions.resume_canceled_orders_msg')))
                 end
               end
 
@@ -731,11 +731,11 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
                 it 'renders the unpaused subscription as json, leaves the order untouched' do
                   spree_put :unpause, params
                   json_response = JSON.parse(response.body)
-                  expect(json_response['paused_at']).to be nil
-                  expect(json_response['id']).to eq subscription.id
-                  expect(subscription.reload.paused_at).to be nil
-                  expect(order.reload.state).to eq 'canceled'
-                  expect(proxy_order.reload.canceled_at).to_not be nil
+                  expect(json_response['paused_at']).to(be(nil))
+                  expect(json_response['id']).to(eq(subscription.id))
+                  expect(subscription.reload.paused_at).to(be(nil))
+                  expect(order.reload.state).to(eq('canceled'))
+                  expect(proxy_order.reload.canceled_at).to_not(be(nil))
                 end
               end
             end
@@ -745,17 +745,17 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             it 'renders the unpaused subscription as json' do
               spree_put :unpause, params
               json_response = JSON.parse(response.body)
-              expect(json_response['paused_at']).to be nil
-              expect(json_response['id']).to eq subscription.id
-              expect(subscription.reload.paused_at).to be nil
+              expect(json_response['paused_at']).to(be(nil))
+              expect(json_response['id']).to(eq(subscription.id))
+              expect(subscription.reload.paused_at).to(be(nil))
             end
 
             context "when there is an open OC and no associated orders exist yet for it (OC was opened when the subscription was paused)" do
               it "creates an associated order" do
                 spree_put :unpause, params
 
-                expect(subscription.reload.paused_at).to be nil
-                expect(subscription.proxy_orders.size).to be 1
+                expect(subscription.reload.paused_at).to(be(nil))
+                expect(subscription.proxy_orders.size).to(be(1))
               end
             end
           end
@@ -775,17 +775,17 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
     let!(:shipping_method) { create(:shipping_method, distributors: [shop]) }
 
     before do
-      allow(controller).to receive(:spree_current_user) { user }
+      allow(controller).to(receive(:spree_current_user) { user })
       controller.instance_variable_set(:@subscription, Subscription.new(shop: shop))
     end
 
     it "assigns data to instance variables" do
       controller.send(:load_form_data)
-      expect(assigns(:customers)).to include customer1, customer2
-      expect(assigns(:schedules)).to eq [schedule]
-      expect(assigns(:order_cycles)).to eq [order_cycle]
-      expect(assigns(:payment_methods)).to eq [payment_method]
-      expect(assigns(:shipping_methods)).to eq [shipping_method]
+      expect(assigns(:customers)).to(include(customer1, customer2))
+      expect(assigns(:schedules)).to(eq([schedule]))
+      expect(assigns(:order_cycles)).to(eq([order_cycle]))
+      expect(assigns(:payment_methods)).to(eq([payment_method]))
+      expect(assigns(:shipping_methods)).to(eq([shipping_method]))
     end
 
     context "when other payment methods exist" do
@@ -797,8 +797,8 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
 
       it "only loads Stripe and Cash payment methods" do
         controller.send(:load_form_data)
-        expect(assigns(:payment_methods)).to include payment_method, stripe
-        expect(assigns(:payment_methods)).to_not include paypal, bogus
+        expect(assigns(:payment_methods)).to(include(payment_method, stripe))
+        expect(assigns(:payment_methods)).to_not(include(paypal, bogus))
       end
     end
   end

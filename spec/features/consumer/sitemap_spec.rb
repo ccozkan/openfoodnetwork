@@ -8,7 +8,7 @@ describe 'sitemap' do
 
   it "renders sitemap" do
     visit '/sitemap.xml'
-    expect(page).to have_content enterprise_shop_url(enterprise)
-    expect(page).to have_content group_url(group)
+    expect(page).to(have_content(enterprise_shop_url(enterprise)))
+    expect(page).to(have_content(group_url(group)))
   end
 end

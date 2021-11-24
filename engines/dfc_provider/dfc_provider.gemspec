@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.push File.expand_path('lib', __dir__)
+$LOAD_PATH.push(File.expand_path('lib', __dir__))
 
 # Maintain your gem's version:
 require "dfc_provider/version"
@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir["{app,config,lib}/**/*"] + ['README.md']
   spec.test_files = Dir['spec/**/*']
 
-  spec.add_dependency 'active_model_serializers', '~> 0.8.4'
-  spec.add_dependency 'jwt', '~> 2.2'
-  spec.add_dependency 'rspec', '~> 3.9'
+  spec.add_dependency('active_model_serializers', '~> 0.8.4')
+  spec.add_dependency('jwt', '~> 2.2')
+  spec.add_dependency('rspec', '~> 3.9')
 end

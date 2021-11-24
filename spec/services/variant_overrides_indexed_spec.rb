@@ -25,7 +25,7 @@ describe VariantOverridesIndexed do
         let(:vo_distributor) { distributor }
 
         it 'they are included in the mapping' do
-          expect(result).to eq(distributor.id => { variant => variant_override })
+          expect(result).to(eq(distributor.id => { variant => variant_override }))
         end
       end
 
@@ -33,7 +33,7 @@ describe VariantOverridesIndexed do
         let(:vo_distributor) { create(:distributor_enterprise) }
 
         it 'they are not included in the mapping' do
-          expect(result).to eq({})
+          expect(result).to(eq({}))
         end
       end
     end
@@ -45,7 +45,7 @@ describe VariantOverridesIndexed do
         let(:vo_distributor) { distributor }
 
         it 'they are not included in the mapping' do
-          expect(result).to eq({})
+          expect(result).to(eq({}))
         end
       end
 
@@ -53,7 +53,7 @@ describe VariantOverridesIndexed do
         let(:vo_distributor) { create(:distributor_enterprise) }
 
         it 'they are not included in the mapping' do
-          expect(result).to eq({})
+          expect(result).to(eq({}))
         end
       end
     end

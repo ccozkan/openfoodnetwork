@@ -37,12 +37,12 @@ describe CapQuantity do
         it "caps quantity at the stock level for stock-limited items, and reports the change" do
           changes = CapQuantity.new.call(order)
 
-          expect(line_item1.reload.quantity).to be 3 # not capped
-          expect(line_item2.reload.quantity).to be 2 # capped
-          expect(line_item3.reload.quantity).to be 0 # capped
-          expect(changes[line_item1.id]).to be nil
-          expect(changes[line_item2.id]).to be 3
-          expect(changes[line_item3.id]).to be 3
+          expect(line_item1.reload.quantity).to(be(3)) # not capped
+          expect(line_item2.reload.quantity).to(be(2)) # capped
+          expect(line_item3.reload.quantity).to(be(0)) # capped
+          expect(changes[line_item1.id]).to(be(nil))
+          expect(changes[line_item2.id]).to(be(3))
+          expect(changes[line_item3.id]).to(be(3))
         end
       end
     end
@@ -60,26 +60,26 @@ describe CapQuantity do
         it "sets quantity to 0 for unavailable items, and reports the change" do
           changes = CapQuantity.new.call(order)
 
-          expect(line_item1.reload.quantity).to be 0 # unavailable
-          expect(line_item2.reload.quantity).to be 2 # capped
-          expect(line_item3.reload.quantity).to be 0 # capped
-          expect(changes[line_item1.id]).to be 3
-          expect(changes[line_item2.id]).to be 3
-          expect(changes[line_item3.id]).to be 3
+          expect(line_item1.reload.quantity).to(be(0)) # unavailable
+          expect(line_item2.reload.quantity).to(be(2)) # capped
+          expect(line_item3.reload.quantity).to(be(0)) # capped
+          expect(changes[line_item1.id]).to(be(3))
+          expect(changes[line_item2.id]).to(be(3))
+          expect(changes[line_item3.id]).to(be(3))
         end
 
         context "and the order has been placed" do
           before do
-            allow(order).to receive(:ensure_available_shipping_rates) { true }
-            allow(order).to receive(:process_each_payment) { true }
+            allow(order).to(receive(:ensure_available_shipping_rates) { true })
+            allow(order).to(receive(:process_each_payment) { true })
 
             order.create_proposed_shipments
           end
 
           it "removes the unavailable items from the shipment" do
             expect { CapQuantity.new.call(order) }
-              .to change { order.reload.shipment.manifest.size }
-.from(2).to(1)
+              .to(change { order.reload.shipment.manifest.size }
+.from(2).to(1))
           end
         end
       end

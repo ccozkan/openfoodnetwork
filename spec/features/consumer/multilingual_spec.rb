@@ -10,34 +10,34 @@ describe 'Multilingual', js: true do
   include CookieHelper
 
   it 'has three locales available' do
-    expect(Rails.application.config.i18n[:default_locale]).to eq 'en'
-    expect(Rails.application.config.i18n[:locale]).to eq 'en'
-    expect(Rails.application.config.i18n[:available_locales]).to eq ['en', 'es', 'pt']
+    expect(Rails.application.config.i18n[:default_locale]).to(eq('en'))
+    expect(Rails.application.config.i18n[:locale]).to(eq('en'))
+    expect(Rails.application.config.i18n[:available_locales]).to(eq(['en', 'es', 'pt']))
   end
 
   it '18n-js fallsback to default language' do # in backend it doesn't until we change enforce_available_locales to `true`
     visit root_path
     set_i18n_locale('it')
-    expect(get_i18n_translation('label_shops')).to eq 'Shops'
+    expect(get_i18n_translation('label_shops')).to(eq('Shops'))
   end
 
   context 'can switch language by params' do
     it 'in root path' do
       visit root_path
-      expect(get_i18n_locale).to eq 'en'
-      expect(get_i18n_translation('label_shops')).to eq 'Shops'
-      expect(cookies).to be_empty
-      expect(page).to have_content 'SHOPS'
+      expect(get_i18n_locale).to(eq('en'))
+      expect(get_i18n_translation('label_shops')).to(eq('Shops'))
+      expect(cookies).to(be_empty)
+      expect(page).to(have_content('SHOPS'))
 
       visit root_path(locale: 'es')
-      expect(get_i18n_locale).to eq 'es'
-      expect(get_i18n_translation('label_shops')).to eq 'Tiendas'
+      expect(get_i18n_locale).to(eq('es'))
+      expect(get_i18n_translation('label_shops')).to(eq('Tiendas'))
       expect_menu_and_cookie_in_es
 
       # it is not in the list of available of available_locales
       visit root_path(locale: 'it')
-      expect(get_i18n_locale).to eq 'es'
-      expect(get_i18n_translation('label_shops')).to eq 'Tiendas'
+      expect(get_i18n_locale).to(eq('es'))
+      expect(get_i18n_translation('label_shops')).to(eq('Tiendas'))
       expect_menu_and_cookie_in_es
     end
 
@@ -58,14 +58,14 @@ describe 'Multilingual', js: true do
         visit main_app.cart_path(locale: 'es')
 
         expect_menu_and_cookie_in_es
-        expect(page).to have_content 'Precio'
+        expect(page).to(have_content('Precio'))
       end
 
       it "in the checkout page" do
         visit checkout_path(locale: 'es')
 
         expect_menu_and_cookie_in_es
-        expect(page).to have_content 'Total del carrito'
+        expect(page).to(have_content('Total del carrito'))
       end
     end
   end
@@ -77,7 +77,7 @@ describe 'Multilingual', js: true do
       visit root_path(locale: 'es')
 
       expect_menu_and_cookie_in_es
-      expect(user.locale).to be_nil
+      expect(user.locale).to(be_nil)
       login_as user
       visit root_path
 
@@ -89,12 +89,12 @@ describe 'Multilingual', js: true do
       visit root_path(locale: 'es')
       user.reload
 
-      expect(user.locale).to eq 'es'
+      expect(user.locale).to(eq('es'))
 
       logout
 
       expect_menu_and_cookie_in_es
-      expect(page).to have_content '¿Estás interesada en entrar en Open Food Network?'
+      expect(page).to(have_content('¿Estás interesada en entrar en Open Food Network?'))
     end
   end
 
@@ -102,34 +102,34 @@ describe 'Multilingual', js: true do
     before { browse_as_large }
     context "when there is only one language available" do
       before do
-        allow(ENV).to receive(:[]).and_call_original
-        allow(ENV).to receive(:[]).with("LOCALE").and_return("en")
-        allow(ENV).to receive(:[]).with("AVAILABLE_LOCALES").and_return("en")
+        allow(ENV).to(receive(:[]).and_call_original)
+        allow(ENV).to(receive(:[]).with("LOCALE").and_return("en"))
+        allow(ENV).to(receive(:[]).with("AVAILABLE_LOCALES").and_return("en"))
       end
 
       it "hides the dropdown language menu" do
         visit root_path
-        expect(page).to have_no_css 'ul.right li.language-switcher.has-dropdown'
+        expect(page).to(have_no_css('ul.right li.language-switcher.has-dropdown'))
       end
     end
 
     context "when there are multiple languages available" do
       before do
-        allow(ENV).to receive(:[]).and_call_original
-        allow(ENV).to receive(:[]).with("LOCALE").and_return("en")
-        allow(ENV).to receive(:[]).with("AVAILABLE_LOCALES").and_return("en,es")
+        allow(ENV).to(receive(:[]).and_call_original)
+        allow(ENV).to(receive(:[]).with("LOCALE").and_return("en"))
+        allow(ENV).to(receive(:[]).with("AVAILABLE_LOCALES").and_return("en,es"))
       end
 
       it "allows switching language via the main navigation" do
         visit root_path
 
-        expect(page).to have_content 'SHOPS'
+        expect(page).to(have_content('SHOPS'))
 
         find('.language-switcher').click
         within '.language-switcher .dropdown' do
-          expect(page).not_to have_link I18n.t('language_name', locale: :en), href: '/locales/en'
-          expect(page).to have_link I18n.t('language_name', locale: :es, default: 'Language Name'),
-                                    href: '/locales/es'
+          expect(page).not_to(have_link(I18n.t('language_name', locale: :en), href: '/locales/en'))
+          expect(page).to(have_link(I18n.t('language_name', locale: :es, default: 'Language Name'),
+                                    href: '/locales/es'))
 
           find('li a[href="/locales/es"]').click
         end
@@ -141,6 +141,6 @@ describe 'Multilingual', js: true do
 end
 
 def expect_menu_and_cookie_in_es
-  expect(cookie_named('locale')[:value]).to eq 'es'
-  expect(page).to have_content 'TIENDAS'
+  expect(cookie_named('locale')[:value]).to(eq('es'))
+  expect(page).to(have_content('TIENDAS'))
 end

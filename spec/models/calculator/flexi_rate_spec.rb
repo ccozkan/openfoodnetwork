@@ -16,7 +16,7 @@ describe Calculator::FlexiRate do
     let(:quantity) { 4.0 }
 
     it "returns the first item rate" do
-      expect(calculator.compute(line_item).round(2)).to eq(4.0)
+      expect(calculator.compute(line_item).round(2)).to(eq(4.0))
     end
   end
 
@@ -24,7 +24,7 @@ describe Calculator::FlexiRate do
     let(:quantity) { 2.0 }
 
     it "returns the first item rate" do
-      expect(calculator.compute(line_item).round(2)).to eq(3.0)
+      expect(calculator.compute(line_item).round(2)).to(eq(3.0))
     end
   end
 

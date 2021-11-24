@@ -16,17 +16,17 @@ module CheckoutHelper
 
     # Remove tax adjustments and (optionally) shipping fees
     adjustments.reject! { |a| a.originator_type == 'Spree::TaxRate' }
-    if exclude.include? :shipping
+    if exclude.include?(:shipping)
       adjustments.reject! do |a|
         a.originator_type == 'Spree::ShippingMethod'
       end
     end
-    if exclude.include? :payment
+    if exclude.include?(:payment)
       adjustments.reject! do |a|
         a.originator_type == 'Spree::PaymentMethod'
       end
     end
-    if exclude.include? :line_item
+    if exclude.include?(:line_item)
       adjustments.reject! do |a|
         a.adjustable_type == 'Spree::LineItem'
       end
@@ -39,7 +39,7 @@ module CheckoutHelper
     adjustments.reject! do |a|
       a.originator_type == 'EnterpriseFee' && a.adjustable_type != 'Spree::LineItem'
     end
-    unless exclude.include? :admin_and_handling
+    unless exclude.include?(:admin_and_handling)
       adjustments << Spree::Adjustment.new(
         label: I18n.t(:orders_form_admin), amount: enterprise_fee_adjustments.sum(&:amount)
       )
@@ -49,7 +49,7 @@ module CheckoutHelper
   end
 
   def display_line_item_fees_total_for(order)
-    Spree::Money.new order.adjustments.enterprise_fee.sum(:amount), currency: order.currency
+    Spree::Money.new(order.adjustments.enterprise_fee.sum(:amount), currency: order.currency)
   end
 
   def checkout_line_item_fees(order)
@@ -61,11 +61,11 @@ module CheckoutHelper
   end
 
   def display_checkout_subtotal(order)
-    Spree::Money.new checkout_subtotal(order), currency: order.currency
+    Spree::Money.new(checkout_subtotal(order), currency: order.currency)
   end
 
   def display_checkout_tax_total(order)
-    Spree::Money.new order.total_tax, currency: order.currency
+    Spree::Money.new(order.total_tax, currency: order.currency)
   end
 
   def display_checkout_taxes_hash(order)
@@ -73,7 +73,7 @@ module CheckoutHelper
 
     totals.each_with_object({}) do |(tax_rate, tax_amount), hash|
       hash[number_to_percentage(tax_rate.amount * 100, precision: 1)] =
-        Spree::Money.new tax_amount, currency: order.currency
+        Spree::Money.new(tax_amount, currency: order.currency)
     end
   end
 
@@ -93,7 +93,7 @@ module CheckoutHelper
   end
 
   def display_checkout_total_less_tax(order)
-    Spree::Money.new order.total - order.total_tax, currency: order.currency
+    Spree::Money.new(order.total - order.total_tax, currency: order.currency)
   end
 
   def validated_input(name, path, args = {})
@@ -104,9 +104,9 @@ module CheckoutHelper
       :id => path,
       "ng-model" => path,
       "ng-class" => "{error: !fieldValid('#{path}')}"
-    }.merge args
+    }.merge(args)
 
-    render "shared/validated_input", name: name, path: path, attributes: attributes
+    render("shared/validated_input", name: name, path: path, attributes: attributes)
   end
 
   def validated_select(name, path, options, args = {})
@@ -115,13 +115,13 @@ module CheckoutHelper
       :id => path,
       "ng-model" => path,
       "ng-class" => "{error: !fieldValid('#{path}')}"
-    }.merge args
+    }.merge(args)
 
-    render "shared/validated_select",
+    render("shared/validated_select",
 name: name,
 path: path,
 options: options,
-                                      attributes: attributes
+                                      attributes: attributes)
   end
 
   def payment_method_price(method, order)

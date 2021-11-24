@@ -26,30 +26,30 @@ describe Spree::UsersController, type: :controller do
     let(:outstanding_balance) { instance_double(OutstandingBalance) }
 
     before do
-      allow(controller).to receive(:spree_current_user) { u1 }
+      allow(controller).to(receive(:spree_current_user) { u1 })
     end
 
     it "returns orders placed by the user at normal shops" do
       get :show
 
-      expect(orders).to include d1o1, d1o2
-      expect(orders).to_not include d1_order_for_u2, d1o3, d2o1
-      expect(shops).to include distributor1
+      expect(orders).to(include(d1o1, d1o2))
+      expect(orders).to_not(include(d1_order_for_u2, d1o3, d2o1))
+      expect(shops).to(include(distributor1))
 
       # Doesn't return orders for irrelevant distributors" do
-      expect(orders).not_to include d2o1
-      expect(shops).not_to include distributor2
+      expect(orders).not_to(include(d2o1))
+      expect(shops).not_to(include(distributor2))
 
       # Doesn't return other users' orders" do
-      expect(orders).not_to include d1_order_for_u2
+      expect(orders).not_to(include(d1_order_for_u2))
 
       # Doesn't return uncompleted orders" do
-      expect(orders).not_to include d1o3
+      expect(orders).not_to(include(d1o3))
     end
 
     it 'calls OutstandingBalance' do
-      allow(OutstandingBalance).to receive(:new).and_return(outstanding_balance)
-      expect(outstanding_balance).to receive(:query) { Spree::Order.none }
+      allow(OutstandingBalance).to(receive(:new).and_return(outstanding_balance))
+      expect(outstanding_balance).to(receive(:query) { Spree::Order.none })
 
       spree_get :show
     end
@@ -62,20 +62,20 @@ describe Spree::UsersController, type: :controller do
 
     it "returns true if email corresponds to a registered user" do
       post :registered_email, params: { email: user.email }
-      expect(json_response['registered']).to eq true
+      expect(json_response['registered']).to(eq(true))
     end
 
     it "returns false if email does not correspond to a registered user" do
       post :registered_email, params: { email: 'nonregistereduser@example.com' }
-      expect(json_response['registered']).to eq false
+      expect(json_response['registered']).to(eq(false))
     end
   end
 
   context '#load_object' do
     it 'should redirect to signup path if user is not found' do
-      allow(controller).to receive_messages(spree_current_user: nil)
+      allow(controller).to(receive_messages(spree_current_user: nil))
       put :update, params: { user: { email: 'foobar@example.com' } }
-      expect(response).to redirect_to('/login')
+      expect(response).to(redirect_to('/login'))
     end
   end
 
@@ -89,7 +89,7 @@ password: 'foobar123',
 password_confirmation: 'foobar123'
 }
 }
-      expect(assigns[:user].new_record?).to be_falsey
+      expect(assigns[:user].new_record?).to(be_falsey)
     end
   end
 end

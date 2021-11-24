@@ -11,7 +11,7 @@ describe Api::V0::ReportsController, type: :controller do
   end
 
   before do
-    allow(controller).to receive(:spree_current_user) { current_user }
+    allow(controller).to(receive(:spree_current_user) { current_user })
     order.finalize!
   end
 
@@ -24,8 +24,8 @@ describe Api::V0::ReportsController, type: :controller do
       it "renders results" do
         api_get :show, params
 
-        expect(response.status).to eq 200
-        expect(json_response[:data]).to match_array report_output(order, "distributor")
+        expect(response.status).to(eq(200))
+        expect(json_response[:data]).to(match_array(report_output(order, "distributor")))
       end
     end
 
@@ -45,8 +45,8 @@ child: order.distributor,
       it "renders results" do
         api_get :show, params
 
-        expect(response.status).to eq 200
-        expect(json_response[:data]).to match_array report_output(order, "supplier")
+        expect(response.status).to(eq(200))
+        expect(json_response[:data]).to(match_array(report_output(order, "supplier")))
       end
     end
   end

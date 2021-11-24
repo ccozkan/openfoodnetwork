@@ -107,7 +107,7 @@ class ProductTagRulesFilterer
   end
 
   def customer_tagged?(rule)
-    customer_tag_list.include? rule.preferred_customer_tags
+    customer_tag_list.include?(rule.preferred_customer_tags)
   end
 
   def customer_tag_list

@@ -53,17 +53,17 @@ distributor: dist1,
     let!(:line_item4) { FactoryBot.create(:line_item_with_shipment, order: order3) }
 
     context "as a normal user" do
-      before { allow(controller).to receive_messages spree_current_user: create(:user) }
+      before { allow(controller).to(receive_messages(spree_current_user: create(:user))) }
 
       it "should deny me access to the index action" do
         get :index, format: :json
-        expect(response).to redirect_to unauthorized_path
+        expect(response).to(redirect_to(unauthorized_path))
       end
     end
 
     context "as an administrator" do
       before do
-        allow(controller).to receive_messages spree_current_user: create(:admin_user)
+        allow(controller).to(receive_messages(spree_current_user: create(:admin_user)))
       end
 
       context "when no ransack params are passed in" do
@@ -73,12 +73,12 @@ distributor: dist1,
 
         it "retrieves a list of line_items with appropriate attributes, including line items with appropriate attributes" do
           keys = json_response['line_items'].first.keys.map(&:to_sym)
-          expect(line_item_attributes.all? { |attr| keys.include? attr }).to eq(true)
+          expect(line_item_attributes.all? { |attr| keys.include?(attr) }).to(eq(true))
         end
 
         it "sorts line_items in ascending id line_item" do
-          expect(line_item_ids[0]).to be < line_item_ids[1]
-          expect(line_item_ids[1]).to be < line_item_ids[2]
+          expect(line_item_ids[0]).to(be < line_item_ids[1])
+          expect(line_item_ids[1]).to(be < line_item_ids[2])
         end
 
         it "formats final_weight_volume as a float" do
@@ -86,7 +86,7 @@ distributor: dist1,
 json_response['line_items'].map do |line_item|
                    line_item['final_weight_volume']
                  end.all? { |fwv| fwv.is_a?(Float) }
-).to eq(true)
+).to(eq(true))
         end
 
         it "returns distributor object with id key" do
@@ -94,7 +94,7 @@ json_response['line_items'].map do |line_item|
 json_response['line_items'].map do |line_item|
                    line_item['supplier']
                  end.all? { |d| d.key?('id') }
-).to eq(true)
+).to(eq(true))
         end
       end
 
@@ -104,7 +104,7 @@ json_response['line_items'].map do |line_item|
         end
 
         it "retrives a list of line items which match the criteria" do
-          expect(line_item_ids).to eq [line_item2.id, line_item3.id]
+          expect(line_item_ids).to(eq([line_item2.id, line_item3.id]))
         end
       end
 
@@ -114,7 +114,7 @@ json_response['line_items'].map do |line_item|
         end
 
         it "retrives a list of line items whose orders match the criteria" do
-          expect(line_item_ids).to eq [line_item2.id, line_item3.id, line_item4.id]
+          expect(line_item_ids).to(eq([line_item2.id, line_item3.id, line_item4.id]))
         end
       end
     end
@@ -169,62 +169,62 @@ order: order2,
 
       context "producer enterprise" do
         before do
-          allow(controller).to receive_messages spree_current_user: supplier.owner
+          allow(controller).to(receive_messages(spree_current_user: supplier.owner))
           get :index, as: :json
         end
 
         it "does not display line items for which my enterprise is a supplier" do
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
       context "coordinator enterprise" do
         before do
-          allow(controller).to receive_messages spree_current_user: coordinator.owner
+          allow(controller).to(receive_messages(spree_current_user: coordinator.owner))
           get :index, as: :json
         end
 
         it "retrieves a list of line_items" do
           keys = json_response['line_items'].first.keys.map(&:to_sym)
-          expect(line_item_attributes.all? { |attr| keys.include? attr }).to eq(true)
+          expect(line_item_attributes.all? { |attr| keys.include?(attr) }).to(eq(true))
         end
       end
 
       context "hub enterprise" do
         before do
-          allow(controller).to receive_messages spree_current_user: distributor1.owner
+          allow(controller).to(receive_messages(spree_current_user: distributor1.owner))
           get :index, as: :json
         end
 
         it "retrieves a list of line_items" do
           keys = json_response['line_items'].first.keys.map(&:to_sym)
-          expect(line_item_attributes.all? { |attr| keys.include? attr }).to eq(true)
+          expect(line_item_attributes.all? { |attr| keys.include?(attr) }).to(eq(true))
         end
       end
     end
 
     context "paginating" do
       before do
-        allow(controller).to receive_messages spree_current_user: create(:admin_user)
+        allow(controller).to(receive_messages(spree_current_user: create(:admin_user)))
       end
 
       context "with pagination args" do
         it "returns paginated results" do
           get :index, params: { page: 1, per_page: 2 }, as: :json
 
-          expect(line_item_ids).to eq [line_item1.id, line_item2.id]
-          expect(json_response['pagination']).to eq(
+          expect(line_item_ids).to(eq([line_item1.id, line_item2.id]))
+          expect(json_response['pagination']).to(eq(
             { 'page' => 1, 'per_page' => 2, 'pages' => 2, 'results' => 4 }
-          )
+          ))
         end
 
         it "returns paginated results for a second page" do
           get :index, params: { page: 2, per_page: 2 }, as: :json
 
-          expect(line_item_ids).to eq [line_item3.id, line_item4.id]
-          expect(json_response['pagination']).to eq(
+          expect(line_item_ids).to(eq([line_item3.id, line_item4.id]))
+          expect(json_response['pagination']).to(eq(
             { 'page' => 2, 'per_page' => 2, 'pages' => 2, 'results' => 4 }
-          )
+          ))
         end
       end
     end
@@ -260,12 +260,12 @@ order: order1,
     context "as an enterprise user" do
       context "producer enterprise" do
         before do
-          allow(controller).to receive_messages spree_current_user: supplier.owner
+          allow(controller).to(receive_messages(spree_current_user: supplier.owner))
           spree_put :update, params
         end
 
         it "does not allow access" do
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
@@ -273,7 +273,7 @@ order: order1,
         render_views
 
         before do
-          allow(controller).to receive_messages spree_current_user: coordinator.owner
+          allow(controller).to(receive_messages(spree_current_user: coordinator.owner))
         end
 
         # Used in admin/orders/bulk_management
@@ -283,28 +283,28 @@ order: order1,
           it "updates the line item" do
             spree_put :update, params
             line_item1.reload
-            expect(line_item1.quantity).to eq 3
-            expect(line_item1.final_weight_volume).to eq 3000
-            expect(line_item1.price).to eq 3.00
+            expect(line_item1.quantity).to(eq(3))
+            expect(line_item1.final_weight_volume).to(eq(3000))
+            expect(line_item1.price).to(eq(3.00))
           end
 
           it "returns an empty JSON response" do
             spree_put :update, params
-            expect(response.body).to eq ""
+            expect(response.body).to(eq(""))
           end
 
           it 'returns a 204 response' do
             spree_put :update, params
-            expect(response.status).to eq 204
+            expect(response.status).to(eq(204))
           end
 
           it 'applies enterprise fees locking the order with an exclusive row lock' do
-            allow(Spree::LineItem).to receive(:find).with(line_item1.id.to_s).and_return(line_item1)
+            allow(Spree::LineItem).to(receive(:find).with(line_item1.id.to_s).and_return(line_item1))
 
-            expect(line_item1.order).to receive(:with_lock).and_call_original
-            expect(line_item1.order).to receive(:update_line_item_fees!)
-            expect(line_item1.order).to receive(:update_order_fees!)
-            expect(line_item1.order).to receive(:update_order!).once
+            expect(line_item1.order).to(receive(:with_lock).and_call_original)
+            expect(line_item1.order).to(receive(:update_line_item_fees!))
+            expect(line_item1.order).to(receive(:update_order_fees!))
+            expect(line_item1.order).to(receive(:update_order!).once)
 
             spree_put :update, params
           end
@@ -315,12 +315,12 @@ order: order1,
 
             it 'returns a JSON with the errors' do
               spree_put :update, params
-              expect(JSON.parse(response.body)['errors']).to eq(errors)
+              expect(JSON.parse(response.body)['errors']).to(eq(errors))
             end
 
             it 'returns a 412 response' do
               spree_put :update, params
-              expect(response.status).to eq 412
+              expect(response.status).to(eq(412))
             end
           end
         end
@@ -328,15 +328,15 @@ order: order1,
 
       context "hub enterprise" do
         before do
-          allow(controller).to receive_messages spree_current_user: distributor1.owner
+          allow(controller).to(receive_messages(spree_current_user: distributor1.owner))
           put :update, params: params, xhr: true
         end
 
         it "updates the line item" do
           line_item1.reload
-          expect(line_item1.quantity).to eq 3
-          expect(line_item1.final_weight_volume).to eq 3000
-          expect(line_item1.price).to eq 3.00
+          expect(line_item1.quantity).to(eq(3))
+          expect(line_item1.final_weight_volume).to(eq(3000))
+          expect(line_item1.price).to(eq(3.00))
         end
       end
     end
@@ -369,7 +369,7 @@ order: order1,
     let(:params) { { id: line_item1.id, order_id: order1.number } }
 
     before do
-      allow(controller).to receive_messages spree_current_user: coordinator.owner
+      allow(controller).to(receive_messages(spree_current_user: coordinator.owner))
     end
 
     # Used in admin/orders/bulk_management
@@ -378,19 +378,19 @@ order: order1,
 
       it 'destroys the line item' do
         expect do
-          spree_delete :destroy, params
-        end.to change { Spree::LineItem.where(id: line_item1).count }
-.from(1).to(0)
+          spree_delete(:destroy, params)
+        end.to(change { Spree::LineItem.where(id: line_item1).count }
+.from(1).to(0))
       end
 
       it 'returns an empty JSON response' do
         spree_delete :destroy, params
-        expect(response.body).to eq ""
+        expect(response.body).to(eq(""))
       end
 
       it 'returns a 204 response' do
         spree_delete :destroy, params
-        expect(response.status).to eq 204
+        expect(response.status).to(eq(204))
       end
     end
   end
@@ -457,7 +457,7 @@ inherits_tax_category: false,
 
     before do
       outgoing_exchange.variants << [line_item1.variant, line_item2.variant]
-      allow(order).to receive(:tax_zone) { zone }
+      allow(order).to(receive(:tax_zone) { zone })
       line_item1.product.update_columns(tax_category_id: tax_cat5.id)
       line_item2.product.update_columns(tax_category_id: tax_cat10.id)
 
@@ -474,9 +474,9 @@ amount: order.total,
           state: "completed"
 )
 
-      allow(controller).to receive(:spree_current_user) { distributor.owner }
-      allow(Spree::LineItem).to receive(:find) { line_item1 }
-      allow(line_item1).to receive(:order) { order }
+      allow(controller).to(receive(:spree_current_user) { distributor.owner })
+      allow(Spree::LineItem).to(receive(:find) { line_item1 })
+      allow(line_item1).to(receive(:order) { order })
     end
 
     describe "updating a line item" do
@@ -484,26 +484,26 @@ amount: order.total,
       let(:params) { { id: line_item1.id, order_id: order.number, line_item: line_item_params } }
 
       it "correctly updates order totals and states" do
-        expect(order.total).to eq 35.0
-        expect(order.shipment_adjustments.shipping.sum(:amount)).to eq 6.0
-        expect(order.shipment_adjustments.tax.sum(:amount)).to eq 0.29
-        expect(order.item_total).to eq 20.0
-        expect(order.adjustment_total).to eq 15.0
-        expect(order.included_tax_total).to eq 1.22
-        expect(order.payment_state).to eq "paid"
+        expect(order.total).to(eq(35.0))
+        expect(order.shipment_adjustments.shipping.sum(:amount)).to(eq(6.0))
+        expect(order.shipment_adjustments.tax.sum(:amount)).to(eq(0.29))
+        expect(order.item_total).to(eq(20.0))
+        expect(order.adjustment_total).to(eq(15.0))
+        expect(order.included_tax_total).to(eq(1.22))
+        expect(order.payment_state).to(eq("paid"))
 
-        expect(order).to receive(:update_order!).at_least(:once).and_call_original
-        expect(order).to receive(:create_tax_charge!).at_least(:once).and_call_original
+        expect(order).to(receive(:update_order!).at_least(:once).and_call_original)
+        expect(order).to(receive(:create_tax_charge!).at_least(:once).and_call_original)
 
         spree_put :update, params
         order.reload
 
-        expect(order.total).to eq 67.0
-        expect(order.shipment_adjustments.sum(:amount)).to eq 12.57
-        expect(order.item_total).to eq 40.0
-        expect(order.adjustment_total).to eq 27.0
-        expect(order.included_tax_total).to eq 3.38
-        expect(order.payment_state).to eq "balance_due"
+        expect(order.total).to(eq(67.0))
+        expect(order.shipment_adjustments.sum(:amount)).to(eq(12.57))
+        expect(order.item_total).to(eq(40.0))
+        expect(order.adjustment_total).to(eq(27.0))
+        expect(order.included_tax_total).to(eq(3.38))
+        expect(order.payment_state).to(eq("balance_due"))
       end
     end
 
@@ -511,24 +511,24 @@ amount: order.total,
       let(:params) { { id: line_item1.id, order_id: order.number } }
 
       it "correctly updates order totals and states" do
-        expect(order.total).to eq 35.0
-        expect(order.shipment_adjustments.shipping.sum(:amount)).to eq 6.0
-        expect(order.shipment_adjustments.tax.sum(:amount)).to eq 0.29
-        expect(order.item_total).to eq 20.0
-        expect(order.adjustment_total).to eq 15.0
-        expect(order.included_tax_total).to eq 1.22
-        expect(order.payment_state).to eq "paid"
+        expect(order.total).to(eq(35.0))
+        expect(order.shipment_adjustments.shipping.sum(:amount)).to(eq(6.0))
+        expect(order.shipment_adjustments.tax.sum(:amount)).to(eq(0.29))
+        expect(order.item_total).to(eq(20.0))
+        expect(order.adjustment_total).to(eq(15.0))
+        expect(order.included_tax_total).to(eq(1.22))
+        expect(order.payment_state).to(eq("paid"))
 
         spree_delete :destroy, params
         order.reload
 
-        expect(order.total).to eq 19.0
-        expect(order.shipment_adjustments.shipping.sum(:amount)).to eq 3.0
-        expect(order.shipment_adjustments.tax.sum(:amount)).to eq 0.14
-        expect(order.item_total).to eq 10.0
-        expect(order.adjustment_total).to eq 9.0
-        expect(order.included_tax_total).to eq 0.84
-        expect(order.payment_state).to eq "credit_owed"
+        expect(order.total).to(eq(19.0))
+        expect(order.shipment_adjustments.shipping.sum(:amount)).to(eq(3.0))
+        expect(order.shipment_adjustments.tax.sum(:amount)).to(eq(0.14))
+        expect(order.item_total).to(eq(10.0))
+        expect(order.adjustment_total).to(eq(9.0))
+        expect(order.included_tax_total).to(eq(0.84))
+        expect(order.payment_state).to(eq("credit_owed"))
       end
     end
   end

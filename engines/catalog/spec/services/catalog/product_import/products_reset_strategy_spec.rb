@@ -23,7 +23,7 @@ module Catalog
 
             it 'does not reset the variant.on_hand' do
               products_reset.reset(supplier_ids)
-              expect(variant.reload.on_hand).to eq(2)
+              expect(variant.reload.on_hand).to(eq(2))
             end
           end
 
@@ -32,21 +32,21 @@ module Catalog
 
             it 'does not reset the variant.on_hand' do
               products_reset.reset(supplier_ids)
-              expect(variant.reload.on_hand).to eq(2)
+              expect(variant.reload.on_hand).to(eq(2))
             end
           end
 
           context 'and supplier_ids is set' do
             it 'does not update the on_hand of the excluded items' do
               products_reset.reset(supplier_ids)
-              expect(variant.reload.on_hand).to eq(2)
+              expect(variant.reload.on_hand).to(eq(2))
             end
 
             it 'updates the on_hand of the non-excluded items' do
               non_excluded_variant = create(:variant, product: variant.product)
               non_excluded_variant.on_hand = 3
               products_reset.reset(supplier_ids)
-              expect(non_excluded_variant.reload.on_hand).to eq(0)
+              expect(non_excluded_variant.reload.on_hand).to(eq(0))
             end
           end
         end
@@ -59,7 +59,7 @@ module Catalog
 
             it 'does not reset the variant.on_hand' do
               products_reset.reset(supplier_ids)
-              expect(variant.reload.on_hand).to eq(2)
+              expect(variant.reload.on_hand).to(eq(2))
             end
           end
 
@@ -68,15 +68,15 @@ module Catalog
 
             it 'does not reset the variant.on_hand' do
               products_reset.reset(supplier_ids)
-              expect(variant.reload.on_hand).to eq(2)
+              expect(variant.reload.on_hand).to(eq(2))
             end
           end
 
           context 'and supplier_ids is not nil' do
             it 'sets all on_hand to 0' do
               updated_records_count = products_reset.reset(supplier_ids)
-              expect(variant.reload.on_hand).to eq(0)
-              expect(updated_records_count).to eq(1)
+              expect(variant.reload.on_hand).to(eq(0))
+              expect(updated_records_count).to(eq(1))
             end
 
             context 'and there is an unresetable variant' do
@@ -86,7 +86,7 @@ module Catalog
 
               it 'returns correct number of resetted variants' do
                 expect { products_reset.reset(supplier_ids) }
-.to raise_error RuntimeError
+.to(raise_error(RuntimeError))
               end
             end
 
@@ -96,7 +96,7 @@ module Catalog
               it 'turns off the on demand setting on the variant' do
                 products_reset.reset(supplier_ids)
 
-                expect(variant.reload.on_demand).to eq(false)
+                expect(variant.reload.on_demand).to(eq(false))
               end
             end
           end
@@ -110,7 +110,7 @@ module Catalog
 
             it 'does not reset the variant.on_hand' do
               products_reset.reset(supplier_ids)
-              expect(variant.reload.on_hand).to eq(2)
+              expect(variant.reload.on_hand).to(eq(2))
             end
           end
 
@@ -118,14 +118,14 @@ module Catalog
             let(:supplier_ids) { nil }
             it 'does not reset the variant.on_hand' do
               products_reset.reset(supplier_ids)
-              expect(variant.reload.on_hand).to eq(2)
+              expect(variant.reload.on_hand).to(eq(2))
             end
           end
 
           context 'and supplier_ids is nil' do
             it 'sets all on_hand to 0' do
               products_reset.reset(supplier_ids)
-              expect(variant.reload.on_hand).to eq(0)
+              expect(variant.reload.on_hand).to(eq(0))
             end
           end
         end

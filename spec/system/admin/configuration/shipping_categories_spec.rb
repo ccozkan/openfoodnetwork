@@ -14,11 +14,11 @@ describe "Shipping Categories" do
       check "shipping_category_temperature_controlled"
       click_button "Create"
 
-      expect(page).to have_content("successfully created!")
-      expect(page).to have_content("freeze")
+      expect(page).to(have_content("successfully created!"))
+      expect(page).to(have_content("freeze"))
       row = find('tr', text: 'freeze')
       within row do
-        expect(page).to have_content "Yes"
+        expect(page).to(have_content("Yes"))
       end
     end
   end

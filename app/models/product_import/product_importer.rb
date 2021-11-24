@@ -231,7 +231,7 @@ self,
     end
 
     def accepted_mimetype
-      return false unless ['.csv'].include? File.extname(@file.path)
+      return false unless ['.csv'].include?(File.extname(@file.path))
 
       @file.path.split('.').last.to_sym
     end
@@ -247,7 +247,7 @@ self,
         @sheet.row(i)
       end
     rescue ArgumentError => e
-      if e.message.include? 'invalid byte sequence'
+      if e.message.include?('invalid byte sequence')
         errors.add(:importer, I18n.t('admin.product_import.model.encoding_error'))
       else
         errors.add(
@@ -260,7 +260,7 @@ I18n.t(
       end
       []
     rescue CSV::MalformedCSVError => e
-      add_malformed_csv_error e.message
+      add_malformed_csv_error(e.message)
       []
     end
 
@@ -321,7 +321,7 @@ I18n.t(
         row_data = [headers, row].transpose.to_h
         entry = SpreadsheetEntry.new(row_data)
         entry.line_number = offset + i + 2
-        entries.push entry
+        entries.push(entry)
       end
     end
   end

@@ -8,7 +8,7 @@ describe TagRule::FilterProducts, type: :model do
   describe "determining whether tags match for a given variant" do
     context "when the variant is nil" do
       it "returns false" do
-        expect(tag_rule.send(:tags_match?, nil)).to be false
+        expect(tag_rule.send(:tags_match?, nil)).to(be(false))
       end
     end
 
@@ -16,26 +16,26 @@ describe TagRule::FilterProducts, type: :model do
       let(:variant_object) { { "tag_list" => ["member", "local", "volunteer"] } }
 
       context "when the rule has no preferred variant tags specified" do
-        before { allow(tag_rule).to receive(:preferred_variant_tags) { "" } }
-        it { expect(tag_rule.send(:tags_match?, variant_object)).to be false }
+        before { allow(tag_rule).to(receive(:preferred_variant_tags) { "" }) }
+        it { expect(tag_rule.send(:tags_match?, variant_object)).to(be(false)) }
       end
 
       context "when the rule has preferred variant tags specified that match ANY of the variant tags" do
         before do
-          allow(tag_rule).to receive(:preferred_variant_tags) {
+          allow(tag_rule).to(receive(:preferred_variant_tags) {
                                "wholesale,some_tag,member"
-                             }
+                             })
         end
-        it { expect(tag_rule.send(:tags_match?, variant_object)).to be true }
+        it { expect(tag_rule.send(:tags_match?, variant_object)).to(be(true)) }
       end
 
       context "when the rule has preferred variant tags specified that match NONE of the variant tags" do
         before do
-          allow(tag_rule).to receive(:preferred_variant_tags) {
+          allow(tag_rule).to(receive(:preferred_variant_tags) {
                                "wholesale,some_tag,some_other_tag"
-                             }
+                             })
         end
-        it { expect(tag_rule.send(:tags_match?, variant_object)).to be false }
+        it { expect(tag_rule.send(:tags_match?, variant_object)).to(be(false)) }
       end
     end
   end

@@ -21,10 +21,10 @@ describe "spree/admin/orders/invoice.html.haml" do
 
   before do
     assign(:order, order)
-    allow(view).to receive_messages checkout_adjustments_for: [],
+    allow(view).to(receive_messages(checkout_adjustments_for: [],
                                     display_checkout_tax_total: '10',
                                     display_checkout_total_less_tax: '8',
-                                    outstanding_balance_label: 'Outstanding Balance'
+                                    outstanding_balance_label: 'Outstanding Balance'))
   end
 
   it "displays the customer code" do
@@ -35,15 +35,15 @@ describe "spree/admin/orders/invoice.html.haml" do
       code: "Money Penny",
     )
     render
-    expect(rendered).to have_content "Code: Money Penny"
+    expect(rendered).to(have_content("Code: Money Penny"))
   end
 
   it "displays the billing address" do
     order.bill_address = adas_address
     render
-    expect(rendered).to have_content "Ada Lovelace"
-    expect(rendered).to have_content adas_address.phone
-    expect(rendered).to have_content adas_address_display
+    expect(rendered).to(have_content("Ada Lovelace"))
+    expect(rendered).to(have_content(adas_address.phone))
+    expect(rendered).to(have_content(adas_address_display))
   end
 
   it "displays shipping info" do
@@ -51,16 +51,16 @@ describe "spree/admin/orders/invoice.html.haml" do
     order.ship_address = adas_address
 
     render
-    expect(rendered).to have_content "Shipping: Home delivery"
-    expect(rendered).to have_content adas_address.phone
-    expect(rendered).to have_content adas_address_display
+    expect(rendered).to(have_content("Shipping: Home delivery"))
+    expect(rendered).to(have_content(adas_address.phone))
+    expect(rendered).to(have_content(adas_address_display))
   end
 
   it "displays special instructions" do
     order.special_instructions = "The combination is 12345."
 
     render
-    expect(rendered).to have_content "The combination is 12345."
+    expect(rendered).to(have_content("The combination is 12345."))
   end
 
   it "hides billing address for pickups" do
@@ -68,7 +68,7 @@ describe "spree/admin/orders/invoice.html.haml" do
     order.shipping_method.update!(name: "Pickup", require_ship_address: false,)
 
     render
-    expect(rendered).to have_content "Shipping: Pickup"
-    expect(rendered).to_not have_content adas_address_display
+    expect(rendered).to(have_content("Shipping: Pickup"))
+    expect(rendered).to_not(have_content(adas_address_display))
   end
 end

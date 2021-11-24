@@ -16,7 +16,7 @@ module OrderCyclesHelper
   end
 
   def permitted_producer_enterprise_options_for(order_cycle)
-    validated_enterprise_options permitted_producer_enterprises_for(order_cycle)
+    validated_enterprise_options(permitted_producer_enterprises_for(order_cycle))
   end
 
   def permitted_coordinating_enterprises_for(_order_cycle)
@@ -24,7 +24,7 @@ module OrderCyclesHelper
   end
 
   def permitted_coordinating_enterprise_options_for(order_cycle)
-    validated_enterprise_options permitted_coordinating_enterprises_for(order_cycle)
+    validated_enterprise_options(permitted_coordinating_enterprises_for(order_cycle))
   end
 
   def permitted_hub_enterprises_for(order_cycle)
@@ -32,8 +32,8 @@ module OrderCyclesHelper
   end
 
   def permitted_hub_enterprise_options_for(order_cycle)
-    validated_enterprise_options permitted_hub_enterprises_for(order_cycle),
-                                 shipping_and_payment_methods: true
+    validated_enterprise_options(permitted_hub_enterprises_for(order_cycle),
+                                 shipping_and_payment_methods: true)
   end
 
   def order_cycle_status_class(order_cycle)
@@ -69,7 +69,7 @@ module OrderCyclesHelper
   end
 
   def viewing_as_coordinator_of?(order_cycle)
-    Enterprise.managed_by(spree_current_user).include? order_cycle.coordinator
+    Enterprise.managed_by(spree_current_user).include?(order_cycle.coordinator)
   end
 
   private

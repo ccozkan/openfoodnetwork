@@ -25,20 +25,20 @@ describe CompleteOrdersWithBalance do
       end
 
       it 'calls OutstandingBalance#query' do
-        allow(OutstandingBalance).to receive(:new).and_return(outstanding_balance)
-        expect(outstanding_balance).to receive(:query)
+        allow(OutstandingBalance).to(receive(:new).and_return(outstanding_balance))
+        expect(outstanding_balance).to(receive(:query))
 
         complete_orders_with_balance.query
       end
 
       it 'returns complete orders including their balance' do
         order = complete_orders_with_balance.query.first
-        expect(order[:balance_value]).to eq(-1.0)
+        expect(order[:balance_value]).to(eq(-1.0))
       end
 
       it 'sorts them by their completed_at with the most recent first' do
         orders = complete_orders_with_balance.query
-        expect(orders.pluck(:id)).to eq([other_order.id, order.id])
+        expect(orders.pluck(:id)).to(eq([other_order.id, order.id]))
       end
     end
 
@@ -46,15 +46,15 @@ describe CompleteOrdersWithBalance do
       let(:order) { create(:order) }
 
       it 'calls OutstandingBalance' do
-        allow(OutstandingBalance).to receive(:new).and_return(outstanding_balance)
-        expect(outstanding_balance).to receive(:query)
+        allow(OutstandingBalance).to(receive(:new).and_return(outstanding_balance))
+        expect(outstanding_balance).to(receive(:query))
 
         complete_orders_with_balance.query
       end
 
       it 'returns an empty array' do
         order = complete_orders_with_balance.query
-        expect(order).to be_empty
+        expect(order).to(be_empty)
       end
     end
   end

@@ -15,7 +15,7 @@ module Spree
           end
 
           it "returns zero stock for the variant" do
-            expect(quantifier.total_on_hand).to eq 0
+            expect(quantifier.total_on_hand).to(eq(0))
           end
         end
       end

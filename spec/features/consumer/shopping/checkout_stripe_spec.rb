@@ -97,15 +97,15 @@ distributors: [distributor],
 
       it "allows use of a saved card" do
         # shows the saved credit card dropdown
-        expect(page).to have_content I18n.t("spree.checkout.payment.stripe.used_saved_card")
+        expect(page).to(have_content(I18n.t("spree.checkout.payment.stripe.used_saved_card")))
 
         # default card is selected, form element is not shown
-        expect(page).to have_no_selector "#card-element.StripeElement"
-        expect(page).to have_select 'selected_card', selected: "Visa x-1111 Exp:01/2025"
+        expect(page).to(have_no_selector("#card-element.StripeElement"))
+        expect(page).to(have_select('selected_card', selected: "Visa x-1111 Exp:01/2025"))
 
         # allows checkout
         place_order
-        expect(page).to have_content "Your order has been processed successfully"
+        expect(page).to(have_content("Your order has been processed successfully"))
       end
     end
   end
@@ -139,9 +139,9 @@ distributors: [distributor],
         it "completes checkout successfully" do
           checkout_with_stripe
 
-          expect(page).to have_content "Confirmed"
-          expect(order.reload.completed?).to eq true
-          expect(order.payments.first.state).to eq "completed"
+          expect(page).to(have_content("Confirmed"))
+          expect(order.reload.completed?).to(eq(true))
+          expect(order.payments.first.state).to(eq("completed"))
         end
       end
 
@@ -154,9 +154,9 @@ distributors: [distributor],
         it "shows an error message from the Stripe response" do
           checkout_with_stripe
 
-          expect(page).to have_content error_message
-          expect(order.reload.state).to eq "cart"
-          expect(order.payments.first.state).to eq "failed"
+          expect(page).to(have_content(error_message))
+          expect(order.reload.state).to(eq("cart"))
+          expect(order.payments.first.state).to(eq("failed"))
         end
       end
 
@@ -178,9 +178,9 @@ distributors: [distributor],
             # We make stripe return stripe_redirect_url (which is already sending the user back to the checkout) as if the authorization was done
             # We can then control the actual authorization or failure of the payment through the mock stub_successful_capture_request
 
-            expect(page).to have_content "Confirmed"
-            expect(order.reload.completed?).to eq true
-            expect(order.payments.first.state).to eq "completed"
+            expect(page).to(have_content("Confirmed"))
+            expect(order.reload.completed?).to(eq(true))
+            expect(order.payments.first.state).to(eq("completed"))
           end
         end
 
@@ -195,9 +195,9 @@ distributors: [distributor],
             # We make stripe return stripe_redirect_url (which is already sending the user back to the checkout) as if the authorization was done
             # We can then control the actual authorization or failure of the payment through the mock stub_failed_capture_request
 
-            expect(page).to have_content error_message
-            expect(order.reload.state).to eq "cart"
-            expect(order.payments.first.state).to eq "failed"
+            expect(page).to(have_content(error_message))
+            expect(order.reload.state).to(eq("cart"))
+            expect(order.payments.first.state).to(eq("failed"))
           end
         end
       end
@@ -211,20 +211,20 @@ distributors: [distributor],
           # First payment attempt is rejected
           stub_failed_capture_request(order: order, response: { message: error_message })
           checkout_with_stripe
-          expect(page).to have_content error_message
+          expect(page).to(have_content(error_message))
 
-          expect(order.reload.payments.count).to eq 1
-          expect(order.state).to eq "cart"
-          expect(order.payments.first.state).to eq "failed"
+          expect(order.reload.payments.count).to(eq(1))
+          expect(order.state).to(eq("cart"))
+          expect(order.payments.first.state).to(eq("failed"))
 
           # Second payment attempt is accepted
           stub_successful_capture_request order: order
           place_order
-          expect(page).to have_content "Confirmed"
+          expect(page).to(have_content("Confirmed"))
 
-          expect(order.reload.payments.count).to eq 2
-          expect(order.state).to eq "complete"
-          expect(order.payments.last.state).to eq "completed"
+          expect(order.reload.payments.count).to(eq(2))
+          expect(order.state).to(eq("complete"))
+          expect(order.payments.last.state).to(eq("completed"))
         end
       end
     end
@@ -255,14 +255,14 @@ distributors: [distributor],
         it "allows saving a card and re-using it" do
           checkout_with_stripe guest_checkout: false, remember_card: true
 
-          expect(page).to have_content "Confirmed"
-          expect(order.reload.completed?).to eq true
-          expect(order.payments.first.state).to eq "completed"
+          expect(page).to(have_content("Confirmed"))
+          expect(order.reload.completed?).to(eq(true))
+          expect(order.payments.first.state).to(eq("completed"))
 
           # Verify card has been saved with correct stripe IDs
           user_credit_card = order.reload.user.credit_cards.first
-          expect(user_credit_card.gateway_payment_profile_id).to eq "pm_123"
-          expect(user_credit_card.gateway_customer_profile_id).to eq "cus_A123"
+          expect(user_credit_card.gateway_payment_profile_id).to(eq("pm_123"))
+          expect(user_credit_card.gateway_customer_profile_id).to(eq("cus_A123"))
 
           # Prepare a second order
           new_order = create(
@@ -282,8 +282,8 @@ ship_address_id: nil
           visit checkout_path
           choose free_shipping.name
           choose stripe_sca_payment_method.name
-          expect(page).to have_content "Use a saved card"
-          expect(page).to have_select 'selected_card', selected: "Visa x-4242 Exp:10/2050"
+          expect(page).to(have_content("Use a saved card"))
+          expect(page).to(have_select('selected_card', selected: "Visa x-4242 Exp:10/2050"))
           place_order
         end
       end

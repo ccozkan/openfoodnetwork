@@ -61,11 +61,11 @@ ba.firstname,
     end
 
     def orders
-      filter Spree::Order.managed_by(@user).distributed_by_user(@user).complete.not_state(:canceled)
+      filter(Spree::Order.managed_by(@user).distributed_by_user(@user).complete.not_state(:canceled))
     end
 
     def filter(orders)
-      filter_to_supplier filter_to_distributor filter_to_order_cycle orders
+      filter_to_supplier(filter_to_distributor(filter_to_order_cycle(orders)))
     end
 
     def filter_to_supplier(orders)

@@ -50,9 +50,9 @@ tax_category: tax_category
     click_button 'Continue'
 
     # Then I should see the adjustment, with the correct tax
-    expect(page).to have_selector 'td.label', text: 'Late fee'
-    expect(page).to have_selector 'td.amount', text: '110.00'
-    expect(page).to have_selector 'td.tax', text: '10.00'
+    expect(page).to(have_selector('td.label', text: 'Late fee'))
+    expect(page).to(have_selector('td.amount', text: '110.00'))
+    expect(page).to(have_selector('td.tax', text: '10.00'))
   end
 
   it "modifying taxed adjustments on an order" do
@@ -72,15 +72,15 @@ order: order
     click_link 'Adjustments'
     page.find('tr', text: 'Extra Adjustment').find('a.icon-edit').click
 
-    expect(page).to have_select2 :adjustment_tax_category_id, selected: 'GST'
+    expect(page).to(have_select2(:adjustment_tax_category_id, selected: 'GST'))
 
     # When I edit the adjustment, removing the tax
     select2_select 'None', from: :adjustment_tax_category_id
     click_button 'Continue'
 
     # Then the adjustment tax should be cleared
-    expect(page).to have_selector 'td.amount', text: '110.00'
-    expect(page).to have_selector 'td.tax', text: '0.00'
+    expect(page).to(have_selector('td.amount', text: '110.00'))
+    expect(page).to(have_selector('td.tax', text: '0.00'))
   end
 
   it "modifying an untaxed adjustment on an order" do
@@ -100,15 +100,15 @@ order: order
     click_link 'Adjustments'
     page.find('tr', text: 'Extra Adjustment').find('a.icon-edit').click
 
-    expect(page).to have_select2 :adjustment_tax_category_id, selected: []
+    expect(page).to(have_select2(:adjustment_tax_category_id, selected: []))
 
     # When I edit the adjustment, setting a tax rate
     select2_select 'GST', from: :adjustment_tax_category_id
     click_button 'Continue'
 
     # Then the adjustment tax should be recalculated
-    expect(page).to have_selector 'td.amount', text: '110.00'
-    expect(page).to have_selector 'td.tax', text: '10.00'
+    expect(page).to(have_selector('td.amount', text: '110.00'))
+    expect(page).to(have_selector('td.tax', text: '10.00'))
   end
 
   it "viewing adjustments on a canceled order" do
@@ -127,7 +127,7 @@ order: order
 
     click_link 'Adjustments'
 
-    expect(page).to_not have_selector('tr a.icon-edit')
-    expect(page).to_not have_selector('a.icon-plus'), text: I18n.t(:new_adjustment)
+    expect(page).to_not(have_selector('tr a.icon-edit'))
+    expect(page).to_not(have_selector('a.icon-plus'), text: I18n.t(:new_adjustment))
   end
 end

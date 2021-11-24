@@ -7,7 +7,7 @@ module DfcProvider
       before_action :check_enterprise
 
       def show
-        render json: current_enterprise, serializer: DfcProvider::EnterpriseSerializer
+        render(json: current_enterprise, serializer: DfcProvider::EnterpriseSerializer)
       end
 
       private

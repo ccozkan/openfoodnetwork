@@ -10,7 +10,7 @@ module Web
         respond_to :json
 
         def show
-          render json: { cookies_consent: cookies_consent.exists? }
+          render(json: { cookies_consent: cookies_consent.exists? })
         end
 
         def create

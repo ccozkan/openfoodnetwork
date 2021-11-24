@@ -9,7 +9,7 @@ module Features
     end
 
     def select_date_from_datepicker(date)
-      navigate_datepicker_to_month date
+      navigate_datepicker_to_month(date)
       find(
 '.flatpickr-calendar.open .flatpickr-days .flatpickr-day:not(.prevMonthDay)',
            text: date.strftime("%e").to_s.strip,
@@ -22,8 +22,8 @@ match: :first
       ## First of all select date
       select_date_from_datepicker(datetime)
       # Then select time
-      find(".flatpickr-calendar.open .flatpickr-hour").set datetime.strftime("%H").to_s.strip
-      find(".flatpickr-calendar.open .flatpickr-minute").set datetime.strftime("%M").to_s.strip
+      find(".flatpickr-calendar.open .flatpickr-hour").set(datetime.strftime("%H").to_s.strip)
+      find(".flatpickr-calendar.open .flatpickr-minute").set(datetime.strftime("%M").to_s.strip)
     end
 
     def navigate_datepicker_to_month(date, reference_date = Time.zone.today)

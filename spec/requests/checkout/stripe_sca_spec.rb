@@ -92,8 +92,8 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] }
 
   before do
     order_cycle_distributed_variants = double(:order_cycle_distributed_variants)
-    allow(OrderCycleDistributedVariants).to receive(:new) { order_cycle_distributed_variants }
-    allow(order_cycle_distributed_variants).to receive(:distributes_order_variants?) { true }
+    allow(OrderCycleDistributedVariants).to(receive(:new) { order_cycle_distributed_variants })
+    allow(order_cycle_distributed_variants).to(receive(:distributes_order_variants?) { true })
 
     Stripe.api_key = "sk_test_12345"
     order.update(distributor_id: enterprise.id, order_cycle_id: order_cycle.id)
@@ -138,17 +138,17 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] }
       it "should process the payment without storing card details" do
         put update_checkout_path, params: params
 
-        expect(json_response["path"]).to eq order_path(order)
-        expect(order.payments.completed.count).to be 1
+        expect(json_response["path"]).to(eq(order_path(order)))
+        expect(order.payments.completed.count).to(be(1))
 
         card = order.payments.completed.first.source
 
-        expect(card.gateway_customer_profile_id).to eq nil
-        expect(card.gateway_payment_profile_id).to eq stripe_payment_method
-        expect(card.cc_type).to eq "visa"
-        expect(card.last_digits).to eq "4242"
-        expect(card.first_name).to eq "Jill"
-        expect(card.last_name).to eq "Jeffreys"
+        expect(card.gateway_customer_profile_id).to(eq(nil))
+        expect(card.gateway_payment_profile_id).to(eq(stripe_payment_method))
+        expect(card.cc_type).to(eq("visa"))
+        expect(card.last_digits).to(eq("4242"))
+        expect(card.first_name).to(eq("Jill"))
+        expect(card.last_name).to(eq("Jeffreys"))
       end
     end
 
@@ -160,10 +160,10 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] }
       it "should not process the payment" do
         put update_checkout_path, params: params
 
-        expect(response.status).to be 400
+        expect(response.status).to(be(400))
 
-        expect(json_response["flash"]["error"]).to eq "payment-intent-failure"
-        expect(order.payments.completed.count).to be 0
+        expect(json_response["flash"]["error"]).to(eq("payment-intent-failure"))
+        expect(order.payments.completed.count).to(be(0))
       end
     end
   end
@@ -230,17 +230,17 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] }
         it "should process the payment, and store the card/customer details" do
           put update_checkout_path, params: params
 
-          expect(json_response["path"]).to eq order_path(order)
-          expect(order.payments.completed.count).to be 1
+          expect(json_response["path"]).to(eq(order_path(order)))
+          expect(order.payments.completed.count).to(be(1))
 
           card = order.payments.completed.first.source
 
-          expect(card.gateway_customer_profile_id).to eq customer_id
-          expect(card.gateway_payment_profile_id).to eq stripe_payment_method
-          expect(card.cc_type).to eq "visa"
-          expect(card.last_digits).to eq "4242"
-          expect(card.first_name).to eq "Jill"
-          expect(card.last_name).to eq "Jeffreys"
+          expect(card.gateway_customer_profile_id).to(eq(customer_id))
+          expect(card.gateway_payment_profile_id).to(eq(stripe_payment_method))
+          expect(card.cc_type).to(eq("visa"))
+          expect(card.last_digits).to(eq("4242"))
+          expect(card.first_name).to(eq("Jill"))
+          expect(card.last_name).to(eq("Jeffreys"))
         end
       end
 
@@ -252,11 +252,11 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] }
         it "should not process the payment" do
           put update_checkout_path, params: params
 
-          expect(response.status).to be 400
+          expect(response.status).to(be(400))
 
           expect(json_response["flash"]["error"])
-            .to eq(I18n.t(:spree_gateway_error_flash_for_checkout, error: 'customer-store-failure'))
-          expect(order.payments.completed.count).to be 0
+            .to(eq(I18n.t(:spree_gateway_error_flash_for_checkout, error: 'customer-store-failure')))
+          expect(order.payments.completed.count).to(be(0))
         end
       end
 
@@ -268,10 +268,10 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] }
         it "should not process the payment" do
           put update_checkout_path, params: params
 
-          expect(response.status).to be 400
+          expect(response.status).to(be(400))
 
-          expect(json_response["flash"]["error"]).to eq "payment-intent-failure"
-          expect(order.payments.completed.count).to be 0
+          expect(json_response["flash"]["error"]).to(eq("payment-intent-failure"))
+          expect(order.payments.completed.count).to(be(0))
         end
       end
 
@@ -283,10 +283,10 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] }
         it "should not process the payment" do
           put update_checkout_path, params: params
 
-          expect(response.status).to be 400
+          expect(response.status).to(be(400))
 
-          expect(json_response["flash"]["error"]).to include "payment-method-failure"
-          expect(order.payments.completed.count).to be 0
+          expect(json_response["flash"]["error"]).to(include("payment-method-failure"))
+          expect(order.payments.completed.count).to(be(0))
         end
       end
     end
@@ -316,17 +316,17 @@ year: 2026
         it "should process the payment, and keep the profile ids and other card details" do
           put update_checkout_path, params: params
 
-          expect(json_response["path"]).to eq order_path(order)
-          expect(order.payments.completed.count).to be 1
+          expect(json_response["path"]).to(eq(order_path(order)))
+          expect(order.payments.completed.count).to(be(1))
 
           card = order.payments.completed.first.source
 
-          expect(card.gateway_customer_profile_id).to eq customer_id
-          expect(card.gateway_payment_profile_id).to eq stripe_payment_method
-          expect(card.cc_type).to eq "master"
-          expect(card.last_digits).to eq "4321"
-          expect(card.first_name).to eq "Sammy"
-          expect(card.last_name).to eq "Signpost"
+          expect(card.gateway_customer_profile_id).to(eq(customer_id))
+          expect(card.gateway_payment_profile_id).to(eq(stripe_payment_method))
+          expect(card.cc_type).to(eq("master"))
+          expect(card.last_digits).to(eq("4321"))
+          expect(card.first_name).to(eq("Sammy"))
+          expect(card.last_name).to(eq("Signpost"))
         end
       end
 
@@ -338,10 +338,10 @@ year: 2026
         it "should not process the payment" do
           put update_checkout_path, params: params
 
-          expect(response.status).to be 400
+          expect(response.status).to(be(400))
 
-          expect(json_response["flash"]["error"]).to eq "payment-intent-failure"
-          expect(order.payments.completed.count).to be 0
+          expect(json_response["flash"]["error"]).to(eq("payment-intent-failure"))
+          expect(order.payments.completed.count).to(be(0))
         end
       end
 
@@ -364,8 +364,8 @@ status: "requires_source_action"
         it "redirects the user to the authorization stripe url" do
           put update_checkout_path, params: params
 
-          expect(response.status).to be 200
-          expect(response.body).to include stripe_redirect_url
+          expect(response.status).to(be(200))
+          expect(response.body).to(include(stripe_redirect_url))
         end
       end
     end

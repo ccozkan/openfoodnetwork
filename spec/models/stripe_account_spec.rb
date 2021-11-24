@@ -27,9 +27,9 @@ body: JSON.generate(error: 'invalid_grant', error_description: "Some Message"))
       end
 
       it "destroys the record and notifies Bugsnag" do
-        expect(Bugsnag).to receive(:notify)
+        expect(Bugsnag).to(receive(:notify))
         stripe_account.deauthorize_and_destroy
-        expect(StripeAccount.all).to_not include(stripe_account)
+        expect(StripeAccount.all).to_not(include(stripe_account))
       end
     end
 
@@ -42,7 +42,7 @@ body: JSON.generate(error: 'invalid_grant', error_description: "Some Message"))
 
       it "destroys the record" do
         stripe_account.deauthorize_and_destroy
-        expect(StripeAccount.all).not_to include(stripe_account)
+        expect(StripeAccount.all).not_to(include(stripe_account))
       end
     end
 
@@ -52,9 +52,9 @@ body: JSON.generate(error: 'invalid_grant', error_description: "Some Message"))
       end
 
       it "Doesn't make a Stripe API disconnection request " do
-        expect(Stripe::OAuth).to_not receive(:deauthorize)
+        expect(Stripe::OAuth).to_not(receive(:deauthorize))
         stripe_account.deauthorize_and_destroy
-        expect(StripeAccount.all).not_to include(stripe_account)
+        expect(StripeAccount.all).not_to(include(stripe_account))
       end
     end
   end

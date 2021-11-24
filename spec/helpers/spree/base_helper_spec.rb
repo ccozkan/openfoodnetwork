@@ -18,7 +18,7 @@ describe Spree::BaseHelper do
       end
 
       it "return complete list of countries" do
-        expect(available_countries.count).to eq Spree::Country.count
+        expect(available_countries.count).to(eq(Spree::Country.count))
       end
     end
 
@@ -31,7 +31,7 @@ describe Spree::BaseHelper do
         end
 
         it "return only the countries defined by the checkout zone" do
-          expect(available_countries).to eq [country]
+          expect(available_countries).to(eq([country]))
         end
       end
 
@@ -44,7 +44,7 @@ describe Spree::BaseHelper do
         end
 
         it "return complete list of countries" do
-          expect(available_countries.count).to eq Spree::Country.count
+          expect(available_countries.count).to(eq(Spree::Country.count))
         end
       end
     end
@@ -52,7 +52,7 @@ describe Spree::BaseHelper do
 
   context "pretty_time" do
     it "prints in a format" do
-      expect(pretty_time(DateTime.new(2012, 5, 6, 13, 33))).to eq "May 06, 2012  1:33 PM"
+      expect(pretty_time(DateTime.new(2012, 5, 6, 13, 33))).to(eq("May 06, 2012  1:33 PM"))
     end
   end
 end

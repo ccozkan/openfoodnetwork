@@ -12,7 +12,7 @@ describe Api::V0::ReportsController, type: :controller do
   end
 
   before do
-    allow(controller).to receive(:spree_current_user) { current_user }
+    allow(controller).to(receive(:spree_current_user) { current_user })
   end
 
   describe "fetching reports" do
@@ -42,8 +42,8 @@ describe Api::V0::ReportsController, type: :controller do
       it "returns an error" do
         api_get :show, q: { example: 'test' }
 
-        expect(response.status).to eq 422
-        expect(json_response["error"]).to eq I18n.t('errors.no_report_type', scope: i18n_scope)
+        expect(response.status).to(eq(422))
+        expect(json_response["error"]).to(eq(I18n.t('errors.no_report_type', scope: i18n_scope)))
       end
     end
 
@@ -53,8 +53,8 @@ describe Api::V0::ReportsController, type: :controller do
       it "returns an error" do
         api_get :show, report_type: "xxxxxx", q: { example: 'test' }
 
-        expect(response.status).to eq 422
-        expect(json_response["error"]).to eq I18n.t('errors.report_not_found', scope: i18n_scope)
+        expect(response.status).to(eq(422))
+        expect(json_response["error"]).to(eq(I18n.t('errors.report_not_found', scope: i18n_scope)))
       end
     end
 
@@ -64,10 +64,10 @@ describe Api::V0::ReportsController, type: :controller do
       it "returns an error" do
         api_get :show, report_type: "packing"
 
-        expect(response.status).to eq 422
-        expect(json_response["error"]).to eq(
+        expect(response.status).to(eq(422))
+        expect(json_response["error"]).to(eq(
           I18n.t('errors.missing_ransack_params', scope: i18n_scope)
-        )
+        ))
       end
     end
   end

@@ -41,7 +41,7 @@ namespace :ofn do
       def exit_in_production
         return unless Rails.env.production?
 
-        puts "Oops, we are in production environment. Exiting."
+        puts("Oops, we are in production environment. Exiting.")
         exit
       end
 
@@ -53,7 +53,7 @@ namespace :ofn do
       end
 
       def request_order_cycle_id
-        puts "Please input Order Cycle ID to reset"
+        puts("Please input Order Cycle ID to reset")
         input = STDIN.gets.chomp
         exit if input.blank? || !Integer(input)
         Integer(input)

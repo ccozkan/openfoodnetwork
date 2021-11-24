@@ -12,7 +12,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
   context "for distributors" do
     before do
-      allow(permissions).to receive(:allowed_distributors) do
+      allow(permissions).to(receive(:allowed_distributors)) do
         stub_model_collection(Enterprise, :id, ["1", "2", "3"])
       end
     end
@@ -22,7 +22,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "does not raise error" do
         expect { authorizer.authorize! }
-.not_to raise_error
+.not_to(raise_error)
       end
     end
 
@@ -31,14 +31,14 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "raises ParameterNotAllowedError" do
         expect { authorizer.authorize! }
-          .to raise_error(Reports::Authorizer::ParameterNotAllowedError)
+          .to(raise_error(Reports::Authorizer::ParameterNotAllowedError))
       end
     end
   end
 
   context "for producers" do
     before do
-      allow(permissions).to receive(:allowed_producers) do
+      allow(permissions).to(receive(:allowed_producers)) do
         stub_model_collection(Enterprise, :id, ["1", "2", "3"])
       end
     end
@@ -48,7 +48,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "does not raise error" do
         expect { authorizer.authorize! }
-.not_to raise_error
+.not_to(raise_error)
       end
     end
 
@@ -57,14 +57,14 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "raises ParameterNotAllowedError" do
         expect { authorizer.authorize! }
-          .to raise_error(Reports::Authorizer::ParameterNotAllowedError)
+          .to(raise_error(Reports::Authorizer::ParameterNotAllowedError))
       end
     end
   end
 
   context "for order cycles" do
     before do
-      allow(permissions).to receive(:allowed_order_cycles) do
+      allow(permissions).to(receive(:allowed_order_cycles)) do
         stub_model_collection(OrderCycle, :id, ["1", "2", "3"])
       end
     end
@@ -74,7 +74,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "does not raise error" do
         expect { authorizer.authorize! }
-.not_to raise_error
+.not_to(raise_error)
       end
     end
 
@@ -83,14 +83,14 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "raises ParameterNotAllowedError" do
         expect { authorizer.authorize! }
-          .to raise_error(Reports::Authorizer::ParameterNotAllowedError)
+          .to(raise_error(Reports::Authorizer::ParameterNotAllowedError))
       end
     end
   end
 
   context "for enterprise fees" do
     before do
-      allow(permissions).to receive(:allowed_enterprise_fees) do
+      allow(permissions).to(receive(:allowed_enterprise_fees)) do
         stub_model_collection(EnterpriseFee, :id, ["1", "2", "3"])
       end
     end
@@ -100,7 +100,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "does not raise error" do
         expect { authorizer.authorize! }
-.not_to raise_error
+.not_to(raise_error)
       end
     end
 
@@ -109,14 +109,14 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "raises ParameterNotAllowedError" do
         expect { authorizer.authorize! }
-          .to raise_error(Reports::Authorizer::ParameterNotAllowedError)
+          .to(raise_error(Reports::Authorizer::ParameterNotAllowedError))
       end
     end
   end
 
   context "for shipping methods" do
     before do
-      allow(permissions).to receive(:allowed_shipping_methods) do
+      allow(permissions).to(receive(:allowed_shipping_methods)) do
         stub_model_collection(Spree::ShippingMethod, :id, ["1", "2", "3"])
       end
     end
@@ -126,7 +126,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "does not raise error" do
         expect { authorizer.authorize! }
-.not_to raise_error
+.not_to(raise_error)
       end
     end
 
@@ -135,14 +135,14 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "raises ParameterNotAllowedError" do
         expect { authorizer.authorize! }
-          .to raise_error(Reports::Authorizer::ParameterNotAllowedError)
+          .to(raise_error(Reports::Authorizer::ParameterNotAllowedError))
       end
     end
   end
 
   context "for payment methods" do
     before do
-      allow(permissions).to receive(:allowed_payment_methods) do
+      allow(permissions).to(receive(:allowed_payment_methods)) do
         stub_model_collection(Spree::PaymentMethod, :id, ["1", "2", "3"])
       end
     end
@@ -152,7 +152,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "does not raise error" do
         expect { authorizer.authorize! }
-.not_to raise_error
+.not_to(raise_error)
       end
     end
 
@@ -161,7 +161,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Authorizer do
 
       it "raises ParameterNotAllowedError" do
         expect { authorizer.authorize! }
-          .to raise_error(Reports::Authorizer::ParameterNotAllowedError)
+          .to(raise_error(Reports::Authorizer::ParameterNotAllowedError))
       end
     end
   end

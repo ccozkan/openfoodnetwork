@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Spree::Admin::OverviewController, type: :controller do
   describe "#index" do
     before do
-      allow(controller).to receive(:spree_current_user).and_return(user)
+      allow(controller).to(receive(:spree_current_user).and_return(user))
     end
 
     context "when user owns only one enterprise" do
@@ -24,14 +24,14 @@ describe Spree::Admin::OverviewController, type: :controller do
 
           it "redirects to the welcome page for the enterprise" do
             spree_get :index
-            expect(response).to redirect_to welcome_admin_enterprise_path(enterprise)
+            expect(response).to(redirect_to(welcome_admin_enterprise_path(enterprise)))
           end
         end
 
         context "and the enterprise does not have sells='unspecified'" do
           it "renders the single enterprise dashboard" do
             spree_get :index
-            expect(response).to render_template :single_enterprise_dashboard
+            expect(response).to(render_template(:single_enterprise_dashboard))
           end
         end
       end
@@ -41,7 +41,7 @@ describe Spree::Admin::OverviewController, type: :controller do
 
         it "renders the single enterprise dashboard" do
           spree_get :index
-          expect(response).to render_template :single_enterprise_dashboard
+          expect(response).to(render_template(:single_enterprise_dashboard))
         end
       end
     end
@@ -64,14 +64,14 @@ describe Spree::Admin::OverviewController, type: :controller do
 
           it "redirects to the enterprises index" do
             spree_get :index
-            expect(response).to redirect_to admin_enterprises_path
+            expect(response).to(redirect_to(admin_enterprises_path))
           end
         end
 
         context "and no owned enterprises have sells='unspecified'" do
           it "renders the multiple enterprise dashboard" do
             spree_get :index
-            expect(response).to render_template :multi_enterprise_dashboard
+            expect(response).to(render_template(:multi_enterprise_dashboard))
           end
         end
       end
@@ -81,7 +81,7 @@ describe Spree::Admin::OverviewController, type: :controller do
 
         it "renders the multiple enterprise dashboard" do
           spree_get :index
-          expect(response).to render_template :multi_enterprise_dashboard
+          expect(response).to(render_template(:multi_enterprise_dashboard))
         end
       end
     end

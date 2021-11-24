@@ -21,10 +21,10 @@ module Admin
             @shipping_methods = Spree::ShippingMethod.managed_by(spree_current_user)
           else
             @shop = @shops.first
-            render :setup_explanation
+            render(:setup_explanation)
           end
         end
-        format.json { render_as_json @collection, ams_prefix: params[:ams_prefix] }
+        format.json { render_as_json(@collection, ams_prefix: params[:ams_prefix]) }
       end
     end
 
@@ -45,7 +45,7 @@ module Admin
       @subscription.cancel(@open_orders_to_keep || [])
 
       respond_with(@subscription) do |format|
-        format.json { render_as_json @subscription }
+        format.json { render_as_json(@subscription) }
       end
     end
 
@@ -55,7 +55,7 @@ module Admin
       end
 
       @subscription.update(paused_at: Time.zone.now)
-      render_as_json @subscription
+      render_as_json(@subscription)
     end
 
     def unpause
@@ -67,14 +67,14 @@ module Admin
     def save_form_and_render(render_issues = true, options = {})
       form = OrderManagement::Subscriptions::Form.new(@subscription, subscription_params, options)
       unless form.save
-        render json: { errors: form.json_errors }, status: :unprocessable_entity
+        render(json: { errors: form.json_errors }, status: :unprocessable_entity)
         return
       end
 
       if render_issues
-        render_as_json @subscription, order_update_issues: form.order_update_issues
+        render_as_json(@subscription, order_update_issues: form.order_update_issues)
       else
-        render_as_json @subscription
+        render_as_json(@subscription)
       end
     end
 
@@ -115,7 +115,7 @@ module Admin
 
     # Wrap :subscription_line_items_attributes in :subscription root
     def wrap_nested_attrs
-      if raw_params[:subscription_line_items].is_a? Array
+      if raw_params[:subscription_line_items].is_a?(Array)
         attributes =
  raw_params[:subscription_line_items].map do |sli|
           sli.slice(*SubscriptionLineItem.attribute_names + ["_destroy"])
@@ -142,21 +142,21 @@ module Admin
       @open_orders_to_keep = @subscription.proxy_orders.placed_and_open.pluck(:id)
       return if @open_orders_to_keep.empty? || params[:open_orders] == 'keep'
 
-      render json: { errors: { open_orders: t('admin.subscriptions.confirm_cancel_open_orders_msg') } },
-             status: :conflict
+      render(json: { errors: { open_orders: t('admin.subscriptions.confirm_cancel_open_orders_msg') } },
+             status: :conflict)
     end
 
     def check_for_canceled_orders
       return if params[:canceled_orders] == 'notified'
       return if @subscription.proxy_orders.active.canceled.empty?
 
-      render json: { errors: { canceled_orders: t('admin.subscriptions.resume_canceled_orders_msg') } },
-             status: :conflict
+      render(json: { errors: { canceled_orders: t('admin.subscriptions.resume_canceled_orders_msg') } },
+             status: :conflict)
     end
 
     def strip_banned_attrs
-      subscription_params.delete :schedule_id
-      subscription_params.delete :customer_id
+      subscription_params.delete(:schedule_id)
+      subscription_params.delete(:customer_id)
     end
 
     # Overriding Spree method to load data from params here so that

@@ -15,7 +15,7 @@ class OrderFeesHandler
     # See https://github.com/rails/rails/blob/3-2-stable/activerecord/lib/active_record/locking/pessimistic.rb#L69
     # and https://www.postgresql.org/docs/current/static/sql-select.html#SQL-FOR-UPDATE-SHARE
     order.with_lock do
-      EnterpriseFee.clear_all_adjustments order
+      EnterpriseFee.clear_all_adjustments(order)
 
       create_line_item_fees!
       create_order_fees!
@@ -27,14 +27,14 @@ class OrderFeesHandler
 
   def create_line_item_fees!
     order.line_items.includes(variant: :product).each do |line_item|
-      calculator.create_line_item_adjustments_for line_item if provided_by_order_cycle? line_item
+      calculator.create_line_item_adjustments_for(line_item) if provided_by_order_cycle?(line_item)
     end
   end
 
   def create_order_fees!
     return unless order_cycle
 
-    calculator.create_order_adjustments_for order
+    calculator.create_order_adjustments_for(order)
   end
 
   def tax_enterprise_fees!
@@ -61,6 +61,6 @@ class OrderFeesHandler
 
   def provided_by_order_cycle?(line_item)
     @order_cycle_variant_ids ||= order_cycle&.variants&.map(&:id) || []
-    @order_cycle_variant_ids.include? line_item.variant_id
+    @order_cycle_variant_ids.include?(line_item.variant_id)
   end
 end

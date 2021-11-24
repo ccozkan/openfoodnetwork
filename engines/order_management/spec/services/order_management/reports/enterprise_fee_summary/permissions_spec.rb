@@ -24,43 +24,43 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Permissions do
     it "allows admin" do
       user = create(:admin_user)
       authorizer = described_class.new(user)
-      expect(authorizer.allowed_order_cycles).to include(order_cycle)
+      expect(authorizer.allowed_order_cycles).to(include(order_cycle))
     end
 
     it "allows coordinator of the order cycle" do
       user = order_cycle.coordinator.owner
       authorizer = described_class.new(user)
-      expect(authorizer.allowed_order_cycles).to include(order_cycle)
+      expect(authorizer.allowed_order_cycles).to(include(order_cycle))
     end
 
     it "allows sender of incoming exchange" do
       user = incoming_exchange.sender.owner
       authorizer = described_class.new(user)
-      expect(authorizer.allowed_order_cycles).to include(order_cycle)
+      expect(authorizer.allowed_order_cycles).to(include(order_cycle))
     end
 
     it "allows receiver of outgoing exchange" do
       user = outgoing_exchange.receiver.owner
       authorizer = described_class.new(user)
-      expect(authorizer.allowed_order_cycles).to include(order_cycle)
+      expect(authorizer.allowed_order_cycles).to(include(order_cycle))
     end
 
     it "does not allow coordinator of another order cycle" do
       user = another_order_cycle.coordinator.owner
       authorizer = described_class.new(user)
-      expect(authorizer.allowed_order_cycles).not_to include(order_cycle)
+      expect(authorizer.allowed_order_cycles).not_to(include(order_cycle))
     end
 
     it "does not allow sender of incoming exchange of another order cycle" do
       user = another_incoming_exchange.sender.owner
       authorizer = described_class.new(user)
-      expect(authorizer.allowed_order_cycles).not_to include(order_cycle)
+      expect(authorizer.allowed_order_cycles).not_to(include(order_cycle))
     end
 
     it "does not allow receiver of outgoing exchange of another order cycle" do
       user = another_outgoing_exchange.receiver.owner
       authorizer = described_class.new(user)
-      expect(authorizer.allowed_order_cycles).not_to include(order_cycle)
+      expect(authorizer.allowed_order_cycles).not_to(include(order_cycle))
     end
   end
 
@@ -68,27 +68,27 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Permissions do
     let(:user) { create(:user) }
     let(:authorizer) do
       described_class.new(user).tap do |instance|
-        allow(instance).to receive(:allowed_order_cycles) { [order_cycle] }
+        allow(instance).to(receive(:allowed_order_cycles) { [order_cycle] })
       end
     end
 
     describe "allowed distributors" do
       it "includes distributor of allowed order cycle" do
-        expect(authorizer.allowed_distributors).to include(outgoing_exchange.receiver)
+        expect(authorizer.allowed_distributors).to(include(outgoing_exchange.receiver))
       end
 
       it "does not include distributor of order cycle that is not allowed" do
-        expect(authorizer.allowed_distributors).not_to include(another_outgoing_exchange.receiver)
+        expect(authorizer.allowed_distributors).not_to(include(another_outgoing_exchange.receiver))
       end
     end
 
     describe "allowed producers" do
       it "includes supplier of allowed order cycle" do
-        expect(authorizer.allowed_producers).to include(incoming_exchange.sender)
+        expect(authorizer.allowed_producers).to(include(incoming_exchange.sender))
       end
 
       it "does not include supplier of order cycle that is not allowed" do
-        expect(authorizer.allowed_producers).not_to include(another_incoming_exchange.sender)
+        expect(authorizer.allowed_producers).not_to(include(another_incoming_exchange.sender))
       end
     end
 
@@ -107,11 +107,11 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Permissions do
         end
 
         it "includes enterprise fee in allowed order cycle" do
-          expect(authorizer.allowed_enterprise_fees).to include(coordinator_fee)
+          expect(authorizer.allowed_enterprise_fees).to(include(coordinator_fee))
         end
 
         it "does not include enterprise fee in order cycle that is not allowed" do
-          expect(authorizer.allowed_enterprise_fees).not_to include(another_coordinator_fee)
+          expect(authorizer.allowed_enterprise_fees).not_to(include(another_coordinator_fee))
         end
       end
 
@@ -129,11 +129,11 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Permissions do
         end
 
         it "includes enterprise fee in allowed order cycle" do
-          expect(authorizer.allowed_enterprise_fees).to include(exchange_fee)
+          expect(authorizer.allowed_enterprise_fees).to(include(exchange_fee))
         end
 
         it "does not include enterprise fee in order cycle that is not allowed" do
-          expect(authorizer.allowed_enterprise_fees).not_to include(another_exchange_fee)
+          expect(authorizer.allowed_enterprise_fees).not_to(include(another_exchange_fee))
         end
       end
 
@@ -151,11 +151,11 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Permissions do
         end
 
         it "includes enterprise fee in allowed order cycle" do
-          expect(authorizer.allowed_enterprise_fees).to include(exchange_fee)
+          expect(authorizer.allowed_enterprise_fees).to(include(exchange_fee))
         end
 
         it "does not include enterprise fee in order cycle that is not allowed" do
-          expect(authorizer.allowed_enterprise_fees).not_to include(another_exchange_fee)
+          expect(authorizer.allowed_enterprise_fees).not_to(include(another_exchange_fee))
         end
       end
     end
@@ -163,17 +163,17 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Permissions do
     describe "allowed shipping methods" do
       it "includes shipping methods of distributors in allowed order cycle" do
         shipping_method = create(:shipping_method, distributors: [outgoing_exchange.receiver])
-        expect(authorizer.allowed_shipping_methods).to include(shipping_method)
+        expect(authorizer.allowed_shipping_methods).to(include(shipping_method))
       end
 
       it "does not include shipping methods of suppliers in allowed order cycle" do
         shipping_method = create(:shipping_method, distributors: [incoming_exchange.sender])
-        expect(authorizer.allowed_shipping_methods).not_to include(shipping_method)
+        expect(authorizer.allowed_shipping_methods).not_to(include(shipping_method))
       end
 
       it "does not include shipping methods of coordinator of allowed order cycle" do
         shipping_method = create(:shipping_method, distributors: [order_cycle.coordinator])
-        expect(authorizer.allowed_shipping_methods).not_to include(shipping_method)
+        expect(authorizer.allowed_shipping_methods).not_to(include(shipping_method))
       end
 
       it "does not include shipping methods of distributors in order cycle that is not allowed" do
@@ -181,29 +181,29 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Permissions do
 :shipping_method,
                                  distributors: [another_outgoing_exchange.receiver]
 )
-        expect(authorizer.allowed_shipping_methods).not_to include(shipping_method)
+        expect(authorizer.allowed_shipping_methods).not_to(include(shipping_method))
       end
     end
 
     describe "allowed payment methods" do
       it "includes payment methods of distributors in allowed order cycle" do
         payment_method = create(:payment_method, distributors: [outgoing_exchange.receiver])
-        expect(authorizer.allowed_payment_methods).to include(payment_method)
+        expect(authorizer.allowed_payment_methods).to(include(payment_method))
       end
 
       it "does not include payment methods of suppliers in allowed order cycle" do
         payment_method = create(:payment_method, distributors: [incoming_exchange.sender])
-        expect(authorizer.allowed_payment_methods).not_to include(payment_method)
+        expect(authorizer.allowed_payment_methods).not_to(include(payment_method))
       end
 
       it "does not include payment methods of coordinator of allowed order cycle" do
         payment_method = create(:payment_method, distributors: [order_cycle.coordinator])
-        expect(authorizer.allowed_payment_methods).not_to include(payment_method)
+        expect(authorizer.allowed_payment_methods).not_to(include(payment_method))
       end
 
       it "does not include payment methods of distributors in order cycle that is not allowed" do
         payment_method = create(:payment_method, distributors: [another_outgoing_exchange.receiver])
-        expect(authorizer.allowed_payment_methods).not_to include(payment_method)
+        expect(authorizer.allowed_payment_methods).not_to(include(payment_method))
       end
     end
   end

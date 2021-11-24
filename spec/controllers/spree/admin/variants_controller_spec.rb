@@ -18,12 +18,12 @@ module Spree
 
           it "lists only non-deleted variants with params[:deleted] == off" do
             spree_get :index, product_id: product.permalink, deleted: "off"
-            expect(assigns(:variants)).to eq(product.variants)
+            expect(assigns(:variants)).to(eq(product.variants))
           end
 
           it "lists only deleted variants with params[:deleted] == on" do
             spree_get :index, product_id: product.permalink, deleted: "on"
-            expect(assigns(:variants)).to eq([deleted_variant])
+            expect(assigns(:variants)).to(eq([deleted_variant]))
           end
         end
       end
@@ -39,23 +39,23 @@ module Spree
 
         it "filters by distributor" do
           spree_get :search, q: 'Prod', distributor_id: d.id.to_s
-          expect(assigns(:variants)).to eq([v1])
+          expect(assigns(:variants)).to(eq([v1]))
         end
 
         it "applies variant overrides" do
           spree_get :search, q: 'Prod', distributor_id: d.id.to_s
-          expect(assigns(:variants)).to eq([v1])
-          expect(assigns(:variants).first.on_hand).to eq(44)
+          expect(assigns(:variants)).to(eq([v1]))
+          expect(assigns(:variants).first.on_hand).to(eq(44))
         end
 
         it "filters by order cycle" do
           spree_get :search, q: 'Prod', order_cycle_id: oc.id.to_s
-          expect(assigns(:variants)).to eq([v1])
+          expect(assigns(:variants)).to(eq([v1]))
         end
 
         it "does not filter when no distributor or order cycle is specified" do
           spree_get :search, q: 'Prod'
-          expect(assigns(:variants)).to match_array [v1, v2]
+          expect(assigns(:variants)).to(match_array([v1, v2]))
         end
       end
 
@@ -64,8 +64,8 @@ module Spree
 
         context 'when requesting with html' do
           before do
-            allow(Spree::Variant).to receive(:find).with(variant.id.to_s) { variant }
-            allow(variant).to receive(:destroy).and_call_original
+            allow(Spree::Variant).to(receive(:find).with(variant.id.to_s) { variant })
+            allow(variant).to(receive(:destroy).and_call_original)
           end
 
           it 'deletes the variant' do
@@ -73,7 +73,7 @@ module Spree
 id: variant.id,
 product_id: variant.product.permalink,
                                    format: 'html'
-            expect(variant).to have_received(:destroy)
+            expect(variant).to(have_received(:destroy))
           end
 
           it 'shows a success flash message' do
@@ -81,7 +81,7 @@ product_id: variant.product.permalink,
 id: variant.id,
 product_id: variant.product.permalink,
                                    format: 'html'
-            expect(flash[:success]).to be
+            expect(flash[:success]).to(be)
           end
 
           it 'redirects to admin_product_variants_url' do
@@ -89,7 +89,7 @@ product_id: variant.product.permalink,
 id: variant.id,
 product_id: variant.product.permalink,
                                    format: 'html'
-            expect(response).to redirect_to spree.admin_product_variants_url(variant.product.permalink)
+            expect(response).to(redirect_to(spree.admin_product_variants_url(variant.product.permalink)))
           end
 
           it 'destroys all its exchanges' do
@@ -100,7 +100,7 @@ product_id: variant.product.permalink,
 id: variant.id,
 product_id: variant.product.permalink,
                                    format: 'html'
-            expect(variant.exchanges.reload).to be_empty
+            expect(variant.exchanges.reload).to(be_empty)
           end
         end
       end

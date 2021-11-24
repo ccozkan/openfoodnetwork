@@ -9,10 +9,10 @@ module OpenFoodNetwork
       @compile_table = compile_table
 
       # Convert arrays of ids to comma delimited strings
-      if @params[:enterprise_id_in].is_a? Array
+      if @params[:enterprise_id_in].is_a?(Array)
         @params[:enterprise_id_in] = @params[:enterprise_id_in].join(',')
       end
-      @params[:user_id_in] = @params[:user_id_in].join(',') if @params[:user_id_in].is_a? Array
+      @params[:user_id_in] = @params[:user_id_in].join(',') if @params[:user_id_in].is_a?(Array)
     end
 
     def header
@@ -133,7 +133,7 @@ module OpenFoodNetwork
     def to_local_datetime(date)
       return "" if date.nil?
 
-      date.to_datetime.in_time_zone.strftime "%Y-%m-%d %H:%M"
+      date.to_datetime.in_time_zone.strftime("%Y-%m-%d %H:%M")
     end
   end
 end

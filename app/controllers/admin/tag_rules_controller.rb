@@ -6,7 +6,7 @@ module Admin
 
     respond_override destroy: {
 json: {
-      success: -> { render body: nil, status: :no_content }
+      success: -> { render(body: nil, status: :no_content) }
     }
 }
 
@@ -14,7 +14,7 @@ json: {
       respond_to do |format|
         format.json do
           serializer = ActiveModel::ArraySerializer.new(collection)
-          render json: serializer.to_json
+          render(json: serializer.to_json)
         end
       end
     end

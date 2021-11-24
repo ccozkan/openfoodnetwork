@@ -80,7 +80,7 @@ end
 RSpec.configure do |config|
   # Need to check here again because this is used in i18n_spec too.
   if ENV['CHECK_TRANSLATIONS']
-    config.after :suite do
+    config.after(:suite) do
       Spree.check_missing_translations
       if Spree.missing_translation_messages.any?
         puts "\nThere are missing translations within Spree:"

@@ -12,9 +12,9 @@ describe 'Orders Cycles endpoint', type: :request do
 
     it "redirects to v0, preserving URL params" do
       get path
-      expect(response).to redirect_to(
+      expect(response).to(redirect_to(
         "/api/v0/order_cycles/#{order_cycle.id}/products?distributor=#{distributor.id}"
-      )
+      ))
     end
   end
 
@@ -23,7 +23,7 @@ describe 'Orders Cycles endpoint', type: :request do
 
     it "does not redirect" do
       get path
-      expect(response.status).to eq(200)
+      expect(response.status).to(eq(200))
     end
   end
 end

@@ -307,7 +307,7 @@ id
   end
 
   def plus_relatives_and_oc_producers(order_cycles)
-    oc_producer_ids = Exchange.in_order_cycle(order_cycles).incoming.pluck :sender_id
+    oc_producer_ids = Exchange.in_order_cycle(order_cycles).incoming.pluck(:sender_id)
     Enterprise.is_primary_producer.relatives_of_one_union_others(id, oc_producer_ids | [id])
   end
 
@@ -324,15 +324,15 @@ id
   end
 
   def website
-    strip_url self[:website]
+    strip_url(self[:website])
   end
 
   def facebook
-    strip_url self[:facebook]
+    strip_url(self[:facebook])
   end
 
   def linkedin
-    strip_url self[:linkedin]
+    strip_url(self[:linkedin])
   end
 
   def inventory_variants
@@ -455,7 +455,7 @@ id
     dups = Enterprise.where(name: name)
     dups = dups.where('id != ?', id) unless new_record?
 
-    errors.add :name, I18n.t(:enterprise_name_error, email: dups.first.owner.email) if dups.any?
+    errors.add(:name, I18n.t(:enterprise_name_error, email: dups.first.owner.email)) if dups.any?
   end
 
   def send_welcome_email
@@ -491,7 +491,7 @@ email: owner.email,
   end
 
   def set_default_contact
-    update_contact owner_id
+    update_contact(owner_id)
   end
 
   def relate_to_owners_enterprises

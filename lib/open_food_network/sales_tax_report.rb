@@ -63,8 +63,8 @@ I18n.t(:report_header_order_number),
         end
       else
         orders.map do |order|
-          totals = totals_of order.line_items
-          shipping_cost = shipping_cost_for order
+          totals = totals_of(order.line_items)
+          shipping_cost = shipping_cost_for(order)
 
           [
 order.number,
@@ -99,7 +99,7 @@ order.distributor&.name
         totals[:items] += line_item.quantity
         totals[:items_total] += line_item.amount
 
-        sales_tax = tax_included_in line_item
+        sales_tax = tax_included_in(line_item)
 
         if sales_tax > 0
           totals[:taxable_total] += line_item.amount

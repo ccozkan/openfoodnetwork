@@ -9,8 +9,8 @@ module Spree
 class_name: "Spree::ReturnAuthorization",
                                       inverse_of: :inventory_units
 
-    scope :backordered, -> { where state: 'backordered' }
-    scope :shipped, -> { where state: 'shipped' }
+    scope :backordered, -> { where(state: 'backordered') }
+    scope :shipped, -> { where(state: 'shipped') }
     scope :backordered_per_variant,
 lambda { |stock_item|
       includes(:shipment)

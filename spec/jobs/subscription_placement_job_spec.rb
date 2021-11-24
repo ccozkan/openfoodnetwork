@@ -33,29 +33,29 @@ let!(:proxy_order) do
       create(:proxy_order, subscription: subscription, order_cycle: order_cycle1)
     end
     it "ignores proxy orders where the OC has closed" do
-      expect(job.send(:proxy_orders)).to include proxy_order
+      expect(job.send(:proxy_orders)).to(include(proxy_order))
       proxy_order.update!(order_cycle_id: order_cycle2.id)
-      expect(job.send(:proxy_orders)).to_not include proxy_order
+      expect(job.send(:proxy_orders)).to_not(include(proxy_order))
     end
 
     it "ignores proxy orders for paused or cancelled subscriptions" do
-      expect(job.send(:proxy_orders)).to include proxy_order
+      expect(job.send(:proxy_orders)).to(include(proxy_order))
       subscription.update!(paused_at: 1.minute.ago)
-      expect(job.send(:proxy_orders)).to_not include proxy_order
+      expect(job.send(:proxy_orders)).to_not(include(proxy_order))
       subscription.update!(paused_at: nil)
-      expect(job.send(:proxy_orders)).to include proxy_order
+      expect(job.send(:proxy_orders)).to(include(proxy_order))
       subscription.update!(canceled_at: 1.minute.ago)
-      expect(job.send(:proxy_orders)).to_not include proxy_order
+      expect(job.send(:proxy_orders)).to_not(include(proxy_order))
     end
 
     it "ignores proxy orders that have been marked as cancelled or placed" do
-      expect(job.send(:proxy_orders)).to include proxy_order
+      expect(job.send(:proxy_orders)).to(include(proxy_order))
       proxy_order.update!(canceled_at: 5.minutes.ago)
-      expect(job.send(:proxy_orders)).to_not include proxy_order
+      expect(job.send(:proxy_orders)).to_not(include(proxy_order))
       proxy_order.update!(canceled_at: nil)
-      expect(job.send(:proxy_orders)).to include proxy_order
+      expect(job.send(:proxy_orders)).to(include(proxy_order))
       proxy_order.update!(placed_at: 5.minutes.ago)
-      expect(job.send(:proxy_orders)).to_not include proxy_order
+      expect(job.send(:proxy_orders)).to_not(include(proxy_order))
     end
   end
 
@@ -66,30 +66,30 @@ let!(:proxy_order) do
       let!(:proxy_order) { create(:proxy_order, subscription: subscription, order: order) }
 
       before do
-        allow(job).to receive(:proxy_orders) { ProxyOrder.where(id: proxy_order.id) }
+        allow(job).to(receive(:proxy_orders) { ProxyOrder.where(id: proxy_order.id) })
       end
 
       it "processes placeable proxy_orders" do
         service = PlaceProxyOrder.new(proxy_order, summarizer, JobLogger.logger, CapQuantity.new)
 
-        allow(PlaceProxyOrder).to receive(:new) { service }
-        allow(service).to receive(:call)
+        allow(PlaceProxyOrder).to(receive(:new) { service })
+        allow(service).to(receive(:call))
 
         job.perform
 
-        expect(service).to have_received(:call)
+        expect(service).to(have_received(:call))
       end
 
       it "records exceptions" do
         order.line_items << build(:line_item)
 
         summarizer = TestSummarizer.new
-        allow(OrderManagement::Subscriptions::Summarizer).to receive(:new).and_return(summarizer)
+        allow(OrderManagement::Subscriptions::Summarizer).to(receive(:new).and_return(summarizer))
 
         job.perform
 
         expect(summarizer.recorded_issues[order.id])
-          .to eq("Errors: Cannot transition state via :next from :address (Reason(s): Items cannot be shipped)")
+          .to(eq("Errors: Cannot transition state via :next from :address (Reason(s): Items cannot be shipped)"))
       end
     end
   end
@@ -108,9 +108,9 @@ let!(:proxy_order) do
     let!(:exchange_fee) { ExchangeFee.create!(exchange: ex, enterprise_fee: fee) }
 
     before do
-      expect_any_instance_of(Spree::Payment).to_not receive(:process!)
-      allow_any_instance_of(PlaceProxyOrder).to receive(:send_placement_email)
-      allow_any_instance_of(PlaceProxyOrder).to receive(:send_empty_email)
+      expect_any_instance_of(Spree::Payment).to_not(receive(:process!))
+      allow_any_instance_of(PlaceProxyOrder).to(receive(:send_placement_email))
+      allow_any_instance_of(PlaceProxyOrder).to(receive(:send_empty_email))
     end
 
     context "when the order is not already complete" do
@@ -122,22 +122,22 @@ let!(:proxy_order) do
 
         before do
           fake_relation = instance_double(ActiveRecord::Relation, select: -123)
-          allow(store_updater).to receive(:available_variants_for).and_return(fake_relation)
+          allow(store_updater).to(receive(:available_variants_for).and_return(fake_relation))
         end
 
         it "does not place the order, clears all adjustments, and sends an empty_order email" do
-          allow(service).to receive(:send_placement_email)
-          allow(service).to receive(:send_empty_email)
+          allow(service).to(receive(:send_placement_email))
+          allow(service).to(receive(:send_empty_email))
 
           service.call
 
-          expect(proxy_order.order.reload.completed_at).to be_nil
-          expect(proxy_order.order.all_adjustments).to be_empty
-          expect(proxy_order.order.total).to eq 0
-          expect(proxy_order.order.adjustment_total).to eq 0
+          expect(proxy_order.order.reload.completed_at).to(be_nil)
+          expect(proxy_order.order.all_adjustments).to(be_empty)
+          expect(proxy_order.order.total).to(eq(0))
+          expect(proxy_order.order.adjustment_total).to(eq(0))
 
-          expect(service).to_not have_received(:send_placement_email)
-          expect(service).to have_received(:send_empty_email)
+          expect(service).to_not(have_received(:send_placement_email))
+          expect(service).to(have_received(:send_empty_email))
         end
       end
 
@@ -147,7 +147,7 @@ let!(:proxy_order) do
         end
 
         before do
-          allow(service).to receive(:send_placement_email)
+          allow(service).to(receive(:send_placement_email))
         end
 
         it "processes the order to completion, but does not process the payment" do
@@ -155,24 +155,24 @@ let!(:proxy_order) do
             service.call
             proxy_order.order.reload.completed_at
 
-            expect(proxy_order.order.completed_at).to eq(Time.zone.now)
-            expect(proxy_order.order.payments.first.state).to eq "checkout"
+            expect(proxy_order.order.completed_at).to(eq(Time.zone.now))
+            expect(proxy_order.order.payments.first.state).to(eq("checkout"))
           end
         end
 
         it "does not enqueue confirmation emails" do
           expect { service.call }
-            .to_not have_enqueued_mail(Spree::OrderMailer, :confirm_email_for_customer)
+            .to_not(have_enqueued_mail(Spree::OrderMailer, :confirm_email_for_customer))
 
-          expect(service).to have_received(:send_placement_email).once
+          expect(service).to(have_received(:send_placement_email).once)
         end
 
         context "when progression of the order fails" do
-          before { allow(service).to receive(:move_to_completion).and_raise(StandardError) }
+          before { allow(service).to(receive(:move_to_completion).and_raise(StandardError)) }
 
           it "records an error and does not attempt to send an email" do
-            expect(service).to_not receive(:send_placement_email)
-            expect(summarizer).to receive(:record_and_log_error).once
+            expect(service).to_not(receive(:send_placement_email))
+            expect(summarizer).to(receive(:record_and_log_error).once)
             service.call
           end
         end

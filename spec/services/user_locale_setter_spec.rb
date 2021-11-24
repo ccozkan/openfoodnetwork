@@ -17,8 +17,8 @@ describe UserLocaleSetter do
         it "saves selected locale to user.locale and cookies[:locale]" do
           service.set_locale
 
-          expect(user.reload.locale).to eq "es"
-          expect(cookies).to eq({ locale: "es" })
+          expect(user.reload.locale).to(eq("es"))
+          expect(cookies).to(eq({ locale: "es" }))
         end
       end
 
@@ -26,7 +26,7 @@ describe UserLocaleSetter do
         it "saves selected locale to cookies[:locale]" do
           service.set_locale
 
-          expect(cookies).to eq({ locale: "es" })
+          expect(cookies).to(eq({ locale: "es" }))
         end
       end
     end
@@ -39,7 +39,7 @@ describe UserLocaleSetter do
           it "applies the user's locale" do
             service.set_locale
 
-            expect(I18n.locale).to eq :es
+            expect(I18n.locale).to(eq(:es))
           end
         end
 
@@ -49,7 +49,7 @@ describe UserLocaleSetter do
           it "applies the default locale" do
             service.set_locale
 
-            expect(I18n.locale).to eq I18n.default_locale
+            expect(I18n.locale).to(eq(I18n.default_locale))
           end
         end
 
@@ -60,13 +60,13 @@ describe UserLocaleSetter do
             cookies[:locale] = "es"
             service.set_locale
 
-            expect(I18n.locale).to eq :es
+            expect(I18n.locale).to(eq(:es))
           end
 
           it "applies the default locale otherwise " do
             service.set_locale
 
-            expect(I18n.locale).to eq I18n.default_locale
+            expect(I18n.locale).to(eq(I18n.default_locale))
           end
         end
       end
@@ -79,7 +79,7 @@ describe UserLocaleSetter do
             cookies[:locale] = "es"
             service.set_locale
 
-            expect(I18n.locale).to eq :es
+            expect(I18n.locale).to(eq(:es))
           end
         end
 
@@ -87,7 +87,7 @@ describe UserLocaleSetter do
           it "applies the default locale" do
             service.set_locale
 
-            expect(I18n.locale).to eq I18n.default_locale
+            expect(I18n.locale).to(eq(I18n.default_locale))
           end
         end
       end
@@ -103,7 +103,7 @@ describe UserLocaleSetter do
           it "set the user's locale to the default" do
             service.ensure_valid_locale_persisted
 
-            expect(user.reload.locale).to eq default_locale.to_s
+            expect(user.reload.locale).to(eq(default_locale.to_s))
           end
         end
 
@@ -113,7 +113,7 @@ describe UserLocaleSetter do
           it "set the user's locale to the cookie value" do
             service.ensure_valid_locale_persisted
 
-            expect(user.reload.locale).to eq "es"
+            expect(user.reload.locale).to(eq("es"))
           end
         end
       end
@@ -126,13 +126,13 @@ describe UserLocaleSetter do
     context "when the user has a locale set" do
       it "returns the user's locale" do
         user.update(locale: "es")
-        expect(service.valid_current_locale).to eq "es"
+        expect(service.valid_current_locale).to(eq("es"))
       end
     end
 
     context "when the user has no locale set" do
       it "returns the default locale" do
-        expect(service.valid_current_locale).to eq default_locale
+        expect(service.valid_current_locale).to(eq(default_locale))
       end
     end
 
@@ -140,7 +140,7 @@ describe UserLocaleSetter do
       let(:user) { nil }
 
       it "returns the default locale" do
-        expect(service.valid_current_locale).to eq default_locale
+        expect(service.valid_current_locale).to(eq(default_locale))
       end
     end
   end

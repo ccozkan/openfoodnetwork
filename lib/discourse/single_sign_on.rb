@@ -32,11 +32,11 @@ module Discourse
     attr_accessor(*ACCESSORS, :sso_secret, :sso_url)
 
     def self.sso_secret
-      raise "sso_secret not implemented on class, be sure to set it on instance"
+      raise("sso_secret not implemented on class, be sure to set it on instance")
     end
 
     def self.sso_url
-      raise "sso_url not implemented on class, be sure to set it on instance"
+      raise("sso_url not implemented on class, be sure to set it on instance")
     end
 
     def self.parse(payload, sso_secret = nil)
@@ -47,9 +47,9 @@ module Discourse
       if sso.sign(parsed["sso"]) != parsed["sig"]
         diags = "\n\nsso: #{parsed['sso']}\n\nsig: #{parsed['sig']}\n\nexpected sig: #{sso.sign(parsed['sso'])}"
         if parsed["sso"] =~ %r{[^a-zA-Z0-9=\r\n/+]}m
-          raise "The SSO field should be Base64 encoded, using only A-Z, a-z, 0-9, +, /, and = characters. Your input contains characters we don't understand as Base64, see http://en.wikipedia.org/wiki/Base64 #{diags}"
+          raise("The SSO field should be Base64 encoded, using only A-Z, a-z, 0-9, +, /, and = characters. Your input contains characters we don't understand as Base64, see http://en.wikipedia.org/wiki/Base64 #{diags}")
         else
-          raise "Bad signature for payload #{diags}"
+          raise("Bad signature for payload #{diags}")
         end
       end
 
@@ -58,8 +58,8 @@ module Discourse
 
       ACCESSORS.each do |k|
         val = decoded_hash[k.to_s]
-        val = val.to_i if FIXNUMS.include? k
-        if BOOLS.include? k
+        val = val.to_i if FIXNUMS.include?(k)
+        if BOOLS.include?(k)
           val = ["true", "false"].include?(val) ? val == "true" : nil
         end
         sso.public_send("#{k}=", val)
@@ -107,7 +107,7 @@ module Discourse
     def unsigned_payload
       payload = {}
       ACCESSORS.each do |k|
-        next if (val = public_send k).nil?
+        next if (val = public_send(k)).nil?
 
         payload[k] = val
       end

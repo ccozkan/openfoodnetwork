@@ -96,8 +96,8 @@ module ProductImport
 
     def initialize(attrs)
       @validates_as = ''
-      remove_empty_skus attrs
-      assign_units attrs
+      remove_empty_skus(attrs)
+      assign_units(attrs)
     end
 
     def persisted?

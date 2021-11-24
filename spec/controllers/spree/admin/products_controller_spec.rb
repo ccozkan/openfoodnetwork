@@ -17,11 +17,11 @@ describe Spree::Admin::ProductsController, type: :controller do
       end
 
       it "denies access" do
-        expect(response).to redirect_to unauthorized_path
+        expect(response).to(redirect_to(unauthorized_path))
       end
 
       it "does not update any product" do
-        expect(product.reload.name).not_to eq("Pine nuts")
+        expect(product.reload.name).not_to(eq("Pine nuts"))
       end
     end
 
@@ -51,7 +51,7 @@ describe Spree::Admin::ProductsController, type: :controller do
                      }
                    ]
 
-        expect(response).to have_http_status(302)
+        expect(response).to(have_http_status(302))
       end
 
       it 'does not redirect to bulk_products' do
@@ -64,7 +64,7 @@ describe Spree::Admin::ProductsController, type: :controller do
                      }
                    ]
 
-        expect(response).to redirect_to('/api/v0/products/bulk_products')
+        expect(response).to(redirect_to('/api/v0/products/bulk_products'))
       end
     end
 
@@ -114,7 +114,7 @@ describe Spree::Admin::ProductsController, type: :controller do
                      }
                    ]
 
-        expect(response).to have_http_status(:found)
+        expect(response).to(have_http_status(:found))
       end
     end
   end
@@ -139,12 +139,12 @@ describe Spree::Admin::ProductsController, type: :controller do
 
     it "redirects to products when the user hits 'create'" do
       spree_post :create, product: product_attrs, button: 'create'
-      expect(response).to redirect_to spree.admin_products_path
+      expect(response).to(redirect_to(spree.admin_products_path))
     end
 
     it "redirects to new when the user hits 'add_another'" do
       spree_post :create, product: product_attrs, button: 'add_another'
-      expect(response).to redirect_to spree.new_admin_product_path
+      expect(response).to(redirect_to(spree.new_admin_product_path))
     end
 
     describe "when user uploads an image in an unsupported format" do
@@ -161,9 +161,9 @@ describe Spree::Admin::ProductsController, type: :controller do
         )
 
         expect do
-          spree_put :create, product: product_attrs_with_image
-        end.not_to raise_error Paperclip::Errors::NotIdentifiedByImageMagickError
-        expect(response.status).to eq 200
+          spree_put(:create, product: product_attrs_with_image)
+        end.not_to(raise_error(Paperclip::Errors::NotIdentifiedByImageMagickError))
+        expect(response.status).to(eq(200))
       end
     end
   end
@@ -191,8 +191,8 @@ coordinator: distributor,
         new_producer = create(:enterprise)
         spree_put :update, id: product, product: { supplier_id: new_producer.id }
 
-        expect(product.reload.supplier.id).to eq new_producer.id
-        expect(order_cycle.reload.distributed_variants).to_not include product.variants.first
+        expect(product.reload.supplier.id).to(eq(new_producer.id))
+        expect(order_cycle.reload.distributed_variants).to_not(include(product.variants.first))
       end
     end
 
@@ -201,15 +201,15 @@ coordinator: distributor,
         # forces an error in the variant
         product.variants.first.stock_items = []
 
-        expect(Bugsnag).to receive(:notify)
+        expect(Bugsnag).to(receive(:notify))
 
         expect do
-          spree_put :update,
+          spree_put(:update,
                     id: product,
                     product: {
                       on_hand: 1
-                    }
-        end.to raise_error(StandardError)
+                    })
+        end.to(raise_error(StandardError))
       end
     end
 
@@ -226,10 +226,10 @@ coordinator: distributor,
                           '0' => { property_name: 'a different name', value: 'something' }
                         }
                       }
-            expect(Spree::Property.count).to be 1
-            expect(Spree::ProductProperty.count).to be 0
+            expect(Spree::Property.count).to(be(1))
+            expect(Spree::ProductProperty.count).to(be(0))
             property_names = product.reload.properties.map(&:name)
-            expect(property_names).to_not include 'a different name'
+            expect(property_names).to_not(include('a different name'))
           end
         end
 
@@ -242,10 +242,10 @@ coordinator: distributor,
                           '0' => { property_name: 'A nice name', value: 'something' }
                         }
                       }
-            expect(Spree::Property.count).to be 1
-            expect(Spree::ProductProperty.count).to be 1
+            expect(Spree::Property.count).to(be(1))
+            expect(Spree::ProductProperty.count).to(be(1))
             property_names = product.reload.properties.map(&:name)
-            expect(property_names).to include 'A nice name'
+            expect(property_names).to(include('A nice name'))
           end
         end
       end

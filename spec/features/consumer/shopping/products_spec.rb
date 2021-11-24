@@ -30,7 +30,7 @@ orders_close_at: 2.days.from_now
 
     describe "viewing HTML product descriptions" do
       before do
-        exchange1.update_attribute :pickup_time, "monday"
+        exchange1.update_attribute(:pickup_time, "monday")
         add_variant_to_order_cycle(exchange1, variant)
       end
 
@@ -39,33 +39,33 @@ orders_close_at: 2.days.from_now
         product.save!
 
         visit shop_path
-        expect(page).to have_content product.name
+        expect(page).to(have_content(product.name))
         click_link product.name
 
-        expect(page).to have_selector '.reveal-modal'
+        expect(page).to(have_selector('.reveal-modal'))
         modal_should_be_open_for product
 
         within(".reveal-modal") do
-          expect(html).to include('<p><b>Formatted</b> product description.</p> Link to an <a href="http://google.fr" target="_blank">external site</a>')
+          expect(html).to(include('<p><b>Formatted</b> product description.</p> Link to an <a href="http://google.fr" target="_blank">external site</a>'))
         end
 
         # -- edit product via admin interface
         login_as_admin_and_visit spree.edit_admin_product_path(product)
-        expect(page.find("div[id^='taTextElement']")['innerHTML']).to include('<a href="http://google.fr" target="_blank">external site</a>')
+        expect(page.find("div[id^='taTextElement']")['innerHTML']).to(include('<a href="http://google.fr" target="_blank">external site</a>'))
 
         fill_in 'product_name', with: "#{product.name}_update"
         click_button 'Update'
 
         # -- check back consumer product view
         visit shop_path
-        expect(page).to have_content("#{product.name}_update")
+        expect(page).to(have_content("#{product.name}_update"))
         click_link("#{product.name}_update")
 
-        expect(page).to have_selector '.reveal-modal'
+        expect(page).to(have_selector('.reveal-modal'))
         modal_should_be_open_for product
 
         within(".reveal-modal") do
-          expect(html).to include('<p><b>Formatted</b> product description.</p> Link to an <a href="http://google.fr" target="_blank">external site</a>')
+          expect(html).to(include('<p><b>Formatted</b> product description.</p> Link to an <a href="http://google.fr" target="_blank">external site</a>'))
         end
       end
 
@@ -74,15 +74,15 @@ orders_close_at: 2.days.from_now
         product.save!
 
         visit shop_path
-        expect(page).to have_content product.name
+        expect(page).to(have_content(product.name))
         click_link product.name
 
-        expect(page).to have_selector '.reveal-modal'
+        expect(page).to(have_selector('.reveal-modal'))
         modal_should_be_open_for product
 
         within(".reveal-modal") do
-          expect(html).to include("<p>Safe</p>")
-          expect(html).not_to include("<script>alert('Dangerous!');</script>")
+          expect(html).to(include("<p>Safe</p>"))
+          expect(html).not_to(include("<script>alert('Dangerous!');</script>"))
         end
       end
     end

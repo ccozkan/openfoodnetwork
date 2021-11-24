@@ -7,13 +7,13 @@ module Spree
 
       def update
         params.each do |name, value|
-          next unless Spree::Config.has_preference? name
+          next unless Spree::Config.has_preference?(name)
 
           Spree::Config[name] = value
         end
 
         flash[:success] = Spree.t(:successfully_updated, resource: Spree.t(:mail_method_settings))
-        render :edit
+        render(:edit)
       end
 
       def testmail
@@ -25,7 +25,7 @@ module Spree
       rescue StandardError => e
         flash[:error] = format(Spree.t('admin.mail_methods.testmail.error'), e: e)
       ensure
-        redirect_to spree.edit_admin_mail_methods_url
+        redirect_to(spree.edit_admin_mail_methods_url)
       end
 
       private

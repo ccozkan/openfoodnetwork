@@ -39,7 +39,7 @@ orders_close_at: 2.days.from_now
       Spree::Config[:enable_embedded_shopfronts] = true
       Spree::Config[:embedded_shopfronts_whitelist] = 'test.com'
 
-      allow_any_instance_of(ActionDispatch::Request).to receive(:referer).and_return('https://www.test.com')
+      allow_any_instance_of(ActionDispatch::Request).to(receive(:referer).and_return('https://www.test.com'))
       visit "/embedded-shop-preview.html?#{distributor.permalink}"
     end
 
@@ -50,12 +50,12 @@ orders_close_at: 2.days.from_now
     it "displays modified shopfront layout" do
       on_embedded_page do
         within '.top-bar' do
-          expect(page).to have_selector '.nav-logo', visible: false
-          expect(page).to have_selector '.nav-main-menu', visible: false
+          expect(page).to(have_selector('.nav-logo', visible: false))
+          expect(page).to(have_selector('.nav-main-menu', visible: false))
         end
 
-        expect(page).to have_content "My Embedded Hub"
-        expect(page).to have_content "Framed Apples"
+        expect(page).to(have_content("My Embedded Hub"))
+        expect(page).to(have_content("Framed Apples"))
       end
     end
 
@@ -65,15 +65,15 @@ orders_close_at: 2.days.from_now
 
         edit_cart
 
-        expect(page).to have_text 'Your shopping cart'
+        expect(page).to(have_text('Your shopping cart'))
         find('a#checkout-link').click
 
-        expect(page).to have_text 'Ok, ready to checkout?'
+        expect(page).to(have_text('Ok, ready to checkout?'))
 
         click_button 'Login'
         login_with_modal
 
-        expect(page).to have_text 'Payment'
+        expect(page).to(have_text('Payment'))
 
         within "#details" do
           fill_in "First Name", with: "Some"
@@ -100,7 +100,7 @@ orders_close_at: 2.days.from_now
 
         place_order
 
-        expect(page).to have_content "Your order has been processed successfully"
+        expect(page).to(have_content("Your order has been processed successfully"))
       end
     end
 
@@ -114,7 +114,7 @@ orders_close_at: 2.days.from_now
         wait_until { page.find('.user-menu.has-dropdown').value.present? }
         logout_via_navigation
 
-        expect(page).to have_text 'My Embedded Hub'
+        expect(page).to(have_text('My Embedded Hub'))
       end
     end
   end
@@ -122,15 +122,15 @@ orders_close_at: 2.days.from_now
   private
 
   def login_with_modal
-    page.has_selector? 'div.login-modal', visible: true
+    page.has_selector?('div.login-modal', visible: true)
 
-    within 'div.login-modal' do
-      fill_in "Email", with: user.email
-      fill_in "Password", with: user.password
+    within('div.login-modal') do
+      fill_in("Email", with: user.email)
+      fill_in("Password", with: user.password)
       find('input[type="submit"]').click
     end
 
-    page.has_no_selector? 'div.login-modal', visible: true
+    page.has_no_selector?('div.login-modal', visible: true)
   end
 
   def logout_via_navigation

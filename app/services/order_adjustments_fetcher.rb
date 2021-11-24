@@ -24,11 +24,11 @@ class OrderAdjustmentsFetcher
   end
 
   def payment_fee
-    sum_adjustments "payment_fee"
+    sum_adjustments("payment_fee")
   end
 
   def ship_total
-    sum_adjustments "shipping"
+    sum_adjustments("shipping")
   end
 
   private
@@ -56,7 +56,7 @@ class OrderAdjustmentsFetcher
         match_by_scope(adjustment, adjustment_scope) && match_by_scope(adjustment, eligible_scope)
       end
     else
-      adjustments.where(nil).eligible.public_send scope
+      adjustments.where(nil).eligible.public_send(scope)
     end
   end
 

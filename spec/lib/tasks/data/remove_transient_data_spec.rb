@@ -8,24 +8,24 @@ describe RemoveTransientData do
     let(:retention_period) { RemoveTransientData::RETENTION_PERIOD }
 
     before do
-      allow(Spree::StateChange).to receive(:delete_all)
-      allow(Spree::LogEntry).to receive(:delete_all)
-      allow(RemoveTransientData::Session).to receive(:delete_all)
-      allow(Rails.logger).to receive(:info)
+      allow(Spree::StateChange).to(receive(:delete_all))
+      allow(Spree::LogEntry).to(receive(:delete_all))
+      allow(RemoveTransientData::Session).to(receive(:delete_all))
+      allow(Rails.logger).to(receive(:info))
     end
 
     it 'deletes state changes older than rentention_period' do
       Spree::StateChange.create(created_at: retention_period - 1.day)
 
       RemoveTransientData.new.call
-      expect(Spree::StateChange.all).to be_empty
+      expect(Spree::StateChange.all).to(be_empty)
     end
 
     it 'deletes log entries older than retention_period' do
       Spree::LogEntry.create(created_at: retention_period - 1.day)
 
       expect { RemoveTransientData.new.call }
-.to change(Spree::LogEntry, :count).by(-1)
+.to(change(Spree::LogEntry, :count).by(-1))
     end
 
     it 'deletes sessions older than retention_period' do
@@ -33,7 +33,7 @@ describe RemoveTransientData do
 
       RemoveTransientData.new.call
 
-      expect(RemoveTransientData::Session.all).to be_empty
+      expect(RemoveTransientData::Session.all).to(be_empty)
     end
 
     describe "deleting old carts" do
@@ -56,26 +56,26 @@ describe RemoveTransientData do
         RemoveTransientData.new.call
 
         expect { cart.reload }
-.to_not raise_error
+.to_not(raise_error)
         expect { line_item.reload }
-.to_not raise_error
+.to_not(raise_error)
         expect { adjustment.reload }
-.to_not raise_error
+.to_not(raise_error)
 
         expect { old_cart.reload }
-.to raise_error ActiveRecord::RecordNotFound
+.to(raise_error(ActiveRecord::RecordNotFound))
         expect { old_line_item.reload }
-.to raise_error ActiveRecord::RecordNotFound
+.to(raise_error(ActiveRecord::RecordNotFound))
         expect { old_adjustment.reload }
-.to raise_error ActiveRecord::RecordNotFound
+.to(raise_error(ActiveRecord::RecordNotFound))
       end
 
       it "removes any defunct line item option value records" do
         line_item.delete
 
         expect { RemoveTransientData.new.call }
-.to change { Spree::OptionValuesLineItem.count }
-.by(-1)
+.to(change { Spree::OptionValuesLineItem.count }
+.by(-1))
       end
     end
   end

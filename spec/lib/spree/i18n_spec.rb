@@ -22,45 +22,45 @@ describe "i18n" do
       }
     )
 
-    allow(ActionView::Base).to receive(:raise_on_missing_translations).and_return(false)
+    allow(ActionView::Base).to(receive(:raise_on_missing_translations).and_return(false))
   end
 
   it "translates within the spree scope" do
-    expect(Spree.normal_t(:foo)).to eql("bar")
-    expect(Spree.translate(:foo)).to eql("bar")
+    expect(Spree.normal_t(:foo)).to(eql("bar"))
+    expect(Spree.translate(:foo)).to(eql("bar"))
   end
 
   it "translates within the spree scope using a path" do
-    allow(Spree).to receive(:virtual_path).and_return('bar')
+    allow(Spree).to(receive(:virtual_path).and_return('bar'))
 
-    expect(Spree.normal_t('.legacy_translation')).to eql("back in the day...")
-    expect(Spree.translate('.legacy_translation')).to eql("back in the day...")
+    expect(Spree.normal_t('.legacy_translation')).to(eql("back in the day..."))
+    expect(Spree.translate('.legacy_translation')).to(eql("back in the day..."))
   end
 
   it "raise error without any context when using a path" do
     expect do
       Spree.normal_t('.legacy_translation')
-    end.to raise_error
+    end.to(raise_error)
 
     expect do
       Spree.translate('.legacy_translation')
-    end.to raise_error
+    end.to(raise_error)
   end
 
   it "prepends a string scope" do
-    expect(Spree.normal_t(:foo, scope: "bar")).to eql("bar within bar scope")
+    expect(Spree.normal_t(:foo, scope: "bar")).to(eql("bar within bar scope"))
   end
 
   it "prepends to an array scope" do
-    expect(Spree.normal_t(:foo, scope: ["bar"])).to eql("bar within bar scope")
+    expect(Spree.normal_t(:foo, scope: ["bar"])).to(eql("bar within bar scope"))
   end
 
   it "returns two translations" do
-    expect(Spree.normal_t([:foo, 'bar.foo'])).to eql(["bar", "bar within bar scope"])
+    expect(Spree.normal_t([:foo, 'bar.foo'])).to(eql(["bar", "bar within bar scope"]))
   end
 
   it "returns reasonable string for missing translations" do
-    expect(Spree.t(:missing_entry)).to include("<span")
+    expect(Spree.t(:missing_entry)).to(include("<span"))
   end
 
   context "missed + unused translations" do
@@ -90,13 +90,13 @@ describe "i18n" do
       it "does not log present translations" do
         Spree.t(:foo)
         Spree.check_missing_translations
-        expect(Spree.missing_translation_messages).to be_empty
+        expect(Spree.missing_translation_messages).to(be_empty)
       end
 
       it "does not break when asked for multiple translations" do
-        Spree.t [:foo, 'bar.foo']
+        Spree.t([:foo, 'bar.foo'])
         Spree.check_missing_translations
-        expect(Spree.missing_translation_messages).to be_empty
+        expect(Spree.missing_translation_messages).to(be_empty)
       end
     end
 

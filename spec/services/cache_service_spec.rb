@@ -7,7 +7,7 @@ describe CacheService do
 
   describe "#cache" do
     before do
-      allow(rails_cache).to receive(:fetch)
+      allow(rails_cache).to(receive(:fetch))
     end
 
     it "provides a wrapper for basic #fetch calls to Rails.cache" do
@@ -15,7 +15,7 @@ describe CacheService do
         "TEST"
       end
 
-      expect(rails_cache).to have_received(:fetch).with("test-cache-key", expires_in: 10.seconds)
+      expect(rails_cache).to(have_received(:fetch).with("test-cache-key", expires_in: 10.seconds))
     end
   end
 
@@ -23,8 +23,8 @@ describe CacheService do
     let(:timestamp) { Time.now.to_i }
 
     before do
-      allow(rails_cache).to receive(:fetch)
-      allow(Enterprise).to receive(:maximum).with(:updated_at).and_return(timestamp)
+      allow(rails_cache).to(receive(:fetch))
+      allow(Enterprise).to(receive(:maximum).with(:updated_at).and_return(timestamp))
     end
 
     it "caches data by timestamp for last record of that class" do
@@ -32,7 +32,7 @@ describe CacheService do
         "TEST"
       end
 
-      expect(rails_cache).to have_received(:fetch).with("test-cache-key-Enterprise-#{timestamp}")
+      expect(rails_cache).to(have_received(:fetch).with("test-cache-key-Enterprise-#{timestamp}"))
     end
   end
 
@@ -42,10 +42,10 @@ describe CacheService do
 
     it "gets the :updated_at value of the last record for a given class and returns a timestamp" do
       taxon1.touch
-      expect(CacheService.latest_timestamp_by_class(Spree::Taxon)).to eq taxon1.updated_at.to_i
+      expect(CacheService.latest_timestamp_by_class(Spree::Taxon)).to(eq(taxon1.updated_at.to_i))
 
       taxon2.touch
-      expect(CacheService.latest_timestamp_by_class(Spree::Taxon)).to eq taxon2.updated_at.to_i
+      expect(CacheService.latest_timestamp_by_class(Spree::Taxon)).to(eq(taxon2.updated_at.to_i))
     end
   end
 end

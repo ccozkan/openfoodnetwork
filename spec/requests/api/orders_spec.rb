@@ -93,26 +93,26 @@ payment_state: 'credit_owed',
 
           context "and there are no query parameters" do
             run_test! do |response|
-              expect(response).to have_http_status(200)
+              expect(response).to(have_http_status(200))
 
               data = JSON.parse(response.body)
               orders = data["orders"]
-              expect(orders.size).to eq 4
+              expect(orders.size).to(eq(4))
             end
           end
 
           context "and queried by distributor id" do
             let(:'q[distributor_id_eq]') { order_dist_2.distributor.id }
 
-            before { order_dist_2.distributor.update owner: user }
+            before { order_dist_2.distributor.update(owner: user) }
 
             run_test! do |response|
-              expect(response).to have_http_status(200)
+              expect(response).to(have_http_status(200))
 
               data = JSON.parse(response.body)
               orders = data["orders"]
-              expect(orders.size).to eq 1
-              expect(orders.first["id"]).to eq order_dist_2.id
+              expect(orders.size).to(eq(1))
+              expect(orders.first["id"]).to(eq(order_dist_2.id))
             end
           end
 
@@ -121,48 +121,48 @@ payment_state: 'credit_owed',
             let(:'q[completed_at_lt]') { Time.zone.today - 6.days }
 
             run_test! do |response|
-              expect(response).to have_http_status(200)
+              expect(response).to(have_http_status(200))
 
               data = JSON.parse(response.body)
               orders = data["orders"]
-              expect(orders.size).to eq 1
-              expect(orders.first["id"]).to eq order_dist_1_complete.id
+              expect(orders.size).to(eq(1))
+              expect(orders.first["id"]).to(eq(order_dist_1_complete.id))
             end
           end
 
           context "and queried by complete state" do
             let(:'q[state_eq]') { "complete" }
             run_test! do |response|
-              expect(response).to have_http_status(200)
+              expect(response).to(have_http_status(200))
 
               data = JSON.parse(response.body)
               orders = data["orders"]
-              expect(orders.size).to eq 1
-              expect(orders.first["id"]).to eq order_dist_1_complete.id
+              expect(orders.size).to(eq(1))
+              expect(orders.first["id"]).to(eq(order_dist_1_complete.id))
             end
           end
 
           context "and queried by credit_owed payment_state" do
             let(:'q[payment_state_eq]') { "credit_owed" }
             run_test! do |response|
-              expect(response).to have_http_status(200)
+              expect(response).to(have_http_status(200))
 
               data = JSON.parse(response.body)
               orders = data["orders"]
-              expect(orders.size).to eq 1
-              expect(orders.first["id"]).to eq order_dist_1_credit_owed.id
+              expect(orders.size).to(eq(1))
+              expect(orders.first["id"]).to(eq(order_dist_1_credit_owed.id))
             end
           end
 
           context "and queried by buyer email contains a specific string" do
             let(:'q[email_cont]') { order_dist_1.email.split("@").first }
             run_test! do |response|
-              expect(response).to have_http_status(200)
+              expect(response).to(have_http_status(200))
 
               data = JSON.parse(response.body)
               orders = data["orders"]
-              expect(orders.size).to eq 1
-              expect(orders.first["id"]).to eq order_dist_1.id
+              expect(orders.size).to(eq(1))
+              expect(orders.first["id"]).to(eq(order_dist_1.id))
             end
           end
 
@@ -171,15 +171,15 @@ payment_state: 'credit_owed',
               order_dist_2.order_cycle.id
             end
 
-            before { order_dist_2.distributor.update owner: user }
+            before { order_dist_2.distributor.update(owner: user) }
 
             run_test! do |response|
-              expect(response).to have_http_status(200)
+              expect(response).to(have_http_status(200))
 
               data = JSON.parse(response.body)
               orders = data["orders"]
-              expect(orders.size).to eq 1
-              expect(orders.first["id"]).to eq order_dist_2.id
+              expect(orders.size).to(eq(1))
+              expect(orders.first["id"]).to(eq(order_dist_2.id))
             end
           end
         end

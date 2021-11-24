@@ -12,13 +12,13 @@ describe Spree::ReportsHelper, type: :helper do
     it "returns payment method select options for given orders" do
       select_options = helper.report_payment_method_options([order_with_payments])
 
-      expect(select_options).to eq [[payment_method.name, payment_method.id]]
+      expect(select_options).to(eq([[payment_method.name, payment_method.id]]))
     end
 
     it "handles orders that don't have payments, without error" do
       select_options = helper.report_payment_method_options(orders)
 
-      expect(select_options).to eq [[payment_method.name, payment_method.id]]
+      expect(select_options).to(eq([[payment_method.name, payment_method.id]]))
     end
   end
 end

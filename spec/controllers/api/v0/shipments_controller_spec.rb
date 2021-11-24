@@ -12,7 +12,7 @@ describe Api::V0::ShipmentsController, type: :controller do
   let(:current_api_user) { build(:user) }
 
   before do
-    allow(controller).to receive(:spree_current_user) { current_api_user }
+    allow(controller).to(receive(:spree_current_user) { current_api_user })
   end
 
   context "as a non-admin" do
@@ -45,8 +45,8 @@ format: :json
     let(:error_message) { "broken shipments creation" }
 
     before do
-      order.update_attribute :ship_address_id, order_ship_address.id
-      order.update_attribute :distributor, variant.product.supplier
+      order.update_attribute(:ship_address_id, order_ship_address.id)
+      order.update_attribute(:distributor, variant.product.supplier)
       shipment.shipping_method.distributors << variant.product.supplier
     end
 
@@ -58,8 +58,8 @@ format: :json
         spree_post :create, params
 
         expect_valid_response
-        expect(order.shipment.reload.inventory_units.size).to eq 2
-        expect(order.reload.line_items.first.variant.price).to eq(variant.price)
+        expect(order.shipment.reload.inventory_units.size).to(eq(2))
+        expect(order.reload.line_items.first.variant.price).to(eq(variant.price))
       end
 
       it 'updates and returns exiting shipment, if order already has a shipment' do
@@ -67,10 +67,10 @@ format: :json
 
         spree_post :create, params
 
-        expect(json_response["id"]).to eq(original_shipment_id)
+        expect(json_response["id"]).to(eq(original_shipment_id))
         expect_valid_response
-        expect(order.shipment.reload.inventory_units.size).to eq 2
-        expect(order.reload.line_items.first.variant.price).to eq(variant.price)
+        expect(order.shipment.reload.inventory_units.size).to(eq(2))
+        expect(order.reload.line_items.first.variant.price).to(eq(variant.price))
       end
 
       it 'updates existing shipment with variant override if an VO is sent' do
@@ -82,8 +82,8 @@ format: :json
         spree_post :create, params
 
         expect_valid_response
-        expect(order.shipment.reload.inventory_units.size).to eq 2
-        expect(order.reload.line_items.first.price).to eq(variant_override.price)
+        expect(order.shipment.reload.inventory_units.size).to(eq(2))
+        expect(order.reload.line_items.first.price).to(eq(variant_override.price))
       end
 
       it 'returns error code when adding to order contents fails' do
@@ -96,20 +96,20 @@ format: :json
     end
 
     it "can make a shipment ready" do
-      allow_any_instance_of(Spree::Order).to receive_messages(paid?: true, complete?: true)
+      allow_any_instance_of(Spree::Order).to(receive_messages(paid?: true, complete?: true))
       api_put :ready, order_id: shipment.order.to_param, id: shipment.to_param
 
-      expect(attributes.all? { |attr| json_response.key? attr.to_s }).to be_truthy
-      expect(json_response["state"]).to eq("ready")
-      expect(shipment.reload.state).to eq("ready")
+      expect(attributes.all? { |attr| json_response.key?(attr.to_s) }).to(be_truthy)
+      expect(json_response["state"]).to(eq("ready"))
+      expect(shipment.reload.state).to(eq("ready"))
     end
 
     it "cannot make a shipment ready if the order is unpaid" do
-      allow_any_instance_of(Spree::Order).to receive_messages(paid?: false)
+      allow_any_instance_of(Spree::Order).to(receive_messages(paid?: false))
       api_put :ready, order_id: shipment.order.to_param, id: shipment.to_param
 
-      expect(json_response["error"]).to eq("Cannot ready shipment.")
-      expect(response.status).to eq(422)
+      expect(json_response["error"]).to(eq("Cannot ready shipment."))
+      expect(response.status).to(eq(422))
     end
 
     describe "#add and #remove" do
@@ -132,52 +132,52 @@ format: :json
       context 'for completed shipments' do
         it 'adds a variant to a shipment' do
           expect do
-            api_put :add, params.merge(variant_id: new_variant.to_param)
-            expect(response.status).to eq(200)
-          end.to change { inventory_units_for(new_variant).size }
-.by(2)
+            api_put(:add, params.merge(variant_id: new_variant.to_param))
+            expect(response.status).to(eq(200))
+          end.to(change { inventory_units_for(new_variant).size }
+.by(2))
         end
 
         it 'adjusts stock when adding a variant' do
           expect do
-            api_put :add, params.merge(variant_id: new_variant.to_param)
-          end.to change { new_variant.reload.on_hand }
-.by(-2)
+            api_put(:add, params.merge(variant_id: new_variant.to_param))
+          end.to(change { new_variant.reload.on_hand }
+.by(-2))
         end
 
         it 'removes a variant from a shipment' do
           expect do
-            api_put :remove, params.merge(variant_id: existing_variant.to_param)
-            expect(response.status).to eq(200)
-          end.to change { inventory_units_for(existing_variant).size }
-.by(-2)
+            api_put(:remove, params.merge(variant_id: existing_variant.to_param))
+            expect(response.status).to(eq(200))
+          end.to(change { inventory_units_for(existing_variant).size }
+.by(-2))
         end
 
         it 'adjusts stock when removing a variant' do
           expect do
-            api_put :remove, params.merge(variant_id: existing_variant.to_param)
-          end.to change { existing_variant.reload.on_hand }
-.by(2)
+            api_put(:remove, params.merge(variant_id: existing_variant.to_param))
+          end.to(change { existing_variant.reload.on_hand }
+.by(2))
         end
       end
 
       context "for canceled orders" do
         before do
-          expect(order.cancel).to eq true
+          expect(order.cancel).to(eq(true))
         end
 
         it "doesn't adjust stock when adding a variant" do
           expect do
-            api_put :add, params.merge(variant_id: existing_variant.to_param)
-            expect(response.status).to eq(422)
-          end.to_not change { existing_variant.reload.on_hand }
+            api_put(:add, params.merge(variant_id: existing_variant.to_param))
+            expect(response.status).to(eq(422))
+          end.to_not(change { existing_variant.reload.on_hand })
         end
 
         it "doesn't adjust stock when removing a variant" do
           expect do
-            api_put :remove, params.merge(variant_id: existing_variant.to_param)
-            expect(response.status).to eq(422)
-          end.to_not change { existing_variant.reload.on_hand }
+            api_put(:remove, params.merge(variant_id: existing_variant.to_param))
+            expect(response.status).to(eq(422))
+          end.to_not(change { existing_variant.reload.on_hand })
         end
       end
 
@@ -207,18 +207,18 @@ distributors: [distributor],
         context "adding item to a shipment" do
           it "updates the shipping fee" do
             expect do
-              api_put :add, params.merge(variant_id: new_variant.to_param)
-            end.to change { order.reload.shipment.adjustments.first.amount }
-.by(20)
+              api_put(:add, params.merge(variant_id: new_variant.to_param))
+            end.to(change { order.reload.shipment.adjustments.first.amount }
+.by(20))
           end
         end
 
         context "removing item from a shipment" do
           it "updates the shipping fee" do
             expect do
-              api_put :remove, params.merge(variant_id: existing_variant.to_param)
-            end.to change { order.reload.shipment.adjustments.first.amount }
-.by(-20)
+              api_put(:remove, params.merge(variant_id: existing_variant.to_param))
+            end.to(change { order.reload.shipment.adjustments.first.amount }
+.by(-20))
           end
         end
       end
@@ -260,20 +260,20 @@ distributors: [distributor],
       context "when an order has multiple shipping methods available which could be chosen" do
         context "changing the selected shipping method" do
           it "updates the order's totals and states" do
-            expect(order.shipment.shipping_method).to eq shipping_method1
-            expect(order.shipment.cost).to eq 10
-            expect(order.total).to eq 60 # item total is 50, shipping cost is 10
-            expect(order.payment_state).to eq "paid" # order is fully paid for
+            expect(order.shipment.shipping_method).to(eq(shipping_method1))
+            expect(order.shipment.cost).to(eq(10))
+            expect(order.total).to(eq(60)) # item total is 50, shipping cost is 10
+            expect(order.payment_state).to(eq("paid")) # order is fully paid for
 
             api_put :update, params
-            expect(response.status).to eq 200
+            expect(response.status).to(eq(200))
 
             order.reload
 
-            expect(order.shipment.shipping_method).to eq shipping_method2
-            expect(order.shipment.cost).to eq 20
-            expect(order.total).to eq 70 # item total is 50, shipping cost is 20
-            expect(order.payment_state).to eq "balance_due" # total changed, payment is due
+            expect(order.shipment.shipping_method).to(eq(shipping_method2))
+            expect(order.shipment.cost).to(eq(20))
+            expect(order.total).to(eq(70)) # item total is 50, shipping cost is 20
+            expect(order.payment_state).to(eq("balance_due")) # total changed, payment is due
           end
 
           context "using the 'unlock' parameter with closed adjustments" do
@@ -285,18 +285,18 @@ distributors: [distributor],
               params[:shipment][:unlock] = "no"
 
               expect do
-                api_put :update, params
-                expect(response.status).to eq 200
-              end.to_not change { order.reload.shipment.fee_adjustment.amount }
+                api_put(:update, params)
+                expect(response.status).to(eq(200))
+              end.to_not(change { order.reload.shipment.fee_adjustment.amount })
             end
 
             it "updates closed adjustments with unlock option selected" do
               params[:shipment][:unlock] = "yes"
 
               expect do
-                api_put :update, params
-                expect(response.status).to eq 200
-              end.to change { order.reload.shipment.fee_adjustment.amount }
+                api_put(:update, params)
+                expect(response.status).to(eq(200))
+              end.to(change { order.reload.shipment.fee_adjustment.amount })
             end
           end
         end
@@ -305,13 +305,13 @@ distributors: [distributor],
 
     context "#ship" do
       before do
-        allow_any_instance_of(Spree::Order).to receive_messages(paid?: true, complete?: true)
+        allow_any_instance_of(Spree::Order).to(receive_messages(paid?: true, complete?: true))
         # For the shipment notification email
         Spree::Config[:mails_from] = "ofn@example.com"
 
         shipment.update!(shipment.order)
-        expect(shipment.state).to eq("ready")
-        allow_any_instance_of(Spree::ShippingRate).to receive_messages(cost: 5)
+        expect(shipment.state).to(eq("ready"))
+        allow_any_instance_of(Spree::ShippingRate).to(receive_messages(cost: 5))
       end
 
       it "can transition a shipment from ready to ship" do
@@ -321,8 +321,8 @@ order_id: shipment.order.to_param,
                        id: shipment.to_param,
                        shipment: { tracking: "123123" }
 
-        expect(attributes.all? { |attr| json_response.key? attr.to_s }).to be_truthy
-        expect(json_response["state"]).to eq("shipped")
+        expect(attributes.all? { |attr| json_response.key?(attr.to_s) }).to(be_truthy)
+        expect(json_response["state"]).to(eq("shipped"))
       end
     end
 
@@ -336,7 +336,7 @@ order_id: shipment.order.to_param,
           spree_put :add, params
 
           expect_valid_response
-          expect(inventory_units_for(variant).size).to eq 2
+          expect(inventory_units_for(variant).size).to(eq(2))
         end
 
         it 'returns error code when adding to order contents fails' do
@@ -355,8 +355,8 @@ order_id: shipment.order.to_param,
           spree_put :add, params
 
           expect_valid_response
-          expect(inventory_units_for(variant).size).to eq 2
-          expect(order.reload.line_items.last.price).to eq(variant_override.price)
+          expect(inventory_units_for(variant).size).to(eq(2))
+          expect(order.reload.line_items.last.price).to(eq(variant_override.price))
         end
 
         context "when line items have fees" do
@@ -366,18 +366,18 @@ order_id: shipment.order.to_param,
           let(:contents) { instance_double(Spree::OrderContents) }
 
           before do
-            allow(Spree::Order).to receive(:find_by!) { fee_order }
-            allow(controller).to receive(:find_and_update_shipment) {}
-            allow(controller).to receive(:refuse_changing_cancelled_orders) {}
-            allow(fee_order).to receive(:contents) { contents }
-            allow(contents).to receive(:add) {}
-            allow(fee_order).to receive(:recreate_all_fees!)
+            allow(Spree::Order).to(receive(:find_by!) { fee_order })
+            allow(controller).to(receive(:find_and_update_shipment) {})
+            allow(controller).to(receive(:refuse_changing_cancelled_orders) {})
+            allow(fee_order).to(receive(:contents) { contents })
+            allow(contents).to(receive(:add) {})
+            allow(fee_order).to(receive(:recreate_all_fees!))
           end
 
           it "recalculates fees for the line item" do
             params[:order_id] = fee_order.number
             spree_put :add, params
-            expect(fee_order).to have_received(:recreate_all_fees!)
+            expect(fee_order).to(have_received(:recreate_all_fees!))
           end
         end
       end
@@ -392,7 +392,7 @@ order_id: shipment.order.to_param,
           spree_put :remove, params
 
           expect_valid_response
-          expect(inventory_units_for(variant).size).to eq 0
+          expect(inventory_units_for(variant).size).to(eq(0))
         end
 
         it 'returns error code when removing from order contents fails' do
@@ -410,18 +410,18 @@ order_id: shipment.order.to_param,
     end
 
     def expect_valid_response
-      expect(response.status).to eq 200
-      attributes.all? { |attr| json_response.key? attr.to_s }
+      expect(response.status).to(eq(200))
+      attributes.all? { |attr| json_response.key?(attr.to_s) }
     end
 
     def make_order_contents_fail
-      expect(Spree::Order).to receive(:find_by!).with({ number: order.number }) { order }
-      expect(order).to receive(:contents) { raise error_message }
+      expect(Spree::Order).to(receive(:find_by!).with({ number: order.number }) { order })
+      expect(order).to(receive(:contents) { raise(error_message) })
     end
 
     def expect_error_response
-      expect(response.status).to eq 422
-      expect(json_response["exception"]).to eq error_message
+      expect(response.status).to(eq(422))
+      expect(json_response["exception"]).to(eq(error_message))
     end
   end
 end

@@ -7,7 +7,7 @@ module SampleData
     include Logging
 
     def create_samples(enterprises)
-      log "Creating products:"
+      log("Creating products:")
       product_data(enterprises).map do |hash|
         create_product(hash)
       end
@@ -61,7 +61,7 @@ module SampleData
     end
 
     def create_product(hash)
-      log "- #{hash[:name]}"
+      log("- #{hash[:name]}")
       params = hash.slice(:name, :price).merge(
         supplier_id: hash[:supplier].id,
         primary_taxon_id: hash[:taxons].first.id,
@@ -72,7 +72,7 @@ module SampleData
         tax_category_id: find_or_create_tax_category.id
       )
       product = Spree::Product.create_with(params).find_or_create_by!(name: params[:name])
-      product.variants.first.update_attribute :on_demand, true
+      product.variants.first.update_attribute(:on_demand, true)
       product
     end
 

@@ -82,12 +82,12 @@ lambda { |permission|
       permissions.destroy_all
     else
       permissions.where('name NOT IN (?)', perms).destroy_all
-      perms.map { |name| permissions.find_or_initialize_by name: name }
+      perms.map { |name| permissions.find_or_initialize_by(name: name) }
     end
   end
 
   def has_permission?(name)
-    permissions.reload.map(&:name).map(&:to_sym).include? name.to_sym
+    permissions.reload.map(&:name).map(&:to_sym).include?(name.to_sym)
   end
 
   private

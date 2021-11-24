@@ -101,7 +101,7 @@ module Spree
       shipment.destroy if shipment.inventory_units.reload.count == 0
 
       # removing this from shipment, and adding to stock_location
-      shipment.stock_location.restock variant, removed_quantity, shipment if order.completed?
+      shipment.stock_location.restock(variant, removed_quantity, shipment) if order.completed?
 
       removed_quantity
     end

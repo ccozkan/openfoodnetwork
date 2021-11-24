@@ -16,19 +16,19 @@ describe DfcProvider::Api::PersonsController, type: :controller do
       context 'with an authenticated user' do
         before do
           allow_any_instance_of(DfcProvider::AuthorizationControl)
-            .to receive(:process)
-            .and_return(user)
+            .to(receive(:process)
+            .and_return(user))
         end
 
         context 'given with an accessible id' do
           before { api_get :show, id: user.id }
 
           it 'is successful' do
-            expect(response).to be_successful
+            expect(response).to(be_successful)
           end
 
           it 'renders the required content' do
-            expect(response.body).to include('dfc:Person')
+            expect(response.body).to(include('dfc:Person'))
           end
         end
 
@@ -36,7 +36,7 @@ describe DfcProvider::Api::PersonsController, type: :controller do
           before { api_get :show, id: create(:user).id }
 
           it 'is not found' do
-            expect(response).to be_not_found
+            expect(response).to(be_not_found)
           end
         end
       end

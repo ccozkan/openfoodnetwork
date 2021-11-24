@@ -21,11 +21,11 @@ module Api
         @shipment.refresh_rates
         @shipment.save!
 
-        render json: @shipment.reload, serializer: Api::ShipmentSerializer, status: :ok
+        render(json: @shipment.reload, serializer: Api::ShipmentSerializer, status: :ok)
       end
 
       def update
-        authorize! :read, Spree::Shipment
+        authorize!(:read, Spree::Shipment)
         @shipment = @order.shipments.find_by!(number: params[:id])
         params[:shipment] ||= []
         unlock = params[:shipment].delete(:unlock)
@@ -36,11 +36,11 @@ module Api
 
         @shipment.fee_adjustment.close if unlock == 'yes'
 
-        render json: @shipment.reload, serializer: Api::ShipmentSerializer, status: :ok
+        render(json: @shipment.reload, serializer: Api::ShipmentSerializer, status: :ok)
       end
 
       def ready
-        authorize! :read, Spree::Shipment
+        authorize!(:read, Spree::Shipment)
         unless @shipment.ready?
           if @shipment.can_ready?
             @shipment.ready!
@@ -51,13 +51,13 @@ status: :unprocessable_entity
 ) && return
           end
         end
-        render json: @shipment, serializer: Api::ShipmentSerializer, status: :ok
+        render(json: @shipment, serializer: Api::ShipmentSerializer, status: :ok)
       end
 
       def ship
-        authorize! :read, Spree::Shipment
+        authorize!(:read, Spree::Shipment)
         @shipment.ship! unless @shipment.shipped?
-        render json: @shipment, serializer: Api::ShipmentSerializer, status: :ok
+        render(json: @shipment, serializer: Api::ShipmentSerializer, status: :ok)
       end
 
       def add
@@ -67,7 +67,7 @@ status: :unprocessable_entity
         @order.contents.add(variant, quantity, @shipment)
         @order.recreate_all_fees!
 
-        render json: @shipment, serializer: Api::ShipmentSerializer, status: :ok
+        render(json: @shipment, serializer: Api::ShipmentSerializer, status: :ok)
       end
 
       def remove
@@ -77,14 +77,14 @@ status: :unprocessable_entity
         @order.contents.remove(variant, quantity, @shipment)
         @shipment.reload if @shipment.persisted?
 
-        render json: @shipment, serializer: Api::ShipmentSerializer, status: :ok
+        render(json: @shipment, serializer: Api::ShipmentSerializer, status: :ok)
       end
 
       private
 
       def find_order
         @order = Spree::Order.find_by!(number: params[:order_id])
-        authorize! :read, @order
+        authorize!(:read, @order)
       end
 
       def find_and_update_shipment
@@ -94,7 +94,7 @@ status: :unprocessable_entity
       end
 
       def refuse_changing_cancelled_orders
-        render status: :unprocessable_entity if @order.canceled?
+        render(status: :unprocessable_entity) if @order.canceled?
       end
 
       def scoped_variant(variant_id)
@@ -108,7 +108,7 @@ status: :unprocessable_entity
       end
 
       def shipment_params
-        return {} unless params.has_key? :shipment
+        return {} unless params.has_key?(:shipment)
 
         params.require(:shipment).permit(:tracking, :selected_shipping_rate_id)
       end

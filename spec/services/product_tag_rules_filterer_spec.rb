@@ -60,7 +60,7 @@ describe ProductTagRulesFilterer do
 
     context "when the distributor has no rules" do
       it "returns the relation unchanged" do
-        expect(filterer.call).to eq variants_relation
+        expect(filterer.call).to(eq(variants_relation))
       end
     end
 
@@ -69,7 +69,7 @@ describe ProductTagRulesFilterer do
         customer.update_attribute(:tag_list, show_rule.preferred_customer_tags)
 
         customer_applicable_rules = filterer.__send__(:customer_applicable_rules)
-        expect(customer_applicable_rules).to eq [show_rule]
+        expect(customer_applicable_rules).to(eq([show_rule]))
       end
     end
 
@@ -82,7 +82,7 @@ describe ProductTagRulesFilterer do
 )
 
           overrides_to_hide = filterer.__send__(:overrides_to_hide)
-          expect(overrides_to_hide).to eq [variant_hidden_by_default.id]
+          expect(overrides_to_hide).to(eq([variant_hidden_by_default.id]))
         end
       end
 
@@ -100,8 +100,8 @@ describe ProductTagRulesFilterer do
 )
 
           overrides_to_hide = filterer.__send__(:overrides_to_hide)
-          expect(overrides_to_hide).to include variant_hidden_by_default.id,
-                                               variant_hidden_by_rule.id
+          expect(overrides_to_hide).to(include(variant_hidden_by_default.id,
+                                               variant_hidden_by_rule.id))
         end
       end
     end
@@ -112,7 +112,7 @@ describe ProductTagRulesFilterer do
         variant_shown_by_rule.update_attribute(:tag_list, show_rule.preferred_variant_tags)
 
         overrides_to_show = filterer.__send__(:overrides_to_show)
-        expect(overrides_to_show).to eq [variant_shown_by_rule.id]
+        expect(overrides_to_show).to(eq([variant_shown_by_rule.id]))
       end
     end
   end

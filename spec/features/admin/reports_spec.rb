@@ -15,7 +15,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
       it "does not show super admin only report" do
         login_to_admin_as user
         click_link "Reports"
-        expect(page).not_to have_content "Users & Enterprises"
+        expect(page).not_to(have_content("Users & Enterprises"))
       end
     end
 
@@ -23,7 +23,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
       it "shows the super admin only report" do
         login_to_admin_section
         click_link "Reports"
-        expect(page).to have_content "Users & Enterprises"
+        expect(page).to(have_content("Users & Enterprises"))
       end
     end
   end
@@ -35,23 +35,23 @@ describe ' As an administrator I want numbers, all the numbers! ' do
 
     it "customers report" do
       click_link "Mailing List"
-      expect(page).to have_select('report_type', selected: 'Mailing List')
-      expect(page).to have_content "click on GO"
+      expect(page).to(have_select('report_type', selected: 'Mailing List'))
+      expect(page).to(have_content("click on GO"))
       click_button "Go"
 
       rows = find("table#listing_customers").all("thead tr")
       table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-      expect(table.sort).to eq([["Email", "First Name", "Last Name", "Suburb"]].sort)
+      expect(table.sort).to(eq([["Email", "First Name", "Last Name", "Suburb"]].sort))
     end
 
     it "customers report" do
       click_link "Addresses"
-      expect(page).to have_select('report_type', selected: 'Addresses')
+      expect(page).to(have_select('report_type', selected: 'Addresses'))
 
       click_button "Go"
       rows = find("table#listing_customers").all("thead tr")
       table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-      expect(table.sort).to eq(
+      expect(table.sort).to(eq(
 [
         [
 "First Name",
@@ -64,7 +64,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
          "Shipping Method"
 ]
       ].sort
-)
+))
     end
   end
 
@@ -78,7 +78,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
       click_button "Search"
       rows = find("table#listing_ocm_orders").all("thead tr")
       table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-      expect(table.sort).to eq(
+      expect(table.sort).to(eq(
 [
         [
 "First Name",
@@ -93,7 +93,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
 "Balance"
 ]
       ].sort
-)
+))
     end
 
     it "delivery report" do
@@ -101,7 +101,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
       click_button "Search"
       rows = find("table#listing_ocm_orders").all("thead tr")
       table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-      expect(table.sort).to eq(
+      expect(table.sort).to(eq(
 [
         [
 "First Name",
@@ -119,7 +119,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
 "Special Instructions"
 ]
       ].sort
-)
+))
     end
   end
 
@@ -128,7 +128,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
     click_link 'Orders And Distributors'
     click_button 'Search'
 
-    expect(page).to have_content 'Order date'
+    expect(page).to(have_content('Order date'))
   end
 
   it "payments reports" do
@@ -136,7 +136,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
     click_link 'Payment Reports'
     click_button 'Search'
 
-    expect(page).to have_content 'Payment State'
+    expect(page).to(have_content('Payment State'))
   end
 
   describe "sales tax report" do
@@ -225,30 +225,30 @@ amount: order1.reload.total,
 
     it "reports" do
       # Then it should give me access only to managed enterprises
-      expect(page).to     have_select 'q_distributor_id_eq',
-                                      with_options: [user1.enterprises.first.name]
-      expect(page).not_to have_select 'q_distributor_id_eq',
-                                      with_options: [user2.enterprises.first.name]
+      expect(page).to(    have_select('q_distributor_id_eq',
+                                      with_options: [user1.enterprises.first.name]))
+      expect(page).not_to(have_select('q_distributor_id_eq',
+                                      with_options: [user2.enterprises.first.name]))
 
       # When I filter to just one distributor
       select user1.enterprises.first.name, from: 'q_distributor_id_eq'
       click_button 'Search'
 
       # Then I should see the relevant order
-      expect(page).to have_content order1.number.to_s
+      expect(page).to(have_content(order1.number.to_s))
 
       # And the totals and sales tax should be correct
-      expect(page).to have_content "1512.99" # items total
-      expect(page).to have_content "1500.45" # taxable items total
-      expect(page).to have_content "250.08" # sales tax
-      expect(page).to have_content "20.0" # enterprise fee tax
+      expect(page).to(have_content("1512.99")) # items total
+      expect(page).to(have_content("1500.45")) # taxable items total
+      expect(page).to(have_content("250.08")) # sales tax
+      expect(page).to(have_content("20.0")) # enterprise fee tax
 
       # And the shipping cost and tax should be correct
-      expect(page).to have_content "100.55" # shipping cost
-      expect(page).to have_content "16.76" # shipping tax
+      expect(page).to(have_content("100.55")) # shipping cost
+      expect(page).to(have_content("16.76")) # shipping tax
 
       # And the total tax should be correct
-      expect(page).to have_content "286.84" # total tax
+      expect(page).to(have_content("286.84")) # total tax
     end
   end
 
@@ -257,7 +257,7 @@ amount: order1.reload.total,
       login_as_admin_and_visit spree.admin_reports_path
       click_link 'Orders & Fulfillment Reports'
 
-      expect(page).to have_content 'Supplier'
+      expect(page).to(have_content('Supplier'))
     end
 
     context "with two orders on the same day at different times" do
@@ -303,7 +303,7 @@ bill_address: bill_address,
         click_button 'Search'
 
         # Then I should see the rows for the first order but not the second
-        expect(all('table#listing_orders tbody tr').count).to eq(2) # Two rows per order
+        expect(all('table#listing_orders tbody tr').count).to(eq(2)) # Two rows per order
       end
     end
 
@@ -320,7 +320,7 @@ orders_close_at: nil
 
       login_as_admin_and_visit spree.orders_and_fulfillment_admin_reports_path
 
-      expect(page).to have_content "My Order Cycle"
+      expect(page).to(have_content("My Order Cycle"))
     end
   end
 
@@ -354,8 +354,8 @@ sku: "product_sku"
     let(:variant3) { product2.variants.first }
 
     before do
-      product1.set_property 'Organic', 'NASAA 12345'
-      product2.set_property 'Organic', 'NASAA 12345'
+      product1.set_property('Organic', 'NASAA 12345')
+      product2.set_property('Organic', 'NASAA 12345')
       product1.taxons = [taxon]
       product2.taxons = [taxon]
       variant1.on_hand = 10
@@ -371,12 +371,12 @@ sku: "product_sku"
     it "shows products and inventory report" do
       login_as_admin_and_visit spree.admin_reports_path
 
-      expect(page).to have_content "All products"
-      expect(page).to have_content "Inventory (on hand)"
+      expect(page).to(have_content("All products"))
+      expect(page).to(have_content("Inventory (on hand)"))
       click_link 'Products & Inventory'
       click_button "Go"
-      expect(page).to have_content "Supplier"
-      expect(page).to have_table_row [
+      expect(page).to(have_content("Supplier"))
+      expect(page).to(have_table_row([
 "Supplier",
 "Producer Suburb",
 "Product",
@@ -387,8 +387,8 @@ sku: "product_sku"
 "Group Buy Unit Quantity",
 "Amount",
 "SKU"
-].map(&:upcase)
-      expect(page).to have_table_row [
+].map(&:upcase)))
+      expect(page).to(have_table_row([
 product1.supplier.name,
 product1.supplier.address.city,
                                       "Product Name",
@@ -399,8 +399,8 @@ product1.primary_taxon.name,
 product1.group_buy_unit_size.to_s,
 "",
 "sku1"
-]
-      expect(page).to have_table_row [
+]))
+      expect(page).to(have_table_row([
 product1.supplier.name,
 product1.supplier.address.city,
                                       "Product Name",
@@ -411,8 +411,8 @@ product1.primary_taxon.name,
 product1.group_buy_unit_size.to_s,
 "",
 "sku2"
-]
-      expect(page).to have_table_row [
+]))
+      expect(page).to(have_table_row([
 product2.supplier.name,
 product1.supplier.address.city,
                                       "Product 2",
@@ -423,7 +423,7 @@ product2.primary_taxon.name,
 product1.group_buy_unit_size.to_s,
 "",
 "product_sku"
-]
+]))
     end
 
     it "shows the LettuceShare report" do
@@ -431,7 +431,7 @@ product1.group_buy_unit_size.to_s,
       click_link 'LettuceShare'
       click_button "Go"
 
-      expect(page).to have_table_row [
+      expect(page).to(have_table_row([
 'PRODUCT',
 'Description',
 'Qty',
@@ -442,8 +442,8 @@ product1.group_buy_unit_size.to_s,
 'GST incl.',
 'Grower and growing method',
 'Taxon'
-].map(&:upcase)
-      expect(page).to have_table_row [
+].map(&:upcase)))
+      expect(page).to(have_table_row([
 'Product 2',
 '100g',
 '',
@@ -454,7 +454,7 @@ product1.group_buy_unit_size.to_s,
 '0',
                                       'Supplier Name (Organic - NASAA 12345)',
 'Taxon Name'
-]
+]))
     end
   end
 
@@ -477,7 +477,7 @@ product1.group_buy_unit_size.to_s,
       rows = find("table#users_and_enterprises").all("tr")
       table = rows.map { |r| r.all("th,td").map { |c| c.text.strip }[0..2] }
 
-      expect(table.sort).to eq(
+      expect(table.sort).to(eq(
 [
         ["User", "Relationship", "Enterprise"],
         [enterprise1.owner.email, "owns", enterprise1.name],
@@ -488,7 +488,7 @@ product1.group_buy_unit_size.to_s,
         [enterprise3.owner.email, "manages", enterprise3.name],
         [enterprise1.owner.email, "manages", enterprise3.name]
       ].sort
-)
+))
     end
 
     it "filters the list" do
@@ -500,12 +500,12 @@ product1.group_buy_unit_size.to_s,
       rows = find("table#users_and_enterprises").all("tr")
       table = rows.map { |r| r.all("th,td").map { |c| c.text.strip }[0..2] }
 
-      expect(table.sort).to eq(
+      expect(table.sort).to(eq(
 [
         ["User", "Relationship", "Enterprise"],
         [enterprise1.owner.email, "manages", enterprise3.name]
       ].sort
-)
+))
     end
   end
 
@@ -662,7 +662,7 @@ tax_category: tax_category
 
       before do
         order1.update_order!
-        order1.update_attribute :email, 'customer@email.com'
+        order1.update_attribute(:email, 'customer@email.com')
         order1.shipment.update_columns(included_tax_total: 10.06)
         Timecop.travel(Time.zone.local(2015, 4, 25, 14, 0, 0)) { order1.finalize! }
         order1.reload
@@ -680,7 +680,7 @@ tax_category: tax_category
 
       it "shows Xero invoices report" do
         click_button "Search"
-        expect(xero_invoice_table).to match_table [
+        expect(xero_invoice_table).to(match_table([
           xero_invoice_header,
           xero_invoice_summary_row('Total untaxable produce (no tax)', 12.54, 'GST Free Income'),
           xero_invoice_summary_row(
@@ -705,7 +705,7 @@ tax_category: tax_category
 40.0,
                                    'GST on Income'
 )
-        ]
+        ]))
       end
 
       it "can customise a number of fields" do
@@ -722,7 +722,7 @@ due_date: '2015-03-12',
 account_code: 'abc123'
 }
 
-        expect(xero_invoice_table).to match_table [
+        expect(xero_invoice_table).to(match_table([
           xero_invoice_header,
           xero_invoice_summary_row(
 'Total untaxable produce (no tax)',
@@ -766,7 +766,7 @@ opts
                                    'GST on Income',
 opts
 )
-        ]
+        ]))
       end
 
       it "generates a detailed report" do
@@ -775,7 +775,7 @@ opts
 
         opts = {}
 
-        expect(xero_invoice_table).to match_table [
+        expect(xero_invoice_table).to(match_table([
           xero_invoice_header,
           xero_invoice_li_row(line_item1),
           xero_invoice_li_row(line_item2),
@@ -799,7 +799,7 @@ opts
                                    'GST on Income',
 opts
 )
-        ]
+        ]))
       end
     end
 
@@ -843,17 +843,17 @@ Paid?
     end
 
     def xero_invoice_summary_row(description, amount, tax_type, opts = {})
-      xero_invoice_row '', description, amount, '1', tax_type, opts
+      xero_invoice_row('', description, amount, '1', tax_type, opts)
     end
 
     def xero_invoice_li_row(line_item, opts = {})
       tax_type = line_item.has_tax? ? 'GST on Income' : 'GST Free Income'
-      xero_invoice_row line_item.product.sku,
+      xero_invoice_row(line_item.product.sku,
 line_item.product_and_full_name,
                        line_item.price.to_s,
 line_item.quantity.to_s,
 tax_type,
-opts
+opts)
     end
 
     def xero_invoice_adjustment_row(adjustment, opts = {})

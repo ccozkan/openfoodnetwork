@@ -9,9 +9,9 @@ describe ProductFilters do
 
       filters = ProductFilters.new.extract(params)
 
-      expect(filters).not_to include 'id'
-      expect(filters).to include 'producerFilter'
-      expect(filters).to include 'categoryFilter'
+      expect(filters).not_to(include('id'))
+      expect(filters).to(include('producerFilter'))
+      expect(filters).to(include('categoryFilter'))
     end
   end
 end

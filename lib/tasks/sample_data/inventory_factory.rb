@@ -7,7 +7,7 @@ module SampleData
     include Logging
 
     def create_samples(products)
-      log "Creating inventories"
+      log("Creating inventories")
       marys_shop = Enterprise.find_by(name: "Mary's Online Shop")
       products.each do |product|
         create_item(marys_shop, product)

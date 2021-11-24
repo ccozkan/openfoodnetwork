@@ -16,8 +16,8 @@ module Stripe
       before do
         Stripe.api_key = "sk_test_12345"
 
-        allow(payment).to receive_message_chain(:payment_method, :preferred_enterprise_id) { 1 }
-        allow(StripeAccount).to receive(:find_by) { stripe_account_mock }
+        allow(payment).to(receive_message_chain(:payment_method, :preferred_enterprise_id) { 1 })
+        allow(StripeAccount).to(receive(:find_by) { stripe_account_mock })
 
         stub_request(:get, "https://api.stripe.com/v1/payment_intents/#{payment_intent_id}")
           .with(headers: { 'Stripe-Account' => stripe_account_id })
@@ -32,8 +32,8 @@ module Stripe
         it "returns payment intent id and does not raise" do
           expect do
             result = validator.call
-            expect(result).to eq payment_intent_response_body
-          end.to_not raise_error Stripe::StripeError
+            expect(result).to(eq(payment_intent_response_body))
+          end.to_not(raise_error(Stripe::StripeError))
         end
       end
 
@@ -45,7 +45,7 @@ module Stripe
         it "raises Stripe error with payment intent last_payment_error as message" do
           expect do
             validator.call
-          end.to raise_error Stripe::StripeError, "No money"
+          end.to(raise_error(Stripe::StripeError, "No money"))
         end
       end
     end

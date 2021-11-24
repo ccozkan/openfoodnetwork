@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
-  subject { OrderManagement::Reports::BulkCoop::BulkCoopReport.new user, params, true }
+  subject { OrderManagement::Reports::BulkCoop::BulkCoopReport.new(user, params, true) }
   let(:user) { create(:admin_user) }
 
   describe '#table_items' do
@@ -23,7 +23,7 @@ describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
         it "fetches completed orders" do
           o2 = create(:order, state: 'cart')
           o2.line_items << build(:line_item)
-          expect(subject.table_items).to eq([li1])
+          expect(subject.table_items).to(eq([li1]))
         end
 
         it 'shows canceled orders' do
@@ -36,7 +36,7 @@ order_cycle: oc1,
 )
           line_item = build(:line_item_with_shipment)
           o2.line_items << line_item
-          expect(subject.table_items).to include(line_item)
+          expect(subject.table_items).to(include(line_item))
         end
       end
 
@@ -46,7 +46,7 @@ order_cycle: oc1,
         it "fetches completed orders" do
           o2 = create(:order, state: 'cart')
           o2.line_items << build(:line_item)
-          expect(subject.table_items).to eq([li1])
+          expect(subject.table_items).to(eq([li1]))
         end
 
         it 'shows canceled orders' do
@@ -59,7 +59,7 @@ order_cycle: oc1,
 )
           line_item = build(:line_item_with_shipment)
           o2.line_items << line_item
-          expect(subject.table_items).to include(line_item)
+          expect(subject.table_items).to(include(line_item))
         end
       end
     end
@@ -71,18 +71,18 @@ order_cycle: oc1,
         li2 = build(:line_item_with_shipment)
         o2.line_items << li2
 
-        report = OrderManagement::Reports::BulkCoop::BulkCoopReport.new user, {}, true
-        expect(report.table_items).to match_array [li1, li2]
+        report = OrderManagement::Reports::BulkCoop::BulkCoopReport.new(user, {}, true)
+        expect(report.table_items).to(match_array([li1, li2]))
 
         report = OrderManagement::Reports::BulkCoop::BulkCoopReport.new(
           user, { q: { completed_at_gt: 2.days.ago } }, true
         )
-        expect(report.table_items).to eq([li1])
+        expect(report.table_items).to(eq([li1]))
 
         report = OrderManagement::Reports::BulkCoop::BulkCoopReport.new(
           user, { q: { completed_at_lt: 2.days.ago } }, true
         )
-        expect(report.table_items).to eq([li2])
+        expect(report.table_items).to(eq([li2]))
       end
     end
 
@@ -94,24 +94,24 @@ order_cycle: oc1,
         li2 = build(:line_item_with_shipment)
         o2.line_items << li2
 
-        report = OrderManagement::Reports::BulkCoop::BulkCoopReport.new user, {}, true
-        expect(report.table_items).to match_array [li1, li2]
+        report = OrderManagement::Reports::BulkCoop::BulkCoopReport.new(user, {}, true)
+        expect(report.table_items).to(match_array([li1, li2]))
 
         report = OrderManagement::Reports::BulkCoop::BulkCoopReport.new(
           user, { q: { distributor_id_in: [d1.id] } }, true
         )
-        expect(report.table_items).to eq([li1])
+        expect(report.table_items).to(eq([li1]))
 
         report = OrderManagement::Reports::BulkCoop::BulkCoopReport.new(
           user, { q: { distributor_id_in: [d2.id] } }, true
         )
-        expect(report.table_items).to eq([li2])
+        expect(report.table_items).to(eq([li2]))
       end
     end
 
     context "as a manager of a supplier" do
       let!(:user) { create(:user) }
-      subject { OrderManagement::Reports::BulkCoop::BulkCoopReport.new user, {}, true }
+      subject { OrderManagement::Reports::BulkCoop::BulkCoopReport.new(user, {}, true) }
 
       let(:s1) { create(:supplier_enterprise) }
 
@@ -144,8 +144,8 @@ child: d1,
         end
 
         it "shows line items supplied by my producers, with names hidden" do
-          expect(subject.table_items).to eq([li2])
-          expect(subject.table_items.first.order.bill_address.firstname).to eq("HIDDEN")
+          expect(subject.table_items).to(eq([li2]))
+          expect(subject.table_items.first.order.bill_address.firstname).to(eq("HIDDEN"))
         end
       end
 
@@ -168,7 +168,7 @@ bill_address: create(:address),
         end
 
         it "does not show line items supplied by my producers" do
-          expect(subject.table_items).to eq([])
+          expect(subject.table_items).to(eq([]))
         end
       end
     end
@@ -179,7 +179,7 @@ bill_address: create(:address),
       let(:params) { { report_type: 'bulk_coop_customer_payments' } }
 
       it 'returns' do
-        expect(subject.columns).to eq(
+        expect(subject.columns).to(eq(
           [
             :order_billing_address_name,
             :order_completed_at,
@@ -187,7 +187,7 @@ bill_address: create(:address),
             :customer_payments_amount_owed,
             :customer_payments_amount_paid,
           ]
-        )
+        ))
       end
     end
   end
@@ -202,7 +202,7 @@ bill_address: create(:address),
     let(:order) { line_item.order }
 
     it 'calls #new_outstanding_balance' do
-      expect_any_instance_of(Spree::Order).to receive(:new_outstanding_balance)
+      expect_any_instance_of(Spree::Order).to(receive(:new_outstanding_balance))
       subject.send(:customer_payments_amount_owed, [line_item])
     end
   end

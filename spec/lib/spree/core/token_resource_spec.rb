@@ -16,20 +16,20 @@ describe Spree::Core::TokenResource do
 
   context '#token' do
     it 'should return the token of the associated permission' do
-      allow(order).to receive_messages tokenized_permission: permission
-      allow(permission).to receive_messages token: 'foo'
-      expect(order.token).to eq 'foo'
+      allow(order).to(receive_messages(tokenized_permission: permission))
+      allow(permission).to(receive_messages(token: 'foo'))
+      expect(order.token).to(eq('foo'))
     end
 
     it 'should return nil if there is no associated permission' do
-      expect(order.token).to be_nil
+      expect(order.token).to(be_nil)
     end
   end
 
   context '#create_token' do
     it 'should create a randomized 16 character token' do
       token = order.create_token
-      expect(token.size).to eq 16
+      expect(token.size).to(eq(16))
     end
   end
 end

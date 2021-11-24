@@ -25,7 +25,7 @@ describe "Managing enterprise images" do
 
       def go_to_images
         within(".side_menu") do
-          click_link "Images"
+          click_link("Images")
         end
       end
 
@@ -38,7 +38,7 @@ describe "Managing enterprise images" do
         attach_file "enterprise[logo]", Rails.root.join("app", "assets", "images", "logo-white.png")
         click_button "Update"
 
-        expect(page).to have_content("Enterprise \"#{distributor.name}\" has been successfully updated!")
+        expect(page).to(have_content("Enterprise \"#{distributor.name}\" has been successfully updated!"))
 
         go_to_images
         within ".page-admin-enterprises-form__logo-field-group" do
@@ -49,7 +49,7 @@ describe "Managing enterprise images" do
         attach_file "enterprise[logo]", Rails.root.join("app", "assets", "images", "logo-black.png")
         click_button "Update"
 
-        expect(page).to have_content("Enterprise \"#{distributor.name}\" has been successfully updated!")
+        expect(page).to(have_content("Enterprise \"#{distributor.name}\" has been successfully updated!"))
 
         go_to_images
         within ".page-admin-enterprises-form__logo-field-group" do
@@ -63,7 +63,7 @@ describe "Managing enterprise images" do
           end
         end
 
-        expect(page).to have_content("Logo removed successfully")
+        expect(page).to(have_content("Logo removed successfully"))
 
         within ".page-admin-enterprises-form__logo-field-group" do
           expect_no_preview_image
@@ -76,7 +76,7 @@ describe "Managing enterprise images" do
                     Rails.root.join("app", "assets", "images", "logo-white.png")
         click_button "Update"
 
-        expect(page).to have_content("Enterprise \"#{distributor.name}\" has been successfully updated!")
+        expect(page).to(have_content("Enterprise \"#{distributor.name}\" has been successfully updated!"))
 
         go_to_images
         within ".page-admin-enterprises-form__promo-image-field-group" do
@@ -88,7 +88,7 @@ describe "Managing enterprise images" do
                     Rails.root.join("app", "assets", "images", "logo-black.png")
         click_button "Update"
 
-        expect(page).to have_content("Enterprise \"#{distributor.name}\" has been successfully updated!")
+        expect(page).to(have_content("Enterprise \"#{distributor.name}\" has been successfully updated!"))
 
         go_to_images
         within ".page-admin-enterprises-form__promo-image-field-group" do
@@ -102,7 +102,7 @@ describe "Managing enterprise images" do
           end
         end
 
-        expect(page).to have_content("Promo image removed successfully")
+        expect(page).to(have_content("Promo image removed successfully"))
 
         within ".page-admin-enterprises-form__promo-image-field-group" do
           expect_no_preview_image
@@ -112,10 +112,10 @@ describe "Managing enterprise images" do
   end
 
   def expect_preview_image(file_name)
-    expect(page).to have_selector(".image-field-group__preview-image[src*='#{file_name}']")
+    expect(page).to(have_selector(".image-field-group__preview-image[src*='#{file_name}']"))
   end
 
   def expect_no_preview_image
-    expect(page).to have_no_selector(".image-field-group__preview-image")
+    expect(page).to(have_no_selector(".image-field-group__preview-image"))
   end
 end

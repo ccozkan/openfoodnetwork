@@ -50,14 +50,14 @@ lambda {
 
   def move_stock!(quantity)
     unless stock_overridden?
-      Bugsnag.notify RuntimeError.new "Attempting to move stock of a VariantOverride without a count_on_hand specified."
+      Bugsnag.notify(RuntimeError.new("Attempting to move stock of a VariantOverride without a count_on_hand specified."))
       return
     end
 
     if quantity > 0
-      increment! :count_on_hand, quantity
+      increment!(:count_on_hand, quantity)
     elsif quantity < 0
-      decrement! :count_on_hand, -quantity
+      decrement!(:count_on_hand, -quantity)
     end
   end
 
@@ -71,7 +71,7 @@ lambda {
         self.attributes = { on_demand: false, count_on_hand: default_stock }
         save
       else
-        Bugsnag.notify RuntimeError.new "Attempting to reset stock level for a variant with no default stock level."
+        Bugsnag.notify(RuntimeError.new("Attempting to reset stock level for a variant with no default stock level."))
       end
     end
     self

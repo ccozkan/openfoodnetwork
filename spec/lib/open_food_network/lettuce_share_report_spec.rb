@@ -7,34 +7,34 @@ require 'open_food_network/lettuce_share_report'
 module OpenFoodNetwork
   describe LettuceShareReport do
     let(:user) { create(:user) }
-    let(:report) { LettuceShareReport.new user, {}, true }
+    let(:report) { LettuceShareReport.new(user, {}, true) }
     let(:variant) { create(:variant) }
 
     describe "grower and method" do
       it "shows just the producer when there is no certification" do
-        allow(report).to receive(:producer_name) { "Producer" }
-        allow(report).to receive(:certification) { "" }
+        allow(report).to(receive(:producer_name) { "Producer" })
+        allow(report).to(receive(:certification) { "" })
 
-        expect(report.send(:grower_and_method, variant)).to eq("Producer")
+        expect(report.send(:grower_and_method, variant)).to(eq("Producer"))
       end
 
       it "shows producer and certification when a certification is present" do
-        allow(report).to receive(:producer_name) { "Producer" }
-        allow(report).to receive(:certification) { "Method" }
+        allow(report).to(receive(:producer_name) { "Producer" })
+        allow(report).to(receive(:certification) { "Method" })
 
-        expect(report.send(:grower_and_method, variant)).to eq("Producer (Method)")
+        expect(report.send(:grower_and_method, variant)).to(eq("Producer (Method)"))
       end
     end
 
     describe "gst" do
       it "handles tax category without rates" do
-        expect(report.send(:gst, variant)).to eq(0)
+        expect(report.send(:gst, variant)).to(eq(0))
       end
     end
 
     describe "table" do
       it "handles no items" do
-        expect(report.table).to eq []
+        expect(report.table).to(eq([]))
       end
 
       describe "lists" do
@@ -51,18 +51,18 @@ module OpenFoodNetwork
         end
 
         it "all items" do
-          allow(report).to receive(:child_variants) {
+          allow(report).to(receive(:child_variants) {
                              Spree::Variant.where(id: [variant, variant2, variant3])
-                           }
-          expect(report.table.count).to eq 3
+                           })
+          expect(report.table.count).to(eq(3))
         end
 
         it "only available items" do
           variant.on_hand = 0
-          allow(report).to receive(:child_variants) {
+          allow(report).to(receive(:child_variants) {
                              Spree::Variant.where(id: [variant, variant2, variant3, variant4])
-                           }
-          expect(report.table.count).to eq 3
+                           })
+          expect(report.table.count).to(eq(3))
         end
 
         it "only available items considering overrides" do
@@ -75,13 +75,13 @@ receiver_id: hub.id,
           # create the overrides
           variant2_override
           variant3_override
-          allow(report).to receive(:child_variants) {
+          allow(report).to(receive(:child_variants) {
                              Spree::Variant.where(id: [variant, variant2, variant3])
-                           }
-          allow(report).to receive(:params) { { distributor_id: hub.id } }
+                           })
+          allow(report).to(receive(:params) { { distributor_id: hub.id } })
           rows = report.table
-          expect(rows.count).to eq 2
-          expect(rows.map { |row| row[0] }).to include variant.product.name, variant2.product.name
+          expect(rows.count).to(eq(2))
+          expect(rows.map { |row| row[0] }).to(include(variant.product.name, variant2.product.name))
         end
       end
     end

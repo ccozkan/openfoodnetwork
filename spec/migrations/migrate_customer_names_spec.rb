@@ -27,10 +27,10 @@ key: "/enterprise/show_customer_names_to_suppliers/#{enterprise4.id}")
     it "migrates the preference to the enterprise" do
       subject.migrate_customer_names_preferences!
 
-      expect(enterprise1.reload.show_customer_names_to_suppliers?).to be true
-      expect(enterprise2.reload.show_customer_names_to_suppliers?).to be false
-      expect(enterprise3.reload.show_customer_names_to_suppliers?).to be false # was nil
-      expect(enterprise4.reload.show_customer_names_to_suppliers?).to be true
+      expect(enterprise1.reload.show_customer_names_to_suppliers?).to(be(true))
+      expect(enterprise2.reload.show_customer_names_to_suppliers?).to(be(false))
+      expect(enterprise3.reload.show_customer_names_to_suppliers?).to(be(false)) # was nil
+      expect(enterprise4.reload.show_customer_names_to_suppliers?).to(be(true))
     end
   end
 end

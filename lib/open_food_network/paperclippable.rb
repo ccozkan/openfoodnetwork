@@ -18,7 +18,7 @@ module OpenFoodNetwork
 
       # Initialise an ID
       base.__send__(:attr_accessor, :id)
-      base.instance_variable_set :@id, 1
+      base.instance_variable_set(:@id, 1)
     end
 
     # ActiveModel requirements
@@ -33,7 +33,7 @@ module OpenFoodNetwork
     def destroyed?()  true end
 
     def save
-      run_callbacks :save do
+      run_callbacks(:save) do
       end
       true
     end

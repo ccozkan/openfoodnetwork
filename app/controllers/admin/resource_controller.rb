@@ -12,15 +12,15 @@ module Admin
 
     def new
       respond_with(@object) do |format|
-        format.html { render layout: !request.xhr? }
-        format.js   { render layout: false }
+        format.html { render(layout: !request.xhr?) }
+        format.js   { render(layout: false) }
       end
     end
 
     def edit
       respond_with(@object) do |format|
-        format.html { render layout: !request.xhr? }
-        format.js   { render layout: false }
+        format.html { render(layout: !request.xhr?) }
+        format.js   { render(layout: false) }
       end
     end
 
@@ -28,8 +28,8 @@ module Admin
       if @object.update(permitted_resource_params)
         flash[:success] = flash_message_for(@object, :successfully_updated)
         respond_with(@object) do |format|
-          format.html { redirect_to location_after_save }
-          format.js   { render layout: false }
+          format.html { redirect_to(location_after_save) }
+          format.js   { render(layout: false) }
         end
       else
         respond_with(@object)
@@ -41,8 +41,8 @@ module Admin
       if @object.save
         flash[:success] = flash_message_for(@object, :successfully_created)
         respond_with(@object) do |format|
-          format.html { redirect_to location_after_save }
-          format.js   { render layout: false }
+          format.html { redirect_to(location_after_save) }
+          format.js   { render(layout: false) }
         end
       else
         respond_with(@object)
@@ -55,7 +55,7 @@ module Admin
       end
 
       respond_to do |format|
-        format.js { render plain: 'Ok' }
+        format.js { render(plain: 'Ok') }
       end
     end
 
@@ -63,12 +63,12 @@ module Admin
       if @object.destroy
         flash[:success] = flash_message_for(@object, :successfully_removed)
         respond_with(@object) do |format|
-          format.html { redirect_to collection_url }
-          format.js   { render partial: "spree/admin/shared/destroy" }
+          format.html { redirect_to(collection_url) }
+          format.js   { render(partial: "spree/admin/shared/destroy") }
         end
       else
         respond_with(@object) do |format|
-          format.html { redirect_to collection_url }
+          format.html { redirect_to(collection_url) }
         end
       end
     end
@@ -77,7 +77,7 @@ module Admin
 
     def resource_not_found
       flash[:error] = flash_message_for(model_class.new, :not_found)
-      redirect_to collection_url
+      redirect_to(collection_url)
     end
 
     class << self
@@ -111,14 +111,14 @@ module Admin
         # call authorize! a third time (called twice already in Admin::BaseController)
         # this time we pass the actual instance so fine-grained abilities can control
         # access to individual records, not just entire models.
-        authorize! action, @object
+        authorize!(action, @object)
 
         instance_variable_set("@#{object_name}", @object)
 
         # If we don't have access, clear the object
-        instance_variable_set("@#{object_name}", nil) unless can? action, @object
+        instance_variable_set("@#{object_name}", nil) unless can?(action, @object)
 
-        authorize! action, @object
+        authorize!(action, @object)
       else
         @collection ||= collection
 
@@ -192,21 +192,21 @@ module Admin
 
     def edit_object_url(object, options = {})
       if parent_data.present?
-        url_helper.public_send "edit_admin_#{model_name}_#{object_name}_url",
+        url_helper.public_send("edit_admin_#{model_name}_#{object_name}_url",
                                parent,
 object,
-options
+options)
       else
-        url_helper.public_send "edit_admin_#{object_name}_url", object, options
+        url_helper.public_send("edit_admin_#{object_name}_url", object, options)
       end
     end
 
     def object_url(object = nil, options = {})
       target = object || @object
       if parent_data.present?
-        url_helper.public_send "admin_#{model_name}_#{object_name}_url", parent, target, options
+        url_helper.public_send("admin_#{model_name}_#{object_name}_url", parent, target, options)
       else
-        url_helper.public_send "admin_#{object_name}_url", target, options
+        url_helper.public_send("admin_#{object_name}_url", target, options)
       end
     end
 
@@ -214,7 +214,7 @@ options
     #
     # Example: params.require(object_name).permit(:name)
     def permitted_resource_params
-      raise "All extending controllers need to override the method permitted_resource_params"
+      raise("All extending controllers need to override the method permitted_resource_params")
     end
 
     def collection_url(options = {})
@@ -230,7 +230,7 @@ options
     end
 
     def member_action?
-      !collection_actions.include? action
+      !collection_actions.include?(action)
     end
 
     def new_actions
@@ -256,7 +256,7 @@ options
     end
 
     def spree_controller?
-      controller_path.starts_with? "spree"
+      controller_path.starts_with?("spree")
     end
   end
 end

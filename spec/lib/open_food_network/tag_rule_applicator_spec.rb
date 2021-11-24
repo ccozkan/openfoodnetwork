@@ -71,13 +71,13 @@ preferred_matched_shipping_methods_visibility: "visible"
       context "when enterprise is nil" do
         let(:applicator) { OpenFoodNetwork::TagRuleApplicator.new(nil, "FilterProducts", ["tag1"]) }
         it { expect { applicator }
-.to raise_error "Enterprise cannot be nil" }
+.to(raise_error("Enterprise cannot be nil")) }
       end
 
       context "when rule_type is nil" do
         let(:applicator) { OpenFoodNetwork::TagRuleApplicator.new(enterprise, nil, ["tag1"]) }
         it { expect { applicator }
-.to raise_error "Rule Type cannot be nil" }
+.to(raise_error("Rule Type cannot be nil")) }
       end
 
       context "when rule_type does not match an existing rule type" do
@@ -85,7 +85,7 @@ preferred_matched_shipping_methods_visibility: "visible"
           OpenFoodNetwork::TagRuleApplicator.new(enterprise, "FilterSomething", ["tag1"])
         end
         it { expect { applicator }
-.to raise_error NameError }
+.to(raise_error(NameError)) }
       end
 
       context "when enterprise and rule_type are present" do
@@ -97,12 +97,12 @@ preferred_matched_shipping_methods_visibility: "visible"
           let!(:customer_tags) { nil }
 
           it "sets customer tags to an empty array" do
-            expect(applicator.customer_tags).to eq []
+            expect(applicator.customer_tags).to(eq([]))
           end
 
           it "does not match rules without customer tags" do
             rule = double(:rule, preferred_customer_tags: "")
-            expect(applicator.send(:customer_tags_match?, rule)).to be false
+            expect(applicator.send(:customer_tags_match?, rule)).to(be(false))
           end
         end
 
@@ -110,12 +110,12 @@ preferred_matched_shipping_methods_visibility: "visible"
           let!(:customer_tags) { [] }
 
           it "sets customer tags to an empty array" do
-            expect(applicator.customer_tags).to eq []
+            expect(applicator.customer_tags).to(eq([]))
           end
 
           it "does not match rules without customer tags" do
             rule = double(:rule, preferred_customer_tags: "")
-            expect(applicator.send(:customer_tags_match?, rule)).to be false
+            expect(applicator.send(:customer_tags_match?, rule)).to(be(false))
           end
         end
 
@@ -127,26 +127,26 @@ preferred_matched_shipping_methods_visibility: "visible"
           let(:default_rules) { applicator.send(:default_rules) }
 
           it "stores enterprise, rule_class and customer_tags as instance variables" do
-            expect(applicator.enterprise).to eq enterprise
-            expect(applicator.rule_class).to eq TagRule::FilterProducts
-            expect(applicator.customer_tags).to eq ["tag1"]
+            expect(applicator.enterprise).to(eq(enterprise))
+            expect(applicator.rule_class).to(eq(TagRule::FilterProducts))
+            expect(applicator.customer_tags).to(eq(["tag1"]))
           end
 
           it "selects only rules of the specified type, in order of priority" do
-            expect(rules).to eq [
+            expect(rules).to(eq([
 default_product_tag_rule,
 product_tag_rule3,
 product_tag_rule2,
                                  product_tag_rule1
-]
+]))
           end
 
           it "splits rules into those which match customer tags and those which don't, in order of priority" do
-            expect(customer_rules).to eq [product_tag_rule2, product_tag_rule1]
+            expect(customer_rules).to(eq([product_tag_rule2, product_tag_rule1]))
           end
 
           it "splits out default rules" do
-            expect(default_rules).to eq [default_product_tag_rule]
+            expect(default_rules).to(eq([default_product_tag_rule]))
           end
         end
       end
@@ -160,7 +160,7 @@ product_tag_rule2,
 
         it "returns immediately" do
           applicator.filter!(subject)
-          expect(subject).to_not have_received(:reject!)
+          expect(subject).to_not(have_received(:reject!))
         end
       end
 
@@ -169,7 +169,7 @@ product_tag_rule2,
 
         it "returns immediately" do
           applicator.filter!(subject)
-          expect(subject).to_not have_received(:reject!)
+          expect(subject).to_not(have_received(:reject!))
         end
       end
 
@@ -183,37 +183,37 @@ product_tag_rule2,
           let(:children) { [child1, child2] }
           let(:rule_class) { double(:rule_class, tagged_children_for: children) }
 
-          before { allow(applicator).to receive(:rule_class) { rule_class } }
+          before { allow(applicator).to(receive(:rule_class) { rule_class }) }
 
           context "when reject? returns true only for some children" do
             before do
-              allow(applicator).to receive(:reject?).with(child1) { true }
-              allow(applicator).to receive(:reject?).with(child2) { false }
+              allow(applicator).to(receive(:reject?).with(child1) { true })
+              allow(applicator).to(receive(:reject?).with(child2) { false })
               applicator.filter!(subject)
             end
 
             it "rejects the specified children from the array" do
-              expect(children).to eq [child2]
+              expect(children).to(eq([child2]))
             end
 
             it "does not remove the element from the original subject" do
-              expect(subject).to eq [element]
+              expect(subject).to(eq([element]))
             end
           end
 
           context "when reject? returns true for all children" do
             before do
-              allow(applicator).to receive(:reject?).with(child1) { true }
-              allow(applicator).to receive(:reject?).with(child2) { true }
+              allow(applicator).to(receive(:reject?).with(child1) { true })
+              allow(applicator).to(receive(:reject?).with(child2) { true })
               applicator.filter!(subject)
             end
 
             it "removes all children from the array" do
-              expect(children).to eq []
+              expect(children).to(eq([]))
             end
 
             it "removes the element from the original subject" do
-              expect(subject).to eq []
+              expect(subject).to(eq([]))
             end
           end
         end
@@ -221,27 +221,27 @@ product_tag_rule2,
         context "when rule_class doesn't respond to tagged_children_for" do
           let(:rule_class) { double(:rule_class) }
 
-          before { allow(applicator).to receive(:rule_class) { rule_class } }
+          before { allow(applicator).to(receive(:rule_class) { rule_class }) }
 
           context "when reject? returns false for the element" do
             before do
-              allow(applicator).to receive(:reject?).with(element) { false }
+              allow(applicator).to(receive(:reject?).with(element) { false })
               applicator.filter!(subject)
             end
 
             it "does not remove the element from the original subject" do
-              expect(subject).to eq [element]
+              expect(subject).to(eq([element]))
             end
           end
 
           context "when reject? returns true for the element" do
             before do
-              allow(applicator).to receive(:reject?).with(element) { true }
+              allow(applicator).to(receive(:reject?).with(element) { true })
               applicator.filter!(subject)
             end
 
             it "removes the element from the original subject" do
-              expect(subject).to eq []
+              expect(subject).to(eq([]))
             end
           end
         end
@@ -260,33 +260,33 @@ product_tag_rule2,
       end
       let(:dummy) { double(:dummy) }
 
-      before { allow(applicator).to receive(:customer_rules) { [customer_rule] } }
-      before { allow(applicator).to receive(:default_rules) { [default_rule] } }
+      before { allow(applicator).to(receive(:customer_rules) { [customer_rule] }) }
+      before { allow(applicator).to(receive(:default_rules) { [default_rule] }) }
 
       context "when a customer rule matches the tags of the element" do
-        before { allow(customer_rule).to receive(:tags_match?).with(dummy) { true } }
+        before { allow(customer_rule).to(receive(:tags_match?).with(dummy) { true }) }
 
         it "returns the value of customer_rule.reject_matched?" do
-          expect(applicator.send(:reject?, dummy)).to eq "customer_rule.reject_matched?"
+          expect(applicator.send(:reject?, dummy)).to(eq("customer_rule.reject_matched?"))
         end
       end
 
       context "when no customer rules match the tags of the element" do
-        before { allow(customer_rule).to receive(:tags_match?) { false } }
+        before { allow(customer_rule).to(receive(:tags_match?) { false }) }
 
         context "when a default rule matches the tags of the element" do
-          before { allow(default_rule).to receive(:tags_match?) { true } }
+          before { allow(default_rule).to(receive(:tags_match?) { true }) }
 
           it "returns the value of the default_rule.reject_matched?" do
-            expect(applicator.send(:reject?, dummy)).to eq "default_rule.reject_matched?"
+            expect(applicator.send(:reject?, dummy)).to(eq("default_rule.reject_matched?"))
           end
         end
 
         context "when a default rule matches the tags of the element" do
-          before { allow(default_rule).to receive(:tags_match?) { false } }
+          before { allow(default_rule).to(receive(:tags_match?) { false }) }
 
           it "returns false" do
-            expect(applicator.send(:reject?, dummy)).to be false
+            expect(applicator.send(:reject?, dummy)).to(be(false))
           end
         end
       end
@@ -315,14 +315,14 @@ product_tag_rule2,
 
         it "applies the default rule" do
           applicator.filter!(products_array)
-          expect(products_array).to eq [
+          expect(products_array).to(eq([
             {
 :id => 2,
 :name => 'product 2',
 "variants" => [{ :id => 9, "tag_list" => ["tag2"] }]
 },
 product3
-          ]
+          ]))
         end
       end
 
@@ -334,7 +334,7 @@ product3
         it "applies those rules" do
           # product_tag_rule1 and product_tag_rule2 are being applied
           applicator.filter!(products_array)
-          expect(products_array).to eq [product1, product2]
+          expect(products_array).to(eq([product1, product2]))
         end
       end
     end

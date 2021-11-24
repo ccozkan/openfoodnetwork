@@ -6,12 +6,12 @@ module Api
       include PaginationData
 
       def show
-        authorize! :read, order
-        render json: order, serializer: Api::OrderDetailedSerializer, current_order: order
+        authorize!(:read, order)
+        render(json: order, serializer: Api::OrderDetailedSerializer, current_order: order)
       end
 
       def index
-        authorize! :admin, Spree::Order
+        authorize!(:admin, Spree::Order)
 
         orders = SearchOrders.new(params, current_api_user).orders
 
@@ -19,29 +19,29 @@ module Api
           @pagy, orders = pagy(orders, items: params[:per_page] || default_per_page)
         end
 
-        render json: { orders: serialized_orders(orders), pagination: pagination_data }
+        render(json: { orders: serialized_orders(orders), pagination: pagination_data })
       end
 
       def ship
-        authorize! :admin, order
+        authorize!(:admin, order)
 
         if order.ship
-          render json: order.reload, serializer: Api::Admin::OrderSerializer, status: :ok
+          render(json: order.reload, serializer: Api::Admin::OrderSerializer, status: :ok)
         else
-          render json: { error: I18n.t('api.orders.failed_to_update') },
-                 status: :unprocessable_entity
+          render(json: { error: I18n.t('api.orders.failed_to_update') },
+                 status: :unprocessable_entity)
         end
       end
 
       def capture
-        authorize! :admin, order
+        authorize!(:admin, order)
 
         pending_payment = order.pending_payments.first
 
         return payment_capture_failed unless order.payment_required? && pending_payment
 
         if pending_payment.capture!
-          render json: order.reload, serializer: Api::Admin::OrderSerializer, status: :ok
+          render(json: order.reload, serializer: Api::Admin::OrderSerializer, status: :ok)
         else
           payment_capture_failed
         end
@@ -52,7 +52,7 @@ module Api
       private
 
       def payment_capture_failed
-        render json: { error: I18n.t(:payment_processing_failed) }, status: :unprocessable_entity
+        render(json: { error: I18n.t(:payment_processing_failed) }, status: :unprocessable_entity)
       end
 
       def serialized_orders(orders)

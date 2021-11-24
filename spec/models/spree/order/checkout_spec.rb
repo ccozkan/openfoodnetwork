@@ -21,52 +21,52 @@ describe Spree::Order::Checkout do
 from: transition.keys.first,
 to: transition.values.first
 )
-        expect(transition).to_not be_nil
+        expect(transition).to_not(be_nil)
       end
     end
 
     it "does not have a transition from delivery to confirm" do
       transition = Spree::Order.find_transition(from: :delivery, to: :confirm)
-      expect(transition).to be_nil
+      expect(transition).to(be_nil)
     end
 
     it '.find_transition when contract was broken' do
-      expect(Spree::Order.find_transition({ foo: :bar, baz: :dog })).to be_falsy
+      expect(Spree::Order.find_transition({ foo: :bar, baz: :dog })).to(be_falsy)
     end
 
     context "#checkout_steps" do
       context "when payment not required" do
-        before { allow(order).to receive_messages payment_required?: false }
+        before { allow(order).to(receive_messages(payment_required?: false)) }
         specify do
-          expect(order.checkout_steps).to eq %w(address delivery complete)
+          expect(order.checkout_steps).to(eq(%w(address delivery complete)))
         end
       end
 
       context "when payment required" do
-        before { allow(order).to receive_messages payment_required?: true }
+        before { allow(order).to(receive_messages(payment_required?: true)) }
         specify do
-          expect(order.checkout_steps).to eq %w(address delivery payment complete)
+          expect(order.checkout_steps).to(eq(%w(address delivery payment complete)))
         end
       end
     end
 
     it "starts out at cart" do
-      expect(order.state).to eq "cart"
+      expect(order.state).to(eq("cart"))
     end
 
     it "transitions to address" do
       order.line_items << FactoryBot.create(:line_item)
       order.email = "user@example.com"
       order.next!
-      expect(order.state).to eq "address"
+      expect(order.state).to(eq("address"))
     end
 
     it "cannot transition to address without any line items" do
-      expect(order.line_items).to be_blank
-      expect(-> { order.next! }).to raise_error(
+      expect(order.line_items).to(be_blank)
+      expect(-> { order.next! }).to(raise_error(
 StateMachines::InvalidTransition,
                                                     /#{Spree.t(:there_are_no_items_for_this_order)}/
-)
+))
     end
 
     context "from address" do
@@ -79,19 +79,19 @@ StateMachines::InvalidTransition,
       end
 
       it "transitions to delivery" do
-        allow(order).to receive_messages(ensure_available_shipping_rates: true)
+        allow(order).to(receive_messages(ensure_available_shipping_rates: true))
         order.next!
-        expect(order.state).to eq "delivery"
+        expect(order.state).to(eq("delivery"))
       end
 
       context "cannot transition to delivery" do
         context "if there are no shipping rates for any shipment" do
           specify do
             transition = -> { order.next! }
-            expect(transition).to raise_error(
+            expect(transition).to(raise_error(
 StateMachines::InvalidTransition,
                                               /#{Spree.t(:items_cannot_be_shipped)}/
-)
+))
           end
         end
       end
@@ -104,23 +104,23 @@ StateMachines::InvalidTransition,
 
       context "with payment required" do
         before do
-          allow(order).to receive_messages payment_required?: true
+          allow(order).to(receive_messages(payment_required?: true))
         end
 
         it "transitions to payment" do
           order.next!
-          expect(order.state).to eq 'payment'
+          expect(order.state).to(eq('payment'))
         end
       end
 
       context "without payment required" do
         before do
-          allow(order).to receive_messages payment_required?: false
+          allow(order).to(receive_messages(payment_required?: false))
         end
 
         it "transitions to complete" do
           order.next!
-          expect(order.state).to eq "complete"
+          expect(order.state).to(eq("complete"))
         end
       end
     end
@@ -130,22 +130,22 @@ StateMachines::InvalidTransition,
     let(:order) { build_stubbed(:order) }
 
     context 'when the order is not complete' do
-      before { allow(order).to receive(:completed?) { false } }
+      before { allow(order).to(receive(:completed?) { false }) }
 
       it 'transitions to cart state' do
-        expect(order.state).to eq('cart')
+        expect(order.state).to(eq('cart'))
       end
     end
 
     context 'when the order is complete' do
-      before { allow(order).to receive(:completed?) { true } }
+      before { allow(order).to(receive(:completed?) { true }) }
 
       it 'raises' do
         expect { order.restart_checkout! }
-          .to raise_error(
+          .to(raise_error(
             StateMachines::InvalidTransition,
             /Cannot transition state via :restart_checkout/
-          )
+          ))
       end
     end
   end
@@ -171,7 +171,7 @@ StateMachines::InvalidTransition,
 
       order.next
       order.next
-      expect(order.state).to eq "delivery"
+      expect(order.state).to(eq("delivery"))
     end
   end
 end

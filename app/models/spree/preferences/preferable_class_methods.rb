@@ -11,7 +11,7 @@ module Spree
 
         # cache_key will be nil for new objects, then if we check if there
         # is a pending preference before going to default
-        define_method preference_getter_method(name) do
+        define_method(preference_getter_method(name)) do
           # perference_cache_key will only be nil/false for new records
           #
           if preference_cache_key(name)
@@ -20,48 +20,48 @@ module Spree
             get_pending_preference(name) || default
           end
         end
-        alias_method prefers_getter_method(name), preference_getter_method(name)
+        alias_method(prefers_getter_method(name), preference_getter_method(name))
 
-        define_method preference_setter_method(name) do |value|
+        define_method(preference_setter_method(name)) do |value|
           value = convert_preference_value(value, type)
           if preference_cache_key(name)
-            preference_store.set preference_cache_key(name), value, type
+            preference_store.set(preference_cache_key(name), value, type)
           else
             add_pending_preference(name, value)
           end
         end
-        alias_method prefers_setter_method(name), preference_setter_method(name)
+        alias_method(prefers_setter_method(name), preference_setter_method(name))
 
-        define_method preference_default_getter_method(name) do
+        define_method(preference_default_getter_method(name)) do
           default
         end
 
-        define_method preference_type_getter_method(name) do
+        define_method(preference_type_getter_method(name)) do
           type
         end
 
-        define_method preference_description_getter_method(name) do
+        define_method(preference_description_getter_method(name)) do
           description
         end
       end
 
       def remove_preference(name)
-        if method_defined? preference_getter_method(name)
-          remove_method preference_getter_method(name)
+        if method_defined?(preference_getter_method(name))
+          remove_method(preference_getter_method(name))
         end
-        if method_defined? preference_setter_method(name)
-          remove_method preference_setter_method(name)
+        if method_defined?(preference_setter_method(name))
+          remove_method(preference_setter_method(name))
         end
-        remove_method prefers_getter_method(name) if method_defined? prefers_getter_method(name)
-        remove_method prefers_setter_method(name) if method_defined? prefers_setter_method(name)
-        if method_defined? preference_default_getter_method(name)
-          remove_method preference_default_getter_method(name)
+        remove_method(prefers_getter_method(name)) if method_defined?(prefers_getter_method(name))
+        remove_method(prefers_setter_method(name)) if method_defined?(prefers_setter_method(name))
+        if method_defined?(preference_default_getter_method(name))
+          remove_method(preference_default_getter_method(name))
         end
-        if method_defined? preference_type_getter_method(name)
-          remove_method preference_type_getter_method(name)
+        if method_defined?(preference_type_getter_method(name))
+          remove_method(preference_type_getter_method(name))
         end
-        if method_defined? preference_description_getter_method(name)
-          remove_method preference_description_getter_method(name)
+        if method_defined?(preference_description_getter_method(name))
+          remove_method(preference_description_getter_method(name))
         end
       end
 

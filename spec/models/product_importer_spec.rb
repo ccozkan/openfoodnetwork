@@ -298,75 +298,75 @@ enterprise.name,
     let(:importer) { import_data csv_data }
 
     it "returns the number of entries" do
-      expect(importer.item_count).to eq(5)
+      expect(importer.item_count).to(eq(5))
     end
 
     it "validates entries and returns the results as json" do
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 5
-      expect(filter('invalid', entries)).to eq 0
-      expect(filter('create_product', entries)).to eq 5
-      expect(filter('update_product', entries)).to eq 0
+      expect(filter('valid', entries)).to(eq(5))
+      expect(filter('invalid', entries)).to(eq(0))
+      expect(filter('create_product', entries)).to(eq(5))
+      expect(filter('update_product', entries)).to(eq(0))
     end
 
     it "saves the results and returns info on updated products" do
       importer.save_entries
 
-      expect(importer.products_created_count).to eq 5
-      expect(importer.updated_ids).to be_a(Array)
-      expect(importer.updated_ids.count).to eq 5
+      expect(importer.products_created_count).to(eq(5))
+      expect(importer.updated_ids).to(be_a(Array))
+      expect(importer.updated_ids.count).to(eq(5))
 
       carrots = Spree::Product.find_by(name: 'Carrots')
-      expect(carrots.supplier).to eq enterprise
-      expect(carrots.on_hand).to eq 5
-      expect(carrots.price).to eq 3.20
-      expect(carrots.unit_value).to eq 500
-      expect(carrots.variant_unit).to eq 'weight'
-      expect(carrots.variant_unit_scale).to eq 1
-      expect(carrots.on_demand).to_not eq true
-      expect(carrots.variants.first.import_date).to be_within(1.minute).of Time.zone.now
+      expect(carrots.supplier).to(eq(enterprise))
+      expect(carrots.on_hand).to(eq(5))
+      expect(carrots.price).to(eq(3.20))
+      expect(carrots.unit_value).to(eq(500))
+      expect(carrots.variant_unit).to(eq('weight'))
+      expect(carrots.variant_unit_scale).to(eq(1))
+      expect(carrots.on_demand).to_not(eq(true))
+      expect(carrots.variants.first.import_date).to(be_within(1.minute).of(Time.zone.now))
 
       potatoes = Spree::Product.find_by(name: 'Potatoes')
-      expect(potatoes.supplier).to eq enterprise
-      expect(potatoes.on_hand).to eq 6
-      expect(potatoes.price).to eq 6.50
-      expect(potatoes.unit_value).to eq 2000
-      expect(potatoes.variant_unit).to eq 'weight'
-      expect(potatoes.variant_unit_scale).to eq 1000
-      expect(potatoes.on_demand).to_not eq true
-      expect(potatoes.variants.first.import_date).to be_within(1.minute).of Time.zone.now
+      expect(potatoes.supplier).to(eq(enterprise))
+      expect(potatoes.on_hand).to(eq(6))
+      expect(potatoes.price).to(eq(6.50))
+      expect(potatoes.unit_value).to(eq(2000))
+      expect(potatoes.variant_unit).to(eq('weight'))
+      expect(potatoes.variant_unit_scale).to(eq(1000))
+      expect(potatoes.on_demand).to_not(eq(true))
+      expect(potatoes.variants.first.import_date).to(be_within(1.minute).of(Time.zone.now))
 
       pea_soup = Spree::Product.find_by(name: 'Pea Soup')
-      expect(pea_soup.supplier).to eq enterprise
-      expect(pea_soup.on_hand).to eq 8
-      expect(pea_soup.price).to eq 5.50
-      expect(pea_soup.unit_value).to eq 0.75
-      expect(pea_soup.variant_unit).to eq 'volume'
-      expect(pea_soup.variant_unit_scale).to eq 0.001
-      expect(pea_soup.on_demand).to_not eq true
-      expect(pea_soup.variants.first.import_date).to be_within(1.minute).of Time.zone.now
+      expect(pea_soup.supplier).to(eq(enterprise))
+      expect(pea_soup.on_hand).to(eq(8))
+      expect(pea_soup.price).to(eq(5.50))
+      expect(pea_soup.unit_value).to(eq(0.75))
+      expect(pea_soup.variant_unit).to(eq('volume'))
+      expect(pea_soup.variant_unit_scale).to(eq(0.001))
+      expect(pea_soup.on_demand).to_not(eq(true))
+      expect(pea_soup.variants.first.import_date).to(be_within(1.minute).of(Time.zone.now))
 
       salad = Spree::Product.find_by(name: 'Salad')
-      expect(salad.supplier).to eq enterprise
-      expect(salad.on_hand).to eq 7
-      expect(salad.price).to eq 4.50
-      expect(salad.unit_value).to eq 1
-      expect(salad.variant_unit).to eq 'items'
-      expect(salad.variant_unit_scale).to eq nil
-      expect(salad.on_demand).to_not eq true
-      expect(salad.variants.first.import_date).to be_within(1.minute).of Time.zone.now
+      expect(salad.supplier).to(eq(enterprise))
+      expect(salad.on_hand).to(eq(7))
+      expect(salad.price).to(eq(4.50))
+      expect(salad.unit_value).to(eq(1))
+      expect(salad.variant_unit).to(eq('items'))
+      expect(salad.variant_unit_scale).to(eq(nil))
+      expect(salad.on_demand).to_not(eq(true))
+      expect(salad.variants.first.import_date).to(be_within(1.minute).of(Time.zone.now))
 
       buns = Spree::Product.find_by(name: 'Hot Cross Buns')
-      expect(buns.supplier).to eq enterprise
-      expect(buns.on_hand).to eq 7
-      expect(buns.price).to eq 3.50
-      expect(buns.unit_value).to eq 1
-      expect(buns.variant_unit).to eq 'items'
-      expect(buns.variant_unit_scale).to eq nil
-      expect(buns.on_demand).to eq true
-      expect(buns.variants.first.import_date).to be_within(1.minute).of Time.zone.now
+      expect(buns.supplier).to(eq(enterprise))
+      expect(buns.on_hand).to(eq(7))
+      expect(buns.price).to(eq(3.50))
+      expect(buns.unit_value).to(eq(1))
+      expect(buns.variant_unit).to(eq('items'))
+      expect(buns.variant_unit_scale).to(eq(nil))
+      expect(buns.on_demand).to(eq(true))
+      expect(buns.variants.first.import_date).to(be_within(1.minute).of(Time.zone.now))
     end
   end
 
@@ -402,26 +402,26 @@ enterprise.name,
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 1
-      expect(filter('invalid', entries)).to eq 1
-      expect(filter('create_product', entries)).to eq 1
-      expect(filter('update_product', entries)).to eq 0
+      expect(filter('valid', entries)).to(eq(1))
+      expect(filter('invalid', entries)).to(eq(1))
+      expect(filter('create_product', entries)).to(eq(1))
+      expect(filter('update_product', entries)).to(eq(0))
     end
 
     it "allows saving of the valid entries" do
       importer.save_entries
 
-      expect(importer.products_created_count).to eq 1
-      expect(importer.updated_ids).to be_a(Array)
-      expect(importer.updated_ids.count).to eq 1
+      expect(importer.products_created_count).to(eq(1))
+      expect(importer.updated_ids).to(be_a(Array))
+      expect(importer.updated_ids.count).to(eq(1))
 
       carrots = Spree::Product.find_by(name: 'Good Carrots')
-      expect(carrots.supplier).to eq enterprise
-      expect(carrots.on_hand).to eq 5
-      expect(carrots.price).to eq 3.20
-      expect(carrots.variants.first.import_date).to be_within(1.minute).of Time.zone.now
+      expect(carrots.supplier).to(eq(enterprise))
+      expect(carrots.on_hand).to(eq(5))
+      expect(carrots.price).to(eq(3.20))
+      expect(carrots.variants.first.import_date).to(be_within(1.minute).of(Time.zone.now))
 
-      expect(Spree::Product.find_by(name: 'Bad Potatoes')).to eq nil
+      expect(Spree::Product.find_by(name: 'Bad Potatoes')).to(eq(nil))
     end
   end
 
@@ -436,14 +436,14 @@ enterprise.name,
 
     # an unquoted \n will create a non valid line which will fail entry validation hence why we are only testing with \r
     it "should raise an unquoted field error if data include unquoted field with \r character" do
-      expect(importer.errors.messages.values).to include(
+      expect(importer.errors.messages.values).to(include(
         [
 I18n.t(
 'admin.product_import.model.malformed_csv',
                 error_message: "Unquoted fields do not allow new line <\"\\r\"> in line 3."
 )
 ]
-      )
+      ))
     end
   end
 
@@ -482,7 +482,7 @@ nil,
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(entries['2']['errors']['shipping_category']).to eq "Shipping_category can't be blank"
+      expect(entries['2']['errors']['shipping_category']).to(eq("Shipping_category can't be blank"))
     end
   end
 
@@ -500,8 +500,8 @@ nil,
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(entries['2']['errors']['producer']).to include "not found in database"
-      expect(entries['3']['errors']['producer']).to include "not enabled as a producer"
+      expect(entries['2']['errors']['producer']).to(include("not found in database"))
+      expect(entries['3']['errors']['producer']).to(include("not enabled as a producer"))
     end
   end
 
@@ -549,31 +549,31 @@ shipping_category.name
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 2
-      expect(filter('invalid', entries)).to eq 0
-      expect(filter('create_product', entries)).to eq 1
-      expect(filter('update_product', entries)).to eq 1
+      expect(filter('valid', entries)).to(eq(2))
+      expect(filter('invalid', entries)).to(eq(0))
+      expect(filter('create_product', entries)).to(eq(1))
+      expect(filter('update_product', entries)).to(eq(1))
     end
 
     it "saves and updates" do
       importer.save_entries
 
-      expect(importer.products_created_count).to eq 1
-      expect(importer.products_updated_count).to eq 1
-      expect(importer.updated_ids).to be_a(Array)
-      expect(importer.updated_ids.count).to eq 2
+      expect(importer.products_created_count).to(eq(1))
+      expect(importer.products_updated_count).to(eq(1))
+      expect(importer.updated_ids).to(be_a(Array))
+      expect(importer.updated_ids.count).to(eq(2))
 
       added_coffee = Spree::Variant.find_by(display_name: 'Emergent Coffee')
-      expect(added_coffee.product.name).to eq 'Hypothetical Cake'
-      expect(added_coffee.price).to eq 3.50
-      expect(added_coffee.on_hand).to eq 6
-      expect(added_coffee.import_date).to be_within(1.minute).of Time.zone.now
+      expect(added_coffee.product.name).to(eq('Hypothetical Cake'))
+      expect(added_coffee.price).to(eq(3.50))
+      expect(added_coffee.on_hand).to(eq(6))
+      expect(added_coffee.import_date).to(be_within(1.minute).of(Time.zone.now))
 
       updated_banana = Spree::Variant.find_by(display_name: 'Preexisting Banana')
-      expect(updated_banana.product.name).to eq 'Hypothetical Cake'
-      expect(updated_banana.price).to eq 5.50
-      expect(updated_banana.on_hand).to eq 5
-      expect(updated_banana.import_date).to be_within(1.minute).of Time.zone.now
+      expect(updated_banana.product.name).to(eq('Hypothetical Cake'))
+      expect(updated_banana.price).to(eq(5.50))
+      expect(updated_banana.on_hand).to(eq(5))
+      expect(updated_banana.import_date).to(be_within(1.minute).of(Time.zone.now))
     end
   end
 
@@ -612,9 +612,9 @@ shipping_category.name
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 1
-      expect(filter('invalid', entries)).to eq 0
-      expect(filter('update_product', entries)).to eq 1
+      expect(filter('valid', entries)).to(eq(1))
+      expect(filter('invalid', entries)).to(eq(0))
+      expect(filter('update_product', entries)).to(eq(1))
     end
   end
 
@@ -695,34 +695,34 @@ enterprise.name,
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 3
-      expect(filter('invalid', entries)).to eq 2
-      expect(filter('create_product', entries)).to eq 3
+      expect(filter('valid', entries)).to(eq(3))
+      expect(filter('invalid', entries)).to(eq(2))
+      expect(filter('create_product', entries)).to(eq(3))
     end
 
     it "saves and updates" do
       importer.save_entries
 
-      expect(importer.products_created_count).to eq 3
-      expect(importer.updated_ids).to be_a(Array)
-      expect(importer.updated_ids.count).to eq 3
+      expect(importer.products_created_count).to(eq(3))
+      expect(importer.updated_ids).to(be_a(Array))
+      expect(importer.updated_ids.count).to(eq(3))
 
       small_bag = Spree::Variant.find_by(display_name: 'Small Bag')
-      expect(small_bag.product.name).to eq 'Potatoes'
-      expect(small_bag.price).to eq 3.50
-      expect(small_bag.on_hand).to eq 5
+      expect(small_bag.product.name).to(eq('Potatoes'))
+      expect(small_bag.price).to(eq(3.50))
+      expect(small_bag.on_hand).to(eq(5))
 
       big_bag = Spree::Variant.find_by(display_name: "Big Bag")
-      expect(big_bag).to be_blank
+      expect(big_bag).to(be_blank)
 
       small_sack = Spree::Variant.find_by(display_name: "Small Sack")
-      expect(small_sack.product.name).to eq "Potatoes"
-      expect(small_sack.price).to eq 22.00
-      expect(small_sack.on_hand).to eq 6
-      expect(small_sack.product.id).to eq small_bag.product.id
+      expect(small_sack.product.name).to(eq("Potatoes"))
+      expect(small_sack.price).to(eq(22.00))
+      expect(small_sack.on_hand).to(eq(6))
+      expect(small_sack.product.id).to(eq(small_bag.product.id))
 
       big_sack = Spree::Variant.find_by(display_name: "Big Sack")
-      expect(big_sack).to be_blank
+      expect(big_sack).to(be_blank)
     end
   end
 
@@ -773,27 +773,27 @@ enterprise3.name,
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 2
-      expect(filter('invalid', entries)).to eq 0
-      expect(filter('create_product', entries)).to eq 0
-      expect(filter('update_product', entries)).to eq 2
+      expect(filter('valid', entries)).to(eq(2))
+      expect(filter('invalid', entries)).to(eq(0))
+      expect(filter('create_product', entries)).to(eq(0))
+      expect(filter('update_product', entries)).to(eq(2))
     end
 
     it "saves and updates" do
       importer.save_entries
 
-      expect(importer.products_created_count).to eq 0
-      expect(importer.products_updated_count).to eq 2
-      expect(importer.updated_ids).to be_a(Array)
-      expect(importer.updated_ids.count).to eq 2
+      expect(importer.products_created_count).to(eq(0))
+      expect(importer.products_updated_count).to(eq(2))
+      expect(importer.updated_ids).to(be_a(Array))
+      expect(importer.updated_ids.count).to(eq(2))
 
       beetroot = Spree::Product.find_by(name: 'Beetroot').variants.first
-      expect(beetroot.price).to eq 3.50
-      expect(beetroot.on_demand).to_not eq true
+      expect(beetroot.price).to(eq(3.50))
+      expect(beetroot.on_demand).to_not(eq(true))
 
       tomato = Spree::Product.find_by(name: 'Tomato').variants.first
-      expect(tomato.price).to eq 5.50
-      expect(tomato.on_demand).to eq true
+      expect(tomato.price).to(eq(5.50))
+      expect(tomato.on_demand).to(eq(true))
     end
   end
 
@@ -811,11 +811,11 @@ enterprise3.name,
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 0
-      expect(filter('invalid', entries)).to eq 2
+      expect(filter('valid', entries)).to(eq(0))
+      expect(filter('invalid', entries)).to(eq(2))
 
       importer.entries.each do |entry|
-        expect(entry.errors.messages.values).to include [I18n.t('admin.product_import.model.not_updatable')]
+        expect(entry.errors.messages.values).to(include([I18n.t('admin.product_import.model.not_updatable')]))
       end
     end
   end
@@ -848,22 +848,22 @@ enterprise3.name,
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 5
-      expect(filter('invalid', entries)).to eq 0
-      expect(filter('create_product', entries)).to eq 3
-      expect(filter('update_product', entries)).to eq 2
-      expect(filter('create_inventory', entries)).to eq 0
-      expect(filter('update_inventory', entries)).to eq 0
+      expect(filter('valid', entries)).to(eq(5))
+      expect(filter('invalid', entries)).to(eq(0))
+      expect(filter('create_product', entries)).to(eq(3))
+      expect(filter('update_product', entries)).to(eq(2))
+      expect(filter('create_inventory', entries)).to(eq(0))
+      expect(filter('update_inventory', entries)).to(eq(0))
     end
 
     it "saves and updates" do
       importer.save_entries
 
-      expect(importer.products_created_count).to eq 3
-      expect(importer.products_updated_count).to eq 2
-      expect(importer.inventory_created_count).to eq 0
-      expect(importer.inventory_updated_count).to eq 0
-      expect(importer.updated_ids.count).to eq 5
+      expect(importer.products_created_count).to(eq(3))
+      expect(importer.products_updated_count).to(eq(2))
+      expect(importer.inventory_created_count).to(eq(0))
+      expect(importer.inventory_updated_count).to(eq(0))
+      expect(importer.updated_ids.count).to(eq(5))
     end
   end
 
@@ -891,54 +891,54 @@ enterprise3.name,
 
     it "processes the validation in stages" do
       # Using settings of start: 1, end: 3 to simulate import over multiple stages
-      importer = import_data csv_data, start: 1, end: 3
+      importer = import_data(csv_data, start: 1, end: 3)
 
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 3
-      expect(filter('invalid', entries)).to eq 0
-      expect(filter('create_product', entries)).to eq 3
-      expect(filter('update_product', entries)).to eq 0
-      expect(filter('create_inventory', entries)).to eq 0
-      expect(filter('update_inventory', entries)).to eq 0
+      expect(filter('valid', entries)).to(eq(3))
+      expect(filter('invalid', entries)).to(eq(0))
+      expect(filter('create_product', entries)).to(eq(3))
+      expect(filter('update_product', entries)).to(eq(0))
+      expect(filter('create_inventory', entries)).to(eq(0))
+      expect(filter('update_inventory', entries)).to(eq(0))
 
-      importer = import_data csv_data, start: 4, end: 6
+      importer = import_data(csv_data, start: 4, end: 6)
 
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 2
-      expect(filter('invalid', entries)).to eq 0
-      expect(filter('create_product', entries)).to eq 2
-      expect(filter('update_product', entries)).to eq 0
-      expect(filter('create_inventory', entries)).to eq 0
-      expect(filter('update_inventory', entries)).to eq 0
+      expect(filter('valid', entries)).to(eq(2))
+      expect(filter('invalid', entries)).to(eq(0))
+      expect(filter('create_product', entries)).to(eq(2))
+      expect(filter('update_product', entries)).to(eq(0))
+      expect(filter('create_inventory', entries)).to(eq(0))
+      expect(filter('update_inventory', entries)).to(eq(0))
     end
 
     it "processes saving in stages" do
-      importer = import_data csv_data, start: 1, end: 3
+      importer = import_data(csv_data, start: 1, end: 3)
       importer.save_entries
 
-      expect(importer.products_created_count).to eq 3
-      expect(importer.products_updated_count).to eq 0
-      expect(importer.inventory_created_count).to eq 0
-      expect(importer.inventory_updated_count).to eq 0
-      expect(importer.updated_ids.count).to eq 3
+      expect(importer.products_created_count).to(eq(3))
+      expect(importer.products_updated_count).to(eq(0))
+      expect(importer.inventory_created_count).to(eq(0))
+      expect(importer.inventory_updated_count).to(eq(0))
+      expect(importer.updated_ids.count).to(eq(3))
 
-      importer = import_data csv_data, start: 4, end: 6
+      importer = import_data(csv_data, start: 4, end: 6)
       importer.save_entries
 
-      expect(importer.products_created_count).to eq 2
-      expect(importer.products_updated_count).to eq 0
-      expect(importer.inventory_created_count).to eq 0
-      expect(importer.inventory_updated_count).to eq 0
-      expect(importer.updated_ids.count).to eq 2
+      expect(importer.products_created_count).to(eq(2))
+      expect(importer.products_updated_count).to(eq(0))
+      expect(importer.inventory_created_count).to(eq(0))
+      expect(importer.inventory_updated_count).to(eq(0))
+      expect(importer.updated_ids.count).to(eq(2))
 
       products = Spree::Product.where(name: 'Bag of Oats')
 
-      expect(products.count).to eq 1
-      expect(products.first.variants.count).to eq 5
+      expect(products.count).to(eq(1))
+      expect(products.first.variants.count).to(eq(5))
     end
   end
 
@@ -967,19 +967,19 @@ enterprise3.name,
         importer.validate_entries
         entries = JSON.parse(importer.entries_json)
 
-        expect(filter('valid', entries)).to eq 3
-        expect(filter('invalid', entries)).to eq 0
-        expect(filter('create_inventory', entries)).to eq 2
-        expect(filter('update_inventory', entries)).to eq 1
+        expect(filter('valid', entries)).to(eq(3))
+        expect(filter('invalid', entries)).to(eq(0))
+        expect(filter('create_inventory', entries)).to(eq(2))
+        expect(filter('update_inventory', entries)).to(eq(1))
       end
 
       it "saves and updates inventory" do
         importer.save_entries
 
-        expect(importer.inventory_created_count).to eq 2
-        expect(importer.inventory_updated_count).to eq 1
-        expect(importer.updated_ids).to be_a(Array)
-        expect(importer.updated_ids.count).to eq 3
+        expect(importer.inventory_created_count).to(eq(2))
+        expect(importer.inventory_updated_count).to(eq(1))
+        expect(importer.updated_ids).to(be_a(Array))
+        expect(importer.updated_ids.count).to(eq(3))
 
         beans_override = VariantOverride.where(
 variant_id: product2.variants.first.id,
@@ -994,14 +994,14 @@ variant_id: product4.variants.first.id,
 hub_id: enterprise2.id
 ).first
 
-        expect(Float(beans_override.price)).to eq 3.20
-        expect(beans_override.count_on_hand).to eq 5
+        expect(Float(beans_override.price)).to(eq(3.20))
+        expect(beans_override.count_on_hand).to(eq(5))
 
-        expect(Float(sprouts_override.price)).to eq 6.50
-        expect(sprouts_override.count_on_hand).to eq 6
+        expect(Float(sprouts_override.price)).to(eq(6.50))
+        expect(sprouts_override.count_on_hand).to(eq(6))
 
-        expect(Float(cabbage_override.price)).to eq 1.50
-        expect(cabbage_override.count_on_hand).to eq 2001
+        expect(Float(cabbage_override.price)).to(eq(1.50))
+        expect(cabbage_override.count_on_hand).to(eq(2001))
       end
     end
 
@@ -1017,7 +1017,7 @@ hub_id: enterprise2.id
       it "updates inventory item correctly" do
         importer.save_entries
 
-        expect(importer.inventory_created_count).to eq 1
+        expect(importer.inventory_created_count).to(eq(1))
 
         override = VariantOverride.where(variant_id: variant2.id, hub_id: enterprise2.id).first
         visible = InventoryItem.where(
@@ -1025,8 +1025,8 @@ variant_id: variant2.id,
 enterprise_id: enterprise2.id
 ).first.visible
 
-        expect(override.count_on_hand).to eq 900
-        expect(visible).to be_truthy
+        expect(override.count_on_hand).to(eq(900))
+        expect(visible).to(be_truthy)
       end
     end
 
@@ -1057,7 +1057,7 @@ visible: false
       it "sets the item to visible in inventory when the item is updated" do
         importer.save_entries
 
-        expect(importer.inventory_updated_count).to eq 1
+        expect(importer.inventory_updated_count).to(eq(1))
 
         override = VariantOverride.where(
 variant_id: product4.variants.first.id,
@@ -1068,8 +1068,8 @@ variant_id: product4.variants.first.id,
 enterprise_id: enterprise2.id
 ).first.visible
 
-        expect(override.count_on_hand).to eq 900
-        expect(visible).to be_truthy
+        expect(override.count_on_hand).to(eq(900))
+        expect(visible).to(be_truthy)
       end
     end
   end
@@ -1109,23 +1109,23 @@ enterprise2.name,
                 shipping_category.name
 ]
       end
-      importer = import_data csv_data, import_user: user
+      importer = import_data(csv_data, import_user: user)
 
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 1
-      expect(filter('invalid', entries)).to eq 1
-      expect(filter('create_product', entries)).to eq 1
+      expect(filter('valid', entries)).to(eq(1))
+      expect(filter('invalid', entries)).to(eq(1))
+      expect(filter('create_product', entries)).to(eq(1))
 
       importer.save_entries
 
-      expect(importer.products_created_count).to eq 1
-      expect(importer.updated_ids).to be_a(Array)
-      expect(importer.updated_ids.count).to eq 1
+      expect(importer.products_created_count).to(eq(1))
+      expect(importer.updated_ids).to(be_a(Array))
+      expect(importer.updated_ids.count).to(eq(1))
 
-      expect(Spree::Product.find_by(name: 'My Carrots')).to be_a Spree::Product
-      expect(Spree::Product.find_by(name: 'Your Potatoes')).to eq nil
+      expect(Spree::Product.find_by(name: 'My Carrots')).to(be_a(Spree::Product))
+      expect(Spree::Product.find_by(name: 'Your Potatoes')).to(eq(nil))
     end
 
     it "allows creating inventories for producers that a user's hub has permission for" do
@@ -1134,26 +1134,26 @@ enterprise2.name,
         csv << ["name", "producer", "distributor", "on_hand", "price", "units", "unit_type"]
         csv << ["Beans", enterprise.name, enterprise2.name, "777", "3.20", "500", "g"]
       end
-      importer = import_data csv_data, import_into: 'inventories'
+      importer = import_data(csv_data, import_into: 'inventories')
 
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 1
-      expect(filter('invalid', entries)).to eq 0
-      expect(filter('create_inventory', entries)).to eq 1
+      expect(filter('valid', entries)).to(eq(1))
+      expect(filter('invalid', entries)).to(eq(0))
+      expect(filter('create_inventory', entries)).to(eq(1))
 
       importer.save_entries
 
-      expect(importer.inventory_created_count).to eq 1
-      expect(importer.updated_ids).to be_a(Array)
-      expect(importer.updated_ids.count).to eq 1
+      expect(importer.inventory_created_count).to(eq(1))
+      expect(importer.updated_ids).to(be_a(Array))
+      expect(importer.updated_ids.count).to(eq(1))
 
       beans = VariantOverride.where(
 variant_id: product2.variants.first.id,
 hub_id: enterprise2.id
 ).first
-      expect(beans.count_on_hand).to eq 777
+      expect(beans.count_on_hand).to(eq(777))
     end
 
     it "does not allow creating inventories for producers that a user's hubs don't have permission for" do
@@ -1163,20 +1163,20 @@ hub_id: enterprise2.id
         csv << ["Beans", enterprise.name, "5", "3.20", "500", "g"]
         csv << ["Sprouts", enterprise.name, "6", "6.50", "500", "g"]
       end
-      importer = import_data csv_data, import_into: 'inventories'
+      importer = import_data(csv_data, import_into: 'inventories')
 
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 0
-      expect(filter('invalid', entries)).to eq 2
-      expect(filter('create_inventory', entries)).to eq 0
+      expect(filter('valid', entries)).to(eq(0))
+      expect(filter('invalid', entries)).to(eq(2))
+      expect(filter('create_inventory', entries)).to(eq(0))
 
       importer.save_entries
 
-      expect(importer.inventory_created_count).to eq 0
-      expect(importer.updated_ids).to be_a(Array)
-      expect(importer.updated_ids.count).to eq 0
+      expect(importer.inventory_created_count).to(eq(0))
+      expect(importer.updated_ids).to(be_a(Array))
+      expect(importer.updated_ids.count).to(eq(0))
     end
   end
 
@@ -1215,38 +1215,38 @@ enterprise.name,
                 shipping_category.name
 ]
       end
-      importer = import_data csv_data, reset_all_absent: true
+      importer = import_data(csv_data, reset_all_absent: true)
 
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 2
-      expect(filter('invalid', entries)).to eq 0
-      expect(filter('create_product', entries)).to eq 1
-      expect(filter('update_product', entries)).to eq 1
+      expect(filter('valid', entries)).to(eq(2))
+      expect(filter('invalid', entries)).to(eq(0))
+      expect(filter('create_product', entries)).to(eq(1))
+      expect(filter('update_product', entries)).to(eq(1))
 
       importer.save_entries
 
-      expect(importer.products_created_count).to eq 1
-      expect(importer.products_updated_count).to eq 1
-      expect(importer.updated_ids).to be_a(Array)
-      expect(importer.updated_ids.count).to eq 2
+      expect(importer.products_created_count).to(eq(1))
+      expect(importer.products_updated_count).to(eq(1))
+      expect(importer.updated_ids).to(be_a(Array))
+      expect(importer.updated_ids.count).to(eq(2))
 
       updated_ids = importer.updated_ids
 
-      importer = import_data csv_data,
+      importer = import_data(csv_data,
 reset_all_absent: true,
 updated_ids: updated_ids,
-                                       enterprises_to_reset: [enterprise.id]
+                                       enterprises_to_reset: [enterprise.id])
       importer.reset_absent(updated_ids)
 
-      expect(importer.products_reset_count).to eq 7
+      expect(importer.products_reset_count).to(eq(7))
 
-      expect(Spree::Product.find_by(name: 'Carrots').on_hand).to eq 5    # Present in file, added
-      expect(Spree::Product.find_by(name: 'Beans').on_hand).to eq 6      # Present in file, updated
-      expect(Spree::Product.find_by(name: 'Sprouts').on_hand).to eq 0    # In enterprise, not in file
-      expect(Spree::Product.find_by(name: 'Cabbage').on_hand).to eq 0    # In enterprise, not in file
-      expect(Spree::Product.find_by(name: 'Lettuce').on_hand).to eq 100  # In different enterprise; unchanged
+      expect(Spree::Product.find_by(name: 'Carrots').on_hand).to(eq(5))    # Present in file, added
+      expect(Spree::Product.find_by(name: 'Beans').on_hand).to(eq(6))      # Present in file, updated
+      expect(Spree::Product.find_by(name: 'Sprouts').on_hand).to(eq(0))    # In enterprise, not in file
+      expect(Spree::Product.find_by(name: 'Cabbage').on_hand).to(eq(0))    # In enterprise, not in file
+      expect(Spree::Product.find_by(name: 'Lettuce').on_hand).to(eq(100))  # In different enterprise; unchanged
     end
 
     it "can reset all inventory items for an enterprise that are not present in the uploaded file to zero stock" do
@@ -1256,28 +1256,28 @@ updated_ids: updated_ids,
         csv << ["Beans", enterprise2.name, enterprise.name, "6", "3.20", "500", "g"]
         csv << ["Sprouts", enterprise2.name, enterprise.name, "7", "6.50", "500", "g"]
       end
-      importer = import_data csv_data, import_into: 'inventories', reset_all_absent: true
+      importer = import_data(csv_data, import_into: 'inventories', reset_all_absent: true)
 
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(filter('valid', entries)).to eq 2
-      expect(filter('invalid', entries)).to eq 0
-      expect(filter('create_inventory', entries)).to eq 2
+      expect(filter('valid', entries)).to(eq(2))
+      expect(filter('invalid', entries)).to(eq(0))
+      expect(filter('create_inventory', entries)).to(eq(2))
 
       importer.save_entries
 
-      expect(importer.inventory_created_count).to eq 2
-      expect(importer.updated_ids).to be_a(Array)
-      expect(importer.updated_ids.count).to eq 2
+      expect(importer.inventory_created_count).to(eq(2))
+      expect(importer.updated_ids).to(be_a(Array))
+      expect(importer.updated_ids.count).to(eq(2))
 
       updated_ids = importer.updated_ids
 
-      importer = import_data csv_data,
+      importer = import_data(csv_data,
 import_into: 'inventories',
 reset_all_absent: true,
                                        updated_ids: updated_ids,
-enterprises_to_reset: [enterprise2.id]
+enterprises_to_reset: [enterprise2.id])
       importer.reset_absent(updated_ids)
 
       beans = VariantOverride.where(
@@ -1297,10 +1297,10 @@ variant_id: product5.variants.first.id,
 hub_id: enterprise.id
 ).first
 
-      expect(beans.count_on_hand).to eq 6      # Present in file, created
-      expect(sprouts.count_on_hand).to eq 7    # Present in file, created
-      expect(cabbage.count_on_hand).to eq 0    # In enterprise, not in file (reset)
-      expect(lettuce.count_on_hand).to eq 96   # In different enterprise; unchanged
+      expect(beans.count_on_hand).to(eq(6))      # Present in file, created
+      expect(sprouts.count_on_hand).to(eq(7))    # Present in file, created
+      expect(cabbage.count_on_hand).to(eq(0))    # In enterprise, not in file (reset)
+      expect(lettuce.count_on_hand).to(eq(96))   # In different enterprise; unchanged
     end
   end
 end

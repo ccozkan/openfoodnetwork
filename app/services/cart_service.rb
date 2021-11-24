@@ -19,8 +19,8 @@ class CartService
     variants_data = read_variants_hash(from_hash)
 
     @order.with_lock do
-      attempt_cart_add_variants variants_data
-      overwrite_variants variants_data
+      attempt_cart_add_variants(variants_data)
+      overwrite_variants(variants_data)
     end
     valid?
   end
@@ -127,7 +127,7 @@ class CartService
 
   # Returns true if the saved cart differs from what's in the posted data, otherwise false
   def varies_from_cart(variant_data, loaded_variant)
-    li = line_item_for_variant loaded_variant
+    li = line_item_for_variant(loaded_variant)
 
     li_added = li.nil? && (variant_data[:quantity].to_i > 0 || variant_data[:max_quantity].to_i > 0)
     li_quantity_changed = li.present? && li.quantity != variant_data[:quantity].to_i
@@ -156,17 +156,17 @@ class CartService
     return true if OrderCycleDistributedVariants.new(
 @order_cycle,
                                                      @distributor
-).available_variants.include? variant
+).available_variants.include?(variant)
 
     errors.add(:base, I18n.t(:spree_order_populator_availability_error))
     false
   end
 
   def line_item_for_variant(variant)
-    order.find_line_item_by_variant variant
+    order.find_line_item_by_variant(variant)
   end
 
   def variant_ids_in_cart
-    @order.line_items.pluck :variant_id
+    @order.line_items.pluck(:variant_id)
   end
 end

@@ -11,17 +11,17 @@ module Spree
     context "validations" do
       it "should validate price is greater than 0" do
         variant.price = -1
-        expect(variant).to be_invalid
+        expect(variant).to(be_invalid)
       end
 
       it "should validate price is 0" do
         variant.price = 0
-        expect(variant).to be_valid
+        expect(variant).to(be_valid)
       end
 
       it "should validate unit_value is greater than 0" do
         variant.unit_value = 0
-        expect(variant).to be_invalid
+        expect(variant).to(be_invalid)
       end
     end
 
@@ -51,7 +51,7 @@ separator: ','
         context "with decimal point" do
           it "captures the proper amount for a formatted price" do
             variant.price = '1,599.99'
-            expect(variant.price).to eq 1599.99
+            expect(variant.price).to(eq(1599.99))
           end
         end
 
@@ -59,7 +59,7 @@ separator: ','
           it "captures the proper amount for a formatted price" do
             I18n.locale = :es
             variant.price = '1.599,99'
-            expect(variant.price).to eq 1599.99
+            expect(variant.price).to(eq(1599.99))
           end
         end
 
@@ -67,7 +67,7 @@ separator: ','
           it "uses the price as is" do
             I18n.locale = :es
             variant.price = 1599.99
-            expect(variant.price).to eq 1599.99
+            expect(variant.price).to(eq(1599.99))
           end
         end
       end
@@ -75,14 +75,14 @@ separator: ','
 
     context "#currency" do
       it "returns the globally configured currency" do
-        expect(variant.currency).to eq Spree::Config[:currency]
+        expect(variant.currency).to(eq(Spree::Config[:currency]))
       end
     end
 
     context "#display_amount" do
       it "returns a Spree::Money" do
         variant.price = 21.22
-        expect(variant.display_amount.to_s).to eq "$21.22"
+        expect(variant.display_amount.to_s).to(eq("$21.22"))
       end
     end
 
@@ -92,7 +92,7 @@ separator: ','
 
         it "populates cost currency with the default value on save" do
           variant.save!
-          expect(variant.cost_currency).to eq Spree::Config[:currency]
+          expect(variant.cost_currency).to(eq(Spree::Config[:currency]))
         end
       end
     end
@@ -107,7 +107,7 @@ separator: ','
         let(:currency) { nil }
 
         it "returns 0" do
-          expect(subject.to_s).to eq "$0.00"
+          expect(subject.to_s).to(eq("$0.00"))
         end
       end
 
@@ -115,7 +115,7 @@ separator: ','
         let(:currency) { 'EUR' }
 
         it "returns the value in EUR" do
-          expect(subject.to_s).to eq "€33.33"
+          expect(subject.to_s).to(eq("€33.33"))
         end
       end
 
@@ -123,7 +123,7 @@ separator: ','
         let(:currency) { 'AUD' }
 
         it "returns the value in AUD" do
-          expect(subject.to_s).to eq "$19.99"
+          expect(subject.to_s).to(eq("$19.99"))
         end
       end
     end
@@ -139,7 +139,7 @@ separator: ','
         let(:currency) { nil }
 
         it "returns nil" do
-          expect(subject).to be_nil
+          expect(subject).to(be_nil)
         end
       end
 
@@ -147,7 +147,7 @@ separator: ','
         let(:currency) { 'EUR' }
 
         it "returns the value in EUR" do
-          expect(subject).to eq 33.33
+          expect(subject).to(eq(33.33))
         end
       end
 
@@ -155,7 +155,7 @@ separator: ','
         let(:currency) { 'AUD' }
 
         it "returns the value in AUD" do
-          expect(subject).to eq 19.99
+          expect(subject).to(eq(19.99))
         end
       end
     end
@@ -164,34 +164,34 @@ separator: ','
     describe "set_position" do
       it "sets variant position after creation" do
         variant = create(:variant)
-        expect(variant.position).to_not be_nil
+        expect(variant.position).to_not(be_nil)
       end
     end
 
     describe '#in_stock?' do
       context 'when stock_items are not backorderable' do
         before do
-          allow_any_instance_of(Spree::StockItem).to receive_messages(backorderable: false)
+          allow_any_instance_of(Spree::StockItem).to(receive_messages(backorderable: false))
         end
 
         context 'when stock_items in stock' do
           before do
-            allow_any_instance_of(Spree::StockItem).to receive_messages(count_on_hand: 10)
+            allow_any_instance_of(Spree::StockItem).to(receive_messages(count_on_hand: 10))
           end
 
           it 'returns true if stock_items in stock' do
-            expect(variant.in_stock?).to be_truthy
+            expect(variant.in_stock?).to(be_truthy)
           end
         end
 
         context 'when stock_items out of stock' do
           before do
-            allow_any_instance_of(Spree::StockItem).to receive_messages(backorderable: false)
-            allow_any_instance_of(Spree::Stock::Quantifier).to receive_messages(total_on_hand: 0)
+            allow_any_instance_of(Spree::StockItem).to(receive_messages(backorderable: false))
+            allow_any_instance_of(Spree::Stock::Quantifier).to(receive_messages(total_on_hand: 0))
           end
 
           it 'return false if stock_items out of stock' do
-            expect(variant.in_stock?).to be_falsy
+            expect(variant.in_stock?).to(be_falsy)
           end
         end
 
@@ -201,26 +201,26 @@ separator: ','
           end
 
           it 'returns correct value' do
-            expect(variant.in_stock?).to be_truthy
-            expect(variant.in_stock?(2)).to be_truthy
-            expect(variant.in_stock?(10)).to be_truthy
-            expect(variant.in_stock?(11)).to be_falsy
+            expect(variant.in_stock?).to(be_truthy)
+            expect(variant.in_stock?(2)).to(be_truthy)
+            expect(variant.in_stock?(10)).to(be_truthy)
+            expect(variant.in_stock?(11)).to(be_falsy)
           end
         end
       end
 
       context 'when stock_items are backorderable' do
         before do
-          allow_any_instance_of(Spree::StockItem).to receive_messages(backorderable?: true)
+          allow_any_instance_of(Spree::StockItem).to(receive_messages(backorderable?: true))
         end
 
         context 'when stock_items out of stock' do
           before do
-            allow_any_instance_of(Spree::StockItem).to receive_messages(count_on_hand: 0)
+            allow_any_instance_of(Spree::StockItem).to(receive_messages(count_on_hand: 0))
           end
 
           it 'returns true if stock_items in stock' do
-            expect(variant.in_stock?).to be_truthy
+            expect(variant.in_stock?).to(be_truthy)
           end
         end
       end
@@ -229,7 +229,7 @@ separator: ','
     describe '#total_on_hand' do
       it 'matches quantifier total_on_hand' do
         variant = build(:variant)
-        expect(variant.total_on_hand).to eq(Spree::Stock::Quantifier.new(variant).total_on_hand)
+        expect(variant.total_on_hand).to(eq(Spree::Stock::Quantifier.new(variant).total_on_hand))
       end
     end
 
@@ -243,12 +243,12 @@ separator: ','
         let!(:oc2) { create(:simple_order_cycle, distributors: [d2], variants: [p2.master]) }
 
         it "shows variants in an order cycle distribution" do
-          expect(Variant.in_distributor(d1)).to eq([p1.master])
+          expect(Variant.in_distributor(d1)).to(eq([p1.master]))
         end
 
         it "doesn't show duplicates" do
           oc_dup = create(:simple_order_cycle, distributors: [d1], variants: [p1.master])
-          expect(Variant.in_distributor(d1)).to eq([p1.master])
+          expect(Variant.in_distributor(d1)).to(eq([p1.master]))
         end
       end
 
@@ -261,14 +261,14 @@ separator: ','
         let!(:oc2) { create(:simple_order_cycle, distributors: [d2], variants: [p2.master]) }
 
         it "shows variants in an order cycle" do
-          expect(Variant.in_order_cycle(oc1)).to eq([p1.master])
+          expect(Variant.in_order_cycle(oc1)).to(eq([p1.master]))
         end
 
         it "doesn't show duplicates" do
           ex = create(:exchange, order_cycle: oc1, sender: oc1.coordinator, receiver: d2)
           ex.variants << p1.master
 
-          expect(Variant.in_order_cycle(oc1)).to eq([p1.master])
+          expect(Variant.in_order_cycle(oc1)).to(eq([p1.master]))
         end
       end
 
@@ -318,17 +318,17 @@ variants: [v2]
         end
 
         it "returns variants in the order cycle and distributor" do
-          expect(p1.variants.for_distribution(oc, d1)).to eq([v1])
-          expect(p2.variants.for_distribution(oc, d2)).to eq([v2])
+          expect(p1.variants.for_distribution(oc, d1)).to(eq([v1]))
+          expect(p2.variants.for_distribution(oc, d2)).to(eq([v2]))
         end
 
         it "does not return variants in the order cycle but not the distributor" do
-          expect(p1.variants.for_distribution(oc, d2)).to be_empty
-          expect(p2.variants.for_distribution(oc, d1)).to be_empty
+          expect(p1.variants.for_distribution(oc, d2)).to(be_empty)
+          expect(p2.variants.for_distribution(oc, d1)).to(be_empty)
         end
 
         it "does not return variants not in the order cycle" do
-          expect(p_external.variants.for_distribution(oc, d1)).to be_empty
+          expect(p_external.variants.for_distribution(oc, d1)).to(be_empty)
         end
       end
 
@@ -350,7 +350,7 @@ variants: [v2]
             let!(:variants) { Spree::Variant.not_hidden_for(nil) }
 
             it "returns an empty list" do
-              expect(variants).to eq []
+              expect(variants).to(eq([]))
             end
           end
 
@@ -358,8 +358,8 @@ variants: [v2]
             let!(:variants) { Spree::Variant.not_hidden_for(enterprise) }
 
             it "lists any variants that are not listed as visible=false" do
-              expect(variants).to include new_variant, visible_variant
-              expect(variants).to_not include hidden_variant
+              expect(variants).to(include(new_variant, visible_variant))
+              expect(variants).to_not(include(hidden_variant))
             end
 
             context "when inventory items exist for other enterprises" do
@@ -391,8 +391,8 @@ variant: hidden_variant,
               end
 
               it "lists any variants that are not listed as visible=false only for the relevant enterprise" do
-                expect(variants).to include new_variant, visible_variant
-                expect(variants).to_not include hidden_variant
+                expect(variants).to(include(new_variant, visible_variant))
+                expect(variants).to_not(include(hidden_variant))
               end
             end
           end
@@ -402,8 +402,8 @@ variant: hidden_variant,
           let!(:variants) { Spree::Variant.visible_for(enterprise) }
 
           it "lists any variants that are listed as visible=true" do
-            expect(variants).to include visible_variant
-            expect(variants).to_not include new_variant, hidden_variant
+            expect(variants).to(include(visible_variant))
+            expect(variants).to_not(include(new_variant, hidden_variant))
           end
         end
       end
@@ -435,8 +435,8 @@ child: shop,
 
         it 'shows variants produced by the enterprise and any producers granting P-OC' do
           stockable_variants = Spree::Variant.stockable_by(shop)
-          expect(stockable_variants).to include v1, v2
-          expect(stockable_variants).to_not include v3
+          expect(stockable_variants).to(include(v1, v2))
+          expect(stockable_variants).to_not(include(v3))
         end
       end
     end
@@ -447,30 +447,30 @@ child: shop,
       let!(:v3) { create(:variant) }
 
       it "indexes variants by id" do
-        expect(Variant.where(id: [v1, v2, v3]).indexed).to eq(
+        expect(Variant.where(id: [v1, v2, v3]).indexed).to(eq(
           v1.id => v1, v2.id => v2, v3.id => v3
-        )
+        ))
       end
     end
 
     describe "generating the product and variant name" do
       let(:v) { Variant.new }
       let(:p) { double(:product, name: 'product') }
-      before { allow(v).to receive(:product) { p } }
+      before { allow(v).to(receive(:product) { p }) }
 
       context "when full_name starts with the product name" do
-        before { allow(v).to receive(:full_name) { p.name + " - something" } }
+        before { allow(v).to(receive(:full_name) { p.name + " - something" }) }
 
         it "does not show the product name twice" do
-          expect(v.product_and_full_name).to eq('product - something')
+          expect(v.product_and_full_name).to(eq('product - something'))
         end
       end
 
       context "when full_name does not start with the product name" do
-        before { allow(v).to receive(:full_name) { "display_name (unit)" } }
+        before { allow(v).to(receive(:full_name) { "display_name (unit)" }) }
 
         it "prepends the product name to the full name" do
-          expect(v.product_and_full_name).to eq('product - display_name (unit)')
+          expect(v.product_and_full_name).to(eq('product - display_name (unit)'))
         end
       end
     end
@@ -480,9 +480,9 @@ child: shop,
         distributor = double(:distributor)
         order_cycle = double(:order_cycle)
 
-        variant = Variant.new price: 100
-        expect(variant).to receive(:fees_for).with(distributor, order_cycle) { 23 }
-        expect(variant.price_with_fees(distributor, order_cycle)).to eq(123)
+        variant = Variant.new(price: 100)
+        expect(variant).to(receive(:fees_for).with(distributor, order_cycle) { 23 })
+        expect(variant.price_with_fees(distributor, order_cycle)).to(eq(123))
       end
     end
 
@@ -492,11 +492,11 @@ child: shop,
         order_cycle = double(:order_cycle)
         variant = Variant.new
 
-        expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).to receive(:fees_for).with(variant) {
+        expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).to(receive(:fees_for).with(variant) {
                                                                               23
-                                                                            }
+                                                                            })
 
-        expect(variant.fees_for(distributor, order_cycle)).to eq(23)
+        expect(variant.fees_for(distributor, order_cycle)).to(eq(23))
       end
     end
 
@@ -507,11 +507,11 @@ child: shop,
         variant = Variant.new
         fees = double(:fees)
 
-        expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).to receive(:fees_by_type_for).with(variant) {
+        expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).to(receive(:fees_by_type_for).with(variant) {
                                                                               fees
-                                                                            }
+                                                                            })
 
-        expect(variant.fees_by_type_for(distributor, order_cycle)).to eq(fees)
+        expect(variant.fees_by_type_for(distributor, order_cycle)).to(eq(fees))
       end
     end
 
@@ -522,30 +522,30 @@ child: shop,
       %w(weight volume).each do |unit|
         context "when the product's unit is #{unit}" do
           before do
-            product.update_attribute :variant_unit, unit
+            product.update_attribute(:variant_unit, unit)
             product.reload
           end
 
           it "is valid when unit value is set and unit description is not" do
             variant.unit_value = 1
             variant.unit_description = nil
-            expect(variant).to be_valid
+            expect(variant).to(be_valid)
           end
 
           it "is invalid when unit value is not set" do
             variant.unit_value = nil
-            expect(variant).not_to be_valid
+            expect(variant).not_to(be_valid)
           end
 
           it "has a valid master variant" do
-            expect(product.master).to be_valid
+            expect(product.master).to(be_valid)
           end
         end
       end
 
       context "when the product's unit is items" do
         before do
-          product.update_attribute :variant_unit, 'items'
+          product.update_attribute(:variant_unit, 'items')
           product.reload
           variant.reload
         end
@@ -553,24 +553,24 @@ child: shop,
         it "is valid with only unit value set" do
           variant.unit_value = 1
           variant.unit_description = nil
-          expect(variant).to be_valid
+          expect(variant).to(be_valid)
         end
 
         it "is valid with only unit description set" do
           variant.unit_value = nil
           variant.unit_description = 'Medium'
-          expect(variant).to be_valid
+          expect(variant).to(be_valid)
         end
 
         it "sets unit_value to 1.0 before validation if it's nil" do
           variant.unit_value = nil
           variant.unit_description = nil
-          expect(variant).to be_valid
-          expect(variant.unit_value).to eq 1.0
+          expect(variant).to(be_valid)
+          expect(variant.unit_value).to(eq(1.0))
         end
 
         it "has a valid master variant" do
-          expect(product.master).to be_valid
+          expect(product.master).to(be_valid)
         end
       end
     end
@@ -580,67 +580,67 @@ child: shop,
         let(:v) { Variant.new }
 
         before do
-          allow(v).to receive(:display_name) { 'display_name' }
-          allow(v).to receive(:unit_to_display) { 'unit_to_display' }
+          allow(v).to(receive(:display_name) { 'display_name' })
+          allow(v).to(receive(:unit_to_display) { 'unit_to_display' })
         end
 
         it "returns unit_to_display when display_name is blank" do
-          allow(v).to receive(:display_name) { '' }
-          expect(v.full_name).to eq('unit_to_display')
+          allow(v).to(receive(:display_name) { '' })
+          expect(v.full_name).to(eq('unit_to_display'))
         end
 
         it "returns display_name when it contains unit_to_display" do
-          allow(v).to receive(:display_name) { 'DiSpLaY_name' }
-          allow(v).to receive(:unit_to_display) { 'name' }
-          expect(v.full_name).to eq('DiSpLaY_name')
+          allow(v).to(receive(:display_name) { 'DiSpLaY_name' })
+          allow(v).to(receive(:unit_to_display) { 'name' })
+          expect(v.full_name).to(eq('DiSpLaY_name'))
         end
 
         it "returns unit_to_display when it contains display_name" do
-          allow(v).to receive(:display_name) { '_to_' }
-          allow(v).to receive(:unit_to_display) { 'unit_TO_display' }
-          expect(v.full_name).to eq('unit_TO_display')
+          allow(v).to(receive(:display_name) { '_to_' })
+          allow(v).to(receive(:unit_to_display) { 'unit_TO_display' })
+          expect(v.full_name).to(eq('unit_TO_display'))
         end
 
         it "returns a combination otherwise" do
-          allow(v).to receive(:display_name) { 'display_name' }
-          allow(v).to receive(:unit_to_display) { 'unit_to_display' }
-          expect(v.full_name).to eq('display_name (unit_to_display)')
+          allow(v).to(receive(:display_name) { 'display_name' })
+          allow(v).to(receive(:unit_to_display) { 'unit_to_display' })
+          expect(v.full_name).to(eq('display_name (unit_to_display)'))
         end
 
         it "is resilient to regex chars" do
-          v = Variant.new display_name: ")))"
-          allow(v).to receive(:unit_to_display) { ")))" }
-          expect(v.full_name).to eq(")))")
+          v = Variant.new(display_name: ")))")
+          allow(v).to(receive(:unit_to_display) { ")))" })
+          expect(v.full_name).to(eq(")))"))
         end
       end
 
       describe "getting name for display" do
         it "returns display_name if present" do
           v = build_stubbed(:variant, display_name: "foo")
-          expect(v.name_to_display).to eq("foo")
+          expect(v.name_to_display).to(eq("foo"))
         end
 
         it "returns product name if display_name is empty" do
           v = build_stubbed(:variant)
-          expect(v.name_to_display).to eq(v.product.name)
+          expect(v.name_to_display).to(eq(v.product.name))
           v1 = build_stubbed(:variant, display_name: "")
-          expect(v1.name_to_display).to eq(v1.product.name)
+          expect(v1.name_to_display).to(eq(v1.product.name))
         end
       end
 
       describe "getting unit for display" do
         it "returns display_as if present" do
           v = build_stubbed(:variant, display_as: "foo")
-          expect(v.unit_to_display).to eq("foo")
+          expect(v.unit_to_display).to(eq("foo"))
         end
 
         it "returns options_text if display_as is blank" do
           v = build_stubbed(:variant)
           v1 = build_stubbed(:variant, display_as: "")
-          allow(v).to receive(:options_text).and_return "ponies"
-          allow(v1).to receive(:options_text).and_return "ponies"
-          expect(v.unit_to_display).to eq("ponies")
-          expect(v1.unit_to_display).to eq("ponies")
+          allow(v).to(receive(:options_text).and_return("ponies"))
+          allow(v1).to(receive(:options_text).and_return("ponies"))
+          expect(v.unit_to_display).to(eq("ponies"))
+          expect(v1.unit_to_display).to(eq("ponies"))
         end
       end
 
@@ -649,33 +649,33 @@ child: shop,
           p = create(:simple_product, variant_unit: 'volume')
           v = create(:variant, product: p, weight: 0)
 
-          p.update! variant_unit: 'weight', variant_unit_scale: 1
-          v.update! unit_value: 10, unit_description: 'foo'
+          p.update!(variant_unit: 'weight', variant_unit_scale: 1)
+          v.update!(unit_value: 10, unit_description: 'foo')
 
-          expect(v.reload.weight).to eq(0.01)
+          expect(v.reload.weight).to(eq(0.01))
         end
 
         it "does nothing when unit is not weight" do
           p = create(:simple_product, variant_unit: 'volume')
           v = create(:variant, product: p, weight: 123)
 
-          p.update! variant_unit: 'volume', variant_unit_scale: 1
-          v.update! unit_value: 10, unit_description: 'foo'
+          p.update!(variant_unit: 'volume', variant_unit_scale: 1)
+          v.update!(unit_value: 10, unit_description: 'foo')
 
-          expect(v.reload.weight).to eq(123)
+          expect(v.reload.weight).to(eq(123))
         end
 
         it "does nothing when unit_value is not set" do
           p = create(:simple_product, variant_unit: 'volume')
           v = create(:variant, product: p, weight: 123)
 
-          p.update! variant_unit: 'weight', variant_unit_scale: 1
+          p.update!(variant_unit: 'weight', variant_unit_scale: 1)
 
           # Although invalid, this calls the before_validation callback, which would
           # error if not handling unit_value == nil case
-          expect(v.update(unit_value: nil, unit_description: 'foo')).to be false
+          expect(v.update(unit_value: nil, unit_description: 'foo')).to(be(false))
 
-          expect(v.reload.weight).to eq(123)
+          expect(v.reload.weight).to(eq(123))
         end
       end
 
@@ -688,9 +688,9 @@ child: shop,
 
           expect do
             v.update!(unit_value: 10, unit_description: 'foo')
-          end.to change(Spree::OptionValue, :count).by(1)
+          end.to(change(Spree::OptionValue, :count).by(1))
 
-          expect(v.option_values).not_to include ov_orig
+          expect(v.option_values).not_to(include(ov_orig))
         end
       end
 
@@ -707,10 +707,10 @@ child: shop,
 
           expect do
             v.update!(unit_value: 10, unit_description: 'foo')
-          end.to change(Spree::OptionValue, :count).by(0)
+          end.to(change(Spree::OptionValue, :count).by(0))
 
-          expect(v.option_values).not_to include ov_orig
-          expect(v.option_values).to     include ov_new
+          expect(v.option_values).not_to(include(ov_orig))
+          expect(v.option_values).to(    include(ov_new))
         end
       end
 
@@ -721,10 +721,10 @@ child: shop,
         end
 
         it "requests the name of the new option_value from OptionValueName" do
-          expect_any_instance_of(VariantUnits::OptionValueNamer).to receive(:name).exactly(1).times.and_call_original
+          expect_any_instance_of(VariantUnits::OptionValueNamer).to(receive(:name).exactly(1).times.and_call_original)
           v.update(unit_value: 10, unit_description: 'foo')
           ov = v.option_values.last
-          expect(ov.name).to eq("10g foo")
+          expect(ov.name).to(eq("10g foo"))
         end
       end
 
@@ -735,10 +735,10 @@ child: shop,
         end
 
         it "does not request the name of the new option_value from OptionValueName" do
-          expect_any_instance_of(VariantUnits::OptionValueNamer).not_to receive(:name)
+          expect_any_instance_of(VariantUnits::OptionValueNamer).not_to(receive(:name))
           v.update!(unit_value: 10, unit_description: 'foo')
           ov = v.option_values.last
-          expect(ov.name).to eq("FOOS!")
+          expect(ov.name).to(eq("FOOS!"))
         end
       end
     end
@@ -746,20 +746,20 @@ child: shop,
     describe "deleting unit option values" do
       before do
         p = create(:simple_product, variant_unit: 'weight', variant_unit_scale: 1)
-        ot = Spree::OptionType.find_by name: 'unit_weight'
+        ot = Spree::OptionType.find_by(name: 'unit_weight')
         @v = create(:variant, product: p)
       end
 
       it "removes option value associations for unit option types" do
         expect do
           @v.delete_unit_option_values
-        end.to change(@v.option_values, :count).by(-1)
+        end.to(change(@v.option_values, :count).by(-1))
       end
 
       it "does not delete option values" do
         expect do
           @v.delete_unit_option_values
-        end.to change(Spree::OptionValue, :count).by(0)
+        end.to(change(Spree::OptionValue, :count).by(0))
       end
     end
 
@@ -787,7 +787,7 @@ child: shop,
       end
 
       it "saves without infinite loop" do
-        expect(variant1.update(price: 1)).to be_truthy
+        expect(variant1.update(price: 1)).to(be_truthy)
       end
     end
   end
@@ -798,7 +798,7 @@ child: shop,
       e = create(:exchange, variants: [v])
 
       v.destroy
-      expect(e.reload.variant_ids).to be_empty
+      expect(e.reload.variant_ids).to(be_empty)
     end
   end
 
@@ -810,7 +810,7 @@ child: shop,
       it "sets the variant's unit_value to 1" do
         product.update(variant_unit: "items")
 
-        expect(variant.unit_value).to eq 1
+        expect(variant.unit_value).to(eq(1))
       end
     end
 
@@ -818,7 +818,7 @@ child: shop,
       it "does not allow NaN" do
         variant.update(unit_value: Float::NAN)
 
-        expect(variant.reload.unit_value).to eq(1.0)
+        expect(variant.reload.unit_value).to(eq(1.0))
       end
     end
   end
@@ -833,8 +833,8 @@ child: shop,
 
         default_price.destroy
 
-        expect(variant.reload.default_price).to be_a Spree::Price
-        expect(variant.default_price.id).to eq price_id
+        expect(variant.reload.default_price).to(be_a(Spree::Price))
+        expect(variant.default_price.id).to(eq(price_id))
       end
     end
   end

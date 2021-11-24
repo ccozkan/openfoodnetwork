@@ -12,11 +12,11 @@ module OpenFoodNetwork
         user
       end
       subject do
-        ProductsAndInventoryReport.new user, {}, true
+        ProductsAndInventoryReport.new(user, {}, true)
       end
 
       it "Should return headers" do
-        expect(subject.header).to eq(
+        expect(subject.header).to(eq(
 [
                                        "Supplier",
                                        "Producer Suburb",
@@ -29,7 +29,7 @@ module OpenFoodNetwork
                                        "Amount",
                                        "SKU"
                                      ]
-)
+))
       end
 
       it "should build a table from a list of variants" do
@@ -40,32 +40,32 @@ sku: "sku",
           count_on_hand: 10,
           price: 100
 )
-        allow(variant).to receive_message_chain(:product, :supplier, :name).and_return("Supplier")
-        allow(variant).to receive_message_chain(
+        allow(variant).to(receive_message_chain(:product, :supplier, :name).and_return("Supplier"))
+        allow(variant).to(receive_message_chain(
 :product,
 :supplier,
 :address,
                                                 :city
-).and_return("A city")
-        allow(variant).to receive_message_chain(:product, :name).and_return("Product Name")
-        allow(variant).to receive_message_chain(
+).and_return("A city"))
+        allow(variant).to(receive_message_chain(:product, :name).and_return("Product Name"))
+        allow(variant).to(receive_message_chain(
 :product,
                                                 :properties
-).and_return [
+).and_return([
 double(name: "property1"),
                                                                          double(name: "property2")
-]
-        allow(variant).to receive_message_chain(
+]))
+        allow(variant).to(receive_message_chain(
 :product,
                                                 :taxons
-).and_return [
+).and_return([
 double(name: "taxon1"),
                                                                      double(name: "taxon2")
-]
-        allow(variant).to receive_message_chain(:product, :group_buy_unit_size).and_return(21)
-        allow(subject).to receive(:variants).and_return [variant]
+]))
+        allow(variant).to(receive_message_chain(:product, :group_buy_unit_size).and_return(21))
+        allow(subject).to(receive(:variants).and_return([variant]))
 
-        expect(subject.table).to eq(
+        expect(subject.table).to(eq(
 [
 [
                                       "Supplier",
@@ -80,13 +80,13 @@ double(name: "taxon1"),
                                       "sku"
                                     ]
 ]
-)
+))
       end
 
       it "fetches variants for some params" do
-        expect(subject).to receive(:child_variants).and_return ["children"]
-        expect(subject).to receive(:filter).with(['children']).and_return ["filter_children"]
-        expect(subject.variants).to eq(["filter_children"])
+        expect(subject).to(receive(:child_variants).and_return(["children"]))
+        expect(subject).to(receive(:filter).with(['children']).and_return(["filter_children"]))
+        expect(subject.variants).to(eq(["filter_children"]))
       end
     end
 
@@ -101,7 +101,7 @@ double(name: "taxon1"),
       end
 
       subject do
-        ProductsAndInventoryReport.new enterprise_user, {}, true
+        ProductsAndInventoryReport.new(enterprise_user, {}, true)
       end
 
       describe "fetching child variants" do
@@ -110,7 +110,7 @@ double(name: "taxon1"),
           variant1 = product1.variants.first
           variant2 = create(:variant, product: product1)
 
-          expect(subject.child_variants).to match_array [variant1, variant2]
+          expect(subject.child_variants).to(match_array([variant1, variant2]))
         end
 
         it "should only return variants managed by the user" do
@@ -119,7 +119,7 @@ double(name: "taxon1"),
           variant1 = product1.variants.first
           variant2 = product2.variants.first
 
-          expect(subject.child_variants).to eq([variant2])
+          expect(subject.child_variants).to(eq([variant2]))
         end
       end
 
@@ -131,8 +131,8 @@ double(name: "taxon1"),
             product1 = create(:simple_product, supplier: supplier, on_hand: 99)
             product2 = create(:simple_product, supplier: supplier, on_hand: 0)
 
-            allow(subject).to receive(:params).and_return(report_type: 'inventory')
-            expect(subject.filter(variants)).to eq([product1.variants.first])
+            allow(subject).to(receive(:params).and_return(report_type: 'inventory'))
+            expect(subject.filter(variants)).to(eq([product1.variants.first]))
           end
         end
         it "filters to a specific supplier" do
@@ -140,8 +140,8 @@ double(name: "taxon1"),
           product1 = create(:simple_product, supplier: supplier)
           product2 = create(:simple_product, supplier: supplier2)
 
-          allow(subject).to receive(:params).and_return(supplier_id: supplier.id)
-          expect(subject.filter(variants)).to eq([product1.variants.first])
+          allow(subject).to(receive(:params).and_return(supplier_id: supplier.id))
+          expect(subject.filter(variants)).to(eq([product1.variants.first]))
         end
         it "filters to a specific distributor" do
           distributor = create(:distributor_enterprise)
@@ -154,8 +154,8 @@ suppliers: [supplier],
 variants: [product2.variants.first]
 )
 
-          allow(subject).to receive(:params).and_return(distributor_id: distributor.id)
-          expect(subject.filter(variants)).to eq([product2.variants.first])
+          allow(subject).to(receive(:params).and_return(distributor_id: distributor.id))
+          expect(subject.filter(variants)).to(eq([product2.variants.first]))
         end
 
         it "ignores variant overrides without filter" do
@@ -172,7 +172,7 @@ variants: [product.variants.first]
 
           result = subject.filter(variants)
 
-          expect(result.first.price).to eq 5
+          expect(result.first.price).to(eq(5))
         end
 
         it "considers variant overrides with distributor" do
@@ -187,10 +187,10 @@ variants: [product.variants.first]
 )
           create(:variant_override, hub: distributor, variant: variant, price: 2)
 
-          allow(subject).to receive(:params).and_return(distributor_id: distributor.id)
+          allow(subject).to(receive(:params).and_return(distributor_id: distributor.id))
           result = subject.filter(variants)
 
-          expect(result.first.price).to eq 2
+          expect(result.first.price).to(eq(2))
         end
 
         it "filters to a specific order cycle" do
@@ -204,8 +204,8 @@ suppliers: [supplier],
 variants: [product1.variants.first]
 )
 
-          allow(subject).to receive(:params).and_return(order_cycle_id: order_cycle.id)
-          expect(subject.filter(variants)).to eq([product1.variants.first])
+          allow(subject).to(receive(:params).and_return(order_cycle_id: order_cycle.id))
+          expect(subject.filter(variants)).to(eq([product1.variants.first]))
         end
 
         it "should do all the filters at once" do
@@ -265,17 +265,17 @@ supplier: supplier,
             ]
           )
 
-          allow(subject).to receive(:params).and_return(
+          allow(subject).to(receive(:params).and_return(
             order_cycle_id: order_cycle.id,
             supplier_id: supplier.id,
             distributor_id: distributor.id,
             report_type: 'inventory'
-          )
+          ))
 
-          expect(subject.filter(variants)).to match_array [not_filtered_variant]
+          expect(subject.filter(variants)).to(match_array([not_filtered_variant]))
 
           # And it integrates with the ordering of the `variants` method.
-          expect(subject.variants).to match_array [not_filtered_variant]
+          expect(subject.variants).to(match_array([not_filtered_variant]))
         end
       end
 
@@ -288,7 +288,7 @@ supplier: supplier,
         context "when the variant has an SKU set" do
           before { variant.update_attribute(:sku, "Variant SKU") }
           it "returns it" do
-            expect(subject.send(:sku_for, variant)).to eq "Variant SKU"
+            expect(subject.send(:sku_for, variant)).to(eq("Variant SKU"))
           end
         end
 
@@ -296,7 +296,7 @@ supplier: supplier,
           before { variant.update_attribute(:sku, "") }
 
           it "returns the product's SKU" do
-            expect(subject.send(:sku_for, variant)).to eq "Product SKU"
+            expect(subject.send(:sku_for, variant)).to(eq("Product SKU"))
           end
         end
       end

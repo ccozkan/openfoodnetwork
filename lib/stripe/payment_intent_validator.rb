@@ -36,7 +36,7 @@ module Stripe
       return unless payment_intent_response.respond_to?(:last_payment_error) &&
                     payment_intent_response.last_payment_error.present?
 
-      raise Stripe::StripeError, payment_intent_response.last_payment_error.message
+      raise(Stripe::StripeError, payment_intent_response.last_payment_error.message)
     end
   end
 end

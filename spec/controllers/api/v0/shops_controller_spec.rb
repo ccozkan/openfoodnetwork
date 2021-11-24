@@ -18,16 +18,16 @@ describe Api::V0::ShopsController, type: :controller do
     let!(:closed_hub2) { create(:distributor_enterprise) }
 
     before do
-      allow(controller).to receive(:spree_current_user) { nil }
+      allow(controller).to(receive(:spree_current_user) { nil })
     end
 
     describe "#show" do
       it "returns shopfront data for an enterprise" do
         get :show, params: { id: producer.id }
 
-        expect(json_response['name']).to eq 'Shopfront Test Producer'
-        expect(json_response['hubs'][0]['name']).to eq 'Shopfront Test Hub'
-        expect(json_response['supplied_taxons'][0]['name']).to eq 'Fruit'
+        expect(json_response['name']).to(eq('Shopfront Test Producer'))
+        expect(json_response['hubs'][0]['name']).to(eq('Shopfront Test Hub'))
+        expect(json_response['supplied_taxons'][0]['name']).to(eq('Fruit'))
       end
     end
 
@@ -35,10 +35,10 @@ describe Api::V0::ShopsController, type: :controller do
       it "returns data for all closed shops" do
         get :closed_shops, params: {}
 
-        expect(json_response).not_to match hub.name
+        expect(json_response).not_to(match(hub.name))
 
         response_ids = json_response.map { |shop| shop['id'] }
-        expect(response_ids).to contain_exactly(closed_hub1.id, closed_hub2.id)
+        expect(response_ids).to(contain_exactly(closed_hub1.id, closed_hub2.id))
       end
     end
   end

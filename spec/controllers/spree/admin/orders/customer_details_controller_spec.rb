@@ -43,15 +43,15 @@ describe Spree::Admin::Orders::CustomerDetailsController, type: :controller do
 
       it "advances the order state" do
         expect do
-          spree_post :update,
+          spree_post(:update,
 order: {
 email: user.email,
 bill_address_attributes: address_params,
 ship_address_attributes: address_params
 },
-                              order_id: order.number
-        end.to change { order.reload.state }
-.from("cart").to("payment")
+                              order_id: order.number)
+        end.to(change { order.reload.state }
+.from("cart").to("payment"))
       end
 
       context "when adding details of a registered user" do
@@ -62,7 +62,7 @@ order_id: order.number
 
           order.reload
 
-          expect(response).to redirect_to spree.admin_order_customer_path(order)
+          expect(response).to(redirect_to(spree.admin_order_customer_path(order)))
         end
       end
 
@@ -74,7 +74,7 @@ order_id: order.number
 
           order.reload
 
-          expect(response).to redirect_to spree.admin_order_customer_path(order)
+          expect(response).to(redirect_to(spree.admin_order_customer_path(order)))
         end
       end
     end

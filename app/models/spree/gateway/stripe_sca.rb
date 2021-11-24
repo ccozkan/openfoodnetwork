@@ -113,7 +113,7 @@ response_code,
       private
 
       def voidable?(payment_intent_response)
-        VOIDABLE_STATES.include? payment_intent_response.status
+        VOIDABLE_STATES.include?(payment_intent_response.status)
       end
 
       def refundable_amount(payment_intent_response)
@@ -148,7 +148,7 @@ response_code,
 
       def fetch_payment_intent(creditcard, gateway_options)
         payment = fetch_payment(creditcard, gateway_options)
-        raise Stripe::StripeError, I18n.t(:no_pending_payments) unless payment&.response_code
+        raise(Stripe::StripeError, I18n.t(:no_pending_payments)) unless payment&.response_code
 
         payment_intent_response = Stripe::PaymentIntentValidator.new(payment).call
 
@@ -161,7 +161,7 @@ response_code,
         state = payment_intent_response.status
         return if state == 'requires_capture'
 
-        raise Stripe::StripeError, I18n.t(:invalid_payment_state, state: state)
+        raise(Stripe::StripeError, I18n.t(:invalid_payment_state, state: state))
       end
 
       def fetch_payment(creditcard, gateway_options)

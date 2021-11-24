@@ -46,7 +46,7 @@ module Sets
     end
 
     def errors
-      errors = ActiveModel::Errors.new self
+      errors = ActiveModel::Errors.new(self)
       full_messages = @collection.map { |model| model.errors.full_messages }
 .flatten
 

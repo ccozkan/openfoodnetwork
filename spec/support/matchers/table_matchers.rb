@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-RSpec::Matchers.define :have_table_row do |row|
+RSpec::Matchers.define(:have_table_row) do |row|
   match do |node|
     @row = row
-    rows_under(node).include? row # Robust check of columns
+    rows_under(node).include?(row) # Robust check of columns
   end
 
   match_when_negated do |node|
     @row = row
-    !rows_under(node).include? row # Robust check of columns
+    !rows_under(node).include?(row) # Robust check of columns
   end
 
   failure_message do |_text|
@@ -25,7 +25,7 @@ RSpec::Matchers.define :have_table_row do |row|
 end
 
 # find("#my-table").should match_table [[...]]
-RSpec::Matchers.define :match_table do |expected_table|
+RSpec::Matchers.define(:match_table) do |expected_table|
   match do |node|
     rows = node.all("tr").map { |r| r.all("th,td").map { |c| c.text.strip } }
 

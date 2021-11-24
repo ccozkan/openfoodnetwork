@@ -197,7 +197,7 @@ foreign_key: :source_id
 
       payment_method.create_profile(self)
     rescue ActiveMerchant::ConnectionError => e
-      gateway_error e
+      gateway_error(e)
     end
 
     # Makes newly entered payments invalidate previously entered payments so the most recent payment

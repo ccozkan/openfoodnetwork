@@ -9,13 +9,13 @@ module OpenFoodNetwork
 
         result = Benchmark.measure(&block)
 
-        puts result
+        puts(result)
 
         result.total
       end.drop(1) # Do not return the first sample
 
       avg = (results.sum / results.count * 1000).round(0)
-      puts avg
+      puts(avg)
 
       results
     end

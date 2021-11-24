@@ -10,7 +10,7 @@ module Spree
         invoice_service = BulkInvoiceService.new
         invoice_service.start_pdf_job(params[:order_ids])
 
-        render json: invoice_service.id, status: :ok
+        render(json: invoice_service.id, status: :ok)
       end
 
       def show
@@ -23,10 +23,10 @@ module Spree
       def poll
         invoice_id = params[:invoice_id]
 
-        if BulkInvoiceService.new.invoice_created? invoice_id
-          render json: { created: true }, status: :ok
+        if BulkInvoiceService.new.invoice_created?(invoice_id)
+          render(json: { created: true }, status: :ok)
         else
-          render json: { created: false }, status: :unprocessable_entity
+          render(json: { created: false }, status: :unprocessable_entity)
         end
       end
     end

@@ -16,23 +16,23 @@ describe Admin::TagRulesController, type: :controller do
 
         before do
           user.owned_enterprises << create(:enterprise)
-          allow(controller).to receive(:spree_current_user) { user }
+          allow(controller).to(receive(:spree_current_user) { user })
         end
 
         it "redirects to unauthorized" do
           spree_delete :destroy, params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
       context "where I manage the tag rule enterprise" do
         before do
-          allow(controller).to receive(:spree_current_user) { enterprise.owner }
+          allow(controller).to(receive(:spree_current_user) { enterprise.owner })
         end
 
-        it { expect { spree_delete :destroy, params }
-.to change { TagRule.count }
-.by(-1) }
+        it { expect { spree_delete(:destroy, params) }
+.to(change { TagRule.count }
+.by(-1)) }
       end
     end
   end

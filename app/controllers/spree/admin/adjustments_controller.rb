@@ -38,7 +38,7 @@ module Spree
         return unless @order.canceled?
 
         flash[:error] = t("admin.adjustments.skipped_changing_canceled_order")
-        redirect_to admin_order_adjustments_path(@order) if @order.canceled?
+        redirect_to(admin_order_adjustments_path(@order)) if @order.canceled?
       end
 
       def apply_tax

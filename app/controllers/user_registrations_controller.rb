@@ -21,7 +21,7 @@ class UserRegistrationsController < Spree::UserRegistrationsController
 
     respond_to do |format|
       format.js do
-        render json: { email: @user.email }
+        render(json: { email: @user.email })
       end
     end
   rescue StandardError => e
@@ -41,7 +41,7 @@ class UserRegistrationsController < Spree::UserRegistrationsController
     clean_up_passwords(resource)
     respond_to do |format|
       format.js do
-        render json: errors, status: :unauthorized
+        render(json: errors, status: :unauthorized)
       end
     end
   end

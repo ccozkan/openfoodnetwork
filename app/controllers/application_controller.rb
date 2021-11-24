@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
   # Helper for debugging strong_parameters
   rescue_from ActiveModel::ForbiddenAttributesError, with: :print_params
   def print_params
-    raise ActiveModel::ForbiddenAttributesError, params.to_s
+    raise(ActiveModel::ForbiddenAttributesError, params.to_s)
   end
 
   respond_to :html
@@ -78,18 +78,18 @@ rescue StandardError
 
   def shopfront_session
     session[:safari_fix] = true
-    render 'shop/shopfront_session', layout: false
+    render('shop/shopfront_session', layout: false)
   end
 
   def enable_embedded_styles
     session[:embedded_shopfront] = true
-    render json: {}, status: :ok
+    render(json: {}, status: :ok)
   end
 
   def disable_embedded_styles
-    session.delete :embedded_shopfront
-    session.delete :shopfront_redirect
-    render json: {}, status: :ok
+    session.delete(:embedded_shopfront)
+    session.delete(:shopfront_redirect)
+    render(json: {}, status: :ok)
   end
 
   protected
@@ -127,21 +127,21 @@ rescue StandardError
 
   def require_distributor_chosen
     unless @distributor = current_distributor
-      redirect_to main_app.root_path
+      redirect_to(main_app.root_path)
       false
     end
   end
 
   def require_order_cycle
-    redirect_to main_app.shop_path unless current_order_cycle
+    redirect_to(main_app.shop_path) unless current_order_cycle
   end
 
   def check_hub_ready_for_checkout
     if current_distributor_closed?
       current_order.empty!
-      current_order.set_distribution! nil, nil
+      current_order.set_distribution!(nil, nil)
       flash[:info] = I18n.t('order_cycles_closed_for_hub')
-      redirect_to main_app.root_url
+      redirect_to(main_app.root_url)
     end
   end
 
@@ -155,9 +155,9 @@ rescue StandardError
   def check_order_cycle_expiry
     if current_order_cycle&.closed?
       current_order.empty!
-      current_order.set_order_cycle! nil
+      current_order.set_order_cycle!(nil)
       flash[:info] = I18n.t('order_cycle_closed')
-      redirect_to main_app.shop_path
+      redirect_to(main_app.shop_path)
     end
   end
 

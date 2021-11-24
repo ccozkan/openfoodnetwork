@@ -17,7 +17,7 @@ module Spree
       def new
         @url_filters = ::ProductFilters.new.extract(request.query_parameters)
 
-        render layout: !request.xhr?
+        render(layout: !request.xhr?)
       end
 
       def create
@@ -27,7 +27,7 @@ module Spree
         @object.attributes = permitted_resource_params
         if @object.save
           flash[:success] = flash_message_for(@object, :successfully_created)
-          redirect_to spree.admin_product_images_url(params[:product_id], @url_filters)
+          redirect_to(spree.admin_product_images_url(params[:product_id], @url_filters))
         else
           respond_with(@object)
         end
@@ -43,7 +43,7 @@ module Spree
 
         if @object.update(permitted_resource_params)
           flash[:success] = flash_message_for(@object, :successfully_updated)
-          redirect_to spree.admin_product_images_url(params[:product_id], @url_filters)
+          redirect_to(spree.admin_product_images_url(params[:product_id], @url_filters))
         else
           respond_with(@object)
         end
@@ -55,7 +55,7 @@ module Spree
 
         flash[:success] = flash_message_for(@object, :successfully_removed) if @object.destroy
 
-        redirect_to spree.admin_product_images_url(params[:product_id], @url_filters)
+        redirect_to(spree.admin_product_images_url(params[:product_id], @url_filters))
       end
 
       private

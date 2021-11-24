@@ -8,9 +8,9 @@ module Spree
       module Order
         def self.included(base)
           base.class_eval do
-            helper_method :current_order
-            helper_method :current_currency
-            before_action :set_current_order
+            helper_method(:current_order)
+            helper_method(:current_currency)
+            before_action(:set_current_order)
           end
         end
 

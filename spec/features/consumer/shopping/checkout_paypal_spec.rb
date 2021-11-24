@@ -55,7 +55,7 @@ describe "Check out with Paypal", js: true do
       stub_paypal_response success: false
 
       place_order
-      expect(page).to have_content "PayPal failed."
+      expect(page).to(have_content("PayPal failed."))
     end
   end
 
@@ -79,10 +79,10 @@ describe "Check out with Paypal", js: true do
       stub_paypal_confirm
 
       place_order
-      expect(page).to have_content "Your order has been processed successfully"
+      expect(page).to(have_content("Your order has been processed successfully"))
 
-      expect(order.reload.state).to eq "complete"
-      expect(order.payments.count).to eq 1
+      expect(order.reload.state).to(eq("complete"))
+      expect(order.payments.count).to(eq(1))
     end
   end
 end

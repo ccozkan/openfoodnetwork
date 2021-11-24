@@ -9,10 +9,10 @@ describe ' As an admin I want to manage payments ' do
 
   describe "payments/new" do
     it "displays the order balance as the default payment amount" do
-      login_as_admin_and_visit spree.new_admin_order_payment_path order
+      login_as_admin_and_visit spree.new_admin_order_payment_path(order)
 
-      expect(page).to have_content I18n.t(:new_payment)
-      expect(page).to have_field(:payment_amount, with: order.outstanding_balance.to_f)
+      expect(page).to(have_content(I18n.t(:new_payment)))
+      expect(page).to(have_field(:payment_amount, with: order.outstanding_balance.to_f))
     end
   end
 
@@ -27,9 +27,9 @@ describe ' As an admin I want to manage payments ' do
     end
 
     it "renders the new payment page" do
-      login_as_admin_and_visit spree.new_admin_order_payment_path order
+      login_as_admin_and_visit spree.new_admin_order_payment_path(order)
 
-      expect(page).to have_content I18n.t(:new_payment)
+      expect(page).to(have_content(I18n.t(:new_payment)))
     end
   end
 
@@ -44,21 +44,21 @@ describe ' As an admin I want to manage payments ' do
     end
 
     it "creates the payment, completes the order, and updates payment and shipping states" do
-      login_as_admin_and_visit spree.new_admin_order_payment_path order
+      login_as_admin_and_visit spree.new_admin_order_payment_path(order)
 
-      expect(page).to have_content "New Payment"
+      expect(page).to(have_content("New Payment"))
 
       within "#new_payment" do
         find('input[type="radio"]').click
       end
 
       click_button "Update"
-      expect(page).to have_content "Payments"
+      expect(page).to(have_content("Payments"))
 
       order.reload
-      expect(order.state).to eq "complete"
-      expect(order.payment_state).to eq "balance_due"
-      expect(order.shipment_state).to eq "pending"
+      expect(order.state).to(eq("complete"))
+      expect(order.payment_state).to(eq("balance_due"))
+      expect(order.shipment_state).to(eq("pending"))
     end
   end
 end

@@ -20,30 +20,30 @@ describe AddressGeocoder do
   end
 
   it "formats the address into a single comma separated string when passing it to the geocoder" do
-    expect(Geocoder).to receive(:coordinates).with("12 Galvin Street, Unit 1, 3018, Altona, Australia, Victoria")
+    expect(Geocoder).to(receive(:coordinates).with("12 Galvin Street, Unit 1, 3018, Altona, Australia, Victoria"))
 
     AddressGeocoder.new(address).geocode
   end
 
   describe "when the geocoder can determine the latitude and longitude" do
     it "updates the address's latitude and longitude" do
-      allow(Geocoder).to receive(:coordinates).and_return([-37.47, 144.78])
+      allow(Geocoder).to(receive(:coordinates).and_return([-37.47, 144.78]))
 
       AddressGeocoder.new(address).geocode
 
-      expect(address.latitude).to eq(-37.47)
-      expect(address.longitude).to eq(144.78)
+      expect(address.latitude).to(eq(-37.47))
+      expect(address.longitude).to(eq(144.78))
     end
   end
 
   describe "when the geocoder cannot determine the latitude and longitude" do
     it "doesn't update the address's latitude and longitude" do
-      allow(Geocoder).to receive(:coordinates).and_return([nil, nil])
+      allow(Geocoder).to(receive(:coordinates).and_return([nil, nil]))
 
       AddressGeocoder.new(address).geocode
 
-      expect(address.latitude).to be_nil
-      expect(address.longitude).to be_nil
+      expect(address.latitude).to(be_nil)
+      expect(address.longitude).to(be_nil)
     end
   end
 end

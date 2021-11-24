@@ -18,7 +18,7 @@ describe PaymentsRequiringAction do
       end
 
       it "finds the payment" do
-        expect(payments_requiring_action.query.all).to include(payment)
+        expect(payments_requiring_action.query.all).to(include(payment))
       end
     end
 
@@ -28,7 +28,7 @@ describe PaymentsRequiringAction do
       end
 
       it "does not find the payment" do
-        expect(payments_requiring_action.query.all).to_not include(payment)
+        expect(payments_requiring_action.query.all).to_not(include(payment))
       end
     end
   end

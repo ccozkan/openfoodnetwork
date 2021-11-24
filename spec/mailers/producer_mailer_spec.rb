@@ -34,16 +34,16 @@ zone: zone,
   let(:p6) { create(:product, name: "Eggs", price: 67.89, supplier: s1) }
   let(:order_cycle) { create(:simple_order_cycle) }
   let!(:incoming_exchange) do
-    order_cycle.exchanges.create! sender: s1,
+    order_cycle.exchanges.create!(sender: s1,
 receiver: d1,
 incoming: true,
-                                  receival_instructions: 'Outside shed.'
+                                  receival_instructions: 'Outside shed.')
   end
   let!(:outgoing_exchange) do
-    order_cycle.exchanges.create! sender: d1,
+    order_cycle.exchanges.create!(sender: d1,
 receiver: d1,
 incoming: false,
-                                  pickup_time: 'Tue, 23rd Dec'
+                                  pickup_time: 'Tue, 23rd Dec')
   end
 
   let!(:order) do
@@ -74,43 +74,43 @@ incoming: false,
   let(:mail) { ProducerMailer.order_cycle_report(s1, order_cycle) }
 
   it "sets a reply-to of the oc coordinator's email" do
-    expect(mail.reply_to).to eq [order_cycle.coordinator.contact.email]
+    expect(mail.reply_to).to(eq([order_cycle.coordinator.contact.email]))
   end
 
   it "includes the pickup time for each distributor" do
-    expect(mail.body.encoded).to include "#{d1.name} (Tue, 23rd Dec)"
+    expect(mail.body.encoded).to(include("#{d1.name} (Tue, 23rd Dec)"))
   end
 
   it "includes receival instructions" do
-    expect(mail.body.encoded).to include 'Outside shed.'
+    expect(mail.body.encoded).to(include('Outside shed.'))
   end
 
   it "cc's the oc coordinator" do
-    expect(mail.cc).to eq [order_cycle.coordinator.contact.email]
+    expect(mail.cc).to(eq([order_cycle.coordinator.contact.email]))
   end
 
   it "contains an aggregated list of produce in alphabetical order" do
-    expect(mail.body.encoded).to match(/coffee.+\n.+Zebra/)
+    expect(mail.body.encoded).to(match(/coffee.+\n.+Zebra/))
     body_lines_including(mail, p1.name).each do |line|
-      expect(line).to include 'QTY: 3'
-      expect(line).to include '@ $10.00 = $30.00'
+      expect(line).to(include('QTY: 3'))
+      expect(line).to(include('@ $10.00 = $30.00'))
     end
     expect(body_as_html(mail).find("table.order-summary tr", text: p1.name))
-      .to have_selector("td", text: "$30.00")
+      .to(have_selector("td", text: "$30.00"))
   end
 
   it "displays tax totals for each product" do
     # Tax for p1 line items
     expect(body_as_html(mail).find("table.order-summary tr", text: p1.name))
-      .to have_selector("td.tax", text: "$2.73")
+      .to(have_selector("td.tax", text: "$2.73"))
   end
 
   it "does not include incomplete orders" do
-    expect(mail.body.encoded).not_to include p3.name
+    expect(mail.body.encoded).not_to(include(p3.name))
   end
 
   it "does not include canceled orders" do
-    expect(mail.body.encoded).not_to include p5.name
+    expect(mail.body.encoded).not_to(include(p5.name))
   end
 
   context "when a cancelled order has been resumed" do
@@ -125,19 +125,19 @@ incoming: false,
     end
 
     it "includes items from resumed orders" do
-      expect(mail.body.encoded).to include p6.name
+      expect(mail.body.encoded).to(include(p6.name))
     end
   end
 
   it "includes the total" do
-    expect(mail.body.encoded).to include 'Total: $50.00'
-    expect(body_as_html(mail).find("tr.total-row")).to have_selector("td", text: "$50.00")
+    expect(mail.body.encoded).to(include('Total: $50.00'))
+    expect(body_as_html(mail).find("tr.total-row")).to(have_selector("td", text: "$50.00"))
   end
 
   it "sends no mail when the producer has no orders" do
     expect do
       ProducerMailer.order_cycle_report(s3, order_cycle).deliver_now
-    end.to change(ActionMailer::Base.deliveries, :count).by(0)
+    end.to(change(ActionMailer::Base.deliveries, :count).by(0))
   end
 
   it "shows a deleted variant's full name" do
@@ -145,12 +145,12 @@ incoming: false,
     full_name = variant.full_name
     variant.delete
 
-    expect(mail.body.encoded).to include(full_name)
+    expect(mail.body.encoded).to(include(full_name))
   end
 
   it 'shows deleted products' do
     p1.delete
-    expect(mail.body.encoded).to include(p1.name)
+    expect(mail.body.encoded).to(include(p1.name))
   end
 
   context 'when flag show_customer_names_to_suppliers is true' do
@@ -159,7 +159,7 @@ incoming: false,
     end
 
     it "adds customer names table" do
-      expect(body_as_html(mail).find(".order-summary.customer-order")).to_not be_nil
+      expect(body_as_html(mail).find(".order-summary.customer-order")).to_not(be_nil)
     end
 
     it "displays last name for each order" do
@@ -170,7 +170,7 @@ body_as_html(mail).find(
 "table.order-summary.customer-order tr",
                                      text: product_name
 )
-).to have_selector("td", text: last_name)
+).to(have_selector("td", text: last_name))
     end
 
     it "displays first name for each order" do
@@ -181,7 +181,7 @@ body_as_html(mail).find(
 "table.order-summary.customer-order tr",
                                      text: product_name
 )
-).to have_selector("td", text: first_name)
+).to(have_selector("td", text: first_name))
     end
 
     it "it orders list via last name" do
@@ -201,7 +201,7 @@ order_cycle: order_cycle,
 state: 'complete',
                          bill_address: FactoryBot.create(:address, last_name: "maggie")
 )
-      expect(mail.body.encoded).to match(/.*Abby.*Doe.*maggie/m)
+      expect(mail.body.encoded).to(match(/.*Abby.*Doe.*maggie/m))
     end
   end
 
@@ -213,14 +213,14 @@ state: 'complete',
     it "does not add customer names table" do
       expect do
         body_as_html(mail).find(".order-summary.customer-order")
-      end.to raise_error(Capybara::ElementNotFound)
+      end.to(raise_error(Capybara::ElementNotFound))
     end
   end
 
   private
 
   def body_lines_including(mail, str)
-    mail.body.to_s.lines.select { |line| line.include? str }
+    mail.body.to_s.lines.select { |line| line.include?(str) }
   end
 
   def body_as_html(mail)

@@ -41,7 +41,7 @@ state: 'complete',
       it "do not display the payment description information" do
         login_as_admin_and_visit spree.print_admin_order_path(order)
         convert_pdf_to_page
-        expect(page).to have_no_content 'Payment Description at Checkout'
+        expect(page).to(have_no_content('Payment Description at Checkout'))
       end
     end
 
@@ -56,14 +56,14 @@ state: 'complete',
       it "display the payment description section" do
         login_as_admin_and_visit spree.print_admin_order_path(order)
         convert_pdf_to_page
-        expect(page).to have_content 'Payment Description at Checkout'
-        expect(page).to have_content 'description1'
+        expect(page).to(have_content('Payment Description at Checkout'))
+        expect(page).to(have_content('description1'))
       end
     end
 
     context "with two payments, and one that failed" do
       before do
-        order.update payments: []
+        order.update(payments: [])
         order.payments << create(
 :payment,
 order: order,
@@ -84,14 +84,14 @@ created_at: 2.days.ago
       it "display the payment description section and use the one from the completed payment" do
         login_as_admin_and_visit spree.print_admin_order_path(order)
         convert_pdf_to_page
-        expect(page).to have_content 'Payment Description at Checkout'
-        expect(page).to have_content 'description1'
+        expect(page).to(have_content('Payment Description at Checkout'))
+        expect(page).to(have_content('description1'))
       end
     end
 
     context "with two completed payments" do
       before do
-        order.update payments: []
+        order.update(payments: [])
         order.payments << create(
 :payment,
 order: order,
@@ -112,8 +112,8 @@ created_at: 1.day.ago
       it "display the payment description section and use the one from the last payment" do
         login_as_admin_and_visit spree.print_admin_order_path(order)
         convert_pdf_to_page
-        expect(page).to have_content 'Payment Description at Checkout'
-        expect(page).to have_content 'description2'
+        expect(page).to(have_content('Payment Description at Checkout'))
+        expect(page).to(have_content('description2'))
       end
     end
   end

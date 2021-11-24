@@ -23,13 +23,13 @@ module Spree
 
         if @object.update(permitted_resource_params)
           flash[:success] = flash_message_for(@object, :successfully_updated)
-          redirect_to spree.admin_product_variants_url(params[:product_id], @url_filters)
+          redirect_to(spree.admin_product_variants_url(params[:product_id], @url_filters))
         else
-          redirect_to spree.edit_admin_product_variant_url(
+          redirect_to(spree.edit_admin_product_variant_url(
 params[:product_id],
                                                            @object,
                                                            @url_filters
-)
+))
         end
       end
 
@@ -46,9 +46,9 @@ params[:product_id],
         @object.attributes = permitted_resource_params
         if @object.save
           flash[:success] = flash_message_for(@object, :successfully_created)
-          redirect_to spree.admin_product_variants_url(params[:product_id], @url_filters)
+          redirect_to(spree.admin_product_variants_url(params[:product_id], @url_filters))
         else
-          redirect_to spree.new_admin_product_variant_url(params[:product_id], @url_filters)
+          redirect_to(spree.new_admin_product_variant_url(params[:product_id], @url_filters))
         end
 
         return unless @object.present? && @object.valid?
@@ -60,7 +60,7 @@ params[:product_id],
       def search
         scoper = OpenFoodNetwork::ScopeVariantsForSearch.new(variant_search_params)
         @variants = scoper.search
-        render json: @variants, each_serializer: ::Api::Admin::VariantSerializer
+        render(json: @variants, each_serializer: ::Api::Admin::VariantSerializer)
       end
 
       def destroy
@@ -69,7 +69,7 @@ params[:product_id],
         @variant = Spree::Variant.find(params[:id])
         flash[:success] = delete_variant
 
-        redirect_to spree.admin_product_variants_url(params[:product_id], @url_filters)
+        redirect_to(spree.admin_product_variants_url(params[:product_id], @url_filters))
       end
 
       protected

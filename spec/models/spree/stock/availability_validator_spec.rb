@@ -15,7 +15,7 @@ module Spree
           it "suceeds" do
             line_item.quantity = line_item.variant.on_hand - 1
             validator.validate(line_item)
-            expect(line_item).to be_valid
+            expect(line_item).to(be_valid)
           end
         end
 
@@ -23,14 +23,14 @@ module Spree
           it "fails" do
             line_item.quantity = line_item.variant.on_hand + 1
             validator.validate(line_item)
-            expect(line_item).not_to be_valid
+            expect(line_item).not_to(be_valid)
           end
 
           it "succeeds with line_item skip_stock_check" do
             line_item.skip_stock_check = true
             line_item.quantity = line_item.variant.on_hand + 1
             validator.validate(line_item)
-            expect(line_item).to be_valid
+            expect(line_item).to(be_valid)
           end
         end
       end
@@ -43,13 +43,13 @@ module Spree
           it "succeeds because it excludes existing inventory units from the validation" do
             line_item.quantity += line_item.variant.on_hand
             validator.validate(line_item)
-            expect(line_item).to be_valid
+            expect(line_item).to(be_valid)
           end
 
           it "fails if one more item is added" do
             line_item.quantity += line_item.variant.on_hand + 1
             validator.validate(line_item)
-            expect(line_item).not_to be_valid
+            expect(line_item).not_to(be_valid)
           end
         end
 
@@ -65,7 +65,7 @@ module Spree
             it "is valid" do
               line_item.quantity = 999
               validator.validate(line_item)
-              expect(line_item).to be_valid
+              expect(line_item).to(be_valid)
             end
           end
 
@@ -75,7 +75,7 @@ module Spree
             it "is not valid" do
               line_item.quantity = 999
               validator.validate(line_item)
-              expect(line_item).to_not be_valid
+              expect(line_item).to_not(be_valid)
             end
           end
         end

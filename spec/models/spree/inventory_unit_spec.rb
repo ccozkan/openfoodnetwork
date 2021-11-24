@@ -15,7 +15,7 @@ describe Spree::InventoryUnit do
       shipment.shipping_methods << create(:shipping_method)
       shipment.order = order
       # We don't care about this in this test
-      allow(shipment).to receive(:ensure_correct_adjustment)
+      allow(shipment).to(receive(:ensure_correct_adjustment))
       shipment.tap(&:save!)
     end
 
@@ -30,11 +30,11 @@ describe Spree::InventoryUnit do
     it "returns modifiable objects" do
       units = Spree::InventoryUnit.backordered_for_stock_item(stock_item)
       expect { units.first.save! }
-.to_not raise_error
+.to_not(raise_error)
     end
 
     it "finds inventory units from its stock location when the unit's variant matches the stock item's variant" do
-      expect(Spree::InventoryUnit.backordered_for_stock_item(stock_item)).to eq [unit]
+      expect(Spree::InventoryUnit.backordered_for_stock_item(stock_item)).to(eq([unit]))
     end
 
     it "does not find inventory units that don't match the stock item's variant" do
@@ -43,7 +43,7 @@ describe Spree::InventoryUnit do
       other_variant_unit.variant = create(:variant)
       other_variant_unit.save!
 
-      expect(Spree::InventoryUnit.backordered_for_stock_item(stock_item)).to_not include(other_variant_unit)
+      expect(Spree::InventoryUnit.backordered_for_stock_item(stock_item)).to_not(include(other_variant_unit))
     end
   end
 
@@ -54,7 +54,7 @@ describe Spree::InventoryUnit do
 
     it "can still fetch variant" do
       unit.variant.destroy
-      expect(unit.reload.variant).to be_a Spree::Variant
+      expect(unit.reload.variant).to(be_a(Spree::Variant))
     end
   end
 
@@ -70,7 +70,7 @@ describe Spree::InventoryUnit do
 
     it "should create a stock movement" do
       Spree::InventoryUnit.finalize_units!(inventory_units)
-      expect(inventory_units.any?(&:pending)).to be_falsy
+      expect(inventory_units.any?(&:pending)).to(be_falsy)
     end
   end
 end

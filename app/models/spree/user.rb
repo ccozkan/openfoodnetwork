@@ -95,7 +95,7 @@ inverse_of: :owner
 
     def build_enterprise_roles
       Enterprise.all.find_each do |enterprise|
-        unless enterprise_roles.find_by enterprise_id: enterprise.id
+        unless enterprise_roles.find_by(enterprise_id: enterprise.id)
           enterprise_roles.build(enterprise: enterprise)
         end
       end
@@ -163,7 +163,7 @@ inverse_of: :owner
     private
 
     def check_completed_orders
-      raise DestroyWithOrdersError if orders.complete.present?
+      raise(DestroyWithOrdersError) if orders.complete.present?
     end
 
     def set_login

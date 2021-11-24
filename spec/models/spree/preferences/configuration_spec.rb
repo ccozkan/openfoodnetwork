@@ -12,16 +12,16 @@ describe Spree::Preferences::Configuration do
 
   it "has named methods to access preferences" do
     @config.color = 'orange'
-    expect(@config.color).to eq 'orange'
+    expect(@config.color).to(eq('orange'))
   end
 
   it "uses [ ] to access preferences" do
     @config[:color] = 'red'
-    expect(@config[:color]).to eq 'red'
+    expect(@config[:color]).to(eq('red'))
   end
 
   it "uses set/get to access preferences" do
-    @config.set :color, 'green'
-    expect(@config.get(:color)).to eq 'green'
+    @config.set(:color, 'green')
+    expect(@config.get(:color)).to(eq('green'))
   end
 end

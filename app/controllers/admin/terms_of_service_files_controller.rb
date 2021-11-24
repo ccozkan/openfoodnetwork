@@ -9,20 +9,20 @@ module Admin
 
     def new
       show
-      render :show
+      render(:show)
     end
 
     def create
       TermsOfServiceFile.create!(file_params)
-      redirect_to main_app.admin_terms_of_service_files_path
+      redirect_to(main_app.admin_terms_of_service_files_path)
     rescue ActionController::ParameterMissing
       flash[:error] = t(".select_file")
-      redirect_to main_app.admin_terms_of_service_files_path
+      redirect_to(main_app.admin_terms_of_service_files_path)
     end
 
     def destroy
       TermsOfServiceFile.current.destroy!
-      redirect_to main_app.admin_terms_of_service_files_path
+      redirect_to(main_app.admin_terms_of_service_files_path)
     end
 
     private

@@ -19,7 +19,7 @@ class EnterprisesController < BaseController
   respond_to :js, only: :permalink_checker
 
   def shop
-    return redirect_to main_app.cart_path unless enough_stock?
+    return redirect_to(main_app.cart_path) unless enough_stock?
 
     set_noindex_meta_tag
 
@@ -42,15 +42,15 @@ data: OpenFoodNetwork::EnterpriseInjectionData.new
   end
 
   def check_permalink
-    if Enterprise.find_by permalink: params[:permalink]
+    if Enterprise.find_by(permalink: params[:permalink])
       render(plain: params[:permalink], status: :conflict) && return
     end
 
     begin
       Rails.application.routes.recognize_path("/#{params[:permalink]}")
-      render plain: params[:permalink], status: :conflict
+      render(plain: params[:permalink], status: :conflict)
     rescue ActionController::RoutingError
-      render plain: params[:permalink], status: :ok
+      render(plain: params[:permalink], status: :ok)
     end
   end
 
@@ -77,7 +77,7 @@ data: OpenFoodNetwork::EnterpriseInjectionData.new
     order_cart_reset.reset_other!(spree_current_user, current_customer)
   rescue ActiveRecord::RecordNotFound
     flash[:error] = I18n.t(:enterprise_shop_show_error)
-    redirect_to shops_path
+    redirect_to(shops_path)
   end
 
   def set_noindex_meta_tag

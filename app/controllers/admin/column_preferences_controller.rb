@@ -7,14 +7,14 @@ module Admin
     respond_to :json
 
     def bulk_update
-      @cp_set.collection.each { |cp| authorize! :bulk_update, cp }
+      @cp_set.collection.each { |cp| authorize!(:bulk_update, cp) }
 
       if @cp_set.save
-        render json: @cp_set.collection, each_serializer: Api::Admin::ColumnPreferenceSerializer
+        render(json: @cp_set.collection, each_serializer: Api::Admin::ColumnPreferenceSerializer)
       elsif @cp_set.errors.present?
-        render json: { errors: @cp_set.errors }, status: :bad_request
+        render(json: { errors: @cp_set.errors }, status: :bad_request)
       else
-        render body: nil, status: :internal_server_error
+        render(body: nil, status: :internal_server_error)
       end
     end
 

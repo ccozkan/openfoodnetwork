@@ -16,9 +16,9 @@ describe ' As an administrator I want to manage enterprise groups ' do
 
     click_link 'Groups'
 
-    expect(page).to have_selector 'td', text: group.name
-    expect(page).to have_selector 'td', text: 'Y'
-    expect(page).to have_selector 'td', text: e.name
+    expect(page).to(have_selector('td', text: group.name))
+    expect(page).to(have_selector('td', text: 'Y'))
+    expect(page).to(have_selector('td', text: e.name))
   end
 
   it "creating a new enterprise group", js: true do
@@ -43,13 +43,13 @@ describe ' As an administrator I want to manage enterprise groups ' do
     select2_select 'Victoria', from: 'enterprise_group_address_attributes_state_id'
     click_button 'Create'
 
-    expect(page).to have_content 'Enterprise group "EGEGEG" has been successfully created!'
+    expect(page).to(have_content('Enterprise group "EGEGEG" has been successfully created!'))
 
     eg = EnterpriseGroup.last
-    expect(eg.name).to eq('EGEGEG')
-    expect(eg.description).to eq('This is a description')
-    expect(eg.on_front_page).to be true
-    expect(eg.enterprises).to match_array [e1, e2]
+    expect(eg.name).to(eq('EGEGEG'))
+    expect(eg.description).to(eq('This is a description'))
+    expect(eg.on_front_page).to(be(true))
+    expect(eg.enterprises).to(match_array([e1, e2]))
   end
 
   it "editing an enterprise group" do
@@ -60,9 +60,9 @@ describe ' As an administrator I want to manage enterprise groups ' do
     click_link 'Groups'
     first("a.edit-enterprise-group").click
 
-    expect(page).to have_field 'enterprise_group_name', with: 'EGEGEG'
-    expect(page).to have_checked_field 'enterprise_group_on_front_page'
-    expect(page).to have_select 'enterprise_group_enterprise_ids', selected: [e1.name, e2.name]
+    expect(page).to(have_field('enterprise_group_name', with: 'EGEGEG'))
+    expect(page).to(have_checked_field('enterprise_group_on_front_page'))
+    expect(page).to(have_select('enterprise_group_enterprise_ids', selected: [e1.name, e2.name]))
 
     fill_in 'enterprise_group_name', with: 'xyzzy'
     uncheck 'enterprise_group_on_front_page'
@@ -71,12 +71,12 @@ describe ' As an administrator I want to manage enterprise groups ' do
     select e2.name, from: 'enterprise_group_enterprise_ids'
     click_button 'Update'
 
-    expect(page).to have_content 'Enterprise group "xyzzy" has been successfully updated!'
+    expect(page).to(have_content('Enterprise group "xyzzy" has been successfully updated!'))
 
     eg = EnterpriseGroup.last
-    expect(eg.name).to eq('xyzzy')
-    expect(eg.on_front_page).to be false
-    expect(eg.enterprises).to eq([e2])
+    expect(eg.name).to(eq('xyzzy'))
+    expect(eg.on_front_page).to(be(false))
+    expect(eg.enterprises).to(eq([e2]))
   end
 
   it "re-ordering enterprise groups" do
@@ -85,11 +85,11 @@ describe ' As an administrator I want to manage enterprise groups ' do
 
     click_link 'Groups'
 
-    expect(page.all('td.name').map(&:text)).to eq(['A', 'B'])
+    expect(page.all('td.name').map(&:text)).to(eq(['A', 'B']))
     all("a.move-down").first.click
-    expect(page.all('td.name').map(&:text)).to eq(['B', 'A'])
+    expect(page.all('td.name').map(&:text)).to(eq(['B', 'A']))
     all("a.move-up").last.click
-    expect(page.all('td.name').map(&:text)).to eq(['A', 'B'])
+    expect(page.all('td.name').map(&:text)).to(eq(['A', 'B']))
   end
 
   it "deleting an enterprise group", js: true do
@@ -100,9 +100,9 @@ describe ' As an administrator I want to manage enterprise groups ' do
       first("a.delete-resource").click
     end
 
-    expect(page).to have_no_content 'EGEGEG'
+    expect(page).to(have_no_content('EGEGEG'))
 
-    expect(EnterpriseGroup.all).not_to include eg
+    expect(EnterpriseGroup.all).not_to(include(eg))
   end
 
   context "as an enterprise user" do
@@ -114,7 +114,7 @@ describe ' As an administrator I want to manage enterprise groups ' do
       login_as user
       visit spree.admin_dashboard_path
       click_link 'Groups'
-      expect(page).to have_content 'My Group'
+      expect(page).to(have_content('My Group'))
     end
   end
 end

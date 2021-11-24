@@ -30,14 +30,14 @@ module OrderManagement
           before do
             # This might be because a shop has not been assigned yet, or no
             # current or future order cycles exist for the schedule
-            allow(estimator).to receive(:fee_calculator) { nil }
+            allow(estimator).to(receive(:fee_calculator) { nil })
           end
 
           it "resets the price estimates for all items" do
             estimator.estimate!
-            expect(sli1.price_estimate).to eq 4.0
-            expect(sli2.price_estimate).to eq 5.0
-            expect(sli3.price_estimate).to eq 6.0
+            expect(sli1.price_estimate).to(eq(4.0))
+            expect(sli2.price_estimate).to(eq(5.0))
+            expect(sli3.price_estimate).to(eq(6.0))
           end
         end
 
@@ -45,18 +45,18 @@ module OrderManagement
           let(:fee_calculator) { instance_double(OpenFoodNetwork::EnterpriseFeeCalculator) }
 
           before do
-            allow(estimator).to receive(:fee_calculator) { fee_calculator }
-            allow(fee_calculator).to receive(:indexed_fees_for).with(sli1.variant) { 1.0 }
-            allow(fee_calculator).to receive(:indexed_fees_for).with(sli2.variant) { 0.0 }
-            allow(fee_calculator).to receive(:indexed_fees_for).with(sli3.variant) { 3.0 }
+            allow(estimator).to(receive(:fee_calculator) { fee_calculator })
+            allow(fee_calculator).to(receive(:indexed_fees_for).with(sli1.variant) { 1.0 })
+            allow(fee_calculator).to(receive(:indexed_fees_for).with(sli2.variant) { 0.0 })
+            allow(fee_calculator).to(receive(:indexed_fees_for).with(sli3.variant) { 3.0 })
           end
 
           context "when no variant overrides apply" do
             it "recalculates price_estimates based on variant prices and associated fees" do
               estimator.estimate!
-              expect(sli1.price_estimate).to eq 2.0
-              expect(sli2.price_estimate).to eq 2.0
-              expect(sli3.price_estimate).to eq 6.0
+              expect(sli1.price_estimate).to(eq(2.0))
+              expect(sli2.price_estimate).to(eq(2.0))
+              expect(sli3.price_estimate).to(eq(6.0))
             end
           end
 
@@ -70,9 +70,9 @@ module OrderManagement
 
             it "recalculates price_estimates based on override prices and associated fees" do
               estimator.estimate!
-              expect(sli1.price_estimate).to eq 2.2
-              expect(sli2.price_estimate).to eq 2.3
-              expect(sli3.price_estimate).to eq 6.0
+              expect(sli1.price_estimate).to(eq(2.2))
+              expect(sli2.price_estimate).to(eq(2.3))
+              expect(sli3.price_estimate).to(eq(6.0))
             end
           end
         end
@@ -93,7 +93,7 @@ with_items: true,
         let(:estimator) { OrderManagement::Subscriptions::Estimator.new(subscription) }
 
         before do
-          allow(estimator).to receive(:assign_price_estimates)
+          allow(estimator).to(receive(:assign_price_estimates))
           sli1.update(price_estimate: 4.0)
           sli2.update(price_estimate: 5.0)
           sli3.update(price_estimate: 6.0)
@@ -115,8 +115,8 @@ with_items: true,
 
           it "calculates fees based on the rates provided" do
             estimator.estimate!
-            expect(subscription.shipping_fee_estimate.to_f).to eq 12.34
-            expect(subscription.payment_fee_estimate.to_f).to eq 9.12
+            expect(subscription.shipping_fee_estimate.to_f).to(eq(12.34))
+            expect(subscription.payment_fee_estimate.to_f).to(eq(9.12))
           end
         end
 
@@ -136,8 +136,8 @@ with_items: true,
 
           it "calculates fees based on the estimated item total and percentage provided" do
             estimator.estimate!
-            expect(subscription.shipping_fee_estimate.to_f).to eq 1.5
-            expect(subscription.payment_fee_estimate.to_f).to eq 3.0
+            expect(subscription.shipping_fee_estimate.to_f).to(eq(1.5))
+            expect(subscription.payment_fee_estimate.to_f).to(eq(3.0))
           end
         end
 
@@ -157,8 +157,8 @@ with_items: true,
 
           it "calculates fees based on the estimated item prices and percentage provided" do
             estimator.estimate!
-            expect(subscription.shipping_fee_estimate.to_f).to eq 0.75
-            expect(subscription.payment_fee_estimate.to_f).to eq 1.5
+            expect(subscription.shipping_fee_estimate.to_f).to(eq(0.75))
+            expect(subscription.payment_fee_estimate.to_f).to(eq(1.5))
           end
         end
 
@@ -178,8 +178,8 @@ with_items: true,
 
           it "calculates fees based on the number of items and rate provided" do
             estimator.estimate!
-            expect(subscription.shipping_fee_estimate.to_f).to eq 3.6
-            expect(subscription.payment_fee_estimate.to_f).to eq 0.9
+            expect(subscription.shipping_fee_estimate.to_f).to(eq(3.6))
+            expect(subscription.payment_fee_estimate.to_f).to(eq(0.9))
           end
         end
       end

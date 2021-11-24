@@ -24,7 +24,7 @@ describe ShopsController, type: :controller do
     get :index
 
     expect(response.body)
-      .to match(/"distributed_properties":\[{"id":\d+,"name":"eggs","presentation":"eggs"}\]/)
+      .to(match(/"distributed_properties":\[{"id":\d+,"name":"eggs","presentation":"eggs"}\]/))
   end
 
   it 'renders distributed producer properties' do
@@ -43,7 +43,7 @@ describe ShopsController, type: :controller do
     get :index
 
     expect(response.body)
-      .to match(/"distributed_properties":\[{"id":\d+,"name":"certified","presentation":"certified"}\]/)
+      .to(match(/"distributed_properties":\[{"id":\d+,"name":"certified","presentation":"certified"}\]/))
   end
 
   it 'renders distributed properties' do
@@ -65,6 +65,6 @@ describe ShopsController, type: :controller do
     get :index
 
     expect(response.body)
-      .to match(/"distributed_properties":\[{"id":\d+,"name":"dairy","presentation":"dairy"}\]/)
+      .to(match(/"distributed_properties":\[{"id":\d+,"name":"dairy","presentation":"dairy"}\]/))
   end
 end

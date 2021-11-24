@@ -96,7 +96,7 @@ enterprise.name + ": " + enterprise.address.address1 + ", " + enterprise.address
     options = {}
     options[:class] = "delete-resource"
     options[:data] = { action: 'remove', confirm: enterprise_confirm_delete_message(enterprise) }
-    link_to_with_icon 'icon-trash', name, url, options
+    link_to_with_icon('icon-trash', name, url, options)
   end
 
   def order_changes_allowed?

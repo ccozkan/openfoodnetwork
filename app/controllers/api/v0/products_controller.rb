@@ -16,16 +16,16 @@ module Api
 
       def show
         @product = find_product(params[:id])
-        render json: @product, serializer: Api::Admin::ProductSerializer
+        render(json: @product, serializer: Api::Admin::ProductSerializer)
       end
 
       def create
-        authorize! :create, Spree::Product
+        authorize!(:create, Spree::Product)
         @product = Spree::Product.new(product_params)
 
         begin
           if @product.save
-            render json: @product, serializer: Api::Admin::ProductSerializer, status: :created
+            render(json: @product, serializer: Api::Admin::ProductSerializer, status: :created)
           else
             invalid_resource!(@product)
           end
@@ -36,21 +36,21 @@ module Api
       end
 
       def update
-        authorize! :update, Spree::Product
+        authorize!(:update, Spree::Product)
         @product = find_product(params[:id])
         if @product.update(product_params)
-          render json: @product, serializer: Api::Admin::ProductSerializer, status: :ok
+          render(json: @product, serializer: Api::Admin::ProductSerializer, status: :ok)
         else
           invalid_resource!(@product)
         end
       end
 
       def destroy
-        authorize! :delete, Spree::Product
+        authorize!(:delete, Spree::Product)
         @product = find_product(params[:id])
-        authorize! :delete, @product
+        authorize!(:delete, @product)
         @product.destroy
-        render json: @product, serializer: Api::Admin::ProductSerializer, status: :no_content
+        render(json: @product, serializer: Api::Admin::ProductSerializer, status: :no_content)
       end
 
       def bulk_products
@@ -65,28 +65,28 @@ module Api
 
         @products = product_query.ransack(query_params_with_defaults).result
 
-        render_paged_products @products
+        render_paged_products(@products)
       end
 
       def overridable
         producer_ids = OpenFoodNetwork::Permissions.new(current_api_user)
           .variant_override_producers.by_name.select('enterprises.id')
 
-        @products = paged_products_for_producers producer_ids
+        @products = paged_products_for_producers(producer_ids)
 
-        render_paged_products @products, ::Api::Admin::ProductSimpleSerializer
+        render_paged_products(@products, ::Api::Admin::ProductSimpleSerializer)
       end
 
       # POST /api/products/:product_id/clone
       #
       def clone
-        authorize! :create, Spree::Product
+        authorize!(:create, Spree::Product)
         original_product = find_product(params[:product_id])
-        authorize! :update, original_product
+        authorize!(:update, original_product)
 
         @product = original_product.duplicate
 
-        render json: @product, serializer: Api::Admin::ProductSerializer, status: :created
+        render(json: @product, serializer: Api::Admin::ProductSerializer, status: :created)
       end
 
       private
@@ -138,7 +138,7 @@ module Api
           each_serializer: product_serializer
         )
 
-        render json: { products: serialized_products, pagination: pagination_data }
+        render(json: { products: serialized_products, pagination: pagination_data })
       end
 
       def query_params_with_defaults

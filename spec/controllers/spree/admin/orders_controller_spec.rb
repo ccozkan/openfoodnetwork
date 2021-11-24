@@ -12,9 +12,9 @@ describe Spree::Admin::OrdersController, type: :controller do
 
     it "advances the order state" do
       expect do
-        spree_get :edit, id: order
-      end.to change { order.reload.state }
-.from("cart").to("payment")
+        spree_get(:edit, id: order)
+      end.to(change { order.reload.state }
+.from("cart").to("payment"))
     end
 
     describe "view" do
@@ -33,7 +33,7 @@ describe Spree::Admin::OrdersController, type: :controller do
 
         spree_get :edit, id: order
 
-        expect(response.body).to_not match adjustment.label
+        expect(response.body).to_not(match(adjustment.label))
       end
     end
   end
@@ -60,21 +60,21 @@ order_cycle_id: order.order_cycle_id
 
         spree_put :update, params
 
-        expect(response.status).to eq 302
+        expect(response.status).to(eq(302))
       end
 
       context "recalculating fees and taxes" do
         before do
-          allow(Spree::Order).to receive_message_chain(:includes, :find_by!) { order }
+          allow(Spree::Order).to(receive_message_chain(:includes, :find_by!) { order })
         end
 
         it "updates fees and taxes and redirects to order details page" do
-          expect(order).to receive(:recreate_all_fees!)
-          expect(order).to receive(:create_tax_charge!)
+          expect(order).to(receive(:recreate_all_fees!))
+          expect(order).to(receive(:create_tax_charge!))
 
           spree_put :update, params
 
-          expect(response).to redirect_to spree.edit_admin_order_path(order)
+          expect(response).to(redirect_to(spree.edit_admin_order_path(order)))
         end
       end
 
@@ -112,35 +112,35 @@ order_cycle: order_cycle
         end
 
         before do
-          allow(controller).to receive(:spree_current_user) { user }
-          allow(controller).to receive(:order_to_update) { order }
+          allow(controller).to(receive(:spree_current_user) { user })
+          allow(controller).to(receive(:order_to_update) { order })
         end
 
         it "recalculates fees if the orders contents have changed" do
-          expect(order.total).to eq order.item_total + (enterprise_fee.calculator.preferred_amount * 2)
-          expect(order.adjustment_total).to eq enterprise_fee.calculator.preferred_amount * 2
+          expect(order.total).to(eq(order.item_total + (enterprise_fee.calculator.preferred_amount * 2)))
+          expect(order.adjustment_total).to(eq(enterprise_fee.calculator.preferred_amount * 2))
 
           order.contents.add(order.line_items.first.variant, 1)
 
           spree_put :update, { id: order.number }
 
-          expect(order.reload.total).to eq order.item_total + (enterprise_fee.calculator.preferred_amount * 3)
-          expect(order.adjustment_total).to eq enterprise_fee.calculator.preferred_amount * 3
+          expect(order.reload.total).to(eq(order.item_total + (enterprise_fee.calculator.preferred_amount * 3)))
+          expect(order.adjustment_total).to(eq(enterprise_fee.calculator.preferred_amount * 3))
         end
 
         context "if the associated enterprise fee record is soft-deleted" do
           it "removes adjustments for deleted enterprise fees" do
             fee_amount = enterprise_fee.calculator.preferred_amount
 
-            expect(order.total).to eq order.item_total + (fee_amount * 2)
-            expect(order.adjustment_total).to eq fee_amount * 2
+            expect(order.total).to(eq(order.item_total + (fee_amount * 2)))
+            expect(order.adjustment_total).to(eq(fee_amount * 2))
 
             enterprise_fee.destroy
 
             spree_put :update, { id: order.number }
 
-            expect(order.reload.total).to eq order.item_total
-            expect(order.adjustment_total).to eq 0
+            expect(order.reload.total).to(eq(order.item_total))
+            expect(order.adjustment_total).to(eq(0))
           end
         end
 
@@ -150,15 +150,15 @@ order_cycle: order_cycle
           it "removes adjustments for deleted enterprise fees" do
             fee_amount = enterprise_fee.calculator.preferred_amount
 
-            expect(order.total).to eq order.item_total + (fee_amount * 2)
-            expect(order.adjustment_total).to eq fee_amount * 2
+            expect(order.total).to(eq(order.item_total + (fee_amount * 2)))
+            expect(order.adjustment_total).to(eq(fee_amount * 2))
 
             enterprise_fee.really_destroy!
 
             spree_put :update, { id: order.number }
 
-            expect(order.reload.total).to eq order.item_total
-            expect(order.adjustment_total).to eq 0
+            expect(order.reload.total).to(eq(order.item_total))
+            expect(order.adjustment_total).to(eq(0))
           end
         end
 
@@ -173,7 +173,7 @@ order_cycle: order_cycle
           end
 
           before do
-            allow(order).to receive(:tax_zone) { zone }
+            allow(order).to(receive(:tax_zone) { zone })
           end
 
           context "with included taxes" do
@@ -181,11 +181,11 @@ order_cycle: order_cycle
               spree_put :update, { id: order.number }
               order.reload
 
-              expect(order.all_adjustments.tax.count).to eq 2
-              expect(order.enterprise_fee_tax).to eq 0.4
+              expect(order.all_adjustments.tax.count).to(eq(2))
+              expect(order.enterprise_fee_tax).to(eq(0.4))
 
-              expect(order.included_tax_total).to eq 0.4
-              expect(order.additional_tax_total).to eq 0
+              expect(order.included_tax_total).to(eq(0.4))
+              expect(order.additional_tax_total).to(eq(0))
             end
           end
 
@@ -196,11 +196,11 @@ order_cycle: order_cycle
               spree_put :update, { id: order.number }
               order.reload
 
-              expect(order.all_adjustments.tax.count).to eq 2
-              expect(order.enterprise_fee_tax).to eq 0.5
+              expect(order.all_adjustments.tax.count).to(eq(2))
+              expect(order.enterprise_fee_tax).to(eq(0.5))
 
-              expect(order.included_tax_total).to eq 0
-              expect(order.additional_tax_total).to eq 0.5
+              expect(order.included_tax_total).to(eq(0))
+              expect(order.additional_tax_total).to(eq(0.5))
             end
 
             context "when the order has legacy taxes" do
@@ -222,16 +222,16 @@ state: "closed"
               end
 
               it "removes legacy tax adjustments before recalculating tax" do
-                expect(order.all_adjustments.tax.count).to eq 1
-                expect(order.all_adjustments.tax).to include legacy_tax_adjustment
-                expect(order.additional_tax_total).to eq 0.5
+                expect(order.all_adjustments.tax.count).to(eq(1))
+                expect(order.all_adjustments.tax).to(include(legacy_tax_adjustment))
+                expect(order.additional_tax_total).to(eq(0.5))
 
                 spree_put :update, { id: order.number }
                 order.reload
 
-                expect(order.all_adjustments.tax.count).to eq 2
-                expect(order.all_adjustments.tax).to_not include legacy_tax_adjustment
-                expect(order.additional_tax_total).to eq 0.5
+                expect(order.all_adjustments.tax.count).to(eq(2))
+                expect(order.all_adjustments.tax).to_not(include(legacy_tax_adjustment))
+                expect(order.additional_tax_total).to(eq(0.5))
               end
             end
           end
@@ -247,8 +247,8 @@ state: "closed"
         it "redirects to order details page with flash error" do
           spree_put :update, params
 
-          expect(flash[:error]).to eq "Line items can't be blank"
-          expect(response).to redirect_to spree.edit_admin_order_path(order)
+          expect(flash[:error]).to(eq("Line items can't be blank"))
+          expect(response).to(redirect_to(spree.edit_admin_order_path(order)))
         end
       end
 
@@ -262,11 +262,11 @@ state: "closed"
 
         context "and no errors" do
           it "updates distribution charges and redirects to customer details page" do
-            expect_any_instance_of(Spree::Order).to receive(:recreate_all_fees!)
+            expect_any_instance_of(Spree::Order).to(receive(:recreate_all_fees!))
 
             spree_put :update, params
 
-            expect(response).to redirect_to spree.admin_order_customer_path(order)
+            expect(response).to(redirect_to(spree.admin_order_customer_path(order)))
           end
         end
 
@@ -276,8 +276,8 @@ state: "closed"
 
             spree_put :update, params
 
-            expect(flash[:error]).to eq "Distributor or order cycle cannot supply the products in your cart"
-            expect(response).to redirect_to spree.edit_admin_order_path(order)
+            expect(flash[:error]).to(eq("Distributor or order cycle cannot supply the products in your cart"))
+            expect(response).to(redirect_to(spree.edit_admin_order_path(order)))
           end
         end
       end
@@ -286,21 +286,21 @@ state: "closed"
 
   describe "#index" do
     context "as a regular user" do
-      before { allow(controller).to receive(:spree_current_user) { create(:user) } }
+      before { allow(controller).to(receive(:spree_current_user) { create(:user) }) }
 
       it "should deny me access to the index action" do
         spree_get :index
-        expect(response).to redirect_to unauthorized_path
+        expect(response).to(redirect_to(unauthorized_path))
       end
     end
 
     context "as an enterprise user" do
       let!(:order) { create(:order_with_distributor) }
 
-      before { allow(controller).to receive(:spree_current_user) { order.distributor.owner } }
+      before { allow(controller).to(receive(:spree_current_user) { order.distributor.owner }) }
 
       it "should allow access" do
-        expect(response.status).to eq 200
+        expect(response.status).to(eq(200))
       end
     end
   end

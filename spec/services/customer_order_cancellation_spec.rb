@@ -5,7 +5,7 @@ require 'spec_helper'
 describe CustomerOrderCancellation do
   let(:mail_mock) { double(:mailer_mock, deliver_later: true) }
   before do
-    allow(Spree::OrderMailer).to receive(:cancel_email_for_shop) { mail_mock }
+    allow(Spree::OrderMailer).to(receive(:cancel_email_for_shop) { mail_mock })
   end
 
   context "when an order is cancelled successfully" do
@@ -14,8 +14,8 @@ describe CustomerOrderCancellation do
 
       CustomerOrderCancellation.new(order).call
 
-      expect(Spree::OrderMailer).to have_received(:cancel_email_for_shop).with(order)
-      expect(mail_mock).to have_received(:deliver_later)
+      expect(Spree::OrderMailer).to(have_received(:cancel_email_for_shop).with(order))
+      expect(mail_mock).to(have_received(:deliver_later))
     end
   end
 
@@ -25,7 +25,7 @@ describe CustomerOrderCancellation do
 
       CustomerOrderCancellation.new(order).call
 
-      expect(Spree::OrderMailer).to_not have_received(:cancel_email_for_shop)
+      expect(Spree::OrderMailer).to_not(have_received(:cancel_email_for_shop))
     end
   end
 end

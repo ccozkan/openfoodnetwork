@@ -12,9 +12,9 @@ module Spree
         @order_cycle_count = OrderCycle.active.managed_by(spree_current_user).count
 
         if first_access
-          redirect_to enterprises_path
+          redirect_to(enterprises_path)
         else
-          render dashboard_view
+          render(dashboard_view)
         end
       end
 

@@ -6,12 +6,12 @@ class LineItemsController < BaseController
   before_action :load_line_item, only: :destroy
 
   def bought
-    respond_with bought_items, each_serializer: Api::LineItemSerializer
+    respond_with(bought_items, each_serializer: Api::LineItemSerializer)
   end
 
   def destroy
-    authorize! :destroy, @line_item
-    destroy_with_lock @line_item
+    authorize!(:destroy, @line_item)
+    destroy_with_lock(@line_item)
     respond_with(@line_item)
   end
 

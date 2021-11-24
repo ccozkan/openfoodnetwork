@@ -70,13 +70,13 @@ module Checkout
 
       add_to_payment_attributes(existing_card_id)
 
-      @params.dig(:order, :payments_attributes).first.delete :source_attributes
+      @params.dig(:order, :payments_attributes).first.delete(:source_attributes)
     end
 
     def add_to_payment_attributes(existing_card_id)
       credit_card = Spree::CreditCard.find(existing_card_id)
       if credit_card.try(:user_id).blank? || credit_card.user_id != @current_user.try(:id)
-        raise Spree::Core::GatewayError, I18n.t(:invalid_credit_card)
+        raise(Spree::Core::GatewayError, I18n.t(:invalid_credit_card))
       end
 
       @params.dig(:order, :payments_attributes).first[:source] = credit_card

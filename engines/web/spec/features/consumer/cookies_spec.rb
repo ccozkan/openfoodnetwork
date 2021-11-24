@@ -62,7 +62,7 @@ feature "Cookies", js: true do
       scenario "it is not showing" do
         Spree::Config[:cookies_consent_banner_toggle] = false
         visit root_path
-        expect(page).to have_no_content I18n.t('legal.cookies_banner.cookies_usage')
+        expect(page).to(have_no_content(I18n.t('legal.cookies_banner.cookies_usage')))
       end
     end
   end
@@ -79,15 +79,15 @@ feature "Cookies", js: true do
 
     scenario "shows session_id cookies description with correct instance domain" do
       visit '/#/policies/cookies'
-      expect(page).to have_content('_ofn_session_id').and have_content('127.0.0.1')
+      expect(page).to(have_content('_ofn_session_id').and(have_content('127.0.0.1')))
     end
 
     context "without Matomo section configured" do
       scenario "does not show Matomo cookies details and does not show Matomo optout text" do
         Spree::Config[:cookies_policy_matomo_section] = false
         visit_cookies_policy_page
-        expect(page).to have_no_content matomo_description_text
-        expect(page).to have_no_content matomo_opt_out_iframe
+        expect(page).to(have_no_content(matomo_description_text))
+        expect(page).to(have_no_content(matomo_opt_out_iframe))
       end
     end
 
@@ -98,15 +98,15 @@ feature "Cookies", js: true do
 
       scenario "shows Matomo cookies details" do
         visit_cookies_policy_page
-        expect(page).to have_content matomo_description_text
+        expect(page).to(have_content(matomo_description_text))
       end
 
       context "with Matomo integration enabled" do
         scenario "shows Matomo optout iframe" do
           Spree::Config[:matomo_url] = "https://0000.innocraft.cloud/"
           visit_cookies_policy_page
-          expect(page).to have_content matomo_opt_out_iframe
-          expect(page).to have_selector("iframe")
+          expect(page).to(have_content(matomo_opt_out_iframe))
+          expect(page).to(have_selector("iframe"))
         end
       end
 
@@ -115,23 +115,23 @@ feature "Cookies", js: true do
           Spree::Config[:cookies_policy_matomo_section] = true
           Spree::Config[:matomo_url] = ""
           visit_cookies_policy_page
-          expect(page).to have_no_content matomo_opt_out_iframe
-          expect(page).to have_no_selector("iframe")
+          expect(page).to(have_no_content(matomo_opt_out_iframe))
+          expect(page).to(have_no_selector("iframe"))
         end
       end
     end
   end
 
   def expect_visible_cookies_policy_page
-    expect(page).to have_content I18n.t('legal.cookies_policy.header')
+    expect(page).to(have_content(I18n.t('legal.cookies_policy.header')))
   end
 
   def expect_visible_cookies_banner
-    expect(page).to have_css("button", text: accept_cookies_button_text, visible: true)
+    expect(page).to(have_css("button", text: accept_cookies_button_text, visible: true))
   end
 
   def expect_not_visible_cookies_banner
-    expect(page).to have_no_css("button", text: accept_cookies_button_text, visible: true)
+    expect(page).to(have_no_css("button", text: accept_cookies_button_text, visible: true))
   end
 
   def accept_cookies_button_text
@@ -139,32 +139,32 @@ feature "Cookies", js: true do
   end
 
   def visit_root_path_and_wait
-    visit root_path
-    sleep 1
+    visit(root_path)
+    sleep(1)
   end
 
   def accept_cookies_and_wait
-    click_button accept_cookies_button_text
-    sleep 2
+    click_button(accept_cookies_button_text)
+    sleep(2)
   end
 
   def click_banner_cookies_policy_link_and_wait
     find("p.ng-binding > a", text: "cookies policy").click
-    sleep 2
+    sleep(2)
   end
 
   def click_footer_cookies_policy_link_and_wait
     find(".legal a", text: "cookies policy").click
-    sleep 2
+    sleep(2)
   end
 
   def close_cookies_policy_page_and_wait
     find("a.close-reveal-modal").click
-    sleep 2
+    sleep(2)
   end
 
   def visit_cookies_policy_page
-    visit '/#/policies/cookies'
+    visit('/#/policies/cookies')
   end
 
   def matomo_description_text

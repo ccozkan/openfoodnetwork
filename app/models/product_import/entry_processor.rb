@@ -104,25 +104,25 @@ module ProductImport
     attr_reader :settings
 
     def save_to_inventory(entry)
-      save_new_inventory_item entry if entry.validates_as? 'new_inventory_item'
-      save_existing_inventory_item entry if entry.validates_as? 'existing_inventory_item'
+      save_new_inventory_item(entry) if entry.validates_as?('new_inventory_item')
+      save_existing_inventory_item(entry) if entry.validates_as?('existing_inventory_item')
     end
 
     def save_to_product_list(entry)
-      save_new_product entry if entry.validates_as? 'new_product'
+      save_new_product(entry) if entry.validates_as?('new_product')
 
-      if entry.validates_as? 'new_variant'
-        save_variant entry
+      if entry.validates_as?('new_variant')
+        save_variant(entry)
         @variants_created += 1
       end
 
-      return unless entry.validates_as? 'existing_variant'
+      return unless entry.validates_as?('existing_variant')
 
       begin
-        save_variant entry
+        save_variant(entry)
       rescue ActiveRecord::StaleObjectError
         entry.product_object.reload
-        save_variant entry
+        save_variant(entry)
       end
 
       @variants_updated += 1
@@ -135,9 +135,9 @@ module ProductImport
       if new_item.valid? && new_item.save
         display_in_inventory(new_item, true)
         @inventory_created += 1
-        @updated_ids.push new_item.id
+        @updated_ids.push(new_item.id)
       else
-        assign_errors new_item.errors.full_messages, entry.line_number
+        assign_errors(new_item.errors.full_messages, entry.line_number)
       end
     end
 
@@ -148,9 +148,9 @@ module ProductImport
       if existing_item.valid? && existing_item.save
         display_in_inventory(existing_item)
         @inventory_updated += 1
-        @updated_ids.push existing_item.id
+        @updated_ids.push(existing_item.id)
       else
-        assign_errors existing_item.errors.full_messages, entry.line_number
+        assign_errors(existing_item.errors.full_messages, entry.line_number)
       end
     end
 
@@ -175,12 +175,12 @@ module ProductImport
       if product.save
         ensure_variant_updated(product, entry)
         @products_created += 1
-        @updated_ids.push product.variants.first.id
+        @updated_ids.push(product.variants.first.id)
       else
-        assign_errors product.errors.full_messages, entry.line_number
+        assign_errors(product.errors.full_messages, entry.line_number)
       end
 
-      @already_created.deep_merge! entry.enterprise_id => { entry.name => product.id }
+      @already_created.deep_merge!(entry.enterprise_id => { entry.name => product.id })
     end
 
     def save_variant(entry)
@@ -188,10 +188,10 @@ module ProductImport
       variant.import_date = @import_time
 
       if variant.valid? && variant.save
-        @updated_ids.push variant.id
+        @updated_ids.push(variant.id)
         true
       else
-        assign_errors variant.errors.full_messages, entry.line_number
+        assign_errors(variant.errors.full_messages, entry.line_number)
         false
       end
     end

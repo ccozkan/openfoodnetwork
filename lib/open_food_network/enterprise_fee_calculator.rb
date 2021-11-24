@@ -13,7 +13,7 @@ module OpenFoodNetwork
       load_enterprise_fees unless @indexed_enterprise_fees
 
       indexed_enterprise_fees_for(variant).sum do |enterprise_fee|
-        calculate_fee_for variant, enterprise_fee
+        calculate_fee_for(variant, enterprise_fee)
       end
     end
 
@@ -22,21 +22,21 @@ module OpenFoodNetwork
 
       indexed_enterprise_fees_for(variant).each_with_object({}) do |enterprise_fee, fees|
         fees[enterprise_fee.fee_type.to_sym] ||= 0
-        fees[enterprise_fee.fee_type.to_sym] += calculate_fee_for variant, enterprise_fee
+        fees[enterprise_fee.fee_type.to_sym] += calculate_fee_for(variant, enterprise_fee)
       end.select { |_fee_type, amount| amount > 0 }
     end
 
     def fees_for(variant)
       per_item_enterprise_fee_applicators_for(variant).sum do |applicator|
-        calculate_fee_for variant, applicator.enterprise_fee
+        calculate_fee_for(variant, applicator.enterprise_fee)
       end
     end
 
     def fees_by_type_for(variant)
       per_item_enterprise_fee_applicators_for(variant).each_with_object({}) do |applicator, fees|
         fees[applicator.enterprise_fee.fee_type.to_sym] ||= 0
-        fees[applicator.enterprise_fee.fee_type.to_sym] += calculate_fee_for variant,
-                                                                             applicator.enterprise_fee
+        fees[applicator.enterprise_fee.fee_type.to_sym] += calculate_fee_for(variant,
+                                                                             applicator.enterprise_fee)
       end.select { |_fee_type, amount| amount > 0 }
     end
 
@@ -100,7 +100,7 @@ variant,
       @indexed_enterprise_fees = {}
 
       exchange_fees = per_item_enterprise_fees_with_exchange_details
-      load_exchange_fees exchange_fees
+      load_exchange_fees(exchange_fees)
       load_coordinator_fees
     end
 
@@ -136,10 +136,10 @@ variant,
     def calculate_fee_for(variant, enterprise_fee)
       # Spree's Calculator interface accepts Orders or LineItems,
       # so we meet that interface with a struct.
-      line_item = OpenStruct.new variant: variant,
+      line_item = OpenStruct.new(variant: variant,
 quantity: 1,
 price: variant.price,
-                                 amount: variant.price
+                                 amount: variant.price)
       enterprise_fee.compute_amount(line_item)
     end
   end

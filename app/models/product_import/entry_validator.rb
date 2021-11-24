@@ -115,10 +115,10 @@ entry,
     end
 
     def enterprise_validation(entry)
-      return if name_presence_error entry
-      return if enterprise_not_found_error entry
-      return if permissions_error entry
-      return if primary_producer_error entry
+      return if name_presence_error(entry)
+      return if enterprise_not_found_error(entry)
+      return if permissions_error(entry)
+      return if primary_producer_error(entry)
 
       entry.enterprise_id = @spreadsheet_data.enterprises_index[entry.enterprise][:id]
 
@@ -330,7 +330,7 @@ attribute: "category",
     def tax_and_shipping_validation(entry, type, category, index)
       return if category.blank?
 
-      if index.key? category
+      if index.key?(category)
         entry.public_send("#{type}_category_id=", index[category])
       else
         mark_as_invalid(
@@ -431,7 +431,7 @@ attribute: display_name,
     end
 
     def ignore_when_updating_product?(attribute)
-      SKIP_VALIDATE_ON_UPDATE.include? attribute
+      SKIP_VALIDATE_ON_UPDATE.include?(attribute)
     end
 
     def convert_to_trusted_type(untrusted_attribute, trusted_attribute)

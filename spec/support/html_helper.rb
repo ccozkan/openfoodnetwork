@@ -3,9 +3,9 @@
 module OpenFoodNetwork
   module HtmlHelper
     def html_save_and_open(html)
-      require "launchy"
+      require("launchy")
       file = Tempfile.new('html')
-      file.write html
+      file.write(html)
       Launchy.open(file.path)
     end
   end

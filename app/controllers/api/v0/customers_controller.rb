@@ -7,18 +7,18 @@ module Api
 
       def index
         @customers = current_api_user.customers
-        render json: @customers, each_serializer: CustomerSerializer
+        render(json: @customers, each_serializer: CustomerSerializer)
       end
 
       def update
         @customer = Customer.find(params[:id])
-        authorize! :update, @customer
+        authorize!(:update, @customer)
 
         client_secret = RecurringPayments.setup_for(@customer) if params[:customer][:allow_charges]
 
         if @customer.update(customer_params)
           add_recurring_payment_info(client_secret)
-          render json: @customer, serializer: CustomerSerializer, status: :ok
+          render(json: @customer, serializer: CustomerSerializer, status: :ok)
         else
           invalid_resource!(@customer)
         end

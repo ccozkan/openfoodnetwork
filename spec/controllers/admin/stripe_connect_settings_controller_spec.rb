@@ -14,18 +14,18 @@ describe Admin::StripeConnectSettingsController, type: :controller do
 
   describe "edit" do
     context "as an enterprise user" do
-      before { allow(controller).to receive(:spree_current_user) { user } }
+      before { allow(controller).to(receive(:spree_current_user) { user }) }
 
       it "does not allow access" do
         get :edit
-        expect(response).to redirect_to unauthorized_path
+        expect(response).to(redirect_to(unauthorized_path))
       end
     end
 
     context "as super admin" do
       before do
         Spree::Config.set(stripe_connect_enabled: true)
-        allow(controller).to receive(:spree_current_user) { admin }
+        allow(controller).to(receive(:spree_current_user) { admin })
       end
 
       context "when a Stripe API key is not set" do
@@ -35,8 +35,8 @@ describe Admin::StripeConnectSettingsController, type: :controller do
 
         it "sets the account status to :empty_api_key_error_html" do
           get :edit
-          expect(assigns(:stripe_account)[:status]).to eq :empty_api_key_error_html
-          expect(assigns(:settings).stripe_connect_enabled).to be true
+          expect(assigns(:stripe_account)[:status]).to(eq(:empty_api_key_error_html))
+          expect(assigns(:settings).stripe_connect_enabled).to(be(true))
         end
       end
 
@@ -53,8 +53,8 @@ describe Admin::StripeConnectSettingsController, type: :controller do
 
           it "sets the account status to :auth_fail_error" do
             get :edit
-            expect(assigns(:stripe_account)[:status]).to eq :auth_fail_error
-            expect(assigns(:settings).stripe_connect_enabled).to be true
+            expect(assigns(:stripe_account)[:status]).to(eq(:auth_fail_error))
+            expect(assigns(:settings).stripe_connect_enabled).to(be(true))
           end
         end
 
@@ -66,9 +66,9 @@ describe Admin::StripeConnectSettingsController, type: :controller do
 
           it "sets the account status to :ok, loads settings into Struct" do
             get :edit
-            expect(assigns(:stripe_account)[:status]).to eq :ok
-            expect(assigns(:obfuscated_secret_key)).to eq "sk_test_****xxxx"
-            expect(assigns(:settings).stripe_connect_enabled).to be true
+            expect(assigns(:stripe_account)[:status]).to(eq(:ok))
+            expect(assigns(:obfuscated_secret_key)).to(eq("sk_test_****xxxx"))
+            expect(assigns(:settings).stripe_connect_enabled).to(be(true))
           end
         end
       end
@@ -79,24 +79,24 @@ describe Admin::StripeConnectSettingsController, type: :controller do
     let(:params) { { settings: { stripe_connect_enabled: false } } }
 
     context "as an enterprise user" do
-      before { allow(controller).to receive(:spree_current_user) { user } }
+      before { allow(controller).to(receive(:spree_current_user) { user }) }
 
       it "does not allow access" do
         get :update, params: params
-        expect(response).to redirect_to unauthorized_path
+        expect(response).to(redirect_to(unauthorized_path))
       end
     end
 
     context "as super admin" do
       before do
-        allow(controller).to receive(:spree_current_user) { admin }
+        allow(controller).to(receive(:spree_current_user) { admin })
         Spree::Config.set(stripe_connect_enabled: true)
       end
 
       it "sets global config to the specified values" do
-        expect(Spree::Config.stripe_connect_enabled).to be true
+        expect(Spree::Config.stripe_connect_enabled).to(be(true))
         get :update, params: params
-        expect(Spree::Config.stripe_connect_enabled).to be false
+        expect(Spree::Config.stripe_connect_enabled).to(be(false))
       end
     end
   end

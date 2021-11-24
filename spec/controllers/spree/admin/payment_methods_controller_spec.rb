@@ -19,53 +19,53 @@ distributor_ids: [enterprise.id]
       end
       let!(:user) { create(:user) }
 
-      before { allow(controller).to receive(:spree_current_user) { user } }
+      before { allow(controller).to(receive(:spree_current_user) { user }) }
 
       it "does not clear password on update" do
-        expect(payment_method.preferred_password).to eq "haxme"
+        expect(payment_method.preferred_password).to(eq("haxme"))
         spree_put :update,
 id: payment_method.id,
                            payment_method: { type: payment_method.class.to_s, preferred_password: "" }
-        expect(response).to redirect_to spree.edit_admin_payment_method_path(payment_method)
+        expect(response).to(redirect_to(spree.edit_admin_payment_method_path(payment_method)))
 
         payment_method.reload
-        expect(payment_method.preferred_password).to eq "haxme"
+        expect(payment_method.preferred_password).to(eq("haxme"))
       end
 
       context "tries to save invalid payment" do
         it "doesn't break, responds nicely" do
           expect do
-            spree_post :create, payment_method: { name: "", type: "Spree::Gateway::Bogus" }
-          end.not_to raise_error
+            spree_post(:create, payment_method: { name: "", type: "Spree::Gateway::Bogus" })
+          end.not_to(raise_error)
         end
       end
 
       it "can create a payment method of a valid type" do
         expect do
-          spree_post :create,
+          spree_post(:create,
                      payment_method: {
 name: "Test Method",
 type: "Spree::Gateway::Bogus",
 distributor_ids: [enterprise.id]
-}
-        end.to change(Spree::PaymentMethod, :count).by(1)
+})
+        end.to(change(Spree::PaymentMethod, :count).by(1))
 
-        expect(response).to be_redirect
-        expect(response).to redirect_to spree.edit_admin_payment_method_path(assigns(:payment_method))
+        expect(response).to(be_redirect)
+        expect(response).to(redirect_to(spree.edit_admin_payment_method_path(assigns(:payment_method))))
       end
 
       it "can not create a payment method of an invalid type" do
         expect do
-          spree_post :create,
+          spree_post(:create,
                      payment_method: {
 name: "Invalid Payment Method",
 type: "Spree::InvalidType",
 distributor_ids: [enterprise.id]
-}
-        end.to change(Spree::PaymentMethod, :count).by(0)
+})
+        end.to(change(Spree::PaymentMethod, :count).by(0))
 
-        expect(response).to be_redirect
-        expect(response).to redirect_to spree.new_admin_payment_method_path
+        expect(response).to(be_redirect)
+        expect(response).to(redirect_to(spree.new_admin_payment_method_path))
       end
     end
 
@@ -94,10 +94,10 @@ distributor_ids: [enterprise.id]
           spree_post :update, params
           payment_method.reload
 
-          expect(payment_method.name).to eq "Updated"
-          expect(payment_method.description).to eq "Updated"
-          expect(payment_method.calculator.preferred_amount).to eq 456
-          expect(payment_method.calculator.preferred_currency).to eq "GBP"
+          expect(payment_method.name).to(eq("Updated"))
+          expect(payment_method.description).to(eq("Updated"))
+          expect(payment_method.calculator.preferred_amount).to(eq(456))
+          expect(payment_method.calculator.preferred_currency).to(eq("GBP"))
         end
 
         context "when the given payment method type does not match" do
@@ -113,7 +113,7 @@ distributor_ids: [enterprise.id]
           it "updates the payment method type" do
             spree_post :update, params
 
-            expect(PaymentMethod.find(payment_method.id).type).to eq "Spree::Gateway::Bogus"
+            expect(PaymentMethod.find(payment_method.id).type).to(eq("Spree::Gateway::Bogus"))
           end
         end
       end
@@ -130,7 +130,7 @@ distributor_ids: [enterprise1.id, enterprise2.id],
 )
         end
 
-        before { allow(controller).to receive(:spree_current_user) { user } }
+        before { allow(controller).to(receive(:spree_current_user) { user }) }
 
         context "when an attempt is made to change the stripe account holder (preferred_enterprise_id)" do
           let(:params) do
@@ -146,7 +146,7 @@ distributor_ids: [enterprise1.id, enterprise2.id],
           context "as a user that does not manage the existing stripe account holder" do
             it "prevents the stripe account holder from being updated" do
               spree_put :update, params
-              expect(payment_method.reload.preferred_enterprise_id).to eq enterprise2.id
+              expect(payment_method.reload.preferred_enterprise_id).to(eq(enterprise2.id))
             end
           end
 
@@ -155,7 +155,7 @@ distributor_ids: [enterprise1.id, enterprise2.id],
 
             it "allows the stripe account holder to be updated" do
               spree_put :update, params
-              expect(payment_method.reload.preferred_enterprise_id).to eq enterprise1.id
+              expect(payment_method.reload.preferred_enterprise_id).to(eq(enterprise1.id))
             end
 
             context "when no enterprise is selected as the account holder" do
@@ -166,8 +166,8 @@ distributor_ids: [enterprise1.id, enterprise2.id],
 
                 it "does not save the payment method" do
                   spree_put :update, params
-                  expect(response).to render_template :edit
-                  expect(assigns(:payment_method).errors.messages[:stripe_account_owner]).to include I18n.t(:error_required)
+                  expect(response).to(render_template(:edit))
+                  expect(assigns(:payment_method).errors.messages[:stripe_account_owner]).to(include(I18n.t(:error_required)))
                 end
               end
 
@@ -176,8 +176,8 @@ distributor_ids: [enterprise1.id, enterprise2.id],
 
                 it "does not save the payment method" do
                   spree_put :update, params
-                  expect(response).to render_template :edit
-                  expect(assigns(:payment_method).errors.messages[:stripe_account_owner]).to include I18n.t(:error_required)
+                  expect(response).to(render_template(:edit))
+                  expect(assigns(:payment_method).errors.messages[:stripe_account_owner]).to(include(I18n.t(:error_required)))
                 end
               end
             end
@@ -202,7 +202,7 @@ password: 'blahblah',
       end
 
       before do
-        allow(controller).to receive_messages spree_current_user: user
+        allow(controller).to(receive_messages(spree_current_user: user))
       end
 
       context "on an existing payment method" do
@@ -218,8 +218,8 @@ password: 'blahblah',
               spree_get :show_provider_preferences,
                         pm_id: payment_method.id,
                         provider_type: "Spree::PaymentMethod::Check"
-              expect(assigns(:payment_method)).to eq payment_method
-              expect(response).to render_template partial: '_provider_settings'
+              expect(assigns(:payment_method)).to(eq(payment_method))
+              expect(response).to(render_template(partial: '_provider_settings'))
             end
           end
 
@@ -228,8 +228,8 @@ password: 'blahblah',
               spree_get :show_provider_preferences,
                         pm_id: payment_method.id,
                         provider_type: "Spree::Gateway::Bogus"
-              expect(assigns(:payment_method)).not_to eq payment_method
-              expect(response).to render_template partial: '_provider_settings'
+              expect(assigns(:payment_method)).not_to(eq(payment_method))
+              expect(response).to(render_template(partial: '_provider_settings'))
             end
           end
         end
@@ -243,8 +243,8 @@ password: 'blahblah',
             spree_get :show_provider_preferences,
                       pm_id: payment_method.id,
                       provider_type: "Spree::PaymentMethod::Check"
-            expect(assigns(:payment_method)).to eq payment_method
-            expect(flash[:error]).to eq "Authorization Failure"
+            expect(assigns(:payment_method)).to(eq(payment_method))
+            expect(flash[:error]).to(eq("Authorization Failure"))
           end
         end
       end
@@ -252,8 +252,8 @@ password: 'blahblah',
       context "on a new payment method" do
         it "renders provider settings with a new payment method of type" do
           spree_get :show_provider_preferences, pm_id: "", provider_type: "Spree::Gateway::Bogus"
-          expect(assigns(:payment_method)).to be_a_new Spree::Gateway::Bogus
-          expect(response).to render_template partial: '_provider_settings'
+          expect(assigns(:payment_method)).to(be_a_new(Spree::Gateway::Bogus))
+          expect(response).to(render_template(partial: '_provider_settings'))
         end
       end
     end

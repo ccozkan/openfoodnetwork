@@ -13,7 +13,7 @@ module OrderManagement
         context "when the collection has not been set" do
           let(:order_cycles) { nil }
           it "returns 0" do
-            expect(subscriptions_count.for(oc1.id)).to eq 0
+            expect(subscriptions_count.for(oc1.id)).to(eq(0))
           end
         end
 
@@ -26,13 +26,13 @@ module OrderManagement
           context "but the requested id is not present in the list of order cycles provided" do
             it "returns 0" do
               # Note that po3 applies to oc2, but oc2 in not in the collection
-              expect(subscriptions_count.for(oc2.id)).to eq 0
+              expect(subscriptions_count.for(oc2.id)).to(eq(0))
             end
           end
 
           context "and the requested id is present in the list of order cycles provided" do
             it "returns a count of active proxy orders associated with the requested order cycle" do
-              expect(subscriptions_count.for(oc1.id)).to eq 2
+              expect(subscriptions_count.for(oc1.id)).to(eq(2))
             end
           end
         end

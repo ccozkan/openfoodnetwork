@@ -16,9 +16,9 @@ module OrderManagement
 
       context "packages" do
         it "builds, prioritizes and estimates" do
-          expect(subject).to receive(:build_packages).ordered
-          expect(subject).to receive(:prioritize_packages).ordered
-          expect(subject).to receive(:estimate_packages).ordered
+          expect(subject).to(receive(:build_packages).ordered)
+          expect(subject).to(receive(:prioritize_packages).ordered)
+          expect(subject).to(receive(:estimate_packages).ordered)
           subject.packages
         end
       end

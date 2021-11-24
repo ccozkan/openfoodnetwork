@@ -13,7 +13,7 @@ module Spree
       end
 
       it "can access the variant" do
-        expect(price.reload.variant).to eq variant
+        expect(price.reload.variant).to(eq(variant))
       end
     end
 
@@ -22,8 +22,8 @@ module Spree
 
       it "saves without error" do
         expect { expensive_variant.save }
-.to_not raise_error
-        expect(expensive_variant.persisted?).to be true
+.to_not(raise_error)
+        expect(expensive_variant.persisted?).to(be(true))
       end
     end
   end

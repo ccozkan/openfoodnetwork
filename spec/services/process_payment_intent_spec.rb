@@ -30,7 +30,7 @@ distributor: customer.enterprise,
     let(:validator) { instance_double(Stripe::PaymentIntentValidator) }
 
     before do
-      allow(Stripe::PaymentIntentValidator).to receive(:new).and_return(validator)
+      allow(Stripe::PaymentIntentValidator).to(receive(:new).and_return(validator))
     end
 
     context "with an invalid intent" do
@@ -43,32 +43,32 @@ distributor: customer.enterprise,
         it "returns false" do
           result = service.call!
 
-          expect(result.ok?).to eq(false)
-          expect(result.error).to eq("")
+          expect(result.ok?).to(eq(false))
+          expect(result.error).to(eq(""))
         end
 
         it "does not complete the payment" do
           service.call!
-          expect(payment.reload.state).to eq("requires_authorization")
+          expect(payment.reload.state).to(eq("requires_authorization"))
         end
       end
 
       context "where the stripe payment intent validation responds with errors" do
         before do
-          allow(validator).to receive(:call)
-            .and_raise(Stripe::StripeError, "error message")
+          allow(validator).to(receive(:call)
+            .and_raise(Stripe::StripeError, "error message"))
         end
 
         it "returns returns the error message" do
           result = service.call!
 
-          expect(result.ok?).to eq(false)
-          expect(result.error).to eq("error message")
+          expect(result.ok?).to(eq(false))
+          expect(result.error).to(eq("error message"))
         end
 
         it "does not complete the payment" do
           service.call!
-          expect(payment.reload.state).to eq("failed")
+          expect(payment.reload.state).to(eq("failed"))
         end
       end
     end
@@ -79,27 +79,27 @@ distributor: customer.enterprise,
       let(:service) { ProcessPaymentIntent.new(intent, order) }
 
       before do
-        allow(order).to receive(:deliver_order_confirmation_email)
-        allow(validator).to receive(:call).and_return(intent_response)
+        allow(order).to(receive(:deliver_order_confirmation_email))
+        allow(validator).to(receive(:call).and_return(intent_response))
       end
 
       it "validates the intent" do
-        expect(order).to receive(:process_payments!) { true }
+        expect(order).to(receive(:process_payments!) { true })
         service.call!
-        expect(validator).to have_received(:call)
+        expect(validator).to(have_received(:call))
       end
 
       it "processes the order's payment" do
-        allow(order).to receive(:pending_payments) { [payment] }
+        allow(order).to(receive(:pending_payments) { [payment] })
 
-        expect(order).to receive(:process_payments!).and_call_original
-        expect(payment).to receive(:purchase!) { true }
+        expect(order).to(receive(:process_payments!).and_call_original)
+        expect(payment).to(receive(:purchase!) { true })
         service.call!
       end
 
       context "when payment processing succeeds" do
         before do
-          allow(order).to receive(:process_payments!) do
+          allow(order).to(receive(:process_payments!)) do
             payment.complete!
           end
         end
@@ -107,20 +107,20 @@ distributor: customer.enterprise,
         it "completes the payment" do
           service.call!
           payment.reload
-          expect(payment.state).to eq("completed")
-          expect(payment.cvv_response_message).to be nil
+          expect(payment.state).to(eq("completed"))
+          expect(payment.cvv_response_message).to(be(nil))
         end
 
         it "completes the order" do
           service.call!
-          expect(order.state).to eq("complete")
-          expect(order).to have_received(:deliver_order_confirmation_email)
+          expect(order.state).to(eq("complete"))
+          expect(order).to(have_received(:deliver_order_confirmation_email))
         end
       end
 
       context "when payment processing fails" do
         before do
-          allow(order).to receive(:process_payments!) do
+          allow(order).to(receive(:process_payments!)) do
             payment.failure!
           end
         end
@@ -128,14 +128,14 @@ distributor: customer.enterprise,
         it "does not complete the payment" do
           service.call!
           payment.reload
-          expect(payment.state).to eq("failed")
+          expect(payment.state).to(eq("failed"))
         end
 
         it "completes the order, but with failed payment state recorded" do
           service.call!
-          expect(order.state).to eq("complete")
-          expect(order.payment_state).to eq("failed")
-          expect(order).to have_received(:deliver_order_confirmation_email)
+          expect(order.state).to(eq("complete"))
+          expect(order.payment_state).to(eq("failed"))
+          expect(order).to(have_received(:deliver_order_confirmation_email))
         end
       end
     end
@@ -146,19 +146,19 @@ distributor: customer.enterprise,
 
       before do
         payment.update_attribute(:state, "failed")
-        allow(validator).to receive(:call).and_return(intent)
+        allow(validator).to(receive(:call).and_return(intent))
       end
 
       it "does not return any error message" do
         result = service.call!
 
-        expect(result.ok?).to eq(false)
-        expect(result.error).to eq("")
+        expect(result.ok?).to(eq(false))
+        expect(result.error).to(eq(""))
       end
 
       it "does not complete the payment" do
         service.call!
-        expect(payment.reload.state).to eq("failed")
+        expect(payment.reload.state).to(eq("failed"))
       end
     end
 
@@ -168,20 +168,20 @@ distributor: customer.enterprise,
       let(:service) { ProcessPaymentIntent.new(intent, order) }
 
       before do
-        allow(order).to receive(:process_payments!) { nil }
-        allow(validator).to receive(:call).and_return(intent_response)
+        allow(order).to(receive(:process_payments!) { nil })
+        allow(validator).to(receive(:call).and_return(intent_response))
       end
 
       it "returns a failed result" do
         result = service.call!
 
-        expect(result.ok?).to eq(false)
-        expect(result.error).to eq(I18n.t("payment_could_not_complete"))
+        expect(result.ok?).to(eq(false))
+        expect(result.error).to(eq(I18n.t("payment_could_not_complete")))
       end
 
       it "does fails the payment" do
         service.call!
-        expect(payment.reload.state).to eq("failed")
+        expect(payment.reload.state).to(eq("failed"))
       end
     end
   end

@@ -56,7 +56,7 @@ module OrderManagement
 
       def payment_method_type_allowed?
         return unless payment_method
-        return if Subscription::ALLOWED_PAYMENT_METHOD_TYPES.include? payment_method.type
+        return if Subscription::ALLOWED_PAYMENT_METHOD_TYPES.include?(payment_method.type)
 
         errors.add(:payment_method, :invalid_type)
       end
@@ -108,7 +108,7 @@ module OrderManagement
       end
 
       def verify_availability_of(variant)
-        return if available_variant_ids.include? variant.id
+        return if available_variant_ids.include?(variant.id)
 
         name = "#{variant.product.name} - #{variant.full_name}"
         errors.add(:subscription_line_items, :not_available, name: name)

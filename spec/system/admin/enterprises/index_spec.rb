@@ -14,23 +14,23 @@ describe 'Enterprises Index' do
       login_as_admin_and_visit admin_enterprises_path
 
       within("tr.enterprise-#{s.id}") do
-        expect(page).to have_content s.name
-        expect(page).to have_select "sets_enterprise_set_collection_attributes_1_sells"
-        expect(page).to have_content "Settings"
-        expect(page).to have_content "Delete"
-        expect(page).to have_no_content "Payment Methods"
-        expect(page).to have_no_content "Shipping Methods"
-        expect(page).to have_content "Enterprise Fees"
+        expect(page).to(have_content(s.name))
+        expect(page).to(have_select("sets_enterprise_set_collection_attributes_1_sells"))
+        expect(page).to(have_content("Settings"))
+        expect(page).to(have_content("Delete"))
+        expect(page).to(have_no_content("Payment Methods"))
+        expect(page).to(have_no_content("Shipping Methods"))
+        expect(page).to(have_content("Enterprise Fees"))
       end
 
       within("tr.enterprise-#{d.id}") do
-        expect(page).to have_content d.name
-        expect(page).to have_select "sets_enterprise_set_collection_attributes_0_sells"
-        expect(page).to have_content "Settings"
-        expect(page).to have_content "Delete"
-        expect(page).to have_content "Payment Methods"
-        expect(page).to have_content "Shipping Methods"
-        expect(page).to have_content "Enterprise Fees"
+        expect(page).to(have_content(d.name))
+        expect(page).to(have_select("sets_enterprise_set_collection_attributes_0_sells"))
+        expect(page).to(have_content("Settings"))
+        expect(page).to(have_content("Delete"))
+        expect(page).to(have_content("Payment Methods"))
+        expect(page).to(have_content("Shipping Methods"))
+        expect(page).to(have_content("Enterprise Fees"))
       end
     end
 
@@ -41,7 +41,7 @@ describe 'Enterprises Index' do
 
       before do
         d_manager.enterprise_roles.build(enterprise: d).save
-        expect(d.owner).to_not eq d_manager
+        expect(d.owner).to_not(eq(d_manager))
       end
 
       context "without violating rules" do
@@ -51,17 +51,17 @@ describe 'Enterprises Index' do
 
         it "updates the enterprises" do
           within("tr.enterprise-#{d.id}") do
-            expect(page).to have_checked_field "sets_enterprise_set_collection_attributes_0_visible"
+            expect(page).to(have_checked_field("sets_enterprise_set_collection_attributes_0_visible"))
             uncheck "sets_enterprise_set_collection_attributes_0_visible"
             select 'any', from: "sets_enterprise_set_collection_attributes_0_sells"
             select d_manager.email, from: 'sets_enterprise_set_collection_attributes_0_owner_id'
           end
           click_button "Update"
-          expect(flash_message).to eq('Enterprises updated successfully')
+          expect(flash_message).to(eq('Enterprises updated successfully'))
           distributor = Enterprise.find(d.id)
-          expect(distributor.visible).to eq false
-          expect(distributor.sells).to eq 'any'
-          expect(distributor.owner).to eq d_manager
+          expect(distributor.visible).to(eq(false))
+          expect(distributor.sells).to(eq('any'))
+          expect(distributor.owner).to(eq(d_manager))
         end
       end
 
@@ -70,13 +70,13 @@ describe 'Enterprises Index' do
 
         before do
           d_manager.enterprise_roles.build(enterprise: second_distributor).save
-          expect(d.owner).to_not eq d_manager
+          expect(d.owner).to_not(eq(d_manager))
 
           login_as_admin_and_visit admin_enterprises_path
         end
 
         def enterprise_row_index(enterprise_name)
-          enterprise_row_number = all('tr').index { |tr| tr.text.include? enterprise_name }
+          enterprise_row_number = all('tr').index { |tr| tr.text.include?(enterprise_name) }
           enterprise_row_number - 1
         end
 
@@ -93,10 +93,10 @@ describe 'Enterprises Index' do
                    from: "sets_enterprise_set_collection_attributes_#{second_distributor_row_index}_owner_id"
           end
           click_button "Update"
-          expect(flash_message).to eq('Update failed')
-          expect(page).to have_content "#{d_manager.email} is not permitted to own any more enterprises (limit is 1)."
+          expect(flash_message).to(eq('Update failed'))
+          expect(page).to(have_content("#{d_manager.email} is not permitted to own any more enterprises (limit is 1)."))
           second_distributor.reload
-          expect(second_distributor.owner).to_not eq d_manager
+          expect(second_distributor.owner).to_not(eq(d_manager))
         end
       end
     end
@@ -130,27 +130,27 @@ child: distributor1,
         visit admin_enterprises_path
 
         within("tbody#e_#{distributor1.id}") do
-          expect(page).to have_content distributor1.name
-          expect(page).to have_selector "td.producer", text: 'Non-Producer'
-          expect(page).to have_selector "td.package", text: 'Hub'
+          expect(page).to(have_content(distributor1.name))
+          expect(page).to(have_selector("td.producer", text: 'Non-Producer'))
+          expect(page).to(have_selector("td.package", text: 'Hub'))
         end
 
         within("tbody#e_#{distributor3.id}") do
-          expect(page).to have_content distributor3.name
-          expect(page).to have_selector "td.producer", text: 'Non-Producer'
-          expect(page).to have_selector "td.package", text: 'Hub'
+          expect(page).to(have_content(distributor3.name))
+          expect(page).to(have_selector("td.producer", text: 'Non-Producer'))
+          expect(page).to(have_selector("td.package", text: 'Hub'))
         end
 
         within("tbody#e_#{supplier1.id}") do
-          expect(page).to have_content supplier1.name
-          expect(page).to have_selector "td.producer", text: 'Producer'
-          expect(page).to have_selector "td.package", text: 'Profile'
+          expect(page).to(have_content(supplier1.name))
+          expect(page).to(have_selector("td.producer", text: 'Producer'))
+          expect(page).to(have_selector("td.package", text: 'Profile'))
         end
 
-        expect(page).to have_no_content "supplier2.name"
-        expect(page).to have_no_content "distributor2.name"
+        expect(page).to(have_no_content("supplier2.name"))
+        expect(page).to(have_no_content("distributor2.name"))
 
-        expect(find('.js-admin-section-header')).to have_link "New Enterprise"
+        expect(find('.js-admin-section-header')).to(have_link("New Enterprise"))
       end
 
       it "does not give me an option to change or update the package and producer properties of enterprises I manage" do
@@ -158,15 +158,15 @@ child: distributor1,
 
         within("tbody#e_#{distributor1.id}") do
           find("td.producer").click
-          expect(page).to have_selector "a.selector.producer.disabled"
+          expect(page).to(have_selector("a.selector.producer.disabled"))
           find("a.selector.producer.disabled").click
-          expect(page).to have_selector "a.selector.non-producer.selected.disabled"
-          expect(page).to have_no_selector "a.update"
+          expect(page).to(have_selector("a.selector.non-producer.selected.disabled"))
+          expect(page).to(have_no_selector("a.update"))
           find("td.package").click
-          expect(page).to have_selector "a.selector.hub-profile.disabled"
+          expect(page).to(have_selector("a.selector.hub-profile.disabled"))
           find("a.selector.hub-profile.disabled").click
-          expect(page).to have_selector "a.selector.hub.selected.disabled"
-          expect(page).to have_no_selector "a.update"
+          expect(page).to(have_selector("a.selector.hub.selected.disabled"))
+          expect(page).to(have_no_selector("a.update"))
         end
       end
     end
@@ -190,40 +190,40 @@ child: distributor1,
           # Open the producer panel
           find("td.producer").click
 
-          expect(page).to have_no_selector "a.selector.producer.selected"
-          expect(page).to have_selector "a.selector.non-producer.selected"
+          expect(page).to(have_no_selector("a.selector.producer.selected"))
+          expect(page).to(have_selector("a.selector.non-producer.selected"))
 
           # Change to a producer
           find("a.selector.producer").click
 
-          expect(page).to have_no_selector "a.selector.non-producer.selected"
-          expect(page).to have_selector "a.selector.producer.selected"
-          expect(page).to have_selector "a.update", text: "SAVE"
+          expect(page).to(have_no_selector("a.selector.non-producer.selected"))
+          expect(page).to(have_selector("a.selector.producer.selected"))
+          expect(page).to(have_selector("a.update", text: "SAVE"))
 
           # Save selection
           find('a.update').click
-          expect(page).to have_selector "a.update", text: "SAVED"
-          expect(owned_distributor.reload.is_primary_producer).to eq true
+          expect(page).to(have_selector("a.update", text: "SAVED"))
+          expect(owned_distributor.reload.is_primary_producer).to(eq(true))
 
           # Open the package panel
           find("td.package").click
 
-          expect(page).to have_no_selector "a.selector.producer-profile.selected"
-          expect(page).to have_no_selector "a.selector.producer-shop.selected"
-          expect(page).to have_selector "a.selector.producer-hub.selected"
+          expect(page).to(have_no_selector("a.selector.producer-profile.selected"))
+          expect(page).to(have_no_selector("a.selector.producer-shop.selected"))
+          expect(page).to(have_selector("a.selector.producer-hub.selected"))
 
           # Change to a producer-shop
           find("a.selector.producer-shop").click
 
-          expect(page).to have_no_selector "a.selector.producer-profile.selected"
-          expect(page).to have_selector "a.selector.producer-shop.selected"
-          expect(page).to have_no_selector "a.selector.producer-hub.selected"
-          expect(page).to have_selector "a.update", text: "SAVE"
+          expect(page).to(have_no_selector("a.selector.producer-profile.selected"))
+          expect(page).to(have_selector("a.selector.producer-shop.selected"))
+          expect(page).to(have_no_selector("a.selector.producer-hub.selected"))
+          expect(page).to(have_selector("a.update", text: "SAVE"))
 
           # Save selection
           find('a.update').click
-          expect(page).to have_selector "a.update", text: "SAVED"
-          expect(owned_distributor.reload.sells).to eq "own"
+          expect(page).to(have_selector("a.update", text: "SAVED"))
+          expect(owned_distributor.reload.sells).to(eq("own"))
         end
       end
     end

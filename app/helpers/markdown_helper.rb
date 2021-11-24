@@ -9,6 +9,6 @@ tables: true,
                          autolink: true,
 superscript: true
 )
-    md.render markdown
+    md.render(markdown)
   end
 end

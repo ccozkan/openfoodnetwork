@@ -28,9 +28,9 @@ module Spree
 
       if resource.errors.empty?
         set_flash_message(:notice, :send_instructions) if is_navigational_format?
-        respond_with resource, location: spree.login_path
+        respond_with(resource, location: spree.login_path)
       else
-        respond_with_navigational(resource) { render :new }
+        respond_with_navigational(resource) { render(:new) }
       end
     end
 
@@ -42,7 +42,7 @@ module Spree
         self.resource = resource_class.new
         resource.reset_password_token = params.dig(:spree_user, :reset_password_token)
         set_flash_message(:error, :cannot_be_blank)
-        render :edit
+        render(:edit)
       else
         super
       end

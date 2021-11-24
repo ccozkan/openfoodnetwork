@@ -8,11 +8,11 @@ describe ShopHelper, type: :helper do
       let(:distributor) { create(:distributor_enterprise, groups: [group]) }
 
       before do
-        allow(helper).to receive(:current_distributor).and_return distributor
+        allow(helper).to(receive(:current_distributor).and_return(distributor))
       end
 
       it "should return the groups tab" do
-        expect(helper.shop_tabs).to include(name: "groups", show: true, title: "Groups")
+        expect(helper.shop_tabs).to(include(name: "groups", show: true, title: "Groups"))
       end
     end
 
@@ -20,11 +20,11 @@ describe ShopHelper, type: :helper do
       let(:distributor) { create(:distributor_enterprise) }
 
       before do
-        allow(helper).to receive(:current_distributor).and_return distributor
+        allow(helper).to(receive(:current_distributor).and_return(distributor))
       end
 
       it "should not return the groups tab" do
-        expect(helper.shop_tabs).to_not include(name: "groups", show: true, title: "Groups")
+        expect(helper.shop_tabs).to_not(include(name: "groups", show: true, title: "Groups"))
       end
     end
 
@@ -32,11 +32,11 @@ describe ShopHelper, type: :helper do
       let(:distributor) { create(:distributor_enterprise, preferred_shopfront_message: "Hello!") }
 
       before do
-        allow(helper).to receive(:current_distributor).and_return distributor
+        allow(helper).to(receive(:current_distributor).and_return(distributor))
       end
 
       it "should show the home tab" do
-        expect(helper.shop_tabs).to include(name: "home", show: true, title: "Home")
+        expect(helper.shop_tabs).to(include(name: "home", show: true, title: "Home"))
       end
     end
   end

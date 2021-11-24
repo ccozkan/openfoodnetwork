@@ -10,7 +10,7 @@ module OpenFoodNetwork
         user
       end
 
-      allow(controller).to receive_messages(spree_current_user: @admin_user)
+      allow(controller).to(receive_messages(spree_current_user: @admin_user))
     end
 
     def controller_login_as_enterprise_user(enterprises)
@@ -24,7 +24,7 @@ module OpenFoodNetwork
         user
       end
 
-      allow(controller).to receive_messages(spree_current_user: @enterprise_user)
+      allow(controller).to(receive_messages(spree_current_user: @enterprise_user))
     end
 
     def reset_controller_environment

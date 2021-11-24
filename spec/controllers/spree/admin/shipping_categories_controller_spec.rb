@@ -12,29 +12,29 @@ module Spree
 
         it "creates a shipping shipping category" do
           expect do
-            spree_post :create, shipping_category: { name: "Frozen" }
-          end.to change { Spree::ShippingCategory.count }
-.by(1)
+            spree_post(:create, shipping_category: { name: "Frozen" })
+          end.to(change { Spree::ShippingCategory.count }
+.by(1))
 
-          expect(response).to redirect_to spree.admin_shipping_categories_url
+          expect(response).to(redirect_to(spree.admin_shipping_categories_url))
         end
 
         it "updates an existing shipping category" do
           shipping_category = create(:shipping_category)
           spree_put :update, id: shipping_category.id, shipping_category: { name: "Super Frozen" }
 
-          expect(response).to redirect_to spree.admin_shipping_categories_url
-          expect(shipping_category.reload.name).to eq "Super Frozen"
+          expect(response).to(redirect_to(spree.admin_shipping_categories_url))
+          expect(shipping_category.reload.name).to(eq("Super Frozen"))
         end
 
         it "deletes an existing shipping category" do
           shipping_category = create(:shipping_category)
           expect do
-            spree_delete :destroy, id: shipping_category.id
-          end.to change { Spree::ShippingCategory.count }
-.by(-1)
+            spree_delete(:destroy, id: shipping_category.id)
+          end.to(change { Spree::ShippingCategory.count }
+.by(-1))
 
-          expect(response).to redirect_to spree.admin_shipping_categories_url
+          expect(response).to(redirect_to(spree.admin_shipping_categories_url))
         end
       end
     end

@@ -9,12 +9,12 @@ describe 'enterprises.rake' do
       it 'removes the enterprise' do
         enterprise = create(:enterprise)
 
-        Rake.application.rake_require 'tasks/enterprises'
+        Rake.application.rake_require('tasks/enterprises')
         Rake::Task.define_task(:environment)
 
         expect do
-          Rake.application.invoke_task "ofn:remove_enterprise[#{enterprise.id}]"
-        end.to change(Enterprise, :count).by(-1)
+          Rake.application.invoke_task("ofn:remove_enterprise[#{enterprise.id}]")
+        end.to(change(Enterprise, :count).by(-1))
       end
     end
   end

@@ -23,12 +23,12 @@ distributors: [distributor],
   let!(:er) { create(:enterprise_relationship, parent: distributor, child: producer) }
 
   before do
-    producer.set_producer_property 'Organic', 'NASAA 12345'
+    producer.set_producer_property('Organic', 'NASAA 12345')
   end
 
   it "searches by URL" do
     visit shops_path(anchor: "/?query=xyzzy")
-    expect(page).to have_content "Sorry, no results found for xyzzy"
+    expect(page).to(have_content("Sorry, no results found for xyzzy"))
   end
 
   describe "listing shops" do
@@ -37,32 +37,32 @@ distributors: [distributor],
     end
 
     it "shows hubs" do
-      expect(page).to have_content distributor.name
+      expect(page).to(have_content(distributor.name))
       expand_active_table_node distributor.name
-      expect(page).to have_content "OUR PRODUCERS"
+      expect(page).to(have_content("OUR PRODUCERS"))
     end
 
     it "does not show invisible hubs" do
-      expect(page).not_to have_content invisible_distributor.name
+      expect(page).not_to(have_content(invisible_distributor.name))
     end
 
     it "does not show hubs that are not in an order cycle" do
-      expect(page).to have_no_selector 'hub.inactive'
-      expect(page).to have_no_selector 'hub',   text: d2.name
+      expect(page).to(have_no_selector('hub.inactive'))
+      expect(page).to(have_no_selector('hub',   text: d2.name))
     end
 
     it "does not show profiles" do
-      expect(page).not_to have_content profile.name
+      expect(page).not_to(have_content(profile.name))
     end
 
     it "shows closed shops after clicking the button" do
-      click_link_and_ensure("Show closed shops", -> { page.has_selector? 'hub.inactive' })
-      expect(page).to have_selector 'hub.inactive', text: d2.name
+      click_link_and_ensure("Show closed shops", -> { page.has_selector?('hub.inactive') })
+      expect(page).to(have_selector('hub.inactive', text: d2.name))
     end
 
     it "links to the hub page" do
       follow_active_table_node distributor.name
-      expect(page).to have_current_path enterprise_shop_path(distributor)
+      expect(page).to(have_current_path(enterprise_shop_path(distributor)))
     end
   end
 
@@ -75,8 +75,8 @@ distributors: [distributor],
     it "does not show hubs that are not ready for checkout" do
       visit shops_path
 
-      expect(Enterprise.ready_for_checkout).not_to include hub
-      expect(page).not_to have_content hub.name
+      expect(Enterprise.ready_for_checkout).not_to(include(hub))
+      expect(page).not_to(have_content(hub.name))
     end
   end
 
@@ -97,7 +97,7 @@ distributors: [d1, d2],
       ex_d1.variants << p1.variants.first
       ex_d2.variants << p2.variants.first
 
-      p2.set_property 'Local', 'XYZ 123'
+      p2.set_property('Local', 'XYZ 123')
 
       visit shops_path
     end
@@ -107,14 +107,14 @@ distributors: [d1, d2],
 
       toggle_filter 'Organic'
 
-      expect(page).to     have_content d1.name
-      expect(page).not_to have_content d2.name
+      expect(page).to(    have_content(d1.name))
+      expect(page).not_to(have_content(d2.name))
 
       toggle_filter 'Organic'
       toggle_filter 'Local'
 
-      expect(page).not_to have_content d1.name
-      expect(page).to     have_content d2.name
+      expect(page).not_to(have_content(d1.name))
+      expect(page).to(    have_content(d2.name))
     end
   end
 
@@ -136,17 +136,17 @@ distributors: [d1, d2],
       it "shows taxons for open order cycles only" do
         visit shops_path
         expand_active_table_node shop.name
-        expect(page).to     have_selector '.fat-taxons', text: 'Open'
-        expect(page).not_to have_selector '.fat-taxons', text: 'Closed'
+        expect(page).to(    have_selector('.fat-taxons', text: 'Open'))
+        expect(page).not_to(have_selector('.fat-taxons', text: 'Closed'))
       end
     end
 
     describe "closed shops" do
       it "shows taxons for any order cycle" do
         visit shops_path
-        click_link_and_ensure('Show closed shops', -> { page.has_selector? '.active_table_node' })
+        click_link_and_ensure('Show closed shops', -> { page.has_selector?('.active_table_node') })
         expand_active_table_node shop.name
-        expect(page).to have_selector '.fat-taxons', text: 'Closed'
+        expect(page).to(have_selector('.fat-taxons', text: 'Closed'))
       end
     end
   end
@@ -163,7 +163,7 @@ variants: [product.variants.first]
     let(:product) { create(:simple_product, supplier: producer) }
 
     before do
-      product.set_property 'Local', 'XYZ 123'
+      product.set_property('Local', 'XYZ 123')
     end
 
     it "shows property badges" do
@@ -177,8 +177,8 @@ variants: [product.variants.first]
       expand_active_table_node distributor.name
 
       # Then I should see both properties
-      expect(page).to have_content 'Local'   # Product property
-      expect(page).to have_content 'Organic' # Producer property
+      expect(page).to(have_content('Local'))   # Product property
+      expect(page).to(have_content('Organic')) # Producer property
     end
   end
 
@@ -197,14 +197,14 @@ variants: [product.variants.first]
     it "shows hub producer modals" do
       visit shops_path
       expand_active_table_node distributor.name
-      expect(page).to have_content producer.name
+      expect(page).to(have_content(producer.name))
       open_enterprise_modal producer
       modal_should_be_open_for producer
 
       within ".reveal-modal" do
-        expect(page).to have_content 'Fruit'   # Taxon
-        expect(page).to have_content 'Organic' # Producer property
-        expect(page).to have_content "Shop for #{producer.name} products at:".upcase
+        expect(page).to(have_content('Fruit'))   # Taxon
+        expect(page).to(have_content('Organic')) # Producer property
+        expect(page).to(have_content("Shop for #{producer.name} products at:".upcase))
       end
     end
   end
@@ -217,7 +217,7 @@ variants: [product.variants.first]
     end
 
     it "shows closed shops" do
-      expect(page).to have_selector 'hub.inactive', text: d2.name
+      expect(page).to(have_selector('hub.inactive', text: d2.name))
     end
   end
 
@@ -225,9 +225,9 @@ variants: [product.variants.first]
 
   def click_link_and_ensure(link_text, check)
     # Buttons appear to be unresponsive for a while, so keep clicking them until content appears
-    using_wait_time 0.5 do
+    using_wait_time(0.5) do
       10.times do
-        click_link link_text
+        click_link(link_text)
         break if check.call
       end
     end

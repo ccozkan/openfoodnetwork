@@ -27,8 +27,8 @@ module Spree
 
     # Endpoint for queries to check if a user is already registered
     def registered_email
-      user = Spree.user_class.find_by email: params[:email]
-      render json: { registered: user.present? }
+      user = Spree.user_class.find_by(email: params[:email])
+      render(json: { registered: user.present? })
     end
 
     def create
@@ -36,7 +36,7 @@ module Spree
       if @user.save
         redirect_back_or_default(main_app.root_url)
       else
-        render :new
+        render(:new)
       end
     end
 
@@ -47,9 +47,9 @@ module Spree
           Spree::User.reset_password_by_token(params[:user])
           sign_in(@user, event: :authentication, bypass: true)
         end
-        redirect_to spree.account_url, notice: Spree.t(:account_updated)
+        redirect_to(spree.account_url, notice: Spree.t(:account_updated))
       else
-        render :edit
+        render(:edit)
       end
     end
 
@@ -62,14 +62,14 @@ module Spree
     def load_object
       @user ||= spree_current_user
       if @user
-        authorize! params[:action].to_sym, @user
+        authorize!(params[:action].to_sym, @user)
       else
-        redirect_to main_app.login_path
+        redirect_to(main_app.login_path)
       end
     end
 
     def authorize_actions
-      authorize! params[:action].to_sym, Spree::User.new
+      authorize!(params[:action].to_sym, Spree::User.new)
     end
 
     def accurate_title

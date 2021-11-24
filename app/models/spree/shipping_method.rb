@@ -73,7 +73,7 @@ lambda {
     end
 
     def self.calculators
-      spree_calculators.__send__ model_name_without_spree_namespace
+      spree_calculators.__send__(model_name_without_spree_namespace)
     end
 
     # Some shipping methods are only meant to be set via backend
@@ -128,7 +128,7 @@ lambda {
     end
 
     def distributor_validation
-      validates_with DistributorsValidator
+      validates_with(DistributorsValidator)
     end
   end
 end

@@ -15,13 +15,13 @@ describe Admin::MatomoSettingsController, type: :controller do
     end
 
     before do
-      allow(controller).to receive(:spree_current_user) { create(:admin_user) }
+      allow(controller).to(receive(:spree_current_user) { create(:admin_user) })
     end
 
     it "changes Matomo settings" do
       expect do
-        post :update, params: params
-      end.to change {
+        post(:update, params: params)
+      end.to(change {
         [
           Spree::Config[:matomo_url],
           Spree::Config[:matomo_site_id],
@@ -33,7 +33,7 @@ describe Admin::MatomoSettingsController, type: :controller do
           "42",
           "test manager url",
         ]
-      )
+      ))
     end
   end
 end

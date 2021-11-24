@@ -5,10 +5,10 @@ module Spree
     module Checkout
       def self.included(klass)
         klass.class_eval do
-          class_attribute :next_event_transitions
-          class_attribute :previous_states
-          class_attribute :checkout_flow
-          class_attribute :checkout_steps
+          class_attribute(:next_event_transitions)
+          class_attribute(:previous_states)
+          class_attribute(:checkout_flow)
+          class_attribute(:checkout_steps)
 
           def self.checkout_flow(&block)
             if block_given?
@@ -38,7 +38,7 @@ module Spree
             # To avoid multiple occurrences of the same transition being defined
             # On first definition, state_machines will not be defined
             state_machines.clear if respond_to?(:state_machines)
-            state_machine :state, initial: :cart do
+            state_machine(:state, initial: :cart) do
               klass.next_event_transitions.each { |t| transition(t.merge(on: :next)) }
 
               # Persist the state on the order
@@ -47,41 +47,41 @@ module Spree
                 order.save
               end
 
-              event :cancel do
-                transition to: :canceled, if: :allow_cancel?
+              event(:cancel) do
+                transition(to: :canceled, if: :allow_cancel?)
               end
 
-              event :return do
-                transition to: :returned, from: :awaiting_return, unless: :awaiting_returns?
+              event(:return) do
+                transition(to: :returned, from: :awaiting_return, unless: :awaiting_returns?)
               end
 
-              event :resume do
-                transition to: :resumed, from: :canceled, if: :allow_resume?
+              event(:resume) do
+                transition(to: :resumed, from: :canceled, if: :allow_resume?)
               end
 
-              event :authorize_return do
-                transition to: :awaiting_return
+              event(:authorize_return) do
+                transition(to: :awaiting_return)
               end
 
-              event :restart_checkout do
-                transition to: :cart, unless: :completed?
+              event(:restart_checkout) do
+                transition(to: :cart, unless: :completed?)
               end
 
-              event :confirm do
-                transition to: :complete, from: :confirmation
+              event(:confirm) do
+                transition(to: :complete, from: :confirmation)
               end
 
-              before_transition from: :cart, do: :ensure_line_items_present
+              before_transition(from: :cart, do: :ensure_line_items_present)
 
-              before_transition to: :delivery, do: :create_proposed_shipments
-              before_transition to: :delivery, do: :ensure_available_shipping_rates
-              before_transition to: :payment, do: :create_tax_charge!
-              before_transition to: :confirmation, do: :validate_payment_method!
+              before_transition(to: :delivery, do: :create_proposed_shipments)
+              before_transition(to: :delivery, do: :ensure_available_shipping_rates)
+              before_transition(to: :payment, do: :create_tax_charge!)
+              before_transition(to: :confirmation, do: :validate_payment_method!)
 
-              after_transition to: :complete, do: :finalize!
-              after_transition to: :resumed,  do: :after_resume
-              after_transition to: :canceled, do: :after_cancel
-              after_transition to: :payment, do: :set_payment_amount!
+              after_transition(to: :complete, do: :finalize!)
+              after_transition(to: :resumed,  do: :after_resume)
+              after_transition(to: :canceled, do: :after_cancel)
+              after_transition(to: :payment, do: :set_payment_amount!)
             end
           end
 
@@ -140,8 +140,8 @@ module Spree
             return unless checkout_processing
             return if payments.any?
 
-            errors.add :payment_method, I18n.t('split_checkout.errors.select_a_payment_method')
-            throw :halt
+            errors.add(:payment_method, I18n.t('split_checkout.errors.select_a_payment_method'))
+            throw(:halt)
           end
         end
       end

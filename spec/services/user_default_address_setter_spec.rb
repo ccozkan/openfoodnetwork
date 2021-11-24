@@ -19,8 +19,8 @@ describe UserDefaultAddressSetter do
     it "sets the user and customer bill address to the order bill address" do
       setter.set_default_bill_address
 
-      expect(user.bill_address).to eq order.bill_address
-      expect(order.customer.bill_address).to eq order.bill_address
+      expect(user.bill_address).to(eq(order.bill_address))
+      expect(order.customer.bill_address).to(eq(order.bill_address))
     end
   end
 
@@ -28,8 +28,8 @@ describe UserDefaultAddressSetter do
     it "sets the user and customer ship address to the order ship address" do
       setter.set_default_ship_address
 
-      expect(user.ship_address).to eq order.ship_address
-      expect(order.customer.ship_address).to eq order.ship_address
+      expect(user.ship_address).to(eq(order.ship_address))
+      expect(order.customer.ship_address).to(eq(order.ship_address))
     end
   end
 end

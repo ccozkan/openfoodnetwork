@@ -16,8 +16,8 @@ module Stripe
     def create_account
       return false if connection_cancelled_by_user?
 
-      raise StripeError, params["error_description"] unless params["code"]
-      raise CanCan::AccessDenied unless state.key?("enterprise_id")
+      raise(StripeError, params["error_description"]) unless params["code"]
+      raise(CanCan::AccessDenied) unless state.key?("enterprise_id")
 
       # Local authorisation issue, so request disconnection from Stripe
       deauthorize unless user_has_permission_to_connect?
@@ -52,7 +52,7 @@ module Stripe
 
     def deauthorize
       OAuth.deauthorize(stripe_user_id: token.stripe_user_id)
-      raise CanCan::AccessDenied
+      raise(CanCan::AccessDenied)
     end
 
     def user_has_permission_to_connect?

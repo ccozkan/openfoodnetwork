@@ -6,7 +6,7 @@ describe RegistrationController, type: :controller do
   describe "redirecting when user not logged in" do
     it "index" do
       get :index
-      expect(response).to redirect_to registration_auth_path(anchor: "signup?after_login=/register")
+      expect(response).to(redirect_to(registration_auth_path(anchor: "signup?after_login=/register")))
     end
   end
 
@@ -15,12 +15,12 @@ describe RegistrationController, type: :controller do
     let!(:enterprise) { create(:distributor_enterprise, owner: user) }
 
     before do
-      allow(controller).to receive_messages spree_current_user: user
+      allow(controller).to(receive_messages(spree_current_user: user))
     end
 
     it "index" do
       get :index
-      expect(response).to render_template :limit_reached
+      expect(response).to(render_template(:limit_reached))
     end
   end
 
@@ -28,13 +28,13 @@ describe RegistrationController, type: :controller do
     let!(:user) { create(:user) }
 
     before do
-      allow(controller).to receive_messages spree_current_user: user
+      allow(controller).to(receive_messages(spree_current_user: user))
     end
 
     describe "index" do
       it "loads the spree api key" do
         get :index
-        expect(assigns(:spree_api_key)).to eq user.spree_api_key
+        expect(assigns(:spree_api_key)).to(eq(user.spree_api_key))
       end
     end
   end

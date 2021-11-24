@@ -26,7 +26,7 @@ orders_close_at: 2.days.from_now
 
   before do
     set_order order
-    exchange1.update_attribute :pickup_time, "monday"
+    exchange1.update_attribute(:pickup_time, "monday")
     add_variant_to_order_cycle(exchange1, variant)
   end
 
@@ -36,19 +36,19 @@ orders_close_at: 2.days.from_now
     end
 
     it "one click on the question mark icon should open the tooltip, another click should close it" do
-      expect(page).to have_selector '.variant-unit-price'
+      expect(page).to(have_selector('.variant-unit-price'))
       within '.variant-unit-price' do
-        expect(page).to have_selector '.question-mark-icon'
+        expect(page).to(have_selector('.question-mark-icon'))
       end
       find('.question-mark-icon').click
-      expect(page).to have_selector '.joyride-tip-guide.question-mark-tooltip'
+      expect(page).to(have_selector('.joyride-tip-guide.question-mark-tooltip'))
       within '.joyride-tip-guide.question-mark-tooltip' do
-        expect(page).to have_content I18n.t('js.shopfront.unit_price_tooltip')
+        expect(page).to(have_content(I18n.t('js.shopfront.unit_price_tooltip')))
       end
 
       page.find("body").click
-      expect(page).not_to have_selector '.joyride-tip-guide.question-mark-tooltip'
-      expect(page).to have_no_content I18n.t('js.shopfront.unit_price_tooltip')
+      expect(page).not_to(have_selector('.joyride-tip-guide.question-mark-tooltip'))
+      expect(page).to(have_no_content(I18n.t('js.shopfront.unit_price_tooltip')))
     end
   end
 
@@ -60,15 +60,15 @@ orders_close_at: 2.days.from_now
     end
 
     it "shows/hide the unit price information with the question mark icon in the sidebar" do
-      expect(page).to have_selector ".cart-content .question-mark-icon"
+      expect(page).to(have_selector(".cart-content .question-mark-icon"))
       find(".cart-content .question-mark-icon").click
-      expect(page).to have_selector '.joyride-tip-guide.question-mark-tooltip'
+      expect(page).to(have_selector('.joyride-tip-guide.question-mark-tooltip'))
       within '.joyride-tip-guide.question-mark-tooltip' do
-        expect(page).to have_content I18n.t('js.shopfront.unit_price_tooltip')
+        expect(page).to(have_content(I18n.t('js.shopfront.unit_price_tooltip')))
       end
       page.find("body").click
-      expect(page).not_to have_selector '.joyride-tip-guide.question-mark-tooltip'
-      expect(page).to have_no_content I18n.t('js.shopfront.unit_price_tooltip')
+      expect(page).not_to(have_selector('.joyride-tip-guide.question-mark-tooltip'))
+      expect(page).to(have_no_content(I18n.t('js.shopfront.unit_price_tooltip')))
     end
   end
 end

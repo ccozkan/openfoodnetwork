@@ -10,12 +10,12 @@ describe Stripe::CreditCardRemover do
     context 'and is not deleted' do
       it 'deletes the credit card clone and the customer' do
         customer = double('customer', deleted?: false)
-        allow(Stripe::Customer).to receive(:retrieve).and_return(customer)
+        allow(Stripe::Customer).to(receive(:retrieve).and_return(customer))
 
-        expect_any_instance_of(Stripe::CreditCardCloneDestroyer).to receive(:destroy_clones).with(
+        expect_any_instance_of(Stripe::CreditCardCloneDestroyer).to(receive(:destroy_clones).with(
           credit_card
-        )
-        expect(customer).to receive(:delete)
+        ))
+        expect(customer).to(receive(:delete))
         Stripe::CreditCardRemover.new(credit_card).call
       end
     end
@@ -23,12 +23,12 @@ describe Stripe::CreditCardRemover do
     context 'and is deleted' do
       it 'deletes the credit card clone' do
         customer = double('customer', deleted?: true)
-        allow(Stripe::Customer).to receive(:retrieve).and_return(customer)
+        allow(Stripe::Customer).to(receive(:retrieve).and_return(customer))
 
-        expect_any_instance_of(Stripe::CreditCardCloneDestroyer).to receive(:destroy_clones).with(
+        expect_any_instance_of(Stripe::CreditCardCloneDestroyer).to(receive(:destroy_clones).with(
           credit_card
-        )
-        expect(customer).not_to receive(:delete)
+        ))
+        expect(customer).not_to(receive(:delete))
         Stripe::CreditCardRemover.new(credit_card).call
       end
     end
@@ -36,11 +36,11 @@ describe Stripe::CreditCardRemover do
 
   context 'Stripe customer does not exist' do
     it 'deletes the credit card clone' do
-      allow(Stripe::Customer).to receive(:retrieve).and_return(nil)
+      allow(Stripe::Customer).to(receive(:retrieve).and_return(nil))
 
-      expect_any_instance_of(Stripe::CreditCardCloneDestroyer).to receive(:destroy_clones).with(
+      expect_any_instance_of(Stripe::CreditCardCloneDestroyer).to(receive(:destroy_clones).with(
         credit_card
-      )
+      ))
       Stripe::CreditCardRemover.new(credit_card).call
     end
   end

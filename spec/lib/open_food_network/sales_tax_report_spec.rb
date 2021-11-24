@@ -14,15 +14,15 @@ module OpenFoodNetwork
       let(:totals) { report.send(:totals_of, [li1, li2]) }
 
       before do
-        allow(report).to receive(:tax_included_in).and_return(2, 4)
+        allow(report).to(receive(:tax_included_in).and_return(2, 4))
       end
 
       it "calculates total quantity" do
-        expect(totals[:items]).to eq(3)
+        expect(totals[:items]).to(eq(3))
       end
 
       it "calculates total price" do
-        expect(totals[:items_total]).to eq(36)
+        expect(totals[:items_total]).to(eq(36))
       end
 
       context "when floating point math would result in fractional cents" do
@@ -30,33 +30,33 @@ module OpenFoodNetwork
         let(:li2) { double(:line_item, quantity: 2, amount: 0.12) }
 
         it "rounds to the nearest cent" do
-          expect(totals[:items_total]).to eq(0.23)
+          expect(totals[:items_total]).to(eq(0.23))
         end
       end
 
       it "calculates the taxable total price" do
-        expect(totals[:taxable_total]).to eq(36)
+        expect(totals[:taxable_total]).to(eq(36))
       end
 
       it "calculates sales tax" do
-        expect(totals[:sales_tax]).to eq(6)
+        expect(totals[:sales_tax]).to(eq(6))
       end
 
       context "when there is no tax on a line item" do
         before do
-          allow(report).to receive(:tax_included_in) { 0 }
+          allow(report).to(receive(:tax_included_in) { 0 })
         end
 
         it "does not appear in taxable total" do
-          expect(totals[:taxable_total]).to eq(0)
+          expect(totals[:taxable_total]).to(eq(0))
         end
 
         it "still appears on items total" do
-          expect(totals[:items_total]).to eq(36)
+          expect(totals[:items_total]).to(eq(36))
         end
 
         it "does not register sales tax" do
-          expect(totals[:sales_tax]).to eq(0)
+          expect(totals[:sales_tax]).to(eq(0))
         end
       end
     end

@@ -17,18 +17,18 @@ describe "spree/orders/edit.html.haml" do
   before do
     assign(:order, order)
     assign(:insufficient_stock_lines, [])
-    allow(view).to receive_messages(
+    allow(view).to(receive_messages(
       order: order,
       current_order: order,
       pickup_time: 'time',
       spree_current_user: create(:user),
-    )
+    ))
   end
 
   describe "unit prices" do
     it "displays unit prices informations" do
       render
-      expect(rendered).to have_selector(".unit-price")
+      expect(rendered).to(have_selector(".unit-price"))
     end
   end
 end

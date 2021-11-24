@@ -134,27 +134,27 @@ state: "closed"
     subject { OrderTaxAdjustmentsFetcher.new(order).totals }
 
     it "returns a hash with all 5 taxes" do
-      expect(subject.size).to eq(5)
+      expect(subject.size).to(eq(5))
     end
 
     it "contains tax on all line_items" do
-      expect(subject[tax_rate10]).to eq(8.0)
+      expect(subject[tax_rate10]).to(eq(8.0))
     end
 
     it "contains tax on shipping_fee" do
-      expect(subject[tax_rate15]).to eq(6.0)
+      expect(subject[tax_rate15]).to(eq(6.0))
     end
 
     it "contains tax on enterprise_fee" do
-      expect(subject[tax_rate20]).to eq(8.0)
+      expect(subject[tax_rate20]).to(eq(8.0))
     end
 
     it "contains tax on admin adjustment" do
-      expect(subject[tax_rate25]).to eq(10.0)
+      expect(subject[tax_rate25]).to(eq(10.0))
     end
 
     it "contains (legacy) additional taxes recorded on the order" do
-      expect(subject[tax_rate30]).to eq(1.23)
+      expect(subject[tax_rate30]).to(eq(1.23))
     end
   end
 end

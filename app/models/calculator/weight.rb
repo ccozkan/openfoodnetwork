@@ -18,12 +18,12 @@ module Calculator
       if name == :unit_from_list && !["kg", "lb"].include?(value)
         calculable.errors.add(:preferred_unit_from_list, I18n.t(:calculator_preferred_unit_error))
       else
-        __send__ self.class.preference_setter_method(name), value
+        __send__(self.class.preference_setter_method(name), value)
       end
     end
 
     def compute(object)
-      line_items = line_items_for object
+      line_items = line_items_for(object)
       (total_weight(line_items) * preferred_per_unit).round(2)
     end
 

@@ -21,7 +21,7 @@ module Admin
       respond_to do |format|
         format.html
         format.json do
-          render_as_json @collection, controller: self, include_calculators: @include_calculators
+          render_as_json(@collection, controller: self, include_calculators: @include_calculators)
         end
         # format.json { @presented_collection = @collection.each_with_index.map { |ef, i| EnterpriseFeePresenter.new(self, ef, i) } }
       end
@@ -30,7 +30,7 @@ module Admin
     def for_order_cycle
       respond_to do |format|
         format.html
-        format.json { render_as_json @collection, controller: self }
+        format.json { render_as_json(@collection, controller: self) }
       end
     end
 
@@ -39,23 +39,23 @@ module Admin
 
       unless @flat_percent_value.nil? || Float(@flat_percent_value, exception: false)
         flash[:error] = I18n.t(:calculator_preferred_value_error)
-        return redirect_to redirect_path
+        return redirect_to(redirect_path)
       end
 
       @enterprise_fee_set = Sets::EnterpriseFeeSet.new(enterprise_fee_bulk_params)
 
       if @enterprise_fee_set.save
-        redirect_to redirect_path, notice: I18n.t(:enterprise_fees_update_notice)
+        redirect_to(redirect_path, notice: I18n.t(:enterprise_fees_update_notice))
       else
-        redirect_to redirect_path,
-                    flash: { error: @enterprise_fee_set.errors.full_messages.to_sentence }
+        redirect_to(redirect_path,
+                    flash: { error: @enterprise_fee_set.errors.full_messages.to_sentence })
       end
     end
 
     private
 
     def load_enterprise_fee_set
-      @enterprise_fee_set = Sets::EnterpriseFeeSet.new collection: collection
+      @enterprise_fee_set = Sets::EnterpriseFeeSet.new(collection: collection)
     end
 
     def load_data
@@ -92,11 +92,11 @@ spree_current_user,
     end
 
     def current_enterprise
-      Enterprise.find params[:enterprise_id] if params.key? :enterprise_id
+      Enterprise.find(params[:enterprise_id]) if params.key?(:enterprise_id)
     end
 
     def redirect_path
-      if params.key? :enterprise_id
+      if params.key?(:enterprise_id)
         return main_app.admin_enterprise_fees_path(enterprise_id: params[:enterprise_id])
       end
 

@@ -49,11 +49,11 @@ module Api
     end
 
     def pickup
-      shipping_types? :pickup
+      shipping_types?(:pickup)
     end
 
     def delivery
-      shipping_types? :delivery
+      shipping_types?(:delivery)
     end
 
     def email_address

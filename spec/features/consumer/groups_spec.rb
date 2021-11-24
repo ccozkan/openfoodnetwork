@@ -11,12 +11,12 @@ describe 'Groups', js: true do
 
   it "renders groups" do
     visit groups_path
-    expect(page).to have_content group.name
+    expect(page).to(have_content(group.name))
   end
 
   it "searches by URL" do
     visit groups_path(anchor: "/?query=xyzzy")
-    expect(page).to have_content "No groups found"
+    expect(page).to(have_content("No groups found"))
   end
 
   describe "producers" do
@@ -28,11 +28,11 @@ describe 'Groups', js: true do
       let!(:product2) { create(:simple_product, supplier: producer2) }
 
       before do
-        product1.set_property 'Organic', 'NASAA 12345'
-        product2.set_property 'Biodynamic', 'ABC123'
+        product1.set_property('Organic', 'NASAA 12345')
+        product2.set_property('Biodynamic', 'ABC123')
 
-        producer1.set_producer_property 'Local', 'Victoria'
-        producer2.set_producer_property 'Fair Trade', 'FT123'
+        producer1.set_producer_property('Local', 'Victoria')
+        producer2.set_producer_property('Fair Trade', 'FT123')
 
         group.enterprises << producer1
         group.enterprises << producer2
@@ -45,14 +45,14 @@ describe 'Groups', js: true do
 
         toggle_filter 'Organic'
 
-        expect(page).to     have_content producer1.name
-        expect(page).not_to have_content producer2.name
+        expect(page).to(    have_content(producer1.name))
+        expect(page).not_to(have_content(producer2.name))
 
         toggle_filter 'Organic'
         toggle_filter 'Fair Trade'
 
-        expect(page).not_to have_content producer1.name
-        expect(page).to     have_content producer2.name
+        expect(page).not_to(have_content(producer1.name))
+        expect(page).to(    have_content(producer2.name))
       end
     end
   end
@@ -91,10 +91,10 @@ distributors: [d4],
       let(:ex_d4) { closed_order_cycle.exchanges.outgoing.where(receiver_id: d4).first }
 
       before do
-        producer.set_producer_property 'Organic', 'NASAA 12345'
-        p2.set_property 'Local', 'XYZ 123'
-        p3.set_property 'Not vibsible', 'Not vibsible'
-        p4.set_property 'No active order cycle', 'No active order cycle'
+        producer.set_producer_property('Organic', 'NASAA 12345')
+        p2.set_property('Local', 'XYZ 123')
+        p3.set_property('Not vibsible', 'Not vibsible')
+        p4.set_property('No active order cycle', 'No active order cycle')
 
         ex_d1.variants << p1.variants.first
         ex_d2.variants << p2.variants.first
@@ -105,12 +105,12 @@ distributors: [d4],
       end
 
       it "adjusts visibilities of enterprises depending on their status" do
-        expect(page).to     have_css('hub', text: d1.name)
-        expect(page).to_not have_css('hub.inactive', text: d1.name)
-        expect(page).to     have_css('hub', text: d2.name)
-        expect(page).to_not have_css('hub.inactive', text: d2.name)
-        expect(page).to_not have_text d3.name
-        expect(page).to     have_css('hub.inactive', text: d4.name)
+        expect(page).to(    have_css('hub', text: d1.name))
+        expect(page).to_not(have_css('hub.inactive', text: d1.name))
+        expect(page).to(    have_css('hub', text: d2.name))
+        expect(page).to_not(have_css('hub.inactive', text: d2.name))
+        expect(page).to_not(have_text(d3.name))
+        expect(page).to(    have_css('hub.inactive', text: d4.name))
       end
 
       it "filters" do
@@ -118,14 +118,14 @@ distributors: [d4],
 
         toggle_filter 'Organic'
 
-        expect(page).to     have_content d1.name
-        expect(page).not_to have_content d2.name
+        expect(page).to(    have_content(d1.name))
+        expect(page).not_to(have_content(d2.name))
 
         toggle_filter 'Organic'
         toggle_filter 'Local'
 
-        expect(page).not_to have_content d1.name
-        expect(page).to     have_content d2.name
+        expect(page).not_to(have_content(d1.name))
+        expect(page).to(    have_content(d2.name))
       end
     end
   end

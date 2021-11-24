@@ -27,7 +27,7 @@ describe "Payments requiring action", js: true do
         visit "/account"
 
         find("a", text: /#{I18n.t('spree.users.show.tabs.transactions')}/i).click
-        expect(page).to have_content I18n.t("spree.users.transactions.authorisation_required")
+        expect(page).to(have_content(I18n.t("spree.users.transactions.authorisation_required")))
       end
     end
 
@@ -40,7 +40,7 @@ describe "Payments requiring action", js: true do
         visit "/account"
 
         find("a", text: /#{I18n.t('spree.users.show.tabs.transactions')}/i).click
-        expect(page).to_not have_content I18n.t("spree.users.transactions.authorisation_required")
+        expect(page).to_not(have_content(I18n.t("spree.users.transactions.authorisation_required")))
       end
     end
   end

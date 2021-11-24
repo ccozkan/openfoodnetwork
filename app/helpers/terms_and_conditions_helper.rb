@@ -14,9 +14,9 @@ target: "_blank",
     if platform_terms_required? && terms_and_conditions_activated?
       render("checkout/all_terms_and_conditions")
     elsif platform_terms_required?
-      render "checkout/platform_terms_of_service"
+      render("checkout/platform_terms_of_service")
     elsif terms_and_conditions_activated?
-      render "checkout/terms_and_conditions"
+      render("checkout/terms_and_conditions")
     end
   end
 

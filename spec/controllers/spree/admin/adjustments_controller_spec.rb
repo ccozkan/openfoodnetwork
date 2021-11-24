@@ -30,20 +30,20 @@ order: order,
       it "displays eligible adjustments" do
         spree_get :index, order_id: order.number
 
-        expect(assigns(:collection)).to include adjustment1, adjustment2
-        expect(assigns(:collection)).to_not include adjustment3
+        expect(assigns(:collection)).to(include(adjustment1, adjustment2))
+        expect(assigns(:collection)).to_not(include(adjustment3))
       end
 
       it "displays admin adjustments" do
         spree_get :index, order_id: order.number
 
-        expect(assigns(:collection)).to include adjustment5
+        expect(assigns(:collection)).to(include(adjustment5))
       end
 
       it "does not display enterprise fee adjustments" do
         spree_get :index, order_id: order.number
 
-        expect(assigns(:collection)).to_not include adjustment4
+        expect(assigns(:collection)).to_not(include(adjustment4))
       end
     end
 
@@ -66,17 +66,17 @@ order: order,
         context "when no tax category is specified" do
           it "doesn't apply tax" do
             spree_post :create, params
-            expect(response).to redirect_to spree.admin_order_adjustments_path(order)
+            expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
 
             new_adjustment = Adjustment.admin.last
 
-            expect(new_adjustment.label).to eq('Testing included tax')
-            expect(new_adjustment.amount).to eq(110)
-            expect(new_adjustment.tax_category).to be_nil
-            expect(new_adjustment.order_id).to eq(order.id)
+            expect(new_adjustment.label).to(eq('Testing included tax'))
+            expect(new_adjustment.amount).to(eq(110))
+            expect(new_adjustment.tax_category).to(be_nil)
+            expect(new_adjustment.order_id).to(eq(order.id))
 
-            expect(order.reload.total).to eq 110
-            expect(order.included_tax_total).to eq 0
+            expect(order.reload.total).to(eq(110))
+            expect(order.included_tax_total).to(eq(0))
           end
         end
 
@@ -85,17 +85,17 @@ order: order,
 
           it "applies tax" do
             spree_post :create, params
-            expect(response).to redirect_to spree.admin_order_adjustments_path(order)
+            expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
 
             new_adjustment = Adjustment.admin.last
 
-            expect(new_adjustment.label).to eq('Testing included tax')
-            expect(new_adjustment.amount).to eq(110)
-            expect(new_adjustment.tax_category).to eq tax_rate.tax_category
-            expect(new_adjustment.order_id).to eq(order.id)
+            expect(new_adjustment.label).to(eq('Testing included tax'))
+            expect(new_adjustment.amount).to(eq(110))
+            expect(new_adjustment.tax_category).to(eq(tax_rate.tax_category))
+            expect(new_adjustment.order_id).to(eq(order.id))
 
-            expect(order.reload.total).to eq 110
-            expect(order.included_tax_total).to eq 10
+            expect(order.reload.total).to(eq(110))
+            expect(order.included_tax_total).to(eq(10))
           end
         end
 
@@ -131,17 +131,17 @@ included_in_price: false,
 
           it "applies both rates" do
             spree_post :create, params
-            expect(response).to redirect_to spree.admin_order_adjustments_path(order)
+            expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
 
             new_adjustment = Adjustment.admin.last
 
-            expect(new_adjustment.amount).to eq(100)
-            expect(new_adjustment.tax_category).to eq tax_category
-            expect(new_adjustment.order_id).to eq(order.id)
-            expect(new_adjustment.adjustments.tax.count).to eq 2
+            expect(new_adjustment.amount).to(eq(100))
+            expect(new_adjustment.tax_category).to(eq(tax_category))
+            expect(new_adjustment.order_id).to(eq(order.id))
+            expect(new_adjustment.adjustments.tax.count).to(eq(2))
 
-            expect(order.reload.total).to eq 130
-            expect(order.additional_tax_total).to eq 30
+            expect(order.reload.total).to(eq(130))
+            expect(order.additional_tax_total).to(eq(30))
           end
         end
       end
@@ -171,17 +171,17 @@ tax_category: old_tax_category
         context "when no tax category is specified" do
           it "doesn't apply tax" do
             spree_put :update, params
-            expect(response).to redirect_to spree.admin_order_adjustments_path(order)
+            expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
 
             adjustment = Adjustment.admin.last
 
-            expect(adjustment.label).to eq('Testing included tax')
-            expect(adjustment.amount).to eq(110)
-            expect(adjustment.tax_category).to be_nil
-            expect(adjustment.order_id).to eq(order.id)
+            expect(adjustment.label).to(eq('Testing included tax'))
+            expect(adjustment.amount).to(eq(110))
+            expect(adjustment.tax_category).to(be_nil)
+            expect(adjustment.order_id).to(eq(order.id))
 
-            expect(order.reload.total).to eq 110
-            expect(order.included_tax_total).to eq 0
+            expect(order.reload.total).to(eq(110))
+            expect(order.included_tax_total).to(eq(0))
           end
         end
 
@@ -190,17 +190,17 @@ tax_category: old_tax_category
 
           it "applies tax" do
             spree_put :update, params
-            expect(response).to redirect_to spree.admin_order_adjustments_path(order)
+            expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
 
             adjustment = Adjustment.admin.last
 
-            expect(adjustment.label).to eq('Testing included tax')
-            expect(adjustment.amount).to eq(110)
-            expect(adjustment.tax_category).to eq tax_rate.tax_category
-            expect(adjustment.order_id).to eq(order.id)
+            expect(adjustment.label).to(eq('Testing included tax'))
+            expect(adjustment.amount).to(eq(110))
+            expect(adjustment.tax_category).to(eq(tax_rate.tax_category))
+            expect(adjustment.order_id).to(eq(order.id))
 
-            expect(order.reload.total).to eq 110
-            expect(order.included_tax_total).to eq 10
+            expect(order.reload.total).to(eq(110))
+            expect(order.included_tax_total).to(eq(10))
           end
         end
       end
@@ -221,8 +221,8 @@ tax_category: old_tax_category
         it "deletes the adjustment" do
           spree_delete :destroy, order_id: order.number, id: payment_fee.id
 
-          expect(response).to redirect_to spree.admin_order_adjustments_path(order)
-          expect(order.reload.all_adjustments.count).to be_zero
+          expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
+          expect(order.reload.all_adjustments.count).to(be_zero)
         end
       end
 
@@ -235,8 +235,8 @@ tax_category: old_tax_category
         it "is unauthorized, does not delete the adjustment" do
           spree_delete :destroy, order_id: order.number, id: payment_fee.id
 
-          expect(response).to redirect_to unauthorized_path
-          expect(order.reload.all_adjustments.count).to eq 1
+          expect(response).to(redirect_to(unauthorized_path))
+          expect(order.reload.all_adjustments.count).to(eq(1))
         end
       end
     end
@@ -249,28 +249,28 @@ tax_category: old_tax_category
       end
 
       before do
-        expect(order.cancel).to eq true
+        expect(order.cancel).to(eq(true))
       end
 
       it "doesn't create adjustments" do
         expect do
-          spree_post :create,
+          spree_post(:create,
 order_id: order.number,
-                              adjustment: { label: "Testing", amount: "110" }
-        end.to_not change { [Adjustment.count, order.reload.total] }
+                              adjustment: { label: "Testing", amount: "110" })
+        end.to_not(change { [Adjustment.count, order.reload.total] })
 
-        expect(response).to redirect_to spree.admin_order_adjustments_path(order)
+        expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
       end
 
       it "doesn't change adjustments" do
         expect do
-          spree_put :update,
+          spree_put(:update,
 order_id: order.number,
 id: adjustment.id,
-                             adjustment: { label: "Testing", amount: "110" }
-        end.to_not change { [adjustment.reload.amount, order.reload.total] }
+                             adjustment: { label: "Testing", amount: "110" })
+        end.to_not(change { [adjustment.reload.amount, order.reload.total] })
 
-        expect(response).to redirect_to spree.admin_order_adjustments_path(order)
+        expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
       end
     end
   end

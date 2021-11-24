@@ -30,7 +30,7 @@ module Api
         end
 
         def managed
-          Enterprise.managed_by(options[:spree_current_user]).include? object
+          Enterprise.managed_by(options[:spree_current_user]).include?(object)
         end
 
         private

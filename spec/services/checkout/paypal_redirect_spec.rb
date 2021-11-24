@@ -9,7 +9,7 @@ describe Checkout::PaypalRedirect do
     let(:redirect) { Checkout::PaypalRedirect.new(params) }
 
     it "returns nil if payment_attributes are not provided" do
-      expect(redirect.path).to be nil
+      expect(redirect.path).to(be(nil))
     end
 
     describe "when payment_attributes are provided" do
@@ -17,7 +17,7 @@ describe Checkout::PaypalRedirect do
         params[:order][:payments_attributes] = [{ payment_method_id: "123" }]
 
         expect { redirect.path }
-.to raise_error ActiveRecord::RecordNotFound
+.to(raise_error(ActiveRecord::RecordNotFound))
       end
 
       describe "when payment method provided exists" do
@@ -27,7 +27,7 @@ describe Checkout::PaypalRedirect do
           let(:payment_method) { create(:payment_method) }
 
           it "returns nil" do
-            expect(redirect.path).to be nil
+            expect(redirect.path).to(be(nil))
           end
         end
 
@@ -41,7 +41,7 @@ distributor_ids: [distributor.id]
           end
 
           it "returns the redirect path" do
-            expect(redirect.path).to include payment_method.id.to_s
+            expect(redirect.path).to(include(payment_method.id.to_s))
           end
         end
       end

@@ -12,7 +12,7 @@ describe Api::V0::EnterprisesController, type: :controller do
     let!(:enterprise) { create(:distributor_enterprise, owner: enterprise_owner) }
 
     before do
-      allow(controller).to receive(:spree_current_user) { enterprise_owner }
+      allow(controller).to(receive(:spree_current_user) { enterprise_owner })
     end
 
     describe "creating an enterprise" do
@@ -33,10 +33,10 @@ address_attributes: {
 
       it "creates as sells=any when it is not a producer" do
         api_post :create, { enterprise: new_enterprise_params }
-        expect(response.status).to eq 201
+        expect(response.status).to(eq(201))
 
         enterprise = Enterprise.last
-        expect(enterprise.sells).to eq('any')
+        expect(enterprise.sells).to(eq('any'))
       end
 
       it "saves all user ids submitted" do
@@ -47,21 +47,21 @@ address_attributes: {
           enterprise: new_enterprise_params
             .merge({ user_ids: [enterprise_owner.id, manager1.id, manager2.id] })
         }
-        expect(response.status).to eq 201
+        expect(response.status).to(eq(201))
 
         enterprise = Enterprise.last
-        expect(enterprise.user_ids).to match_array([enterprise_owner.id, manager1.id, manager2.id])
+        expect(enterprise.user_ids).to(match_array([enterprise_owner.id, manager1.id, manager2.id]))
       end
 
       context "geocoding" do
         it "geocodes the address when the :use_geocoder parameter is set" do
-          expect_any_instance_of(AddressGeocoder).to receive(:geocode)
+          expect_any_instance_of(AddressGeocoder).to(receive(:geocode))
 
           api_post :create, { enterprise: new_enterprise_params, use_geocoder: "1" }
         end
 
         it "doesn't geocode the address when the :use_geocoder parameter is not set" do
-          expect_any_instance_of(AddressGeocoder).not_to receive(:geocode)
+          expect_any_instance_of(AddressGeocoder).not_to(receive(:geocode))
 
           api_post :create, { enterprise: new_enterprise_params, use_geocoder: "0" }
         end
@@ -74,28 +74,28 @@ address_attributes: {
 
     before do
       enterprise_manager.enterprise_roles.build(enterprise: enterprise).save
-      allow(controller).to receive(:spree_current_user) { enterprise_manager }
+      allow(controller).to(receive(:spree_current_user) { enterprise_manager })
     end
 
     describe "submitting a valid image" do
       let!(:logo) { fixture_file_upload("files/logo.png", "image/png") }
       before do
         allow(Enterprise)
-          .to receive(:find_by).with({ permalink: enterprise.id.to_s }) { enterprise }
+          .to(receive(:find_by).with({ permalink: enterprise.id.to_s }) { enterprise })
       end
 
       it "I can update enterprise logo image" do
         api_post :update_image, logo: logo, id: enterprise.id
-        expect(response.status).to eq 200
-        expect(response.content_type).to eq "text/html"
-        expect(response.body).to match %r{/images/enterprises/logos/\d*/medium/logo\.png\?\d*}
+        expect(response.status).to(eq(200))
+        expect(response.content_type).to(eq("text/html"))
+        expect(response.body).to(match(%r{/images/enterprises/logos/\d*/medium/logo\.png\?\d*}))
       end
 
       it "I can update enterprise promo image" do
         api_post :update_image, promo: logo, id: enterprise.id
-        expect(response.status).to eq 200
-        expect(response.content_type).to eq "text/html"
-        expect(response.body).to match %r{/images/enterprises/promo_images/\d*/medium/logo\.jpg\?\d*}
+        expect(response.status).to(eq(200))
+        expect(response.content_type).to(eq("text/html"))
+        expect(response.body).to(match(%r{/images/enterprises/promo_images/\d*/medium/logo\.jpg\?\d*}))
       end
     end
   end
@@ -104,8 +104,8 @@ address_attributes: {
     let(:non_managing_user) { create(:user) }
 
     before do
-      allow(Enterprise).to receive(:find_by).with({ permalink: enterprise.id.to_s }) { enterprise }
-      allow(controller).to receive(:spree_current_user) { non_managing_user }
+      allow(Enterprise).to(receive(:find_by).with({ permalink: enterprise.id.to_s }) { enterprise })
+      allow(controller).to(receive(:spree_current_user) { non_managing_user })
     end
 
     describe "submitting a valid image" do

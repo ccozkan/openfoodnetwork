@@ -11,7 +11,7 @@ module OpenFoodNetwork
     describe "merging Spree::Properties" do
       it "merges properties" do
         merge = PropertyMerge.merge([property], [duplicate_property, different_property])
-        expect(merge).to eq [property, different_property]
+        expect(merge).to(eq([property, different_property]))
       end
     end
 
@@ -25,7 +25,7 @@ module OpenFoodNetwork
           [product_property],
           [duplicate_product_property, producer_property]
         )
-        expect(merge).to eq [product_property, producer_property]
+        expect(merge).to(eq([product_property, producer_property]))
       end
     end
   end

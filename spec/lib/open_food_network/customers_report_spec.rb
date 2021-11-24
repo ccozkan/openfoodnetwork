@@ -11,15 +11,15 @@ module OpenFoodNetwork
         user.spree_roles << Spree::Role.find_or_create_by!(name: 'admin')
         user
       end
-      subject { CustomersReport.new user, {}, true }
+      subject { CustomersReport.new(user, {}, true) }
 
       describe "mailing list report" do
         before do
-          allow(subject).to receive(:params).and_return(report_type: "mailing_list")
+          allow(subject).to(receive(:params).and_return(report_type: "mailing_list"))
         end
 
         it "returns headers for mailing_list" do
-          expect(subject.header).to eq(["Email", "First Name", "Last Name", "Suburb"])
+          expect(subject.header).to(eq(["Email", "First Name", "Last Name", "Suburb"]))
         end
 
         it "builds a table from a list of variants" do
@@ -30,20 +30,20 @@ firstname: "Firsty",
                   lastname: "Lasty",
 city: "Suburbia"
 )
-          allow(order).to receive(:billing_address).and_return address
-          allow(subject).to receive(:orders).and_return [order]
+          allow(order).to(receive(:billing_address).and_return(address))
+          allow(subject).to(receive(:orders).and_return([order]))
 
-          expect(subject.table).to eq([["test@test.com", "Firsty", "Lasty", "Suburbia"]])
+          expect(subject.table).to(eq([["test@test.com", "Firsty", "Lasty", "Suburbia"]]))
         end
       end
 
       describe "addresses report" do
         before do
-          allow(subject).to receive(:params).and_return(report_type: "addresses")
+          allow(subject).to(receive(:params).and_return(report_type: "addresses"))
         end
 
         it "returns headers for addresses" do
-          expect(subject.header).to eq(
+          expect(subject.header).to(eq(
 [
 "First Name",
 "Last Name",
@@ -54,7 +54,7 @@ city: "Suburbia"
 "Hub Address",
 "Shipping Method"
 ]
-)
+))
         end
 
         it "builds a table from a list of variants" do
@@ -63,8 +63,8 @@ city: "Suburbia"
           o = create(:order, distributor: d, bill_address: a)
           o.shipments << create(:shipment)
 
-          allow(subject).to receive(:orders).and_return [o]
-          expect(subject.table).to eq(
+          allow(subject).to(receive(:orders).and_return([o]))
+          expect(subject.table).to(eq(
 [
 [
                                         a.firstname,
@@ -77,7 +77,7 @@ d.name,
                                         o.shipping_method.name
                                       ]
 ]
-)
+))
         end
       end
 
@@ -85,13 +85,13 @@ d.name,
         it "fetches completed orders" do
           o1 = create(:order)
           o2 = create(:order, completed_at: 1.day.ago)
-          expect(subject.orders).to eq([o2])
+          expect(subject.orders).to(eq([o2]))
         end
 
         it "does not show cancelled orders" do
           o1 = create(:order, state: "canceled", completed_at: 1.day.ago)
           o2 = create(:order, completed_at: 1.day.ago)
-          expect(subject.orders).to eq([o2])
+          expect(subject.orders).to(eq([o2]))
         end
       end
     end
@@ -104,7 +104,7 @@ d.name,
         user
       end
 
-      subject { CustomersReport.new user, {}, true }
+      subject { CustomersReport.new(user, {}, true) }
 
       describe "fetching orders" do
         let(:supplier) { create(:supplier_enterprise) }
@@ -120,8 +120,8 @@ d.name,
           o1 = create(:order, distributor: d1, completed_at: 1.day.ago)
           o2 = create(:order, distributor: d2, completed_at: 1.day.ago)
 
-          expect(subject).to receive(:filter).with([o1]).and_return([o1])
-          expect(subject.orders).to eq([o1])
+          expect(subject).to(receive(:filter).with([o1]).and_return([o1]))
+          expect(subject.orders).to(eq([o1]))
         end
 
         it "does not show orders through a hub that the current user does not manage" do
@@ -130,8 +130,8 @@ d.name,
           order.line_items << create(:line_item_with_shipment, product: product)
 
           # When I fetch orders, I should see no orders
-          expect(subject).to receive(:filter).with([]).and_return([])
-          expect(subject.orders).to eq([])
+          expect(subject).to(receive(:filter).with([]).and_return([]))
+          expect(subject.orders).to(eq([]))
         end
       end
 
@@ -140,7 +140,7 @@ d.name,
         let(:supplier) { create(:supplier_enterprise) }
 
         it "returns all orders sans-params" do
-          expect(subject.filter(orders)).to eq(orders)
+          expect(subject.filter(orders)).to(eq(orders))
         end
 
         it "returns orders with a specific supplier" do
@@ -153,8 +153,8 @@ d.name,
           order1.line_items << create(:line_item, product: product1)
           order2.line_items << create(:line_item, product: product2)
 
-          allow(subject).to receive(:params).and_return(supplier_id: supplier.id)
-          expect(subject.filter(orders)).to eq([order1])
+          allow(subject).to(receive(:params).and_return(supplier_id: supplier.id))
+          expect(subject.filter(orders)).to(eq([order1]))
         end
 
         it "filters to a specific distributor" do
@@ -163,8 +163,8 @@ d.name,
           order1 = create(:order, distributor: d1)
           order2 = create(:order, distributor: d2)
 
-          allow(subject).to receive(:params).and_return(distributor_id: d1.id)
-          expect(subject.filter(orders)).to eq([order1])
+          allow(subject).to(receive(:params).and_return(distributor_id: d1.id))
+          expect(subject.filter(orders)).to(eq([order1]))
         end
 
         it "filters to a specific cycle" do
@@ -173,8 +173,8 @@ d.name,
           order1 = create(:order, order_cycle: oc1)
           order2 = create(:order, order_cycle: oc2)
 
-          allow(subject).to receive(:params).and_return(order_cycle_id: oc1.id)
-          expect(subject.filter(orders)).to eq([order1])
+          allow(subject).to(receive(:params).and_return(order_cycle_id: oc1.id))
+          expect(subject.filter(orders)).to(eq([order1]))
         end
       end
     end

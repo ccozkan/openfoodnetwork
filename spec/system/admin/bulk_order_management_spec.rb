@@ -14,7 +14,7 @@ describe ' As an Administrator I want to be able to manage orders in bulk ', js:
 
     it "displays a message when number of line items is zero" do
       visit_bulk_order_management
-      expect(page).to have_text 'No orders found.'
+      expect(page).to(have_text('No orders found.'))
     end
 
     context "displaying the list of line items" do
@@ -48,16 +48,16 @@ shipment_state: 'ready',
       end
 
       it "displays a list of line items" do
-        expect(page).to have_selector "tr#li_#{li1.id}"
-        expect(page).to have_selector "tr#li_#{li2.id}"
-        expect(page).to have_no_selector "tr#li_#{li3.id}"
+        expect(page).to(have_selector("tr#li_#{li1.id}"))
+        expect(page).to(have_selector("tr#li_#{li2.id}"))
+        expect(page).to(have_no_selector("tr#li_#{li3.id}"))
       end
 
       it "displays only line items that are not shipped" do
-        expect(page).to have_selector "tr#li_#{li1.id}"
-        expect(page).to have_selector "tr#li_#{li2.id}"
-        expect(page).to have_no_selector "tr#li_#{li4.id}"
-        expect(page).to have_no_selector "tr#li_#{li5.id}"
+        expect(page).to(have_selector("tr#li_#{li1.id}"))
+        expect(page).to(have_selector("tr#li_#{li2.id}"))
+        expect(page).to(have_no_selector("tr#li_#{li4.id}"))
+        expect(page).to(have_no_selector("tr#li_#{li5.id}"))
       end
     end
 
@@ -90,47 +90,47 @@ completed_at: Time.zone.now,
       end
 
       it "displays a column for user's full name" do
-        expect(page).to have_selector "th.full_name", text: "NAME", visible: true
-        expect(page).to have_selector "td.full_name", text: o1.bill_address.full_name, visible: true
-        expect(page).to have_selector "td.full_name", text: "", visible: true
+        expect(page).to(have_selector("th.full_name", text: "NAME", visible: true))
+        expect(page).to(have_selector("td.full_name", text: o1.bill_address.full_name, visible: true))
+        expect(page).to(have_selector("td.full_name", text: "", visible: true))
       end
 
       it "displays a column for order date" do
-        expect(page).to have_selector "th.date",
+        expect(page).to(have_selector("th.date",
                                       text: I18n.t("admin.orders.bulk_management.order_date").upcase,
-visible: true
-        expect(page).to have_selector "td.date",
+visible: true))
+        expect(page).to(have_selector("td.date",
 text: o1.completed_at.strftime('%B %d, %Y'),
-                                                 visible: true
-        expect(page).to have_selector "td.date",
+                                                 visible: true))
+        expect(page).to(have_selector("td.date",
 text: o2.completed_at.strftime('%B %d, %Y'),
-                                                 visible: true
+                                                 visible: true))
       end
 
       it "displays a column for producer" do
-        expect(page).to have_selector "th.producer", text: "PRODUCER", visible: true
-        expect(page).to have_selector "td.producer", text: li1.product.supplier.name, visible: true
-        expect(page).to have_selector "td.producer", text: li2.product.supplier.name, visible: true
+        expect(page).to(have_selector("th.producer", text: "PRODUCER", visible: true))
+        expect(page).to(have_selector("td.producer", text: li1.product.supplier.name, visible: true))
+        expect(page).to(have_selector("td.producer", text: li2.product.supplier.name, visible: true))
       end
 
       it "displays a column for variant description, which shows only product name when options text is blank" do
-        expect(page).to have_selector "th.variant", text: "PRODUCT: UNIT", visible: true
-        expect(page).to have_selector "td.variant", text: li1.product.name, visible: true
-        expect(page).to have_selector "td.variant",
+        expect(page).to(have_selector("th.variant", text: "PRODUCT: UNIT", visible: true))
+        expect(page).to(have_selector("td.variant", text: li1.product.name, visible: true))
+        expect(page).to(have_selector("td.variant",
                                       text: "#{li2.product.name}: #{li2.variant.options_text}",
-visible: true
+visible: true))
       end
 
       it "displays a field for quantity" do
-        expect(page).to have_selector "th.quantity", text: "QUANTITY", visible: true
-        expect(page).to have_field "quantity", with: li1.quantity.to_s, visible: true
-        expect(page).to have_field "quantity", with: li2.quantity.to_s, visible: true
+        expect(page).to(have_selector("th.quantity", text: "QUANTITY", visible: true))
+        expect(page).to(have_field("quantity", with: li1.quantity.to_s, visible: true))
+        expect(page).to(have_field("quantity", with: li2.quantity.to_s, visible: true))
       end
 
       it "displays a column for max quantity" do
-        expect(page).to have_selector "th.max", text: "MAX", visible: true
-        expect(page).to have_selector "td.max", text: li1.max_quantity.to_s, visible: true
-        expect(page).to have_selector "td.max", text: li2.max_quantity.to_s, visible: true
+        expect(page).to(have_selector("th.max", text: "MAX", visible: true))
+        expect(page).to(have_selector("td.max", text: li1.max_quantity.to_s, visible: true))
+        expect(page).to(have_selector("td.max", text: li2.max_quantity.to_s, visible: true))
       end
     end
 
@@ -165,14 +165,14 @@ shipment_state: 'ready',
           click_on "Name"
         end
 
-        expect(page).to have_selector(
+        expect(page).to(have_selector(
 "#listing_orders .line_item:nth-child(1) .full_name",
                                       text: customer_names[0]
-)
-        expect(page).to have_selector(
+))
+        expect(page).to(have_selector(
 "#listing_orders .line_item:nth-child(2) .full_name",
                                       text: customer_names[1]
-)
+))
       end
 
       it "sorts by customer name in reverse when the customer name header is clicked twice" do
@@ -183,14 +183,14 @@ shipment_state: 'ready',
           click_on "Name"
         end
 
-        expect(page).to have_selector(
+        expect(page).to(have_selector(
 "#listing_orders .line_item:nth-child(1) .full_name",
                                       text: customer_names[1]
-)
-        expect(page).to have_selector(
+))
+        expect(page).to(have_selector(
 "#listing_orders .line_item:nth-child(2) .full_name",
                                       text: customer_names[0]
-)
+))
       end
     end
   end
@@ -216,9 +216,9 @@ shipment_state: 'ready',
       end
 
       it "adds the class 'ng-dirty' to input elements when value is altered" do
-        expect(page).to have_no_css "input[name='quantity'].ng-dirty"
+        expect(page).to(have_no_css("input[name='quantity'].ng-dirty"))
         fill_in "quantity", with: 2
-        expect(page).to have_css "input[name='quantity'].ng-dirty"
+        expect(page).to(have_css("input[name='quantity'].ng-dirty"))
       end
     end
 
@@ -232,27 +232,27 @@ shipment_state: 'ready',
 
       context "when acceptable data is sent to the server" do
         it "displays an update button which submits pending changes" do
-          expect(page).to have_no_selector "#save-bar"
+          expect(page).to(have_no_selector("#save-bar"))
           fill_in "quantity", with: 2
-          expect(page).to have_selector "input[name='quantity'].ng-dirty"
-          expect(page).to have_selector "#save-bar", text: "You have unsaved changes"
+          expect(page).to(have_selector("input[name='quantity'].ng-dirty"))
+          expect(page).to(have_selector("#save-bar", text: "You have unsaved changes"))
           click_button "Save Changes"
-          expect(page).to have_selector "#save-bar", text: "All changes saved"
-          expect(page).to have_no_selector "input[name='quantity'].ng-dirty"
+          expect(page).to(have_selector("#save-bar", text: "All changes saved"))
+          expect(page).to(have_no_selector("input[name='quantity'].ng-dirty"))
         end
       end
 
       context "when unacceptable data is sent to the server" do
         it "displays an update button which submits pending changes" do
-          expect(page).to have_no_selector "#save-bar"
+          expect(page).to(have_no_selector("#save-bar"))
           line_item = order.line_items.first
           fill_in "quantity", with: line_item.variant.on_hand + line_item.quantity + 10
-          expect(page).to have_selector "input[name='quantity'].ng-dirty"
-          expect(page).to have_selector "#save-bar", text: "You have unsaved changes"
+          expect(page).to(have_selector("input[name='quantity'].ng-dirty"))
+          expect(page).to(have_selector("#save-bar", text: "You have unsaved changes"))
           click_button "Save Changes"
-          expect(page).to have_selector "#save-bar", text: "Fields with red borders contain errors."
-          expect(page).to have_selector "input[name='quantity'].ng-dirty.update-error"
-          expect(page).to have_content "is out of stock"
+          expect(page).to(have_selector("#save-bar", text: "Fields with red borders contain errors."))
+          expect(page).to(have_selector("input[name='quantity'].ng-dirty.update-error"))
+          expect(page).to(have_content("is out of stock"))
         end
       end
     end
@@ -299,15 +299,15 @@ final_weight_volume: 1000,
         visit_bulk_order_management
         toggle_columns "Weight/Volume", "Price"
         within "tr#li_#{li1.id}" do
-          expect(page).to have_field "price", with: "50.00"
+          expect(page).to(have_field("price", with: "50.00"))
           fill_in "final_weight_volume", with: 2000
-          expect(page).to have_field "price", with: "100.00"
+          expect(page).to(have_field("price", with: "100.00"))
         end
         click_button "Save Changes"
-        expect(page).to have_content "All changes saved"
+        expect(page).to(have_content("All changes saved"))
         li1.reload
-        expect(li1.final_weight_volume).to eq 2000
-        expect(li1.price).to eq 20.00
+        expect(li1.final_weight_volume).to(eq(2000))
+        expect(li1.price).to(eq(20.00))
       end
     end
 
@@ -316,9 +316,9 @@ final_weight_volume: 1000,
         visit_bulk_order_management
         toggle_columns "Price"
         within "tr#li_#{li1.id}" do
-          expect(page).to have_field "price", with: format('%.2f', li1.price * 5).to_s
+          expect(page).to(have_field("price", with: format('%.2f', li1.price * 5).to_s))
           fill_in "quantity", with: 6
-          expect(page).to have_field "price", with: format('%.2f', li1.price * 6).to_s
+          expect(page).to(have_field("price", with: format('%.2f', li1.price * 6).to_s))
         end
       end
     end
@@ -328,10 +328,10 @@ final_weight_volume: 1000,
         visit_bulk_order_management
         toggle_columns "Weight/Volume"
         within "tr#li_#{li1.id}" do
-          expect(page).to have_field "final_weight_volume", with: li1.final_weight_volume.round.to_s
+          expect(page).to(have_field("final_weight_volume", with: li1.final_weight_volume.round.to_s))
           fill_in "quantity", with: 6
-          expect(page).to have_field "final_weight_volume",
-                                     with: ((li1.final_weight_volume * 6) / 5).round.to_s
+          expect(page).to(have_field("final_weight_volume",
+                                     with: ((li1.final_weight_volume * 6) / 5).round.to_s))
         end
       end
     end
@@ -340,23 +340,23 @@ final_weight_volume: 1000,
       it "shows a column display toggle button, which shows a list of columns when clicked" do
         visit_bulk_order_management
 
-        expect(page).to have_selector "th", text: "NAME"
-        expect(page).to have_selector "th",
-                                      text: I18n.t("admin.orders.bulk_management.order_date").upcase
-        expect(page).to have_selector "th", text: "PRODUCER"
-        expect(page).to have_selector "th", text: "PRODUCT: UNIT"
-        expect(page).to have_selector "th", text: "QUANTITY"
-        expect(page).to have_selector "th", text: "MAX"
+        expect(page).to(have_selector("th", text: "NAME"))
+        expect(page).to(have_selector("th",
+                                      text: I18n.t("admin.orders.bulk_management.order_date").upcase))
+        expect(page).to(have_selector("th", text: "PRODUCER"))
+        expect(page).to(have_selector("th", text: "PRODUCT: UNIT"))
+        expect(page).to(have_selector("th", text: "QUANTITY"))
+        expect(page).to(have_selector("th", text: "MAX"))
 
         toggle_columns "Producer"
 
-        expect(page).to have_no_selector "th", text: "PRODUCER"
-        expect(page).to have_selector "th", text: "NAME"
-        expect(page).to have_selector "th",
-                                      text: I18n.t("admin.orders.bulk_management.order_date").upcase
-        expect(page).to have_selector "th", text: "PRODUCT: UNIT"
-        expect(page).to have_selector "th", text: "QUANTITY"
-        expect(page).to have_selector "th", text: "MAX"
+        expect(page).to(have_no_selector("th", text: "PRODUCER"))
+        expect(page).to(have_selector("th", text: "NAME"))
+        expect(page).to(have_selector("th",
+                                      text: I18n.t("admin.orders.bulk_management.order_date").upcase))
+        expect(page).to(have_selector("th", text: "PRODUCT: UNIT"))
+        expect(page).to(have_selector("th", text: "QUANTITY"))
+        expect(page).to(have_selector("th", text: "MAX"))
       end
     end
 
@@ -385,28 +385,28 @@ completed_at: Time.zone.now,
         end
 
         it "displays a select box for producers, which filters line items by the selected supplier" do
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
           open_select2 "#s2id_supplier_filter"
-          expect(page).to have_selector "div.select2-drop-active ul.select2-results li", text: "All"
+          expect(page).to(have_selector("div.select2-drop-active ul.select2-results li", text: "All"))
           Enterprise.is_primary_producer.map(&:name).each do |sn|
-            expect(page).to have_selector "div.select2-drop-active ul.select2-results li", text: sn
+            expect(page).to(have_selector("div.select2-drop-active ul.select2-results li", text: sn))
           end
           close_select2
           select2_select s1.name, from: "supplier_filter"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
         end
 
         it "displays all line items when 'All' is selected from supplier filter" do
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
           select2_select s1.name, from: "supplier_filter"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
           select2_select "All", from: "supplier_filter"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
         end
       end
 
@@ -441,26 +441,26 @@ distributor: d2,
         end
 
         it "displays a select box for distributors, which filters line items by the selected distributor" do
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
           open_select2 "#s2id_distributor_filter"
-          expect(page).to have_selector "div.select2-drop-active ul.select2-results li", text: "All"
+          expect(page).to(have_selector("div.select2-drop-active ul.select2-results li", text: "All"))
           Enterprise.is_distributor.map(&:name).each do |dn|
-            expect(page).to have_selector "div.select2-drop-active ul.select2-results li", text: dn
+            expect(page).to(have_selector("div.select2-drop-active ul.select2-results li", text: dn))
           end
           close_select2
           select2_select d1.name, from: "distributor_filter"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
         end
 
         it "displays all line items when 'All' is selected from distributor filter" do
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
           select2_select d1.name, from: "distributor_filter"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
           select2_select "All", from: "distributor_filter"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
         end
       end
 
@@ -494,25 +494,25 @@ completed_at: Time.zone.now,
         end
 
         it "displays a select box for order cycles, which filters line items by the selected order cycle" do
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
-          expect(page).to have_select2 'order_cycle_filter',
-                                       with_options: OrderCycle.pluck(:name).unshift("All")
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
+          expect(page).to(have_select2('order_cycle_filter',
+                                       with_options: OrderCycle.pluck(:name).unshift("All")))
           select2_select oc1.name, from: "order_cycle_filter"
-          expect(page).to have_no_selector "#loading img.spinner"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_no_selector("#loading img.spinner"))
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
         end
 
         it "displays all line items when 'All' is selected from order_cycle filter" do
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
           select2_select oc1.name, from: "order_cycle_filter"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
           select2_select "All", from: "order_cycle_filter"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
         end
       end
 
@@ -553,39 +553,39 @@ distributor: d2,
         end
 
         it "allows filters to be used in combination" do
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
           select2_select oc1.name, from: "order_cycle_filter"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
           select2_select d1.name, from: "distributor_filter"
           select2_select s1.name, from: "supplier_filter"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
           select2_select d2.name, from: "distributor_filter"
           select2_select s2.name, from: "supplier_filter"
-          expect(page).to have_no_selector "tr#li_#{li1.id}"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_no_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
           select2_select oc2.name, from: "order_cycle_filter"
-          expect(page).to have_no_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_no_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
         end
 
         it "displays a 'Clear All' button which sets all select filters to 'All'" do
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
           select2_select oc1.name, from: "order_cycle_filter"
           select2_select d1.name, from: "distributor_filter"
           select2_select s1.name, from: "supplier_filter"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
-          expect(page).to have_button "Clear All"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
+          expect(page).to(have_button("Clear All"))
           click_button "Clear All"
-          expect(page).to have_selector "div#s2id_order_cycle_filter a.select2-choice", text: "All"
-          expect(page).to have_selector "div#s2id_supplier_filter a.select2-choice", text: "All"
-          expect(page).to have_selector "div#s2id_distributor_filter a.select2-choice", text: "All"
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("div#s2id_order_cycle_filter a.select2-choice", text: "All"))
+          expect(page).to(have_selector("div#s2id_supplier_filter a.select2-choice", text: "All"))
+          expect(page).to(have_selector("div#s2id_distributor_filter a.select2-choice", text: "All"))
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
         end
       end
     end
@@ -624,13 +624,13 @@ shipment_state: 'ready',
       end
 
       it "filters line items based on their attributes and the contents of the quick search input" do
-        expect(page).to have_selector "tr#li_#{li1.id}"
-        expect(page).to have_selector "tr#li_#{li2.id}"
-        expect(page).to have_selector "tr#li_#{li3.id}"
+        expect(page).to(have_selector("tr#li_#{li1.id}"))
+        expect(page).to(have_selector("tr#li_#{li2.id}"))
+        expect(page).to(have_selector("tr#li_#{li3.id}"))
         fill_in "quick_search", with: o1.email
-        expect(page).to have_selector "tr#li_#{li1.id}"
-        expect(page).to have_no_selector "tr#li_#{li2.id}"
-        expect(page).to have_no_selector "tr#li_#{li3.id}"
+        expect(page).to(have_selector("tr#li_#{li1.id}"))
+        expect(page).to(have_no_selector("tr#li_#{li2.id}"))
+        expect(page).to(have_no_selector("tr#li_#{li3.id}"))
       end
     end
 
@@ -680,63 +680,63 @@ shipment_state: 'ready',
         # use Date.current since Date.today is without timezone
         today = Time.zone.today
         one_week_ago = today.prev_day(7).strftime("%F")
-        expect(page).to have_field "start_date_filter", with: one_week_ago
-        expect(page).to have_field "end_date_filter", with: today.strftime("%F")
+        expect(page).to(have_field("start_date_filter", with: one_week_ago))
+        expect(page).to(have_field("end_date_filter", with: today.strftime("%F")))
       end
 
       it "only loads line items whose orders meet the date restriction criteria" do
-        expect(page).to have_no_selector "tr#li_#{li1.id}"
-        expect(page).to have_selector "tr#li_#{li2.id}"
-        expect(page).to have_selector "tr#li_#{li3.id}"
-        expect(page).to have_no_selector "tr#li_#{li4.id}"
+        expect(page).to(have_no_selector("tr#li_#{li1.id}"))
+        expect(page).to(have_selector("tr#li_#{li2.id}"))
+        expect(page).to(have_selector("tr#li_#{li3.id}"))
+        expect(page).to(have_no_selector("tr#li_#{li4.id}"))
       end
 
       it "displays only line items whose orders meet the date restriction criteria, when changed" do
         find('#start_date_filter').click
         select_date_from_datepicker Time.zone.today - 8.days
 
-        expect(page).to have_selector "tr#li_#{li1.id}"
-        expect(page).to have_selector "tr#li_#{li2.id}"
-        expect(page).to have_selector "tr#li_#{li3.id}"
-        expect(page).to have_no_selector "tr#li_#{li4.id}"
+        expect(page).to(have_selector("tr#li_#{li1.id}"))
+        expect(page).to(have_selector("tr#li_#{li2.id}"))
+        expect(page).to(have_selector("tr#li_#{li3.id}"))
+        expect(page).to(have_no_selector("tr#li_#{li4.id}"))
 
         find('#end_date_filter').click
         select_date_from_datepicker Time.zone.today + 1.day
 
-        expect(page).to have_selector "tr#li_#{li1.id}"
-        expect(page).to have_selector "tr#li_#{li2.id}"
-        expect(page).to have_selector "tr#li_#{li3.id}"
-        expect(page).to have_selector "tr#li_#{li4.id}"
+        expect(page).to(have_selector("tr#li_#{li1.id}"))
+        expect(page).to(have_selector("tr#li_#{li2.id}"))
+        expect(page).to(have_selector("tr#li_#{li3.id}"))
+        expect(page).to(have_selector("tr#li_#{li4.id}"))
       end
 
       context "when the form is dirty" do
         before do
           within("tr#li_#{li2.id} td.quantity") do
-            page.fill_in "quantity", with: (li2.quantity + 1).to_s
+            page.fill_in("quantity", with: (li2.quantity + 1).to_s)
           end
         end
 
         it "shows a dialog and ignores changes when confirm dialog is accepted" do
-          page.driver.accept_modal :confirm,
-                                   text: "Unsaved changes exist and will be lost if you continue." do
+          page.driver.accept_modal(:confirm,
+                                   text: "Unsaved changes exist and will be lost if you continue.") do
             find('#start_date_filter').click
             select_date_from_datepicker Time.zone.today - 9.days
           end
-          expect(page).to have_no_selector "#save-bar"
+          expect(page).to(have_no_selector("#save-bar"))
           within("tr#li_#{li2.id} td.quantity") do
-            expect(page).to have_no_selector "input[name=quantity].ng-dirty"
+            expect(page).to(have_no_selector("input[name=quantity].ng-dirty"))
           end
         end
 
         it "shows a dialog and keeps changes when confirm dialog is rejected" do
-          page.driver.dismiss_modal :confirm,
-                                    text: "Unsaved changes exist and will be lost if you continue." do
+          page.driver.dismiss_modal(:confirm,
+                                    text: "Unsaved changes exist and will be lost if you continue.") do
             find('#start_date_filter').click
             select_date_from_datepicker Time.zone.today - 9.days
           end
-          expect(page).to have_selector "#save-bar"
+          expect(page).to(have_selector("#save-bar"))
           within("tr#li_#{li2.id} td.quantity") do
-            expect(page).to have_selector "input[name=quantity].ng-dirty"
+            expect(page).to(have_selector("input[name=quantity].ng-dirty"))
           end
         end
       end
@@ -767,18 +767,18 @@ shipment_state: 'ready',
       end
 
       it "displays a checkbox for each line item in the list" do
-        expect(page).to have_selector "tr#li_#{li1.id} input[type='checkbox'][name='bulk']"
-        expect(page).to have_selector "tr#li_#{li2.id} input[type='checkbox'][name='bulk']"
+        expect(page).to(have_selector("tr#li_#{li1.id} input[type='checkbox'][name='bulk']"))
+        expect(page).to(have_selector("tr#li_#{li2.id} input[type='checkbox'][name='bulk']"))
       end
 
       it "displays a checkbox to which toggles the 'checked' state of all checkboxes" do
         check "toggle_bulk"
         page.all("input[type='checkbox'][name='bulk']").each do |checkbox|
-          expect(checkbox.checked?).to be true
+          expect(checkbox.checked?).to(be(true))
         end
         uncheck "toggle_bulk"
         page.all("input[type='checkbox'][name='bulk']").each do |checkbox|
-          expect(checkbox.checked?).to be false
+          expect(checkbox.checked?).to(be(false))
         end
       end
 
@@ -787,49 +787,49 @@ shipment_state: 'ready',
         find("div#bulk-actions-dropdown").click
         within("div#bulk-actions-dropdown") do
           list_of_actions.each do |action_name|
-            expect(page).to have_selector "div.menu_item", text: action_name
+            expect(page).to(have_selector("div.menu_item", text: action_name))
           end
         end
       end
 
       context "performing actions" do
         it "deletes selected items" do
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
           within("tr#li_#{li2.id} td.bulk") do
             check "bulk"
           end
           find("div#bulk-actions-dropdown").click
           find("div#bulk-actions-dropdown div.menu_item", text: "Delete Selected").click
-          expect(page).to have_selector "tr#li_#{li1.id}"
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
         end
       end
 
       context "when a filter has been applied" do
         it "only toggles checkboxes which are in filteredLineItems" do
           fill_in "quick_search", with: o1.number
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
           check "toggle_bulk"
           fill_in "quick_search", with: ''
           wait_until { request_monitor_finished 'LineItemsCtrl' }
-          expect(find("tr#li_#{li1.id} input[type='checkbox'][name='bulk']").checked?).to be true
-          expect(find("tr#li_#{li2.id} input[type='checkbox'][name='bulk']").checked?).to be false
-          expect(find("input[type='checkbox'][name='toggle_bulk']").checked?).to be false
+          expect(find("tr#li_#{li1.id} input[type='checkbox'][name='bulk']").checked?).to(be(true))
+          expect(find("tr#li_#{li2.id} input[type='checkbox'][name='bulk']").checked?).to(be(false))
+          expect(find("input[type='checkbox'][name='toggle_bulk']").checked?).to(be(false))
         end
 
         it "only applies the delete action to filteredLineItems" do
           check "toggle_bulk"
           fill_in "quick_search", with: o1.number
-          expect(page).to have_no_selector "tr#li_#{li2.id}"
+          expect(page).to(have_no_selector("tr#li_#{li2.id}"))
           find("div#bulk-actions-dropdown").click
           find("div#bulk-actions-dropdown div.menu_item", text: "Delete Selected").click
-          expect(page).to have_no_selector "tr#li_#{li1.id}"
-          expect(page).to have_selector "#quick_search"
+          expect(page).to(have_no_selector("tr#li_#{li1.id}"))
+          expect(page).to(have_selector("#quick_search"))
           fill_in "quick_search", with: ''
           wait_until { request_monitor_finished 'LineItemsCtrl' }
-          expect(page).to have_selector "tr#li_#{li2.id}"
-          expect(page).to have_no_selector "tr#li_#{li1.id}"
+          expect(page).to(have_selector("tr#li_#{li2.id}"))
+          expect(page).to(have_no_selector("tr#li_#{li1.id}"))
         end
       end
     end
@@ -863,11 +863,11 @@ shipment_state: 'ready',
         end
 
         it "shows an edit button for line_items, which takes the user to the standard edit page for the order" do
-          expect(page).to have_selector "a.edit-order", count: 2
+          expect(page).to(have_selector("a.edit-order", count: 2))
 
           # Shows a confirm dialog when unsaved changes exist
-          page.driver.dismiss_modal :confirm,
-                                    text: "Unsaved changes exist and will be lost if you continue." do
+          page.driver.dismiss_modal(:confirm,
+                                    text: "Unsaved changes exist and will be lost if you continue.") do
             within "tr#li_#{li1.id}" do
               fill_in "quantity", with: (li1.quantity + 1)
               find("a.edit-order").click
@@ -875,16 +875,16 @@ shipment_state: 'ready',
           end
 
           # So we save the changes
-          expect(URI.parse(current_url).path).to eq "/admin/orders/bulk_management"
+          expect(URI.parse(current_url).path).to(eq("/admin/orders/bulk_management"))
           click_button "Save Changes"
-          expect(page).to have_selector "#save-bar", text: "All changes saved"
+          expect(page).to(have_selector("#save-bar", text: "All changes saved"))
 
           # And try again
           within "tr#li_#{li1.id}" do
             find("a.edit-order").click
           end
 
-          expect(URI.parse(current_url).path).to eq "/admin/orders/#{o1.number}/edit"
+          expect(URI.parse(current_url).path).to(eq("/admin/orders/#{o1.number}/edit"))
         end
       end
 
@@ -913,14 +913,14 @@ shipment_state: 'ready',
         end
 
         it "removes a line item when the relevant delete button is clicked" do
-          expect(page).to have_selector "a.delete-line-item", count: 2
+          expect(page).to(have_selector("a.delete-line-item", count: 2))
           accept_alert do
             find("tr#li_#{li1.id} a.delete-line-item").click
           end
-          expect(page).to have_no_selector "a.delete-line-item", count: 2
-          expect(page).to have_selector "a.delete-line-item", count: 1
+          expect(page).to(have_no_selector("a.delete-line-item", count: 2))
+          expect(page).to(have_selector("a.delete-line-item", count: 1))
           visit_bulk_order_management
-          expect(page).to have_selector "a.delete-line-item", count: 1
+          expect(page).to(have_selector("a.delete-line-item", count: 1))
         end
       end
     end
@@ -977,32 +977,32 @@ shipment_state: 'ready',
       end
 
       it "displays group buy calc box" do
-        expect(page).to have_selector "div#group_buy_calculation", visible: true
+        expect(page).to(have_selector("div#group_buy_calculation", visible: true))
 
         within "div#group_buy_calculation" do
-          expect(page).to have_text "Group Buy Unit Size"
-          expect(page).to have_text "5 kg"
-          expect(page).to have_text "Total Quantity Ordered"
-          expect(page).to have_text "4 kg"
-          expect(page).to have_text "Max Quantity Ordered"
-          expect(page).to have_text "9 kg"
-          expect(page).to have_text "Current Fulfilled Units"
-          expect(page).to have_text "0.8"
-          expect(page).to have_text "Max Fulfilled Units"
-          expect(page).to have_text "1.8"
-          expect(page).to have_selector "div.shared_resource", visible: true
+          expect(page).to(have_text("Group Buy Unit Size"))
+          expect(page).to(have_text("5 kg"))
+          expect(page).to(have_text("Total Quantity Ordered"))
+          expect(page).to(have_text("4 kg"))
+          expect(page).to(have_text("Max Quantity Ordered"))
+          expect(page).to(have_text("9 kg"))
+          expect(page).to(have_text("Current Fulfilled Units"))
+          expect(page).to(have_text("0.8"))
+          expect(page).to(have_text("Max Fulfilled Units"))
+          expect(page).to(have_text("1.8"))
+          expect(page).to(have_selector("div.shared_resource", visible: true))
           within "div.shared_resource" do
-            expect(page).to have_selector "span", text: "Shared Resource?"
-            expect(page).to have_selector "input#shared_resource"
+            expect(page).to(have_selector("span", text: "Shared Resource?"))
+            expect(page).to(have_selector("input#shared_resource"))
           end
         end
       end
 
       it "all line items of the same variant" do
-        expect(page).to have_no_selector "tr#li_#{li1.id}", visible: true
-        expect(page).to have_no_selector "tr#li_#{li2.id}", visible: true
-        expect(page).to have_selector "tr#li_#{li3.id}", visible: true
-        expect(page).to have_selector "tr#li_#{li4.id}", visible: true
+        expect(page).to(have_no_selector("tr#li_#{li1.id}", visible: true))
+        expect(page).to(have_no_selector("tr#li_#{li2.id}", visible: true))
+        expect(page).to(have_selector("tr#li_#{li3.id}", visible: true))
+        expect(page).to(have_selector("tr#li_#{li4.id}", visible: true))
       end
 
       context "clicking 'Clear' in group buy box" do
@@ -1011,11 +1011,11 @@ shipment_state: 'ready',
         end
 
         it "shows all products and clears group buy box" do
-          expect(page).to have_no_selector "div#group_buy_calculation", visible: true
-          expect(page).to have_selector "tr#li_#{li1.id}", visible: true
-          expect(page).to have_selector "tr#li_#{li2.id}", visible: true
-          expect(page).to have_selector "tr#li_#{li3.id}", visible: true
-          expect(page).to have_selector "tr#li_#{li4.id}", visible: true
+          expect(page).to(have_no_selector("div#group_buy_calculation", visible: true))
+          expect(page).to(have_selector("tr#li_#{li1.id}", visible: true))
+          expect(page).to(have_selector("tr#li_#{li2.id}", visible: true))
+          expect(page).to(have_selector("tr#li_#{li3.id}", visible: true))
+          expect(page).to(have_selector("tr#li_#{li4.id}", visible: true))
         end
       end
     end
@@ -1060,21 +1060,21 @@ completed_at: Time.zone.now,
 
     it "displays a Bulk Management Tab under the Orders item" do
       visit '/admin/orders'
-      expect(page).to have_link "Bulk Order Management"
+      expect(page).to(have_link("Bulk Order Management"))
       click_link "Bulk Order Management"
-      expect(page).to have_selector "h1.page-title", text: "Bulk Order Management"
+      expect(page).to(have_selector("h1.page-title", text: "Bulk Order Management"))
     end
 
     it "shows only line item from orders that I distribute, and not those that I supply" do
       visit_bulk_order_management
 
-      expect(page).to have_selector "tr#li_#{line_item_distributed.id}", visible: true
-      expect(page).to have_no_selector "tr#li_#{line_item_not_distributed.id}", visible: true
+      expect(page).to(have_selector("tr#li_#{line_item_distributed.id}", visible: true))
+      expect(page).to(have_no_selector("tr#li_#{line_item_not_distributed.id}", visible: true))
     end
   end
 
   def visit_bulk_order_management
-    visit spree.admin_bulk_order_management_path
-    expect(page).to have_no_text 'Loading orders'
+    visit(spree.admin_bulk_order_management_path)
+    expect(page).to(have_no_text('Loading orders'))
   end
 end

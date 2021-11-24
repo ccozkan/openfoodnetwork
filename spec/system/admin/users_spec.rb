@@ -27,18 +27,18 @@ describe "Managing users" do
         end
 
         it "should list users with order email asc" do
-          expect(page).to have_css('table#listing_users')
+          expect(page).to(have_css('table#listing_users'))
           within("table#listing_users") do
-            expect(page).to have_content("a@example.com")
-            expect(page).to have_content("b@example.com")
+            expect(page).to(have_content("a@example.com"))
+            expect(page).to(have_content("b@example.com"))
           end
         end
 
         it "should list users with order email desc" do
           click_link "users_email_title"
           within("table#listing_users") do
-            expect(page).to have_content("a@example.com")
-            expect(page).to have_content("b@example.com")
+            expect(page).to(have_content("a@example.com"))
+            expect(page).to(have_content("b@example.com"))
           end
         end
       end
@@ -48,8 +48,8 @@ describe "Managing users" do
           fill_in "q_email_cont", with: "a@example"
           click_button "Search"
           within("table#listing_users") do
-            expect(page).to have_content("a@example")
-            expect(page).not_to have_content("b@example")
+            expect(page).to(have_content("a@example"))
+            expect(page).not_to(have_content("b@example"))
           end
         end
       end
@@ -64,31 +64,31 @@ describe "Managing users" do
           fill_in "user_password_confirmation", with: "welcome"
           click_button "Update"
 
-          expect(page).to have_content("Account updated")
+          expect(page).to(have_content("Account updated"))
         end
 
         it "should let me edit the user email" do
           fill_in "Email", with: "newemail@example.org"
           click_button "Update"
 
-          expect(page).to have_content("The account will be updated once the new email is confirmed.")
+          expect(page).to(have_content("The account will be updated once the new email is confirmed."))
         end
 
         it "should allow to generate, regenarate and clear the user api key", js: true do
           user = Spree::User.find_by(email: "a@example.com")
-          expect(page).to have_content "NO KEY"
+          expect(page).to(have_content("NO KEY"))
 
           click_button "Generate API key"
           first_user_api_key = user.reload.spree_api_key
-          expect(page).to have_content first_user_api_key
+          expect(page).to(have_content(first_user_api_key))
 
           click_button "Regenerate Key"
           second_user_api_key = user.reload.spree_api_key
-          expect(page).to have_content second_user_api_key
-          expect(second_user_api_key).not_to eq first_user_api_key
+          expect(page).to(have_content(second_user_api_key))
+          expect(second_user_api_key).not_to(eq(first_user_api_key))
 
           click_button "Clear key"
-          expect(page).to have_content "NO KEY"
+          expect(page).to(have_content("NO KEY"))
         end
       end
     end
@@ -96,7 +96,7 @@ describe "Managing users" do
     describe "creating a user" do
       it "shows no confirmation message to start with" do
         visit spree.new_admin_user_path
-        expect(page).to have_no_text "Email confirmation is pending"
+        expect(page).to(have_no_text("Email confirmation is pending"))
       end
 
       it "confirms successful creation" do
@@ -105,11 +105,11 @@ describe "Managing users" do
         fill_in "Password", with: "user1Secret"
         fill_in "Confirm Password", with: "user1Secret"
         expect do
-          click_button "Create"
-        end.to change { Spree::User.count }
-.by 1
-        expect(page).to have_text "Created Successfully"
-        expect(page).to have_text "Email confirmation is pending"
+          click_button("Create")
+        end.to(change { Spree::User.count }
+.by(1))
+        expect(page).to(have_text("Created Successfully"))
+        expect(page).to(have_text("Email confirmation is pending"))
       end
     end
 
@@ -121,13 +121,13 @@ describe "Managing users" do
       end
 
       it "displays success" do
-        visit spree.edit_admin_user_path user
+        visit spree.edit_admin_user_path(user)
 
         expect do
           # The `a` element doesn't have an href, so we can't use click_link.
           find("a", text: "Resend").click
-          expect(page).to have_text "Resend done"
-        end.to enqueue_job ActionMailer::DeliveryJob
+          expect(page).to(have_text("Resend done"))
+        end.to(enqueue_job(ActionMailer::DeliveryJob))
       end
     end
   end

@@ -15,7 +15,7 @@ describe "spree/admin/shared/_order_links.html.haml" do
     it "contains all the actions buttons" do
       render
 
-      expect(rendered).to have_content("links-dropdown")
+      expect(rendered).to(have_content("links-dropdown"))
     end
   end
 end

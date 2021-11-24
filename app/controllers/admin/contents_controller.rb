@@ -22,7 +22,7 @@ module Admin
       flash[:success] =
         t(:successfully_updated, resource: I18n.t('admin.contents.edit.your_content'))
 
-      redirect_to main_app.edit_admin_contents_path
+      redirect_to(main_app.edit_admin_contents_path)
     end
 
     private

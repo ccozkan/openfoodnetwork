@@ -79,7 +79,7 @@ find(
 '#q_order_cycle_id_in',
                   visible: :all
 )[:innerHTML]
-).to have_content(/.*Four.*Three.*Two/m)
+).to(have_content(/.*Four.*Three.*Two/m))
     end
 
     it "filter by multiple order cycles" do
@@ -91,9 +91,9 @@ find(
       page.find('.filter-actions .button.icon-search').click
 
       # Order 2 and 3 should show, but not 4
-      expect(page).to have_content order2.number
-      expect(page).to have_content order3.number
-      expect(page).to_not have_content order4.number
+      expect(page).to(have_content(order2.number))
+      expect(page).to(have_content(order3.number))
+      expect(page).to_not(have_content(order4.number))
     end
 
     it "filter by distributors" do
@@ -105,9 +105,9 @@ find(
       page.find('.filter-actions .button.icon-search').click
 
       # Order 2 and 4 should show, but not 3
-      expect(page).to have_content order2.number
-      expect(page).to_not have_content order3.number
-      expect(page).to have_content order4.number
+      expect(page).to(have_content(order2.number))
+      expect(page).to_not(have_content(order3.number))
+      expect(page).to(have_content(order4.number))
     end
 
     it "filter by complete date" do
@@ -121,9 +121,9 @@ find(
       page.find('.filter-actions .button.icon-search').click
 
       # Order 3 and 4 should show, but not 2
-      expect(page).to_not have_content order2.number
-      expect(page).to have_content order3.number
-      expect(page).to have_content order4.number
+      expect(page).to_not(have_content(order2.number))
+      expect(page).to(have_content(order3.number))
+      expect(page).to(have_content(order4.number))
     end
 
     context "select/unselect all orders" do
@@ -134,14 +134,14 @@ find(
       it "by clicking on the checkbox in the table header" do
         # select all orders
         page.find("#listing_orders thead th:first-child input[type=checkbox]").click
-        expect(page.find("#listing_orders tbody tr td:first-child input[type=checkbox]")).to be_checked
+        expect(page.find("#listing_orders tbody tr td:first-child input[type=checkbox]")).to(be_checked)
         # enables print invoices button
-        expect(page).to have_button('Print Invoices', disabled: false)
+        expect(page).to(have_button('Print Invoices', disabled: false))
         # unselect all orders
         page.find("#listing_orders thead th:first-child input[type=checkbox]").click
-        expect(page.find("#listing_orders tbody tr td:first-child input[type=checkbox]")).to_not be_checked
+        expect(page.find("#listing_orders tbody tr td:first-child input[type=checkbox]")).to_not(be_checked)
         # disables print invoices button
-        expect(page).to have_button('Print Invoices', disabled: true)
+        expect(page).to(have_button('Print Invoices', disabled: true))
       end
     end
 
@@ -153,19 +153,19 @@ find(
 
       it "capture payment" do
         login_as_admin_and_visit spree.admin_orders_path
-        expect(page).to have_current_path spree.admin_orders_path
+        expect(page).to(have_current_path(spree.admin_orders_path))
 
         # click the 'capture' link for the order
         page.find("[data-powertip=Capture]").click
 
-        expect(page).to have_css "i.success"
-        expect(page).to have_css "button.icon-road"
+        expect(page).to(have_css("i.success"))
+        expect(page).to(have_css("button.icon-road"))
 
         # check the order was captured
-        expect(order.reload.payment_state).to eq "paid"
+        expect(order.reload.payment_state).to(eq("paid"))
 
         # we should still be on the same page
-        expect(page).to have_current_path spree.admin_orders_path
+        expect(page).to(have_current_path(spree.admin_orders_path))
       end
 
       it "ship order from the orders index page" do
@@ -174,9 +174,9 @@ find(
 
         page.find("[data-powertip=Ship]").click
 
-        expect(page).to have_css "i.success"
-        expect(order.reload.shipments.any?(&:shipped?)).to be true
-        expect(order.shipment_state).to eq("shipped")
+        expect(page).to(have_css("i.success"))
+        expect(order.reload.shipments.any?(&:shipped?)).to(be(true))
+        expect(order.shipment_state).to(eq("shipped"))
       end
     end
   end
@@ -196,7 +196,7 @@ line_items_count: 1
 
       find(".icon-edit").click
 
-      expect(page).to have_current_path spree.edit_admin_order_path(incomplete_order)
+      expect(page).to(have_current_path(spree.edit_admin_order_path(incomplete_order)))
     end
   end
 
@@ -233,17 +233,17 @@ line_items_count: 1
       empty_order = create(:order, distributor: distributor, order_cycle: order_cycle)
 
       login_as_admin_and_visit spree.admin_orders_path
-      expect(page).to have_content complete_order.number
-      expect(page).to have_content empty_complete_order.number
-      expect(page).to have_no_content incomplete_order.number
-      expect(page).to have_no_content empty_order.number
+      expect(page).to(have_content(complete_order.number))
+      expect(page).to(have_content(empty_complete_order.number))
+      expect(page).to(have_no_content(incomplete_order.number))
+      expect(page).to(have_no_content(empty_order.number))
 
       uncheck 'Only show complete orders'
       page.find('a.icon-search').click
 
-      expect(page).to have_content complete_order.number
-      expect(page).to have_content incomplete_order.number
-      expect(page).to have_no_content empty_order.number
+      expect(page).to(have_content(complete_order.number))
+      expect(page).to(have_content(incomplete_order.number))
+      expect(page).to(have_no_content(empty_order.number))
     end
   end
 
@@ -287,32 +287,32 @@ line_items_count: 1
       page.driver.refresh
 
       # Check every filters to be equal
-      expect(find_field("Only show complete orders")).not_to be_checked
-      expect(find_field("Invoice number").value).to eq "R123456"
-      expect(find("#s2id_q_shipping_method_id").text).to eq shipping_method.name
-      expect(find("#s2id_q_state_eq").text).to eq "complete"
-      expect(find("#s2id_q_distributor_id_in").text).to eq distributor.name
-      expect(find("#s2id_q_order_cycle_id_in").text).to eq order_cycle.name
-      expect(find_field("Email").value).to eq user.email
-      expect(find_field("First name begins with").value).to eq "J"
-      expect(find_field("Last name begins with").value).to eq "D"
-      expect(find("#q_completed_at_gteq").value).to eq 1.week.ago.strftime("%Y-%m-%d")
-      expect(find("#q_completed_at_lteq").value).to eq Time.zone.now.tomorrow.strftime("%Y-%m-%d")
+      expect(find_field("Only show complete orders")).not_to(be_checked)
+      expect(find_field("Invoice number").value).to(eq("R123456"))
+      expect(find("#s2id_q_shipping_method_id").text).to(eq(shipping_method.name))
+      expect(find("#s2id_q_state_eq").text).to(eq("complete"))
+      expect(find("#s2id_q_distributor_id_in").text).to(eq(distributor.name))
+      expect(find("#s2id_q_order_cycle_id_in").text).to(eq(order_cycle.name))
+      expect(find_field("Email").value).to(eq(user.email))
+      expect(find_field("First name begins with").value).to(eq("J"))
+      expect(find_field("Last name begins with").value).to(eq("D"))
+      expect(find("#q_completed_at_gteq").value).to(eq(1.week.ago.strftime("%Y-%m-%d")))
+      expect(find("#q_completed_at_lteq").value).to(eq(Time.zone.now.tomorrow.strftime("%Y-%m-%d")))
     end
 
     it "and clear filters" do
       find("a#clear_filters_button").click
-      expect(find_field("Only show complete orders")).to be_checked
-      expect(find_field("Invoice number").value).to eq ""
-      expect(find("#s2id_q_shipping_method_id").text).to be_empty
-      expect(find("#s2id_q_state_eq").text).to be_empty
-      expect(find("#s2id_q_distributor_id_in").text).to be_empty
-      expect(find("#s2id_q_order_cycle_id_in").text).to be_empty
-      expect(find_field("Email").value).to be_empty
-      expect(find_field("First name begins with").value).to be_empty
-      expect(find_field("Last name begins with").value).to be_empty
-      expect(find("#q_completed_at_gteq").value).to be_empty
-      expect(find("#q_completed_at_lteq").value).to be_empty
+      expect(find_field("Only show complete orders")).to(be_checked)
+      expect(find_field("Invoice number").value).to(eq(""))
+      expect(find("#s2id_q_shipping_method_id").text).to(be_empty)
+      expect(find("#s2id_q_state_eq").text).to(be_empty)
+      expect(find("#s2id_q_distributor_id_in").text).to(be_empty)
+      expect(find("#s2id_q_order_cycle_id_in").text).to(be_empty)
+      expect(find_field("Email").value).to(be_empty)
+      expect(find_field("First name begins with").value).to(be_empty)
+      expect(find_field("Last name begins with").value).to(be_empty)
+      expect(find("#q_completed_at_gteq").value).to(be_empty)
+      expect(find("#q_completed_at_lteq").value).to(be_empty)
     end
   end
 end

@@ -14,7 +14,7 @@ FactoryBot.define do
     login { email }
     password { 'secret' }
     password_confirmation { password }
-    if Spree.user_class.attribute_method? :authentication_token
+    if Spree.user_class.attribute_method?(:authentication_token)
       authentication_token do
         generate(:user_authentication_token)
       end

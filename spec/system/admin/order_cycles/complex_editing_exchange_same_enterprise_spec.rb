@@ -18,14 +18,14 @@ describe ' As an administrator I want to manage complex order cycles ', js: true
 
     # When I edit the first order cycle, the exchange should appear as incoming
     login_as_admin_and_visit admin_order_cycle_incoming_path(oc_incoming)
-    expect(page).to have_selector 'table.exchanges tr.supplier'
+    expect(page).to(have_selector('table.exchanges tr.supplier'))
     visit admin_order_cycle_outgoing_path(oc_incoming)
-    expect(page).not_to have_selector 'table.exchanges tr.distributor'
+    expect(page).not_to(have_selector('table.exchanges tr.distributor'))
 
     # And when I edit the second order cycle, the exchange should appear as outgoing
     visit admin_order_cycle_outgoing_path(oc_outgoing)
-    expect(page).to have_selector 'table.exchanges tr.distributor'
+    expect(page).to(have_selector('table.exchanges tr.distributor'))
     visit admin_order_cycle_incoming_path(oc_outgoing)
-    expect(page).not_to have_selector 'table.exchanges tr.supplier'
+    expect(page).not_to(have_selector('table.exchanges tr.supplier'))
   end
 end

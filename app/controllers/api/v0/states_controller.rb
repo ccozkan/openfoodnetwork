@@ -8,12 +8,12 @@ module Api
       skip_authorization_check
 
       def index
-        render json: states, each_serializer: Api::StateSerializer, status: :ok
+        render(json: states, each_serializer: Api::StateSerializer, status: :ok)
       end
 
       def show
         @state = scope.find(params[:id])
-        render json: @state, serializer: Api::StateSerializer, status: :ok
+        render(json: @state, serializer: Api::StateSerializer, status: :ok)
       end
 
       private

@@ -41,12 +41,12 @@ orders_open_at: 2.days.from_now,
       end
 
       context 'as an enterprise user' do
-        before { allow(controller).to receive(:spree_current_user) { user } }
+        before { allow(controller).to(receive(:spree_current_user) { user }) }
 
         context "but no shop_id is provided" do
           it "returns an error" do
             spree_post :build, params
-            expect(JSON.parse(response.body)['errors']).to eq ['Unauthorised']
+            expect(JSON.parse(response.body)['errors']).to(eq(['Unauthorised']))
           end
         end
 
@@ -55,7 +55,7 @@ orders_open_at: 2.days.from_now,
 
           it "returns an error" do
             spree_post :build, params
-            expect(JSON.parse(response.body)['errors']).to eq ['Unauthorised']
+            expect(JSON.parse(response.body)['errors']).to(eq(['Unauthorised']))
           end
         end
 
@@ -68,7 +68,7 @@ orders_open_at: 2.days.from_now,
             it "returns an error" do
               spree_post :build, params
               json_response = JSON.parse(response.body)
-              expect(json_response['errors']).to eq ["#{shop.name} is not permitted to sell the selected product"]
+              expect(json_response['errors']).to(eq(["#{shop.name} is not permitted to sell the selected product"]))
             end
           end
 
@@ -82,9 +82,9 @@ orders_open_at: 2.days.from_now,
                 spree_post :build, params
 
                 json_response = JSON.parse(response.body)
-                expect(json_response['price_estimate']).to eq '?'
-                expect(json_response['quantity']).to eq 2
-                expect(json_response['description']).to eq "#{variant.product.name} - 100g"
+                expect(json_response['price_estimate']).to(eq('?'))
+                expect(json_response['quantity']).to(eq(2))
+                expect(json_response['description']).to(eq("#{variant.product.name} - 100g"))
               end
             end
 
@@ -95,9 +95,9 @@ orders_open_at: 2.days.from_now,
                 spree_post :build, params
 
                 json_response = JSON.parse(response.body)
-                expect(json_response['price_estimate']).to eq '?'
-                expect(json_response['quantity']).to eq 2
-                expect(json_response['description']).to eq "#{variant.product.name} - 100g"
+                expect(json_response['price_estimate']).to(eq('?'))
+                expect(json_response['quantity']).to(eq(2))
+                expect(json_response['description']).to(eq("#{variant.product.name} - 100g"))
               end
             end
 
@@ -109,9 +109,9 @@ orders_open_at: 2.days.from_now,
                   spree_post :build, params
 
                   json_response = JSON.parse(response.body)
-                  expect(json_response['price_estimate']).to eq 18.5
-                  expect(json_response['quantity']).to eq 2
-                  expect(json_response['description']).to eq "#{variant.product.name} - 100g"
+                  expect(json_response['price_estimate']).to(eq(18.5))
+                  expect(json_response['quantity']).to(eq(2))
+                  expect(json_response['description']).to(eq("#{variant.product.name} - 100g"))
                 end
               end
 
@@ -124,9 +124,9 @@ orders_open_at: 2.days.from_now,
                   spree_post :build, params
 
                   json_response = JSON.parse(response.body)
-                  expect(json_response['price_estimate']).to eq 15.5
-                  expect(json_response['quantity']).to eq 2
-                  expect(json_response['description']).to eq "#{variant.product.name} - 100g"
+                  expect(json_response['price_estimate']).to(eq(15.5))
+                  expect(json_response['quantity']).to(eq(2))
+                  expect(json_response['description']).to(eq("#{variant.product.name} - 100g"))
                 end
               end
             end

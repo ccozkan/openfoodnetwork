@@ -131,31 +131,31 @@ product4_variant1
 
   describe "viewing products" do
     it "shows price and stock from the override" do
-      expect(page).to have_price with_currency(61.11) # product1_variant1_override.price ($55.55) + 10% fee
-      expect(page).not_to have_price with_currency(12.22) # product1_variant1.price ($11.11) + 10% fee
+      expect(page).to(have_price(with_currency(61.11))) # product1_variant1_override.price ($55.55) + 10% fee
+      expect(page).not_to(have_price(with_currency(12.22))) # product1_variant1.price ($11.11) + 10% fee
 
       # Product should appear but one of the variants is out of stock
-      expect(page).not_to have_content product1_variant2.options_text
+      expect(page).not_to(have_content(product1_variant2.options_text))
 
       # Entire product should not appear - no stock
-      expect(page).not_to have_content product2.name
-      expect(page).not_to have_content product2_variant1.options_text
+      expect(page).not_to(have_content(product2.name))
+      expect(page).not_to(have_content(product2_variant1.options_text))
 
       # On-demand product with VO of no stock should NOT appear
-      expect(page).not_to have_content product3_variant1.options_text
+      expect(page).not_to(have_content(product3_variant1.options_text))
     end
 
     it "calculates fees correctly" do
       page.find("#variant-#{product1_variant1.id} .graph-button").click
-      expect(page).to have_selector 'li', text: "#{with_currency(55.55)}\nItem cost"
-      expect(page).to have_selector 'li', text: "#{with_currency(5.56)}\nPacking fee"
-      expect(page).to have_selector 'li', text: "= #{with_currency(61.11)}"
+      expect(page).to(have_selector('li', text: "#{with_currency(55.55)}\nItem cost"))
+      expect(page).to(have_selector('li', text: "#{with_currency(5.56)}\nPacking fee"))
+      expect(page).to(have_selector('li', text: "= #{with_currency(61.11)}"))
     end
 
     it "shows the correct prices when products are in the cart" do
       click_add_to_cart product1_variant1, 2
       visit shop_path
-      expect(page).to have_price with_currency(61.11)
+      expect(page).to(have_price(with_currency(61.11)))
     end
 
     # The two specs below reveal an unrelated issue with fee calculation. See:
@@ -164,32 +164,32 @@ product4_variant1
     it "shows the overridden price with fees in the quick cart" do
       click_add_to_cart product1_variant1, 2
       toggle_cart
-      expect(page).to have_selector "#cart-variant-#{product1_variant1.id} .quantity", text: '2'
-      expect(page).to have_selector "#cart-variant-#{product1_variant1.id} .total-price",
-                                    text: with_currency(122.22)
+      expect(page).to(have_selector("#cart-variant-#{product1_variant1.id} .quantity", text: '2'))
+      expect(page).to(have_selector("#cart-variant-#{product1_variant1.id} .total-price",
+                                    text: with_currency(122.22)))
     end
 
     it "shows the correct prices in the shopping cart" do
       click_add_to_cart product1_variant1, 2
       edit_cart
 
-      expect(page).to have_selector "tr.line-item.variant-#{product1_variant1.id} .cart-item-price",
-                                    text: with_currency(61.11)
-      expect(page).to have_field "order[line_items_attributes][0][quantity]", with: '2'
-      expect(page).to have_selector "tr.line-item.variant-#{product1_variant1.id} .cart-item-total",
-                                    text: with_currency(122.22)
+      expect(page).to(have_selector("tr.line-item.variant-#{product1_variant1.id} .cart-item-price",
+                                    text: with_currency(61.11)))
+      expect(page).to(have_field("order[line_items_attributes][0][quantity]", with: '2'))
+      expect(page).to(have_selector("tr.line-item.variant-#{product1_variant1.id} .cart-item-total",
+                                    text: with_currency(122.22)))
 
-      expect(page).to have_selector "#edit-cart .item-total", text: with_currency(122.22)
-      expect(page).to have_selector "#edit-cart .grand-total", text: with_currency(122.22)
+      expect(page).to(have_selector("#edit-cart .item-total", text: with_currency(122.22)))
+      expect(page).to(have_selector("#edit-cart .grand-total", text: with_currency(122.22)))
     end
 
     it "shows the correct prices in the checkout" do
       click_add_to_cart product1_variant1, 2
       click_checkout
 
-      expect(page).to have_selector 'form.edit_order .cart-total', text: with_currency(122.22)
-      expect(page).to have_selector 'form.edit_order .shipping', text: with_currency(0.00)
-      expect(page).to have_selector 'form.edit_order .total', text: with_currency(122.22)
+      expect(page).to(have_selector('form.edit_order .cart-total', text: with_currency(122.22)))
+      expect(page).to(have_selector('form.edit_order .shipping', text: with_currency(0.00)))
+      expect(page).to(have_selector('form.edit_order .total', text: with_currency(122.22)))
     end
   end
 
@@ -201,8 +201,8 @@ product4_variant1
       complete_checkout
 
       o = Spree::Order.complete.last
-      expect(o.line_items.first.price).to eq(55.55)
-      expect(o.total).to eq(122.22)
+      expect(o.line_items.first.price).to(eq(55.55))
+      expect(o.total).to(eq(122.22))
     end
 
     it "subtracts stock from the override" do
@@ -212,10 +212,10 @@ product4_variant1
       expect do
         expect do
           complete_checkout
-        end.to change { product1_variant3.reload.on_hand }
-.by(0)
-      end.to change { product1_variant3_override.reload.count_on_hand }
-.by(-2)
+        end.to(change { product1_variant3.reload.on_hand }
+.by(0))
+      end.to(change { product1_variant3_override.reload.count_on_hand }
+.by(-2))
     end
 
     it "subtracts stock from stock-overridden on_demand variants" do
@@ -225,10 +225,10 @@ product4_variant1
       expect do
         expect do
           complete_checkout
-        end.to change { product3_variant2.reload.on_hand }
-.by(0)
-      end.to change { product3_variant2_override.reload.count_on_hand }
-.by(-2)
+        end.to(change { product3_variant2.reload.on_hand }
+.by(0))
+      end.to(change { product3_variant2_override.reload.count_on_hand }
+.by(-2))
     end
 
     it "does not subtract stock from overrides that do not override count_on_hand" do
@@ -236,9 +236,9 @@ product4_variant1
       click_checkout
       expect do
         complete_checkout
-      end.to change { product1_variant1.reload.on_hand }
-.by(-2)
-      expect(product1_variant1_override.reload.count_on_hand).to be_nil
+      end.to(change { product1_variant1.reload.on_hand }
+.by(-2))
+      expect(product1_variant1_override.reload.count_on_hand).to(be_nil)
     end
 
     it "does not subtract stock from variants where the override has on_demand: true" do
@@ -246,9 +246,9 @@ product4_variant1
       click_checkout
       expect do
         complete_checkout
-      end.to change { product4_variant1.reload.on_hand }
-.by(0)
-      expect(product4_variant1_override.reload.count_on_hand).to be_nil
+      end.to(change { product4_variant1.reload.on_hand }
+.by(0))
+      expect(product4_variant1_override.reload.count_on_hand).to(be_nil)
     end
 
     it "does not show out of stock flags on order confirmation page" do
@@ -258,7 +258,7 @@ product4_variant1
 
       complete_checkout
 
-      expect(page).not_to have_content "Out of Stock"
+      expect(page).not_to(have_content("Out of Stock"))
     end
   end
 
@@ -267,36 +267,36 @@ product4_variant1
   def complete_checkout
     checkout_as_guest
 
-    within "#details" do
-      fill_in "First Name", with: "Some"
-      fill_in "Last Name", with: "One"
-      fill_in "Email", with: "test@example.com"
-      fill_in "Phone", with: "0456789012"
+    within("#details") do
+      fill_in("First Name", with: "Some")
+      fill_in("Last Name", with: "One")
+      fill_in("Email", with: "test@example.com")
+      fill_in("Phone", with: "0456789012")
     end
 
-    within "#billing" do
-      fill_in "Address", with: "123 Street"
-      select "Australia", from: "Country"
-      select "Victoria", from: "State"
-      fill_in "City", with: "Melbourne"
-      fill_in "Postcode", with: "3066"
+    within("#billing") do
+      fill_in("Address", with: "123 Street")
+      select("Australia", from: "Country")
+      select("Victoria", from: "State")
+      fill_in("City", with: "Melbourne")
+      fill_in("Postcode", with: "3066")
     end
 
-    within "#shipping" do
-      choose sm.name
+    within("#shipping") do
+      choose(sm.name)
     end
 
-    within "#payment" do
-      choose pm.name
+    within("#payment") do
+      choose(pm.name)
     end
 
     place_order
-    expect(page).to have_content "Your order has been processed successfully"
+    expect(page).to(have_content("Your order has been processed successfully"))
   end
 
   def click_checkout
     toggle_cart
     wait_for_cart
-    click_link I18n.t('shared.menu.cart_sidebar.checkout')
+    click_link(I18n.t('shared.menu.cart_sidebar.checkout'))
   end
 end

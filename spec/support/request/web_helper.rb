@@ -2,7 +2,7 @@
 
 module WebHelper
   def self.included(base)
-    base.extend ClassMethods
+    base.extend(ClassMethods)
   end
 
   module ClassMethods
@@ -20,26 +20,26 @@ module WebHelper
 
   def have_input(name, opts = {})
     selector  = "[name='#{name}']"
-    selector += "[placeholder='#{opts[:placeholder]}']" if opts.key? :placeholder
+    selector += "[placeholder='#{opts[:placeholder]}']" if opts.key?(:placeholder)
 
     visible = opts.key?(:visible) ? opts[:visible] : true
 
     element = page.all(selector, visible: visible).first
-    expect(element.value).to eq(opts[:with]) if element && opts.key?(:with)
+    expect(element.value).to(eq(opts[:with])) if element && opts.key?(:with)
 
-    have_selector selector, visible: visible
+    have_selector(selector, visible: visible)
   end
 
   def fill_in_fields(field_values)
     field_values.each do |key, value|
-      fill_in key, with: value
+      fill_in(key, with: value)
     rescue Capybara::ElementNotFound
       find_field(key).select(value)
     end
   end
 
   def select_by_value(value, options = {})
-    from = options.delete :from
+    from = options.delete(:from)
     page.find_by(id: from).find("option[value='#{value}']").select_option
   end
 
@@ -48,13 +48,13 @@ module WebHelper
   end
 
   def handle_js_confirm(accept = true)
-    page.execute_script "window.confirm = function(msg) { return #{!!accept}; }"
+    page.execute_script("window.confirm = function(msg) { return #{!!accept}; }")
     yield
   end
 
   def visit_delete(url)
-    response = Capybara.current_session.driver.delete url
-    click_link 'redirected' if response.status == 302
+    response = Capybara.current_session.driver.delete(url)
+    click_link('redirected') if response.status == 302
   end
 
   def set_i18n_locale(locale = 'en')
@@ -76,12 +76,12 @@ module WebHelper
   def script_content(opts = {})
     elems = page.all('script', visible: false)
 
-    elems = elems.to_a.select { |e| e.text(:all).include? opts[:with] } if opts[:with]
+    elems = elems.to_a.select { |e| e.text(:all).include?(opts[:with]) } if opts[:with]
 
     if elems.none?
       nil
     elsif elems.many?
-      raise "Multiple results returned for script_content"
+      raise("Multiple results returned for script_content")
     else
       elems.first.text(:all)
     end
@@ -90,7 +90,7 @@ module WebHelper
   # http://www.elabs.se/blog/53-why-wait_until-was-removed-from-capybara
   # Do not use this without good reason. Capybara's built-in waiting is very effective.
   def wait_until(secs = nil)
-    require "timeout"
+    require("timeout")
     Timeout.timeout(secs || Capybara.default_max_wait_time) do
       sleep(0.1) until value = yield
       value
@@ -114,7 +114,7 @@ module WebHelper
       .find(:css, '.select2-drop-active .select2-result-label', text: options[:select_text] || value)
       .click
 
-    expect(page).to have_select2 options[:from], selected: options[:select_text] || value
+    expect(page).to(have_select2(options[:from], selected: options[:select_text] || value))
   end
 
   def open_select2(selector)
@@ -142,10 +142,10 @@ module WebHelper
   end
 
   def fill_in_tag(tag_name, selector = "tags-input .tags input")
-    expect(page).to have_selector selector
-    find(:css, selector).send_keys ""
-    find(:css, selector).set "#{tag_name}\n"
-    expect(page).to have_selector ".tag-list .tag-item span", text: tag_name
+    expect(page).to(have_selector(selector))
+    find(:css, selector).send_keys("")
+    find(:css, selector).set("#{tag_name}\n")
+    expect(page).to(have_selector(".tag-list .tag-item span", text: tag_name))
   end
 
   private

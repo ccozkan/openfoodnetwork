@@ -12,11 +12,11 @@ module DfcProvider
         # an user on the DFC specifications, as defined here:
         # https://datafoodconsortium.gitbook.io/dfc-standard-documentation
         #  /technical-specification/api-examples
-        render json: current_user, serializer: DfcProvider::PersonSerializer
+        render(json: current_user, serializer: DfcProvider::PersonSerializer)
       end
 
       def show
-        render json: variant, serializer: DfcProvider::CatalogItemSerializer
+        render(json: variant, serializer: DfcProvider::CatalogItemSerializer)
       end
 
       private

@@ -15,8 +15,8 @@ describe UploadSanitizer do
     it "sanitizes the uploaded file" do
       sanitized_upload = service.call
 
-      expect(sanitized_upload.encoding.name).to eq "UTF-8"
-      expect(sanitized_upload.to_s).to eq "Test"
+      expect(sanitized_upload.encoding.name).to(eq("UTF-8"))
+      expect(sanitized_upload.to_s).to(eq("Test"))
     end
   end
 end

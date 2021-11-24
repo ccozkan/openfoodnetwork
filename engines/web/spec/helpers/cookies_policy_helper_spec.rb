@@ -20,17 +20,17 @@ module Web
         end
 
         scenario "includes the matomo URL" do
-          expect(helper.matomo_iframe_src).to include Spree::Config.matomo_url
+          expect(helper.matomo_iframe_src).to(include(Spree::Config.matomo_url))
         end
 
         scenario "is not equal to the matomo URL" do
-          expect(helper.matomo_iframe_src).to_not eq Spree::Config.matomo_url
+          expect(helper.matomo_iframe_src).to_not(eq(Spree::Config.matomo_url))
         end
       end
 
       scenario "is not nil, when matomo url is nil" do
         Spree::Config.matomo_url = nil
-        expect(helper.matomo_iframe_src).to_not eq nil
+        expect(helper.matomo_iframe_src).to_not(eq(nil))
       end
     end
 
@@ -45,17 +45,17 @@ module Web
 
       scenario "when locale is the language" do
         I18n.locale = "en"
-        expect(helper.locale_language).to eq "en"
+        expect(helper.locale_language).to(eq("en"))
       end
 
       scenario "is empty when locale is empty" do
         I18n.locale = ""
-        expect(helper.locale_language).to be_empty
+        expect(helper.locale_language).to(be_empty)
       end
 
       scenario "is only the language, when locale includes country" do
         I18n.locale = "en_GB"
-        expect(helper.locale_language).to eq "en"
+        expect(helper.locale_language).to(eq("en"))
       end
     end
   end

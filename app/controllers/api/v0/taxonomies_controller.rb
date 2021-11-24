@@ -9,7 +9,7 @@ module Api
 
       def jstree
         @taxonomy = Spree::Taxonomy.find(params[:id])
-        render json: @taxonomy.root, serializer: Api::TaxonJstreeSerializer
+        render(json: @taxonomy.root, serializer: Api::TaxonJstreeSerializer)
       end
     end
   end

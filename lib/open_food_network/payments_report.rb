@@ -160,7 +160,7 @@ proc { |orders| orders.first.payment_state },
            orders.sum do |o|
              o.payments.select do |payment|
                payment.completed? &&
-                 (payment.payment_method.name.to_s.include? "EFT")
+                 (payment.payment_method.name.to_s.include?("EFT"))
              end.sum(&:amount)
            end
          },
@@ -168,7 +168,7 @@ proc { |orders| orders.first.payment_state },
            orders.sum do |o|
              o.payments.select do |payment|
                payment.completed? &&
-                 (payment.payment_method.name.to_s.include? "PayPal")
+                 (payment.payment_method.name.to_s.include?("PayPal"))
              end.sum(&:amount)
            end
          },

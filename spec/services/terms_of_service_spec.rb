@@ -8,41 +8,41 @@ describe TermsOfService do
 
   context "a customer has not accepted the terms of service" do
     before do
-      allow(customer).to receive(:terms_and_conditions_accepted_at) { nil }
+      allow(customer).to(receive(:terms_and_conditions_accepted_at) { nil })
     end
 
     it "returns false" do
-      expect(TermsOfService.tos_accepted?(customer)).to be false
+      expect(TermsOfService.tos_accepted?(customer)).to(be(false))
     end
   end
 
   context "a customer has accepted the platform terms of service" do
     before do
-      allow(customer).to receive(:terms_and_conditions_accepted_at) { Time.zone.now - 1.week }
-      allow(TermsOfServiceFile).to receive(:updated_at) { Time.zone.now - 2.weeks }
+      allow(customer).to(receive(:terms_and_conditions_accepted_at) { Time.zone.now - 1.week })
+      allow(TermsOfServiceFile).to(receive(:updated_at) { Time.zone.now - 2.weeks })
     end
 
     it "should reflect whether the platform TOS have been accepted since the last update" do
       expect do
-        allow(TermsOfServiceFile).to receive(:updated_at) { Time.zone.now }
-      end.to change {
+        allow(TermsOfServiceFile).to(receive(:updated_at) { Time.zone.now })
+      end.to(change {
         TermsOfService.tos_accepted?(customer)
-      }.from(true).to(false)
+      }.from(true).to(false))
     end
   end
 
   context "a customer has accepted the distributor terms of service" do
     before do
-      allow(customer).to receive(:terms_and_conditions_accepted_at) { Time.zone.now - 1.week }
-      allow(distributor).to receive(:terms_and_conditions_updated_at) { Time.zone.now - 2.weeks }
+      allow(customer).to(receive(:terms_and_conditions_accepted_at) { Time.zone.now - 1.week })
+      allow(distributor).to(receive(:terms_and_conditions_updated_at) { Time.zone.now - 2.weeks })
     end
 
     it "should reflect whether the platform TOS have been accepted since the last update" do
       expect do
-        allow(distributor).to receive(:terms_and_conditions_updated_at) { Time.zone.now }
-      end.to change {
+        allow(distributor).to(receive(:terms_and_conditions_updated_at) { Time.zone.now })
+      end.to(change {
         TermsOfService.tos_accepted?(customer, distributor)
-      }.from(true).to(false)
+      }.from(true).to(false))
     end
   end
 end

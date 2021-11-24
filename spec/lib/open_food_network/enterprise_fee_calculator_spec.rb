@@ -52,13 +52,13 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                  order_cycle
 ).fees_for(product1.master)
-).to eq(20)
+).to(eq(20))
               expect(
 EnterpriseFeeCalculator.new(
 distributor,
                                                  order_cycle
 ).fees_for(product2.master)
-).to eq(3)
+).to(eq(3))
             end
 
             it "calculates via indexed computation" do
@@ -67,13 +67,13 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                  order_cycle
 ).indexed_fees_for(product1.master)
-).to eq(20)
+).to(eq(20))
               expect(
 EnterpriseFeeCalculator.new(
 distributor,
                                                  order_cycle
 ).indexed_fees_for(product2.master)
-).to eq(3)
+).to(eq(3))
             end
           end
 
@@ -100,7 +100,7 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                  order_cycle
 ).fees_for(product1.master)
-).to eq(23)
+).to(eq(23))
             end
 
             it "sums via indexed computation" do
@@ -109,7 +109,7 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                  order_cycle
 ).indexed_fees_for(product1.master)
-).to eq(23)
+).to(eq(23))
             end
           end
 
@@ -132,7 +132,7 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                  order_cycle
 ).fees_for(product1.master)
-).to eq(23)
+).to(eq(23))
             end
 
             it "sums via indexed computation" do
@@ -141,7 +141,7 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                  order_cycle
 ).indexed_fees_for(product1.master)
-).to eq(23)
+).to(eq(23))
             end
           end
         end
@@ -173,7 +173,7 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                order_cycle
 ).fees_for(product1.master)
-).to eq(2.00)
+).to(eq(2.00))
           end
 
           it "sums via indexed computation" do
@@ -182,7 +182,7 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                order_cycle
 ).indexed_fees_for(product1.master)
-).to eq(2.00)
+).to(eq(2.00))
           end
         end
       end
@@ -212,28 +212,28 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                order_cycle
 ).fees_by_type_for(product1.master)
-).to eq(
+).to(eq(
 admin: 1.23,
 sales: 4.56,
 packing: 7.89,
 transport: 0.12,
 fundraising: 3.45
-)
+))
           end
 
           it "filters out zero fees" do
-            ef_admin.calculator.update_attribute :preferred_amount, 0
+            ef_admin.calculator.update_attribute(:preferred_amount, 0)
             expect(
 EnterpriseFeeCalculator.new(
 distributor,
                                                order_cycle
 ).fees_by_type_for(product1.master)
-).to eq(
+).to(eq(
 sales: 4.56,
 packing: 7.89,
 transport: 0.12,
 fundraising: 3.45
-)
+))
           end
         end
 
@@ -244,28 +244,28 @@ EnterpriseFeeCalculator.new(
 distributor,
                                                order_cycle
 ).indexed_fees_by_type_for(product1.master)
-).to eq(
+).to(eq(
 admin: 1.23,
 sales: 4.56,
 packing: 7.89,
 transport: 0.12,
 fundraising: 3.45
-)
+))
           end
 
           it "filters out zero fees" do
-            ef_admin.calculator.update_attribute :preferred_amount, 0
+            ef_admin.calculator.update_attribute(:preferred_amount, 0)
             expect(
 EnterpriseFeeCalculator.new(
 distributor,
                                                order_cycle
 ).indexed_fees_by_type_for(product1.master)
-).to eq(
+).to(eq(
 sales: 4.56,
 packing: 7.89,
 transport: 0.12,
 fundraising: 3.45
-)
+))
           end
         end
       end
@@ -296,25 +296,25 @@ variants: [product1.master]
           EnterpriseFeeCalculator.new(
 distributor,
                                       order_cycle
-).create_line_item_adjustments_for line_item
+).create_line_item_adjustments_for(line_item)
 
           a = Spree::Adjustment.last
-          expect(a.metadata.fee_name).to eq(enterprise_fee_line_item.name)
+          expect(a.metadata.fee_name).to(eq(enterprise_fee_line_item.name))
         end
 
         it "creates adjustments for an order" do
           exchange.enterprise_fees << enterprise_fee_order
 
-          EnterpriseFeeCalculator.new(distributor, order_cycle).create_order_adjustments_for order
+          EnterpriseFeeCalculator.new(distributor, order_cycle).create_order_adjustments_for(order)
 
           a = Spree::Adjustment.last
-          expect(a.metadata.fee_name).to eq(enterprise_fee_order.name)
+          expect(a.metadata.fee_name).to(eq(enterprise_fee_order.name))
         end
       end
     end
 
     describe "indexed fee retrieval" do
-      subject { EnterpriseFeeCalculator.new distributor, order_cycle }
+      subject { EnterpriseFeeCalculator.new(distributor, order_cycle) }
       let(:order_cycle) { create(:simple_order_cycle, coordinator_fees: [ef_coordinator]) }
       let(:distributor) { create(:distributor_enterprise) }
       let(:distributor_other) { create(:distributor_enterprise) }
@@ -340,13 +340,13 @@ variants: [v]
 
       describe "fetching enterprise fees with pre-loaded exchange details" do
         it "scopes enterprise fees to those on exchanges for the current order cycle" do
-          expect(subject.send(:per_item_enterprise_fees_with_exchange_details)).to eq([ef_exchange])
+          expect(subject.send(:per_item_enterprise_fees_with_exchange_details)).to(eq([ef_exchange]))
         end
 
         it "includes the exchange variant id" do
-          expect(subject.send(:per_item_enterprise_fees_with_exchange_details).first.variant_id.to_i).to eq(
+          expect(subject.send(:per_item_enterprise_fees_with_exchange_details).first.variant_id.to_i).to(eq(
             v.id
-          )
+          ))
         end
 
         it "does not include outgoing exchanges to other distributors" do
@@ -359,7 +359,7 @@ enterprise_fees: [ef_other_distributor],
 variants: [v]
 )
 
-          expect(subject.send(:per_item_enterprise_fees_with_exchange_details)).to eq([ef_exchange])
+          expect(subject.send(:per_item_enterprise_fees_with_exchange_details)).to(eq([ef_exchange]))
         end
       end
 
@@ -368,14 +368,14 @@ variants: [v]
 
         it "loads exchange fees" do
           subject.send(:load_exchange_fees, exchange_fees)
-          expect(indexed_enterprise_fees).to eq(v.id => [ef_exchange])
+          expect(indexed_enterprise_fees).to(eq(v.id => [ef_exchange]))
         end
       end
 
       describe "loading coordinator fees" do
         it "loads coordinator fees" do
           subject.send(:load_coordinator_fees)
-          expect(indexed_enterprise_fees).to eq(v.id => [ef_coordinator])
+          expect(indexed_enterprise_fees).to(eq(v.id => [ef_coordinator]))
         end
       end
     end
@@ -395,14 +395,14 @@ variants: [v]
         let(:line_item) { double(:line_item, variant: variant, order: order) }
 
         before do
-          allow(incoming_exchange).to receive(:enterprise_fees) {
+          allow(incoming_exchange).to(receive(:enterprise_fees) {
                                         double(:enterprise_fees, per_item: [ef1])
-                                      }
-          allow(outgoing_exchange).to receive(:enterprise_fees) {
+                                      })
+          allow(outgoing_exchange).to(receive(:enterprise_fees) {
                                         double(:enterprise_fees, per_item: [ef2])
-                                      }
-          allow(oc).to receive(:exchanges_carrying) { [incoming_exchange, outgoing_exchange] }
-          allow(oc).to receive(:coordinator_fees) { double(:coodinator_fees, per_item: [ef3]) }
+                                      })
+          allow(oc).to(receive(:exchanges_carrying) { [incoming_exchange, outgoing_exchange] })
+          allow(oc).to(receive(:coordinator_fees) { double(:coodinator_fees, per_item: [ef3]) })
         end
 
         context "with order_cycle and distributor set" do
@@ -410,16 +410,16 @@ variants: [v]
           let(:order) { double(:order, distributor: distributor, order_cycle: oc) }
 
           it "creates an adjustment for each fee" do
-            expect(efc).to receive(:per_item_enterprise_fee_applicators_for).with(variant) {
+            expect(efc).to(receive(:per_item_enterprise_fee_applicators_for).with(variant) {
                              [applicator]
-                           }
-            expect(applicator).to receive(:create_line_item_adjustment).with(line_item)
-            efc.create_line_item_adjustments_for line_item
+                           })
+            expect(applicator).to(receive(:create_line_item_adjustment).with(line_item))
+            efc.create_line_item_adjustments_for(line_item)
           end
 
           it "makes fee applicators for a line item" do
             expect(efc.send(:per_item_enterprise_fee_applicators_for, line_item.variant))
-              .to eq [
+              .to(eq([
 OpenFoodNetwork::EnterpriseFeeApplicator.new(ef1, line_item.variant, 'supplier'),
                       OpenFoodNetwork::EnterpriseFeeApplicator.new(
 ef2,
@@ -431,7 +431,7 @@ ef3,
 line_item.variant,
                                                                    'coordinator'
 )
-]
+]))
           end
         end
 
@@ -440,21 +440,21 @@ line_item.variant,
           let(:order) { double(:order, distributor: nil, order_cycle: nil) }
 
           it "does not make applicators for an order" do
-            expect(efc.send(:per_item_enterprise_fee_applicators_for, line_item.variant)).to eq []
+            expect(efc.send(:per_item_enterprise_fee_applicators_for, line_item.variant)).to(eq([]))
           end
         end
       end
 
       describe "for an order" do
         before do
-          allow(incoming_exchange).to receive(:enterprise_fees) {
+          allow(incoming_exchange).to(receive(:enterprise_fees) {
                                         double(:enterprise_fees, per_order: [ef1])
-                                      }
-          allow(outgoing_exchange).to receive(:enterprise_fees) {
+                                      })
+          allow(outgoing_exchange).to(receive(:enterprise_fees) {
                                         double(:enterprise_fees, per_order: [ef2])
-                                      }
-          allow(oc).to receive(:exchanges_supplying) { [incoming_exchange, outgoing_exchange] }
-          allow(oc).to receive(:coordinator_fees) { double(:coodinator_fees, per_order: [ef3]) }
+                                      })
+          allow(oc).to(receive(:exchanges_supplying) { [incoming_exchange, outgoing_exchange] })
+          allow(oc).to(receive(:coordinator_fees) { double(:coodinator_fees, per_order: [ef3]) })
         end
 
         context "with order_cycle and distributor set" do
@@ -462,20 +462,20 @@ line_item.variant,
           let(:order) { double(:order, distributor: distributor, order_cycle: oc) }
 
           it "creates an adjustment for each fee" do
-            expect(efc).to receive(:per_order_enterprise_fee_applicators_for).with(order) {
+            expect(efc).to(receive(:per_order_enterprise_fee_applicators_for).with(order) {
                              [applicator]
-                           }
-            expect(applicator).to receive(:create_order_adjustment).with(order)
-            efc.create_order_adjustments_for order
+                           })
+            expect(applicator).to(receive(:create_order_adjustment).with(order))
+            efc.create_order_adjustments_for(order)
           end
 
           it "makes fee applicators for an order" do
             expect(efc.send(:per_order_enterprise_fee_applicators_for, order))
-              .to eq [
+              .to(eq([
 OpenFoodNetwork::EnterpriseFeeApplicator.new(ef1, nil, 'supplier'),
                       OpenFoodNetwork::EnterpriseFeeApplicator.new(ef2, nil, 'distributor'),
                       OpenFoodNetwork::EnterpriseFeeApplicator.new(ef3, nil, 'coordinator')
-]
+]))
           end
         end
 
@@ -484,7 +484,7 @@ OpenFoodNetwork::EnterpriseFeeApplicator.new(ef1, nil, 'supplier'),
           let(:order) { double(:order, distributor: nil, order_cycle: nil) }
 
           it "does not make applicators for an order" do
-            expect(efc.send(:per_order_enterprise_fee_applicators_for, order)).to eq []
+            expect(efc.send(:per_order_enterprise_fee_applicators_for, order)).to(eq([]))
           end
         end
       end

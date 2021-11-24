@@ -20,7 +20,7 @@ module OrderManagement
         end
 
         def list
-          order_grouper = OpenFoodNetwork::OrderGrouper.new @report.rules, @report.columns, @report
+          order_grouper = OpenFoodNetwork::OrderGrouper.new(@report.rules, @report.columns, @report)
           order_grouper.table(@report.table_items)
         end
       end

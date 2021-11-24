@@ -13,9 +13,9 @@ describe Spree::Taxonomy do
     it "should destroy all associated taxons" do
       @taxonomy.destroy
       expect { Spree::Taxon.find(@root_taxon.id) }
-.to raise_error(ActiveRecord::RecordNotFound)
+.to(raise_error(ActiveRecord::RecordNotFound))
       expect { Spree::Taxon.find(@child_taxon.id) }
-.to raise_error(ActiveRecord::RecordNotFound)
+.to(raise_error(ActiveRecord::RecordNotFound))
     end
   end
 end

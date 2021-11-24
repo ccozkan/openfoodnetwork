@@ -14,7 +14,7 @@ describe Spree::Order do
       it "o'brien@gmail.com is a valid email address" do
         order.state = 'address'
         order.email = "o'brien@gmail.com"
-        expect(order.errors[:email]).to be_empty
+        expect(order.errors[:email]).to(be_empty)
       end
     end
   end
@@ -24,12 +24,12 @@ describe Spree::Order do
       let(:user) { double(:user, email: "test@example.com") }
 
       before do
-        allow(order).to receive_messages user: user
+        allow(order).to(receive_messages(user: user))
       end
 
       it "should assign the email address of the user" do
         order.run_callbacks(:create)
-        expect(order.email).to eq user.email
+        expect(order.email).to(eq(user.email))
       end
     end
   end
@@ -38,7 +38,7 @@ describe Spree::Order do
     it "should not validate email address" do
       order.state = "cart"
       order.email = nil
-      expect(order.errors[:email]).to be_empty
+      expect(order.errors[:email]).to(be_empty)
     end
   end
 end

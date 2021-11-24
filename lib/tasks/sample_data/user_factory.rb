@@ -7,7 +7,7 @@ module SampleData
     include Logging
 
     def create_samples
-      log "Creating users:"
+      log("Creating users:")
       usernames.map do |name|
         create_user(name)
       end.to_h
@@ -31,7 +31,7 @@ module SampleData
     def create_user(name)
       email = "#{name.downcase.tr(' ', '.')}@example.org"
       password = Spree::User.friendly_token
-      log "- #{email}"
+      log("- #{email}")
       user = Spree::User.create_with(
         password: password,
         password_confirmation: password,

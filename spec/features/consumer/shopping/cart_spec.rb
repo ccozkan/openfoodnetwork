@@ -47,13 +47,13 @@ variants: [product_with_tax.variants.first, product_with_fee.variants.first]
         add_product_to_cart order, product_with_fee, quantity: 2
         visit main_app.cart_path
 
-        expect(page).to have_link "Continue shopping"
+        expect(page).to(have_link("Continue shopping"))
 
         click_link "Continue shopping"
 
-        expect(page).to have_no_link "Continue shopping"
-        expect(page).to have_link "Shop"
-        expect(page).to have_no_content distributor.preferred_shopfront_message
+        expect(page).to(have_no_link("Continue shopping"))
+        expect(page).to(have_link("Shop"))
+        expect(page).to(have_no_content(distributor.preferred_shopfront_message))
       end
     end
 
@@ -61,7 +61,7 @@ variants: [product_with_tax.variants.first, product_with_fee.variants.first]
       it "does not link to the product page" do
         add_product_to_cart order, product_with_fee, quantity: 2
         visit main_app.cart_path
-        expect(page).to have_no_selector '.item-thumb-image a'
+        expect(page).to(have_no_selector('.item-thumb-image a'))
       end
     end
 
@@ -72,7 +72,7 @@ variants: [product_with_tax.variants.first, product_with_fee.variants.first]
         product_with_fee.destroy
 
         visit main_app.cart_path
-        expect(page).to have_selector '.cart-item-price'
+        expect(page).to(have_selector('.cart-item-price'))
       end
     end
 
@@ -93,10 +93,10 @@ variants: [product_with_tax.variants.first, product_with_fee.variants.first]
       it "rounds fee calculations correctly" do
         # $0.86 + 20% = $1.032
         # Fractional cents should be immediately rounded down and not carried through
-        expect(page).to have_selector '.cart-item-price',         text: with_currency(1.03)
-        expect(page).to have_selector '.cart-item-total',         text: with_currency(8.24)
-        expect(page).to have_selector '.order-total.item-total',  text: with_currency(8.24)
-        expect(page).to have_selector '.order-total.grand-total', text: with_currency(8.24)
+        expect(page).to(have_selector('.cart-item-price',         text: with_currency(1.03)))
+        expect(page).to(have_selector('.cart-item-total',         text: with_currency(8.24)))
+        expect(page).to(have_selector('.order-total.item-total',  text: with_currency(8.24)))
+        expect(page).to(have_selector('.order-total.grand-total', text: with_currency(8.24)))
       end
     end
 
@@ -118,12 +118,12 @@ fee_type: 'admin'
         end
 
         it "shows admin and handlings row" do
-          expect(page).to have_selector('#cart-detail')
-          expect(page).to have_content('Admin & Handling')
-          expect(page).to have_selector '.cart-item-price', text: with_currency(0.86)
-          expect(page).to have_selector '.order-total.item-total', text: with_currency(2.58)
-          expect(page).to have_selector '.order-total.distribution-total', text: with_currency(1.00)
-          expect(page).to have_selector '.order-total.grand-total', text: with_currency(3.58) # price * 3 + 1
+          expect(page).to(have_selector('#cart-detail'))
+          expect(page).to(have_content('Admin & Handling'))
+          expect(page).to(have_selector('.cart-item-price', text: with_currency(0.86)))
+          expect(page).to(have_selector('.order-total.item-total', text: with_currency(2.58)))
+          expect(page).to(have_selector('.order-total.distribution-total', text: with_currency(1.00)))
+          expect(page).to(have_selector('.order-total.grand-total', text: with_currency(3.58))) # price * 3 + 1
         end
       end
 
@@ -134,10 +134,10 @@ fee_type: 'admin'
         end
 
         it "hides admin and handlings row" do
-          expect(page).to have_selector('#cart-detail')
-          expect(page).to have_no_content('Admin & Handling')
-          expect(page).to have_selector '.cart-item-price',         text: with_currency(0.86)
-          expect(page).to have_selector '.order-total.grand-total', text: with_currency(1.72) # price * 3
+          expect(page).to(have_selector('#cart-detail'))
+          expect(page).to(have_no_content('Admin & Handling'))
+          expect(page).to(have_selector('.cart-item-price',         text: with_currency(0.86)))
+          expect(page).to(have_selector('.order-total.grand-total', text: with_currency(1.72))) # price * 3
         end
       end
     end
@@ -172,10 +172,10 @@ product_with_tax.variants.first.id => 3
         end
 
         it "shows the correct weight calculations" do
-          expect(page).to have_selector('#cart-detail')
-          expect(page).to have_selector '.cart-item-price',                 text: with_currency(2.86) # price + (1eur * 2kg)
-          expect(page).to have_selector '.cart-item-price',                 text: with_currency(115.0) # price + (1eur * 5kg)
-          expect(page).to have_selector '.order-total.grand-total',         text: with_currency(353.58) # above * 3 items
+          expect(page).to(have_selector('#cart-detail'))
+          expect(page).to(have_selector('.cart-item-price',                 text: with_currency(2.86))) # price + (1eur * 2kg)
+          expect(page).to(have_selector('.cart-item-price',                 text: with_currency(115.0))) # price + (1eur * 5kg)
+          expect(page).to(have_selector('.order-total.grand-total',         text: with_currency(353.58))) # above * 3 items
         end
       end
     end
@@ -188,7 +188,7 @@ product_with_tax.variants.first.id => 3
       end
 
       it "shows the total tax for the order, including product tax and tax on fees" do
-        expect(page).to have_selector '.tax-total', text: '11.00' # 10 + 1
+        expect(page).to(have_selector('.tax-total', text: '11.00')) # 10 + 1
       end
     end
 
@@ -207,7 +207,7 @@ product_with_tax.variants.first.id => 3
           visit main_app.cart_path
 
           fill_in "order_line_items_attributes_0_quantity", with: '5'
-          expect(page).to have_field "order_line_items_attributes_0_quantity", with: '5'
+          expect(page).to(have_field("order_line_items_attributes_0_quantity", with: '5'))
         end
       end
 
@@ -224,64 +224,64 @@ product_with_tax.variants.first.id => 3
               fill_in "order_line_items_attributes_0_quantity", with: '4'
             end
           end
-          expect(page).to have_field "order_line_items_attributes_0_quantity", with: '2'
+          expect(page).to(have_field("order_line_items_attributes_0_quantity", with: '2'))
 
           accept_alert 'Insufficient stock available, only 3 remaining' do
             within "tr.variant-#{variant2.id}" do
               fill_in "order_line_items_attributes_1_quantity", with: '4'
             end
           end
-          expect(page).to have_field "order_line_items_attributes_1_quantity", with: '3'
+          expect(page).to(have_field("order_line_items_attributes_1_quantity", with: '3'))
         end
 
         it "shows the quantities saved, not those submitted" do
           # Given we load the page with 3 on hand, then the number available drops to 2
-          variant.update! on_demand: false
-          variant.update! on_hand: 3
+          variant.update!(on_demand: false)
+          variant.update!(on_hand: 3)
           visit main_app.cart_path
-          variant.update! on_hand: 2
+          variant.update!(on_hand: 2)
 
           accept_alert do
             fill_in "order_line_items_attributes_0_quantity", with: '4'
           end
           click_button 'Update'
 
-          expect(page).to have_content "Insufficient stock available, only 2 remaining"
-          expect(page).to have_field "order_line_items_attributes_0_quantity", with: '1'
+          expect(page).to(have_content("Insufficient stock available, only 2 remaining"))
+          expect(page).to(have_field("order_line_items_attributes_0_quantity", with: '1'))
         end
 
         describe "full UX for correcting selected quantities with insufficient stock" do
           before do
             add_product_to_cart order, product_with_tax, quantity: 5
-            variant.update! on_hand: 4, on_demand: false
+            variant.update!(on_hand: 4, on_demand: false)
           end
 
           it "gives clear user feedback during the correcting process" do
             visit main_app.cart_path
 
             # shows a relevant Flash message
-            expect(page).to have_selector ".alert-box",
-                                          text: I18n.t('spree.orders.error_flash_for_unavailable_items')
+            expect(page).to(have_selector(".alert-box",
+                                          text: I18n.t('spree.orders.error_flash_for_unavailable_items')))
 
             # "Continue Shopping" and "Checkout" buttons are disabled
-            expect(page).to have_selector "a.continue-shopping[disabled=disabled]"
-            expect(page).to have_selector "a#checkout-link[disabled=disabled]"
+            expect(page).to(have_selector("a.continue-shopping[disabled=disabled]"))
+            expect(page).to(have_selector("a#checkout-link[disabled=disabled]"))
 
             # Quantity field clearly marked as invalid and "Update" button is not highlighted
-            expect(page).to have_selector "#order_line_items_attributes_0_quantity.ng-invalid-stock"
-            expect(page).to_not have_selector "#update-button.alert"
+            expect(page).to(have_selector("#order_line_items_attributes_0_quantity.ng-invalid-stock"))
+            expect(page).to_not(have_selector("#update-button.alert"))
 
             fill_in "order_line_items_attributes_0_quantity", with: 4
 
             # Quantity field not marked as invalid and "Update" button is highlighted after correction
-            expect(page).to_not have_selector "#order_line_items_attributes_0_quantity.ng-invalid-stock"
-            expect(page).to have_selector "#update-button.alert"
+            expect(page).to_not(have_selector("#order_line_items_attributes_0_quantity.ng-invalid-stock"))
+            expect(page).to(have_selector("#update-button.alert"))
 
             click_button I18n.t("update")
 
             # "Continue Shopping" and "Checkout" buttons are not disabled after cart is updated
-            expect(page).to_not have_selector "a.continue-shopping[disabled=disabled]"
-            expect(page).to_not have_selector "a#checkout-link[disabled=disabled]"
+            expect(page).to_not(have_selector("a.continue-shopping[disabled=disabled]"))
+            expect(page).to_not(have_selector("a#checkout-link[disabled=disabled]"))
           end
         end
       end
@@ -321,23 +321,23 @@ distributor: distributor,
         item1 = prev_order1.line_items.first
         item2 = prev_order2.line_items.first
 
-        expect(page).to have_no_content item1.variant.name
-        expect(page).to have_no_content item2.variant.name
+        expect(page).to(have_no_content(item1.variant.name))
+        expect(page).to(have_no_content(item2.variant.name))
 
-        expect(page).to have_link I18n.t(:orders_bought_edit_button), href: spree.account_path
+        expect(page).to(have_link(I18n.t(:orders_bought_edit_button), href: spree.account_path))
         find("td.toggle-bought").click
 
-        expect(page).to have_content item1.variant.name
-        expect(page).to have_content item2.variant.name
+        expect(page).to(have_content(item1.variant.name))
+        expect(page).to(have_content(item2.variant.name))
         page.find(".line-item-#{item1.id} td.bought-item-delete a").click
-        expect(page).to have_no_content item1.variant.name
-        expect(page).to have_content item2.variant.name
+        expect(page).to(have_no_content(item1.variant.name))
+        expect(page).to(have_content(item2.variant.name))
 
         visit main_app.cart_path
 
         find("td.toggle-bought").click
-        expect(page).to have_no_content item1.variant.name
-        expect(page).to have_content item2.variant.name
+        expect(page).to(have_no_content(item1.variant.name))
+        expect(page).to(have_content(item2.variant.name))
       end
 
       context "with a single editable order" do # Regression test for #8191
@@ -346,8 +346,8 @@ distributor: distributor,
         end
 
         it "doesn't throw an error" do
-          expect { visit main_app.cart_path }
-.to_not raise_error
+          expect { visit(main_app.cart_path) }
+.to_not(raise_error)
         end
       end
     end

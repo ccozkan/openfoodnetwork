@@ -13,39 +13,39 @@ describe EnterpriseRelationship do
       er2 = create(:enterprise_relationship, parent: e1, child: e2)
       er3 = create(:enterprise_relationship, parent: e2, child: e1)
 
-      expect(EnterpriseRelationship.by_name).to eq([er3, er1, er2])
+      expect(EnterpriseRelationship.by_name).to(eq([er3, er1, er2]))
     end
 
     describe "finding relationships involving some enterprises" do
       let!(:er) { create(:enterprise_relationship, parent: e1, child: e2) }
 
       it "returns relationships where an enterprise is the parent" do
-        expect(EnterpriseRelationship.involving_enterprises([e1])).to eq([er])
+        expect(EnterpriseRelationship.involving_enterprises([e1])).to(eq([er]))
       end
 
       it "returns relationships where an enterprise is the child" do
-        expect(EnterpriseRelationship.involving_enterprises([e2])).to eq([er])
+        expect(EnterpriseRelationship.involving_enterprises([e2])).to(eq([er]))
       end
 
       it "does not return other relationships" do
-        expect(EnterpriseRelationship.involving_enterprises([e3])).to eq([])
+        expect(EnterpriseRelationship.involving_enterprises([e3])).to(eq([]))
       end
     end
 
     describe "creating with a permission list" do
       context "creating a new list of permissions" do
         it "creates a new permission for each item in the list" do
-          er = EnterpriseRelationship.create! parent: e1,
+          er = EnterpriseRelationship.create!(parent: e1,
 child: e2,
-                                              permissions_list: ['one', 'two']
+                                              permissions_list: ['one', 'two'])
           er.reload
-          expect(er.permissions.map(&:name)).to match_array ['one', 'two']
+          expect(er.permissions.map(&:name)).to(match_array(['one', 'two']))
         end
 
         it "does nothing when the list is nil" do
-          er = EnterpriseRelationship.create! parent: e1, child: e2, permissions_list: nil
+          er = EnterpriseRelationship.create!(parent: e1, child: e2, permissions_list: nil)
           er.reload
-          expect(er.permissions).to be_empty
+          expect(er.permissions).to(be_empty)
         end
       end
 
@@ -62,30 +62,30 @@ child: e2,
           er.permissions_list = ['four']
           er.save!
           er.reload
-          expect(er.permissions.map(&:name)).to include 'four'
+          expect(er.permissions.map(&:name)).to(include('four'))
         end
 
         it "does not duplicate existing permissions" do
           er.permissions_list = ["one", "two", "three"]
           er.save!
           er.reload
-          expect(er.permissions.map(&:name).count).to eq(3)
-          expect(er.permissions.map(&:name)).to match_array ["one", "two", "three"]
+          expect(er.permissions.map(&:name).count).to(eq(3))
+          expect(er.permissions.map(&:name)).to(match_array(["one", "two", "three"]))
         end
 
         it "removes permissions that are not in the list" do
           er.permissions_list = ['one', 'three']
           er.save!
           er.reload
-          expect(er.permissions.map(&:name)).to include 'one', 'three'
-          expect(er.permissions.map(&:name)).not_to include 'two'
+          expect(er.permissions.map(&:name)).to(include('one', 'three'))
+          expect(er.permissions.map(&:name)).not_to(include('two'))
         end
 
         it "does removes all permissions when the list provided is nil" do
           er.permissions_list = nil
           er.save!
           er.reload
-          expect(er.permissions).to be_empty
+          expect(er.permissions).to(be_empty)
         end
       end
     end
@@ -96,11 +96,11 @@ child: e2,
       let!(:er3) { create(:enterprise_relationship, parent: e1, child: e3) }
 
       it "finds relationships that grant permissions to some enterprises" do
-        expect(EnterpriseRelationship.permitting([e1, e2])).to match_array [er1, er2]
+        expect(EnterpriseRelationship.permitting([e1, e2])).to(match_array([er1, er2]))
       end
 
       it "finds relationships that are granted by particular enterprises" do
-        expect(EnterpriseRelationship.permitted_by([e1, e2])).to match_array [er1, er3]
+        expect(EnterpriseRelationship.permitted_by([e1, e2])).to(match_array([er1, er3]))
       end
     end
 
@@ -124,7 +124,7 @@ child: e1,
                           permissions_list: ['three', 'four']
 )
 
-      expect(EnterpriseRelationship.with_permission('two')).to match_array [er1, er2]
+      expect(EnterpriseRelationship.with_permission('two')).to(match_array([er1, er2]))
     end
   end
 
@@ -135,31 +135,31 @@ child: e1,
     let(:er_reverse) { create(:enterprise_relationship, parent: e2, child: e1) }
 
     it "includes self where appropriate" do
-      expect(EnterpriseRelationship.relatives[e2.id][:distributors]).to include e2.id
-      expect(EnterpriseRelationship.relatives[e2.id][:producers]).not_to include e2.id
+      expect(EnterpriseRelationship.relatives[e2.id][:distributors]).to(include(e2.id))
+      expect(EnterpriseRelationship.relatives[e2.id][:producers]).not_to(include(e2.id))
     end
 
     it "categorises enterprises into distributors and producers" do
-      e2.update_attribute :is_primary_producer, true
-      expect(EnterpriseRelationship.relatives).to eq(
+      e2.update_attribute(:is_primary_producer, true)
+      expect(EnterpriseRelationship.relatives).to(eq(
         e1.id => { distributors: Set.new([e2.id]), producers: Set.new([e1.id, e2.id]) },
         e2.id => { distributors: Set.new([e2.id]), producers: Set.new([e2.id, e1.id]) }
-      )
+      ))
     end
 
     it "finds inactive enterprises by default" do
-      e1.update_attribute :sells, 'unspecified'
-      expect(EnterpriseRelationship.relatives[e2.id][:producers]).to eq(Set.new([e1.id]))
+      e1.update_attribute(:sells, 'unspecified')
+      expect(EnterpriseRelationship.relatives[e2.id][:producers]).to(eq(Set.new([e1.id])))
     end
 
     it "does not find inactive enterprises when requested" do
-      e1.update_attribute :sells, 'unspecified'
-      expect(EnterpriseRelationship.relatives(true)[e2.id][:producers]).to be_empty
+      e1.update_attribute(:sells, 'unspecified')
+      expect(EnterpriseRelationship.relatives(true)[e2.id][:producers]).to(be_empty)
     end
 
     it "does not show duplicates" do
       er_reverse
-      expect(EnterpriseRelationship.relatives[e2.id][:producers]).to eq(Set.new([e1.id]))
+      expect(EnterpriseRelationship.relatives[e2.id][:producers]).to(eq(Set.new([e1.id])))
     end
   end
 
@@ -212,9 +212,9 @@ hub: hub,
           context "when the enterprise relationship is destroyed" do
             before { er.destroy }
             it "should set permission_revoked_at to the current time for all variant overrides of the relationship" do
-              expect(vo1.reload.permission_revoked_at).to_not be_nil
-              expect(vo2.reload.permission_revoked_at).to_not be_nil
-              expect(vo2.reload.permission_revoked_at).to_not be_nil
+              expect(vo1.reload.permission_revoked_at).to_not(be_nil)
+              expect(vo2.reload.permission_revoked_at).to_not(be_nil)
+              expect(vo2.reload.permission_revoked_at).to_not(be_nil)
             end
           end
         end
@@ -222,12 +222,12 @@ hub: hub,
         context "and is then removed" do
           before { er.permissions_list = [:add_to_order_cycles]; er.save! }
           it "should set permission_revoked_at to the current time for all relevant variant overrides" do
-            expect(vo1.reload.permission_revoked_at).to_not be_nil
-            expect(vo2.reload.permission_revoked_at).to_not be_nil
+            expect(vo1.reload.permission_revoked_at).to_not(be_nil)
+            expect(vo2.reload.permission_revoked_at).to_not(be_nil)
           end
 
           it "should not affect other variant overrides" do
-            expect(vo3.reload.permission_revoked_at).to be_nil
+            expect(vo3.reload.permission_revoked_at).to(be_nil)
           end
         end
 
@@ -235,9 +235,9 @@ hub: hub,
           before { er.permissions_list = [:create_variant_overrides]; er.save! }
 
           it "should have no effect on existing variant_overrides" do
-            expect(vo1.reload.permission_revoked_at).to be_nil
-            expect(vo2.reload.permission_revoked_at).to be_nil
-            expect(vo3.reload.permission_revoked_at).to be_nil
+            expect(vo1.reload.permission_revoked_at).to(be_nil)
+            expect(vo2.reload.permission_revoked_at).to(be_nil)
+            expect(vo3.reload.permission_revoked_at).to(be_nil)
           end
         end
       end
@@ -289,12 +289,12 @@ permission_revoked_at: Time.now.in_time_zone
             er.permissions_list = [:add_to_order_cycles, :create_variant_overrides]; er.save!
           end
           it "should set permission_revoked_at to nil for all relevant variant overrides" do
-            expect(vo1.reload.permission_revoked_at).to be_nil
-            expect(vo2.reload.permission_revoked_at).to be_nil
+            expect(vo1.reload.permission_revoked_at).to(be_nil)
+            expect(vo2.reload.permission_revoked_at).to(be_nil)
           end
 
           it "should not affect other variant overrides" do
-            expect(vo3.reload.permission_revoked_at).to_not be_nil
+            expect(vo3.reload.permission_revoked_at).to_not(be_nil)
           end
         end
 
@@ -302,9 +302,9 @@ permission_revoked_at: Time.now.in_time_zone
           before { er.permissions_list = [:add_to_order_cycles, :manage_products]; er.save! }
 
           it "should have no effect on existing variant_overrides" do
-            expect(vo1.reload.permission_revoked_at).to_not be_nil
-            expect(vo2.reload.permission_revoked_at).to_not be_nil
-            expect(vo3.reload.permission_revoked_at).to_not be_nil
+            expect(vo1.reload.permission_revoked_at).to_not(be_nil)
+            expect(vo2.reload.permission_revoked_at).to_not(be_nil)
+            expect(vo3.reload.permission_revoked_at).to_not(be_nil)
           end
         end
       end

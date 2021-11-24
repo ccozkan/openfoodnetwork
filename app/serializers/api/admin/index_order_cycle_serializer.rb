@@ -34,7 +34,7 @@ module Api
       end
 
       def status
-        order_cycle_status_class object
+        order_cycle_status_class(object)
       end
 
       def orders_open_at
@@ -46,7 +46,7 @@ module Api
       end
 
       def viewing_as_coordinator
-        Enterprise.managed_by(options[:current_user]).include? object.coordinator
+        Enterprise.managed_by(options[:current_user]).include?(object.coordinator)
       end
 
       def coordinator

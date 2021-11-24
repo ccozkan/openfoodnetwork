@@ -12,14 +12,14 @@ describe Api::Admin::SubscriptionCustomerSerializer do
   end
 
   before do
-    allow(serializer).to receive(:finder) { finder_mock }
+    allow(serializer).to(receive(:finder) { finder_mock })
   end
 
   it "serializes a customer " do
     result = JSON.parse(serializer.to_json)
-    expect(result['email']).to eq customer.email
-    expect(result['ship_address']['id']).to be nil
-    expect(result['ship_address']['address1']).to eq address.address1
-    expect(result['ship_address']['firstname']).to eq address.firstname
+    expect(result['email']).to(eq(customer.email))
+    expect(result['ship_address']['id']).to(be(nil))
+    expect(result['ship_address']['address1']).to(eq(address.address1))
+    expect(result['ship_address']['firstname']).to(eq(address.firstname))
   end
 end

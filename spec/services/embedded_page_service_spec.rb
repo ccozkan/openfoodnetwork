@@ -39,18 +39,18 @@ nil
       before { service.embed! }
 
       it "sets the response headers to enables embedding requests from the embedding site" do
-        expect(response.headers).to_not include 'X-Frame-Options' => 'DENY'
-        expect(response.headers).to eq 'Content-Security-Policy' => "frame-ancestors 'self' embedding-enterprise.com"
+        expect(response.headers).to_not(include('X-Frame-Options' => 'DENY'))
+        expect(response.headers).to(eq('Content-Security-Policy' => "frame-ancestors 'self' embedding-enterprise.com"))
       end
 
       it "sets session variables" do
-        expect(session[:embedded_shopfront]).to eq true
-        expect(session[:embedding_domain]).to eq 'embedding-enterprise.com'
-        expect(session[:shopfront_redirect]).to eq '/' + enterprise_slug + '/shop?embedded_shopfront=true'
+        expect(session[:embedded_shopfront]).to(eq(true))
+        expect(session[:embedding_domain]).to(eq('embedding-enterprise.com'))
+        expect(session[:shopfront_redirect]).to(eq('/' + enterprise_slug + '/shop?embedded_shopfront=true'))
       end
 
       it "publicly reports that embedded layout should be used" do
-        expect(service.use_embedded_layout?).to be true
+        expect(service.use_embedded_layout?).to(be(true))
       end
     end
 
@@ -62,9 +62,9 @@ nil
       end
 
       it "resets the session variables for the new request" do
-        expect(session[:embedded_shopfront]).to eq true
-        expect(session[:embedding_domain]).to eq 'embedding-enterprise.com'
-        expect(session[:shopfront_redirect]).to eq '/' + enterprise_slug + '/shop?embedded_shopfront=true'
+        expect(session[:embedded_shopfront]).to(eq(true))
+        expect(session[:embedding_domain]).to(eq('embedding-enterprise.com'))
+        expect(session[:shopfront_redirect]).to(eq('/' + enterprise_slug + '/shop?embedded_shopfront=true'))
       end
     end
 
@@ -75,7 +75,7 @@ nil
       end
 
       it "does not enable embedding" do
-        expect(response.headers['X-Frame-Options']).to eq 'DENY'
+        expect(response.headers['X-Frame-Options']).to(eq('DENY'))
       end
     end
 
@@ -90,7 +90,7 @@ nil
       end
 
       it "returns a 200 status" do
-        expect(response.status).to eq 200
+        expect(response.status).to(eq(200))
       end
     end
   end

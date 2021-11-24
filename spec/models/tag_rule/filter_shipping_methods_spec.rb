@@ -8,7 +8,7 @@ describe TagRule::FilterShippingMethods, type: :model do
   describe "determining whether tags match for a given shipping method" do
     context "when the shipping method is nil" do
       it "returns false" do
-        expect(tag_rule.send(:tags_match?, nil)).to be false
+        expect(tag_rule.send(:tags_match?, nil)).to(be(false))
       end
     end
 
@@ -18,26 +18,26 @@ describe TagRule::FilterShippingMethods, type: :model do
       end
 
       context "when the rule has no preferred shipping method tags specified" do
-        before { allow(tag_rule).to receive(:preferred_shipping_method_tags) { "" } }
-        it { expect(tag_rule.send(:tags_match?, shipping_method)).to be false }
+        before { allow(tag_rule).to(receive(:preferred_shipping_method_tags) { "" }) }
+        it { expect(tag_rule.send(:tags_match?, shipping_method)).to(be(false)) }
       end
 
       context "when the rule has preferred customer tags specified that match ANY of the customer tags" do
         before do
-          allow(tag_rule).to receive(:preferred_shipping_method_tags) {
+          allow(tag_rule).to(receive(:preferred_shipping_method_tags) {
                                "wholesale,some_tag,member"
-                             }
+                             })
         end
-        it { expect(tag_rule.send(:tags_match?, shipping_method)).to be true }
+        it { expect(tag_rule.send(:tags_match?, shipping_method)).to(be(true)) }
       end
 
       context "when the rule has preferred customer tags specified that match NONE of the customer tags" do
         before do
-          allow(tag_rule).to receive(:preferred_shipping_method_tags) {
+          allow(tag_rule).to(receive(:preferred_shipping_method_tags) {
                                "wholesale,some_tag,some_other_tag"
-                             }
+                             })
         end
-        it { expect(tag_rule.send(:tags_match?, shipping_method)).to be false }
+        it { expect(tag_rule.send(:tags_match?, shipping_method)).to(be(false)) }
       end
     end
   end

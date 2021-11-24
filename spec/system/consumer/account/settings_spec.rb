@@ -21,7 +21,7 @@ describe "Account Settings", js: true do
       login_as user
       visit "/account"
       find("a", text: /#{I18n.t('spree.users.show.tabs.settings')}/i).click
-      expect(page).to have_content I18n.t('spree.users.form.account_settings')
+      expect(page).to(have_content(I18n.t('spree.users.form.account_settings')))
     end
 
     it "allows the user to update their email address" do
@@ -29,21 +29,21 @@ describe "Account Settings", js: true do
 
       performing_deliveries do
         expect do
-          click_button I18n.t(:update)
-        end.to enqueue_job ActionMailer::DeliveryJob
+          click_button(I18n.t(:update))
+        end.to(enqueue_job(ActionMailer::DeliveryJob))
       end
 
-      expect(enqueued_jobs.last.to_s).to match "new@email.com"
+      expect(enqueued_jobs.last.to_s).to(match("new@email.com"))
 
-      expect(find(".alert-box.success").text.strip).to eq "#{I18n.t('spree.account_updated')}\n×"
+      expect(find(".alert-box.success").text.strip).to(eq("#{I18n.t('spree.account_updated')}\n×"))
       user.reload
-      expect(user.email).to eq 'old@email.com'
-      expect(user.unconfirmed_email).to eq 'new@email.com'
+      expect(user.email).to(eq('old@email.com'))
+      expect(user.unconfirmed_email).to(eq('new@email.com'))
       find("a", text: /#{I18n.t('spree.users.show.tabs.settings')}/i).click
-      expect(page).to have_content I18n.t(
+      expect(page).to(have_content(I18n.t(
 'spree.users.show.unconfirmed_email',
                                           unconfirmed_email: 'new@email.com'
-)
+)))
     end
 
     it "allows the user to change their password" do
@@ -53,9 +53,9 @@ describe "Account Settings", js: true do
       fill_in 'user_password_confirmation', with: 'NewPassword'
 
       click_button I18n.t(:update)
-      expect(find(".alert-box.success").text.strip).to eq "#{I18n.t('spree.account_updated')}\n×"
+      expect(find(".alert-box.success").text.strip).to(eq("#{I18n.t('spree.account_updated')}\n×"))
 
-      expect(user.reload.encrypted_password).to_not eq initial_password
+      expect(user.reload.encrypted_password).to_not(eq(initial_password))
     end
   end
 end

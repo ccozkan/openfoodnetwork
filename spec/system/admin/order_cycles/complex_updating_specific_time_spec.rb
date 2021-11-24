@@ -85,18 +85,18 @@ child: distributor,
     select 'Coord fee 2', from: 'order_cycle_coordinator_fee_1_id'
 
     click_button 'Save and Next'
-    expect(page).to have_content 'Your order cycle has been updated.'
+    expect(page).to(have_content('Your order cycle has been updated.'))
 
     # And I add a supplier and some products
-    expect(page).to have_selector("table.exchanges tr.supplier")
+    expect(page).to(have_selector("table.exchanges tr.supplier"))
     select 'My supplier', from: 'new_supplier_id'
     click_button 'Add supplier'
-    expect(page).to have_selector("table.exchanges tr.supplier", text: "My supplier")
+    expect(page).to(have_selector("table.exchanges tr.supplier", text: "My supplier"))
 
     open_all_exchange_product_tabs
 
-    expect(page).to have_selector "#order_cycle_incoming_exchange_1_variants_#{initial_variants.last.id}",
-                                  visible: true
+    expect(page).to(have_selector("#order_cycle_incoming_exchange_1_variants_#{initial_variants.last.id}",
+                                  visible: true))
     page.find("#order_cycle_incoming_exchange_1_variants_#{initial_variants.last.id}", visible: true).click # uncheck (with visible:true filter)
     check "order_cycle_incoming_exchange_2_variants_#{v1.id}"
     check "order_cycle_incoming_exchange_2_variants_#{v2.id}"
@@ -114,12 +114,12 @@ child: distributor,
            from: 'order_cycle_incoming_exchange_2_enterprise_fees_0_enterprise_fee_id'
 
     click_button 'Save and Next'
-    expect(page).to have_content 'Your order cycle has been updated.'
+    expect(page).to(have_content('Your order cycle has been updated.'))
 
     # And I add a distributor and some products
     select 'My distributor', from: 'new_distributor_id'
     click_button 'Add distributor'
-    expect(page).to have_field("order_cycle_outgoing_exchange_2_pickup_time")
+    expect(page).to(have_field("order_cycle_outgoing_exchange_2_pickup_time"))
 
     fill_in 'order_cycle_outgoing_exchange_0_pickup_time', with: 'New time 0'
     fill_in 'order_cycle_outgoing_exchange_0_pickup_instructions', with: 'New instructions 0'
@@ -130,7 +130,7 @@ child: distributor,
 
     page.find("table.exchanges tr.distributor-#{distributor.id} td.tags").click
     within ".exchange-tags" do
-      find(:css, "tags-input .tags input").set "wholesale\n"
+      find(:css, "tags-input .tags input").set("wholesale\n")
     end
 
     open_all_exchange_product_tabs
@@ -150,37 +150,37 @@ child: distributor,
     select 'Distributor fee 2',
            from: 'order_cycle_outgoing_exchange_2_enterprise_fees_0_enterprise_fee_id'
 
-    expect(page).to have_selector "#save-bar"
+    expect(page).to(have_selector("#save-bar"))
     click_button 'Save and Back to List'
 
     oc = OrderCycle.last
     toggle_columns "Producers", "Shops"
 
-    expect(page).to have_input "oc#{oc.id}[name]", value: "Plums & Avos"
-    expect(page).to have_input "oc#{oc.id}[orders_open_at]", value: order_cycle_opening_time
-    expect(page).to have_input "oc#{oc.id}[orders_close_at]", value: order_cycle_closing_time
-    expect(page).to have_content coordinator.name
+    expect(page).to(have_input("oc#{oc.id}[name]", value: "Plums & Avos"))
+    expect(page).to(have_input("oc#{oc.id}[orders_open_at]", value: order_cycle_opening_time))
+    expect(page).to(have_input("oc#{oc.id}[orders_close_at]", value: order_cycle_closing_time))
+    expect(page).to(have_content(coordinator.name))
 
-    expect(page).to have_selector 'td.producers', text: 'My supplier'
-    expect(page).to have_selector 'td.shops', text: 'My distributor'
+    expect(page).to(have_selector('td.producers', text: 'My supplier'))
+    expect(page).to(have_selector('td.shops', text: 'My distributor'))
 
     # And my coordinator fees should have been configured
-    expect(oc.coordinator_fee_ids).to match_array [coordinator_fee1.id, coordinator_fee2.id]
+    expect(oc.coordinator_fee_ids).to(match_array([coordinator_fee1.id, coordinator_fee2.id]))
 
     # And my supplier fees should have been configured
-    expect(oc.exchanges.incoming.last.enterprise_fee_ids).to eq([supplier_fee2.id])
+    expect(oc.exchanges.incoming.last.enterprise_fee_ids).to(eq([supplier_fee2.id]))
 
     # And my distributor fees should have been configured
-    expect(oc.exchanges.outgoing.last.enterprise_fee_ids).to eq([distributor_fee2.id])
+    expect(oc.exchanges.outgoing.last.enterprise_fee_ids).to(eq([distributor_fee2.id]))
 
     # And my tags should have been save
-    expect(oc.exchanges.outgoing.last.tag_list).to eq(['wholesale'])
+    expect(oc.exchanges.outgoing.last.tag_list).to(eq(['wholesale']))
 
     # And it should have some variants selected
-    selected_initial_variants = initial_variants.take initial_variants.size - 1
-    expect(oc.variants.map(&:id)).to match_array(
+    selected_initial_variants = initial_variants.take(initial_variants.size - 1)
+    expect(oc.variants.map(&:id)).to(match_array(
 (selected_initial_variants.map(&:id) + [v1.id, v2.id])
-)
+))
 
     # And the collection details should have been updated
     expect(
@@ -188,19 +188,19 @@ oc.exchanges.where(
 pickup_time: 'New time 0',
 pickup_instructions: 'New instructions 0'
 )
-).to be_present
+).to(be_present)
     expect(
 oc.exchanges.where(
 pickup_time: 'New time 1',
 pickup_instructions: 'New instructions 1'
 )
-).to be_present
+).to(be_present)
   end
 
   private
 
   def wait_for_edit_form_to_load_order_cycle(order_cycle)
-    expect(page).to have_field "order_cycle_name", with: order_cycle.name
+    expect(page).to(have_field("order_cycle_name", with: order_cycle.name))
   end
 
   def open_all_exchange_product_tabs
@@ -209,7 +209,7 @@ pickup_instructions: 'New instructions 1'
       exchange_row.find("td.products").click
       within(exchange_row) do
         # Wait for the products panel to be visible.
-        expect(page).to have_selector ".exchange-products"
+        expect(page).to(have_selector(".exchange-products"))
       end
     end
   end

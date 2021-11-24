@@ -10,21 +10,21 @@ class DiscourseSsoController < ApplicationController
 
   def login
     if require_activation?
-      redirect_to discourse_url
+      redirect_to(discourse_url)
     else
-      redirect_to discourse_login_url
+      redirect_to(discourse_login_url)
     end
   end
 
   def sso
     if spree_current_user
       begin
-        redirect_to sso_url
+        redirect_to(sso_url)
       rescue TypeError
-        render plain: "Bad SingleSignOn request.", status: :bad_request
+        render(plain: "Bad SingleSignOn request.", status: :bad_request)
       end
     else
-      redirect_to login_path
+      redirect_to(login_path)
     end
   end
 
@@ -43,7 +43,7 @@ class DiscourseSsoController < ApplicationController
   end
 
   def require_config
-    raise ActionController::RoutingError, 'Not Found' unless discourse_configured?
+    raise(ActionController::RoutingError, 'Not Found') unless discourse_configured?
   end
 
   def require_activation?

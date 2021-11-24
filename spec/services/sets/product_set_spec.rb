@@ -29,7 +29,7 @@ describe Sets::ProductSet do
         it 'does not create a new product' do
           product_set.save
 
-          expect(Spree::Product.last).to be nil
+          expect(Spree::Product.last).to(be(nil))
         end
       end
 
@@ -59,16 +59,16 @@ describe Sets::ProductSet do
           it 'updates the product' do
             product_set.save
 
-            expect(product.reload.attributes).to include('variant_unit' => 'weight')
+            expect(product.reload.attributes).to(include('variant_unit' => 'weight'))
           end
 
           it 'does not add an error' do
             product_set.save
-            expect(product_set.errors).to be_empty
+            expect(product_set.errors).to(be_empty)
           end
 
           it 'returns true' do
-            expect(product_set.save).to eq(true)
+            expect(product_set.save).to(eq(true))
           end
         end
 
@@ -97,8 +97,8 @@ variants: [product.variants.first],
           it 'updates the product and removes the product from order cycles' do
             product_set.save
 
-            expect(product.reload.attributes).to include('supplier_id' => producer.id)
-            expect(order_cycle.distributed_variants).to_not include product.variants.first
+            expect(product.reload.attributes).to(include('supplier_id' => producer.id))
+            expect(order_cycle.distributed_variants).to_not(include(product.variants.first))
           end
         end
 
@@ -114,7 +114,7 @@ variants: [product.variants.first],
             it 'updates the attributes of the variant' do
               product_set.save
 
-              expect(product.reload.variants.first[:sku]).to eq variants_attributes.first[:sku]
+              expect(product.reload.variants.first[:sku]).to(eq(variants_attributes.first[:sku]))
             end
 
             context 'and when product attributes are also passed' do
@@ -123,8 +123,8 @@ variants: [product.variants.first],
 
                 product_set.save
 
-                expect(product.reload.variants.first[:sku]).to eq variants_attributes.first[:sku]
-                expect(product.reload.attributes).to include('permalink' => "test_permalink")
+                expect(product.reload.variants.first[:sku]).to(eq(variants_attributes.first[:sku]))
+                expect(product.reload.attributes).to(include('permalink' => "test_permalink"))
               end
             end
           end
@@ -143,7 +143,7 @@ variants: [product.variants.first],
 
               it 'updates the attributes of the master variant' do
                 product_set.save
-                expect(variant.reload.sku).to eq('123')
+                expect(variant.reload.sku).to(eq('123'))
               end
             end
 
@@ -156,8 +156,8 @@ variants: [product.variants.first],
                 it 'creates it with the specified attributes' do
                   number_of_variants = Spree::Variant.all.size
                   product_set.save
-                  expect(Spree::Variant.last.sku).to eq('123')
-                  expect(Spree::Variant.all.size).to eq number_of_variants + 1
+                  expect(Spree::Variant.last.sku).to(eq('123'))
+                  expect(Spree::Variant.all.size).to(eq(number_of_variants + 1))
                 end
               end
 
@@ -169,12 +169,12 @@ variants: [product.variants.first],
                 end
 
                 it 'does not create variant and notifies bugsnag still raising the exception' do
-                  expect(Bugsnag).to receive(:notify)
+                  expect(Bugsnag).to(receive(:notify))
                   number_of_variants = Spree::Variant.all.size
                   expect { product_set.save }
-.to raise_error(StandardError)
-                  expect(Spree::Variant.all.size).to eq number_of_variants
-                  expect(Spree::Variant.last.sku).not_to eq('321')
+.to(raise_error(StandardError))
+                  expect(Spree::Variant.all.size).to(eq(number_of_variants))
+                  expect(Spree::Variant.last.sku).not_to(eq('321'))
                 end
               end
             end

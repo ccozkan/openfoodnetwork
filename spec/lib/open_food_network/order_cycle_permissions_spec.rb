@@ -17,25 +17,25 @@ module OpenFoodNetwork
         let(:permissions) { OrderCyclePermissions.new(user, nil) }
 
         before do
-          allow(permissions).to receive(:managed_enterprises) {
+          allow(permissions).to(receive(:managed_enterprises) {
                                   Enterprise.where(id: [coordinator])
-                                }
+                                })
         end
 
         it "returns an empty scope" do
-          expect(permissions.visible_enterprises).to be_empty
+          expect(permissions.visible_enterprises).to(be_empty)
         end
       end
 
       context "as a manager of the coordinator" do
         before do
-          allow(permissions).to receive(:managed_enterprises) {
+          allow(permissions).to(receive(:managed_enterprises) {
                                   Enterprise.where(id: [coordinator])
-                                }
+                                })
         end
 
         it "returns the coordinator itself" do
-          expect(permissions.visible_enterprises).to include coordinator
+          expect(permissions.visible_enterprises).to(include(coordinator))
         end
 
         context "where P-OC has been granted to the coordinator by other enterprises" do
@@ -51,16 +51,16 @@ child: coordinator,
           context "where the coordinator sells any" do
             it "returns enterprises which have granted P-OC to the coordinator" do
               enterprises = permissions.visible_enterprises
-              expect(enterprises).to include hub
-              expect(enterprises).to_not include producer
+              expect(enterprises).to(include(hub))
+              expect(enterprises).to_not(include(producer))
             end
           end
 
           context "where the coordinator sells 'own'" do
-            before { allow(coordinator).to receive(:sells) { 'own' } }
+            before { allow(coordinator).to(receive(:sells) { 'own' }) }
             it "returns just the coordinator" do
               enterprises = permissions.visible_enterprises
-              expect(enterprises).to_not include hub, producer
+              expect(enterprises).to_not(include(hub, producer))
             end
           end
         end
@@ -89,15 +89,15 @@ receiver: hub,
             context "where the coordinator sells any" do
               it "returns enterprises which have granted P-OC to the coordinator" do
                 enterprises = permissions.visible_enterprises
-                expect(enterprises).to include hub, producer
+                expect(enterprises).to(include(hub, producer))
               end
             end
 
             context "where the coordinator sells 'own'" do
-              before { allow(coordinator).to receive(:sells) { 'own' } }
+              before { allow(coordinator).to(receive(:sells) { 'own' }) }
               it "returns just the coordinator" do
                 enterprises = permissions.visible_enterprises
-                expect(enterprises).to_not include hub, producer
+                expect(enterprises).to_not(include(hub, producer))
               end
             end
           end
@@ -105,7 +105,7 @@ receiver: hub,
           context "where the other enterprises are not in the order cycle" do
             it "returns just the coordinator" do
               enterprises = permissions.visible_enterprises
-              expect(enterprises).to_not include hub, producer
+              expect(enterprises).to_not(include(hub, producer))
             end
           end
         end
@@ -113,7 +113,7 @@ receiver: hub,
 
       context "as a manager of a hub" do
         before do
-          allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
+          allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: [hub]) })
         end
 
         context "that has granted P-OC to the coordinator" do
@@ -139,8 +139,8 @@ receiver: hub,
 
             it "returns my hub" do
               enterprises = permissions.visible_enterprises
-              expect(enterprises).to include hub
-              expect(enterprises).to_not include producer, coordinator
+              expect(enterprises).to(include(hub))
+              expect(enterprises).to_not(include(producer, coordinator))
             end
 
             context "and has been granted P-OC by a producer" do
@@ -166,7 +166,7 @@ receiver: coordinator,
 
                 it "returns the producer" do
                   enterprises = permissions.visible_enterprises
-                  expect(enterprises).to include producer, hub
+                  expect(enterprises).to(include(producer, hub))
                 end
               end
 
@@ -175,7 +175,7 @@ receiver: coordinator,
 
                 it "does not return the producer" do
                   enterprises = permissions.visible_enterprises
-                  expect(enterprises).to_not include producer
+                  expect(enterprises).to_not(include(producer))
                 end
               end
             end
@@ -203,7 +203,7 @@ receiver: coordinator,
 
                 it "returns the producer" do
                   enterprises = permissions.visible_enterprises
-                  expect(enterprises).to include producer, hub
+                  expect(enterprises).to(include(producer, hub))
                 end
               end
 
@@ -212,7 +212,7 @@ receiver: coordinator,
 
                 it "does not return the producer" do
                   enterprises = permissions.visible_enterprises
-                  expect(enterprises).to_not include producer
+                  expect(enterprises).to_not(include(producer))
                 end
               end
             end
@@ -223,7 +223,7 @@ receiver: coordinator,
 
             it "does not return my hub" do
               enterprises = permissions.visible_enterprises
-              expect(enterprises).to_not include hub, producer, coordinator
+              expect(enterprises).to_not(include(hub, producer, coordinator))
             end
           end
         end
@@ -231,7 +231,7 @@ receiver: coordinator,
         context "that has not granted P-OC to the coordinator" do
           it "does not return my hub" do
             enterprises = permissions.visible_enterprises
-            expect(enterprises).to_not include hub, producer, coordinator
+            expect(enterprises).to_not(include(hub, producer, coordinator))
           end
 
           context "but is already in the order cycle" do
@@ -247,8 +247,8 @@ receiver: hub,
 
             it "returns my hub" do
               enterprises = permissions.visible_enterprises
-              expect(enterprises).to include hub
-              expect(enterprises).to_not include producer, coordinator
+              expect(enterprises).to(include(hub))
+              expect(enterprises).to_not(include(producer, coordinator))
             end
 
             context "and distributes variants distributed by an unmanaged and unpermitted producer" do
@@ -259,8 +259,8 @@ receiver: hub,
               # TODO: update this when we are confident about P-OCs
               it "returns that producer as well" do
                 enterprises = permissions.visible_enterprises
-                expect(enterprises).to include producer, hub
-                expect(enterprises).to_not include coordinator
+                expect(enterprises).to(include(producer, hub))
+                expect(enterprises).to_not(include(coordinator))
               end
             end
           end
@@ -269,7 +269,7 @@ receiver: hub,
 
       context "as a manager of a producer" do
         before do
-          allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [producer]) }
+          allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: [producer]) })
         end
 
         context "which has granted P-OC to the coordinator" do
@@ -295,8 +295,8 @@ receiver: coordinator,
 
             it "returns my producer" do
               enterprises = permissions.visible_enterprises
-              expect(enterprises).to include producer
-              expect(enterprises).to_not include hub, coordinator
+              expect(enterprises).to(include(producer))
+              expect(enterprises).to_not(include(hub, coordinator))
             end
 
             context "and has been granted P-OC by a hub" do
@@ -322,8 +322,8 @@ receiver: hub,
 
                 it "returns the hub as well" do
                   enterprises = permissions.visible_enterprises
-                  expect(enterprises).to include producer, hub
-                  expect(enterprises).to_not include coordinator
+                  expect(enterprises).to(include(producer, hub))
+                  expect(enterprises).to_not(include(coordinator))
                 end
               end
 
@@ -332,7 +332,7 @@ receiver: hub,
 
                 it "does not return the hub" do
                   enterprises = permissions.visible_enterprises
-                  expect(enterprises).to_not include hub
+                  expect(enterprises).to_not(include(hub))
                 end
               end
             end
@@ -360,8 +360,8 @@ receiver: hub,
 
                 it "returns the hub as well" do
                   enterprises = permissions.visible_enterprises
-                  expect(enterprises).to include producer, hub
-                  expect(enterprises).to_not include coordinator
+                  expect(enterprises).to(include(producer, hub))
+                  expect(enterprises).to_not(include(coordinator))
                 end
               end
 
@@ -370,7 +370,7 @@ receiver: hub,
 
                 it "does not return the hub" do
                   enterprises = permissions.visible_enterprises
-                  expect(enterprises).to_not include hub
+                  expect(enterprises).to_not(include(hub))
                 end
               end
             end
@@ -381,7 +381,7 @@ receiver: hub,
 
             it "does not return my producer" do
               enterprises = permissions.visible_enterprises
-              expect(enterprises).to_not include hub, producer, coordinator
+              expect(enterprises).to_not(include(hub, producer, coordinator))
             end
           end
         end
@@ -389,7 +389,7 @@ receiver: hub,
         context "which has not granted P-OC to the coordinator" do
           it "does not return my producer" do
             enterprises = permissions.visible_enterprises
-            expect(enterprises).to_not include producer
+            expect(enterprises).to_not(include(producer))
           end
 
           context "but is already in the order cycle" do
@@ -406,8 +406,8 @@ receiver: coordinator,
             # TODO: update this when we are confident about P-OCs
             it "returns my producer" do
               enterprises = permissions.visible_enterprises
-              expect(enterprises).to include producer
-              expect(enterprises).to_not include hub, coordinator
+              expect(enterprises).to(include(producer))
+              expect(enterprises).to_not(include(hub, coordinator))
             end
 
             context "and has variants distributed by an outgoing hub" do
@@ -430,8 +430,8 @@ receiver: hub,
               # TODO: update this when we are confident about P-OCs
               it "returns that hub as well" do
                 enterprises = permissions.visible_enterprises
-                expect(enterprises).to include producer, hub
-                expect(enterprises).to_not include coordinator
+                expect(enterprises).to(include(producer, hub))
+                expect(enterprises).to_not(include(coordinator))
               end
             end
           end
@@ -455,13 +455,13 @@ receiver: coordinator,
         end
 
         before do
-          allow(permissions).to receive(:managed_enterprises) {
+          allow(permissions).to(receive(:managed_enterprises) {
                                   Enterprise.where(id: [coordinator])
-                                }
+                                })
         end
 
         it "returns all exchanges in the order cycle, regardless of hubE permissions" do
-          expect(permissions.visible_exchanges).to include ex_in, ex_out
+          expect(permissions.visible_exchanges).to(include(ex_in, ex_out))
         end
       end
 
@@ -477,7 +477,7 @@ receiver: coordinator,
         end
 
         before do
-          allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
+          allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: [hub]) })
         end
 
         context "where my hub is in the order cycle" do
@@ -486,7 +486,7 @@ receiver: coordinator,
           end
 
           it "returns my hub's outgoing exchange" do
-            expect(permissions.visible_exchanges).to eq([ex_out])
+            expect(permissions.visible_exchanges).to(eq([ex_out]))
           end
 
           context "where my hub has been granted P-OC by an incoming producer" do
@@ -500,20 +500,20 @@ child: hub,
             end
 
             it "returns the producer's incoming exchange" do
-              expect(permissions.visible_exchanges).to include ex_in
+              expect(permissions.visible_exchanges).to(include(ex_in))
             end
           end
 
           context "where my hub has not been granted P-OC by an incoming producer" do
             it "returns the producers's incoming exchange, and my own outhoing exchange" do
-              expect(permissions.visible_exchanges).not_to include ex_in
+              expect(permissions.visible_exchanges).not_to(include(ex_in))
             end
           end
         end
 
         context "where my hub isn't in the order cycle" do
           it "does not return the producer's incoming exchanges" do
-            expect(permissions.visible_exchanges).to eq([])
+            expect(permissions.visible_exchanges).to(eq([]))
           end
         end
 
@@ -528,7 +528,7 @@ child: hub,
             before { ex_out.variants << variant }
 
             it "returns incoming exchanges supplying the variants in my outgoing exchange" do
-              expect(permissions.visible_exchanges).to include ex_out
+              expect(permissions.visible_exchanges).to(include(ex_out))
             end
           end
         end
@@ -540,7 +540,7 @@ child: hub,
         end
 
         before do
-          allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [producer]) }
+          allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: [producer]) })
         end
 
         context "where my producer supplies to the order cycle" do
@@ -555,7 +555,7 @@ receiver: coordinator,
           end
 
           it "returns my producer's incoming exchange" do
-            expect(permissions.visible_exchanges).to eq([ex_in])
+            expect(permissions.visible_exchanges).to(eq([ex_in]))
           end
 
           context "my producer has granted P-OC to an outgoing hub" do
@@ -569,20 +569,20 @@ child: hub,
             end
 
             it "returns the hub's outgoing exchange" do
-              expect(permissions.visible_exchanges).to include ex_out
+              expect(permissions.visible_exchanges).to(include(ex_out))
             end
           end
 
           context "my producer has not granted P-OC to an outgoing hub" do
             it "does not return the hub's outgoing exchange" do
-              expect(permissions.visible_exchanges).not_to include ex_out
+              expect(permissions.visible_exchanges).not_to(include(ex_out))
             end
           end
         end
 
         context "where my producer doesn't supply the order cycle" do
           it "does not return the hub's outgoing exchanges" do
-            expect(permissions.visible_exchanges).to eq([])
+            expect(permissions.visible_exchanges).to(eq([]))
           end
         end
 
@@ -605,13 +605,13 @@ receiver: coordinator,
               end
 
               it "returns the outgoing exchange" do
-                expect(permissions.visible_exchanges).to include ex_out
+                expect(permissions.visible_exchanges).to(include(ex_out))
               end
             end
 
             context "where my producer doesn't supply to the order cycle" do
               it "does not return the outgoing exchange" do
-                expect(permissions.visible_exchanges).not_to include ex_out
+                expect(permissions.visible_exchanges).not_to(include(ex_out))
               end
             end
           end
@@ -628,35 +628,35 @@ receiver: coordinator,
       describe "incoming exchanges" do
         context "as a manager of the coordinator" do
           before do
-            allow(permissions).to receive(:managed_enterprises) {
+            allow(permissions).to(receive(:managed_enterprises) {
                                     Enterprise.where(id: [coordinator])
-                                  }
+                                  })
           end
 
           it "returns all variants belonging to the sending producer" do
             visible = permissions.visible_variants_for_incoming_exchanges_from(producer1)
-            expect(visible).to include v1
-            expect(visible).to_not include v2
+            expect(visible).to(include(v1))
+            expect(visible).to_not(include(v2))
           end
         end
 
         context "as a manager of the producer" do
           before do
-            allow(permissions).to receive(:managed_enterprises) {
+            allow(permissions).to(receive(:managed_enterprises) {
                                     Enterprise.where(id: [producer1])
-                                  }
+                                  })
           end
 
           it "returns all variants belonging to the sending producer" do
             visible = permissions.visible_variants_for_incoming_exchanges_from(producer1)
-            expect(visible).to include v1
-            expect(visible).to_not include v2
+            expect(visible).to(include(v1))
+            expect(visible).to_not(include(v2))
           end
         end
 
         context "as a manager of a hub which has been granted P-OC by the producer" do
           before do
-            allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
+            allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: [hub]) })
             create(
 :enterprise_relationship,
 parent: producer1,
@@ -678,8 +678,8 @@ receiver: hub,
 
             it "returns variants produced by that producer only" do
               visible = permissions.visible_variants_for_incoming_exchanges_from(producer1)
-              expect(visible).to include v1
-              expect(visible).to_not include v2
+              expect(visible).to(include(v1))
+              expect(visible).to_not(include(v2))
             end
           end
 
@@ -688,7 +688,7 @@ receiver: hub,
 
             it "does not return variants produced by that producer" do
               visible = permissions.visible_variants_for_incoming_exchanges_from(producer1)
-              expect(visible).to_not include v1, v2
+              expect(visible).to_not(include(v1, v2))
             end
           end
         end
@@ -697,9 +697,9 @@ receiver: hub,
       describe "outgoing exchanges" do
         context "as a manager of the coordinator" do
           before do
-            allow(permissions).to receive(:managed_enterprises) {
+            allow(permissions).to(receive(:managed_enterprises) {
                                     Enterprise.where(id: [coordinator])
-                                  }
+                                  })
             create(
 :enterprise_relationship,
 parent: producer1,
@@ -710,8 +710,8 @@ child: hub,
 
           it "returns all variants of any producer which has granted the outgoing hub P-OC" do
             visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
-            expect(visible).to include v1
-            expect(visible).to_not include v2
+            expect(visible).to(include(v1))
+            expect(visible).to_not(include(v2))
           end
 
           context "where the coordinator produces products" do
@@ -719,14 +719,14 @@ child: hub,
 
             it "returns any variants produced by the coordinator itself for exchanges with 'self'" do
               visible = permissions.visible_variants_for_outgoing_exchanges_to(coordinator)
-              expect(visible).to include v3
-              expect(visible).to_not include v1, v2
+              expect(visible).to(include(v3))
+              expect(visible).to_not(include(v1, v2))
             end
 
             it "does not return coordinator's variants for exchanges with other hubs, when permission has not been granted" do
               visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to include v1
-              expect(visible).to_not include v2, v3
+              expect(visible).to(include(v1))
+              expect(visible).to_not(include(v2, v3))
             end
           end
 
@@ -747,14 +747,14 @@ receiver: hub,
 
             it "returns those variants that are in the exchange" do
               visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to include v1, v2
+              expect(visible).to(include(v1, v2))
             end
           end
         end
 
         context "as manager of an outgoing hub" do
           before do
-            allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
+            allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: [hub]) })
             create(
 :enterprise_relationship,
 parent: producer1,
@@ -765,8 +765,8 @@ child: hub,
 
           it "returns all variants of any producer which has granted the outgoing hub P-OC" do
             visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
-            expect(visible).to include v1
-            expect(visible).to_not include v2
+            expect(visible).to(include(v1))
+            expect(visible).to_not(include(v2))
           end
 
           context "where the hub produces products" do
@@ -775,7 +775,7 @@ child: hub,
 
             it "returns any variants produced by the hub" do
               visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to include v3
+              expect(visible).to(include(v3))
             end
           end
 
@@ -796,16 +796,16 @@ receiver: hub,
 
             it "returns those variants that are in the exchange" do
               visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to include v1, v2
+              expect(visible).to(include(v1, v2))
             end
           end
         end
 
         context "as the manager of a producer which has granted P-OC to an outgoing hub" do
           before do
-            allow(permissions).to receive(:managed_enterprises) {
+            allow(permissions).to(receive(:managed_enterprises) {
                                     Enterprise.where(id: [producer1])
-                                  }
+                                  })
             create(
 :enterprise_relationship,
 parent: producer1,
@@ -827,8 +827,8 @@ receiver: coordinator,
 
             it "returns all of my produced variants" do
               visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to include v1
-              expect(visible).to_not include v2
+              expect(visible).to(include(v1))
+              expect(visible).to_not(include(v2))
             end
           end
 
@@ -837,16 +837,16 @@ receiver: coordinator,
 
             it "does not return my variants" do
               visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to_not include v1, v2
+              expect(visible).to_not(include(v1, v2))
             end
           end
         end
 
         context "as the manager of a producer which has not granted P-OC to an outgoing hub" do
           before do
-            allow(permissions).to receive(:managed_enterprises) {
+            allow(permissions).to(receive(:managed_enterprises) {
                                     Enterprise.where(id: [producer2])
-                                  }
+                                  })
             create(
 :enterprise_relationship,
 parent: producer1,
@@ -856,7 +856,7 @@ child: hub,
           end
 
           it "returns an empty array" do
-            expect(permissions.visible_variants_for_outgoing_exchanges_to(hub)).to eq []
+            expect(permissions.visible_variants_for_outgoing_exchanges_to(hub)).to(eq([]))
           end
 
           # TODO: for backwards compatability, remove later
@@ -877,8 +877,8 @@ receiver: hub,
 
             it "returns those variants that are in the exchange" do
               visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to_not include v1, v3
-              expect(visible).to include v2
+              expect(visible).to_not(include(v1, v3))
+              expect(visible).to(include(v2))
             end
           end
         end
@@ -894,35 +894,35 @@ receiver: hub,
       describe "incoming exchanges" do
         context "as a manager of the coordinator" do
           before do
-            allow(permissions).to receive(:managed_enterprises) {
+            allow(permissions).to(receive(:managed_enterprises) {
                                     Enterprise.where(id: [coordinator])
-                                  }
+                                  })
           end
 
           it "returns all variants belonging to the sending producer" do
             visible = permissions.editable_variants_for_incoming_exchanges_from(producer1)
-            expect(visible).to include v1
-            expect(visible).to_not include v2
+            expect(visible).to(include(v1))
+            expect(visible).to_not(include(v2))
           end
         end
 
         context "as a manager of the producer" do
           before do
-            allow(permissions).to receive(:managed_enterprises) {
+            allow(permissions).to(receive(:managed_enterprises) {
                                     Enterprise.where(id: [producer1])
-                                  }
+                                  })
           end
 
           it "returns all variants belonging to the sending producer" do
             visible = permissions.editable_variants_for_incoming_exchanges_from(producer1)
-            expect(visible).to include v1
-            expect(visible).to_not include v2
+            expect(visible).to(include(v1))
+            expect(visible).to_not(include(v2))
           end
         end
 
         context "as a manager of a hub which has been granted P-OC by the producer" do
           before do
-            allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
+            allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: [hub]) })
             create(
 :enterprise_relationship,
 parent: producer1,
@@ -933,7 +933,7 @@ child: hub,
 
           it "does not return variants produced by that producer" do
             visible = permissions.editable_variants_for_incoming_exchanges_from(producer1)
-            expect(visible).to_not include v1, v2
+            expect(visible).to_not(include(v1, v2))
           end
         end
       end
@@ -941,9 +941,9 @@ child: hub,
       describe "outgoing exchanges" do
         context "as a manager of the coordinator" do
           before do
-            allow(permissions).to receive(:managed_enterprises) {
+            allow(permissions).to(receive(:managed_enterprises) {
                                     Enterprise.where(id: [coordinator])
-                                  }
+                                  })
             create(
 :enterprise_relationship,
 parent: producer1,
@@ -954,8 +954,8 @@ child: hub,
 
           it "returns all variants of any producer which has granted the outgoing hub P-OC" do
             visible = permissions.editable_variants_for_outgoing_exchanges_to(hub)
-            expect(visible).to include v1
-            expect(visible).to_not include v2
+            expect(visible).to(include(v1))
+            expect(visible).to_not(include(v2))
           end
 
           context "where the coordinator produces products" do
@@ -963,14 +963,14 @@ child: hub,
 
             it "returns any variants produced by the coordinator itself for exchanges with 'self'" do
               visible = permissions.editable_variants_for_outgoing_exchanges_to(coordinator)
-              expect(visible).to include v3
-              expect(visible).to_not include v1, v2
+              expect(visible).to(include(v3))
+              expect(visible).to_not(include(v1, v2))
             end
 
             it "does not return coordinator's variants for exchanges with other hubs, when permission has not been granted" do
               visible = permissions.editable_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to include v1
-              expect(visible).to_not include v2, v3
+              expect(visible).to(include(v1))
+              expect(visible).to_not(include(v2, v3))
             end
           end
 
@@ -991,14 +991,14 @@ receiver: hub,
 
             it "returns those variants that are in the exchange" do
               visible = permissions.editable_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to include v1, v2
+              expect(visible).to(include(v1, v2))
             end
           end
         end
 
         context "as manager of an outgoing hub" do
           before do
-            allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
+            allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: [hub]) })
             create(
 :enterprise_relationship,
 parent: producer1,
@@ -1009,8 +1009,8 @@ child: hub,
 
           it "returns all variants of any producer which has granted the outgoing hub P-OC" do
             visible = permissions.editable_variants_for_outgoing_exchanges_to(hub)
-            expect(visible).to include v1
-            expect(visible).to_not include v2
+            expect(visible).to(include(v1))
+            expect(visible).to_not(include(v2))
           end
 
           context "where the hub produces products" do
@@ -1019,7 +1019,7 @@ child: hub,
 
             it "returns any variants produced by the hub" do
               visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to include v3
+              expect(visible).to(include(v3))
             end
           end
 
@@ -1040,16 +1040,16 @@ receiver: hub,
 
             it "returns those variants that are in the exchange" do
               visible = permissions.editable_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to include v1, v2
+              expect(visible).to(include(v1, v2))
             end
           end
         end
 
         context "as the manager of a producer which has granted P-OC to an outgoing hub" do
           before do
-            allow(permissions).to receive(:managed_enterprises) {
+            allow(permissions).to(receive(:managed_enterprises) {
                                     Enterprise.where(id: [producer1])
-                                  }
+                                  })
             create(
 :enterprise_relationship,
 parent: producer1,
@@ -1081,8 +1081,8 @@ child: producer1,
 
               it "returns all of my produced variants" do
                 visible = permissions.editable_variants_for_outgoing_exchanges_to(hub)
-                expect(visible).to include v1
-                expect(visible).to_not include v2
+                expect(visible).to(include(v1))
+                expect(visible).to_not(include(v2))
               end
             end
 
@@ -1091,7 +1091,7 @@ child: producer1,
 
               it "does not return my variants" do
                 visible = permissions.editable_variants_for_outgoing_exchanges_to(hub)
-                expect(visible).to_not include v1, v2
+                expect(visible).to_not(include(v1, v2))
               end
             end
           end
@@ -1101,16 +1101,16 @@ child: producer1,
 
             it "does not return my variants" do
               visible = permissions.editable_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to_not include v1, v2
+              expect(visible).to_not(include(v1, v2))
             end
           end
         end
 
         context "as the manager of a producer which has not granted P-OC to an outgoing hub" do
           before do
-            allow(permissions).to receive(:managed_enterprises) {
+            allow(permissions).to(receive(:managed_enterprises) {
                                     Enterprise.where(id: [producer2])
-                                  }
+                                  })
             create(
 :enterprise_relationship,
 parent: producer1,
@@ -1120,7 +1120,7 @@ child: hub,
           end
 
           it "returns an empty array" do
-            expect(permissions.editable_variants_for_outgoing_exchanges_to(hub)).to eq []
+            expect(permissions.editable_variants_for_outgoing_exchanges_to(hub)).to(eq([]))
           end
 
           # TODO: for backwards compatability, remove later
@@ -1141,7 +1141,7 @@ receiver: hub,
 
             it "does not return my variants" do
               visible = permissions.editable_variants_for_outgoing_exchanges_to(hub)
-              expect(visible).to_not include v1, v2, v3
+              expect(visible).to_not(include(v1, v2, v3))
             end
           end
         end

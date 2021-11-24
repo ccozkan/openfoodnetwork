@@ -11,11 +11,11 @@ module Admin
 json: {
       success: lambda {
         tag_rule_mapping = TagRule.mapping_for(Enterprise.where(id: @customer.enterprise))
-        render_as_json @customer, tag_rule_mapping: tag_rule_mapping
+        render_as_json(@customer, tag_rule_mapping: tag_rule_mapping)
       },
       failure: lambda {
-                 render json: { errors: @customer.errors.full_messages },
-                        status: :unprocessable_entity
+                 render(json: { errors: @customer.errors.full_messages },
+                        status: :unprocessable_entity)
                }
     }
 }
@@ -24,16 +24,16 @@ json: {
       respond_to do |format|
         format.html
         format.json do
-          render json: @collection,
+          render(json: @collection,
                  each_serializer: ::Api::Admin::CustomerWithBalanceSerializer,
                  tag_rule_mapping: tag_rule_mapping,
-                 customer_tags: customer_tags_by_id
+                 customer_tags: customer_tags_by_id)
         end
       end
     end
 
     def show
-      render_as_json @customer, ams_prefix: params[:ams_prefix]
+      render_as_json(@customer, ams_prefix: params[:ams_prefix])
     end
 
     def create
@@ -41,12 +41,12 @@ json: {
       if user_can_create_customer?
         if @customer.save
           tag_rule_mapping = TagRule.mapping_for(Enterprise.where(id: @customer.enterprise))
-          render_as_json @customer, tag_rule_mapping: tag_rule_mapping
+          render_as_json(@customer, tag_rule_mapping: tag_rule_mapping)
         else
-          render json: { errors: @customer.errors.full_messages }, status: :bad_request
+          render(json: { errors: @customer.errors.full_messages }, status: :bad_request)
         end
       else
-        redirect_to '/unauthorized'
+        redirect_to('/unauthorized')
       end
     end
 
@@ -54,13 +54,13 @@ json: {
     def destroy
       if @object.destroy
         respond_with(@object) do |format|
-          format.html { redirect_to location_after_destroy }
-          format.js   { render partial: "spree/admin/shared/destroy" }
+          format.html { redirect_to(location_after_destroy) }
+          format.js   { render(partial: "spree/admin/shared/destroy") }
         end
       else
         respond_with(@object) do |format|
-          format.html { redirect_to location_after_destroy }
-          format.json { render json: { errors: @object.errors.full_messages }, status: :conflict }
+          format.html { redirect_to(location_after_destroy) }
+          format.json { render(json: { errors: @object.errors.full_messages }, status: :conflict) }
         end
       end
     end

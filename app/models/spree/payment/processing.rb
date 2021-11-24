@@ -202,13 +202,13 @@ shipping_address: order.ship_address.try(:active_merchant_hash)
       def validate!
         return false unless payment_method&.source_required?
 
-        raise Core::GatewayError, Spree.t(:payment_processing_failed) unless source
+        raise(Core::GatewayError, Spree.t(:payment_processing_failed)) unless source
 
         return false if processing?
 
         unless payment_method.supports?(source)
           invalidate!
-          raise Core::GatewayError, Spree.t(:payment_method_not_supported)
+          raise(Core::GatewayError, Spree.t(:payment_method_not_supported))
         end
         true
       end
@@ -270,16 +270,16 @@ shipping_address: order.ship_address.try(:active_merchant_hash)
 
       def gateway_error(error)
         text =
- if error.is_a? ActiveMerchant::Billing::Response
+ if error.is_a?(ActiveMerchant::Billing::Response)
                  error_text(error)
-               elsif error.is_a? ActiveMerchant::ConnectionError
+               elsif error.is_a?(ActiveMerchant::ConnectionError)
                  Spree.t(:unable_to_connect_to_gateway)
                else
                  error.to_s
                end
         logger.error(Spree.t(:gateway_error))
         logger.error("  #{error.to_yaml}")
-        raise Core::GatewayError, text
+        raise(Core::GatewayError, text)
       end
 
       def error_text(error)
@@ -296,7 +296,7 @@ shipping_address: order.ship_address.try(:active_merchant_hash)
         return if payment_method.environment == Rails.env
 
         message = Spree.t(:gateway_config_unavailable) + " - #{Rails.env}"
-        raise Core::GatewayError, message
+        raise(Core::GatewayError, message)
       end
 
       # The unique identifier to be passed in to the payment gateway

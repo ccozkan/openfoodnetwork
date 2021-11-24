@@ -21,7 +21,7 @@ describe "spree/admin/orders/edit.html.haml" do
       end
     end
 
-    allow(view).to receive_messages spree_current_user: create(:user)
+    allow(view).to(receive_messages(spree_current_user: create(:user)))
 
     order = create(:completed_order_with_fees)
     order.distributor = create(:distributor_enterprise)
@@ -34,9 +34,9 @@ describe "spree/admin/orders/edit.html.haml" do
     it "displays order shipping costs, transaction fee and order total" do
       render
 
-      expect(rendered).to have_content("Shipping Method\nUPS Ground $6.00")
-      expect(rendered).to have_content("Transaction fee:\n\n$10.00")
-      expect(rendered).to have_content("Order Total\n$36.00")
+      expect(rendered).to(have_content("Shipping Method\nUPS Ground $6.00"))
+      expect(rendered).to(have_content("Transaction fee:\n\n$10.00"))
+      expect(rendered).to(have_content("Order Total\n$36.00"))
     end
   end
 end

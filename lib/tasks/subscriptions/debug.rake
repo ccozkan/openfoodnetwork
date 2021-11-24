@@ -57,7 +57,7 @@ source_id: payment.id
       end
 
       def request_order_cycle_id
-        puts "Please input Order Cycle ID to debug"
+        puts("Please input Order Cycle ID to debug")
         input = STDIN.gets.chomp
         exit if input.blank? || !Integer(input)
         Integer(input)

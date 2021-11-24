@@ -22,7 +22,7 @@ only: [
       def index
         respond_with(@collection) do |format|
           format.html
-          format.json { render json: json_data }
+          format.json { render(json: json_data) }
         end
       end
 
@@ -35,9 +35,9 @@ only: [
           @user.spree_roles = roles.reject(&:blank?).collect { |r| Spree::Role.find(r) } if roles
 
           flash.now[:success] = Spree.t(:created_successfully)
-          render :edit
+          render(:edit)
         else
-          render :new
+          render(:new)
         end
       end
 
@@ -55,17 +55,17 @@ only: [
                     end
           flash.now[:success] = message
         end
-        render :edit
+        render(:edit)
       end
 
       def generate_api_key
         flash[:success] = t('spree.api.key_generated') if @user.generate_spree_api_key!
-        redirect_to spree.edit_admin_user_path(@user)
+        redirect_to(spree.edit_admin_user_path(@user))
       end
 
       def clear_api_key
         flash[:success] = t('spree.api.key_cleared') if @user.clear_spree_api_key!
-        redirect_to spree.edit_admin_user_path(@user)
+        redirect_to(spree.edit_admin_user_path(@user))
       end
 
       protected
@@ -98,7 +98,7 @@ only: [
 
       # handling raise from Admin::ResourceController#destroy
       def user_destroy_with_orders_error
-        render status: :forbidden, text: Spree.t(:error_user_destroy_with_orders)
+        render(status: :forbidden, text: Spree.t(:error_user_destroy_with_orders))
       end
 
       # Allow different formats of json data to suit different ajax calls

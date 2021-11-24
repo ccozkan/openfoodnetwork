@@ -117,7 +117,7 @@ module Sets
         variant.on_hand = on_hand.to_i if on_hand.present?
       rescue StandardError => e
         notify_bugsnag(e, product, variant, variant_attributes)
-        raise e
+        raise(e)
       end
     end
 

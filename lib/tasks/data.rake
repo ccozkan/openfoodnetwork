@@ -88,11 +88,11 @@ child_id: exchange.receiver_id
 
     def request_months
       # Ask how many months back we want to search for
-      puts "This task will search order cycle edited within (n) months of today's date.\nPlease enter a value for (n), or hit ENTER to use the default of three (3) months."
+      puts("This task will search order cycle edited within (n) months of today's date.\nPlease enter a value for (n), or hit ENTER to use the default of three (3) months.")
       input = check_default(STDIN.gets.chomp)
 
       while !is_integer?(input)
-        puts "'#{input}' is not an integer. Please enter an integer."
+        puts("'#{input}' is not an integer. Please enter an integer.")
         input = check_default(STDIN.gets.chomp)
       end
 
@@ -101,7 +101,7 @@ child_id: exchange.receiver_id
 
     def check_default(input)
       if input.blank?
-        puts "Using default value of three (3) months."
+        puts("Using default value of three (3) months.")
         3
       else
         input

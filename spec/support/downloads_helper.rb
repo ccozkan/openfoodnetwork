@@ -31,7 +31,7 @@ module DownloadsHelper
 
   def wait_for_download
     Timeout.timeout(TIMEOUT) do
-      sleep 0.1 until downloaded?
+      sleep(0.1) until downloaded?
     end
   end
 

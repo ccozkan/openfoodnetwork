@@ -15,7 +15,7 @@ unless ENV['DISABLE_KNAPSACK']
   Knapsack::Adapters::RSpecAdapter.bind
 end
 
-Capybara.register_driver :chrome do |app|
+Capybara.register_driver(:chrome) do |app|
   options = Selenium::WebDriver::Chrome::Options.new(
     args: %w[headless disable-gpu no-sandbox window-size=1280,768]
   )
@@ -33,7 +33,7 @@ Capybara.disable_animation = true
 RSpec.configure do |config|
   # DatabaseCleaner
   config.before(:suite) do
-    DatabaseCleaner.clean_with :deletion, except: ['spree_countries', 'spree_states']
+    DatabaseCleaner.clean_with(:deletion, except: ['spree_countries', 'spree_states'])
   end
   config.before(:each)           { DatabaseCleaner.strategy = :transaction }
   config.before(:each, js: true) do
@@ -58,7 +58,7 @@ RSpec.configure do |config|
 
   # Precompile Webpacker assets (once) when starting the suite. The default setup can result
   # in the assets getting compiled many times throughout the build, slowing it down.
-  config.before :suite do
+  config.before(:suite) do
     Webpacker.compile
   end
 
@@ -71,11 +71,11 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   # Helpers
-  config.include ViewComponent::TestHelpers, type: :component
-  config.include ControllerRequestsHelper, type: :controller
-  config.include Devise::Test::ControllerHelpers, type: :controller
-  config.include OpenFoodNetwork::ApiHelper, type: :controller
-  config.include OpenFoodNetwork::ControllerHelper, type: :controller
-  config.include Features::DatepickerHelper, type: :feature
-  config.include DownloadsHelper, type: :feature
+  config.include(ViewComponent::TestHelpers, type: :component)
+  config.include(ControllerRequestsHelper, type: :controller)
+  config.include(Devise::Test::ControllerHelpers, type: :controller)
+  config.include(OpenFoodNetwork::ApiHelper, type: :controller)
+  config.include(OpenFoodNetwork::ControllerHelper, type: :controller)
+  config.include(Features::DatepickerHelper, type: :feature)
+  config.include(DownloadsHelper, type: :feature)
 end

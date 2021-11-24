@@ -57,7 +57,7 @@ module ProductImport
       units = @attrs['units'].to_f
       unit_type = @attrs['unit_type'].to_s.downcase
 
-      return unless valid_unit_type? unit_type
+      return unless valid_unit_type?(unit_type)
 
       @attrs['variant_unit'] = unit_scales[unit_type][:unit]
       @attrs['variant_unit_scale'] = unit_scales[unit_type][:scale]
@@ -81,7 +81,7 @@ module ProductImport
     end
 
     def valid_unit_type?(unit_type)
-      unit_scales.key? unit_type
+      unit_scales.key?(unit_type)
     end
   end
 end

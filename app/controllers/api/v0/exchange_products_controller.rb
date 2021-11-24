@@ -33,7 +33,7 @@ module Api
       private
 
       def render_variant_count
-        render plain: { count: variants.count }.to_json
+        render(plain: { count: variants.count }.to_json)
       end
 
       def variants
@@ -60,12 +60,12 @@ module Api
         @enterprise = Enterprise.find_by(id: exchange_params[:enterprise_id])
 
         # This will be a string (eg "true") when it arrives via params, but we want a boolean
-        @incoming = ActiveModel::Type::Boolean.new.cast exchange_params[:incoming]
+        @incoming = ActiveModel::Type::Boolean.new.cast(exchange_params[:incoming])
 
         if exchange_params[:order_cycle_id]
           @order_cycle = OrderCycle.find_by(id: exchange_params[:order_cycle_id])
         elsif !@incoming
-          raise "order_cycle_id is required to list products for new outgoing exchange"
+          raise("order_cycle_id is required to list products for new outgoing exchange")
         end
       end
 
@@ -82,7 +82,7 @@ module Api
           order_cycle: @order_cycle
         )
 
-        render json: { products: serialized_products, pagination: pagination_data }
+        render(json: { products: serialized_products, pagination: pagination_data })
       end
 
       def exchange_params

@@ -7,10 +7,10 @@ module OpenFoodNetwork
   describe OrderAndDistributorReport do
     describe 'orders and distributors report' do
       it 'should return a header row describing the report' do
-        subject = OrderAndDistributorReport.new nil
+        subject = OrderAndDistributorReport.new(nil)
 
         header = subject.header
-        expect(header).to eq(
+        expect(header).to(eq(
           [
             'Order date',
 'Order Id',
@@ -33,7 +33,7 @@ module OpenFoodNetwork
             'Shipping Method',
 'Shipping instructions'
           ]
-        )
+        ))
       end
 
       context 'with completed order' do
@@ -63,12 +63,12 @@ bill_address: bill_address,
         end
 
         it 'should denormalise order and distributor details for display as csv' do
-          subject = OrderAndDistributorReport.new create(:admin_user), {}, true
+          subject = OrderAndDistributorReport.new(create(:admin_user), {}, true)
 
           table = subject.table
 
-          expect(table.size).to eq 1
-          expect(table[0]).to eq(
+          expect(table.size).to(eq(1))
+          expect(table[0]).to(eq(
 [
                                    order.reload.completed_at.strftime("%F %T"),
                                    order.id,
@@ -91,7 +91,7 @@ bill_address: bill_address,
                                    shipping_method.name,
                                    shipping_instructions
                                  ]
-)
+))
         end
 
         it "prints one row per line item" do
@@ -100,7 +100,7 @@ bill_address: bill_address,
           subject = OrderAndDistributorReport.new(create(:admin_user), {}, true)
 
           table = subject.table
-          expect(table.size).to eq 2
+          expect(table.size).to(eq(2))
         end
       end
     end

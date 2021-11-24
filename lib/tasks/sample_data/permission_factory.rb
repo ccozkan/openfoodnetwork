@@ -14,7 +14,7 @@ module SampleData
         :create_variant_overrides
       ]
       enterprises.each do |enterprise|
-        log "#{enterprise.name} permits everybody to do everything."
+        log("#{enterprise.name} permits everybody to do everything.")
         enterprise_permits_to(enterprise, enterprises, all_permissions)
       end
     end

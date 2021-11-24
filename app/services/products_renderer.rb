@@ -16,7 +16,7 @@ class ProductsRenderer
   end
 
   def products_json
-    raise NoProducts unless order_cycle && distributor && products
+    raise(NoProducts) unless order_cycle && distributor && products
 
     ActiveModel::ArraySerializer.new(
 products,
@@ -49,7 +49,7 @@ products,
   end
 
   def enterprise_fee_calculator
-    OpenFoodNetwork::EnterpriseFeeCalculator.new distributor, order_cycle
+    OpenFoodNetwork::EnterpriseFeeCalculator.new(distributor, order_cycle)
   end
 
   def filter_and_paginate(query)
@@ -97,7 +97,7 @@ products,
   end
 
   def variants_for_shop_by_id
-    index_by_product_id variants_for_shop.reject(&:is_master)
+    index_by_product_id(variants_for_shop.reject(&:is_master))
   end
 
   def index_by_product_id(variants)

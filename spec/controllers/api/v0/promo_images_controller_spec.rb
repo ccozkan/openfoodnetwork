@@ -23,7 +23,7 @@ module Api
       let(:enterprise) { create(:enterprise, owner: enterprise_owner, promo_image: image) }
 
       before do
-        allow(controller).to receive(:spree_current_user) { current_user }
+        allow(controller).to(receive(:spree_current_user) { current_user })
       end
 
       context "as manager" do
@@ -32,10 +32,10 @@ module Api
         it "removes promo image" do
           spree_delete :destroy, enterprise_id: enterprise
 
-          expect(response.status).to eq 200
-          expect(json_response["id"]).to eq enterprise.id
+          expect(response.status).to(eq(200))
+          expect(json_response["id"]).to(eq(enterprise.id))
           enterprise.reload
-          expect(enterprise.promo_image?).to be false
+          expect(enterprise.promo_image?).to(be(false))
         end
 
         context "when promo image does not exist" do
@@ -44,8 +44,8 @@ module Api
           it "responds with error" do
             spree_delete :destroy, enterprise_id: enterprise
 
-            expect(response.status).to eq(409)
-            expect(json_response["error"]).to eq I18n.t("api.enterprise_promo_image.destroy_attachment_does_not_exist")
+            expect(response.status).to(eq(409))
+            expect(json_response["error"]).to(eq(I18n.t("api.enterprise_promo_image.destroy_attachment_does_not_exist")))
           end
         end
       end
@@ -55,7 +55,7 @@ module Api
 
         it "allows removal of promo image" do
           spree_delete :destroy, enterprise_id: enterprise
-          expect(response.status).to eq 200
+          expect(response.status).to(eq(200))
         end
       end
 
@@ -64,7 +64,7 @@ module Api
 
         it "allows removal of promo image" do
           spree_delete :destroy, enterprise_id: enterprise
-          expect(response.status).to eq 200
+          expect(response.status).to(eq(200))
         end
       end
 
@@ -73,9 +73,9 @@ module Api
 
         it "does not allow removal of promo image" do
           spree_delete :destroy, enterprise_id: enterprise
-          expect(response.status).to eq(401)
+          expect(response.status).to(eq(401))
           enterprise.reload
-          expect(enterprise.promo_image?).to be true
+          expect(enterprise.promo_image?).to(be(true))
         end
       end
 
@@ -84,9 +84,9 @@ module Api
 
         it "does not allow removal of promo image" do
           spree_delete :destroy, enterprise_id: enterprise
-          expect(response.status).to eq(401)
+          expect(response.status).to(eq(401))
           enterprise.reload
-          expect(enterprise.promo_image?).to be true
+          expect(enterprise.promo_image?).to(be(true))
         end
       end
     end

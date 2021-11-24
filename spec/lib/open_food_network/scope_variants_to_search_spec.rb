@@ -28,8 +28,8 @@ describe OpenFoodNetwork::ScopeVariantsForSearch do
       let(:params) { { q: "product 1" } }
 
       it "returns all products whose names or SKUs match the query" do
-        expect(result).to include v1, v2
-        expect(result).to_not include v3, v4
+        expect(result).to(include(v1, v2))
+        expect(result).to_not(include(v3, v4))
       end
     end
 
@@ -38,8 +38,8 @@ describe OpenFoodNetwork::ScopeVariantsForSearch do
 
       it "returns all products distributed through that schedule" do
         lala = result
-        expect(lala).to include v1, v3
-        expect(result).to_not include v2, v4
+        expect(lala).to(include(v1, v3))
+        expect(result).to_not(include(v2, v4))
       end
     end
 
@@ -47,8 +47,8 @@ describe OpenFoodNetwork::ScopeVariantsForSearch do
       let(:params) { { q: "product", order_cycle_id: oc2.id } }
 
       it "returns all products distributed through that order cycle" do
-        expect(result).to include v2
-        expect(result).to_not include v1, v3, v4
+        expect(result).to(include(v2))
+        expect(result).to_not(include(v1, v3, v4))
       end
     end
 
@@ -56,8 +56,8 @@ describe OpenFoodNetwork::ScopeVariantsForSearch do
       let(:params) { { q: "product", distributor_id: d2.id } }
 
       it "returns all products distributed through that distributor" do
-        expect(result).to include v4
-        expect(result).to_not include v1, v2, v3
+        expect(result).to(include(v4))
+        expect(result).to_not(include(v1, v2, v3))
       end
     end
   end

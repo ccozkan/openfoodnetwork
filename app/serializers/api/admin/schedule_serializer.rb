@@ -8,7 +8,7 @@ module Api
       has_many :order_cycles, serializer: Api::Admin::IdNameSerializer
 
       def viewing_as_coordinator
-        options[:editable_schedule_ids].include? object.id
+        options[:editable_schedule_ids].include?(object.id)
       end
     end
   end

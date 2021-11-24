@@ -32,7 +32,7 @@ module OrderManagement
       end
 
       def render_report_form
-        render action: :new
+        render(action: :new)
       end
 
       def report_klass
@@ -54,7 +54,7 @@ module OrderManagement
         when nil, "", "html"
           report_klass::Renderers::HtmlRenderer
         else
-          raise Reports::UnsupportedReportFormatException
+          raise(Reports::UnsupportedReportFormatException)
         end
       end
 

@@ -28,7 +28,7 @@ bill_address: create(:address)
       Spree::Config[:mails_from] = "no-reply@foobar.com"
       message.deliver_now
       @email = ActionMailer::Base.deliveries.first
-      expect(@email.from).to eq ["no-reply@foobar.com"]
+      expect(@email.from).to(eq(["no-reply@foobar.com"]))
     end
 
     it "should use the provided from address" do
@@ -37,38 +37,38 @@ bill_address: create(:address)
       message.to = "test@test.com"
       message.deliver_now
       email = ActionMailer::Base.deliveries.first
-      expect(email.from).to eq ["override@foobar.com"]
-      expect(email.to).to eq ["test@test.com"]
+      expect(email.from).to(eq(["override@foobar.com"]))
+      expect(email.to).to(eq(["test@test.com"]))
     end
 
     it "should add the bcc email when provided" do
       Spree::Config[:mail_bcc] = "bcc-foo@foobar.com"
       message.deliver_now
       @email = ActionMailer::Base.deliveries.first
-      expect(@email.bcc).to eq ["bcc-foo@foobar.com"]
+      expect(@email.bcc).to(eq(["bcc-foo@foobar.com"]))
     end
 
     context "when intercept_email is provided" do
       it "should strip the bcc recipients" do
-        expect(message.bcc).to be_blank
+        expect(message.bcc).to(be_blank)
       end
 
       it "should strip the cc recipients" do
-        expect(message.cc).to be_blank
+        expect(message.cc).to(be_blank)
       end
 
       it "should replace the receipient with the specified address" do
         Spree::Config[:intercept_email] = "intercept@foobar.com"
         message.deliver_now
         @email = ActionMailer::Base.deliveries.first
-        expect(@email.to).to eq ["intercept@foobar.com"]
+        expect(@email.to).to(eq(["intercept@foobar.com"]))
       end
 
       it "should modify the subject to include the original email" do
         Spree::Config[:intercept_email] = "intercept@foobar.com"
         message.deliver_now
         @email = ActionMailer::Base.deliveries.first
-        expect(@email.subject).to include order.distributor.contact.email
+        expect(@email.subject).to(include(order.distributor.contact.email))
       end
     end
 
@@ -77,7 +77,7 @@ bill_address: create(:address)
         Spree::Config[:intercept_email] = ""
         message.deliver_now
         @email = ActionMailer::Base.deliveries.first
-        expect(@email.to).to eq [order.distributor.contact.email]
+        expect(@email.to).to(eq([order.distributor.contact.email]))
       end
     end
   end

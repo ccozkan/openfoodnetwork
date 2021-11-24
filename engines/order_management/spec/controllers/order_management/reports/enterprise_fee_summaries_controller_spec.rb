@@ -10,15 +10,15 @@ describe OrderManagement::Reports::EnterpriseFeeSummariesController, type: :cont
   let(:current_user) { distributor.owner }
 
   before do
-    allow(controller).to receive(:spree_current_user) { current_user }
+    allow(controller).to(receive(:spree_current_user) { current_user })
   end
 
   describe "#new" do
     it "renders the report form" do
       get :new
 
-      expect(response.status).to eq 200
-      expect(response).to render_template(new_template_path)
+      expect(response.status).to(eq(200))
+      expect(response).to(render_template(new_template_path))
     end
   end
 
@@ -27,9 +27,9 @@ describe OrderManagement::Reports::EnterpriseFeeSummariesController, type: :cont
       it "sends the generated report in the correct format" do
         post :create, params: { report: { start_at: "2018-10-09 07:30:00" }, report_format: "csv" }
 
-        expect(response.status).to eq 200
-        expect(response.body).not_to be_blank
-        expect(response.header["Content-Type"]).to eq("text/csv")
+        expect(response.status).to(eq(200))
+        expect(response.body).not_to(be_blank)
+        expect(response.header["Content-Type"]).to(eq("text/csv"))
       end
     end
 
@@ -37,8 +37,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummariesController, type: :cont
       it "renders the report form with an error" do
         post :create, params: { report: { start_at: "invalid date" }, report_format: "csv" }
 
-        expect(flash[:error]).to eq(I18n.t("invalid_filter_parameters", scope: i18n_scope))
-        expect(response).to render_template(new_template_path)
+        expect(flash[:error]).to(eq(I18n.t("invalid_filter_parameters", scope: i18n_scope)))
+        expect(response).to(render_template(new_template_path))
       end
     end
 
@@ -54,8 +54,8 @@ params: {
           report: { distributor_ids: [other_distributor.id] }, report_format: "csv"
         }
 
-        expect(flash[:error]).to eq(report_klass::Authorizer.parameter_not_allowed_error_message)
-        expect(response).to render_template(new_template_path)
+        expect(flash[:error]).to(eq(report_klass::Authorizer.parameter_not_allowed_error_message))
+        expect(response).to(render_template(new_template_path))
       end
     end
 
@@ -71,7 +71,7 @@ params: {
       it "applies permissions to report" do
         post :create, params: { report: {}, report_format: "csv" }
 
-        expect(assigns(:permissions).allowed_order_cycles.to_a).to eq([order_cycle])
+        expect(assigns(:permissions).allowed_order_cycles.to_a).to(eq([order_cycle]))
       end
     end
   end

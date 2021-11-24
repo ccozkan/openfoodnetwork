@@ -24,14 +24,14 @@ module Api
       exchange.variants << product1.variants.first
       exchange.variants << product2.variants.first
       exchange.variants << product3.variants.first
-      allow(controller).to receive(:spree_current_user) { user }
+      allow(controller).to(receive(:spree_current_user) { user })
     end
 
     describe "#products" do
       it "loads products for distributed products in the order cycle" do
         api_get :products, id: order_cycle.id, distributor: distributor.id
 
-        expect(product_ids).to include product1.id, product2.id, product3.id
+        expect(product_ids).to(include(product1.id, product2.id, product3.id))
       end
 
       context "with variant overrides" do
@@ -56,13 +56,13 @@ module Api
           api_get :products, id: order_cycle.id, distributor: distributor.id
 
           overidden_product = json_response.select { |product| product['id'] == product1.id }
-          expect(overidden_product[0]['variants'][0]['price']).to eq vo1.price.to_s
+          expect(overidden_product[0]['variants'][0]['price']).to(eq(vo1.price.to_s))
         end
 
         it "does not return products where the variant overrides are out of stock" do
           api_get :products, id: order_cycle.id, distributor: distributor.id
 
-          expect(product_ids).to_not include product2.id
+          expect(product_ids).to_not(include(product2.id))
         end
       end
 
@@ -73,8 +73,8 @@ id: order_cycle.id,
 distributor: distributor.id,
                              q: { properties_id_or_supplier_properties_id_in_any: [property1.id, property2.id] }
 
-          expect(product_ids).to include product1.id, product2.id
-          expect(product_ids).to_not include product3.id
+          expect(product_ids).to(include(product1.id, product2.id))
+          expect(product_ids).to_not(include(product3.id))
         end
       end
 
@@ -85,8 +85,8 @@ id: order_cycle.id,
 distributor: distributor.id,
                              q: { primary_taxon_id_in_any: [taxon2.id] }
 
-          expect(product_ids).to include product2.id, product3.id
-          expect(product_ids).to_not include product1.id, product4.id
+          expect(product_ids).to(include(product2.id, product3.id))
+          expect(product_ids).to_not(include(product1.id, product4.id))
         end
       end
 
@@ -145,7 +145,7 @@ distributor: distributor.id,
 
           api_get :products, id: order_cycle.id, distributor: distributor.id
 
-          expect(product_ids).to_not include product1.id
+          expect(product_ids).to_not(include(product1.id))
         end
 
         it "does not return variants hidden for this specific customer" do
@@ -154,7 +154,7 @@ distributor: distributor.id,
 
           api_get :products, id: order_cycle.id, distributor: distributor.id
 
-          expect(product_ids).to_not include product2.id
+          expect(product_ids).to_not(include(product2.id))
         end
 
         it "returns hidden variants made visible for this specific customer" do
@@ -167,23 +167,23 @@ distributor: distributor.id,
 
           api_get :products, id: order_cycle.id, distributor: distributor.id
 
-          expect(product_ids).to_not include product1.id
-          expect(product_ids).to include product3.id
+          expect(product_ids).to_not(include(product1.id))
+          expect(product_ids).to(include(product3.id))
         end
       end
 
       context "when the order cycle is closed" do
         before do
-          allow(controller).to receive(:order_cycle) { order_cycle }
-          allow(order_cycle).to receive(:open?) { false }
+          allow(controller).to(receive(:order_cycle) { order_cycle })
+          allow(order_cycle).to(receive(:open?) { false })
         end
 
         # Regression test for https://github.com/openfoodfoundation/openfoodnetwork/issues/6491
         it "renders no products without error" do
           api_get :products, id: order_cycle.id, distributor: distributor.id
 
-          expect(json_response).to eq({})
-          expect(response).to have_http_status :not_found
+          expect(json_response).to(eq({}))
+          expect(response).to(have_http_status(:not_found))
         end
       end
     end
@@ -194,8 +194,8 @@ distributor: distributor.id,
 
         taxons = json_response.map { |taxon| taxon['name'] }
 
-        expect(json_response.length).to be 2
-        expect(taxons).to include taxon1.name, taxon2.name
+        expect(json_response.length).to(be(2))
+        expect(taxons).to(include(taxon1.name, taxon2.name))
       end
     end
 
@@ -205,8 +205,8 @@ distributor: distributor.id,
 
         properties = json_response.map { |property| property['name'] }
 
-        expect(json_response.length).to be 2
-        expect(properties).to include property1.presentation, property2.presentation
+        expect(json_response.length).to(be(2))
+        expect(properties).to(include(property1.presentation, property2.presentation))
       end
 
       context "with producer properties" do
@@ -220,10 +220,10 @@ distributor: distributor.id,
 
           properties = json_response.map { |property| property['name'] }
 
-          expect(json_response.length).to be 3
-          expect(properties).to include property1.presentation,
+          expect(json_response.length).to(be(3))
+          expect(properties).to(include(property1.presentation,
 property2.presentation,
-                                        producer_property.property.presentation
+                                        producer_property.property.presentation))
         end
       end
     end
@@ -253,7 +253,7 @@ property2.presentation,
 
       it "displays products in new order" do
         api_get :products, id: order_cycle.id, distributor: distributor.id
-        expect(product_ids).to eq [
+        expect(product_ids).to(eq([
 product7.id,
 product8.id,
 product2.id,
@@ -261,18 +261,18 @@ product3.id,
 product5.id,
                                    product6.id,
 product1.id
-]
+]))
       end
 
       it "displays products in correct order across multiple pages" do
         api_get :products, id: order_cycle.id, distributor: distributor.id, per_page: 3
-        expect(product_ids).to eq [product7.id, product8.id, product2.id]
+        expect(product_ids).to(eq([product7.id, product8.id, product2.id]))
 
         api_get :products, id: order_cycle.id, distributor: distributor.id, per_page: 3, page: 2
-        expect(product_ids).to eq [product3.id, product5.id, product6.id]
+        expect(product_ids).to(eq([product3.id, product5.id, product6.id]))
 
         api_get :products, id: order_cycle.id, distributor: distributor.id, per_page: 3, page: 3
-        expect(product_ids).to eq [product1.id]
+        expect(product_ids).to(eq([product1.id]))
       end
     end
 

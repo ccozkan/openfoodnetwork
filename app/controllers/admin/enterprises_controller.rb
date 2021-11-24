@@ -35,9 +35,9 @@ module Admin
       respond_to do |format|
         format.html
         format.json do
-          render_as_json @collection,
+          render_as_json(@collection,
 ams_prefix: params[:ams_prefix],
-                                      spree_current_user: spree_current_user
+                                      spree_current_user: spree_current_user)
         end
       end
     end
@@ -49,27 +49,27 @@ ams_prefix: params[:ams_prefix],
     end
 
     def welcome
-      render layout: "spree/layouts/bare_admin"
+      render(layout: "spree/layouts/bare_admin")
     end
 
     def update
-      tag_rules_attributes = params[object_name].delete :tag_rules_attributes
+      tag_rules_attributes = params[object_name].delete(:tag_rules_attributes)
       update_tag_rules(tag_rules_attributes) if tag_rules_attributes.present?
       update_enterprise_notifications
 
       if @object.update(enterprise_params)
         flash[:success] = flash_message_for(@object, :successfully_updated)
         respond_with(@object) do |format|
-          format.html { redirect_to location_after_save }
-          format.js   { render layout: false }
+          format.html { redirect_to(location_after_save) }
+          format.js   { render(layout: false) }
           format.json do
-            render_as_json @object, ams_prefix: 'index', spree_current_user: spree_current_user
+            render_as_json(@object, ams_prefix: 'index', spree_current_user: spree_current_user)
           end
         end
       else
         respond_with(@object) do |format|
           format.json do
-            render json: { errors: @object.errors.messages }, status: :unprocessable_entity
+            render(json: { errors: @object.errors.messages }, status: :unprocessable_entity)
           end
         end
       end
@@ -80,17 +80,17 @@ ams_prefix: params[:ams_prefix],
 
       if register_params[:sells] == 'unspecified'
         flash[:error] = I18n.t(:enterprise_register_package_error)
-        return render :welcome, layout: "spree/layouts/bare_admin"
+        return render(:welcome, layout: "spree/layouts/bare_admin")
       end
 
       attributes = { sells: register_params[:sells], visible: true }
 
       if @enterprise.update(attributes)
         flash[:success] = I18n.t(:enterprise_register_success_notice, enterprise: @enterprise.name)
-        redirect_to spree.admin_dashboard_path
+        redirect_to(spree.admin_dashboard_path)
       else
         flash[:error] = I18n.t(:enterprise_register_error, enterprise: @enterprise.name)
-        render :welcome, layout: "spree/layouts/bare_admin"
+        render(:welcome, layout: "spree/layouts/bare_admin")
       end
     end
 
@@ -99,22 +99,22 @@ ams_prefix: params[:ams_prefix],
       if @enterprise_set.save
         flash[:success] = I18n.t(:enterprise_bulk_update_success_notice)
 
-        redirect_to main_app.admin_enterprises_path
+        redirect_to(main_app.admin_enterprises_path)
       else
         touched_enterprises = @enterprise_set.collection.select(&:changed?)
-        @enterprise_set.collection.to_a.select! { |e| touched_enterprises.include? e }
+        @enterprise_set.collection.to_a.select! { |e| touched_enterprises.include?(e) }
         flash[:error] = I18n.t(:enterprise_bulk_update_error)
-        render :index
+        render(:index)
       end
     end
 
     def for_order_cycle
       respond_to do |format|
         format.json do
-          render json: @collection,
+          render(json: @collection,
                  each_serializer: Api::Admin::ForOrderCycle::EnterpriseSerializer,
 order_cycle: @order_cycle,
-spree_current_user: spree_current_user
+spree_current_user: spree_current_user)
         end
       end
     end
@@ -122,9 +122,9 @@ spree_current_user: spree_current_user
     def visible
       respond_to do |format|
         format.json do
-          render_as_json @collection,
+          render_as_json(@collection,
 ams_prefix: params[:ams_prefix] || 'basic',
-                                      spree_current_user: spree_current_user
+                                      spree_current_user: spree_current_user)
         end
       end
     end
@@ -203,11 +203,11 @@ ams_prefix: params[:ams_prefix] || 'basic',
       
       @payment_methods =
  Spree::PaymentMethod.managed_by(spree_current_user).to_a.sort_by! do |pm|
-        [(enterprise_payment_methods.include? pm) ? 0 : 1, pm.name]
+        [(enterprise_payment_methods.include?(pm)) ? 0 : 1, pm.name]
       end
       @shipping_methods =
  Spree::ShippingMethod.managed_by(spree_current_user).to_a.sort_by! do |sm|
-        [(enterprise_shipping_methods.include? sm) ? 0 : 1, sm.name]
+        [(enterprise_shipping_methods.include?(sm)) ? 0 : 1, sm.name]
       end
       
 
@@ -243,8 +243,8 @@ ams_prefix: params[:ams_prefix] || 'basic',
     end
 
     def update_enterprise_notifications
-      if params.key? :receives_notifications
-        @enterprise.update_contact params[:receives_notifications]
+      if params.key?(:receives_notifications)
+        @enterprise.update_contact(params[:receives_notifications])
       end
     end
 
@@ -259,7 +259,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
       unless spree_current_user.admin?
         params[:sets_enterprise_set][:collection_attributes].each do |_i, enterprise_params|
           unless spree_current_user == Enterprise.find_by(id: enterprise_params[:id]).owner
-            enterprise_params.delete :sells
+            enterprise_params.delete(:sells)
           end
         end
       end
@@ -267,7 +267,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
 
     def check_can_change_sells
       unless spree_current_user.admin? || spree_current_user == @enterprise.owner
-        enterprise_params.delete :sells
+        enterprise_params.delete(:sells)
       end
     end
 
@@ -285,21 +285,21 @@ ams_prefix: params[:ams_prefix] || 'basic',
 
     def check_can_change_owner
       unless (spree_current_user == @enterprise.owner) || spree_current_user.admin?
-        enterprise_params.delete :owner_id
+        enterprise_params.delete(:owner_id)
       end
     end
 
     def check_can_change_bulk_owner
       unless spree_current_user.admin?
         bulk_params[:collection_attributes].each do |_i, enterprise_params|
-          enterprise_params.delete :owner_id
+          enterprise_params.delete(:owner_id)
         end
       end
     end
 
     def check_can_change_managers
       unless (spree_current_user == @enterprise.owner) || spree_current_user.admin?
-        enterprise_params.delete :user_ids
+        enterprise_params.delete(:user_ids)
       end
     end
 
@@ -311,8 +311,8 @@ ams_prefix: params[:ams_prefix] || 'basic',
 
         names = Spree::Property.pluck(:name)
         enterprise_params[:producer_properties_attributes].each do |key, property|
-          unless names.include? property[:property_name]
-            enterprise_params[:producer_properties_attributes].delete key
+          unless names.include?(property[:property_name])
+            enterprise_params[:producer_properties_attributes].delete(key)
           end
         end
       end

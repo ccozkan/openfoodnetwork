@@ -8,7 +8,7 @@ describe Spree::CreditCardsController, type: :controller do
 
   before do
     Stripe.api_key = "sk_test_12345"
-    allow(controller).to receive(:spree_current_user) { user }
+    allow(controller).to(receive(:spree_current_user) { user })
   end
 
   describe "#new_from_token" do
@@ -37,31 +37,31 @@ describe Spree::CreditCardsController, type: :controller do
       it "saves the card locally" do
         spree_post :new_from_token, params
 
-        expect { spree_post :new_from_token, params }
-.to change(Spree::CreditCard, :count).by(1)
+        expect { spree_post(:new_from_token, params) }
+.to(change(Spree::CreditCard, :count).by(1))
 
         card = Spree::CreditCard.last
-        expect(card.gateway_payment_profile_id).to eq "card_1AEEb"
-        expect(card.gateway_customer_profile_id).to eq "cus_AZNMJ"
-        expect(card.user_id).to eq user.id
-        expect(card.last_digits).to eq "4242"
+        expect(card.gateway_payment_profile_id).to(eq("card_1AEEb"))
+        expect(card.gateway_customer_profile_id).to(eq("cus_AZNMJ"))
+        expect(card.user_id).to(eq(user.id))
+        expect(card.last_digits).to(eq("4242"))
       end
 
       context "when saving the card locally fails" do
         before do
-          allow(controller).to receive(:stored_card_attributes) { {} }
+          allow(controller).to(receive(:stored_card_attributes) { {} })
         end
 
         it "renders a flash error" do
-          expect { spree_post :new_from_token, params }
-.to_not change(Spree::CreditCard, :count)
+          expect { spree_post(:new_from_token, params) }
+.to_not(change(Spree::CreditCard, :count))
 
           json_response = JSON.parse(response.body)
           flash_message = I18n.t(
 :spree_gateway_error_flash_for_checkout,
                                  error: I18n.t(:card_could_not_be_saved)
 )
-          expect(json_response["flash"]["error"]).to eq flash_message
+          expect(json_response["flash"]["error"]).to(eq(flash_message))
         end
       end
     end
@@ -69,12 +69,12 @@ describe Spree::CreditCardsController, type: :controller do
     context "when the request to store the customer/card with Stripe fails" do
       let(:response_mock) { { status: 402, body: JSON.generate(error: { message: "Bup-bow..." }) } }
       it "doesn't save the card locally, and renders a flash error" do
-        expect { spree_post :new_from_token, params }
-.to_not change(Spree::CreditCard, :count)
+        expect { spree_post(:new_from_token, params) }
+.to_not(change(Spree::CreditCard, :count))
 
         json_response = JSON.parse(response.body)
         flash_message = I18n.t(:spree_gateway_error_flash_for_checkout, error: "Bup-bow...")
-        expect(json_response["flash"]["error"]).to eq flash_message
+        expect(json_response["flash"]["error"]).to(eq(flash_message))
       end
     end
   end
@@ -87,7 +87,7 @@ describe Spree::CreditCardsController, type: :controller do
       it "renders a flash error" do
         spree_put :update, params
         json_response = JSON.parse(response.body)
-        expect(json_response['flash']['error']).to eq I18n.t(:card_could_not_be_updated)
+        expect(json_response['flash']['error']).to(eq(I18n.t(:card_could_not_be_updated)))
       end
     end
 
@@ -98,7 +98,7 @@ describe Spree::CreditCardsController, type: :controller do
       context "but the card is not owned by the user" do
         it "redirects to unauthorized" do
           spree_put :update, params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
@@ -107,12 +107,12 @@ describe Spree::CreditCardsController, type: :controller do
 
         context "when the update completes successfully" do
           it "renders a serialized copy of the updated card" do
-            expect { spree_put :update, params }
-.to change { card.reload.is_default }
-.to(true)
+            expect { spree_put(:update, params) }
+.to(change { card.reload.is_default }
+.to(true))
             json_response = JSON.parse(response.body)
-            expect(json_response['id']).to eq card.id
-            expect(json_response['is_default']).to eq true
+            expect(json_response['id']).to(eq(card.id))
+            expect(json_response['is_default']).to(eq(true))
           end
         end
 
@@ -121,7 +121,7 @@ describe Spree::CreditCardsController, type: :controller do
           it "renders an error" do
             spree_put :update, params
             json_response = JSON.parse(response.body)
-            expect(json_response['flash']['error']).to eq I18n.t(:card_could_not_be_updated)
+            expect(json_response['flash']['error']).to(eq(I18n.t(:card_could_not_be_updated)))
           end
         end
 
@@ -134,11 +134,11 @@ describe Spree::CreditCardsController, type: :controller do
             customer2.user = card.user
             customer1.save
             customer2.save
-            expect(customer1.reload.allow_charges).to be true
-            expect(customer2.reload.allow_charges).to be true
+            expect(customer1.reload.allow_charges).to(be(true))
+            expect(customer2.reload.allow_charges).to(be(true))
             spree_put :update, params
-            expect(customer1.reload.allow_charges).to be false
-            expect(customer2.reload.allow_charges).to be false
+            expect(customer1.reload.allow_charges).to(be(false))
+            expect(customer2.reload.allow_charges).to(be(false))
           end
         end
       end
@@ -150,10 +150,10 @@ describe Spree::CreditCardsController, type: :controller do
       let(:params) { { id: 123 } }
 
       it "redirects to /account with a flash error, does not request deletion with Stripe" do
-        expect(controller).to_not receive(:destroy_at_stripe)
+        expect(controller).to_not(receive(:destroy_at_stripe))
         spree_delete :destroy, params
-        expect(flash[:error]).to eq I18n.t(:card_could_not_be_removed)
-        expect(response).to redirect_to spree.account_path(anchor: 'cards')
+        expect(flash[:error]).to(eq(I18n.t(:card_could_not_be_removed)))
+        expect(response).to(redirect_to(spree.account_path(anchor: 'cards')))
       end
     end
 
@@ -164,7 +164,7 @@ describe Spree::CreditCardsController, type: :controller do
       context "but the card is not owned by the user" do
         it "redirects to unauthorized" do
           spree_delete :destroy, params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
@@ -183,10 +183,10 @@ describe Spree::CreditCardsController, type: :controller do
           end
 
           it "doesn't delete the card" do
-            expect { spree_delete :destroy, params }
-.to_not change(Spree::CreditCard, :count)
-            expect(flash[:error]).to eq I18n.t(:card_could_not_be_removed)
-            expect(response).to redirect_to spree.account_path(anchor: 'cards')
+            expect { spree_delete(:destroy, params) }
+.to_not(change(Spree::CreditCard, :count))
+            expect(flash[:error]).to(eq(I18n.t(:card_could_not_be_removed)))
+            expect(response).to(redirect_to(spree.account_path(anchor: 'cards')))
           end
         end
 
@@ -197,13 +197,13 @@ describe Spree::CreditCardsController, type: :controller do
           end
 
           it "deletes the card and redirects to account_path" do
-            expect { spree_delete :destroy, params }
-.to change(Spree::CreditCard, :count).by(-1)
-            expect(flash[:success]).to eq I18n.t(
+            expect { spree_delete(:destroy, params) }
+.to(change(Spree::CreditCard, :count).by(-1))
+            expect(flash[:success]).to(eq(I18n.t(
 :card_has_been_removed,
                                                  number: "x-#{card.last_digits}"
-)
-            expect(response).to redirect_to spree.account_path(anchor: 'cards')
+)))
+            expect(response).to(redirect_to(spree.account_path(anchor: 'cards')))
           end
 
           context "the card is the default card and there are existing authorizations for the user" do
@@ -218,11 +218,11 @@ describe Spree::CreditCardsController, type: :controller do
               customer2.user = card.user
               customer1.save
               customer2.save
-              expect(customer1.reload.allow_charges).to be true
-              expect(customer2.reload.allow_charges).to be true
+              expect(customer1.reload.allow_charges).to(be(true))
+              expect(customer2.reload.allow_charges).to(be(true))
               spree_delete :destroy, params
-              expect(customer1.reload.allow_charges).to be false
-              expect(customer2.reload.allow_charges).to be false
+              expect(customer1.reload.allow_charges).to(be(false))
+              expect(customer2.reload.allow_charges).to(be(false))
             end
           end
         end

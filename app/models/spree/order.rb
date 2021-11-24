@@ -33,7 +33,7 @@ if: lambda { |order|
       }
       go_to_state :confirmation,
 if: lambda { |_order|
-        Flipper.enabled? :split_checkout
+        Flipper.enabled?(:split_checkout)
       }
       go_to_state :complete
     end
@@ -61,7 +61,7 @@ dependent: :destroy
     has_many :payments, dependent: :destroy
     has_many :return_authorizations, dependent: :destroy, inverse_of: :order
     has_many :adjustments,
--> { order "#{Spree::Adjustment.table_name}.created_at ASC" },
+-> { order("#{Spree::Adjustment.table_name}.created_at ASC") },
              as: :adjustable,
              dependent: :destroy
 
@@ -363,9 +363,9 @@ created_by_id: created_by_id
     # Finalizes an in progress order after checkout is complete.
     # Called after transition to complete state when payments will have been processed
     def finalize!
-      touch :completed_at
+      touch(:completed_at)
 
-      all_adjustments.update_all state: 'closed'
+      all_adjustments.update_all(state: 'closed')
 
       # update payment and shipment(s) states, and save
       updater.update_payment_state
@@ -548,7 +548,7 @@ created_by_id: created_by_id
       shipments.each do |shipment|
         next if shipment.shipped?
 
-        update_adjustment! shipment.fee_adjustment if shipment.fee_adjustment
+        update_adjustment!(shipment.fee_adjustment) if shipment.fee_adjustment
         save_or_rescue_shipment(shipment)
       end
     end
@@ -574,7 +574,7 @@ created_by_id: created_by_id
       payments.each do |payment|
         next if payment.completed?
 
-        update_adjustment! payment.adjustment if payment.adjustment
+        update_adjustment!(payment.adjustment) if payment.adjustment
         payment.save
       end
     end
@@ -594,7 +594,7 @@ created_by_id: created_by_id
 
     def set_distributor!(distributor)
       self.distributor = distributor
-      self.order_cycle = nil unless order_cycle&.has_distributor? distributor
+      self.order_cycle = nil unless order_cycle&.has_distributor?(distributor)
       save!
     end
 
@@ -648,12 +648,12 @@ created_by_id: created_by_id
     end
 
     def process_each_payment
-      raise Core::GatewayError, Spree.t(:no_pending_payments) if pending_payments.empty?
+      raise(Core::GatewayError, Spree.t(:no_pending_payments)) if pending_payments.empty?
 
       pending_payments.each do |payment|
         break if payment_total >= total
 
-        yield payment
+        yield(payment)
 
         self.payment_total += payment.amount if payment.completed?
       end
@@ -768,7 +768,7 @@ created_by_id: created_by_id
       update_totals
       return unless pending_payments.any?
 
-      pending_payments.first.update_attribute :amount, total
+      pending_payments.first.update_attribute(:amount, total)
     end
   end
 end

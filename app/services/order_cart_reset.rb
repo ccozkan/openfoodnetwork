@@ -11,7 +11,7 @@ class OrderCartReset
   def reset_distributor
     if order.distributor && order.distributor != distributor
       order.empty!
-      order.set_order_cycle! nil
+      order.set_order_cycle!(nil)
     end
     order.distributor = distributor
   end

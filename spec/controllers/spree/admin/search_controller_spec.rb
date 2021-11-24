@@ -17,8 +17,8 @@ describe Spree::Admin::SearchController, type: :controller do
         end
 
         it "returns a list of users that I share management of enteprises with" do
-          expect(assigns(:users)).to include owner, manager
-          expect(assigns(:users)).to_not include random
+          expect(assigns(:users)).to(include(owner, manager))
+          expect(assigns(:users)).to_not(include(random))
         end
       end
 
@@ -28,7 +28,7 @@ describe Spree::Admin::SearchController, type: :controller do
         end
 
         it "returns that user, regardless of the relationship between the two users" do
-          expect(assigns(:users)).to eq [random]
+          expect(assigns(:users)).to(eq([random]))
         end
       end
     end
@@ -46,14 +46,14 @@ describe Spree::Admin::SearchController, type: :controller do
 
         describe 'when search query matches the email or name' do
           it 'returns a list of customers of the enterprise' do
-            expect(@results.size).to eq 2
+            expect(@results.size).to(eq(2))
 
-            expect(@results.find { |c| c['id'] == customer_1.id }).to be_truthy
-            expect(@results.find { |c| c['id'] == customer_2.id }).to be_truthy
+            expect(@results.find { |c| c['id'] == customer_1.id }).to(be_truthy)
+            expect(@results.find { |c| c['id'] == customer_2.id }).to(be_truthy)
           end
 
           it 'does not return the customer of other enterprises' do
-            expect(@results.find { |c| c['id'] == customer_3.id }).to be_nil
+            expect(@results.find { |c| c['id'] == customer_3.id }).to(be_nil)
             p customer_3
             p enterprise
           end
@@ -67,7 +67,7 @@ describe Spree::Admin::SearchController, type: :controller do
         end
 
         it 'returns empty array' do
-          expect(@results).to eq []
+          expect(@results).to(eq([]))
         end
       end
     end

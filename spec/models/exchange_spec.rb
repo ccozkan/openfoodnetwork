@@ -4,14 +4,14 @@ require 'spec_helper'
 
 describe Exchange do
   it "should be valid when built from factory" do
-    expect(build(:exchange)).to be_valid
+    expect(build(:exchange)).to(be_valid)
   end
 
   [:order_cycle, :sender, :receiver].each do |attr|
     it "should not be valid without #{attr}" do
       e = build(:exchange)
       e.send("#{attr}=", nil)
-      expect(e).not_to be_valid
+      expect(e).not_to(be_valid)
     end
   end
 
@@ -25,18 +25,18 @@ sender: e1.sender,
 receiver: e1.receiver,
 incoming: e1.incoming
 )
-    expect(e2).not_to be_valid
+    expect(e2).not_to(be_valid)
 
     e2.incoming = !e2.incoming
-    expect(e2).to be_valid
+    expect(e2).to(be_valid)
     e2.incoming = !e2.incoming
 
     e2.receiver = create(:enterprise)
-    expect(e2).to be_valid
+    expect(e2).to(be_valid)
 
     e2.sender = e2.receiver
     e2.receiver = e1.receiver
-    expect(e2).to be_valid
+    expect(e2).to(be_valid)
   end
 
   it "has exchange variants" do
@@ -44,7 +44,7 @@ incoming: e1.incoming
     p = create(:product)
 
     e.exchange_variants.create(variant: p.master)
-    expect(e.variants.count).to eq(1)
+    expect(e.variants.count).to(eq(1))
   end
 
   it "has exchange fees" do
@@ -52,7 +52,7 @@ incoming: e1.incoming
     f = create(:enterprise_fee)
 
     e.exchange_fees.create(enterprise_fee: f)
-    expect(e.enterprise_fees.count).to eq(1)
+    expect(e.enterprise_fees.count).to(eq(1))
   end
 
   describe "exchange directionality" do
@@ -61,29 +61,29 @@ incoming: e1.incoming
     let(:distributor) { create(:distributor_enterprise) }
     let(:oc) { create(:simple_order_cycle, coordinator: coordinator) }
     let(:incoming_exchange) do
-      oc.exchanges.create! sender: supplier, receiver: coordinator, incoming: true
+      oc.exchanges.create!(sender: supplier, receiver: coordinator, incoming: true)
     end
     let(:outgoing_exchange) do
-      oc.exchanges.create! sender: coordinator, receiver: distributor, incoming: false
+      oc.exchanges.create!(sender: coordinator, receiver: distributor, incoming: false)
     end
 
     describe "reporting whether it is an incoming exchange" do
       it "returns true for incoming exchanges" do
-        expect(incoming_exchange).to be_incoming
+        expect(incoming_exchange).to(be_incoming)
       end
 
       it "returns false for outgoing exchanges" do
-        expect(outgoing_exchange).not_to be_incoming
+        expect(outgoing_exchange).not_to(be_incoming)
       end
     end
 
     describe "finding the exchange participant (the enterprise other than the coordinator)" do
       it "returns the sender for incoming exchanges" do
-        expect(incoming_exchange.participant).to eq(supplier)
+        expect(incoming_exchange.participant).to(eq(supplier))
       end
 
       it "returns the receiver for outgoing exchanges" do
-        expect(outgoing_exchange.participant).to eq(distributor)
+        expect(outgoing_exchange.participant).to(eq(distributor))
       end
     end
   end
@@ -91,14 +91,14 @@ incoming: e1.incoming
   describe "reporting its role" do
     it "returns 'supplier' when it is an incoming exchange" do
       e = Exchange.new
-      allow(e).to receive(:incoming?) { true }
-      expect(e.role).to eq('supplier')
+      allow(e).to(receive(:incoming?) { true })
+      expect(e.role).to(eq('supplier'))
     end
 
     it "returns 'distributor' when it is an outgoing exchange" do
       e = Exchange.new
-      allow(e).to receive(:incoming?) { false }
-      expect(e.role).to eq('distributor')
+      allow(e).to(receive(:incoming?) { false })
+      expect(e.role).to(eq('distributor'))
     end
   end
 
@@ -122,69 +122,69 @@ incoming: e1.incoming
         exchange.sender.users << user
         exchange.receiver.users << user
 
-        expect(Exchange.managed_by(user)).to eq([exchange])
+        expect(Exchange.managed_by(user)).to(eq([exchange]))
       end
 
       it "does not return exchanges where the user manages only the sender" do
         exchange = create(:exchange, order_cycle: oc)
         exchange.sender.users << user
 
-        expect(Exchange.managed_by(user)).to be_empty
+        expect(Exchange.managed_by(user)).to(be_empty)
       end
 
       it "does not return exchanges where the user manages only the receiver" do
         exchange = create(:exchange, order_cycle: oc)
         exchange.receiver.users << user
 
-        expect(Exchange.managed_by(user)).to be_empty
+        expect(Exchange.managed_by(user)).to(be_empty)
       end
 
       it "does not return exchanges where the user manages neither enterprise" do
         exchange = create(:exchange, order_cycle: oc)
-        expect(Exchange.managed_by(user)).to be_empty
+        expect(Exchange.managed_by(user)).to(be_empty)
       end
     end
 
     it "finds exchanges in a particular order cycle" do
       ex = create(:exchange, order_cycle: oc)
-      expect(Exchange.in_order_cycle(oc)).to eq([ex])
+      expect(Exchange.in_order_cycle(oc)).to(eq([ex]))
     end
 
     describe "finding exchanges by direction" do
       let!(:incoming_exchange) do
-        oc.exchanges.create! sender: supplier,    receiver: coordinator, incoming: true
+        oc.exchanges.create!(sender: supplier,    receiver: coordinator, incoming: true)
       end
       let!(:outgoing_exchange) do
-        oc.exchanges.create! sender: coordinator, receiver: distributor, incoming: false
+        oc.exchanges.create!(sender: coordinator, receiver: distributor, incoming: false)
       end
 
       it "finds incoming exchanges" do
-        expect(Exchange.incoming).to eq([incoming_exchange])
+        expect(Exchange.incoming).to(eq([incoming_exchange]))
       end
 
       it "finds outgoing exchanges" do
-        expect(Exchange.outgoing).to eq([outgoing_exchange])
+        expect(Exchange.outgoing).to(eq([outgoing_exchange]))
       end
 
       it "correctly determines direction of exchanges between the same enterprise" do
-        incoming_exchange.update sender: coordinator, incoming: true
-        outgoing_exchange.update receiver: coordinator, incoming: false
-        expect(Exchange.incoming).to eq([incoming_exchange])
-        expect(Exchange.outgoing).to eq([outgoing_exchange])
+        incoming_exchange.update(sender: coordinator, incoming: true)
+        outgoing_exchange.update(receiver: coordinator, incoming: false)
+        expect(Exchange.incoming).to(eq([incoming_exchange]))
+        expect(Exchange.outgoing).to(eq([outgoing_exchange]))
       end
 
       it "finds exchanges coming from an enterprise" do
-        expect(Exchange.from_enterprise(supplier)).to    eq([incoming_exchange])
-        expect(Exchange.from_enterprise(coordinator)).to eq([outgoing_exchange])
+        expect(Exchange.from_enterprise(supplier)).to(   eq([incoming_exchange]))
+        expect(Exchange.from_enterprise(coordinator)).to(eq([outgoing_exchange]))
       end
 
       it "finds exchanges going to an enterprise" do
-        expect(Exchange.to_enterprise(coordinator)).to eq([incoming_exchange])
-        expect(Exchange.to_enterprise(distributor)).to eq([outgoing_exchange])
+        expect(Exchange.to_enterprise(coordinator)).to(eq([incoming_exchange]))
+        expect(Exchange.to_enterprise(distributor)).to(eq([outgoing_exchange]))
       end
 
       it "finds exchanges coming from any of a number of enterprises" do
-        expect(Exchange.from_enterprises([coordinator])).to eq([outgoing_exchange])
+        expect(Exchange.from_enterprises([coordinator])).to(eq([outgoing_exchange]))
         expect(
 Exchange.from_enterprises(
 [
@@ -192,14 +192,14 @@ supplier,
                                           coordinator
 ]
 )
-).to match_array [
+).to(match_array([
 incoming_exchange,
                                                                          outgoing_exchange
-]
+]))
       end
 
       it "finds exchanges going to any of a number of enterprises" do
-        expect(Exchange.to_enterprises([coordinator])).to eq([incoming_exchange])
+        expect(Exchange.to_enterprises([coordinator])).to(eq([incoming_exchange]))
         expect(
 Exchange.to_enterprises(
 [
@@ -207,19 +207,19 @@ coordinator,
                                         distributor
 ]
 )
-).to match_array [
+).to(match_array([
 incoming_exchange,
                                                                        outgoing_exchange
-]
+]))
       end
 
       it "finds exchanges involving any of a number of enterprises" do
-        expect(Exchange.involving([supplier])).to eq([incoming_exchange])
-        expect(Exchange.involving([coordinator])).to match_array [
+        expect(Exchange.involving([supplier])).to(eq([incoming_exchange]))
+        expect(Exchange.involving([coordinator])).to(match_array([
 incoming_exchange,
                                                                   outgoing_exchange
-]
-        expect(Exchange.involving([distributor])).to eq([outgoing_exchange])
+]))
+        expect(Exchange.involving([distributor])).to(eq([outgoing_exchange]))
       end
     end
 
@@ -228,14 +228,14 @@ incoming_exchange,
         d = create(:distributor_enterprise)
         ex = create(:exchange, order_cycle: oc, incoming: true)
 
-        expect(oc.exchanges.supplying_to(d)).to eq([ex])
+        expect(oc.exchanges.supplying_to(d)).to(eq([ex]))
       end
 
       it "returns outgoing exchanges to the distributor" do
         d = create(:distributor_enterprise)
         ex = create(:exchange, order_cycle: oc, receiver: d, incoming: false)
 
-        expect(oc.exchanges.supplying_to(d)).to eq([ex])
+        expect(oc.exchanges.supplying_to(d)).to(eq([ex]))
       end
 
       it "does not return outgoing exchanges to a different distributor" do
@@ -243,7 +243,7 @@ incoming_exchange,
         d2 = create(:distributor_enterprise)
         ex = create(:exchange, order_cycle: oc, receiver: d1, incoming: false)
 
-        expect(oc.exchanges.supplying_to(d2)).to be_empty
+        expect(oc.exchanges.supplying_to(d2)).to(be_empty)
       end
     end
 
@@ -252,7 +252,7 @@ incoming_exchange,
       ex = create(:exchange)
       ex.variants << v
 
-      expect(Exchange.with_variant(v)).to eq([ex])
+      expect(Exchange.with_variant(v)).to(eq([ex]))
     end
 
     it "finds exchanges with any of a number of variants, without returning duplicates" do
@@ -263,7 +263,7 @@ incoming_exchange,
       ex.variants << v1
       ex.variants << v2
 
-      expect(Exchange.with_any_variant([v1.id, v2.id, v3.id])).to eq([ex])
+      expect(Exchange.with_any_variant([v1.id, v2.id, v3.id])).to(eq([ex]))
     end
 
     it "finds exchanges with a particular product's master variant" do
@@ -272,7 +272,7 @@ incoming_exchange,
       ex.variants << p.master
       p.reload
 
-      expect(Exchange.with_product(p)).to eq([ex])
+      expect(Exchange.with_product(p)).to(eq([ex]))
     end
 
     it "finds exchanges with a particular product's non-master variant" do
@@ -282,7 +282,7 @@ incoming_exchange,
       ex.variants << v
       p.reload
 
-      expect(Exchange.with_product(p)).to eq([ex])
+      expect(Exchange.with_product(p)).to(eq([ex]))
     end
 
     describe "sorting exchanges by primary enterprise name" do
@@ -295,7 +295,7 @@ incoming_exchange,
       let!(:ex3) { create(:exchange, sender:   e3, incoming: true) }
 
       it "sorts" do
-        expect(Exchange.by_enterprise_name).to eq([ex2, ex3, ex1])
+        expect(Exchange.by_enterprise_name).to(eq([ex2, ex3, ex1]))
       end
     end
   end
@@ -306,17 +306,17 @@ incoming_exchange,
 
     ex1 = oc.exchanges.last
     ex1.update_attribute(:tag_list, "wholesale")
-    ex2 = ex1.clone! new_oc
+    ex2 = ex1.clone!(new_oc)
 
-    expect(ex1.sender_id).to eq ex2.sender_id
-    expect(ex1.receiver_id).to eq ex2.receiver_id
-    expect(ex1.pickup_time).to eq ex2.pickup_time
-    expect(ex1.pickup_instructions).to eq ex2.pickup_instructions
-    expect(ex1.incoming).to eq ex2.incoming
-    expect(ex1.receival_instructions).to eq ex2.receival_instructions
-    expect(ex1.variant_ids).to eq ex2.variant_ids
-    expect(ex1.enterprise_fee_ids).to eq ex2.enterprise_fee_ids
+    expect(ex1.sender_id).to(eq(ex2.sender_id))
+    expect(ex1.receiver_id).to(eq(ex2.receiver_id))
+    expect(ex1.pickup_time).to(eq(ex2.pickup_time))
+    expect(ex1.pickup_instructions).to(eq(ex2.pickup_instructions))
+    expect(ex1.incoming).to(eq(ex2.incoming))
+    expect(ex1.receival_instructions).to(eq(ex2.receival_instructions))
+    expect(ex1.variant_ids).to(eq(ex2.variant_ids))
+    expect(ex1.enterprise_fee_ids).to(eq(ex2.enterprise_fee_ids))
 
-    expect(ex2.reload.tag_list).to eq ["wholesale"]
+    expect(ex2.reload.tag_list).to(eq(["wholesale"]))
   end
 end

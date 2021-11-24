@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec::Matchers.define :have_flash_message do |message|
+RSpec::Matchers.define(:have_flash_message) do |message|
   match do |node|
     @message, @node = message, node
 

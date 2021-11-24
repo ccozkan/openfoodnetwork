@@ -16,10 +16,10 @@ module Admin
       respond_to do |format|
         format.html
         format.json do
-          render_as_json @collection,
+          render_as_json(@collection,
                          ams_prefix: params[:ams_prefix],
                          current_user: spree_current_user,
-                         subscriptions_count: OrderManagement::Subscriptions::Count.new(@collection)
+                         subscriptions_count: OrderManagement::Subscriptions::Count.new(@collection))
         end
       end
     end
@@ -27,10 +27,10 @@ module Admin
     def show
       respond_to do |format|
         format.html do
-          redirect_to edit_admin_order_cycle_path(@order_cycle)
+          redirect_to(edit_admin_order_cycle_path(@order_cycle))
         end
         format.json do
-          render_as_json @order_cycle, current_user: spree_current_user
+          render_as_json(@order_cycle, current_user: spree_current_user)
         end
       end
     end
@@ -39,7 +39,7 @@ module Admin
       respond_to do |format|
         format.html
         format.json do
-          render_as_json @order_cycle, current_user: spree_current_user
+          render_as_json(@order_cycle, current_user: spree_current_user)
         end
       end
     end
@@ -49,12 +49,12 @@ module Admin
 
       if @order_cycle_form.save
         flash[:notice] = I18n.t(:order_cycles_create_notice)
-        render json: {
+        render(json: {
 success: true,
 edit_path: main_app.admin_order_cycle_incoming_path(@order_cycle)
-}
+})
       else
-        render json: { errors: @order_cycle.errors.full_messages }, status: :unprocessable_entity
+        render(json: { errors: @order_cycle.errors.full_messages }, status: :unprocessable_entity)
       end
     end
 
@@ -69,38 +69,38 @@ edit_path: main_app.admin_order_cycle_incoming_path(@order_cycle)
         respond_to do |format|
           flash[:notice] = I18n.t(:order_cycles_update_notice) if params[:reloading] == '1'
           format.html { redirect_back(fallback_location: root_path) }
-          format.json { render json: { success: true } }
+          format.json { render(json: { success: true }) }
         end
       else
-        render json: { errors: @order_cycle.errors.full_messages }, status: :unprocessable_entity
+        render(json: { errors: @order_cycle.errors.full_messages }, status: :unprocessable_entity)
       end
     end
 
     def bulk_update
       if order_cycle_set&.save
-        render_as_json @order_cycles,
+        render_as_json(@order_cycles,
                        ams_prefix: 'index',
                        current_user: spree_current_user,
-                       subscriptions_count: OrderManagement::Subscriptions::Count.new(@collection)
+                       subscriptions_count: OrderManagement::Subscriptions::Count.new(@collection))
       else
         order_cycle = order_cycle_set.collection.find { |oc| oc.errors.present? }
-        render json: { errors: order_cycle.errors.full_messages }, status: :unprocessable_entity
+        render(json: { errors: order_cycle.errors.full_messages }, status: :unprocessable_entity)
       end
     end
 
     def clone
-      @order_cycle = OrderCycle.find params[:id]
+      @order_cycle = OrderCycle.find(params[:id])
       @order_cycle.clone!
-      redirect_to main_app.admin_order_cycles_path,
-                  notice: I18n.t(:order_cycles_clone_notice, name: @order_cycle.name)
+      redirect_to(main_app.admin_order_cycles_path,
+                  notice: I18n.t(:order_cycles_clone_notice, name: @order_cycle.name))
     end
 
     # Send notifications to all producers who are part of the order cycle
     def notify_producers
-      OrderCycleNotificationJob.perform_later params[:id].to_i
+      OrderCycleNotificationJob.perform_later(params[:id].to_i)
 
-      redirect_to main_app.admin_order_cycles_path,
-                  notice: I18n.t(:order_cycles_email_to_producers_notice)
+      redirect_to(main_app.admin_order_cycles_path,
+                  notice: I18n.t(:order_cycles_email_to_producers_notice))
     end
 
     protected
@@ -179,27 +179,27 @@ orders_close_at_null: true
       case available_coordinators.count
       when 0
         flash[:error] = I18n.t(:order_cycles_no_permission_to_coordinate_error)
-        redirect_to main_app.admin_order_cycles_path
+        redirect_to(main_app.admin_order_cycles_path)
       when 1
         @order_cycle.coordinator = available_coordinators.first
       else
         if params[:coordinator_id]
           flash[:error] = I18n.t(:order_cycles_no_permission_to_create_error)
         end
-        render :set_coordinator
+        render(:set_coordinator)
       end
     end
 
     def protect_invalid_destroy
       # Can't delete if OC is linked to any orders or schedules
       if @order_cycle.schedules.any?
-        redirect_to main_app.admin_order_cycles_url
+        redirect_to(main_app.admin_order_cycles_url)
         flash[:error] = I18n.t('admin.order_cycles.destroy_errors.schedule_present')
       else
         begin
           yield
         rescue ActiveRecord::InvalidForeignKey
-          redirect_to main_app.admin_order_cycles_url
+          redirect_to(main_app.admin_order_cycles_url)
           flash[:error] = I18n.t('admin.order_cycles.destroy_errors.orders_present')
         end
       end
@@ -208,11 +208,11 @@ orders_close_at_null: true
     def remove_protected_attrs
       return if order_cycle_params.blank?
 
-      order_cycle_params.delete :coordinator_id
+      order_cycle_params.delete(:coordinator_id)
 
       unless Enterprise.managed_by(spree_current_user).include?(@order_cycle.coordinator)
         order_cycle_params.delete_if do |k, _v|
-          [:name, :orders_open_at, :orders_close_at].include? k.to_sym
+          [:name, :orders_open_at, :orders_close_at].include?(k.to_sym)
         end
       end
     end
@@ -239,8 +239,8 @@ orders_close_at_null: true
     def require_order_cycle_set_params
       return if params[:order_cycle_set].present?
 
-      render json: { errors: t('admin.order_cycles.bulk_update.no_data') },
-             status: :unprocessable_entity
+      render(json: { errors: t('admin.order_cycles.bulk_update.no_data') },
+             status: :unprocessable_entity)
     end
 
     def ams_prefix_whitelist

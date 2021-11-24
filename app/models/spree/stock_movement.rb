@@ -19,7 +19,7 @@ module Spree
     private
 
     def update_stock_item_quantity
-      stock_item.adjust_count_on_hand quantity
+      stock_item.adjust_count_on_hand(quantity)
     end
   end
 end

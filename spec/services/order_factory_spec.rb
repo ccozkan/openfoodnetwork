@@ -36,17 +36,17 @@ describe OrderFactory do
 
     it "builds a new order based on the provided attributes" do
       expect_new_order
-      expect(order.line_items.count).to eq 2
-      expect(order.customer).to eq customer
-      expect(order.user).to eq user
-      expect(order.distributor).to eq shop
-      expect(order.order_cycle).to eq order_cycle
-      expect(order.shipments.first.shipping_method).to eq shipping_method
-      expect(order.payments.first.payment_method).to eq payment_method
-      expect(order.bill_address).to eq bill_address
-      expect(order.ship_address).to eq ship_address
-      expect(order.total).to eq 38.0
-      expect(order.complete?).to be false
+      expect(order.line_items.count).to(eq(2))
+      expect(order.customer).to(eq(customer))
+      expect(order.user).to(eq(user))
+      expect(order.distributor).to(eq(shop))
+      expect(order.order_cycle).to(eq(order_cycle))
+      expect(order.shipments.first.shipping_method).to(eq(shipping_method))
+      expect(order.payments.first.payment_method).to(eq(payment_method))
+      expect(order.bill_address).to(eq(bill_address))
+      expect(order.ship_address).to(eq(ship_address))
+      expect(order.total).to(eq(38.0))
+      expect(order.complete?).to(be(false))
     end
 
     it "retains address, delivery, and payment attributes until completion of the order" do
@@ -54,12 +54,12 @@ describe OrderFactory do
 
       order.reload
 
-      expect(order.customer).to eq customer
-      expect(order.shipping_method).to eq shipping_method
-      expect(order.payments.first.payment_method).to eq payment_method
-      expect(order.bill_address).to eq bill_address
-      expect(order.ship_address).to eq ship_address
-      expect(order.total).to eq 38.0
+      expect(order.customer).to(eq(customer))
+      expect(order.shipping_method).to(eq(shipping_method))
+      expect(order.payments.first.payment_method).to(eq(payment_method))
+      expect(order.bill_address).to(eq(bill_address))
+      expect(order.ship_address).to(eq(ship_address))
+      expect(order.total).to(eq(38.0))
     end
 
     context "when the customer does not have a user associated with it" do
@@ -67,7 +67,7 @@ describe OrderFactory do
 
       it "initialises the order without a user_id" do
         expect_new_order
-        expect(order.user).to be nil
+        expect(order.user).to(be(nil))
       end
     end
 
@@ -81,7 +81,7 @@ describe OrderFactory do
         context "when skip_stock_check is not requested" do
           it "initialises the order but limits stock to the available amount" do
             expect_new_order
-            expect(variant1_line_item.quantity).to eq 2
+            expect(variant1_line_item.quantity).to(eq(2))
           end
 
           context "when variant is on_demand" do
@@ -89,7 +89,7 @@ describe OrderFactory do
 
             it "initialises the order with the requested quantity regardless of stock" do
               expect_new_order
-              expect(variant1_line_item.quantity).to eq 5
+              expect(variant1_line_item.quantity).to(eq(5))
             end
           end
         end
@@ -99,7 +99,7 @@ describe OrderFactory do
 
           it "initialises the order with the requested quantity regardless" do
             expect_new_order
-            expect(variant1_line_item.quantity).to eq 5
+            expect(variant1_line_item.quantity).to(eq(5))
           end
         end
       end
@@ -113,7 +113,7 @@ describe OrderFactory do
         context "when skip_stock_check is not requested" do
           it "initialised the order but limits stock to the available amount" do
             expect_new_order
-            expect(variant1_line_item.quantity).to eq 3
+            expect(variant1_line_item.quantity).to(eq(3))
           end
         end
 
@@ -122,7 +122,7 @@ describe OrderFactory do
 
           it "initialises the order with the requested quantity regardless" do
             expect_new_order
-            expect(variant1_line_item.quantity).to eq 6
+            expect(variant1_line_item.quantity).to(eq(6))
           end
         end
       end
@@ -132,8 +132,8 @@ describe OrderFactory do
       context "when no override is present" do
         it "uses the price from the variant" do
           expect_new_order
-          expect(variant1_line_item.price).to eq 5.0
-          expect(order.total).to eq 38.0
+          expect(variant1_line_item.price).to(eq(5.0))
+          expect(order.total).to(eq(38.0))
         end
       end
 
@@ -144,17 +144,17 @@ describe OrderFactory do
 
         it "uses the price from the override" do
           expect_new_order
-          expect(variant1_line_item.price).to eq 3.0
-          expect(order.total).to eq 34.0
+          expect(variant1_line_item.price).to(eq(3.0))
+          expect(order.total).to(eq(34.0))
         end
       end
     end
 
     def expect_new_order
       expect { order }
-.to change { Spree::Order.count }
-.by(1)
-      expect(order).to be_a Spree::Order
+.to(change { Spree::Order.count }
+.by(1))
+      expect(order).to(be_a(Spree::Order))
     end
 
     def variant1_line_item

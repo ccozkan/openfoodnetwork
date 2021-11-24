@@ -10,50 +10,50 @@ module Spree
       clear_aliased_actions
 
       # override cancan default aliasing (we don't want to differentiate between read and index)
-      alias_action :delete, to: :destroy
-      alias_action :edit, to: :update
-      alias_action :new, to: :create
-      alias_action :new_action, to: :create
-      alias_action :show, to: :read
+      alias_action(:delete, to: :destroy)
+      alias_action(:edit, to: :update)
+      alias_action(:new, to: :create)
+      alias_action(:new_action, to: :create)
+      alias_action(:show, to: :read)
 
       user ||= Spree.user_class.new
 
       if user.respond_to?(:has_spree_role?) && user.has_spree_role?('admin')
-        can :manage, :all
+        can(:manage, :all)
       else
-        can [:index, :read], Country
-        can [:index, :read], OptionType
-        can [:index, :read], OptionValue
-        can :create, Order
-        can :read, Order do |order, token|
+        can([:index, :read], Country)
+        can([:index, :read], OptionType)
+        can([:index, :read], OptionValue)
+        can(:create, Order)
+        can(:read, Order) do |order, token|
           order.user == user || (order.token && token == order.token)
         end
-        can :update, Order do |order, token|
+        can(:update, Order) do |order, token|
           order.user == user || (order.token && token == order.token)
         end
-        can [:index, :read], Product
-        can [:index, :read], ProductProperty
-        can [:index, :read], Property
-        can :create, Spree.user_class
-        can [:read, :update, :destroy], Spree.user_class, id: user.id
-        can [:index, :read], State
-        can [:index, :read], StockItem
-        can [:index, :read], StockLocation
-        can [:index, :read], StockMovement
-        can [:index, :read], Taxon
-        can [:index, :read], Taxonomy
-        can [:index, :read], Variant
-        can [:index, :read], Zone
+        can([:index, :read], Product)
+        can([:index, :read], ProductProperty)
+        can([:index, :read], Property)
+        can(:create, Spree.user_class)
+        can([:read, :update, :destroy], Spree.user_class, id: user.id)
+        can([:index, :read], State)
+        can([:index, :read], StockItem)
+        can([:index, :read], StockLocation)
+        can([:index, :read], StockMovement)
+        can([:index, :read], Taxon)
+        can([:index, :read], Taxonomy)
+        can([:index, :read], Variant)
+        can([:index, :read], Zone)
       end
 
-      add_shopping_abilities user
-      add_base_abilities user if is_new_user? user
-      add_enterprise_management_abilities user if can_manage_enterprises? user
-      add_group_management_abilities user if can_manage_groups? user
-      add_product_management_abilities user if can_manage_products? user
-      add_order_cycle_management_abilities user if can_manage_order_cycles? user
-      add_order_management_abilities user if can_manage_orders? user
-      add_relationship_management_abilities user if can_manage_relationships? user
+      add_shopping_abilities(user)
+      add_base_abilities(user) if is_new_user?(user)
+      add_enterprise_management_abilities(user) if can_manage_enterprises?(user)
+      add_group_management_abilities(user) if can_manage_groups?(user)
+      add_product_management_abilities(user) if can_manage_products?(user)
+      add_order_cycle_management_abilities(user) if can_manage_order_cycles?(user)
+      add_order_management_abilities(user) if can_manage_orders?(user)
+      add_relationship_management_abilities(user) if can_manage_relationships?(user)
     end
 
     # New users have no enterprises.
@@ -89,55 +89,55 @@ module Spree
     end
 
     def can_manage_relationships?(user)
-      can_manage_enterprises? user
+      can_manage_enterprises?(user)
     end
 
     def add_shopping_abilities(user)
-      can [:destroy], Spree::LineItem do |item|
+      can([:destroy], Spree::LineItem) do |item|
         user == item.order.user && item.order.changes_allowed?
       end
 
-      can [:cancel], Spree::Order do |order|
+      can([:cancel], Spree::Order) do |order|
         order.user == user
       end
 
-      can [:update, :destroy], Spree::CreditCard do |credit_card|
+      can([:update, :destroy], Spree::CreditCard) do |credit_card|
         credit_card.user == user
       end
 
-      can [:update], Customer do |customer|
+      can([:update], Customer) do |customer|
         customer.user == user
       end
     end
 
     # New users can create an enterprise, and gain other permissions from doing this.
     def add_base_abilities(_user)
-      can [:create], Enterprise
+      can([:create], Enterprise)
     end
 
     def add_group_management_abilities(user)
-      can [:admin, :index], :overview
-      can [:admin, :index], EnterpriseGroup
-      can [:read, :edit, :update], EnterpriseGroup do |group|
-        user.owned_groups.include? group
+      can([:admin, :index], :overview)
+      can([:admin, :index], EnterpriseGroup)
+      can([:read, :edit, :update], EnterpriseGroup) do |group|
+        user.owned_groups.include?(group)
       end
     end
 
     def add_enterprise_management_abilities(user)
       # We perform authorize! on (:create, nil) when creating a new order from admin,
       #   and also (:search, nil) when searching for variants to add to the order
-      can [:create, :search], nil
+      can([:create, :search], nil)
 
-      can [:admin, :index], :overview
+      can([:admin, :index], :overview)
 
-      can [:admin, :index, :read, :create, :edit, :update_positions, :destroy], ProducerProperty
+      can([:admin, :index, :read, :create, :edit, :update_positions, :destroy], ProducerProperty)
 
-      can [:admin, :map_by_tag, :destroy], TagRule do |tag_rule|
-        user.enterprises.include? tag_rule.enterprise
+      can([:admin, :map_by_tag, :destroy], TagRule) do |tag_rule|
+        user.enterprises.include?(tag_rule.enterprise)
       end
 
-      can [:admin, :index, :create], Enterprise
-      can [
+      can([:admin, :index, :create], Enterprise)
+      can([
 :read,
 :edit,
 :update,
@@ -147,51 +147,51 @@ module Spree
            :bulk_update,
 :resend_confirmation
 ],
-Enterprise do |enterprise|
-        OpenFoodNetwork::Permissions.new(user).editable_enterprises.include? enterprise
+Enterprise) do |enterprise|
+        OpenFoodNetwork::Permissions.new(user).editable_enterprises.include?(enterprise)
       end
-      can [:welcome, :register], Enterprise do |enterprise|
+      can([:welcome, :register], Enterprise) do |enterprise|
         enterprise.owner == user
       end
-      can [
+      can([
 :manage_payment_methods,
            :manage_shipping_methods,
            :manage_enterprise_fees
 ],
-Enterprise do |enterprise|
-        user.enterprises.include? enterprise
+Enterprise) do |enterprise|
+        user.enterprises.include?(enterprise)
       end
 
       # All enterprises can have fees, though possibly suppliers don't need them?
-      can [:index, :create], EnterpriseFee
-      can [:admin, :read, :edit, :bulk_update, :destroy], EnterpriseFee do |enterprise_fee|
-        user.enterprises.include? enterprise_fee.enterprise
+      can([:index, :create], EnterpriseFee)
+      can([:admin, :read, :edit, :bulk_update, :destroy], EnterpriseFee) do |enterprise_fee|
+        user.enterprises.include?(enterprise_fee.enterprise)
       end
 
-      can [:admin, :known_users, :customers], :search
+      can([:admin, :known_users, :customers], :search)
 
-      can [:admin, :show], :account
+      can([:admin, :show], :account)
 
       # For printing own account invoice orders
-      can [:print], Spree::Order do |order|
+      can([:print], Spree::Order) do |order|
         order.user == user
       end
 
-      can [:admin, :bulk_update], ColumnPreference do |column_preference|
+      can([:admin, :bulk_update], ColumnPreference) do |column_preference|
         column_preference.user == user
       end
 
-      can [:admin, :connect, :status, :destroy], StripeAccount do |stripe_account|
-        user.enterprises.include? stripe_account.enterprise
+      can([:admin, :connect, :status, :destroy], StripeAccount) do |stripe_account|
+        user.enterprises.include?(stripe_account.enterprise)
       end
 
-      can [:admin, :create], :manager_invitation
+      can([:admin, :create], :manager_invitation)
     end
 
     def add_product_management_abilities(user)
       # Enterprise User can only access products that they are a supplier for
-      can [:create], Spree::Product
-      can [
+      can([:create], Spree::Product)
+      can([
 :admin,
 :read,
 :index,
@@ -203,12 +203,12 @@ Enterprise do |enterprise|
 :delete,
            :destroy
 ],
-Spree::Product do |product|
-        OpenFoodNetwork::Permissions.new(user).managed_product_enterprises.include? product.supplier
+Spree::Product) do |product|
+        OpenFoodNetwork::Permissions.new(user).managed_product_enterprises.include?(product.supplier)
       end
 
-      can [:create], Spree::Variant
-      can [
+      can([:create], Spree::Variant)
+      can([
 :admin,
 :index,
 :read,
@@ -218,38 +218,38 @@ Spree::Product do |product|
 :delete,
 :destroy
 ],
-Spree::Variant do |variant|
+Spree::Variant) do |variant|
         OpenFoodNetwork::Permissions.new(user)
-          .managed_product_enterprises.include? variant.product.supplier
+          .managed_product_enterprises.include?(variant.product.supplier)
       end
 
-      can [:admin, :index, :read, :update, :bulk_update, :bulk_reset], VariantOverride do |vo|
+      can([:admin, :index, :read, :update, :bulk_update, :bulk_reset], VariantOverride) do |vo|
         next false unless vo.hub.present? && vo.variant&.product&.supplier.present?
 
-        hub_auth = OpenFoodNetwork::Permissions.new(user).variant_override_hubs.include? vo.hub
+        hub_auth = OpenFoodNetwork::Permissions.new(user).variant_override_hubs.include?(vo.hub)
 
         producer_auth = OpenFoodNetwork::Permissions.new(user)
           .variant_override_producers
-          .include? vo.variant.product.supplier
+          .include?(vo.variant.product.supplier)
 
         hub_auth && producer_auth
       end
 
-      can [:admin, :create, :update], InventoryItem do |ii|
+      can([:admin, :create, :update], InventoryItem) do |ii|
         next false unless ii.enterprise.present? && ii.variant&.product&.supplier.present?
 
         hub_auth = OpenFoodNetwork::Permissions.new(user)
           .variant_override_hubs
-          .include? ii.enterprise
+          .include?(ii.enterprise)
 
         producer_auth = OpenFoodNetwork::Permissions.new(user)
           .variant_override_producers
-          .include? ii.variant.product.supplier
+          .include?(ii.variant.product.supplier)
 
         hub_auth && producer_auth
       end
 
-      can [
+      can([
 :admin,
 :index,
 :read,
@@ -258,13 +258,13 @@ Spree::Variant do |variant|
 :update_positions,
 :destroy
 ],
-Spree::ProductProperty
-      can [:admin, :index, :read, :create, :edit, :update, :destroy], Spree::Image
+Spree::ProductProperty)
+      can([:admin, :index, :read, :create, :edit, :update, :destroy], Spree::Image)
 
-      can [:admin, :index, :read, :search], Spree::Taxon
-      can [:admin, :index, :read, :create, :edit], Spree::Classification
+      can([:admin, :index, :read, :search], Spree::Taxon)
+      can([:admin, :index, :read, :create, :edit], Spree::Classification)
 
-      can [
+      can([
 :admin,
 :index,
 :guide,
@@ -274,10 +274,10 @@ Spree::ProductProperty
            :validate_data,
 :reset_absent_products
 ],
-ProductImport::ProductImporter
+ProductImport::ProductImporter)
 
       # Reports page
-      can [
+      can([
 :admin,
 :index,
 :customers,
@@ -289,30 +289,30 @@ ProductImport::ProductImporter
 :order_cycle_management,
 :packing
 ],
-          Spree::Admin::ReportsController
-      can [:admin, :show, :packing], :report
+          Spree::Admin::ReportsController)
+      can([:admin, :show, :packing], :report)
       add_bulk_coop_abilities
       add_enterprise_fee_summary_abilities
     end
 
     def add_order_cycle_management_abilities(user)
-      can [:admin, :index, :read, :edit, :update, :incoming, :outgoing], OrderCycle do |order_cycle|
-        OrderCycle.visible_by(user).include? order_cycle
+      can([:admin, :index, :read, :edit, :update, :incoming, :outgoing], OrderCycle) do |order_cycle|
+        OrderCycle.visible_by(user).include?(order_cycle)
       end
-      can [:admin, :index, :create], Schedule
-      can [:admin, :update, :destroy], Schedule do |schedule|
-        OpenFoodNetwork::Permissions.new(user).editable_schedules.include? schedule
+      can([:admin, :index, :create], Schedule)
+      can([:admin, :update, :destroy], Schedule) do |schedule|
+        OpenFoodNetwork::Permissions.new(user).editable_schedules.include?(schedule)
       end
-      can [:bulk_update, :clone, :destroy, :notify_producers], OrderCycle do |order_cycle|
-        user.enterprises.include? order_cycle.coordinator
+      can([:bulk_update, :clone, :destroy, :notify_producers], OrderCycle) do |order_cycle|
+        user.enterprises.include?(order_cycle.coordinator)
       end
-      can [:for_order_cycle], Enterprise
-      can [:for_order_cycle], EnterpriseFee
+      can([:for_order_cycle], Enterprise)
+      can([:for_order_cycle], EnterpriseFee)
     end
 
     def add_order_management_abilities(user)
-      can [:index, :create], Spree::Order
-      can [:read, :update, :fire, :resend, :invoice, :print, :print_ticket], Spree::Order do |order|
+      can([:index, :create], Spree::Order)
+      can([:read, :update, :fire, :resend, :invoice, :print, :print_ticket], Spree::Order) do |order|
         # We allow editing orders with a nil distributor as this state occurs
         # during the order creation process from the admin backend
         order.distributor.nil? ||
@@ -321,25 +321,25 @@ ProductImport::ProductImporter
           # Enterprise User can access orders that are placed inside a OC they coordinate
           order.order_cycle&.coordinated_by?(user)
       end
-      can [:admin, :bulk_management, :managed], Spree::Order do
+      can([:admin, :bulk_management, :managed], Spree::Order) do
         user.admin? || user.enterprises.any?(&:is_distributor)
       end
-      can [:admin, :create, :show, :poll], :invoice
-      can [:admin, :visible], Enterprise
-      can [:admin, :index, :create, :update, :destroy], :line_item
-      can [:admin, :index, :create], Spree::LineItem
-      can [:destroy, :update], Spree::LineItem do |item|
+      can([:admin, :create, :show, :poll], :invoice)
+      can([:admin, :visible], Enterprise)
+      can([:admin, :index, :create, :update, :destroy], :line_item)
+      can([:admin, :index, :create], Spree::LineItem)
+      can([:destroy, :update], Spree::LineItem) do |item|
         order = item.order
         user.admin? ||
           user.enterprises.include?(order.distributor) ||
           order.order_cycle&.coordinated_by?(user)
       end
 
-      can [:admin, :index, :read, :create, :edit, :update, :fire], Spree::Payment
-      can [:admin, :index, :read, :create, :edit, :update, :fire], Spree::Shipment
-      can [:admin, :index, :read, :create, :edit, :update, :fire], Spree::Adjustment
-      can [:admin, :index, :read, :create, :edit, :update, :fire], Spree::ReturnAuthorization
-      can [:destroy], Spree::Adjustment do |adjustment|
+      can([:admin, :index, :read, :create, :edit, :update, :fire], Spree::Payment)
+      can([:admin, :index, :read, :create, :edit, :update, :fire], Spree::Shipment)
+      can([:admin, :index, :read, :create, :edit, :update, :fire], Spree::Adjustment)
+      can([:admin, :index, :read, :create, :edit, :update, :fire], Spree::ReturnAuthorization)
+      can([:destroy], Spree::Adjustment) do |adjustment|
         if user.admin?
           true
         else
@@ -348,15 +348,15 @@ ProductImport::ProductImporter
         end
       end
 
-      can [:create], OrderCycle
+      can([:create], OrderCycle)
 
-      can [:admin, :index, :read, :create, :edit, :update], ExchangeVariant
-      can [:admin, :index, :read, :create, :edit, :update], Exchange
-      can [:admin, :index, :read, :create, :edit, :update], ExchangeFee
+      can([:admin, :index, :read, :create, :edit, :update], ExchangeVariant)
+      can([:admin, :index, :read, :create, :edit, :update], Exchange)
+      can([:admin, :index, :read, :create, :edit, :update], ExchangeFee)
 
       # Enterprise user can only access payment and shipping methods for their distributors
-      can [:index, :create], Spree::PaymentMethod
-      can [
+      can([:index, :create], Spree::PaymentMethod)
+      can([
 :admin,
 :read,
 :update,
@@ -365,17 +365,17 @@ ProductImport::ProductImporter
            :destroy,
 :show_provider_preferences
 ],
-Spree::PaymentMethod do |payment_method|
+Spree::PaymentMethod) do |payment_method|
         (user.enterprises & payment_method.distributors).any?
       end
 
-      can [:index, :create], Spree::ShippingMethod
-      can [:admin, :read, :update, :destroy], Spree::ShippingMethod do |shipping_method|
+      can([:index, :create], Spree::ShippingMethod)
+      can([:admin, :read, :update, :destroy], Spree::ShippingMethod) do |shipping_method|
         (user.enterprises & shipping_method.distributors).any?
       end
 
       # Reports page
-      can [
+      can([
 :admin,
 :index,
 :customers,
@@ -388,12 +388,12 @@ Spree::PaymentMethod do |payment_method|
            :order_cycle_management,
 :xero_invoices
 ],
-Spree::Admin::ReportsController
+Spree::Admin::ReportsController)
       add_bulk_coop_abilities
       add_enterprise_fee_summary_abilities
 
-      can [:create], Customer
-      can [
+      can([:create], Customer)
+      can([
 :admin,
 :index,
 :update,
@@ -401,23 +401,23 @@ Spree::Admin::ReportsController
 :show
 ],
 Customer,
-enterprise_id: Enterprise.managed_by(user).pluck(:id)
-      can [:admin, :new, :index], Subscription
-      can [:create, :edit, :update, :cancel, :pause, :unpause], Subscription do |subscription|
+enterprise_id: Enterprise.managed_by(user).pluck(:id))
+      can([:admin, :new, :index], Subscription)
+      can([:create, :edit, :update, :cancel, :pause, :unpause], Subscription) do |subscription|
         user.enterprises.include?(subscription.shop)
       end
-      can [:admin, :build], SubscriptionLineItem
-      can [:destroy], SubscriptionLineItem do |subscription_line_item|
+      can([:admin, :build], SubscriptionLineItem)
+      can([:destroy], SubscriptionLineItem) do |subscription_line_item|
         user.enterprises.include?(subscription_line_item.subscription.shop)
       end
-      can [:admin, :edit, :cancel, :resume], ProxyOrder do |proxy_order|
+      can([:admin, :edit, :cancel, :resume], ProxyOrder) do |proxy_order|
         user.enterprises.include?(proxy_order.subscription.shop)
       end
     end
 
     def add_relationship_management_abilities(user)
-      can [:admin, :index, :create], EnterpriseRelationship
-      can [:destroy], EnterpriseRelationship do |enterprise_relationship|
+      can([:admin, :index, :create], EnterpriseRelationship)
+      can([:destroy], EnterpriseRelationship) do |enterprise_relationship|
         user.enterprises.include?(enterprise_relationship.parent) ||
           user.enterprises.include?(enterprise_relationship.child)
       end
@@ -425,16 +425,16 @@ enterprise_id: Enterprise.managed_by(user).pluck(:id)
 
     def add_bulk_coop_abilities
       # Reveal the report link in spree/admin/reports#index
-      can [:bulk_coop], Spree::Admin::ReportsController
+      can([:bulk_coop], Spree::Admin::ReportsController)
       # Allow direct access to the report resource
-      can [:admin, :new, :create], :bulk_coop
+      can([:admin, :new, :create], :bulk_coop)
     end
 
     def add_enterprise_fee_summary_abilities
       # Reveal the report link in spree/admin/reports#index
-      can [:enterprise_fee_summary], Spree::Admin::ReportsController
+      can([:enterprise_fee_summary], Spree::Admin::ReportsController)
       # Allow direct access to the report resource
-      can [:admin, :new, :create], :enterprise_fee_summary
+      can([:admin, :new, :create], :enterprise_fee_summary)
     end
   end
 end

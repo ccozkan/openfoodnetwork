@@ -49,11 +49,11 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Renderers::CsvRenderer 
   let(:current_user) { nil }
 
   before do
-    allow(service).to receive(:list) { enterprise_fee_type_totals }
-    allow(request).to receive_messages(
+    allow(service).to(receive(:list) { enterprise_fee_type_totals })
+    allow(request).to(receive_messages(
 variant: double(Spree::Variant),
 should_apply_vary_header?: true
-)
+))
   end
 
   it "generates CSV header" do
@@ -63,8 +63,8 @@ should_apply_vary_header?: true
     header_row = csv[0]
 
     # Test all header cells have values
-    expect(header_row.length).to eq(8)
-    expect(header_row.all?(&:present?)).to be_truthy
+    expect(header_row.length).to(eq(8))
+    expect(header_row.all?(&:present?)).to(be_truthy)
   end
 
   it "generates CSV data rows" do
@@ -72,18 +72,18 @@ should_apply_vary_header?: true
     result = response.body
     csv = CSV.parse(result, headers: true)
 
-    expect(csv.length).to eq(2)
+    expect(csv.length).to(eq(2))
 
     # Test random cells
-    expect(csv[0][i18n_translate("header.fee_type")]).to eq("Fee Type A")
-    expect(csv[0][i18n_translate("header.total_amount")]).to eq("1.00")
-    expect(csv[1][i18n_translate("header.total_amount")]).to eq("2.00")
+    expect(csv[0][i18n_translate("header.fee_type")]).to(eq("Fee Type A"))
+    expect(csv[0][i18n_translate("header.total_amount")]).to(eq("1.00"))
+    expect(csv[1][i18n_translate("header.total_amount")]).to(eq("2.00"))
   end
 
   it "generates filename correctly" do
     Timecop.freeze(Time.zone.local(2018, 10, 9, 7, 30, 0)) do
       filename = renderer.__send__(:filename)
-      expect(filename).to eq("enterprise_fee_summary_20181009.csv")
+      expect(filename).to(eq("enterprise_fee_summary_20181009.csv"))
     end
   end
 

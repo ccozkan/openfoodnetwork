@@ -10,41 +10,41 @@ module Api
 
       def index
         @variants = scope.includes(option_values: :option_type).ransack(params[:q]).result
-        render json: @variants, each_serializer: Api::VariantSerializer
+        render(json: @variants, each_serializer: Api::VariantSerializer)
       end
 
       def show
         @variant = scope.includes(option_values: :option_type).find(params[:id])
-        render json: @variant, serializer: Api::VariantSerializer
+        render(json: @variant, serializer: Api::VariantSerializer)
       end
 
       def create
-        authorize! :create, Spree::Variant
+        authorize!(:create, Spree::Variant)
         @variant = scope.new(variant_params)
         if @variant.save
-          render json: @variant, serializer: Api::VariantSerializer, status: :created
+          render(json: @variant, serializer: Api::VariantSerializer, status: :created)
         else
           invalid_resource!(@variant)
         end
       end
 
       def update
-        authorize! :update, Spree::Variant
+        authorize!(:update, Spree::Variant)
         @variant = scope.find(params[:id])
         if @variant.update(variant_params)
-          render json: @variant, serializer: Api::VariantSerializer, status: :ok
+          render(json: @variant, serializer: Api::VariantSerializer, status: :ok)
         else
           invalid_resource!(@product)
         end
       end
 
       def destroy
-        authorize! :delete, Spree::Variant
+        authorize!(:delete, Spree::Variant)
         @variant = scope.find(params[:id])
-        authorize! :delete, @variant
+        authorize!(:delete, @variant)
 
         VariantDeleter.new.delete(@variant)
-        render json: @variant, serializer: Api::VariantSerializer, status: :no_content
+        render(json: @variant, serializer: Api::VariantSerializer, status: :no_content)
       end
 
       private

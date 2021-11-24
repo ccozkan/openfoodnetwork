@@ -20,7 +20,7 @@ module Spree
           # At this point Paypal has *provisionally* accepted that the payment can now be placed,
           # and the user will be redirected to a Paypal payment page. On completion, the user is
           # sent back and the response is handled in the #confirm action in this controller.
-          redirect_to provider.express_checkout_url(pp_response, useraction: 'commit')
+          redirect_to(provider.express_checkout_url(pp_response, useraction: 'commit'))
         else
           flash[:error] =
             Spree.t(
@@ -28,11 +28,11 @@ module Spree
 scope: 'paypal',
                        reasons: pp_response.errors.map(&:long_message).join(" ")
 )
-          redirect_to main_app.checkout_state_path(:payment)
+          redirect_to(main_app.checkout_state_path(:payment))
         end
       rescue SocketError
         flash[:error] = Spree.t('flash.connection_failed', scope: 'paypal')
-        redirect_to main_app.checkout_state_path(:payment)
+        redirect_to(main_app.checkout_state_path(:payment))
       end
     end
 
@@ -57,15 +57,15 @@ scope: 'paypal',
         flash.notice = Spree.t(:order_processed_successfully)
         flash[:commerce_tracking] = "nothing special"
         session[:order_id] = nil
-        redirect_to completion_route(@order)
+        redirect_to(completion_route(@order))
       else
-        redirect_to main_app.checkout_state_path(@order.state)
+        redirect_to(main_app.checkout_state_path(@order.state))
       end
     end
 
     def cancel
       flash[:notice] = Spree.t('flash.cancel', scope: 'paypal')
-      redirect_to main_app.checkout_path
+      redirect_to(main_app.checkout_path)
     end
 
     # Clears the cached order. Required for #current_order to return a new order to serve as cart.

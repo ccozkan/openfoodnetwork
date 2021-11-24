@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Api::EnterpriseSerializer do
-  let(:serializer) { Api::EnterpriseSerializer.new enterprise, data: data }
+  let(:serializer) { Api::EnterpriseSerializer.new(enterprise, data: data) }
   let(:enterprise) { create(:distributor_enterprise, is_primary_producer: true) }
   let(:taxon) { create(:taxon) }
   let(:data) do
@@ -18,15 +18,15 @@ shipping_method_services: {}
   end
 
   it "serializes an enterprise" do
-    expect(serializer.to_json).to match enterprise.name
+    expect(serializer.to_json).to(match(enterprise.name))
   end
 
   it "serializes taxons as ids only" do
-    expect(serializer.serializable_hash[:taxons]).to eq([{ id: 123 }])
-    expect(serializer.serializable_hash[:supplied_taxons]).to eq([{ id: 456 }])
+    expect(serializer.serializable_hash[:taxons]).to(eq([{ id: 123 }]))
+    expect(serializer.serializable_hash[:supplied_taxons]).to(eq([{ id: 456 }]))
   end
 
   it "serializes icons" do
-    expect(serializer.to_json).to match "map_005-hub.svg"
+    expect(serializer.to_json).to(match("map_005-hub.svg"))
   end
 end

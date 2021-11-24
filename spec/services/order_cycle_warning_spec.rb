@@ -11,12 +11,12 @@ describe OrderCycleWarning do
   describe "checking if user's managed order cycles have distributors not ready for checkout" do
     context "with an invalid distributor" do
       it "returns a warning message" do
-        expect(subject.new(user).call).to eq(
+        expect(subject.new(user).call).to(eq(
           I18n.t(
 :active_distributors_not_ready_for_checkout_message_singular,
                  distributor_names: distributor.name
 )
-        )
+        ))
       end
     end
 
@@ -30,7 +30,7 @@ describe OrderCycleWarning do
       end
 
       it "returns nil" do
-        expect(subject.new(user).call).to eq nil
+        expect(subject.new(user).call).to(eq(nil))
       end
     end
   end

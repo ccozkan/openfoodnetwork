@@ -24,7 +24,7 @@ describe Api::V0::VariantsController, type: :controller do
   end
 
   before do
-    allow(controller).to receive(:spree_current_user) { current_api_user }
+    allow(controller).to(receive(:spree_current_user) { current_api_user })
   end
 
   context "as a normal user" do
@@ -41,15 +41,15 @@ describe Api::V0::VariantsController, type: :controller do
       get :index, format: :json
 
       keys = json_response.first.keys.map(&:to_sym)
-      expect(attributes.all? { |attr| keys.include? attr }).to eq(true)
+      expect(attributes.all? { |attr| keys.include?(attr) }).to(eq(true))
     end
 
     it 'can query the results through a parameter' do
       expected_result = create(:variant, sku: 'FOOBAR')
       api_get :index, q: { sku_cont: 'FOO' }
 
-      expect(json_response.size).to eq(1)
-      expect(json_response.first['sku']).to eq expected_result.sku
+      expect(json_response.size).to(eq(1))
+      expect(json_response.first['sku']).to(eq(expected_result.sku))
     end
 
     # Regression test for spree#2141
@@ -60,12 +60,12 @@ describe Api::V0::VariantsController, type: :controller do
 
       it "is not returned in the results" do
         api_get :index
-        expect(json_response.count).to eq(10) # there are 11 variants
+        expect(json_response.count).to(eq(10)) # there are 11 variants
       end
 
       it "is not returned even when show_deleted is passed" do
         api_get :index, show_deleted: true
-        expect(json_response.count).to eq(10) # there are 11 variants
+        expect(json_response.count).to(eq(10)) # there are 11 variants
       end
     end
 
@@ -73,7 +73,7 @@ describe Api::V0::VariantsController, type: :controller do
       api_get :show, id: variant.to_param
 
       keys = json_response.keys.map(&:to_sym)
-      expect(attributes.all? { |attr| keys.include? attr }).to eq(true)
+      expect(attributes.all? { |attr| keys.include?(attr) }).to(eq(true))
     end
 
     it "cannot create a new variant if not an admin" do
@@ -93,8 +93,8 @@ describe Api::V0::VariantsController, type: :controller do
 
       assert_unauthorized!
       expect { variant.reload }
-.not_to raise_error
-      expect(variant.deleted_at).to be_nil
+.not_to(raise_error)
+      expect(variant.deleted_at).to(be_nil)
     end
   end
 
@@ -109,10 +109,10 @@ describe Api::V0::VariantsController, type: :controller do
     it "deletes a variant" do
       api_delete :destroy, id: variant.to_param
 
-      expect(response.status).to eq(204)
+      expect(response.status).to(eq(204))
       expect { variant.reload }
-.not_to raise_error
-      expect(variant.deleted_at).to be_present
+.not_to(raise_error)
+      expect(variant.deleted_at).to(be_present)
     end
 
     it "is denied access to soft deleting another enterprises' variant" do
@@ -120,8 +120,8 @@ describe Api::V0::VariantsController, type: :controller do
 
       assert_unauthorized!
       expect { variant_other.reload }
-.not_to raise_error
-      expect(variant_other.deleted_at).to be_nil
+.not_to(raise_error)
+      expect(variant_other.deleted_at).to(be_nil)
     end
   end
 
@@ -139,7 +139,7 @@ describe Api::V0::VariantsController, type: :controller do
       it "are visible by admin" do
         api_get :index, show_deleted: 1, product_id: variant.product.to_param
 
-        expect(json_response.count).to eq(2)
+        expect(json_response.count).to(eq(2))
       end
     end
 
@@ -149,25 +149,25 @@ describe Api::V0::VariantsController, type: :controller do
 variant: { sku: "12345", unit_value: "1", unit_description: "L" },
                         product_id: variant.product.to_param
 
-      expect(attributes.all? { |attr| json_response.include? attr.to_s }).to eq(true)
-      expect(response.status).to eq(201)
-      expect(json_response["sku"]).to eq("12345")
-      expect(variant.product.variants.count).to eq(original_number_of_variants + 1)
+      expect(attributes.all? { |attr| json_response.include?(attr.to_s) }).to(eq(true))
+      expect(response.status).to(eq(201))
+      expect(json_response["sku"]).to(eq("12345"))
+      expect(variant.product.variants.count).to(eq(original_number_of_variants + 1))
     end
 
     it "can update a variant" do
       api_put :update, id: variant.to_param, variant: { sku: "12345" }
 
-      expect(response.status).to eq(200)
+      expect(response.status).to(eq(200))
     end
 
     it "can delete a variant" do
       api_delete :destroy, id: variant.to_param
 
-      expect(response.status).to eq(204)
+      expect(response.status).to(eq(204))
       expect { variant.reload }
-.not_to raise_error
-      expect(variant.deleted_at).not_to be_nil
+.not_to(raise_error)
+      expect(variant.deleted_at).not_to(be_nil)
     end
 
     it "doesn't delete the only variant of the product" do
@@ -175,8 +175,8 @@ variant: { sku: "12345", unit_value: "1", unit_description: "L" },
       variant = product.variants.first
       spree_delete :destroy, id: variant.to_param
 
-      expect(variant.reload).to_not be_deleted
-      expect(assigns(:variant).errors[:product]).to include "must have at least one variant"
+      expect(variant.reload).to_not(be_deleted)
+      expect(assigns(:variant).errors[:product]).to(include("must have at least one variant"))
     end
   end
 end

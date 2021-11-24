@@ -5,7 +5,7 @@ require 'open_food_network/orders_and_fulfillments_report'
 require 'open_food_network/orders_and_fulfillments_report/customer_totals_report'
 require 'open_food_network/order_grouper'
 
-RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsReport do
+RSpec.describe(OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsReport) do
   let!(:distributor) { create(:distributor_enterprise) }
   let!(:customer) { create(:customer, enterprise: distributor) }
   let(:current_user) { distributor.owner }
@@ -31,38 +31,38 @@ distributor: distributor
     end
 
     it "generates the report" do
-      expect(report_table.length).to eq(2)
+      expect(report_table.length).to(eq(2))
     end
 
     it "has a line item row" do
       distributor_name_field = report_table.first[0]
-      expect(distributor_name_field).to eq distributor.name
+      expect(distributor_name_field).to(eq(distributor.name))
 
       customer_name_field = report_table.first[1]
-      expect(customer_name_field).to eq order.bill_address.full_name
+      expect(customer_name_field).to(eq(order.bill_address.full_name))
 
       total_field = report_table.last[5]
-      expect(total_field).to eq I18n.t("admin.reports.total")
+      expect(total_field).to(eq(I18n.t("admin.reports.total")))
     end
 
     it 'includes the order number and date in item rows' do
       order_number_and_date_fields = report_table.first[33..34]
-      expect(order_number_and_date_fields).to eq(
+      expect(order_number_and_date_fields).to(eq(
 [
                                                    order.number,
                                                    order.completed_at.strftime("%F %T"),
                                                  ]
-)
+))
     end
 
     it 'includes the order number and date in total rows' do
       order_number_and_date_fields = report_table.last[33..34]
-      expect(order_number_and_date_fields).to eq(
+      expect(order_number_and_date_fields).to(eq(
 [
                                                    order.number,
                                                    order.completed_at.strftime("%F %T"),
                                                  ]
-)
+))
     end
   end
 
@@ -93,7 +93,7 @@ distributor: distributor
 
     it "displays the correct shipping_method" do
       shipping_method_name_field = report_table.first[15]
-      expect(shipping_method_name_field).to eq shipping_method2.name
+      expect(shipping_method_name_field).to(eq(shipping_method2.name))
     end
   end
 
@@ -111,13 +111,13 @@ distributor: distributor
       let!(:failed_payment) { create(:payment, order: order, state: "failed") }
 
       before do
-        completed_payment.adjustment.update amount: 123.00
-        failed_payment.adjustment.update amount: 456.00, eligible: false, state: "finalized"
+        completed_payment.adjustment.update(amount: 123.00)
+        failed_payment.adjustment.update(amount: 456.00, eligible: false, state: "finalized")
       end
 
       it "shows the correct payment fee amount for the order" do
         payment_fee_field = report_table.last[12]
-        expect(payment_fee_field).to eq completed_payment.adjustment.amount
+        expect(payment_fee_field).to(eq(completed_payment.adjustment.amount))
       end
     end
   end
@@ -145,7 +145,7 @@ distributor: distributor
 
     it 'uses the sku from the variant override' do
       sku_field = report_table.first[23]
-      expect(sku_field).to eq overidden_sku
+      expect(sku_field).to(eq(overidden_sku))
     end
   end
 end

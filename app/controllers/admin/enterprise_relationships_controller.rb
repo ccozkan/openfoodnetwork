@@ -9,24 +9,24 @@ module Admin
       @all_enterprises = Enterprise.includes(:shipping_methods, :payment_methods).by_name
       @enterprise_relationships = EnterpriseRelationship
         .includes(:parent, :child, :permissions)
-        .by_name.involving_enterprises @my_enterprises
+        .by_name.involving_enterprises(@my_enterprises)
     end
 
     def create
-      @enterprise_relationship = EnterpriseRelationship.new enterprise_relationship_params
+      @enterprise_relationship = EnterpriseRelationship.new(enterprise_relationship_params)
 
       if @enterprise_relationship.save
-        render plain: Api::Admin::EnterpriseRelationshipSerializer.new(@enterprise_relationship).to_json
+        render(plain: Api::Admin::EnterpriseRelationshipSerializer.new(@enterprise_relationship).to_json)
       else
-        render status: :bad_request,
-               json: { errors: @enterprise_relationship.errors.full_messages.join(', ') }
+        render(status: :bad_request,
+               json: { errors: @enterprise_relationship.errors.full_messages.join(', ') })
       end
     end
 
     def destroy
-      @enterprise_relationship = EnterpriseRelationship.find params[:id]
+      @enterprise_relationship = EnterpriseRelationship.find(params[:id])
       @enterprise_relationship.destroy
-      render body: nil
+      render(body: nil)
     end
 
     private

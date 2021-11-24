@@ -10,7 +10,7 @@ module Spree
           :shipping_method,
           shipping_categories: [Spree::ShippingCategory.new(name: 'Test')]
         )
-      ).to be_valid
+      ).to(be_valid)
     end
 
     it "can have distributors" do
@@ -22,7 +22,7 @@ module Spree
       sm.distributors << d1
       sm.distributors << d2
 
-      expect(sm.reload.distributors).to match_array [d1, d2]
+      expect(sm.reload.distributors).to(match_array([d1, d2]))
     end
 
     describe "scope" do
@@ -39,9 +39,9 @@ module Spree
 
         it "includes only unique records under specified distributors" do
           result = described_class.for_distributors([distributor_a, distributor_b])
-          expect(result.length).to eq(2)
-          expect(result).to include(shipping_method_a)
-          expect(result).to include(shipping_method_b)
+          expect(result.length).to(eq(2))
+          expect(result).to(include(shipping_method_a))
+          expect(result).to(include(shipping_method_b))
         end
       end
 
@@ -51,7 +51,7 @@ module Spree
         sm1 = create(:shipping_method, distributors: [d1])
         sm2 = create(:shipping_method, distributors: [d2])
 
-        expect(ShippingMethod.for_distributor(d1)).to eq([sm1])
+        expect(ShippingMethod.for_distributor(d1)).to(eq([sm1]))
       end
     end
 
@@ -60,7 +60,7 @@ module Spree
       sm2 = create(:shipping_method, name: 'AA')
       sm3 = create(:shipping_method, name: 'BB')
 
-      expect(ShippingMethod.by_name).to eq([sm2, sm3, sm1])
+      expect(ShippingMethod.by_name).to(eq([sm2, sm3, sm1]))
     end
 
     describe "finding services offered by all distributors" do
@@ -78,31 +78,31 @@ module Spree
       end
 
       it "reports when the services are available" do
-        expect(ShippingMethod.services[d1.id]).to eq(pickup: true, delivery: true)
+        expect(ShippingMethod.services[d1.id]).to(eq(pickup: true, delivery: true))
       end
 
       it "reports when only pickup is available" do
-        expect(ShippingMethod.services[d2.id]).to eq(pickup: true, delivery: false)
+        expect(ShippingMethod.services[d2.id]).to(eq(pickup: true, delivery: false))
       end
 
       it "reports when only delivery is available" do
-        expect(ShippingMethod.services[d3.id]).to eq(pickup: false, delivery: true)
+        expect(ShippingMethod.services[d3.id]).to(eq(pickup: false, delivery: true))
       end
 
       it "returns no entry when no service is available" do
-        expect(ShippingMethod.services[d4.id]).to be_nil
+        expect(ShippingMethod.services[d4.id]).to(be_nil)
       end
     end
 
     describe '#delivery?' do
       context 'when the shipping method requires an address' do
         let(:shipping_method) { build(:shipping_method, require_ship_address: true) }
-        it { expect(shipping_method.delivery?).to be true }
+        it { expect(shipping_method.delivery?).to(be(true)) }
       end
 
       context 'when the shipping method does not require address' do
         let(:shipping_method) { build(:shipping_method, require_ship_address: false) }
-        it { expect(shipping_method.delivery?).to be false }
+        it { expect(shipping_method.delivery?).to(be(false)) }
       end
     end
 
@@ -110,16 +110,16 @@ module Spree
       let(:shipping_method) { build_stubbed(:shipping_method) }
 
       it "does not include a nil address" do
-        expect(shipping_method.include?(nil)).to be false
+        expect(shipping_method.include?(nil)).to(be(false))
       end
 
       it "includes an address that is not included in the zones of the shipping method" do
         address = create(:address)
         zone_mock = instance_double(Spree::Zone)
-        allow(zone_mock).to receive(:include?).with(address).and_return(false)
-        allow(shipping_method).to receive(:zones) { [zone_mock] }
+        allow(zone_mock).to(receive(:include?).with(address).and_return(false))
+        allow(shipping_method).to(receive(:zones) { [zone_mock] })
 
-        expect(shipping_method.include?(address)).to be true
+        expect(shipping_method.include?(address)).to(be(true))
       end
     end
 
@@ -130,22 +130,22 @@ module Spree
 
       it "is touched when applied to a distributor" do
         expect { add_distributor }
-.to change { shipping_method.reload.updated_at }
+.to(change { shipping_method.reload.updated_at })
       end
     end
 
     context "validations" do
       it "validates presence of name" do
         shipping_method = build_stubbed(:shipping_method, name: '')
-        expect(shipping_method).not_to be_valid
-        expect(shipping_method.errors[:name].first).to eq "can't be blank"
+        expect(shipping_method).not_to(be_valid)
+        expect(shipping_method.errors[:name].first).to(eq("can't be blank"))
       end
 
       context "shipping category" do
         it "validates presence of at least one" do
           shipping_method = build_stubbed(:shipping_method, shipping_categories: [])
-          expect(shipping_method).not_to be_valid
-          expect(shipping_method.errors[:base].first).to eq "You need to select at least one shipping category"
+          expect(shipping_method).not_to(be_valid)
+          expect(shipping_method.errors[:base].first).to(eq("You need to select at least one shipping category"))
         end
 
         context "one associated" do
@@ -155,7 +155,7 @@ module Spree
               shipping_categories: [Spree::ShippingCategory.new(name: 'Test')]
             )
           end
-          it { expect(shipping_method).to be_valid }
+          it { expect(shipping_method).to(be_valid) }
         end
       end
     end
@@ -166,7 +166,7 @@ module Spree
 
       it "soft-deletes when destroy is called" do
         shipping_method.destroy
-        expect(shipping_method.deleted_at).to_not be_blank
+        expect(shipping_method.deleted_at).to_not(be_blank)
       end
     end
 
@@ -174,7 +174,7 @@ module Spree
       let(:shipping_method) { create :shipping_method }
 
       it "should set calculable correctly" do
-        expect(shipping_method.calculator.calculable).to eq(shipping_method)
+        expect(shipping_method.calculator.calculable).to(eq(shipping_method))
       end
     end
 
@@ -188,7 +188,7 @@ module Spree
       end
 
       it "can gather all the related shipments" do
-        expect(shipping_method.shipments).to include(shipment)
+        expect(shipping_method.shipments).to(include(shipment))
       end
     end
   end

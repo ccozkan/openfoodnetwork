@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'open_food_network/orders_and_fulfillments_report/supplier_totals_report'
 
-RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::SupplierTotalsReport do
+RSpec.describe(OpenFoodNetwork::OrdersAndFulfillmentsReport::SupplierTotalsReport) do
   let!(:distributor) { create(:distributor_enterprise) }
 
   let!(:order) do
@@ -22,12 +22,12 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::SupplierTotalsRepor
   end
 
   it "generates the report" do
-    expect(report_table.length).to eq(1)
+    expect(report_table.length).to(eq(1))
   end
 
   it "has a variant row" do
     supplier = order.line_items.first.variant.product.supplier
     supplier_name_field = report_table.first[0]
-    expect(supplier_name_field).to eq supplier.name
+    expect(supplier_name_field).to(eq(supplier.name))
   end
 end

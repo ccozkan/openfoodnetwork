@@ -28,38 +28,38 @@ orders_open_at: 3.days.ago,
     end
 
     before do
-      order.set_distributor! current_distributor
+      order.set_distributor!(current_distributor)
       order.line_items << line_item
     end
 
     it "sets the shop as the distributor on the order when shopping for the distributor" do
       get :shop, params: { id: distributor }
 
-      expect(controller.current_distributor).to eq(distributor)
-      expect(controller.current_order.distributor).to eq(distributor)
-      expect(controller.current_order.order_cycle).to be_nil
+      expect(controller.current_distributor).to(eq(distributor))
+      expect(controller.current_order.distributor).to(eq(distributor))
+      expect(controller.current_order.order_cycle).to(be_nil)
     end
 
     context "when user is logged in" do
-      before { allow(controller).to receive(:spree_current_user) { user } }
+      before { allow(controller).to(receive(:spree_current_user) { user }) }
 
       it "sets the shop as the distributor on the order when shopping for the distributor" do
         get :shop, params: { id: distributor }
 
-        expect(controller.current_distributor).to eq(distributor)
-        expect(controller.current_order.distributor).to eq(distributor)
-        expect(controller.current_order.order_cycle).to be_nil
+        expect(controller.current_distributor).to(eq(distributor))
+        expect(controller.current_order.distributor).to(eq(distributor))
+        expect(controller.current_order.order_cycle).to(be_nil)
       end
     end
 
     it "sorts order cycles by the distributor's preferred ordering attr" do
       distributor.update_attribute(:preferred_shopfront_order_cycle_order, 'orders_close_at')
       get :shop, params: { id: distributor }
-      expect(assigns(:order_cycles)).to eq([order_cycle1, order_cycle2].sort_by(&:orders_close_at))
+      expect(assigns(:order_cycles)).to(eq([order_cycle1, order_cycle2].sort_by(&:orders_close_at)))
 
       distributor.update_attribute(:preferred_shopfront_order_cycle_order, 'orders_open_at')
       get :shop, params: { id: distributor }
-      expect(assigns(:order_cycles)).to eq([order_cycle1, order_cycle2].sort_by(&:orders_open_at))
+      expect(assigns(:order_cycles)).to(eq([order_cycle1, order_cycle2].sort_by(&:orders_open_at)))
     end
 
     context "using FilterOrderCycles tag rules" do
@@ -91,23 +91,23 @@ orders_open_at: 3.days.ago,
 )
 
         get :shop, params: { id: distributor }
-        expect(assigns(:order_cycles)).to include order_cycle1, order_cycle2, order_cycle3
+        expect(assigns(:order_cycles)).to(include(order_cycle1, order_cycle2, order_cycle3))
 
-        allow(controller).to receive(:spree_current_user) { user }
+        allow(controller).to(receive(:spree_current_user) { user })
 
         get :shop, params: { id: distributor }
-        expect(assigns(:order_cycles)).to include order_cycle1, order_cycle2, order_cycle3
+        expect(assigns(:order_cycles)).to(include(order_cycle1, order_cycle2, order_cycle3))
 
         oc3_exchange.update_attribute(:tag_list, "wholesale")
 
         get :shop, params: { id: distributor }
-        expect(assigns(:order_cycles)).to include order_cycle1, order_cycle2
-        expect(assigns(:order_cycles)).not_to include order_cycle3
+        expect(assigns(:order_cycles)).to(include(order_cycle1, order_cycle2))
+        expect(assigns(:order_cycles)).not_to(include(order_cycle3))
 
         customer.update_attribute(:tag_list, ["wholesale"])
 
         get :shop, params: { id: distributor }
-        expect(assigns(:order_cycles)).to include order_cycle1, order_cycle2, order_cycle3
+        expect(assigns(:order_cycles)).to(include(order_cycle1, order_cycle2, order_cycle3))
       end
     end
 
@@ -117,16 +117,16 @@ orders_open_at: 3.days.ago,
 
       get :shop, params: { id: distributor }
 
-      expect(controller.current_order.distributor).to eq(distributor)
-      expect(controller.current_order.order_cycle).to be_nil
-      expect(controller.current_order.line_items.size).to eq(0)
+      expect(controller.current_order.distributor).to(eq(distributor))
+      expect(controller.current_order.order_cycle).to(be_nil)
+      expect(controller.current_order.line_items.size).to(eq(0))
     end
 
     it "should not empty an order if returning to the same distributor" do
       get :shop, params: { id: current_distributor }
 
-      expect(controller.current_order.distributor).to eq current_distributor
-      expect(controller.current_order.line_items.first.variant).to eq line_item.variant
+      expect(controller.current_order.distributor).to(eq(current_distributor))
+      expect(controller.current_order.line_items.first.variant).to(eq(line_item.variant))
     end
 
     describe "when an out of stock item is in the cart" do
@@ -137,7 +137,7 @@ orders_open_at: 3.days.ago,
       end
 
       before do
-        order.set_distribution! current_distributor, order_cycle
+        order.set_distribution!(current_distributor, order_cycle)
         order.line_items << line_item
 
         variant.on_hand = 0
@@ -147,7 +147,7 @@ orders_open_at: 3.days.ago,
       it "redirects to the cart" do
         get :shop, params: { id: current_distributor }
 
-        expect(response).to redirect_to cart_path
+        expect(response).to(redirect_to(cart_path))
       end
     end
 
@@ -155,13 +155,13 @@ orders_open_at: 3.days.ago,
       order.distributor = distributor
       order.order_cycle = order_cycle1
       order.save
-      order_cycle1.update_attribute :orders_close_at, Time.zone.now
+      order_cycle1.update_attribute(:orders_close_at, Time.zone.now)
 
       get :shop, params: { id: distributor }
 
-      expect(controller.current_order.distributor).to eq(distributor)
-      expect(controller.current_order.order_cycle).to eq(order_cycle2)
-      expect(controller.current_order.line_items).to be_empty
+      expect(controller.current_order.distributor).to(eq(distributor))
+      expect(controller.current_order.order_cycle).to(eq(order_cycle2))
+      expect(controller.current_order.line_items).to(be_empty)
     end
 
     it "sets order cycle if only one is available at the chosen distributor" do
@@ -169,8 +169,8 @@ orders_open_at: 3.days.ago,
 
       get :shop, params: { id: distributor }
 
-      expect(controller.current_order.distributor).to eq(distributor)
-      expect(controller.current_order.order_cycle).to eq(order_cycle1)
+      expect(controller.current_order.distributor).to(eq(distributor))
+      expect(controller.current_order.order_cycle).to(eq(order_cycle1))
     end
   end
 
@@ -179,16 +179,16 @@ orders_open_at: 3.days.ago,
 
     it "responds with status of 200 when the route does not exist" do
       get :check_permalink, xhr: true, params: { permalink: 'some_nonexistent_route' }, as: :js
-      expect(response.status).to be 200
+      expect(response.status).to(be(200))
     end
 
     it "responds with status of 409 when the permalink matches an existing route" do
       # get :check_permalink, { permalink: 'enterprise_permalink', format: :js }
       # expect(response.status).to be 409
       get :check_permalink, xhr: true, params: { permalink: 'map' }, as: :js
-      expect(response.status).to be 409
+      expect(response.status).to(be(409))
       get :check_permalink, xhr: true, params: { permalink: '' }, as: :js
-      expect(response.status).to be 409
+      expect(response.status).to(be(409))
     end
   end
 
@@ -198,11 +198,11 @@ orders_open_at: 3.days.ago,
     end
 
     it "redirects to shops_path" do
-      expect(response).to redirect_to shops_path
+      expect(response).to(redirect_to(shops_path))
     end
 
     it "shows a flash message with the error" do
-      expect(request.flash[:error]).to eq(I18n.t(:enterprise_shop_show_error))
+      expect(request.flash[:error]).to(eq(I18n.t(:enterprise_shop_show_error)))
     end
   end
 end

@@ -18,8 +18,8 @@ describe DfcProvider::Api::EnterprisesController, type: :controller do
       context 'with an authenticated user' do
         before do
           allow_any_instance_of(DfcProvider::AuthorizationControl)
-            .to receive(:process)
-            .and_return(user)
+            .to(receive(:process)
+            .and_return(user))
         end
 
         context 'with an enterprise' do
@@ -27,13 +27,13 @@ describe DfcProvider::Api::EnterprisesController, type: :controller do
             before { api_get :show, id: 'default' }
 
             it 'is successful' do
-              expect(response).to be_successful
+              expect(response).to(be_successful)
             end
 
             it 'renders the required content' do
-              expect(response.body).to include(product.name)
-              expect(response.body).to include(product.sku)
-              expect(response.body).to include("offers/#{product.variants.first.id}")
+              expect(response.body).to(include(product.name))
+              expect(response.body).to(include(product.sku))
+              expect(response.body).to(include("offers/#{product.variants.first.id}"))
             end
           end
 
@@ -41,7 +41,7 @@ describe DfcProvider::Api::EnterprisesController, type: :controller do
             before { api_get :show, id: 999 }
 
             it 'is not found' do
-              expect(response).to be_not_found
+              expect(response).to(be_not_found)
             end
           end
         end

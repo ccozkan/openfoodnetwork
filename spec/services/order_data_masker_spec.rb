@@ -13,38 +13,38 @@ describe OrderDataMasker do
       it 'masks personal addresses and email' do
         described_class.new(order).call
 
-        expect(order.bill_address.attributes).to include(
+        expect(order.bill_address.attributes).to(include(
           'phone' => '',
           'address1' => '',
           'address2' => '',
           'city' => '',
           'zipcode' => '',
           'state_id' => nil
-        )
+        ))
 
-        expect(order.ship_address.attributes).to include(
+        expect(order.ship_address.attributes).to(include(
           'phone' => '',
           'address1' => '',
           'address2' => '',
           'city' => '',
           'zipcode' => '',
           'state_id' => nil
-        )
+        ))
 
-        expect(order.email).to eq(I18n.t('admin.reports.hidden'))
+        expect(order.email).to(eq(I18n.t('admin.reports.hidden')))
       end
 
       it 'does not mask the full name' do
         described_class.new(order).call
 
-        expect(order.bill_address.attributes).not_to include(
+        expect(order.bill_address.attributes).not_to(include(
           firstname: I18n.t('admin.reports.hidden'),
           lastname: ''
-        )
-        expect(order.ship_address.attributes).not_to include(
+        ))
+        expect(order.ship_address.attributes).not_to(include(
           firstname: I18n.t('admin.reports.hidden'),
           lastname: ''
-        )
+        ))
       end
     end
 
@@ -54,38 +54,38 @@ describe OrderDataMasker do
       it 'masks personal addresses and email' do
         described_class.new(order).call
 
-        expect(order.bill_address.attributes).to include(
+        expect(order.bill_address.attributes).to(include(
           'phone' => '',
           'address1' => '',
           'address2' => '',
           'city' => '',
           'zipcode' => '',
           'state_id' => nil
-        )
+        ))
 
-        expect(order.ship_address.attributes).to include(
+        expect(order.ship_address.attributes).to(include(
           'phone' => '',
           'address1' => '',
           'address2' => '',
           'city' => '',
           'zipcode' => '',
           'state_id' => nil
-        )
+        ))
 
-        expect(order.email).to eq(I18n.t('admin.reports.hidden'))
+        expect(order.email).to(eq(I18n.t('admin.reports.hidden')))
       end
 
       it 'masks the full name' do
         described_class.new(order).call
 
-        expect(order.bill_address.attributes).to include(
+        expect(order.bill_address.attributes).to(include(
           'firstname' => I18n.t('admin.reports.hidden'),
           'lastname' => ''
-        )
-        expect(order.ship_address.attributes).to include(
+        ))
+        expect(order.ship_address.attributes).to(include(
           'firstname' => I18n.t('admin.reports.hidden'),
           'lastname' => ''
-        )
+        ))
       end
     end
   end

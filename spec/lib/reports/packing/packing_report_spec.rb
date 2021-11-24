@@ -24,7 +24,7 @@ distributor: distributor,
     let(:report_contents) { subject.report_data.rows.flatten }
     let(:row_count) { subject.report_data.rows.count }
 
-    subject { Reporting::Reports::Packing::Customer.new user, params }
+    subject { Reporting::Reports::Packing::Customer.new(user, params) }
 
     before do
       order.line_items << line_item
@@ -42,11 +42,11 @@ distributor: distributor,
       end
 
       it "fetches line items for completed orders" do
-        expect(report_contents).to include line_item.product.name
+        expect(report_contents).to(include(line_item.product.name))
       end
 
       it "does not fetch line items for cancelled orders" do
-        expect(report_contents).to_not include line_item2.product.name
+        expect(report_contents).to_not(include(line_item2.product.name))
       end
     end
 
@@ -80,7 +80,7 @@ product: create(:simple_product, name: "not visible", supplier: supplier2))
 
       context "which has not granted P-OC to the distributor" do
         it "does not show line items supplied by my producers" do
-          expect(row_count).to eq 0
+          expect(row_count).to(eq(0))
         end
       end
 
@@ -95,24 +95,24 @@ child: distributor,
         end
 
         it "shows line items supplied by my producers, with names hidden" do
-          expect(report_contents).to include line_item2.product.name
-          expect(report_data.first["first_name"]).to eq(I18n.t('admin.reports.hidden_field'))
+          expect(report_contents).to(include(line_item2.product.name))
+          expect(report_data.first["first_name"]).to(eq(I18n.t('admin.reports.hidden_field')))
         end
 
         context "where the distributor allows suppliers to see customer names" do
           before do
-            distributor.update_columns show_customer_names_to_suppliers: true
+            distributor.update_columns(show_customer_names_to_suppliers: true)
           end
 
           it "shows line items supplied by my producers, with names shown" do
-            expect(report_data.first["first_name"]).to eq(order2.bill_address.firstname)
+            expect(report_data.first["first_name"]).to(eq(order2.bill_address.firstname))
           end
         end
 
         context "where an order contains items from multiple suppliers" do
           it "only shows line items the current user supplies" do
-            expect(report_contents).to include line_item2.product.name
-            expect(report_contents).to_not include line_item3.product.name
+            expect(report_contents).to(include(line_item2.product.name))
+            expect(report_contents).to_not(include(line_item3.product.name))
           end
         end
       end
@@ -137,8 +137,8 @@ distributor: distributor2,
       end
 
       it "only shows line items distributed by enterprises managed by the current user" do
-        expect(report_contents).to include line_item.product.name
-        expect(report_contents).to_not include line_item3.product.name
+        expect(report_contents).to(include(line_item.product.name))
+        expect(report_contents).to_not(include(line_item3.product.name))
       end
 
       context "filtering by order cycle" do
@@ -160,8 +160,8 @@ order_cycle: order_cycle2,
         end
 
         it "only shows results from the selected order cycle" do
-          expect(report_contents).to include line_item.product.name
-          expect(report_contents).to_not include line_item4.product.name
+          expect(report_contents).to(include(line_item.product.name))
+          expect(report_contents).to_not(include(line_item4.product.name))
         end
       end
     end
@@ -182,9 +182,9 @@ distributor: distributor2,
       end
 
       it "groups and orders by distributor and order" do
-        expect(subject.report_data.rows.map(&:first)).to eq(
+        expect(subject.report_data.rows.map(&:first)).to(eq(
           [order.distributor.name, "", order2.distributor.name, order2.distributor.name, ""]
-        )
+        ))
       end
     end
   end

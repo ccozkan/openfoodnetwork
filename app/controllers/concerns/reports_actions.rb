@@ -6,7 +6,7 @@ module ReportsActions
   private
 
   def authorize_report
-    authorize! report_type&.to_sym, :report
+    authorize!(report_type&.to_sym, :report)
   end
 
   def report_class
@@ -45,7 +45,7 @@ module ReportsActions
 
   def form_options_required?
     [:packing, :customers, :products_and_inventory, :order_cycle_management]
-      .include? report_type.to_sym
+      .include?(report_type.to_sym)
   end
 
   def report_filename

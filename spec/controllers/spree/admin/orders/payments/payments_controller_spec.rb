@@ -9,7 +9,7 @@ describe Spree::Admin::PaymentsController, type: :controller do
   let!(:line_item) { create(:line_item, order: order, price: 5.0) }
 
   before do
-    allow(controller).to receive(:spree_current_user) { user }
+    allow(controller).to(receive(:spree_current_user) { user })
   end
 
   describe "#create" do
@@ -23,9 +23,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
 
       it "advances the order state" do
         expect do
-          spree_post :create, payment: params, order_id: order.number
-        end.to change { order.reload.state }
-.from("payment").to("complete")
+          spree_post(:create, payment: params, order_id: order.number)
+        end.to(change { order.reload.state }
+.from("payment").to("complete"))
       end
     end
 
@@ -44,7 +44,7 @@ distributor: shop,
           spree_post :create, payment: params, order_id: order.number
 
           redirects_to_list_of_payments_with_success_flash
-          expect(order.reload.payments.last.state).to eq "checkout"
+          expect(order.reload.payments.last.state).to(eq("checkout"))
         end
       end
 
@@ -52,15 +52,15 @@ distributor: shop,
         let!(:payment_method) { create(:stripe_connect_payment_method, distributors: [shop]) }
         before do
           allow_any_instance_of(Spree::Payment)
-            .to receive(:process_offline!)
-            .and_raise(Spree::Core::GatewayError.new("Payment Gateway Error"))
+            .to(receive(:process_offline!)
+            .and_raise(Spree::Core::GatewayError.new("Payment Gateway Error")))
         end
 
         it "redirects to new payment page with flash error" do
           spree_post :create, payment: params, order_id: order.number
 
           redirects_to_new_payment_page_with_flash_error("Payment Gateway Error")
-          expect(order.reload.payments.last.state).to eq "checkout"
+          expect(order.reload.payments.last.state).to(eq("checkout"))
         end
       end
 
@@ -70,36 +70,36 @@ distributor: shop,
         context "where payment.authorize! raises GatewayError" do
           before do
             allow_any_instance_of(Spree::Payment)
-              .to receive(:authorize!)
-              .and_raise(Spree::Core::GatewayError.new("Stripe Authorization Failure"))
+              .to(receive(:authorize!)
+              .and_raise(Spree::Core::GatewayError.new("Stripe Authorization Failure")))
           end
 
           it "redirects to new payment page with flash error" do
             spree_post :create, payment: params, order_id: order.number
 
             redirects_to_new_payment_page_with_flash_error("Stripe Authorization Failure")
-            expect(order.reload.payments.last.state).to eq "checkout"
+            expect(order.reload.payments.last.state).to(eq("checkout"))
           end
         end
 
         context "where payment.authorize! does not move payment to pending state" do
           before do
-            allow_any_instance_of(Spree::Payment).to receive(:authorize!).and_return(true)
+            allow_any_instance_of(Spree::Payment).to(receive(:authorize!).and_return(true))
           end
 
           it "redirects to new payment page with flash error" do
             spree_post :create, payment: params, order_id: order.number
 
             redirects_to_new_payment_page_with_flash_error("Authorization Failure")
-            expect(order.reload.payments.last.state).to eq "checkout"
+            expect(order.reload.payments.last.state).to(eq("checkout"))
           end
         end
 
         context "where further action is required" do
           before do
-            allow_any_instance_of(Spree::Payment).to receive(:authorize!) do |payment|
-              payment.update cvv_response_message: "https://www.stripe.com/authorize"
-              payment.update state: "requires_authorization"
+            allow_any_instance_of(Spree::Payment).to(receive(:authorize!)) do |payment|
+              payment.update(cvv_response_message: "https://www.stripe.com/authorize")
+              payment.update(state: "requires_authorization")
             end
           end
           it "redirects to new payment page with flash error" do
@@ -111,10 +111,10 @@ distributor: shop,
 
         context "where both payment.process! and payment.authorize! work" do
           before do
-            allow_any_instance_of(Spree::Payment).to receive(:authorize!) do |payment|
-              payment.update state: "pending"
+            allow_any_instance_of(Spree::Payment).to(receive(:authorize!)) do |payment|
+              payment.update(state: "pending")
             end
-            allow_any_instance_of(Spree::Payment).to receive(:process_offline!).and_return(true)
+            allow_any_instance_of(Spree::Payment).to(receive(:process_offline!).and_return(true))
           end
 
           it "makes a payment with the provided card details" do
@@ -131,31 +131,31 @@ payment: params.merge({ source_attributes: source_attributes }),
                                 order_id: order.number
 
             payment = order.reload.payments.last
-            expect(payment.source.attributes.transform_keys(&:to_sym)).to include source_attributes
+            expect(payment.source.attributes.transform_keys(&:to_sym)).to(include(source_attributes))
           end
 
           it "redirects to list of payments with success flash" do
             spree_post :create, payment: params, order_id: order.number
 
             redirects_to_list_of_payments_with_success_flash
-            expect(order.reload.payments.last.state).to eq "pending"
+            expect(order.reload.payments.last.state).to(eq("pending"))
           end
         end
       end
 
       def redirects_to_list_of_payments_with_success_flash
-        expect_redirect_to spree.admin_order_payments_url(order)
-        expect(flash[:success]).to eq "Payment has been successfully created!"
+        expect_redirect_to(spree.admin_order_payments_url(order))
+        expect(flash[:success]).to(eq("Payment has been successfully created!"))
       end
 
       def redirects_to_new_payment_page_with_flash_error(flash_error)
-        expect_redirect_to spree.new_admin_order_payment_url(order)
-        expect(flash[:error]).to eq flash_error
+        expect_redirect_to(spree.new_admin_order_payment_url(order))
+        expect(flash[:error]).to(eq(flash_error))
       end
 
       def expect_redirect_to(path)
-        expect(response.status).to eq 302
-        expect(response.location).to eq path
+        expect(response.status).to(eq(302))
+        expect(response.location).to(eq(path))
       end
     end
   end
@@ -180,34 +180,34 @@ payment: params.merge({ source_attributes: source_attributes }),
 
       before do
         request.env["HTTP_REFERER"] = "http://foo.com"
-        allow(Spree::Payment).to receive(:find).with(payment.id.to_s) { payment }
+        allow(Spree::Payment).to(receive(:find).with(payment.id.to_s) { payment })
       end
 
       it 'handles gateway errors' do
         allow(payment.payment_method)
-          .to receive(:credit).and_raise(Spree::Core::GatewayError, 'error message')
+          .to(receive(:credit).and_raise(Spree::Core::GatewayError, 'error message'))
 
         spree_put :fire, params
 
-        expect(flash[:error]).to eq('error message')
-        expect(response).to redirect_to('http://foo.com')
+        expect(flash[:error]).to(eq('error message'))
+        expect(response).to(redirect_to('http://foo.com'))
       end
 
       it 'handles validation errors' do
-        allow(payment).to receive(:credit!).and_raise(StandardError, 'validation error')
+        allow(payment).to(receive(:credit!).and_raise(StandardError, 'validation error'))
 
         spree_put :fire, params
 
-        expect(flash[:error]).to eq('validation error')
-        expect(response).to redirect_to('http://foo.com')
+        expect(flash[:error]).to(eq('validation error'))
+        expect(response).to(redirect_to('http://foo.com'))
       end
 
       it 'displays a success message and redirects to the referer' do
-        allow(payment_method).to receive(:credit) { successful_response }
+        allow(payment_method).to(receive(:credit) { successful_response })
 
         spree_put :fire, params
 
-        expect(flash[:success]).to eq(I18n.t(:payment_updated))
+        expect(flash[:success]).to(eq(I18n.t(:payment_updated)))
       end
     end
 
@@ -216,34 +216,34 @@ payment: params.merge({ source_attributes: source_attributes }),
 
       before do
         request.env["HTTP_REFERER"] = "http://foo.com"
-        allow(Spree::Payment).to receive(:find).with(payment.id.to_s) { payment }
+        allow(Spree::Payment).to(receive(:find).with(payment.id.to_s) { payment })
       end
 
       it 'handles gateway errors' do
         allow(payment.payment_method)
-          .to receive(:refund).and_raise(Spree::Core::GatewayError, 'error message')
+          .to(receive(:refund).and_raise(Spree::Core::GatewayError, 'error message'))
 
         spree_put :fire, params
 
-        expect(flash[:error]).to eq('error message')
-        expect(response).to redirect_to('http://foo.com')
+        expect(flash[:error]).to(eq('error message'))
+        expect(response).to(redirect_to('http://foo.com'))
       end
 
       it 'handles validation errors' do
-        allow(payment).to receive(:refund!).and_raise(StandardError, 'validation error')
+        allow(payment).to(receive(:refund!).and_raise(StandardError, 'validation error'))
 
         spree_put :fire, params
 
-        expect(flash[:error]).to eq('validation error')
-        expect(response).to redirect_to('http://foo.com')
+        expect(flash[:error]).to(eq('validation error'))
+        expect(response).to(redirect_to('http://foo.com'))
       end
 
       it 'displays a success message and redirects to the referer' do
-        allow(payment_method).to receive(:refund) { successful_response }
+        allow(payment_method).to(receive(:refund) { successful_response })
 
         spree_put :fire, params
 
-        expect(flash[:success]).to eq(I18n.t(:payment_updated))
+        expect(flash[:success]).to(eq(I18n.t(:payment_updated)))
       end
     end
 
@@ -252,19 +252,19 @@ payment: params.merge({ source_attributes: source_attributes }),
       let(:mail_mock) { double(:mailer_mock, deliver_later: true) }
 
       before do
-        allow(PaymentMailer).to receive(:authorize_payment) { mail_mock }
+        allow(PaymentMailer).to(receive(:authorize_payment) { mail_mock })
         request.env["HTTP_REFERER"] = "http://foo.com"
-        allow(Spree::Payment).to receive(:find).with(payment.id.to_s) { payment }
-        allow(payment).to receive(:cvv_response_message).and_return("https://www.stripe.com/authorize")
-        allow(payment).to receive(:requires_authorization?) { true }
+        allow(Spree::Payment).to(receive(:find).with(payment.id.to_s) { payment })
+        allow(payment).to(receive(:cvv_response_message).and_return("https://www.stripe.com/authorize"))
+        allow(payment).to(receive(:requires_authorization?) { true })
       end
 
       it "resends the authorization email" do
         spree_put :fire, params
 
-        expect(flash[:success]).to eq(I18n.t(:payment_updated))
-        expect(PaymentMailer).to have_received(:authorize_payment)
-        expect(mail_mock).to have_received(:deliver_later)
+        expect(flash[:success]).to(eq(I18n.t(:payment_updated)))
+        expect(PaymentMailer).to(have_received(:authorize_payment))
+        expect(mail_mock).to(have_received(:deliver_later))
       end
     end
 
@@ -273,14 +273,14 @@ payment: params.merge({ source_attributes: source_attributes }),
 
       before do
         request.env["HTTP_REFERER"] = "http://foo.com"
-        allow(Spree::Payment).to receive(:find).with(payment.id.to_s) { payment }
+        allow(Spree::Payment).to(receive(:find).with(payment.id.to_s) { payment })
       end
 
       it 'does not process the event' do
         spree_put :fire, params
 
-        expect(payment).to_not receive(:unrecognized_event)
-        expect(flash[:error]).to eq(I18n.t(:cannot_perform_operation))
+        expect(payment).to_not(receive(:unrecognized_event))
+        expect(flash[:error]).to(eq(I18n.t(:cannot_perform_operation)))
       end
     end
   end
@@ -301,7 +301,7 @@ payment: params.merge({ source_attributes: source_attributes }),
 
       it "renders the payments tab" do
         spree_get :index, order_id: order.number
-        expect(response.status).to eq 200
+        expect(response.status).to(eq(200))
       end
 
       context "order is then resumed" do
@@ -311,7 +311,7 @@ payment: params.merge({ source_attributes: source_attributes }),
 
         it "still renders the payments tab" do
           spree_get :index, order_id: order.number
-          expect(response.status).to eq 200
+          expect(response.status).to(eq(200))
         end
       end
     end
@@ -325,8 +325,8 @@ payment: params.merge({ source_attributes: source_attributes }),
 
       it "redirects to the order details page" do
         spree_get :index, order_id: order.number
-        expect(response.status).to eq 302
-        expect(response.location).to eq spree.edit_admin_order_url(order)
+        expect(response.status).to(eq(302))
+        expect(response.location).to(eq(spree.edit_admin_order_url(order)))
       end
     end
   end

@@ -29,7 +29,7 @@ module Api
       end
 
       def viewing_as_coordinator
-        Enterprise.managed_by(options[:current_user]).include? object.coordinator
+        Enterprise.managed_by(options[:current_user]).include?(object.coordinator)
       end
 
       def subscriptions_count

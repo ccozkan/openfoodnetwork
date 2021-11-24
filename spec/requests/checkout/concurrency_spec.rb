@@ -54,8 +54,8 @@ describe "Concurrent checkouts", concurrency: true, type: :request do
     # same time, they are in a race condition and bad things can happen.
     # Examples are processing payments twice or selling more than we have.
     allow_any_instance_of(CheckoutController)
-      .to receive(:checkout_workflow)
-      .and_wrap_original do |method, *args|
+      .to(receive(:checkout_workflow)
+      .and_wrap_original) do |method, *args|
       breakpoint_reached_counter += 1
       breakpoint.synchronize {}
       method.call(*args)
@@ -71,20 +71,20 @@ describe "Concurrent checkouts", concurrency: true, type: :request do
     #    Both threads load required resources and wait at the breakpoint to do
     #    the same checkout action.
     threads = [
-      Thread.new { put update_checkout_path, params: params },
-      Thread.new { put update_checkout_path, params: params },
+      Thread.new { put(update_checkout_path, params: params) },
+      Thread.new { put(update_checkout_path, params: params) },
     ]
 
     # Wait for the first thread to reach the breakpoint:
     Timeout.timeout(1) do
-      sleep 0.1 while breakpoint_reached_counter < 1
+      sleep(0.1) while breakpoint_reached_counter < 1
     end
 
     # Give the second thread a chance to reach the breakpoint, too.
     # But we hope that it waits for the first thread earlier and doesn't
     # reach the breakpoint yet.
     sleep 1
-    expect(breakpoint_reached_counter).to eq 1
+    expect(breakpoint_reached_counter).to(eq(1))
 
     # Let the requests continue and finish.
     breakpoint.unlock
@@ -92,7 +92,7 @@ describe "Concurrent checkouts", concurrency: true, type: :request do
 
     # Verify that the checkout happened once.
     order.reload
-    expect(order.completed?).to be true
-    expect(order.payments.count).to eq 1
+    expect(order.completed?).to(be(true))
+    expect(order.payments.count).to(eq(1))
   end
 end

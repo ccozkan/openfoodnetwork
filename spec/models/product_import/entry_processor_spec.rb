@@ -29,8 +29,8 @@ describe ProductImport::EntryProcessor do
     end
 
     before do
-      allow(ProductImport::ResetAbsent).to receive(:new) { reset_absent }
-      allow(ProductImport::Settings).to receive(:new) { settings }
+      allow(ProductImport::ResetAbsent).to(receive(:new) { reset_absent })
+      allow(ProductImport::Settings).to(receive(:new) { settings })
     end
 
     context 'when there is no data' do
@@ -44,7 +44,7 @@ describe ProductImport::EntryProcessor do
 
       it 'does not call ResetAbsent' do
         entry_processor.reset_absent_items
-        expect(reset_absent).not_to have_received(:call)
+        expect(reset_absent).not_to(have_received(:call))
       end
     end
 
@@ -59,7 +59,7 @@ describe ProductImport::EntryProcessor do
 
       it 'does not call ResetAbsent' do
         entry_processor.reset_absent_items
-        expect(reset_absent).not_to have_received(:call)
+        expect(reset_absent).not_to(have_received(:call))
       end
     end
 
@@ -79,18 +79,18 @@ describe ProductImport::EntryProcessor do
         end
 
         before do
-          allow(settings).to receive(:importing_into_inventory?) { true }
+          allow(settings).to(receive(:importing_into_inventory?) { true })
 
           allow(ProductImport::InventoryResetStrategy)
-            .to receive(:new).with([1]) { reset_stock_strategy }
+            .to(receive(:new).with([1]) { reset_stock_strategy })
         end
 
         it 'delegates to ResetAbsent passing the appropriate reset_stock_strategy' do
           entry_processor.reset_absent_items
 
           expect(ProductImport::ResetAbsent)
-            .to have_received(:new)
-            .with(entry_processor, settings, reset_stock_strategy)
+            .to(have_received(:new)
+            .with(entry_processor, settings, reset_stock_strategy))
         end
       end
 
@@ -100,18 +100,18 @@ describe ProductImport::EntryProcessor do
         end
 
         before do
-          allow(settings).to receive(:importing_into_inventory?) { false }
+          allow(settings).to(receive(:importing_into_inventory?) { false })
 
           allow(Catalog::ProductImport::ProductsResetStrategy)
-            .to receive(:new).with([1]) { reset_stock_strategy }
+            .to(receive(:new).with([1]) { reset_stock_strategy })
         end
 
         it 'delegates to ResetAbsent passing the appropriate reset_stock_strategy' do
           entry_processor.reset_absent_items
 
           expect(ProductImport::ResetAbsent)
-            .to have_received(:new)
-            .with(entry_processor, settings, reset_stock_strategy)
+            .to(have_received(:new)
+            .with(entry_processor, settings, reset_stock_strategy))
         end
       end
     end
@@ -134,19 +134,19 @@ describe ProductImport::EntryProcessor do
       end
 
       before do
-        allow(ProductImport::Settings).to receive(:new) { settings }
-        allow(ProductImport::ResetAbsent).to receive(:new) { reset_absent }
+        allow(ProductImport::Settings).to(receive(:new) { settings })
+        allow(ProductImport::ResetAbsent).to(receive(:new) { reset_absent })
       end
 
       it 'returns the number of items affected by the last reset' do
         entry_processor.reset_absent_items
-        expect(entry_processor.products_reset_count).to eq(2)
+        expect(entry_processor.products_reset_count).to(eq(2))
       end
     end
 
     context 'when ResetAbsent was not called' do
       it 'returns 0' do
-        expect(entry_processor.products_reset_count).to eq(0)
+        expect(entry_processor.products_reset_count).to(eq(0))
       end
     end
   end

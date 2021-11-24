@@ -20,7 +20,7 @@ describe "Business Address" do
     describe "Business Address form" do
       def go_to_business_details
         within(".side_menu") do
-          click_link "Business Details"
+          click_link("Business Details")
         end
       end
 
@@ -38,7 +38,7 @@ describe "Business Address" do
         fill_in 'enterprise_business_address_attributes_phone', with: '0123456789'
 
         click_button "Update"
-        expect(page).to have_content("Enterprise \"First Distributor\" has been successfully updated!")
+        expect(page).to(have_content("Enterprise \"First Distributor\" has been successfully updated!"))
       end
 
       it 'is missing company field' do
@@ -50,7 +50,7 @@ describe "Business Address" do
         fill_in 'enterprise_business_address_attributes_phone', with: '0123456789'
 
         click_button "Update"
-        expect(page).to have_content("Business address company can't be blank")
+        expect(page).to(have_content("Business address company can't be blank"))
       end
 
       it 'is missing address field' do
@@ -62,7 +62,7 @@ describe "Business Address" do
         fill_in 'enterprise_business_address_attributes_phone', with: '0123456789'
 
         click_button "Update"
-        expect(page).to have_content("Business address address1 can't be blank")
+        expect(page).to(have_content("Business address address1 can't be blank"))
       end
 
       it 'is missing city field' do
@@ -74,7 +74,7 @@ describe "Business Address" do
         fill_in 'enterprise_business_address_attributes_phone', with: '0123456789'
 
         click_button "Update"
-        expect(page).to have_content("Business address city can't be blank")
+        expect(page).to(have_content("Business address city can't be blank"))
       end
 
       it 'is missing zipcode field' do
@@ -86,7 +86,7 @@ describe "Business Address" do
         fill_in 'enterprise_business_address_attributes_phone', with: '0123456789'
 
         click_button "Update"
-        expect(page).to have_content("Business address zipcode can't be blank")
+        expect(page).to(have_content("Business address zipcode can't be blank"))
       end
 
       it 'is missing phone field' do
@@ -98,7 +98,7 @@ describe "Business Address" do
         select2_select 'Victoria', from: 'enterprise_business_address_attributes_state_id'
 
         click_button "Update"
-        expect(page).to have_content("Business address phone can't be blank")
+        expect(page).to(have_content("Business address phone can't be blank"))
       end
 
       it 'destroys business address when Reset Form button is clicked' do
@@ -115,7 +115,7 @@ describe "Business Address" do
         go_to_business_details
 
         click_button "Reset Form"
-        expect(page).to have_content("Enterprise \"First Distributor\" has been successfully updated!")
+        expect(page).to(have_content("Enterprise \"First Distributor\" has been successfully updated!"))
       end
 
       it 'clears form when all fields  are empty' do
@@ -138,7 +138,7 @@ describe "Business Address" do
         fill_in 'enterprise_business_address_attributes_phone', with: ''
 
         click_button "Update"
-        expect(page).to have_content("Enterprise \"First Distributor\" has been successfully updated!")
+        expect(page).to(have_content("Enterprise \"First Distributor\" has been successfully updated!"))
       end
     end
   end

@@ -87,7 +87,7 @@ order: order3,
 
       context 'as a regular user' do
         before do
-          allow(controller).to receive(:spree_current_user) { regular_user }
+          allow(controller).to(receive(:spree_current_user) { regular_user })
           get :index
         end
 
@@ -98,7 +98,7 @@ order: order3,
 
       context 'as an admin user' do
         before do
-          allow(controller).to receive(:spree_current_user) { admin_user }
+          allow(controller).to(receive(:spree_current_user) { admin_user })
         end
 
         it "retrieves a list of orders with appropriate attributes,
@@ -111,7 +111,7 @@ order: order3,
       context 'as an enterprise user' do
         context 'producer enterprise' do
           before do
-            allow(controller).to receive(:spree_current_user) { supplier.owner }
+            allow(controller).to(receive(:spree_current_user) { supplier.owner })
             get :index
           end
 
@@ -122,7 +122,7 @@ order: order3,
 
         context 'coordinator enterprise' do
           before do
-            allow(controller).to receive(:spree_current_user) { coordinator.owner }
+            allow(controller).to(receive(:spree_current_user) { coordinator.owner })
             get :index
           end
 
@@ -133,7 +133,7 @@ order: order3,
 
         context 'hub enterprise' do
           before do
-            allow(controller).to receive(:spree_current_user) { distributor.owner }
+            allow(controller).to(receive(:spree_current_user) { distributor.owner })
             get :index
           end
 
@@ -145,7 +145,7 @@ order: order3,
 
       context 'using search filters' do
         before do
-          allow(controller).to receive(:spree_current_user) { admin_user }
+          allow(controller).to(receive(:spree_current_user) { admin_user })
         end
 
         it 'can show only completed orders' do
@@ -153,25 +153,25 @@ order: order3,
 params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
                       as: :json
 
-          expect(json_response['orders']).to eq serialized_orders([order4, order3, order2, order1])
+          expect(json_response['orders']).to(eq(serialized_orders([order4, order3, order2, order1])))
         end
       end
 
       context 'sorting' do
         before do
-          allow(controller).to receive(:spree_current_user) { admin_user }
+          allow(controller).to(receive(:spree_current_user) { admin_user })
         end
 
         it 'can sort orders by total' do
           get :index, params: { q: { completed_at_not_null: true, s: 'total desc' } }, as: :json
 
-          expect(json_response['orders']).to eq serialized_orders([order4, order2, order1, order3])
+          expect(json_response['orders']).to(eq(serialized_orders([order4, order2, order1, order3])))
         end
       end
 
       context 'with pagination' do
         before do
-          allow(controller).to receive(:spree_current_user) { distributor.owner }
+          allow(controller).to(receive(:spree_current_user) { distributor.owner })
         end
 
         it 'returns pagination data when query params contain :per_page]' do
@@ -179,7 +179,7 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
 
           pagination_data = { 'results' => 2, 'pages' => 1, 'page' => 1, 'per_page' => 15 }
 
-          expect(json_response['pagination']).to eq pagination_data
+          expect(json_response['pagination']).to(eq(pagination_data))
         end
       end
     end
@@ -190,48 +190,48 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
       end
 
       context "Resource not found" do
-        before { allow(controller).to receive(:spree_current_user) { admin_user } }
+        before { allow(controller).to(receive(:spree_current_user) { admin_user }) }
 
         it "when no order number is given" do
           get :show, params: { id: "" }
-          expect(response).to have_http_status(:not_found)
+          expect(response).to(have_http_status(:not_found))
         end
 
         it "when order number given is not in the systen" do
           get :show, params: { id: "X1321313232" }
-          expect(response).to have_http_status(:not_found)
+          expect(response).to(have_http_status(:not_found))
         end
       end
 
       context "access" do
         it "returns unauthorized, as a regular user" do
-          allow(controller).to receive(:spree_current_user) { regular_user }
+          allow(controller).to(receive(:spree_current_user) { regular_user })
           get :show, params: { id: order.number }
           assert_unauthorized!
         end
 
         it "returns the order, as an admin user" do
-          allow(controller).to receive(:spree_current_user) { admin_user }
+          allow(controller).to(receive(:spree_current_user) { admin_user })
           get :show, params: { id: order.number }
           expect_order
         end
 
         it "returns the order, as the order distributor owner" do
-          allow(controller).to receive(:spree_current_user) { order.distributor.owner }
+          allow(controller).to(receive(:spree_current_user) { order.distributor.owner })
           get :show, params: { id: order.number }
           expect_order
         end
 
         it "returns unauthorized, as the order product's supplier owner" do
-          allow(controller).to receive(:spree_current_user) {
+          allow(controller).to(receive(:spree_current_user) {
                                  order.line_items.first.variant.product.supplier.owner
-                               }
+                               })
           get :show, params: { id: order.number }
           assert_unauthorized!
         end
 
         it "returns the order, as the Order Cycle coorinator owner" do
-          allow(controller).to receive(:spree_current_user) { order.order_cycle.coordinator.owner }
+          allow(controller).to(receive(:spree_current_user) { order.order_cycle.coordinator.owner })
           get :show, params: { id: order.number }
           expect_order
         end
@@ -242,7 +242,7 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
           create(:completed_order_with_fees, order_cycle: order_cycle, distributor: distributor)
         end
 
-        before { allow(controller).to receive(:spree_current_user) { order.distributor.owner } }
+        before { allow(controller).to(receive(:spree_current_user) { order.distributor.owner }) }
 
         it "can view an order not in a standard state" do
           order.update(completed_at: nil, state: 'shipped')
@@ -255,7 +255,7 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
 :calculator,
                                                  create(:weight_calculator, calculable: order)
 )
-          allow(controller).to receive(:current_order).and_return order
+          allow(controller).to(receive(:current_order).and_return(order))
           get :show, params: { id: order.number }
           expect_order
         end
@@ -264,31 +264,31 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
           get :show, params: { id: order.number }
 
           expect_order
-          expect(json_response.symbolize_keys.keys).to include(*order_detailed_attributes)
+          expect(json_response.symbolize_keys.keys).to(include(*order_detailed_attributes))
 
-          expect(json_response[:bill_address]).to include(
+          expect(json_response[:bill_address]).to(include(
             'address1' => order.bill_address.address1,
             'lastname' => order.bill_address.lastname
-          )
-          expect(json_response[:ship_address]).to include(
+          ))
+          expect(json_response[:ship_address]).to(include(
             'address1' => order.ship_address.address1,
             'lastname' => order.ship_address.lastname
-          )
-          expect(json_response[:shipping_method][:name]).to eq order.shipping_method.name
+          ))
+          expect(json_response[:shipping_method][:name]).to(eq(order.shipping_method.name))
 
-          expect(json_response[:adjustments].first).to include(
+          expect(json_response[:adjustments].first).to(include(
             'label' => "Transaction fee",
             'amount' => order.all_adjustments.payment_fee.first.amount.to_s
-          )
-          expect(json_response[:adjustments].second).to include(
+          ))
+          expect(json_response[:adjustments].second).to(include(
             'label' => "Shipping",
             'amount' => order.shipment_adjustments.first.amount.to_s
-          )
+          ))
 
-          expect(json_response[:payments].first[:amount]).to eq order.payments.first.amount.to_s
-          expect(json_response[:line_items].size).to eq order.line_items.size
-          expect(json_response[:line_items].first[:variant][:product_name]).to eq order.line_items.first.variant.product.name
-          expect(json_response[:line_items].first[:tax_category_id]).to eq order.line_items.first.product.tax_category_id
+          expect(json_response[:payments].first[:amount]).to(eq(order.payments.first.amount.to_s))
+          expect(json_response[:line_items].size).to(eq(order.line_items.size))
+          expect(json_response[:line_items].first[:variant][:product_name]).to(eq(order.line_items.first.variant.product.name))
+          expect(json_response[:line_items].first[:tax_category_id]).to(eq(order.line_items.first.product.tax_category_id))
         end
       end
     end
@@ -318,26 +318,26 @@ payment_state: 'balance_due'
       before do
         order.finalize!
         order.payments << create(:check_payment, order: order, amount: order.total)
-        allow(controller).to receive(:spree_current_user) { order.distributor.owner }
+        allow(controller).to(receive(:spree_current_user) { order.distributor.owner })
       end
 
       describe "#capture" do
         it "captures payments and returns an updated order object" do
           put :capture, params: { id: order.number }
 
-          expect(order.reload.pending_payments.empty?).to be true
+          expect(order.reload.pending_payments.empty?).to(be(true))
           expect_order
         end
 
         context "when payment is not required" do
           before do
-            allow_any_instance_of(Spree::Order).to receive(:payment_required?) { false }
+            allow_any_instance_of(Spree::Order).to(receive(:payment_required?) { false })
           end
 
           it "returns an error" do
             put :capture, params: { id: order.number }
 
-            expect(json_response['error']).to eq I18n.t(:payment_processing_failed)
+            expect(json_response['error']).to(eq(I18n.t(:payment_processing_failed)))
           end
         end
       end
@@ -350,7 +350,7 @@ payment_state: 'balance_due'
         it "marks orders as shipped and returns an updated order object" do
           put :ship, params: { id: order.number }
 
-          expect(order.reload.shipments.any?(&:shipped?)).to be true
+          expect(order.reload.shipments.any?(&:shipped?)).to(be(true))
           expect_order
         end
       end
@@ -359,8 +359,8 @@ payment_state: 'balance_due'
     private
 
     def expect_order
-      expect(response.status).to eq 200
-      expect(json_response[:number]).to eq order.number
+      expect(response.status).to(eq(200))
+      expect(json_response[:number]).to(eq(order.number))
     end
 
     def serialized_orders(orders)
@@ -375,7 +375,7 @@ payment_state: 'balance_due'
 
     def returns_orders(response)
       keys = response['orders'].first.keys.map(&:to_sym)
-      expect(order_attributes.all? { |attr| keys.include? attr }).to be_truthy
+      expect(order_attributes.all? { |attr| keys.include?(attr) }).to(be_truthy)
     end
 
     def order_attributes

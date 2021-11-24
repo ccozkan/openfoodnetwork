@@ -246,7 +246,7 @@ if: lambda { |shipment|
         [iu.variant, iu.state_name]
       end
       grouped_inventory_units.each do |(variant, state_name), inventory_units|
-        package.add variant, inventory_units.count, state_name
+        package.add(variant, inventory_units.count, state_name)
       end
       package
     end
@@ -294,11 +294,11 @@ if: lambda { |shipment|
     end
 
     def manifest_unstock(item)
-      stock_location.unstock item.variant, item.quantity, self
+      stock_location.unstock(item.variant, item.quantity, self)
     end
 
     def manifest_restock(item)
-      stock_location.restock item.variant, item.quantity, self
+      stock_location.restock(item.variant, item.quantity, self)
     end
 
     def generate_shipment_number
@@ -322,14 +322,14 @@ if: lambda { |shipment|
 
       return if shipping_method.include?(address)
 
-      errors.add :shipping_method, Spree.t(:is_not_available_to_shipment_address)
+      errors.add(:shipping_method, Spree.t(:is_not_available_to_shipment_address))
     end
 
     def after_ship
       inventory_units.each(&:ship!)
       fee_adjustment.finalize!
       send_shipped_email
-      touch :shipped_at
+      touch(:shipped_at)
       update_order_shipment_state
     end
 

@@ -15,10 +15,10 @@ module Admin
     def build
       @subscription_line_item.assign_attributes(subscription_line_item_params)
       @subscription_line_item.price_estimate = price_estimate
-      render json: @subscription_line_item,
+      render(json: @subscription_line_item,
 serializer: Api::Admin::SubscriptionLineItemSerializer,
              shop: @shop,
-schedule: @schedule
+schedule: @schedule)
     end
 
     private
@@ -41,14 +41,14 @@ schedule: @schedule
     def ensure_shop
       return if @shop
 
-      render json: { errors: ['Unauthorised'] }, status: :unauthorized
+      render(json: { errors: ['Unauthorised'] }, status: :unauthorized)
     end
 
     def ensure_variant
       return if @variant
 
       error = "#{@shop.name} is not permitted to sell the selected product"
-      render json: { errors: [error] }, status: :unprocessable_entity
+      render(json: { errors: [error] }, status: :unprocessable_entity)
     end
 
     def price_estimate

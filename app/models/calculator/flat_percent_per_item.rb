@@ -21,7 +21,7 @@ class Calculator::FlatPercentPerItem < Spree::Calculator
   def compute(object)
     line_items_for(object).to_a.sum do |li|
       unless li.price.present? && li.quantity.present?
-        raise ArgumentError, "object must respond to #price and #quantity"
+        raise(ArgumentError, "object must respond to #price and #quantity")
       end
 
       value = (li.price * BigDecimal(preferred_flat_percent.to_s) / 100.0).round(2)

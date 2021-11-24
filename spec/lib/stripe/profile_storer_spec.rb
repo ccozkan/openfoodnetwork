@@ -29,8 +29,8 @@ module Stripe
         it "fetches the customer id and the card id from the correct response fields" do
           profile_storer.create_customer_from_token
 
-          expect(payment.source.gateway_customer_profile_id).to eq customer_id
-          expect(payment.source.gateway_payment_profile_id).to eq card_id
+          expect(payment.source.gateway_customer_profile_id).to(eq(customer_id))
+          expect(payment.source.gateway_payment_profile_id).to(eq(card_id))
         end
       end
 
@@ -42,8 +42,8 @@ module Stripe
         it "fetches the customer id and the card id from the correct response fields" do
           profile_storer.create_customer_from_token
 
-          expect(payment.source.gateway_customer_profile_id).to eq customer_id
-          expect(payment.source.gateway_payment_profile_id).to eq card_id
+          expect(payment.source.gateway_customer_profile_id).to(eq(customer_id))
+          expect(payment.source.gateway_payment_profile_id).to(eq(card_id))
         end
       end
     end

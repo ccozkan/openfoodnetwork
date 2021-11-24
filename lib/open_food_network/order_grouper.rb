@@ -82,7 +82,7 @@ module OpenFoodNetwork
     end
 
     def is_leaf_node(node)
-      node.is_a? Array
+      node.is_a?(Array)
     end
   end
 end

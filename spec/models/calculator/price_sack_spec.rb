@@ -16,7 +16,7 @@ describe Calculator::PriceSack do
     let(:price) { 2 }
 
     it "uses the preferred normal amount" do
-      expect(calculator.compute(line_item)).to eq(10)
+      expect(calculator.compute(line_item)).to(eq(10))
     end
   end
 
@@ -24,7 +24,7 @@ describe Calculator::PriceSack do
     let(:price) { 6 }
 
     it "uses the preferred discount amount" do
-      expect(calculator.compute(line_item)).to eq(1)
+      expect(calculator.compute(line_item)).to(eq(1))
     end
   end
 
@@ -38,7 +38,7 @@ describe Calculator::PriceSack do
       let(:price) { 2 }
 
       it "uses the float preferred normal amount" do
-        expect(calculator.compute(line_item)).to eq(10.4)
+        expect(calculator.compute(line_item)).to(eq(10.4))
       end
     end
 
@@ -46,7 +46,7 @@ describe Calculator::PriceSack do
       let(:price) { 6 }
 
       it "uses the float preferred discount amount" do
-        expect(calculator.compute(line_item)).to eq(1.2)
+        expect(calculator.compute(line_item)).to(eq(1.2))
       end
     end
   end
@@ -63,7 +63,7 @@ describe Calculator::PriceSack do
       let(:price) { 8 }
 
       it "returns the correct value of cost" do
-        expect(calculator.compute(line_item)).to eq(5)
+        expect(calculator.compute(line_item)).to(eq(5))
       end
     end
 
@@ -71,7 +71,7 @@ describe Calculator::PriceSack do
       let(:price) { 8.5 }
 
       it "returns the correct value of cost" do
-        expect(calculator.compute(line_item)).to eq(1)
+        expect(calculator.compute(line_item)).to(eq(1))
       end
     end
   end

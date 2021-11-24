@@ -6,20 +6,20 @@ module Admin
 
     respond_override update: {
 json: {
-      success: -> { render_as_json @inventory_item },
+      success: -> { render_as_json(@inventory_item) },
       failure: lambda {
-                 render json: { errors: @inventory_item.errors.full_messages },
-                        status: :unprocessable_entity
+                 render(json: { errors: @inventory_item.errors.full_messages },
+                        status: :unprocessable_entity)
                }
     }
 }
 
     respond_override create: {
 json: {
-      success: -> { render_as_json @inventory_item },
+      success: -> { render_as_json(@inventory_item) },
       failure: lambda {
-                 render json: { errors: @inventory_item.errors.full_messages },
-                        status: :unprocessable_entity
+                 render(json: { errors: @inventory_item.errors.full_messages },
+                        status: :unprocessable_entity)
                }
     }
 }

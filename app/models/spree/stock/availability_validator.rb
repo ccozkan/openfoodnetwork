@@ -39,7 +39,7 @@ module Spree
       def validate_quantity(line_item, quantity)
         line_item.scoper.scope(line_item.variant)
 
-        add_out_of_stock_error(line_item) unless line_item.variant.can_supply? quantity
+        add_out_of_stock_error(line_item) unless line_item.variant.can_supply?(quantity)
       end
 
       def add_out_of_stock_error(line_item)

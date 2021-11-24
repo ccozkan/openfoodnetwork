@@ -26,31 +26,31 @@ describe 'Customers' do
 
       it "passes the smoke test" do
         # Prompts for a hub for a list of my managed enterprises
-        expect(page).to have_select2 "shop_id",
+        expect(page).to(have_select2("shop_id",
                                      with_options: [managed_distributor1.name, managed_distributor2.name],
-without_options: [unmanaged_distributor.name]
+without_options: [unmanaged_distributor.name]))
 
         select2_select managed_distributor2.name, from: "shop_id"
 
         # Loads the right customers; positive assertion first, so DOM content is loaded
-        expect(page).to have_selector "tr#c_#{customer4.id}"
-        expect(page).to have_no_selector "tr#c_#{customer1.id}"
-        expect(page).to have_no_selector "tr#c_#{customer2.id}"
-        expect(page).to have_no_selector "tr#c_#{customer3.id}"
+        expect(page).to(have_selector("tr#c_#{customer4.id}"))
+        expect(page).to(have_no_selector("tr#c_#{customer1.id}"))
+        expect(page).to(have_no_selector("tr#c_#{customer2.id}"))
+        expect(page).to(have_no_selector("tr#c_#{customer3.id}"))
 
         # Changing Shops
         select2_select managed_distributor1.name, from: "shop_id"
 
         # Loads the right customers
-        expect(page).to have_selector "tr#c_#{customer1.id}"
-        expect(page).to have_selector "tr#c_#{customer2.id}"
-        expect(page).to have_no_selector "tr#c_#{customer3.id}"
-        expect(page).to have_no_selector "tr#c_#{customer4.id}"
+        expect(page).to(have_selector("tr#c_#{customer1.id}"))
+        expect(page).to(have_selector("tr#c_#{customer2.id}"))
+        expect(page).to(have_no_selector("tr#c_#{customer3.id}"))
+        expect(page).to(have_no_selector("tr#c_#{customer4.id}"))
 
         # Searching
         fill_in "quick_search", with: customer2.email
-        expect(page).to have_no_selector "tr#c_#{customer1.id}"
-        expect(page).to have_selector "tr#c_#{customer2.id}"
+        expect(page).to(have_no_selector("tr#c_#{customer1.id}"))
+        expect(page).to(have_selector("tr#c_#{customer2.id}"))
         fill_in "quick_search", with: ""
 
         # Sorting when the header of a sortable column is clicked
@@ -58,57 +58,57 @@ without_options: [unmanaged_distributor.name]
         within "#customers thead" do
           click_on "Email"
         end
-        expect(page).to have_selector(
+        expect(page).to(have_selector(
 "#customers .customer:nth-child(1) .email",
                                       text: customer_emails[0]
-)
-        expect(page).to have_selector(
+))
+        expect(page).to(have_selector(
 "#customers .customer:nth-child(2) .email",
                                       text: customer_emails[1]
-)
+))
 
         # Then sorting in reverse when the header is clicked again
         within "#customers thead" do
           click_on "Email"
         end
-        expect(page).to have_selector(
+        expect(page).to(have_selector(
 "#customers .customer:nth-child(1) .email",
                                       text: customer_emails[1]
-)
-        expect(page).to have_selector(
+))
+        expect(page).to(have_selector(
 "#customers .customer:nth-child(2) .email",
                                       text: customer_emails[0]
-)
+))
 
         # Toggling columns
-        expect(page).to have_selector "th.email"
-        expect(page).to have_content customer1.email
+        expect(page).to(have_selector("th.email"))
+        expect(page).to(have_content(customer1.email))
         toggle_columns "Email"
-        expect(page).to have_no_selector "th.email"
-        expect(page).to have_no_content customer1.email
+        expect(page).to(have_no_selector("th.email"))
+        expect(page).to(have_no_content(customer1.email))
 
         # Deleting
         create(:order, customer: customer1)
         expect do
-          within "tr#c_#{customer1.id}" do
+          within("tr#c_#{customer1.id}") do
             accept_alert do
               find("a.delete-customer").click
             end
           end
-          expect(page).to have_selector "#info-dialog .text",
-                                        text: I18n.t('admin.customers.destroy.has_associated_orders')
-          click_button "OK"
-        end.to_not change { Customer.count }
+          expect(page).to(have_selector("#info-dialog .text",
+                                        text: I18n.t('admin.customers.destroy.has_associated_orders')))
+          click_button("OK")
+        end.to_not(change { Customer.count })
 
         expect do
-          within "tr#c_#{customer2.id}" do
+          within("tr#c_#{customer2.id}") do
             accept_alert do
               find("a.delete-customer").click
             end
           end
-          expect(page).to have_no_selector "tr#c_#{customer2.id}"
-        end.to change { Customer.count }
-.by(-1)
+          expect(page).to(have_no_selector("tr#c_#{customer2.id}"))
+        end.to(change { Customer.count }
+.by(-1))
       end
 
       describe "for a shop with multiple customers" do
@@ -161,7 +161,7 @@ amount: 88.00
         end
 
         before do
-          customer4.update enterprise: managed_distributor1
+          customer4.update(enterprise: managed_distributor1)
         end
 
         context "with one payment only" do
@@ -169,17 +169,17 @@ amount: 88.00
             select2_select managed_distributor1.name, from: "shop_id"
 
             within "tr#c_#{customer1.id}" do
-              expect(page).to have_content "CREDIT OWED"
-              expect(page).to have_content "$88.00"
+              expect(page).to(have_content("CREDIT OWED"))
+              expect(page).to(have_content("$88.00"))
             end
             within "tr#c_#{customer2.id}" do
-              expect(page).to have_content "BALANCE DUE"
-              expect(page).to have_content "$-99.00"
+              expect(page).to(have_content("BALANCE DUE"))
+              expect(page).to(have_content("$-99.00"))
             end
             within "tr#c_#{customer4.id}" do
-              expect(page).to_not have_content "CREDIT OWED"
-              expect(page).to_not have_content "BALANCE DUE"
-              expect(page).to have_content "$0.00"
+              expect(page).to_not(have_content("CREDIT OWED"))
+              expect(page).to_not(have_content("BALANCE DUE"))
+              expect(page).to(have_content("$0.00"))
             end
           end
         end
@@ -202,15 +202,15 @@ amount: -25.00
           end
 
           it "displays an updated customer balance" do
-            visit spree.admin_order_payments_path order1
-            expect(page).to have_content "$#{payment2.amount}"
+            visit spree.admin_order_payments_path(order1)
+            expect(page).to(have_content("$#{payment2.amount}"))
 
             visit admin_customers_path
             select2_select managed_distributor1.name, from: "shop_id"
 
             within "tr#c_#{customer1.id}" do
-              expect(page).to have_content "CREDIT OWED"
-              expect(page).to have_content "$63.00"
+              expect(page).to(have_content("CREDIT OWED"))
+              expect(page).to(have_content("$63.00"))
             end
           end
         end
@@ -220,52 +220,52 @@ amount: -25.00
         select2_select managed_distributor1.name, from: "shop_id"
 
         within "tr#c_#{customer1.id}" do
-          expect(find_field('name').value).to eq 'John Doe'
+          expect(find_field('name').value).to(eq('John Doe'))
 
           fill_in "code", with: "new-customer-code"
-          expect(page).to have_css "input[name=code].update-pending"
+          expect(page).to(have_css("input[name=code].update-pending"))
 
           fill_in "name", with: "customer abc"
-          expect(page).to have_css "input[name=name].update-pending"
+          expect(page).to(have_css("input[name=name].update-pending"))
 
-          find(:css, "tags-input .tags input").set "awesome\n"
-          expect(page).to have_css ".tag_watcher.update-pending"
+          find(:css, "tags-input .tags input").set("awesome\n")
+          expect(page).to(have_css(".tag_watcher.update-pending"))
         end
-        expect(page).to have_content I18n.t('admin.unsaved_changes')
+        expect(page).to(have_content(I18n.t('admin.unsaved_changes')))
         click_button "Save Changes"
 
         # Every says it updated
-        expect(page).to have_css "input[name=code].update-success"
-        expect(page).to have_css "input[name=name].update-success"
-        expect(page).to have_css ".tag_watcher.update-success"
+        expect(page).to(have_css("input[name=code].update-success"))
+        expect(page).to(have_css("input[name=name].update-success"))
+        expect(page).to(have_css(".tag_watcher.update-success"))
 
         # And it actually did
-        expect(customer1.reload.code).to eq "new-customer-code"
-        expect(customer1.reload.name).to eq "customer abc"
-        expect(customer1.tag_list).to eq ["awesome"]
+        expect(customer1.reload.code).to(eq("new-customer-code"))
+        expect(customer1.reload.name).to(eq("customer abc"))
+        expect(customer1.tag_list).to(eq(["awesome"]))
 
         # Clearing attributes
         within "tr#c_#{customer1.id}" do
           fill_in "code", with: ""
-          expect(page).to have_css "input[name=code].update-pending"
+          expect(page).to(have_css("input[name=code].update-pending"))
 
           fill_in "name", with: ""
-          expect(page).to have_css "input[name=name].update-pending"
+          expect(page).to(have_css("input[name=name].update-pending"))
 
           find("tags-input li.tag-item a.remove-button").click
-          expect(page).to have_css ".tag_watcher.update-pending"
+          expect(page).to(have_css(".tag_watcher.update-pending"))
         end
         click_button "Save Changes"
 
         # Every says it updated
-        expect(page).to have_css "input[name=code].update-success"
-        expect(page).to have_css "input[name=name].update-success"
-        expect(page).to have_css ".tag_watcher.update-success"
+        expect(page).to(have_css("input[name=code].update-success"))
+        expect(page).to(have_css("input[name=name].update-success"))
+        expect(page).to(have_css(".tag_watcher.update-success"))
 
         # And it actually did
-        expect(customer1.reload.code).to be nil
-        expect(customer1.reload.name).to eq ''
-        expect(customer1.tag_list).to eq []
+        expect(customer1.reload.code).to(be(nil))
+        expect(customer1.reload.name).to(eq(''))
+        expect(customer1.tag_list).to(eq([]))
       end
 
       it "prevents duplicate codes from being saved" do
@@ -273,30 +273,30 @@ amount: -25.00
 
         within "tr#c_#{customer1.id}" do
           fill_in "code", with: "new-customer-code"
-          expect(page).to have_css "input[name=code].update-pending"
+          expect(page).to(have_css("input[name=code].update-pending"))
         end
 
         click_button "Save Changes"
 
         within "tr#c_#{customer1.id}" do
-          expect(page).to have_css "input[name=code].update-success"
+          expect(page).to(have_css("input[name=code].update-success"))
         end
 
         within "tr#c_#{customer2.id}" do
           fill_in "code", with: "new-customer-code"
-          expect(page).to have_content "This code is used already."
+          expect(page).to(have_content("This code is used already."))
         end
 
         click_button "Save Changes"
 
         within "tr#c_#{customer2.id}" do
-          expect(page).to have_css "input[name=code].update-error"
+          expect(page).to(have_css("input[name=code].update-error"))
         end
 
-        expect(page).to have_content "Oh no! I was unable to save your changes"
+        expect(page).to(have_content("Oh no! I was unable to save your changes"))
 
-        expect(customer1.reload.code).to eq "new-customer-code"
-        expect(customer2.reload.code).to be nil
+        expect(customer1.reload.code).to(eq("new-customer-code"))
+        expect(customer2.reload.code).to(be(nil))
       end
 
       describe 'updating a customer addresses' do
@@ -305,38 +305,38 @@ amount: -25.00
         end
 
         it 'updates the existing billing address' do
-          expect(page).to have_content 'BILLING ADDRESS'
+          expect(page).to(have_content('BILLING ADDRESS'))
           first('#bill-address-link').click
           wait_for_modal_fade_in
 
-          expect(page).to have_content 'Edit Billing Address'
-          expect(page).to have_select2 'country_id', selected: 'Australia'
-          expect(page).to have_select2 'state_id', selected: 'Victoria'
+          expect(page).to(have_content('Edit Billing Address'))
+          expect(page).to(have_select2('country_id', selected: 'Australia'))
+          expect(page).to(have_select2('state_id', selected: 'Victoria'))
 
           fill_in 'address1', with: ""
           click_button 'Update Address'
 
-          expect(page).to have_content 'Please input all of the required fields'
+          expect(page).to(have_content('Please input all of the required fields'))
 
           fill_in 'address1', with: "New Address1"
           click_button 'Update Address'
 
-          expect(page).to have_content 'Address updated successfully.'
-          expect(page).to have_link 'New Address1'
-          expect(customer4.reload.bill_address.address1).to eq 'New Address1'
+          expect(page).to(have_content('Address updated successfully.'))
+          expect(page).to(have_link('New Address1'))
+          expect(customer4.reload.bill_address.address1).to(eq('New Address1'))
 
           first('#bill-address-link').click
 
-          expect(page).to have_content 'Edit Billing Address'
-          expect(page).to_not have_content 'Please input all of the required fields'
+          expect(page).to(have_content('Edit Billing Address'))
+          expect(page).to_not(have_content('Please input all of the required fields'))
         end
 
         it 'creates a new shipping address' do
-          expect(page).to have_content 'SHIPPING ADDRESS'
+          expect(page).to(have_content('SHIPPING ADDRESS'))
 
           first('#ship-address-link').click
           wait_for_modal_fade_in
-          expect(page).to have_content 'Edit Shipping Address'
+          expect(page).to(have_content('Edit Shipping Address'))
 
           fill_in 'firstname', with: "First"
           fill_in 'lastname', with: "Last"
@@ -349,16 +349,16 @@ amount: -25.00
           select2_select 'Victoria', from: 'state_id'
           click_button 'Update Address'
 
-          expect(page).to have_content 'Address updated successfully.'
-          expect(page).to have_link 'New Address1'
+          expect(page).to(have_content('Address updated successfully.'))
+          expect(page).to(have_link('New Address1'))
 
           ship_address = customer4.reload.ship_address
 
-          expect(ship_address.firstname).to eq 'First'
-          expect(ship_address.lastname).to eq 'Last'
-          expect(ship_address.address1).to eq 'New Address1'
-          expect(ship_address.phone).to eq '12345678'
-          expect(ship_address.city).to eq 'Melbourne'
+          expect(ship_address.firstname).to(eq('First'))
+          expect(ship_address.lastname).to(eq('Last'))
+          expect(ship_address.address1).to(eq('New Address1'))
+          expect(ship_address.phone).to(eq('12345678'))
+          expect(ship_address.city).to(eq('Melbourne'))
         end
 
         # Modal animations are defined in:
@@ -367,7 +367,7 @@ amount: -25.00
         # Without waiting, `fill_in` can fail randomly:
         # https://github.com/teamcapybara/capybara/issues/1890
         def wait_for_modal_fade_in(time = 0.4)
-          sleep time
+          sleep(time)
         end
       end
 
@@ -389,34 +389,34 @@ amount: -25.00
             # When an invalid email without domain is used it is checked by a regex, in the UI
             expect do
               click_link('New Customer')
-              fill_in 'email', with: "email_with_no_domain@"
-              click_button 'Add Customer'
-              expect(page).to have_selector "#new-customer-dialog .error",
-                                            text: "Please enter a valid email address"
-            end.to_not change { Customer.of(managed_distributor1).count }
+              fill_in('email', with: "email_with_no_domain@")
+              click_button('Add Customer')
+              expect(page).to(have_selector("#new-customer-dialog .error",
+                                            text: "Please enter a valid email address"))
+            end.to_not(change { Customer.of(managed_distributor1).count })
 
             # When an invalid email with domain is used it is checked by the "valid_email2" gem #7886
             expect do
-              fill_in 'email', with: "invalid_email_with_no_complete_domain@incomplete"
-              click_button 'Add Customer'
-              expect(page).to have_selector "#new-customer-dialog .error", text: "Email is invalid"
-            end.to_not change { Customer.of(managed_distributor1).count }
+              fill_in('email', with: "invalid_email_with_no_complete_domain@incomplete")
+              click_button('Add Customer')
+              expect(page).to(have_selector("#new-customer-dialog .error", text: "Email is invalid"))
+            end.to_not(change { Customer.of(managed_distributor1).count })
 
             # When an existing email is used
             expect do
-              fill_in 'email', with: customer1.email
-              click_button 'Add Customer'
-              expect(page).to have_selector "#new-customer-dialog .error",
-                                            text: "Email is associated with an existing customer"
-            end.to_not change { Customer.of(managed_distributor1).count }
+              fill_in('email', with: customer1.email)
+              click_button('Add Customer')
+              expect(page).to(have_selector("#new-customer-dialog .error",
+                                            text: "Email is associated with an existing customer"))
+            end.to_not(change { Customer.of(managed_distributor1).count })
 
             # When a new valid email is used
             expect do
-              fill_in 'email', with: "new@email.com"
-              click_button 'Add Customer'
-              expect(page).not_to have_selector "#new-customer-dialog"
-            end.to change { Customer.of(managed_distributor1).count }
-.from(2).to(3)
+              fill_in('email', with: "new@email.com")
+              click_button('Add Customer')
+              expect(page).not_to(have_selector("#new-customer-dialog"))
+            end.to(change { Customer.of(managed_distributor1).count }
+.from(2).to(3))
           end
         end
       end

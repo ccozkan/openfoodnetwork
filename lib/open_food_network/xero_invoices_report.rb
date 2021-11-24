@@ -214,7 +214,7 @@ opts
     end
 
     def summary_row(order, description, amount, invoice_number, tax_type, opts = {})
-      row order, '', description, '1', amount, invoice_number, tax_type, opts
+      row(order, '', description, '1', amount, invoice_number, tax_type, opts)
     end
 
     def row(order, sku, description, quantity, amount, invoice_number, tax_type, opts = {})

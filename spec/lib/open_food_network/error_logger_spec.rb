@@ -8,7 +8,7 @@ module OpenFoodNetwork
     let(:error) { StandardError.new("Test") }
 
     it "notifies Bugsnag" do
-      expect(Bugsnag).to receive(:notify).with(error)
+      expect(Bugsnag).to(receive(:notify).with(error))
 
       ErrorLogger.notify(error)
     end

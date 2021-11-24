@@ -11,34 +11,34 @@ module Spree
       @customer = create_customer(params[:token])
       @credit_card = build_card_from(stored_card_attributes)
       if @credit_card.save
-        render json: @credit_card, serializer: ::Api::CreditCardSerializer, status: :ok
+        render(json: @credit_card, serializer: ::Api::CreditCardSerializer, status: :ok)
       else
         message = t(:card_could_not_be_saved)
-        render json: {
+        render(json: {
 flash: {
 error: I18n.t(:spree_gateway_error_flash_for_checkout, error: message)
 }
 },
-               status: :bad_request
+               status: :bad_request)
       end
     rescue Stripe::CardError => e
-      render json: {
+      render(json: {
 flash: {
 error: I18n.t(:spree_gateway_error_flash_for_checkout, error: e.message)
 }
 },
-             status: :bad_request
+             status: :bad_request)
     end
 
     def update
       @credit_card = Spree::CreditCard.find_by(id: params[:id])
       return update_failed unless @credit_card
 
-      authorize! :update, @credit_card
+      authorize!(:update, @credit_card)
 
       if @credit_card.update(credit_card_params)
         remove_shop_authorizations if credit_card_params["is_default"]
-        render json: @credit_card, serializer: ::Api::CreditCardSerializer, status: :ok
+        render(json: @credit_card, serializer: ::Api::CreditCardSerializer, status: :ok)
       else
         update_failed
       end
@@ -49,7 +49,7 @@ error: I18n.t(:spree_gateway_error_flash_for_checkout, error: e.message)
     def destroy
       @credit_card = Spree::CreditCard.find_by(id: params[:id])
       if @credit_card
-        authorize! :destroy, @credit_card
+        authorize!(:destroy, @credit_card)
         Stripe::CreditCardRemover.new(@credit_card).call
       end
 
@@ -60,10 +60,10 @@ error: I18n.t(:spree_gateway_error_flash_for_checkout, error: e.message)
       else
         flash[:error] = I18n.t(:card_could_not_be_removed)
       end
-      redirect_to spree.account_path(anchor: 'cards')
+      redirect_to(spree.account_path(anchor: 'cards'))
     rescue Stripe::CardError
       flash[:error] = I18n.t(:card_could_not_be_removed)
-      redirect_to spree.account_path(anchor: 'cards')
+      redirect_to(spree.account_path(anchor: 'cards'))
     end
 
     private
@@ -97,7 +97,7 @@ error: I18n.t(:spree_gateway_error_flash_for_checkout, error: e.message)
     end
 
     def update_failed
-      render json: { flash: { error: t(:card_could_not_be_updated) } }, status: :bad_request
+      render(json: { flash: { error: t(:card_could_not_be_updated) } }, status: :bad_request)
     end
 
     def credit_card_params

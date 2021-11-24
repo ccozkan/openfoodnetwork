@@ -20,18 +20,18 @@ module Spree
             subject.override!
           end
 
-          it { expect(ActionMailer::Base.smtp_settings[:address]).to eq "smtp.example.com" }
-          it { expect(ActionMailer::Base.smtp_settings[:domain]).to eq "example.com" }
-          it { expect(ActionMailer::Base.smtp_settings[:port]).to eq 123 }
-          it { expect(ActionMailer::Base.smtp_settings[:authentication]).to eq "None" }
-          it { expect(ActionMailer::Base.smtp_settings[:enable_starttls_auto]).to be_truthy }
+          it { expect(ActionMailer::Base.smtp_settings[:address]).to(eq("smtp.example.com")) }
+          it { expect(ActionMailer::Base.smtp_settings[:domain]).to(eq("example.com")) }
+          it { expect(ActionMailer::Base.smtp_settings[:port]).to(eq(123)) }
+          it { expect(ActionMailer::Base.smtp_settings[:authentication]).to(eq("None")) }
+          it { expect(ActionMailer::Base.smtp_settings[:enable_starttls_auto]).to(be_truthy) }
 
           it "doesnt touch user name config" do
-            expect(ActionMailer::Base.smtp_settings[:user_name]).to be_nil
+            expect(ActionMailer::Base.smtp_settings[:user_name]).to(be_nil)
           end
 
           it "doesnt touch password config" do
-            expect(ActionMailer::Base.smtp_settings[:password]).to be_nil
+            expect(ActionMailer::Base.smtp_settings[:password]).to(be_nil)
           end
         end
       end
@@ -45,8 +45,8 @@ module Spree
         end
 
         context "overrides user credentials" do
-          it { expect(ActionMailer::Base.smtp_settings[:user_name]).to eq "schof" }
-          it { expect(ActionMailer::Base.smtp_settings[:password]).to eq "hellospree!" }
+          it { expect(ActionMailer::Base.smtp_settings[:user_name]).to(eq("schof")) }
+          it { expect(ActionMailer::Base.smtp_settings[:password]).to(eq("hellospree!")) }
         end
       end
     end

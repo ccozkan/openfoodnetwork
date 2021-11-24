@@ -22,11 +22,11 @@ describe 'shipping methods' do
 
       # Shows appropriate fields when logged in as admin
       visit spree.new_admin_shipping_method_path
-      expect(page).to have_field 'shipping_method_name'
-      expect(page).to have_field 'shipping_method_description'
-      expect(page).to have_select 'shipping_method_display_on'
-      expect(page).to have_css 'div#shipping_method_zones_field'
-      expect(page).to have_field 'shipping_method_require_ship_address_true', checked: true
+      expect(page).to(have_field('shipping_method_name'))
+      expect(page).to(have_field('shipping_method_description'))
+      expect(page).to(have_select('shipping_method_display_on'))
+      expect(page).to(have_css('div#shipping_method_zones_field'))
+      expect(page).to(have_field('shipping_method_require_ship_address_true', checked: true))
 
       # When I create a shipping method and set the distributors
       fill_in 'shipping_method_name', with: 'Carrier Pidgeon'
@@ -35,14 +35,14 @@ describe 'shipping methods' do
       check "shipping_method_shipping_categories_"
       click_button I18n.t("actions.create")
 
-      expect(page).to have_no_button I18n.t("actions.create")
+      expect(page).to(have_no_button(I18n.t("actions.create")))
 
       # Then the shipping method should have its distributor set
-      expect(flash_message).to include "Carrier Pidgeon", "successfully created!"
+      expect(flash_message).to(include("Carrier Pidgeon", "successfully created!"))
 
       sm = Spree::ShippingMethod.last
-      expect(sm.name).to eq('Carrier Pidgeon')
-      expect(sm.distributors).to match_array [distributor1, distributor2]
+      expect(sm.name).to(eq('Carrier Pidgeon'))
+      expect(sm.distributors).to(match_array([distributor1, distributor2]))
     end
 
     it "deleting a shipping method" do
@@ -51,25 +51,25 @@ describe 'shipping methods' do
       accept_alert 'Are you sure?' do
         page.find('a.delete-resource').click
       end
-      expect(page).not_to have_content(@shipping_method)
-      expect(Spree::ShippingMethod.where(id: @shipping_method.id)).to be_empty
+      expect(page).not_to(have_content(@shipping_method))
+      expect(Spree::ShippingMethod.where(id: @shipping_method.id)).to(be_empty)
     end
 
     it "checking a single distributor is checked by default" do
       first_distributor = Enterprise.first
       visit spree.new_admin_shipping_method_path
-      expect(page).to have_field "shipping_method_distributor_ids_#{first_distributor.id}",
-                                 checked: true
+      expect(page).to(have_field("shipping_method_distributor_ids_#{first_distributor.id}",
+                                 checked: true))
     end
 
     it "checking more than a distributor displays no default choice" do
       distributor1 = create(:distributor_enterprise, name: 'Alice Farm Shop')
       distributor2 = create(:distributor_enterprise, name: 'Bob Farm Hub')
       visit spree.new_admin_shipping_method_path
-      expect(page).to have_field "shipping_method_distributor_ids_#{distributor1.id}",
-                                 checked: false
-      expect(page).to have_field "shipping_method_distributor_ids_#{distributor2.id}",
-                                 checked: false
+      expect(page).to(have_field("shipping_method_distributor_ids_#{distributor1.id}",
+                                 checked: false))
+      expect(page).to(have_field("shipping_method_distributor_ids_#{distributor2.id}",
+                                 checked: false))
     end
   end
 
@@ -100,33 +100,33 @@ describe 'shipping methods' do
       click_link 'Create One Now'
 
       # Show the correct fields
-      expect(page).to have_field 'shipping_method_name'
-      expect(page).to have_field 'shipping_method_description'
-      expect(page).to have_select 'shipping_method_display_on'
-      expect(page).to have_css 'div#shipping_method_zones_field'
-      expect(page).to have_field 'shipping_method_require_ship_address_true', checked: true
+      expect(page).to(have_field('shipping_method_name'))
+      expect(page).to(have_field('shipping_method_description'))
+      expect(page).to(have_select('shipping_method_display_on'))
+      expect(page).to(have_css('div#shipping_method_zones_field'))
+      expect(page).to(have_field('shipping_method_require_ship_address_true', checked: true))
 
       # Auto-check default shipping category
-      expect(page).to have_field shipping_category.name, checked: true
+      expect(page).to(have_field(shipping_category.name, checked: true))
 
       fill_in 'shipping_method_name', with: 'Teleport'
 
       check "shipping_method_distributor_ids_#{distributor1.id}"
-      find(:css, "tags-input .tags input").set "local\n"
+      find(:css, "tags-input .tags input").set("local\n")
       within(".tags .tag-list") do
-        expect(page).to have_css '.tag-item', text: "local"
+        expect(page).to(have_css('.tag-item', text: "local"))
       end
 
       click_button I18n.t("actions.create")
 
-      expect(page).to have_content I18n.t('spree.admin.shipping_methods.edit.editing_shipping_method')
-      expect(flash_message).to include "Teleport", "successfully created!"
+      expect(page).to(have_content(I18n.t('spree.admin.shipping_methods.edit.editing_shipping_method')))
+      expect(flash_message).to(include("Teleport", "successfully created!"))
 
-      expect(first('tags-input .tag-list ti-tag-item')).to have_content "local"
+      expect(first('tags-input .tag-list ti-tag-item')).to(have_content("local"))
 
       shipping_method = Spree::ShippingMethod.find_by(name: 'Teleport')
-      expect(shipping_method.distributors).to eq([distributor1])
-      expect(shipping_method.tag_list).to eq(["local"])
+      expect(shipping_method.distributors).to(eq([distributor1]))
+      expect(shipping_method.tag_list).to(eq(["local"]))
     end
 
     it "shows me only shipping methods I have access to" do
@@ -136,9 +136,9 @@ describe 'shipping methods' do
 
       visit spree.admin_shipping_methods_path
 
-      expect(page).to     have_content shipping_method1.name
-      expect(page).to     have_content shipping_method2.name
-      expect(page).not_to have_content sm3.name
+      expect(page).to(    have_content(shipping_method1.name))
+      expect(page).to(    have_content(shipping_method2.name))
+      expect(page).not_to(have_content(sm3.name))
     end
 
     it "does not show duplicates of shipping methods" do
@@ -147,7 +147,7 @@ describe 'shipping methods' do
 
       visit spree.admin_shipping_methods_path
 
-      expect(page).to have_selector 'td', text: 'Two', count: 1
+      expect(page).to(have_selector('td', text: 'Two', count: 1))
     end
 
     it "shows me only shipping methods for the enterprise I select" do
@@ -161,11 +161,11 @@ describe 'shipping methods' do
         click_link "Shipping Methods"
       end
 
-      expect(page).to have_content shipping_method1.name
-      expect(page).to have_content shipping_method2.name
+      expect(page).to(have_content(shipping_method1.name))
+      expect(page).to(have_content(shipping_method2.name))
 
-      expect(page).to have_checked_field "enterprise_shipping_method_ids_#{shipping_method2.id}"
-      expect(page).to have_checked_field "enterprise_shipping_method_ids_#{shipping_method1.id}"
+      expect(page).to(have_checked_field("enterprise_shipping_method_ids_#{shipping_method2.id}"))
+      expect(page).to(have_checked_field("enterprise_shipping_method_ids_#{shipping_method1.id}"))
 
       click_link 'Enterprises'
       within("#e_#{distributor2.id}") { click_link 'Settings' }
@@ -174,11 +174,11 @@ describe 'shipping methods' do
         click_link "Shipping Methods"
       end
 
-      expect(page).to     have_content shipping_method1.name
-      expect(page).to     have_content shipping_method2.name
+      expect(page).to(    have_content(shipping_method1.name))
+      expect(page).to(    have_content(shipping_method2.name))
 
-      expect(page).to have_checked_field "enterprise_shipping_method_ids_#{shipping_method2.id}"
-      expect(page).to have_unchecked_field "enterprise_shipping_method_ids_#{shipping_method1.id}"
+      expect(page).to(have_checked_field("enterprise_shipping_method_ids_#{shipping_method2.id}"))
+      expect(page).to(have_unchecked_field("enterprise_shipping_method_ids_#{shipping_method1.id}"))
     end
   end
 end

@@ -16,16 +16,16 @@ module Api
                   else
                     Spree::Taxon.ransack(raw_params[:q]).result
                   end
-        render json: @taxons, each_serializer: Api::TaxonSerializer
+        render(json: @taxons, each_serializer: Api::TaxonSerializer)
       end
 
       def jstree
         @taxon = taxon
-        render json: @taxon.children, each_serializer: Api::TaxonJstreeSerializer
+        render(json: @taxon.children, each_serializer: Api::TaxonJstreeSerializer)
       end
 
       def create
-        authorize! :create, Spree::Taxon
+        authorize!(:create, Spree::Taxon)
         @taxon = Spree::Taxon.new(taxon_params)
         @taxon.taxonomy_id = params[:taxonomy_id]
         taxonomy = Spree::Taxonomy.find_by(id: params[:taxonomy_id])
@@ -38,25 +38,25 @@ module Api
         @taxon.parent_id = taxonomy.root.id unless params.dig(:taxon, :parent_id)
 
         if @taxon.save
-          render json: @taxon, serializer: Api::TaxonSerializer, status: :created
+          render(json: @taxon, serializer: Api::TaxonSerializer, status: :created)
         else
           invalid_resource!(@taxon)
         end
       end
 
       def update
-        authorize! :update, Spree::Taxon
+        authorize!(:update, Spree::Taxon)
         if taxon.update(taxon_params)
-          render json: taxon, serializer: Api::TaxonSerializer, status: :ok
+          render(json: taxon, serializer: Api::TaxonSerializer, status: :ok)
         else
           invalid_resource!(taxon)
         end
       end
 
       def destroy
-        authorize! :delete, Spree::Taxon
+        authorize!(:delete, Spree::Taxon)
         taxon.destroy
-        render json: taxon, serializer: Api::TaxonSerializer, status: :no_content
+        render(json: taxon, serializer: Api::TaxonSerializer, status: :no_content)
       end
 
       private

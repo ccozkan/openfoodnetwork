@@ -43,7 +43,7 @@ module Stripe
                 headers: { 'Stripe-Account' => stripe_account_id })
           .to_return(payment_method_response_mock)
 
-        credit_card.update_attribute :gateway_payment_profile_id, payment_method_id
+        credit_card.update_attribute(:gateway_payment_profile_id, payment_method_id)
       end
 
       context "when called with a card without a customer (one time usage card)" do
@@ -57,8 +57,8 @@ module Stripe
         it "clones the payment method only" do
           customer_id, payment_method_id = cloner.find_or_clone
 
-          expect(payment_method_id).to eq new_payment_method_id
-          expect(customer_id).to eq nil
+          expect(payment_method_id).to(eq(new_payment_method_id))
+          expect(customer_id).to(eq(nil))
         end
       end
 
@@ -69,14 +69,14 @@ module Stripe
                   headers: { 'Stripe-Account' => stripe_account_id })
             .to_return(payment_method_response_mock)
 
-          credit_card.update_attribute :gateway_customer_profile_id, customer_id
+          credit_card.update_attribute(:gateway_customer_profile_id, customer_id)
         end
 
         it "clones both the payment method and the customer" do
           customer_id, payment_method_id = cloner.find_or_clone
 
-          expect(payment_method_id).to eq new_payment_method_id
-          expect(customer_id).to eq new_customer_id
+          expect(payment_method_id).to(eq(new_payment_method_id))
+          expect(customer_id).to(eq(new_customer_id))
         end
       end
     end

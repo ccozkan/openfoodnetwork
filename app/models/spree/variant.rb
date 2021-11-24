@@ -191,11 +191,11 @@ joins(:prices)
     end
 
     def fees_for(distributor, order_cycle)
-      OpenFoodNetwork::EnterpriseFeeCalculator.new(distributor, order_cycle).fees_for self
+      OpenFoodNetwork::EnterpriseFeeCalculator.new(distributor, order_cycle).fees_for(self)
     end
 
     def fees_by_type_for(distributor, order_cycle)
-      OpenFoodNetwork::EnterpriseFeeCalculator.new(distributor, order_cycle).fees_by_type_for self
+      OpenFoodNetwork::EnterpriseFeeCalculator.new(distributor, order_cycle).fees_by_type_for(self)
     end
 
     def option_value(opt_name)
@@ -227,8 +227,8 @@ joins(:prices)
     # Ensures a new variant takes the product master price when price is not supplied
     def check_price
       if price.nil? && Spree::Config[:require_master_price]
-        raise 'No master variant found to infer price' unless product&.master
-        raise 'Must supply price for variant or master.price for product.' if self == product.master
+        raise('No master variant found to infer price') unless product&.master
+        raise('Must supply price for variant or master.price for product.') if self == product.master
 
         self.price = product.master.price
       end

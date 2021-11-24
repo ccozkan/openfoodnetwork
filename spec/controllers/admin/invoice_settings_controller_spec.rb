@@ -15,31 +15,31 @@ describe Admin::InvoiceSettingsController, type: :controller do
     end
 
     before do
-      allow(controller).to receive(:spree_current_user) { create(:admin_user) }
+      allow(controller).to(receive(:spree_current_user) { create(:admin_user) })
     end
 
     it "disables invoices" do
       expect do
-        post :update, params: params
-      end.to change {
+        post(:update, params: params)
+      end.to(change {
         Spree::Config[:enable_invoices?]
-      }.to(false)
+      }.to(false))
     end
 
     it "changes the invoice style" do
       expect do
-        post :update, params: params
-      end.to change {
+        post(:update, params: params)
+      end.to(change {
         Spree::Config[:invoice_style2?]
-      }.to(true)
+      }.to(true))
     end
 
     it "disables receipt printing" do
       expect do
-        post :update, params: params
-      end.to change {
+        post(:update, params: params)
+      end.to(change {
         Spree::Config[:enable_receipt_printing?]
-      }.to(true)
+      }.to(true))
     end
   end
 end

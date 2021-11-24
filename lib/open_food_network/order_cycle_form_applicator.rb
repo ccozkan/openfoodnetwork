@@ -94,8 +94,8 @@ sender_id: sender_id,
 receiver_id: receiver_id,
 incoming: incoming
 )
-      variant_ids = attrs.delete :variant_ids
-      exchange = @order_cycle.exchanges.build attrs
+      variant_ids = attrs.delete(:variant_ids)
+      exchange = @order_cycle.exchanges.build(attrs)
 
       if manages_coordinator?
         exchange.save!
@@ -114,7 +114,7 @@ incoming: incoming
       return unless permission_for(exchange)
 
       remove_unauthorized_exchange_attributes(exchange, attrs)
-      variant_ids = attrs.delete :variant_ids
+      variant_ids = attrs.delete(:variant_ids)
       exchange.update!(attrs)
       ExchangeVariantBulkUpdater.new(exchange).update!(variant_ids) unless variant_ids.nil?
 
@@ -124,10 +124,10 @@ incoming: incoming
     def remove_unauthorized_exchange_attributes(exchange, exchange_attrs)
       return if manages_coordinator? || manager_for(exchange)
 
-      exchange_attrs.delete :enterprise_fee_ids
-      exchange_attrs.delete :pickup_time
-      exchange_attrs.delete :pickup_instructions
-      exchange_attrs.delete :tag_list
+      exchange_attrs.delete(:enterprise_fee_ids)
+      exchange_attrs.delete(:pickup_time)
+      exchange_attrs.delete(:pickup_instructions)
+      exchange_attrs.delete(:tag_list)
     end
 
     def destroy_untouched_exchanges
@@ -136,15 +136,15 @@ incoming: incoming
 
     def untouched_exchanges
       touched_exchange_ids = @touched_exchanges.map(&:id)
-      @order_cycle.exchanges.reject { |ex| touched_exchange_ids.include? ex.id }
+      @order_cycle.exchanges.reject { |ex| touched_exchange_ids.include?(ex.id) }
     end
 
     def manager_for(exchange)
-      Enterprise.managed_by(@spree_current_user).include? exchange.participant
+      Enterprise.managed_by(@spree_current_user).include?(exchange.participant)
     end
 
     def permission_for(exchange)
-      permitted_enterprises.include? exchange.participant
+      permitted_enterprises.include?(exchange.participant)
     end
 
     def permitted_enterprises
@@ -157,7 +157,7 @@ incoming: incoming
     def manages_coordinator?
       return @manages_coordinator unless @manages_coordinator.nil?
 
-      @manages_coordinator = Enterprise.managed_by(@spree_current_user).include? @order_cycle.coordinator
+      @manages_coordinator = Enterprise.managed_by(@spree_current_user).include?(@order_cycle.coordinator)
     end
 
     def editable_variant_ids_for_incoming_exchange_between(sender, _receiver)

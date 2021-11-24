@@ -45,18 +45,18 @@ module DelegateBelongsTo
     ##
     def delegate_belongs_to(association, *attrs)
       opts = attrs.extract_options!
-      initialize_association :belongs_to, association, opts
+      initialize_association(:belongs_to, association, opts)
       attrs = get_association_column_names(association) if attrs.empty?
-      attrs.concat get_association_column_names(association) if attrs.delete :defaults
+      attrs.concat(get_association_column_names(association)) if attrs.delete(:defaults)
       attrs.each do |attr|
-        class_def attr do |*args|
+        class_def(attr) do |*args|
           if args.empty?
             __send__(:delegator_for, association).__send__(attr)
           else
             __send__(:delegator_for, association).__send__(attr, *args)
           end
         end
-        class_def "#{attr}=" do |val|
+        class_def("#{attr}=") do |val|
           __send__(:delegator_for, association).__send__("#{attr}=", val)
         end
       end
@@ -79,7 +79,7 @@ module DelegateBelongsTo
     # initialize_association :belongs_to, :contact
     def initialize_association(type, association, opts = {})
       unless [:belongs_to].include?(type.to_s.to_sym)
-        raise 'Illegal or unimplemented association type.'
+        raise('Illegal or unimplemented association type.')
       end
 
       __send__(type, association, **opts) if reflect_on_association(association).nil?

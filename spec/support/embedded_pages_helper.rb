@@ -3,7 +3,7 @@
 module OpenFoodNetwork
   module EmbeddedPagesHelper
     def on_embedded_page(&block)
-      within_frame :frame, &block
+      within_frame(:frame, &block)
     end
   end
 end

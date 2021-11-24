@@ -27,7 +27,7 @@ module Spree
 
     def provider
       gateway_options = options
-      gateway_options.delete :login if gateway_options.key?(:login) && gateway_options[:login].nil?
+      gateway_options.delete(:login) if gateway_options.key?(:login) && gateway_options[:login].nil?
       if gateway_options[:server]
         ActiveMerchant::Billing::Base.mode = gateway_options[:server].to_sym
       end
@@ -55,7 +55,7 @@ module Spree
     end
 
     def supports?(source)
-      return true unless provider_class.respond_to? :supports?
+      return true unless provider_class.respond_to?(:supports?)
       return false unless source.brand
 
       provider_class.supports?(source.brand)

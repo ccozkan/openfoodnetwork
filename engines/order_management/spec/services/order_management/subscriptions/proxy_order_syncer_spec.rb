@@ -11,11 +11,11 @@ module OrderManagement
         it "raises an error when initialized with an object
             that is not a Subscription or an ActiveRecord::Relation" do
           expect { ProxyOrderSyncer.new(subscription) }
-.to_not raise_error
+.to_not(raise_error)
           expect { ProxyOrderSyncer.new(Subscription.where(id: subscription.id)) }
-.to_not raise_error
+.to_not(raise_error)
           expect { ProxyOrderSyncer.new("something") }
-.to raise_error RuntimeError
+.to(raise_error(RuntimeError))
         end
       end
 
@@ -92,8 +92,8 @@ orders_close_at: now + 121.seconds
 
             it "does not create a new proxy order for that oc" do
               expect { subscription.save! }
-.to_not change(ProxyOrder, :count).from(0)
-              expect(order_cycles).to_not include oc
+.to_not(change(ProxyOrder, :count).from(0))
+              expect(order_cycles).to_not(include(oc))
             end
           end
 
@@ -102,8 +102,8 @@ orders_close_at: now + 121.seconds
 
             it "does not create a new proxy order for that oc" do
               expect { subscription.save! }
-.to_not change(ProxyOrder, :count).from(0)
-              expect(order_cycles).to_not include oc
+.to_not(change(ProxyOrder, :count).from(0))
+              expect(order_cycles).to_not(include(oc))
             end
           end
 
@@ -114,8 +114,8 @@ orders_close_at: now + 121.seconds
               syncer.sync!
 
               expect { subscription.save! }
-.to change(ProxyOrder, :count).from(0).to(1)
-              expect(subscription.reload.proxy_orders.map(&:order_cycle)).to include oc
+.to(change(ProxyOrder, :count).from(0).to(1))
+              expect(subscription.reload.proxy_orders.map(&:order_cycle)).to(include(oc))
             end
           end
 
@@ -124,8 +124,8 @@ orders_close_at: now + 121.seconds
 
             it "does not create a new proxy order for that oc" do
               expect { subscription.save! }
-.to_not change(ProxyOrder, :count).from(0)
-              expect(order_cycles).to_not include oc
+.to_not(change(ProxyOrder, :count).from(0))
+              expect(order_cycles).to_not(include(oc))
             end
           end
 
@@ -136,8 +136,8 @@ orders_close_at: now + 121.seconds
               syncer.sync!
 
               expect { subscription.save! }
-.to change(ProxyOrder, :count).from(0).to(1)
-              expect(subscription.reload.proxy_orders.map(&:order_cycle)).to include oc
+.to(change(ProxyOrder, :count).from(0).to(1))
+              expect(subscription.reload.proxy_orders.map(&:order_cycle)).to(include(oc))
             end
           end
 
@@ -148,8 +148,8 @@ orders_close_at: now + 121.seconds
               syncer.sync!
 
               expect { subscription.save! }
-.to change(ProxyOrder, :count).from(0).to(1)
-              expect(subscription.reload.proxy_orders.map(&:order_cycle)).to include oc
+.to(change(ProxyOrder, :count).from(0).to(1))
+              expect(subscription.reload.proxy_orders.map(&:order_cycle)).to(include(oc))
             end
           end
 
@@ -158,14 +158,14 @@ orders_close_at: now + 121.seconds
 
             it "does not create a new proxy order for that oc" do
               expect { subscription.save! }
-.to_not change(ProxyOrder, :count).from(0)
-              expect(order_cycles).to_not include oc
+.to_not(change(ProxyOrder, :count).from(0))
+              expect(order_cycles).to_not(include(oc))
             end
           end
         end
 
         context "when the subscription is persisted" do
-          before { expect(subscription.save!).to be true }
+          before { expect(subscription.save!).to(be(true)) }
 
           context "when a proxy order exists" do
             let!(:proxy_order) { create(:proxy_order, subscription: subscription, order_cycle: oc) }
@@ -178,8 +178,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { closed_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -187,8 +187,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { open_oc_closes_before_begins_at_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -196,8 +196,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { open_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -205,8 +205,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_before_begins_at_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -214,8 +214,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_on_begins_at_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -223,8 +223,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_on_ends_at_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -232,8 +232,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_after_ends_at_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
               end
@@ -244,8 +244,8 @@ orders_close_at: now + 121.seconds
 
                   it "removes the proxy order" do
                     expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(1).to(0)
-                    expect(proxy_orders).to_not include proxy_order
+.to(change(ProxyOrder, :count).from(1).to(0))
+                    expect(proxy_orders).to_not(include(proxy_order))
                   end
                 end
 
@@ -254,8 +254,8 @@ orders_close_at: now + 121.seconds
 
                   it "removes the proxy order" do
                     expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(1).to(0)
-                    expect(proxy_orders).to_not include proxy_order
+.to(change(ProxyOrder, :count).from(1).to(0))
+                    expect(proxy_orders).to_not(include(proxy_order))
                   end
                 end
 
@@ -276,8 +276,8 @@ orders_close_at: now + 121.seconds
 
                     it "keeps the proxy order" do
                       expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                      expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                      expect(proxy_orders).to(include(proxy_order))
                     end
                   end
 
@@ -286,8 +286,8 @@ orders_close_at: now + 121.seconds
 
                     it "keeps the proxy order" do
                       expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                      expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                      expect(proxy_orders).to(include(proxy_order))
                     end
                   end
 
@@ -296,8 +296,8 @@ orders_close_at: now + 121.seconds
 
                     it "keeps the proxy order" do
                       expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                      expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                      expect(proxy_orders).to(include(proxy_order))
                     end
                   end
                 end
@@ -307,8 +307,8 @@ orders_close_at: now + 121.seconds
 
                   it "removes the proxy order" do
                     expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(1).to(0)
-                    expect(proxy_orders).to_not include proxy_order
+.to(change(ProxyOrder, :count).from(1).to(0))
+                    expect(proxy_orders).to_not(include(proxy_order))
                   end
                 end
 
@@ -317,8 +317,8 @@ orders_close_at: now + 121.seconds
 
                   it "removes the proxy order" do
                     expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(1).to(0)
-                    expect(proxy_orders).to_not include proxy_order
+.to(change(ProxyOrder, :count).from(1).to(0))
+                    expect(proxy_orders).to_not(include(proxy_order))
                   end
                 end
               end
@@ -330,7 +330,7 @@ orders_close_at: now + 121.seconds
               end
               before do
                 open_oc.schedule_ids = []
-                expect(open_oc.save!).to be true
+                expect(open_oc.save!).to(be(true))
               end
 
               context "and the proxy order has already been placed" do
@@ -340,8 +340,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { closed_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -349,8 +349,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { open_oc_closes_before_begins_at_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -358,8 +358,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { open_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -367,8 +367,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_before_begins_at_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -376,8 +376,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_on_begins_at_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -385,8 +385,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_on_ends_at_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
 
@@ -394,8 +394,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_after_ends_at_oc }
                   it "keeps the proxy order" do
                     expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(1)
-                    expect(proxy_orders).to include proxy_order
+.to_not(change(ProxyOrder, :count).from(1))
+                    expect(proxy_orders).to(include(proxy_order))
                   end
                 end
               end
@@ -406,8 +406,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { closed_oc }
                   it "removes the proxy order" do
                     expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(1).to(0)
-                    expect(proxy_orders).to_not include proxy_order
+.to(change(ProxyOrder, :count).from(1).to(0))
+                    expect(proxy_orders).to_not(include(proxy_order))
                   end
                 end
 
@@ -416,8 +416,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { open_oc }
                   it "removes the proxy order" do
                     expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(1).to(0)
-                    expect(proxy_orders).to_not include proxy_order
+.to(change(ProxyOrder, :count).from(1).to(0))
+                    expect(proxy_orders).to_not(include(proxy_order))
                   end
                 end
 
@@ -425,8 +425,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_before_begins_at_oc }
                   it "removes the proxy order" do
                     expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(1).to(0)
-                    expect(proxy_orders).to_not include proxy_order
+.to(change(ProxyOrder, :count).from(1).to(0))
+                    expect(proxy_orders).to_not(include(proxy_order))
                   end
                 end
 
@@ -434,8 +434,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_on_begins_at_oc }
                   it "removes the proxy order" do
                     expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(1).to(0)
-                    expect(proxy_orders).to_not include proxy_order
+.to(change(ProxyOrder, :count).from(1).to(0))
+                    expect(proxy_orders).to_not(include(proxy_order))
                   end
                 end
 
@@ -443,8 +443,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_on_ends_at_oc }
                   it "removes the proxy order" do
                     expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(1).to(0)
-                    expect(proxy_orders).to_not include proxy_order
+.to(change(ProxyOrder, :count).from(1).to(0))
+                    expect(proxy_orders).to_not(include(proxy_order))
                   end
                 end
 
@@ -452,8 +452,8 @@ orders_close_at: now + 121.seconds
                   let(:oc) { upcoming_closes_after_ends_at_oc }
                   it "removes the proxy order" do
                     expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(1).to(0)
-                    expect(proxy_orders).to_not include proxy_order
+.to(change(ProxyOrder, :count).from(1).to(0))
+                    expect(proxy_orders).to_not(include(proxy_order))
                   end
                 end
               end
@@ -477,8 +477,8 @@ orders_close_at: now + 121.seconds
 
               it "does not create a new proxy order for that oc" do
                 expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(0)
-                expect(order_cycles).to_not include oc
+.to_not(change(ProxyOrder, :count).from(0))
+                expect(order_cycles).to_not(include(oc))
               end
             end
 
@@ -487,8 +487,8 @@ orders_close_at: now + 121.seconds
 
               it "does not create a new proxy order for that oc" do
                 expect { subscription.save! }
-.to_not change(ProxyOrder, :count).from(0)
-                expect(order_cycles).to_not include oc
+.to_not(change(ProxyOrder, :count).from(0))
+                expect(order_cycles).to_not(include(oc))
               end
             end
 
@@ -497,8 +497,8 @@ orders_close_at: now + 121.seconds
 
               it "creates a new proxy order for that oc" do
                 expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(0).to(1)
-                expect(subscription.reload.proxy_orders.map(&:order_cycle)).to include oc
+.to(change(ProxyOrder, :count).from(0).to(1))
+                expect(subscription.reload.proxy_orders.map(&:order_cycle)).to(include(oc))
               end
             end
 
@@ -507,8 +507,8 @@ orders_close_at: now + 121.seconds
 
               it "does not create a new proxy order for that oc" do
                 expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(0)
-                expect(order_cycles).to_not include oc
+.to_not(change(ProxyOrder, :count).from(0))
+                expect(order_cycles).to_not(include(oc))
               end
             end
 
@@ -517,8 +517,8 @@ orders_close_at: now + 121.seconds
 
               it "creates a new proxy order for that oc" do
                 expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(0).to(1)
-                expect(subscription.reload.proxy_orders.map(&:order_cycle)).to include oc
+.to(change(ProxyOrder, :count).from(0).to(1))
+                expect(subscription.reload.proxy_orders.map(&:order_cycle)).to(include(oc))
               end
             end
 
@@ -527,8 +527,8 @@ orders_close_at: now + 121.seconds
 
               it "creates a new proxy order for that oc" do
                 expect { syncer.sync! }
-.to change(ProxyOrder, :count).from(0).to(1)
-                expect(subscription.reload.proxy_orders.map(&:order_cycle)).to include oc
+.to(change(ProxyOrder, :count).from(0).to(1))
+                expect(subscription.reload.proxy_orders.map(&:order_cycle)).to(include(oc))
               end
             end
 
@@ -537,8 +537,8 @@ orders_close_at: now + 121.seconds
 
               it "does not create a new proxy order for that oc" do
                 expect { syncer.sync! }
-.to_not change(ProxyOrder, :count).from(0)
-                expect(order_cycles).to_not include oc
+.to_not(change(ProxyOrder, :count).from(0))
+                expect(order_cycles).to_not(include(oc))
               end
             end
           end

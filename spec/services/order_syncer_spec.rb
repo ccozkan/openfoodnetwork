@@ -21,11 +21,11 @@ describe OrderSyncer do
       end
 
       it "updates the shipping_method on the order and on shipments" do
-        expect(order.shipments.first.shipping_method).to eq shipping_method
+        expect(order.shipments.first.shipping_method).to(eq(shipping_method))
         subscription.assign_attributes(params)
-        expect(syncer.sync!).to be true
-        expect(order.reload.shipping_method).to eq new_shipping_method
-        expect(order.shipments.first.shipping_method).to eq new_shipping_method
+        expect(syncer.sync!).to(be(true))
+        expect(order.reload.shipping_method).to(eq(new_shipping_method))
+        expect(order.shipments.first.shipping_method).to(eq(new_shipping_method))
       end
     end
 
@@ -42,13 +42,13 @@ describe OrderSyncer do
           # behaviour.
           order.select_shipping_method(new_shipping_method.id)
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
+          expect(syncer.sync!).to(be(true))
         end
 
         it "does not update the shipping_method on the subscription or on the pre-altered shipment" do
-          expect(order.reload.shipping_method).to eq new_shipping_method
-          expect(order.reload.shipments.first.shipping_method).to eq new_shipping_method
-          expect(syncer.order_update_issues[order.id]).to be nil
+          expect(order.reload.shipping_method).to(eq(new_shipping_method))
+          expect(order.reload.shipments.first.shipping_method).to(eq(new_shipping_method))
+          expect(syncer.order_update_issues[order.id]).to(be(nil))
         end
       end
 
@@ -65,13 +65,13 @@ describe OrderSyncer do
           order.select_shipping_method(changed_shipping_method.id)
           subscription.assign_attributes(params)
 
-          expect(syncer.sync!).to be true
+          expect(syncer.sync!).to(be(true))
         end
 
         it "does not update the shipping_method on the subscription or on the pre-altered shipment" do
-          expect(order.reload.shipping_method).to eq changed_shipping_method
-          expect(order.reload.shipments.first.shipping_method).to eq changed_shipping_method
-          expect(syncer.order_update_issues[order.id]).to include "Shipping Method"
+          expect(order.reload.shipping_method).to(eq(changed_shipping_method))
+          expect(order.reload.shipments.first.shipping_method).to(eq(changed_shipping_method))
+          expect(syncer.order_update_issues[order.id]).to(include("Shipping Method"))
         end
       end
     end
@@ -90,15 +90,15 @@ describe OrderSyncer do
       let(:params) { { payment_method_id: new_payment_method.id } }
 
       it "voids existing payments and creates a new payment with the relevant payment method" do
-        expect(order.payments.reload.first.payment_method).to eq payment_method
+        expect(order.payments.reload.first.payment_method).to(eq(payment_method))
         subscription.assign_attributes(params)
-        expect(syncer.sync!).to be true
+        expect(syncer.sync!).to(be(true))
         payments = order.reload.payments
-        expect(payments.count).to be 2
-        expect(payments.with_state('void').count).to be 1
-        expect(payments.with_state('checkout').count).to be 1
-        expect(payments.with_state('void').first.payment_method).to eq payment_method
-        expect(payments.with_state('checkout').first.payment_method).to eq new_payment_method
+        expect(payments.count).to(be(2))
+        expect(payments.with_state('void').count).to(be(1))
+        expect(payments.with_state('checkout').count).to(be(1))
+        expect(payments.with_state('void').first.payment_method).to(eq(payment_method))
+        expect(payments.with_state('checkout').first.payment_method).to(eq(new_payment_method))
       end
     end
 
@@ -109,14 +109,14 @@ describe OrderSyncer do
         before do
           order.payments.first.update_attribute(:payment_method_id, new_payment_method.id)
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
+          expect(syncer.sync!).to(be(true))
         end
 
         it "keeps pre-altered payments and doesn't add an issue to order_update_issues" do
           payments = order.reload.payments
-          expect(payments.count).to be 1
-          expect(payments.first.payment_method).to eq new_payment_method
-          expect(syncer.order_update_issues[order.id]).to be nil
+          expect(payments.count).to(be(1))
+          expect(payments.first.payment_method).to(eq(new_payment_method))
+          expect(syncer.order_update_issues[order.id]).to(be(nil))
         end
       end
 
@@ -126,14 +126,14 @@ describe OrderSyncer do
         before do
           order.payments.first.update_attribute(:payment_method_id, changed_payment_method.id)
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
+          expect(syncer.sync!).to(be(true))
         end
 
         it "keeps pre-altered payments and adds an issue to order_update_issues" do
           payments = order.reload.payments
-          expect(payments.count).to be 1
-          expect(payments.first.payment_method).to eq changed_payment_method
-          expect(syncer.order_update_issues[order.id]).to include "Payment Method"
+          expect(payments.count).to(be(1))
+          expect(payments.first.payment_method).to(eq(changed_payment_method))
+          expect(syncer.order_update_issues[order.id]).to(include("Payment Method"))
         end
       end
     end
@@ -175,17 +175,17 @@ phone: "1123581321"
       context "when the bill_address on the order matches that on the subscription" do
         it "updates all bill_address attrs and ship_address names + phone" do
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
-          expect(syncer.order_update_issues.keys).to_not include order.id
+          expect(syncer.sync!).to(be(true))
+          expect(syncer.order_update_issues.keys).to_not(include(order.id))
           order.reload;
-          expect(order.bill_address.firstname).to eq "Bill"
-          expect(order.bill_address.lastname).to eq bill_address_attrs["lastname"]
-          expect(order.bill_address.address1).to eq "123 abc st"
-          expect(order.bill_address.phone).to eq "1123581321"
-          expect(order.ship_address.firstname).to eq "Bill"
-          expect(order.ship_address.lastname).to eq bill_address_attrs["lastname"]
-          expect(order.ship_address.address1).to eq distributor_address.address1
-          expect(order.ship_address.phone).to eq "1123581321"
+          expect(order.bill_address.firstname).to(eq("Bill"))
+          expect(order.bill_address.lastname).to(eq(bill_address_attrs["lastname"]))
+          expect(order.bill_address.address1).to(eq("123 abc st"))
+          expect(order.bill_address.phone).to(eq("1123581321"))
+          expect(order.ship_address.firstname).to(eq("Bill"))
+          expect(order.ship_address.lastname).to(eq(bill_address_attrs["lastname"]))
+          expect(order.ship_address.address1).to(eq(distributor_address.address1))
+          expect(order.ship_address.phone).to(eq("1123581321"))
         end
       end
 
@@ -197,17 +197,17 @@ phone: "1123581321"
 
         it "does not update bill_address or ship_address on the order" do
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
-          expect(syncer.order_update_issues.keys).to include order.id
+          expect(syncer.sync!).to(be(true))
+          expect(syncer.order_update_issues.keys).to(include(order.id))
           order.reload;
-          expect(order.bill_address.firstname).to eq "Jane"
-          expect(order.bill_address.lastname).to eq bill_address_attrs["lastname"]
-          expect(order.bill_address.address1).to eq bill_address_attrs["address1"]
-          expect(order.bill_address.phone).to eq bill_address_attrs["phone"]
-          expect(order.ship_address.firstname).to eq "Jane"
-          expect(order.ship_address.lastname).to eq bill_address_attrs["lastname"]
-          expect(order.ship_address.address1).to eq distributor_address.address1
-          expect(order.ship_address.phone).to eq bill_address_attrs["phone"]
+          expect(order.bill_address.firstname).to(eq("Jane"))
+          expect(order.bill_address.lastname).to(eq(bill_address_attrs["lastname"]))
+          expect(order.bill_address.address1).to(eq(bill_address_attrs["address1"]))
+          expect(order.bill_address.phone).to(eq(bill_address_attrs["phone"]))
+          expect(order.ship_address.firstname).to(eq("Jane"))
+          expect(order.ship_address.lastname).to(eq(bill_address_attrs["lastname"]))
+          expect(order.ship_address.address1).to(eq(distributor_address.address1))
+          expect(order.ship_address.phone).to(eq(bill_address_attrs["phone"]))
         end
       end
     end
@@ -220,17 +220,17 @@ phone: "1123581321"
       context "when the bill_address on the order matches that on the subscription" do
         it "only updates bill_address attrs" do
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
-          expect(syncer.order_update_issues.keys).to_not include order.id
+          expect(syncer.sync!).to(be(true))
+          expect(syncer.order_update_issues.keys).to_not(include(order.id))
           order.reload;
-          expect(order.bill_address.firstname).to eq "Bill"
-          expect(order.bill_address.lastname).to eq bill_address_attrs["lastname"]
-          expect(order.bill_address.address1).to eq "123 abc st"
-          expect(order.bill_address.phone).to eq "1123581321"
-          expect(order.ship_address.firstname).to eq ship_address_attrs["firstname"]
-          expect(order.ship_address.lastname).to eq ship_address_attrs["lastname"]
-          expect(order.ship_address.address1).to eq ship_address_attrs["address1"]
-          expect(order.ship_address.phone).to eq ship_address_attrs["phone"]
+          expect(order.bill_address.firstname).to(eq("Bill"))
+          expect(order.bill_address.lastname).to(eq(bill_address_attrs["lastname"]))
+          expect(order.bill_address.address1).to(eq("123 abc st"))
+          expect(order.bill_address.phone).to(eq("1123581321"))
+          expect(order.ship_address.firstname).to(eq(ship_address_attrs["firstname"]))
+          expect(order.ship_address.lastname).to(eq(ship_address_attrs["lastname"]))
+          expect(order.ship_address.address1).to(eq(ship_address_attrs["address1"]))
+          expect(order.ship_address.phone).to(eq(ship_address_attrs["phone"]))
         end
       end
 
@@ -242,17 +242,17 @@ phone: "1123581321"
 
         it "does not update bill_address or ship_address on the order" do
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
-          expect(syncer.order_update_issues.keys).to include order.id
+          expect(syncer.sync!).to(be(true))
+          expect(syncer.order_update_issues.keys).to(include(order.id))
           order.reload;
-          expect(order.bill_address.firstname).to eq "Jane"
-          expect(order.bill_address.lastname).to eq bill_address_attrs["lastname"]
-          expect(order.bill_address.address1).to eq bill_address_attrs["address1"]
-          expect(order.bill_address.phone).to eq bill_address_attrs["phone"]
-          expect(order.ship_address.firstname).to eq ship_address_attrs["firstname"]
-          expect(order.ship_address.lastname).to eq ship_address_attrs["lastname"]
-          expect(order.ship_address.address1).to eq ship_address_attrs["address1"]
-          expect(order.ship_address.phone).to eq ship_address_attrs["phone"]
+          expect(order.bill_address.firstname).to(eq("Jane"))
+          expect(order.bill_address.lastname).to(eq(bill_address_attrs["lastname"]))
+          expect(order.bill_address.address1).to(eq(bill_address_attrs["address1"]))
+          expect(order.bill_address.phone).to(eq(bill_address_attrs["phone"]))
+          expect(order.ship_address.firstname).to(eq(ship_address_attrs["firstname"]))
+          expect(order.ship_address.lastname).to(eq(ship_address_attrs["lastname"]))
+          expect(order.ship_address.address1).to(eq(ship_address_attrs["address1"]))
+          expect(order.ship_address.phone).to(eq(ship_address_attrs["phone"]))
         end
       end
     end
@@ -293,13 +293,13 @@ phone: "1123581321"
 
       it "does not change the ship address" do
         subscription.assign_attributes(params)
-        expect(syncer.sync!).to be true
-        expect(syncer.order_update_issues.keys).to_not include order.id
+        expect(syncer.sync!).to(be(true))
+        expect(syncer.order_update_issues.keys).to_not(include(order.id))
         order.reload;
-        expect(order.ship_address.firstname).to eq bill_address_attrs["firstname"]
-        expect(order.ship_address.lastname).to eq bill_address_attrs["lastname"]
-        expect(order.ship_address.address1).to eq distributor_address.address1
-        expect(order.ship_address.phone).to eq bill_address_attrs["phone"]
+        expect(order.ship_address.firstname).to(eq(bill_address_attrs["firstname"]))
+        expect(order.ship_address.lastname).to(eq(bill_address_attrs["lastname"]))
+        expect(order.ship_address.address1).to(eq(distributor_address.address1))
+        expect(order.ship_address.phone).to(eq(bill_address_attrs["phone"]))
       end
 
       context "but the shipping method is being changed to one that requires a ship_address" do
@@ -339,13 +339,13 @@ with_items: true,
             end
 
             it "updates ship_address attrs" do
-              expect(syncer.sync!).to be true
-              expect(syncer.order_update_issues.keys).to include order.id
+              expect(syncer.sync!).to(be(true))
+              expect(syncer.order_update_issues.keys).to(include(order.id))
               order.reload
-              expect(order.ship_address.firstname).to eq ship_address_attrs["firstname"]
-              expect(order.ship_address.lastname).to eq ship_address_attrs["lastname"]
-              expect(order.ship_address.address1).to eq ship_address_attrs["address1"]
-              expect(order.ship_address.phone).to eq ship_address_attrs["phone"]
+              expect(order.ship_address.firstname).to(eq(ship_address_attrs["firstname"]))
+              expect(order.ship_address.lastname).to(eq(ship_address_attrs["lastname"]))
+              expect(order.ship_address.address1).to(eq(ship_address_attrs["address1"]))
+              expect(order.ship_address.phone).to(eq(ship_address_attrs["phone"]))
             end
           end
 
@@ -355,13 +355,13 @@ with_items: true,
             end
 
             it "updates ship_address attrs" do
-              expect(syncer.sync!).to be true
-              expect(syncer.order_update_issues.keys).not_to include order.id
+              expect(syncer.sync!).to(be(true))
+              expect(syncer.order_update_issues.keys).not_to(include(order.id))
               order.reload
-              expect(order.ship_address.firstname).to eq "Ship"
-              expect(order.ship_address.lastname).to eq ship_address_attrs["lastname"]
-              expect(order.ship_address.address1).to eq "123 abc st"
-              expect(order.ship_address.phone).to eq "1123581321"
+              expect(order.ship_address.firstname).to(eq("Ship"))
+              expect(order.ship_address.lastname).to(eq(ship_address_attrs["lastname"]))
+              expect(order.ship_address.address1).to(eq("123 abc st"))
+              expect(order.ship_address.phone).to(eq("1123581321"))
             end
           end
         end
@@ -376,13 +376,13 @@ with_items: true,
       context "when the ship address on the order matches that on the subscription" do
         it "updates ship_address attrs" do
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
-          expect(syncer.order_update_issues.keys).to_not include order.id
+          expect(syncer.sync!).to(be(true))
+          expect(syncer.order_update_issues.keys).to_not(include(order.id))
           order.reload;
-          expect(order.ship_address.firstname).to eq "Ship"
-          expect(order.ship_address.lastname).to eq ship_address_attrs["lastname"]
-          expect(order.ship_address.address1).to eq "123 abc st"
-          expect(order.ship_address.phone).to eq "1123581321"
+          expect(order.ship_address.firstname).to(eq("Ship"))
+          expect(order.ship_address.lastname).to(eq(ship_address_attrs["lastname"]))
+          expect(order.ship_address.address1).to(eq("123 abc st"))
+          expect(order.ship_address.phone).to(eq("1123581321"))
         end
       end
 
@@ -394,13 +394,13 @@ with_items: true,
 
         it "does not update ship_address on the order" do
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
-          expect(syncer.order_update_issues.keys).to include order.id
+          expect(syncer.sync!).to(be(true))
+          expect(syncer.order_update_issues.keys).to(include(order.id))
           order.reload;
-          expect(order.ship_address.firstname).to eq "Jane"
-          expect(order.ship_address.lastname).to eq ship_address_attrs["lastname"]
-          expect(order.ship_address.address1).to eq ship_address_attrs["address1"]
-          expect(order.ship_address.phone).to eq ship_address_attrs["phone"]
+          expect(order.ship_address.firstname).to(eq("Jane"))
+          expect(order.ship_address.lastname).to(eq(ship_address_attrs["lastname"]))
+          expect(order.ship_address.address1).to(eq(ship_address_attrs["address1"]))
+          expect(order.ship_address.phone).to(eq(ship_address_attrs["phone"]))
         end
       end
     end
@@ -419,15 +419,15 @@ with_items: true,
       let(:syncer) { OrderSyncer.new(subscription) }
 
       it "updates the line_item quantities and totals on all orders" do
-        expect(order.reload.total.to_f).to eq 59.97
+        expect(order.reload.total.to_f).to(eq(59.97))
         subscription.assign_attributes(params)
-        expect(syncer.sync!).to be true
+        expect(syncer.sync!).to(be(true))
         line_items = Spree::LineItem.where(
 order_id: subscription.orders,
 variant_id: sli.variant_id
 )
-        expect(line_items.map(&:quantity)).to eq [2]
-        expect(order.reload.total.to_f).to eq 79.96
+        expect(line_items.map(&:quantity)).to(eq([2]))
+        expect(order.reload.total.to_f).to(eq(79.96))
       end
     end
 
@@ -436,20 +436,20 @@ variant_id: sli.variant_id
       let(:syncer) { OrderSyncer.new(subscription) }
 
       before do
-        expect(order.reload.total.to_f).to eq 59.97
+        expect(order.reload.total.to_f).to(eq(59.97))
         subscription.assign_attributes(params)
       end
 
       context "when order is not complete" do
         it "updates the line_item quantities and totals on all orders" do
-          expect(syncer.sync!).to be true
+          expect(syncer.sync!).to(be(true))
 
           line_items = Spree::LineItem.where(
 order_id: subscription.orders,
 variant_id: sli.variant_id
 )
-          expect(line_items.map(&:quantity)).to eq [3]
-          expect(order.reload.total.to_f).to eq 99.95
+          expect(line_items.map(&:quantity)).to(eq([3]))
+          expect(order.reload.total.to_f).to(eq(99.95))
         end
       end
 
@@ -457,16 +457,16 @@ variant_id: sli.variant_id
         it "does not update the line_item quantities and adds the order to order_update_issues with insufficient stock" do
           OrderWorkflow.new(order).complete
 
-          expect(syncer.sync!).to be true
+          expect(syncer.sync!).to(be(true))
 
           line_items = Spree::LineItem.where(
 order_id: subscription.orders,
 variant_id: sli.variant_id
 )
-          expect(line_items.map(&:quantity)).to eq [1]
-          expect(order.reload.total.to_f).to eq 59.97
+          expect(line_items.map(&:quantity)).to(eq([1]))
+          expect(order.reload.total.to_f).to(eq(59.97))
           line_item = order.line_items.find_by(variant_id: sli.variant_id)
-          expect(syncer.order_update_issues[order.id]).to include "#{line_item.product.name} - #{line_item.variant.full_name} - Insufficient stock available"
+          expect(syncer.order_update_issues[order.id]).to(include("#{line_item.product.name} - #{line_item.variant.full_name} - Insufficient stock available"))
         end
 
         it "does not update the line_item quantities and adds the order to order_update_issues with out of stock" do
@@ -474,10 +474,10 @@ variant_id: sli.variant_id
           variant.update_attribute(:on_hand, 1)
           OrderWorkflow.new(order).complete
 
-          expect(syncer.sync!).to be true
+          expect(syncer.sync!).to(be(true))
 
           line_item = order.line_items.find_by(variant_id: sli.variant_id)
-          expect(syncer.order_update_issues[order.id]).to include "#{line_item.product.name} - #{line_item.variant.full_name} - Out of Stock"
+          expect(syncer.order_update_issues[order.id]).to(include("#{line_item.product.name} - #{line_item.variant.full_name} - Out of Stock"))
         end
       end
     end
@@ -496,12 +496,12 @@ variant_id: sli.variant_id
         end
 
         it "does not change the quantity, and doesn't add the order to order_update_issues" do
-          expect(order.reload.total.to_f).to eq 99.95
+          expect(order.reload.total.to_f).to(eq(99.95))
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
-          expect(changed_line_item.reload.quantity).to eq 3
-          expect(order.reload.total.to_f).to eq 99.95
-          expect(syncer.order_update_issues[order.id]).to be nil
+          expect(syncer.sync!).to(be(true))
+          expect(changed_line_item.reload.quantity).to(eq(3))
+          expect(order.reload.total.to_f).to(eq(99.95))
+          expect(syncer.order_update_issues[order.id]).to(be(nil))
         end
       end
 
@@ -512,14 +512,14 @@ variant_id: sli.variant_id
         end
 
         it "does not change the quantity, and adds the order to order_update_issues" do
-          expect(order.reload.total.to_f).to eq 79.96
+          expect(order.reload.total.to_f).to(eq(79.96))
 
           subscription.assign_attributes(params)
-          expect(syncer.sync!).to be true
+          expect(syncer.sync!).to(be(true))
 
-          expect(changed_line_item.reload.quantity).to eq 2
-          expect(order.reload.total.to_f).to eq 79.96
-          expect(syncer.order_update_issues[order.id]).to include "#{changed_line_item.product.name} - #{changed_line_item.variant.full_name}"
+          expect(changed_line_item.reload.quantity).to(eq(2))
+          expect(order.reload.total.to_f).to(eq(79.96))
+          expect(syncer.order_update_issues[order.id]).to(include("#{changed_line_item.product.name} - #{changed_line_item.variant.full_name}"))
         end
       end
     end
@@ -532,7 +532,7 @@ variant_id: sli.variant_id
     let(:syncer) { OrderSyncer.new(subscription) }
 
     before do
-      expect(order.reload.total.to_f).to eq 59.97
+      expect(order.reload.total.to_f).to(eq(59.97))
       subscription.assign_attributes(params)
     end
 
@@ -542,11 +542,11 @@ variant_id: sli.variant_id
       end
 
       it "adds the line item and updates the total on all orders" do
-        expect(syncer.sync!).to be true
+        expect(syncer.sync!).to(be(true))
 
         line_items = Spree::LineItem.where(order_id: subscription.orders, variant_id: variant.id)
-        expect(line_items.map(&:quantity)).to eq [1]
-        expect(order.reload.total.to_f).to eq 79.96
+        expect(line_items.map(&:quantity)).to(eq([1]))
+        expect(order.reload.total.to_f).to(eq(79.96))
       end
     end
 
@@ -557,11 +557,11 @@ variant_id: sli.variant_id
 
       context "when order is not complete" do
         it "adds the line_item and updates totals on all orders" do
-          expect(syncer.sync!).to be true
+          expect(syncer.sync!).to(be(true))
 
           line_items = Spree::LineItem.where(order_id: subscription.orders, variant_id: variant.id)
-          expect(line_items.map(&:quantity)).to eq [7]
-          expect(order.reload.total.to_f).to eq 199.9
+          expect(line_items.map(&:quantity)).to(eq([7]))
+          expect(order.reload.total.to_f).to(eq(199.9))
         end
       end
 
@@ -569,23 +569,23 @@ variant_id: sli.variant_id
         before { OrderWorkflow.new(order).complete }
 
         it "does not add line_item and adds the order to order_update_issues" do
-          expect(syncer.sync!).to be true
+          expect(syncer.sync!).to(be(true))
 
           line_items = Spree::LineItem.where(order_id: subscription.orders, variant_id: variant.id)
-          expect(line_items.map(&:quantity)).to eq []
-          expect(order.reload.total.to_f).to eq 59.97
-          expect(syncer.order_update_issues[order.id]).to include "#{variant.product.name} - #{variant.full_name} - Insufficient stock available"
+          expect(line_items.map(&:quantity)).to(eq([]))
+          expect(order.reload.total.to_f).to(eq(59.97))
+          expect(syncer.order_update_issues[order.id]).to(include("#{variant.product.name} - #{variant.full_name} - Insufficient stock available"))
         end
 
         context "and then updating the quantity of that subscription line item that was not added to the completed order" do
           it "does nothing to the order and adds the order to order_update_issues" do
-            expect(syncer.sync!).to be true
+            expect(syncer.sync!).to(be(true))
 
             line_items = Spree::LineItem.where(
 order_id: subscription.orders,
 variant_id: variant.id
 )
-            expect(line_items.map(&:quantity)).to eq []
+            expect(line_items.map(&:quantity)).to(eq([]))
 
             subscription.save # this is necessary to get an id on the subscription_line_items
             params = {
@@ -596,14 +596,14 @@ subscription_line_items_attributes: [
 ]
 }
             subscription.assign_attributes(params)
-            expect(syncer.sync!).to be true
+            expect(syncer.sync!).to(be(true))
 
             line_items = Spree::LineItem.where(
 order_id: subscription.orders,
 variant_id: variant.id
 )
-            expect(line_items.map(&:quantity)).to eq []
-            expect(syncer.order_update_issues[order.id]).to include "#{variant.product.name} - #{variant.full_name}"
+            expect(line_items.map(&:quantity)).to(eq([]))
+            expect(syncer.order_update_issues[order.id]).to(include("#{variant.product.name} - #{variant.full_name}"))
           end
         end
       end
@@ -619,12 +619,12 @@ variant_id: variant.id
     let(:syncer) { OrderSyncer.new(subscription) }
 
     it "removes the line item and updates totals on all orders" do
-      expect(order.reload.total.to_f).to eq 59.97
+      expect(order.reload.total.to_f).to(eq(59.97))
       subscription.assign_attributes(params)
-      expect(syncer.sync!).to be true
+      expect(syncer.sync!).to(be(true))
       line_items = Spree::LineItem.where(order_id: subscription.orders, variant_id: variant.id)
-      expect(line_items.count).to be 0
-      expect(order.reload.total.to_f).to eq 39.98
+      expect(line_items.count).to(be(0))
+      expect(order.reload.total.to_f).to(eq(39.98))
     end
   end
 end

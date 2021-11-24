@@ -117,8 +117,8 @@ order_cycle: ocB
       it "shows all orders in order cycles I coordinate" do
         spree_post :orders_and_fulfillment, q: {}
 
-        expect(resulting_orders).to     include orderA1, orderA2
-        expect(resulting_orders).not_to include orderB1, orderB2
+        expect(resulting_orders).to(    include(orderA1, orderA2))
+        expect(resulting_orders).not_to(include(orderB1, orderB2))
       end
     end
   end
@@ -133,9 +133,9 @@ order_cycle: ocB
       it "only shows orders that I have access to" do
         spree_post :orders_and_distributors
 
-        expect(assigns(:search).result).to include(orderA1, orderB1)
-        expect(assigns(:search).result).not_to include(orderA2)
-        expect(assigns(:search).result).not_to include(orderB2)
+        expect(assigns(:search).result).to(include(orderA1, orderB1))
+        expect(assigns(:search).result).not_to(include(orderA2))
+        expect(assigns(:search).result).not_to(include(orderB2))
       end
     end
 
@@ -145,9 +145,9 @@ order_cycle: ocB
       it "only shows orders that I have access to" do
         spree_post :payments
 
-        expect(resulting_orders_prelim).to     include(orderA1, orderB1)
-        expect(resulting_orders_prelim).not_to include(orderA2)
-        expect(resulting_orders_prelim).not_to include(orderB2)
+        expect(resulting_orders_prelim).to(    include(orderA1, orderB1))
+        expect(resulting_orders_prelim).not_to(include(orderA2))
+        expect(resulting_orders_prelim).not_to(include(orderB2))
       end
     end
 
@@ -158,8 +158,8 @@ order_cycle: ocB
         it "only shows orders that I distribute" do
           spree_post :orders_and_fulfillment, q: {}
 
-          expect(resulting_orders).to     include orderA1, orderB1
-          expect(resulting_orders).not_to include orderA2, orderB2
+          expect(resulting_orders).to(    include(orderA1, orderB1))
+          expect(resulting_orders).not_to(include(orderA2, orderB2))
         end
       end
 
@@ -169,8 +169,8 @@ order_cycle: ocB
         it "only shows the selected order cycle" do
           spree_post :orders_and_fulfillment, q: { order_cycle_id_in: [ocA.id.to_s] }
 
-          expect(resulting_orders).to     include(orderA1)
-          expect(resulting_orders).not_to include(orderB1)
+          expect(resulting_orders).to(    include(orderA1))
+          expect(resulting_orders).not_to(include(orderB1))
         end
       end
     end
@@ -185,8 +185,8 @@ order_cycle: ocB
         spree_get :index
 
         report_types = assigns(:reports).keys
-        expect(report_types).to include :orders_and_fulfillment, :products_and_inventory, :packing # and others
-        expect(report_types).to_not include :sales_tax
+        expect(report_types).to(include(:orders_and_fulfillment, :products_and_inventory, :packing)) # and others
+        expect(report_types).to_not(include(:sales_tax))
       end
     end
 
@@ -206,15 +206,15 @@ child: distributor1,
         it "only shows product line items that I am supplying" do
           spree_post :orders_and_fulfillment, q: {}
 
-          expect(resulting_products).to     include product1
-          expect(resulting_products).not_to include product2, product3
+          expect(resulting_products).to(    include(product1))
+          expect(resulting_products).not_to(include(product2, product3))
         end
 
         it "only shows the selected order cycle" do
           spree_post :orders_and_fulfillment, q: { order_cycle_id_eq: ocA.id }
 
-          expect(resulting_orders_prelim).to     include(orderA1)
-          expect(resulting_orders_prelim).not_to include(orderB1)
+          expect(resulting_orders_prelim).to(    include(orderA1))
+          expect(resulting_orders_prelim).not_to(include(orderB1))
         end
 
         context 'when a purchased product is deleted' do
@@ -226,7 +226,7 @@ child: distributor1,
             table_items = assigns(:report).table_items
             variant = Spree::Variant.unscoped.find(table_items.first.variant_id)
 
-            expect(variant.product).to eq(product1)
+            expect(variant.product).to(eq(product1))
           end
         end
       end
@@ -235,7 +235,7 @@ child: distributor1,
         it "does not show me line_items I supply" do
           spree_post :orders_and_fulfillment
 
-          expect(resulting_products).not_to include product1, product2, product3
+          expect(resulting_products).not_to(include(product1, product2, product3))
         end
       end
     end
@@ -251,12 +251,12 @@ child: distributor1,
 
       it "should build distributors for the current user" do
         spree_get :products_and_inventory
-        expect(assigns(:distributors)).to match_array distributors
+        expect(assigns(:distributors)).to(match_array(distributors))
       end
 
       it "builds suppliers for the current user" do
         spree_get :products_and_inventory
-        expect(assigns(:suppliers)).to match_array suppliers
+        expect(assigns(:suppliers)).to(match_array(suppliers))
       end
     end
 
@@ -265,17 +265,17 @@ child: distributor1,
 
       it "builds order cycles for the current user" do
         spree_get :products_and_inventory
-        expect(assigns(:order_cycles)).to match_array order_cycles
+        expect(assigns(:order_cycles)).to(match_array(order_cycles))
       end
     end
 
     it "assigns report types" do
       spree_get :products_and_inventory
-      expect(assigns(:report_types)).to eq(subject.report_types[:products_and_inventory])
+      expect(assigns(:report_types)).to(eq(subject.report_types[:products_and_inventory]))
     end
 
     it "creates a ProductAndInventoryReport" do
-      expect(OpenFoodNetwork::ProductsAndInventoryReport).to receive(:new)
+      expect(OpenFoodNetwork::ProductsAndInventoryReport).to(receive(:new)
         .with(@admin_user,
               {
 "test" => "foo",
@@ -285,11 +285,11 @@ child: distributor1,
 "use_route" => "main_app"
 },
 false)
-        .and_return(report = double(:report))
-      allow(report).to receive(:header).and_return []
-      allow(report).to receive(:table).and_return []
+        .and_return(report = double(:report)))
+      allow(report).to(receive(:header).and_return([]))
+      allow(report).to(receive(:table).and_return([]))
       spree_get :products_and_inventory, test: "foo"
-      expect(assigns(:report)).to eq(report)
+      expect(assigns(:report)).to(eq(report))
     end
   end
 
@@ -297,12 +297,12 @@ false)
     before { controller_login_as_admin }
 
     it "should have report types for customers" do
-      expect(subject.report_types[:customers]).to eq(
+      expect(subject.report_types[:customers]).to(eq(
 [
                                                        ["Mailing List", :mailing_list],
                                                        ["Addresses", :addresses]
                                                      ]
-)
+))
     end
 
     context "with distributors and suppliers" do
@@ -312,12 +312,12 @@ false)
 
       it "should build distributors for the current user" do
         spree_get :customers
-        expect(assigns(:distributors)).to match_array distributors
+        expect(assigns(:distributors)).to(match_array(distributors))
       end
 
       it "builds suppliers for the current user" do
         spree_get :customers
-        expect(assigns(:suppliers)).to match_array suppliers
+        expect(assigns(:suppliers)).to(match_array(suppliers))
       end
     end
 
@@ -326,17 +326,17 @@ false)
 
       it "builds order cycles for the current user" do
         spree_get :customers
-        expect(assigns(:order_cycles)).to match_array order_cycles
+        expect(assigns(:order_cycles)).to(match_array(order_cycles))
       end
     end
 
     it "assigns report types" do
       spree_get :customers
-      expect(assigns(:report_types)).to eq(subject.report_types[:customers])
+      expect(assigns(:report_types)).to(eq(subject.report_types[:customers]))
     end
 
     it "creates a CustomersReport" do
-      expect(OpenFoodNetwork::CustomersReport).to receive(:new)
+      expect(OpenFoodNetwork::CustomersReport).to(receive(:new)
         .with(@admin_user,
 {
 "test" => "foo",
@@ -346,11 +346,11 @@ false)
 "report" => {}
 },
 false)
-        .and_return(report = double(:report))
-      allow(report).to receive(:header).and_return []
-      allow(report).to receive(:table).and_return []
+        .and_return(report = double(:report)))
+      allow(report).to(receive(:header).and_return([]))
+      allow(report).to(receive(:table).and_return([]))
       spree_get :customers, test: "foo"
-      expect(assigns(:report)).to eq(report)
+      expect(assigns(:report)).to(eq(report))
     end
   end
 
@@ -369,7 +369,7 @@ false)
         report_type: "delivery",
       }
 
-      expect(response).to have_http_status(:ok)
+      expect(response).to(have_http_status(:ok))
     end
   end
 
@@ -381,19 +381,19 @@ false)
 
       it "shows report search forms" do
         spree_get :users_and_enterprises
-        expect(assigns(:report).table).to eq []
+        expect(assigns(:report).table).to(eq([]))
       end
 
       it "shows report data" do
         spree_post :users_and_enterprises, q: {}
-        expect(assigns(:report).table.empty?).to be false
+        expect(assigns(:report).table.empty?).to(be(false))
       end
     end
 
     describe "sales_tax" do
       it "shows report search forms" do
         spree_get :sales_tax
-        expect(assigns(:report).table).to eq []
+        expect(assigns(:report).table).to(eq([]))
       end
     end
   end

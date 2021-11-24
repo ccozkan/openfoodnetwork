@@ -13,9 +13,9 @@ describe "General Settings" do
 
   context "visiting general settings (admin)" do
     it "should have the right content" do
-      expect(page).to have_content("General Settings")
-      expect(find("#site_name").value).to eq("OFN Demo Site")
-      expect(find("#site_url").value).to eq("demo.openfoodnetwork.org")
+      expect(page).to(have_content("General Settings"))
+      expect(find("#site_name").value).to(eq("OFN Demo Site"))
+      expect(find("#site_url").value).to(eq("demo.openfoodnetwork.org"))
     end
   end
 
@@ -25,20 +25,20 @@ describe "General Settings" do
       click_button "Update"
 
       within("[class='flash success']") do
-        expect(page).to have_content(
+        expect(page).to(have_content(
 Spree.t(
 :successfully_updated,
                                              resource: Spree.t(:general_settings)
 )
-)
+))
       end
-      expect(find("#site_name").value).to eq("OFN Demo Site99")
+      expect(find("#site_name").value).to(eq("OFN Demo Site99"))
     end
   end
 
   context 'editing currency symbol position' do
     it 'updates its position' do
-      expect(page).to have_content('CURRENCY SETTINGS')
+      expect(page).to(have_content('CURRENCY SETTINGS'))
 
       within('.currency') do
         find("[for='currency_symbol_position_after']").click
@@ -46,13 +46,13 @@ Spree.t(
 
       click_button 'Update'
 
-      expect(page).to have_content(
+      expect(page).to(have_content(
 Spree.t(
 :successfully_updated,
                                            resource: Spree.t(:general_settings)
 )
-)
-      expect(page).to have_checked_field('10.00 $')
+))
+      expect(page).to(have_checked_field('10.00 $'))
     end
   end
 end

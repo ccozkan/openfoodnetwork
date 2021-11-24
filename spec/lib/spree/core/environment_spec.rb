@@ -9,11 +9,11 @@ describe Spree::Core::Environment do
 
   it "is defined in our code" do
     file = subject.method(:initialize).source_location.first
-    expect(file).to eq our_file
+    expect(file).to(eq(our_file))
   end
 
   it "used by Spree" do
     file = Spree::Core::Engine.config.spree.method(:initialize).source_location.first
-    expect(file).to eq our_file
+    expect(file).to(eq(our_file))
   end
 end

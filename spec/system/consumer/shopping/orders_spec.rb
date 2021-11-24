@@ -49,16 +49,16 @@ describe "Order Management", js: true do
       it "allows the user to see the details" do
         # Cannot load the page without token
         visit order_path(order)
-        expect(page).to_not be_confirmed_order_page
+        expect(page).to_not(be_confirmed_order_page)
 
         # Can load the page with token
         visit order_path(order, token: order.token)
-        expect(page).to be_confirmed_order_page
+        expect(page).to(be_confirmed_order_page)
 
         # Can load the page even without the token, after loading the page with
         # token.
         visit order_path(order)
-        expect(page).to be_confirmed_order_page
+        expect(page).to(be_confirmed_order_page)
       end
     end
 
@@ -71,7 +71,7 @@ describe "Order Management", js: true do
 
       it "allows the user to see order details" do
         visit order_path(order)
-        expect(page).to be_confirmed_order_page
+        expect(page).to(be_confirmed_order_page)
       end
     end
 
@@ -81,11 +81,11 @@ describe "Order Management", js: true do
       it "allows the user to see order details after login" do
         # Cannot load the page without signing in
         visit order_path(order)
-        expect(page).to_not be_confirmed_order_page
+        expect(page).to_not(be_confirmed_order_page)
 
         # Can load the page after signing in
         fill_in_and_submit_login_form user
-        expect(page).to be_confirmed_order_page
+        expect(page).to(be_confirmed_order_page)
       end
     end
   end
@@ -123,7 +123,7 @@ describe "Order Management", js: true do
 
     it 'shows the name of the shipping method' do
       visit order_path(order)
-      expect(find('#order')).to have_content(shipping_method.name)
+      expect(find('#order')).to(have_content(shipping_method.name))
     end
 
     context "when the distributor doesn't allow changes to be made to orders" do
@@ -133,10 +133,10 @@ describe "Order Management", js: true do
 
       it "doesn't show form elements for editing the order" do
         visit order_path(order)
-        expect(find("tr.variant-#{item1.variant.id}")).to have_content item1.product.name
-        expect(find("tr.variant-#{item2.variant.id}")).to have_content item2.product.name
-        expect(find("tr.variant-#{item3.variant.id}")).to have_content item3.product.name
-        expect(page).to have_no_button I18n.t(:save_changes)
+        expect(find("tr.variant-#{item1.variant.id}")).to(have_content(item1.product.name))
+        expect(find("tr.variant-#{item2.variant.id}")).to(have_content(item2.product.name))
+        expect(find("tr.variant-#{item3.variant.id}")).to(have_content(item3.product.name))
+        expect(page).to(have_no_button(I18n.t(:save_changes)))
       end
     end
 
@@ -151,50 +151,50 @@ describe "Order Management", js: true do
       it "allows quantity to be changed, items to be removed and the order to be cancelled" do
         visit order_path(order)
 
-        expect(page).to have_button I18n.t(:order_saved), disabled: true
-        expect(page).to have_no_button I18n.t(:save_changes)
+        expect(page).to(have_button(I18n.t(:order_saved), disabled: true))
+        expect(page).to(have_no_button(I18n.t(:save_changes)))
 
         # Changing the quantity of an item
         within "tr.variant-#{item1.variant.id}" do
-          expect(page).to have_content item1.product.name
-          expect(page).to have_field 'order_line_items_attributes_0_quantity'
+          expect(page).to(have_content(item1.product.name))
+          expect(page).to(have_field('order_line_items_attributes_0_quantity'))
           # The original item quantity is 1, there are 4 more items available in stock
           # By changing quantity to 5 we validate the case where the original stock in the order
           #   must be taken into account to fullfil the order (no insufficient stock error)
           fill_in 'order_line_items_attributes_0_quantity', with: 5
         end
 
-        expect(page).to have_button I18n.t(:save_changes)
+        expect(page).to(have_button(I18n.t(:save_changes)))
 
-        expect(find("tr.variant-#{item2.variant.id}")).to have_content item2.product.name
-        expect(find("tr.variant-#{item3.variant.id}")).to have_content item3.product.name
-        expect(find("tr.order-adjustment")).to have_content "Shipping"
-        expect(find("tr.order-adjustment")).to have_content "5.00"
+        expect(find("tr.variant-#{item2.variant.id}")).to(have_content(item2.product.name))
+        expect(find("tr.variant-#{item3.variant.id}")).to(have_content(item3.product.name))
+        expect(find("tr.order-adjustment")).to(have_content("Shipping"))
+        expect(find("tr.order-adjustment")).to(have_content("5.00"))
 
         click_button I18n.t(:save_changes)
 
-        expect(find(".order-total.grand-total")).to have_content "115.00"
-        expect(item1.reload.quantity).to eq 5
+        expect(find(".order-total.grand-total")).to(have_content("115.00"))
+        expect(item1.reload.quantity).to(eq(5))
 
         # Deleting an item
         within "tr.variant-#{item2.variant.id}" do
           click_link "delete_line_item_#{item2.id}"
         end
 
-        expect(find(".order-total.grand-total")).to have_content "105.00"
-        expect(Spree::LineItem.find_by(id: item2.id)).to be nil
+        expect(find(".order-total.grand-total")).to(have_content("105.00"))
+        expect(Spree::LineItem.find_by(id: item2.id)).to(be(nil))
 
         # Cancelling the order
         accept_alert do
           click_link(I18n.t(:cancel_order))
         end
-        expect(page).to have_content I18n.t(:orders_show_cancelled)
-        expect(order.reload).to be_canceled
+        expect(page).to(have_content(I18n.t(:orders_show_cancelled)))
+        expect(order.reload).to(be_canceled)
       end
     end
   end
 
   def be_confirmed_order_page
-    have_content "Order ##{order.number} Confirmed"
+    have_content("Order ##{order.number} Confirmed")
   end
 end

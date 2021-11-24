@@ -24,7 +24,7 @@ module Api
           search_params
         ).products_json
 
-        render plain: products
+        render(plain: products)
       rescue ProductsRenderer::NoProducts
         render_no_products
       end
@@ -35,21 +35,21 @@ module Api
           .where(spree_products: { id: distributed_products })
           .select('DISTINCT spree_taxons.*')
 
-        render plain: ActiveModel::ArraySerializer.new(
+        render(plain: ActiveModel::ArraySerializer.new(
           taxons, each_serializer: Api::TaxonSerializer
-        ).to_json
+        ).to_json)
       end
 
       def properties
-        render plain: ActiveModel::ArraySerializer.new(
+        render(plain: ActiveModel::ArraySerializer.new(
           product_properties | producer_properties, each_serializer: Api::PropertySerializer
-        ).to_json
+        ).to_json)
       end
 
       private
 
       def render_no_products
-        render status: :not_found, json: {}
+        render(status: :not_found, json: {})
       end
 
       def product_properties
@@ -71,9 +71,9 @@ module Api
       end
 
       def search_params
-        permitted_search_params = params.slice :q, :page, :per_page
+        permitted_search_params = params.slice(:q, :page, :per_page)
 
-        if permitted_search_params.key? :q
+        if permitted_search_params.key?(:q)
           permitted_search_params[:q].slice!(*permitted_ransack_params)
         end
 

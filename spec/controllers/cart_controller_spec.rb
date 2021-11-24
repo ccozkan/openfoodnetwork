@@ -10,35 +10,35 @@ describe CartController, type: :controller do
     let(:errors) { double }
 
     before do
-      allow(CartService).to receive(:new).and_return(cart_service)
+      allow(CartService).to(receive(:new).and_return(cart_service))
     end
 
     it "returns HTTP success when successful" do
-      allow(cart_service).to receive(:populate) { true }
-      allow(cart_service).to receive(:valid?) { true }
+      allow(cart_service).to(receive(:populate) { true })
+      allow(cart_service).to(receive(:valid?) { true })
       post :populate, xhr: true, params: { use_route: :spree }, as: :json
-      expect(response.status).to eq(200)
+      expect(response.status).to(eq(200))
     end
 
     it "returns failure when unsuccessful" do
-      allow(cart_service).to receive(:populate).and_return false
-      allow(cart_service).to receive(:valid?) { false }
-      allow(cart_service).to receive(:errors) { errors }
-      allow(errors).to receive(:full_messages).and_return(["Error: foo"])
+      allow(cart_service).to(receive(:populate).and_return(false))
+      allow(cart_service).to(receive(:valid?) { false })
+      allow(cart_service).to(receive(:errors) { errors })
+      allow(errors).to(receive(:full_messages).and_return(["Error: foo"]))
       post :populate, xhr: true, params: { use_route: :spree }, as: :json
-      expect(response.status).to eq(412)
+      expect(response.status).to(eq(412))
     end
 
     it "returns stock levels as JSON on success" do
-      allow(controller).to receive(:variant_ids_in) { [123] }
-      allow_any_instance_of(VariantsStockLevels).to receive(:call).and_return("my_stock_levels")
-      allow(cart_service).to receive(:populate) { true }
-      allow(cart_service).to receive(:valid?) { true }
+      allow(controller).to(receive(:variant_ids_in) { [123] })
+      allow_any_instance_of(VariantsStockLevels).to(receive(:call).and_return("my_stock_levels"))
+      allow(cart_service).to(receive(:populate) { true })
+      allow(cart_service).to(receive(:valid?) { true })
 
       post :populate, xhr: true, params: { use_route: :spree }, as: :json
 
       data = JSON.parse(response.body)
-      expect(data['stock_levels']).to eq('my_stock_levels')
+      expect(data['stock_levels']).to(eq('my_stock_levels'))
     end
   end
 
@@ -95,7 +95,7 @@ variant_in_the_order,
       spree_post :populate, variants: { variant_in_the_order.id => 1 }
 
       data = JSON.parse(response.body)
-      expect(data['stock_levels'][variant_in_the_order.id.to_s]["on_hand"]).to eq 20
+      expect(data['stock_levels'][variant_in_the_order.id.to_s]["on_hand"]).to(eq(20))
     end
 
     it "returns the variant override stock levels of the variant requested but not in the order" do
@@ -106,7 +106,7 @@ variant_in_the_order,
       spree_post :populate, variants: { variant_not_in_the_order.id => 1 }
 
       data = JSON.parse(response.body)
-      expect(data['stock_levels'][variant_not_in_the_order.id.to_s]["on_hand"]).to eq 7
+      expect(data['stock_levels'][variant_not_in_the_order.id.to_s]["on_hand"]).to(eq(7))
     end
   end
 
@@ -118,15 +118,15 @@ variant_in_the_order,
       order_cycle = create(:simple_order_cycle, distributors: [distributor], variants: [variant])
 
       order = subject.current_order(true)
-      allow(order).to receive(:distributor) { distributor }
-      allow(order).to receive(:order_cycle) { order_cycle }
-      allow(controller).to receive(:current_order).and_return(order)
+      allow(order).to(receive(:distributor) { distributor })
+      allow(order).to(receive(:order_cycle) { order_cycle })
+      allow(controller).to(receive(:current_order).and_return(order))
 
       expect do
-        spree_post :populate,
+        spree_post(:populate,
 variants: { variant.id => 1 },
-                              variant_attributes: { variant.id => { max_quantity: "3" } }
-      end.to change(Spree::LineItem, :count).by(1)
+                              variant_attributes: { variant.id => { max_quantity: "3" } })
+      end.to(change(Spree::LineItem, :count).by(1))
     end
   end
 end

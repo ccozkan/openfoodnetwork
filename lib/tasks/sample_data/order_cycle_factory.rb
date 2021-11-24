@@ -7,7 +7,7 @@ module SampleData
     include Logging
     
     def create_samples
-      log "Creating order cycles"
+      log("Creating order cycles")
       create_order_cycle(
         "Freddy's Farm Shop OC",
         "Freddy's Farm Shop",
@@ -54,7 +54,7 @@ module SampleData
       coordinator = Enterprise.find_by(name: coordinator_name)
       return if OrderCycle.active.where(name: name).exists?
 
-      log "- #{name}"
+      log("- #{name}")
       cycle = create_order_cycle_with_fee(name, coordinator)
       create_exchanges(cycle, supplier_names, distributor_names, data)
     end

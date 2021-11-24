@@ -4,7 +4,7 @@
 class VariantDeleter
   def delete(variant)
     if only_variant_on_product?(variant)
-      variant.errors.add :product, I18n.t(:spree_variant_product_error)
+      variant.errors.add(:product, I18n.t(:spree_variant_product_error))
       return false
     end
 

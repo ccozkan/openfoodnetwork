@@ -33,7 +33,7 @@ module Spree
     def empty
       @order.empty! if @order = current_order
 
-      redirect_to main_app.cart_path
+      redirect_to(main_app.cart_path)
     end
 
     # Patching to redirect to shop if order is empty
@@ -44,7 +44,7 @@ module Spree
         .new(current_order_cycle, current_distributor).unavailable_order_variants(@order)
 
       if @order.line_items.empty?
-        redirect_to main_app.shop_path
+        redirect_to(main_app.shop_path)
       else
         associate_user
 
@@ -76,11 +76,11 @@ module Spree
           format.html do
             if params.key?(:checkout)
               @order.next_transition.run_callbacks if @order.cart?
-              redirect_to main_app.checkout_state_path(@order.checkout_steps.first)
+              redirect_to(main_app.checkout_state_path(@order.checkout_steps.first))
             elsif @order.complete?
-              redirect_to main_app.order_path(@order)
+              redirect_to(main_app.order_path(@order))
             else
-              redirect_to main_app.cart_path
+              redirect_to(main_app.cart_path)
             end
           end
         end
@@ -94,14 +94,14 @@ module Spree
 
     def cancel
       @order = Spree::Order.find_by!(number: params[:id])
-      authorize! :cancel, @order
+      authorize!(:cancel, @order)
 
       if CustomerOrderCancellation.new(@order).call
         flash[:success] = I18n.t(:orders_your_order_has_been_cancelled)
       else
         flash[:error] = I18n.t(:orders_could_not_cancel)
       end
-      redirect_to request.referer || main_app.order_path(@order)
+      redirect_to(request.referer || main_app.order_path(@order))
     end
 
     private
@@ -115,9 +115,9 @@ module Spree
       order = Spree::Order.find_by(number: params[:id]) || current_order
 
       if order
-        authorize! :edit, order, session[:access_token]
+        authorize!(:edit, order, session[:access_token])
       else
-        authorize! :create, Spree::Order
+        authorize!(:create, Spree::Order)
       end
     end
 
@@ -155,7 +155,7 @@ module Spree
       return if session[:access_token] || params[:token] || spree_current_user
 
       flash[:error] = I18n.t("spree.orders.edit.login_to_view_order")
-      redirect_to main_app.root_path(anchor: "login?after_login=#{request.env['PATH_INFO']}")
+      redirect_to(main_app.root_path(anchor: "login?after_login=#{request.env['PATH_INFO']}"))
     end
 
     def order_to_update
@@ -183,7 +183,7 @@ module Spree
 
       if items.empty?
         flash[:error] = I18n.t(:orders_cannot_remove_the_final_item)
-        redirect_to main_app.order_path(order_to_update)
+        redirect_to(main_app.order_path(order_to_update))
       end
     end
 

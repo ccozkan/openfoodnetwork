@@ -49,93 +49,93 @@ orders_close_at: 5.weeks.ago
     login_as_admin_and_visit admin_order_cycles_path
 
     # Then the order cycles should be ordered correctly
-    expect(page).to have_selector "#listing_order_cycles tr td:first-child", count: 7
+    expect(page).to(have_selector("#listing_order_cycles tr td:first-child", count: 7))
 
     order_cycle_names = ["oc0", "oc1", "oc2", "oc3", "oc4", "oc5", "oc6"]
-    expect(all("#listing_order_cycles tr td:first-child input").map(&:value)).to eq order_cycle_names
+    expect(all("#listing_order_cycles tr td:first-child input").map(&:value)).to(eq(order_cycle_names))
 
     # And the rows should have the correct classes
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc0.id}.undated"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc1.id}.open"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc2.id}.open"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc3.id}.upcoming"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc4.id}.upcoming"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc5.id}.closed"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc6.id}.closed"
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc0.id}.undated"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc1.id}.open"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc2.id}.open"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc3.id}.upcoming"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc4.id}.upcoming"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc5.id}.closed"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc6.id}.closed"))
 
     toggle_columns "Producers", "Shops"
 
     # And I should see all the details for an order cycle
     within('table#listing_order_cycles tbody tr:nth-child(2)') do
       # Then I should see the basic fields
-      expect(page).to have_input "oc#{oc1.id}[name]", value: oc1.name
-      expect(page).to have_input "oc#{oc1.id}[orders_open_at]",
+      expect(page).to(have_input("oc#{oc1.id}[name]", value: oc1.name))
+      expect(page).to(have_input("oc#{oc1.id}[orders_open_at]",
 value: oc1.orders_open_at,
-                                                                visible: false
-      expect(page).to have_input "oc#{oc1.id}[orders_close_at]",
+                                                                visible: false))
+      expect(page).to(have_input("oc#{oc1.id}[orders_close_at]",
 value: oc1.orders_close_at,
-                                                                 visible: false
-      expect(page).to have_content oc1.coordinator.name
+                                                                 visible: false))
+      expect(page).to(have_content(oc1.coordinator.name))
 
       # And I should see the suppliers and distributors
-      oc1.suppliers.each    { |s| expect(page).to have_content s.name }
-      oc1.distributors.each { |d| expect(page).to have_content d.name }
+      oc1.suppliers.each    { |s| expect(page).to(have_content(s.name)) }
+      oc1.distributors.each { |d| expect(page).to(have_content(d.name)) }
 
       # And I should see the number of variants
-      expect(page).to have_selector 'td.products', text: '2 variants'
+      expect(page).to(have_selector('td.products', text: '2 variants'))
     end
 
     # I can load more order_cycles
-    expect(page).to have_no_selector "#listing_order_cycles tr.order-cycle-#{oc7.id}"
+    expect(page).to(have_no_selector("#listing_order_cycles tr.order-cycle-#{oc7.id}"))
     click_button "Show 30 more days"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc7.id}"
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc7.id}"))
 
     # I can filter order cycle by involved enterprises
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc0.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc1.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc2.id}"
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc0.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc1.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc2.id}"))
     select2_select oc1.suppliers.first.name, from: "involving_filter"
-    expect(page).to have_no_selector "#listing_order_cycles tr.order-cycle-#{oc0.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc1.id}"
-    expect(page).to have_no_selector "#listing_order_cycles tr.order-cycle-#{oc2.id}"
+    expect(page).to(have_no_selector("#listing_order_cycles tr.order-cycle-#{oc0.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc1.id}"))
+    expect(page).to(have_no_selector("#listing_order_cycles tr.order-cycle-#{oc2.id}"))
     select2_select "Any Enterprise", from: "involving_filter"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc0.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc1.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc2.id}"
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc0.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc1.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc2.id}"))
 
     # I can filter order cycles by name
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc0.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc1.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc2.id}"
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc0.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc1.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc2.id}"))
     fill_in "query", with: oc0.name
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc0.id}"
-    expect(page).to have_no_selector "#listing_order_cycles tr.order-cycle-#{oc1.id}"
-    expect(page).to have_no_selector "#listing_order_cycles tr.order-cycle-#{oc2.id}"
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc0.id}"))
+    expect(page).to(have_no_selector("#listing_order_cycles tr.order-cycle-#{oc1.id}"))
+    expect(page).to(have_no_selector("#listing_order_cycles tr.order-cycle-#{oc2.id}"))
     fill_in "query", with: ''
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc0.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc1.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc2.id}"
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc0.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc1.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc2.id}"))
 
     # I can filter order cycle by schedule
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc0.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc1.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc2.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc3.id}"
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc0.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc1.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc2.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc3.id}"))
     select2_select schedule1.name, from: "schedule_filter"
-    expect(page).to have_no_selector "#listing_order_cycles tr.order-cycle-#{oc0.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc1.id}"
-    expect(page).to have_no_selector "#listing_order_cycles tr.order-cycle-#{oc2.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc3.id}"
+    expect(page).to(have_no_selector("#listing_order_cycles tr.order-cycle-#{oc0.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc1.id}"))
+    expect(page).to(have_no_selector("#listing_order_cycles tr.order-cycle-#{oc2.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc3.id}"))
     select2_select 'Any Schedule', from: "schedule_filter"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc0.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc1.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc2.id}"
-    expect(page).to have_selector "#listing_order_cycles tr.order-cycle-#{oc3.id}"
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc0.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc1.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc2.id}"))
+    expect(page).to(have_selector("#listing_order_cycles tr.order-cycle-#{oc3.id}"))
 
     # Attempting to edit dates of an open order cycle with active subscriptions
     find("#oc#{oc1.id}_orders_open_at").click
-    expect(page).to have_selector "#confirm-dialog .message",
-                                  text: I18n.t('admin.order_cycles.date_warning.msg', n: 1)
+    expect(page).to(have_selector("#confirm-dialog .message",
+                                  text: I18n.t('admin.order_cycles.date_warning.msg', n: 1)))
   end
 
   describe 'listing order cycles with other locales' do
@@ -152,17 +152,17 @@ value: oc1.orders_close_at,
         login_as_admin_and_visit admin_order_cycles_path
 
         within("tr.order-cycle-#{oc_pt.id}") do
-          expect(find('input.datetimepicker', match: :first).value).to start_with '2012-01-01 00:00'
+          expect(find('input.datetimepicker', match: :first).value).to(start_with('2012-01-01 00:00'))
           find('input.datetimepicker', match: :first).click
         end
 
         within(".flatpickr-calendar.open") do
-          expect(page).to have_selector '.flatpickr-day.selected', text: '1'
+          expect(page).to(have_selector('.flatpickr-day.selected', text: '1'))
           find('.dayContainer .flatpickr-day', text: "30").click
         end
 
         within("tr.order-cycle-#{oc_pt.id}") do
-          expect(find('input.datetimepicker', match: :first).value).to eq '2012-01-30 00:00'
+          expect(find('input.datetimepicker', match: :first).value).to(eq('2012-01-30 00:00'))
         end
       end
 
@@ -177,18 +177,18 @@ value: oc1.orders_close_at,
 
         # Sets the value to test_value then looks for the close button and click it
         within(".flatpickr-calendar.open") do
-          expect(page).to have_selector '.shortcut-buttons-flatpickr-buttons'
+          expect(page).to(have_selector('.shortcut-buttons-flatpickr-buttons'))
           select_datetime_from_datepicker test_value
           find("button", text: "CLOSE").click
         end
 
         # Should no more have opened flatpickr
-        expect(page).not_to have_selector '.flatpickr-calendar.open'
+        expect(page).not_to(have_selector('.flatpickr-calendar.open'))
 
         # Check the value is correct
         within("tr.order-cycle-#{oc_pt.id}") do
           expect(find('input.datetimepicker',
-match: :first).value).to eq test_value.to_datetime.strftime("%Y-%m-%d %H:%M")
+match: :first).value).to(eq(test_value.to_datetime.strftime("%Y-%m-%d %H:%M")))
         end
       end
     end
@@ -197,11 +197,11 @@ match: :first).value).to eq test_value.to_datetime.strftime("%Y-%m-%d %H:%M")
   private
 
   def wait_for_edit_form_to_load_order_cycle(order_cycle)
-    expect(page).to have_field "order_cycle_name", with: order_cycle.name
+    expect(page).to(have_field("order_cycle_name", with: order_cycle.name))
   end
 
   def select_incoming_variant(supplier, exchange_no, variant)
     page.find("table.exchanges tr.supplier-#{supplier.id} td.products").click
-    check "order_cycle_incoming_exchange_#{exchange_no}_variants_#{variant.id}"
+    check("order_cycle_incoming_exchange_#{exchange_no}_variants_#{variant.id}")
   end
 end

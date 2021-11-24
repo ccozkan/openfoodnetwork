@@ -56,7 +56,7 @@ subject: "#{Spree::Config[:site_name]} #{t('subscription_mailer.confirmation_sum
   private
 
   def send_mail(order)
-    I18n.with_locale valid_locale(order.user) do
+    I18n.with_locale(valid_locale(order.user)) do
       confirm_email_subject = t('spree.order_mailer.confirm_email.subject')
       subject = "#{Spree::Config[:site_name]} #{confirm_email_subject} ##{order.number}"
       mail(

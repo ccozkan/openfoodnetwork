@@ -32,13 +32,13 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
       it "fetches completed orders" do
         o2 = create(:order)
         o2.line_items << build(:line_item)
-        expect(subject.table_items).to eq([line_item])
+        expect(subject.table_items).to(eq([line_item]))
       end
 
       it "does not show cancelled orders" do
         o2 = create(:order, state: "canceled", completed_at: 1.day.ago)
         o2.line_items << build(:line_item_with_shipment)
-        expect(subject.table_items).to eq([line_item])
+        expect(subject.table_items).to(eq([line_item]))
       end
     end
 
@@ -76,19 +76,19 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
         end
 
         it "shows line items supplied by my producers, with names hidden" do
-          expect(subject.table_items).to eq([li2])
-          expect(subject.table_items.first.order.bill_address.firstname).to eq("HIDDEN")
+          expect(subject.table_items).to(eq([li2]))
+          expect(subject.table_items.first.order.bill_address.firstname).to(eq("HIDDEN"))
         end
 
         context "where the distributor allows suppliers to see customer names" do
           before do
-            distributor.update_columns show_customer_names_to_suppliers: true
+            distributor.update_columns(show_customer_names_to_suppliers: true)
           end
 
           it "shows line items supplied by my producers, with names shown" do
-            expect(subject.table_items).to eq([li2])
+            expect(subject.table_items).to(eq([li2]))
             expect(subject.table_items.first.order.bill_address.firstname)
-              .to eq(order.bill_address.firstname)
+              .to(eq(order.bill_address.firstname))
           end
         end
       end
@@ -112,7 +112,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
         end
 
         it "does not show line items supplied by my producers" do
-          expect(subject.table_items).to eq([])
+          expect(subject.table_items).to(eq([]))
         end
 
         context "where the distributor allows suppliers to see customer names" do
@@ -121,7 +121,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
           end
 
           it "does not show line items supplied by my producers" do
-            expect(subject.table_items).to eq([])
+            expect(subject.table_items).to(eq([]))
           end
         end
       end
@@ -139,15 +139,15 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
         d2.enterprise_roles.create!(user: create(:user))
         o2 = create(:order, distributor: d2, completed_at: 1.day.ago)
         o2.line_items << build(:line_item_with_shipment)
-        expect(subject.table_items).to eq([line_item])
+        expect(subject.table_items).to(eq([line_item]))
       end
 
       it "only shows the selected order cycle" do
         oc2 = create(:simple_order_cycle)
         o2 = create(:order, distributor: distributor, order_cycle: oc2)
         o2.line_items << build(:line_item)
-        allow(subject).to receive(:params).and_return(order_cycle_id_in: order_cycle.id)
-        expect(subject.table_items).to eq([line_item])
+        allow(subject).to(receive(:params).and_return(order_cycle_id_in: order_cycle.id))
+        expect(subject.table_items).to(eq([line_item]))
       end
     end
   end
@@ -164,7 +164,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
 
       report_types.each do |report_type|
         report = described_class.new(admin_user, report_type: report_type)
-        expect(report.header.size).to eq(report.columns.size)
+        expect(report.header.size).to(eq(report.columns.size))
       end
     end
   end
@@ -191,12 +191,12 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
 
     it "has a product row" do
       product_name_field = items.first[5]
-      expect(product_name_field).to eq product.name
+      expect(product_name_field).to(eq(product.name))
     end
 
     it "has a summary row" do
       product_name_field = items.last[5]
-      expect(product_name_field).to eq "TOTAL"
+      expect(product_name_field).to(eq("TOTAL"))
     end
 
     # Expected Report for Scenario:
@@ -233,37 +233,37 @@ price: nil,
       end
 
       it "groups line items by variant and order" do
-        expect(items.length).to eq(5)
+        expect(items.length).to(eq(5))
 
         # Row 1: Armstrong Amari, Fuji Apple, price: 8
         row_data = items[0]
-        expect(customer_name(row_data)).to eq(second_address.full_name)
-        expect(amount(row_data)).to eq(fuji.price * 8)
-        expect(variant_sku(row_data)).to eq(fuji.sku)
+        expect(customer_name(row_data)).to(eq(second_address.full_name))
+        expect(amount(row_data)).to(eq(fuji.price * 8))
+        expect(variant_sku(row_data)).to(eq(fuji.sku))
 
         # Row 2: SUMMARY
         row_data = items[1]
-        expect(totals_row?(row_data)).to eq(true)
-        expect(customer_name(row_data)).to eq(second_address.full_name)
-        expect(amount(row_data)).to eq(fuji.price * 8)
+        expect(totals_row?(row_data)).to(eq(true))
+        expect(customer_name(row_data)).to(eq(second_address.full_name))
+        expect(amount(row_data)).to(eq(fuji.price * 8))
 
         # Row 3: Bartoletti Brooklyn, Fuji Apple, price: 1 + 4
         row_data = items[2]
-        expect(customer_name(row_data)).to eq(address.full_name)
-        expect(amount(row_data)).to eq(fuji.price * 5)
-        expect(variant_sku(row_data)).to eq(fuji.sku)
+        expect(customer_name(row_data)).to(eq(address.full_name))
+        expect(amount(row_data)).to(eq(fuji.price * 5))
+        expect(variant_sku(row_data)).to(eq(fuji.sku))
 
         # Row 4: Bartoletti Brooklyn, Gala Apple, price: 2
         row_data = items[3]
-        expect(customer_name(row_data)).to eq(address.full_name)
-        expect(amount(row_data)).to eq(gala.price * 2)
-        expect(variant_sku(row_data)).to eq(gala.sku)
+        expect(customer_name(row_data)).to(eq(address.full_name))
+        expect(amount(row_data)).to(eq(gala.price * 2))
+        expect(variant_sku(row_data)).to(eq(gala.sku))
 
         # Row 5: SUMMARY
         row_data = items[4]
-        expect(totals_row?(row_data)).to eq(true)
-        expect(customer_name(row_data)).to eq(address.full_name)
-        expect(amount(row_data)).to eq((fuji.price * 5) + (gala.price * 2))
+        expect(totals_row?(row_data)).to(eq(true))
+        expect(customer_name(row_data)).to(eq(address.full_name))
+        expect(amount(row_data)).to(eq((fuji.price * 5) + (gala.price * 2)))
       end
     end
 

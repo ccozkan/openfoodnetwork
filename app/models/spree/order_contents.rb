@@ -57,7 +57,7 @@ module Spree
     def update_item(line_item, params)
       if line_item.update(params)
         discard_empty_line_items
-        order.update_line_item_fees! line_item
+        order.update_line_item_fees!(line_item)
         order.update_order_fees! if order.completed?
         update_shipment
         update_order
@@ -116,7 +116,7 @@ module Spree
       line_item = order.find_line_item_by_variant(variant)
 
       if !line_item.present? && raise_error
-        raise ActiveRecord::RecordNotFound, "Line item not found for variant #{variant.sku}"
+        raise(ActiveRecord::RecordNotFound, "Line item not found for variant #{variant.sku}")
       end
 
       line_item

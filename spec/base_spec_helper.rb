@@ -20,8 +20,8 @@ require "factory_bot_rails"
 require 'shoulda/matchers'
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
+    with.test_framework(:rspec)
+    with.library(:rails)
   end
 end
 
@@ -65,7 +65,7 @@ RSpec.configure do |config|
   config.color_mode = :on
 
   # Force use of expect (over should)
-  config.expect_with :rspec do |expectations|
+  config.expect_with(:rspec) do |expectations|
     expectations.syntax = :expect
   end
 
@@ -89,7 +89,7 @@ RSpec.configure do |config|
 
   # Geocoding
   config.before(:each) do
-    allow_any_instance_of(Spree::Address).to receive(:geocode).and_return([1, 1])
+    allow_any_instance_of(Spree::Address).to(receive(:geocode).and_return([1, 1]))
   end
 
   default_country_id = DefaultCountry.id
@@ -114,31 +114,31 @@ RSpec.configure do |config|
       rescue_from WebMock::NetConnectNotAllowedError, with: :handle_webmock_error
 
       def handle_webmock_error(exception)
-        raise exception.message
+        raise(exception.message)
       end
     end
   end
 
   config.infer_spec_type_from_file_location!
 
-  config.include FactoryBot::Syntax::Methods
-  config.include Paperclip::Shoulda::Matchers
-  config.include JsonSpec::Helpers
+  config.include(FactoryBot::Syntax::Methods)
+  config.include(Paperclip::Shoulda::Matchers)
+  config.include(JsonSpec::Helpers)
 
-  config.include Rails.application.routes.url_helpers
-  config.include Spree::UrlHelpers
-  config.include Spree::MoneyHelper
-  config.include PreferencesHelper
-  config.include OpenFoodNetwork::FeatureToggleHelper
-  config.include OpenFoodNetwork::FiltersHelper
-  config.include OpenFoodNetwork::EnterpriseGroupsHelper
-  config.include OpenFoodNetwork::ProductsHelper
-  config.include OpenFoodNetwork::DistributionHelper
-  config.include OpenFoodNetwork::HtmlHelper
-  config.include ActionView::Helpers::DateHelper
-  config.include OpenFoodNetwork::PerformanceHelper
-  config.include ActiveJob::TestHelper
+  config.include(Rails.application.routes.url_helpers)
+  config.include(Spree::UrlHelpers)
+  config.include(Spree::MoneyHelper)
+  config.include(PreferencesHelper)
+  config.include(OpenFoodNetwork::FeatureToggleHelper)
+  config.include(OpenFoodNetwork::FiltersHelper)
+  config.include(OpenFoodNetwork::EnterpriseGroupsHelper)
+  config.include(OpenFoodNetwork::ProductsHelper)
+  config.include(OpenFoodNetwork::DistributionHelper)
+  config.include(OpenFoodNetwork::HtmlHelper)
+  config.include(ActionView::Helpers::DateHelper)
+  config.include(OpenFoodNetwork::PerformanceHelper)
+  config.include(ActiveJob::TestHelper)
 
-  config.include Features::DatepickerHelper, type: :system
-  config.include DownloadsHelper, type: :system
+  config.include(Features::DatepickerHelper, type: :system)
+  config.include(DownloadsHelper, type: :system)
 end

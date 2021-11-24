@@ -10,11 +10,11 @@ describe VariantStock do
       let(:variant) { create(:variant) }
       let(:stock_item) { variant.stock_items.first }
 
-      before { allow(stock_item).to receive(:save) }
+      before { allow(stock_item).to(receive(:save)) }
 
       it 'saves its stock item' do
         variant.save
-        expect(stock_item).to have_received(:save)
+        expect(stock_item).to(have_received(:save))
       end
     end
   end
@@ -28,7 +28,7 @@ describe VariantStock do
       end
 
       it 'returns the total items in stock anyway' do
-        expect(variant.on_hand).to eq(variant.stock_items.sum(:count_on_hand))
+        expect(variant.on_hand).to(eq(variant.stock_items.sum(:count_on_hand)))
       end
     end
 
@@ -40,7 +40,7 @@ describe VariantStock do
       end
 
       it 'returns the total items in stock' do
-        expect(variant.on_hand).to eq(variant.stock_items.sum(:count_on_hand))
+        expect(variant.on_hand).to(eq(variant.stock_items.sum(:count_on_hand)))
       end
     end
   end
@@ -49,7 +49,7 @@ describe VariantStock do
     it 'sets the new level as the stock item\'s count_on_hand' do
       variant.on_hand = 3
       unique_stock_item = variant.stock_items.first
-      expect(unique_stock_item.count_on_hand).to eq(3)
+      expect(unique_stock_item.count_on_hand).to(eq(3))
     end
 
     context 'when the variant has no stock item' do
@@ -57,7 +57,7 @@ describe VariantStock do
 
       it 'raises' do
         expect { variant.on_hand = 3 }
-.to raise_error(StandardError)
+.to(raise_error(StandardError))
       end
     end
   end
@@ -74,14 +74,14 @@ describe VariantStock do
         end
 
         it 'returns true' do
-          expect(variant.on_demand).to be_truthy
+          expect(variant.on_demand).to(be_truthy)
         end
       end
 
       context 'when the stock items is not backorderable' do
         it 'returns false' do
           variant = build_stubbed(:variant, stock_locations: [build_stubbed(:stock_location)])
-          expect(variant.on_demand).to be_falsy
+          expect(variant.on_demand).to(be_falsy)
         end
       end
     end
@@ -97,11 +97,11 @@ describe VariantStock do
       end
 
       it 'has no stock items' do
-        expect(variant.stock_items.count).to eq 0
+        expect(variant.stock_items.count).to(eq(0))
       end
 
       it 'returns stock location default' do
-        expect(variant.on_demand).to be_falsy
+        expect(variant.on_demand).to(be_falsy)
       end
     end
 
@@ -109,11 +109,11 @@ describe VariantStock do
       let(:deleted_variant) { create(:variant).tap(&:destroy) }
 
       it 'has no stock items' do
-        expect(deleted_variant.stock_items.count).to eq 0
+        expect(deleted_variant.stock_items.count).to(eq(0))
       end
 
       it 'returns stock location default' do
-        expect(deleted_variant.on_demand).to be_falsy
+        expect(deleted_variant.on_demand).to(be_falsy)
       end
     end
   end
@@ -125,7 +125,7 @@ describe VariantStock do
       it 'sets the value as the stock item\'s backorderable value' do
         variant.on_demand = false
         stock_item = variant.stock_items.first
-        expect(stock_item.backorderable).to eq(false)
+        expect(stock_item.backorderable).to(eq(false))
       end
     end
 
@@ -134,7 +134,7 @@ describe VariantStock do
 
       it 'raises' do
         expect { variant.on_demand = 3 }
-.to raise_error(StandardError)
+.to(raise_error(StandardError))
       end
     end
   end
@@ -151,15 +151,15 @@ describe VariantStock do
       let(:stock_item) { Spree::StockItem.new(backorderable: true) }
 
       before do
-        allow(variant).to receive(:stock_items).and_return([stock_item])
+        allow(variant).to(receive(:stock_items).and_return([stock_item]))
       end
 
       it "returns true for zero" do
-        expect(variant.can_supply?(0)).to eq(true)
+        expect(variant.can_supply?(0)).to(eq(true))
       end
 
       it "returns true for large quantity" do
-        expect(variant.can_supply?(100_000)).to eq(true)
+        expect(variant.can_supply?(100_000)).to(eq(true))
       end
     end
 
@@ -174,15 +174,15 @@ describe VariantStock do
         end
 
         it "returns true for zero" do
-          expect(variant.can_supply?(0)).to eq(true)
+          expect(variant.can_supply?(0)).to(eq(true))
         end
 
         it "returns true for number equal to stock level" do
-          expect(variant.can_supply?(variant.total_on_hand)).to eq(true)
+          expect(variant.can_supply?(variant.total_on_hand)).to(eq(true))
         end
 
         it "returns false for number above stock level" do
-          expect(variant.can_supply?(variant.total_on_hand + 1)).to eq(false)
+          expect(variant.can_supply?(variant.total_on_hand + 1)).to(eq(false))
         end
       end
 
@@ -190,11 +190,11 @@ describe VariantStock do
         before { variant.on_hand = 0 }
 
         it "returns true for zero" do
-          expect(variant.can_supply?(0)).to eq(true)
+          expect(variant.can_supply?(0)).to(eq(true))
         end
 
         it "returns false for one" do
-          expect(variant.can_supply?(1)).to eq(false)
+          expect(variant.can_supply?(1)).to(eq(false))
         end
       end
     end

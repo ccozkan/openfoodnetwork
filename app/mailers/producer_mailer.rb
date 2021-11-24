@@ -69,11 +69,11 @@ class ProducerMailer < Spree::BaseMailer
   end
 
   def total_from_line_items(line_items)
-    Spree::Money.new line_items.to_a.sum(&:total)
+    Spree::Money.new(line_items.to_a.sum(&:total))
   end
 
   def tax_total_from_line_items(line_items)
-    Spree::Money.new line_items.to_a.sum(&:included_tax)
+    Spree::Money.new(line_items.to_a.sum(&:included_tax))
   end
 
   def set_customer_data(line_items)

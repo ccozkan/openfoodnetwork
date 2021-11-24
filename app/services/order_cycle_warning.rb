@@ -24,7 +24,7 @@ class OrderCycleWarning
   end
 
   def active_distributors_not_ready_for_checkout_message(distributors)
-    distributor_names = distributors.map(&:name).join ', '
+    distributor_names = distributors.map(&:name).join(', ')
 
     if distributors.count > 1
       I18n.t(

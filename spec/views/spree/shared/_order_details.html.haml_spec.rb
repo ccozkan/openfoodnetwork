@@ -12,7 +12,7 @@ describe "spree/shared/_order_details.html.haml" do
 
   before do
     assign(:order, order)
-    allow(view).to receive_messages(order: order, current_order: order)
+    allow(view).to(receive_messages(order: order, current_order: order))
   end
 
   it "shows how the order is paid for" do
@@ -20,7 +20,7 @@ describe "spree/shared/_order_details.html.haml" do
 
     render
 
-    expect(rendered).to have_content("Paying via:\nBartering")
+    expect(rendered).to(have_content("Paying via:\nBartering"))
   end
 
   it "displays payment methods safely" do
@@ -28,7 +28,7 @@ describe "spree/shared/_order_details.html.haml" do
 
     render
 
-    expect(rendered).to have_content("Paying via:\nBar<script>evil</script>ter&rarr;ing")
+    expect(rendered).to(have_content("Paying via:\nBar<script>evil</script>ter&rarr;ing"))
   end
 
   it "shows the last used payment method" do
@@ -50,6 +50,6 @@ describe "spree/shared/_order_details.html.haml" do
 
     render
 
-    expect(rendered).to have_content("Paying via:\nCredit")
+    expect(rendered).to(have_content("Paying via:\nCredit"))
   end
 end

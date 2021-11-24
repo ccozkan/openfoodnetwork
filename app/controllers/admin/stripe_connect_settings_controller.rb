@@ -32,7 +32,7 @@ module Admin
     end
 
     def redirect_to_edit
-      redirect_to main_app.edit_admin_stripe_connect_settings_path
+      redirect_to(main_app.edit_admin_stripe_connect_settings_path)
     end
 
     def obfuscated_secret_key

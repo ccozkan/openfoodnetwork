@@ -12,7 +12,7 @@ module Reporting
     def report_class
       "#{report_module}::#{report_subtype_class}".constantize
     rescue NameError
-      raise Reporting::Errors::ReportNotFound
+      raise(Reporting::Errors::ReportNotFound)
     end
 
     def default_report_subtype
@@ -34,7 +34,7 @@ module Reporting
     def base_class
       "#{report_module}::Base".constantize
     rescue NameError
-      raise Reporting::Errors::ReportNotFound
+      raise(Reporting::Errors::ReportNotFound)
     end
   end
 end

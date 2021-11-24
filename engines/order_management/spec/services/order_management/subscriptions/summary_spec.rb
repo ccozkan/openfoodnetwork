@@ -9,10 +9,10 @@ module OrderManagement
 
       describe "#initialize" do
         it "initializes instance variables: shop_id, order_count, success_count and issues" do
-          expect(summary.shop_id).to be 123
-          expect(summary.order_count).to be 0
-          expect(summary.success_count).to be 0
-          expect(summary.issues).to be_a Hash
+          expect(summary.shop_id).to(be(123))
+          expect(summary.order_count).to(be(0))
+          expect(summary.success_count).to(be(0))
+          expect(summary.issues).to(be_a(Hash))
         end
       end
 
@@ -20,7 +20,7 @@ module OrderManagement
         let(:order) { double(:order, id: 37) }
         it "adds the order id to the order_ids array" do
           summary.record_order(order)
-          expect(summary.instance_variable_get(:@order_ids)).to eq [order.id]
+          expect(summary.instance_variable_get(:@order_ids)).to(eq([order.id]))
         end
       end
 
@@ -28,7 +28,7 @@ module OrderManagement
         let(:order) { double(:order, id: 37) }
         it "adds the order id to the success_ids array" do
           summary.record_success(order)
-          expect(summary.instance_variable_get(:@success_ids)).to eq [order.id]
+          expect(summary.instance_variable_get(:@success_ids)).to(eq([order.id]))
         end
       end
 
@@ -38,8 +38,8 @@ module OrderManagement
         context "when no issues of the same type have been recorded yet" do
           it "adds a new type to the issues hash, and stores a new issue against it" do
             summary.record_issue(:some_type, order, "message")
-            expect(summary.issues.keys).to include :some_type
-            expect(summary.issues[:some_type][order.id]).to eq "message"
+            expect(summary.issues.keys).to(include(:some_type))
+            expect(summary.issues[:some_type][order.id]).to(eq("message"))
           end
         end
 
@@ -50,8 +50,8 @@ module OrderManagement
 
           it "stores a new issue against the existing type" do
             summary.record_issue(:some_type, order, "message")
-            expect(summary.issues[:some_type]).to include existing_issue
-            expect(summary.issues[:some_type][order.id]).to eq "message"
+            expect(summary.issues[:some_type]).to(include(existing_issue))
+            expect(summary.issues[:some_type][order.id]).to(eq("message"))
           end
         end
       end
@@ -61,7 +61,7 @@ module OrderManagement
 
         it "stores a new subscription issue" do
           summary.record_subscription_issue(subscription)
-          expect(summary.subscription_issues).to eq [101]
+          expect(summary.subscription_issues).to(eq([101]))
         end
       end
 
@@ -69,7 +69,7 @@ module OrderManagement
         let(:order_ids) { [1, 2, 3, 4, 5, 6, 7] }
         it "counts the number of items in the order_ids instance_variable" do
           summary.instance_variable_set(:@order_ids, order_ids)
-          expect(summary.order_count).to be 7
+          expect(summary.order_count).to(be(7))
         end
       end
 
@@ -77,7 +77,7 @@ module OrderManagement
         let(:success_ids) { [1, 2, 3, 4, 5, 6, 7] }
         it "counts the number of items in the success_ids instance_variable" do
           summary.instance_variable_set(:@success_ids, success_ids)
-          expect(summary.success_count).to be 7
+          expect(summary.success_count).to(be(7))
         end
       end
 
@@ -88,7 +88,7 @@ module OrderManagement
         it "counts the number of items in order_ids that are not in success_ids" do
           summary.instance_variable_set(:@order_ids, order_ids)
           summary.instance_variable_set(:@success_ids, success_ids)
-          expect(summary.issue_count).to be 2 # 7 & 9
+          expect(summary.issue_count).to(be(2)) # 7 & 9
         end
 
         context "when there are also subscription issues" do
@@ -102,7 +102,7 @@ module OrderManagement
           end
 
           it "includes subscription issues in the count" do
-            expect(summary.issue_count).to eq 1
+            expect(summary.issue_count).to(eq(1))
           end
         end
       end
@@ -112,16 +112,16 @@ module OrderManagement
         let(:order2) { create(:order) }
 
         before do
-          allow(summary).to receive(:unrecorded_ids) { [order1.id] }
-          allow(summary).to receive(:issues) { { failure: { order2.id => "A message" } } }
+          allow(summary).to(receive(:unrecorded_ids) { [order1.id] })
+          allow(summary).to(receive(:issues) { { failure: { order2.id => "A message" } } })
         end
 
         context "when the issue type is :other" do
           let(:orders) { summary.orders_affected_by(:other) }
 
           it "returns orders specified by unrecorded_ids" do
-            expect(orders).to include order1
-            expect(orders).to_not include order2
+            expect(orders).to(include(order1))
+            expect(orders).to_not(include(order2))
           end
         end
 
@@ -129,8 +129,8 @@ module OrderManagement
           let(:orders) { summary.orders_affected_by(:failure) }
 
           it "returns orders specified by the relevant issue hash" do
-            expect(orders).to include order2
-            expect(orders).to_not include order1
+            expect(orders).to(include(order2))
+            expect(orders).to_not(include(order1))
           end
         end
       end
@@ -145,7 +145,7 @@ module OrderManagement
         end
 
         it "returns order_ids that are not marked as an issue or a success" do
-          expect(summary.unrecorded_ids).to eq [9]
+          expect(summary.unrecorded_ids).to(eq([9]))
         end
       end
     end

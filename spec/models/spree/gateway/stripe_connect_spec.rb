@@ -5,10 +5,10 @@ require 'spec_helper'
 describe Spree::Gateway::StripeConnect, type: :model do
   let(:provider) do
     instance_double(ActiveMerchant::Billing::StripeGateway).tap do |p|
-      allow(p).to receive(:purchase)
-      allow(p).to receive(:authorize)
-      allow(p).to receive(:capture)
-      allow(p).to receive(:refund)
+      allow(p).to(receive(:purchase))
+      allow(p).to(receive(:authorize))
+      allow(p).to(receive(:capture))
+      allow(p).to(receive(:refund))
     end
   end
 
@@ -16,44 +16,44 @@ describe Spree::Gateway::StripeConnect, type: :model do
 
   before do
     Stripe.api_key = "sk_test_123456"
-    allow(subject).to receive(:stripe_account_id) { stripe_account_id }
-    allow(subject).to receive(:options_for_purchase_or_auth).and_return(['money', 'cc', 'opts'])
-    allow(subject).to receive(:provider).and_return provider
+    allow(subject).to(receive(:stripe_account_id) { stripe_account_id })
+    allow(subject).to(receive(:options_for_purchase_or_auth).and_return(['money', 'cc', 'opts']))
+    allow(subject).to(receive(:provider).and_return(provider))
   end
 
   describe "#token_from_card_profile_ids" do
     let(:creditcard) { double(:creditcard) }
     context "when the credit card provided has a gateway_payment_profile_id" do
       before do
-        allow(creditcard).to receive(:gateway_payment_profile_id) { "token_or_card_id123" }
-        allow(subject).to receive(:tokenize_instance_customer_card) { "tokenized" }
+        allow(creditcard).to(receive(:gateway_payment_profile_id) { "token_or_card_id123" })
+        allow(subject).to(receive(:tokenize_instance_customer_card) { "tokenized" })
       end
 
       context "when the credit card provided has a gateway_customer_profile_id" do
-        before { allow(creditcard).to receive(:gateway_customer_profile_id) { "customer_id123" } }
+        before { allow(creditcard).to(receive(:gateway_customer_profile_id) { "customer_id123" }) }
 
         it "requests a new token via tokenize_instance_customer_card" do
           result = subject.send(:token_from_card_profile_ids, creditcard)
-          expect(result).to eq "tokenized"
+          expect(result).to(eq("tokenized"))
         end
       end
 
       context "when the credit card provided does not have a gateway_customer_profile_id" do
-        before { allow(creditcard).to receive(:gateway_customer_profile_id) { nil } }
+        before { allow(creditcard).to(receive(:gateway_customer_profile_id) { nil }) }
         it "returns the gateway_payment_profile_id (assumed to be a token already)" do
           result = subject.send(:token_from_card_profile_ids, creditcard)
-          expect(result).to eq "token_or_card_id123"
+          expect(result).to(eq("token_or_card_id123"))
         end
       end
     end
 
     context "when the credit card provided does not have a gateway_payment_profile_id" do
-      before { allow(creditcard).to receive(:gateway_payment_profile_id) { nil } }
-      before { allow(creditcard).to receive(:gateway_customer_profile_id) { "customer_id123" } }
+      before { allow(creditcard).to(receive(:gateway_payment_profile_id) { nil }) }
+      before { allow(creditcard).to(receive(:gateway_customer_profile_id) { "customer_id123" }) }
 
       it "returns nil....?" do
         result = subject.send(:token_from_card_profile_ids, creditcard)
-        expect(result).to be nil
+        expect(result).to(be(nil))
       end
     end
   end
@@ -76,7 +76,7 @@ subject.send(
 customer_id,
                           card_id
 )
-).to eq token_mock[:id]
+).to(eq(token_mock[:id]))
     end
   end
 
@@ -90,15 +90,15 @@ customer_id,
     end
 
     it "delegates to ActiveMerchant::Billing::StripeGateway#refund" do
-      expect(provider).to have_received(:refund)
+      expect(provider).to(have_received(:refund))
     end
 
     it "adds the stripe_account to the gateway options hash" do
-      expect(provider).to have_received(:refund).with(
+      expect(provider).to(have_received(:refund).with(
 money,
 response_code,
                                                       hash_including(stripe_account: stripe_account_id)
-)
+))
     end
   end
 
@@ -109,7 +109,7 @@ response_code,
 
     it "uses #purchase to charge offline" do
       subject.charge_offline(money, card, gateway_options)
-      expect(provider).to have_received(:purchase).with('money', 'cc', 'opts')
+      expect(provider).to(have_received(:purchase).with('money', 'cc', 'opts'))
     end
   end
 end

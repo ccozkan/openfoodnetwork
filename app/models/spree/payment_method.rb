@@ -62,14 +62,14 @@ lambda { |display_on = 'both'|
     end
 
     def provider_class
-      raise 'You must implement provider_class method for this gateway.'
+      raise('You must implement provider_class method for this gateway.')
     end
 
     # The class that will process payments for this payment type, used for @payment.source
     # e.g. CreditCard in the case of a the Gateway payment type
     # nil means the payment method doesn't require a source e.g. check
     def payment_source_class
-      raise 'You must implement payment_source_class method for this gateway.'
+      raise('You must implement payment_source_class method for this gateway.')
     end
 
     def self.active?
@@ -112,7 +112,7 @@ lambda { |display_on = 'both'|
     private
 
     def distributor_validation
-      validates_with DistributorsValidator
+      validates_with(DistributorsValidator)
     end
   end
 end

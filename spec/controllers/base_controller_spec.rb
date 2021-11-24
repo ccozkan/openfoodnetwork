@@ -7,7 +7,7 @@ describe BaseController, type: :controller do
   let(:order) { instance_double(Spree::Order) }
   controller(BaseController) do
     def index
-      render plain: ""
+      render(plain: "")
     end
   end
 
@@ -16,30 +16,30 @@ describe BaseController, type: :controller do
 
     it "doesn't change anything without a user" do
       expect do
-        get :index
-      end.to_not change { Spree::Order.count }
+        get(:index)
+      end.to_not(change { Spree::Order.count })
     end
 
     it "creates a new order" do
-      allow(controller).to receive(:spree_current_user).and_return(user)
+      allow(controller).to(receive(:spree_current_user).and_return(user))
 
       expect do
-        get :index
-      end.to change { Spree::Order.count }
-.by(1)
+        get(:index)
+      end.to(change { Spree::Order.count }
+.by(1))
 
-      expect(user.orders.count).to eq 1
+      expect(user.orders.count).to(eq(1))
     end
 
     it "uses the last incomplete order" do
       last_cart = create(:order, user: user, created_by: user, state: "cart", completed_at: nil)
-      allow(controller).to receive(:spree_current_user).and_return(user)
+      allow(controller).to(receive(:spree_current_user).and_return(user))
 
       expect do
-        get :index
-      end.to_not change { Spree::Order.count }
+        get(:index)
+      end.to_not(change { Spree::Order.count })
 
-      expect(session[:order_id]).to eq last_cart.id
+      expect(session[:order_id]).to(eq(last_cart.id))
     end
 
     it "ignores the last incomplete order" do
@@ -60,13 +60,13 @@ describe BaseController, type: :controller do
       )
       session[:order_id] = current_cart.id
 
-      allow(controller).to receive(:spree_current_user).and_return(user)
+      allow(controller).to(receive(:spree_current_user).and_return(user))
 
       expect do
-        get :index
-      end.to_not change { Spree::Order.count }
+        get(:index)
+      end.to_not(change { Spree::Order.count })
 
-      expect(current_cart.line_items.count).to eq 0
+      expect(current_cart.line_items.count).to(eq(0))
     end
 
     it "doesn't recover old orders after checkout, a new empty one is created" do
@@ -81,37 +81,37 @@ describe BaseController, type: :controller do
         completed_at: Time.zone.now,
         created_at: 1.week.ago
       )
-      expect(just_completed_order.completed_at).to be_present
+      expect(just_completed_order.completed_at).to(be_present)
       session[:order_id] = just_completed_order.id
 
-      allow(controller).to receive(:spree_current_user).and_return(user)
+      allow(controller).to(receive(:spree_current_user).and_return(user))
 
       expect do
-        get :index
-      end.to change { Spree::Order.count }
-.by(1)
+        get(:index)
+      end.to(change { Spree::Order.count }
+.by(1))
 
-      expect(session[:order_id]).to_not eq just_completed_order.id
-      expect(session[:order_id]).to_not eq last_cart.id
-      expect(controller.current_order.line_items.count).to eq 0
+      expect(session[:order_id]).to_not(eq(just_completed_order.id))
+      expect(session[:order_id]).to_not(eq(last_cart.id))
+      expect(controller.current_order.line_items.count).to(eq(0))
     end
 
     it "doesn't load variant overrides without line items" do
-      expect(VariantOverride).to_not receive(:indexed)
+      expect(VariantOverride).to_not(receive(:indexed))
       controller.current_order(true)
     end
   end
 
   it "redirects to shopfront with message if order cycle is expired" do
-    expect(controller).to receive(:current_order_cycle).and_return(oc)
-    expect(controller).to receive(:current_order).and_return(order).twice
-    expect(oc).to receive(:closed?).and_return(true)
-    expect(order).to receive(:empty!)
-    expect(order).to receive(:set_order_cycle!).with(nil)
+    expect(controller).to(receive(:current_order_cycle).and_return(oc))
+    expect(controller).to(receive(:current_order).and_return(order).twice)
+    expect(oc).to(receive(:closed?).and_return(true))
+    expect(order).to(receive(:empty!))
+    expect(order).to(receive(:set_order_cycle!).with(nil))
 
     get :index
 
-    expect(response).to redirect_to shop_url
-    expect(flash[:info]).to eq I18n.t('order_cycle_closed')
+    expect(response).to(redirect_to(shop_url))
+    expect(flash[:info]).to(eq(I18n.t('order_cycle_closed')))
   end
 end

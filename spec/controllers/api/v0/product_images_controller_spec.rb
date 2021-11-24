@@ -9,7 +9,7 @@ module Api
 
     describe "uploading an image" do
       before do
-        allow(controller).to receive(:spree_current_user) { current_api_user }
+        allow(controller).to(receive(:spree_current_user) { current_api_user })
       end
 
       image_path = File.open(Rails.root.join('app', 'assets', 'images', 'logo-black.png'))
@@ -23,8 +23,8 @@ module Api
 xhr: true,
                                     params: { product_id: product_without_image.id, file: image, use_route: :product_images }
 
-        expect(response.status).to eq 201
-        expect(product_without_image.images.first.id).to eq json_response['id']
+        expect(response.status).to(eq(201))
+        expect(product_without_image.images.first.id).to(eq(json_response['id']))
       end
 
       it "updates an existing product image" do
@@ -32,8 +32,8 @@ xhr: true,
 xhr: true,
                                     params: { product_id: product_with_image.id, file: image, use_route: :product_images }
 
-        expect(response.status).to eq 200
-        expect(product_with_image.images.first.id).to eq json_response['id']
+        expect(response.status).to(eq(200))
+        expect(product_with_image.images.first.id).to(eq(json_response['id']))
       end
     end
   end

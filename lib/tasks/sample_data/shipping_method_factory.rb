@@ -9,7 +9,7 @@ module SampleData
     include Addressing
 
     def create_samples(enterprises)
-      log "Creating shipping methods:"
+      log("Creating shipping methods:")
       distributors = enterprises.select(&:is_distributor)
       distributors.each do |enterprise|
         create_shipping_methods(enterprise)
@@ -21,7 +21,7 @@ module SampleData
     def create_shipping_methods(enterprise)
       return if enterprise.shipping_methods.present?
 
-      log "- #{enterprise.name}"
+      log("- #{enterprise.name}")
       create_pickup(enterprise)
       create_delivery(enterprise)
     end

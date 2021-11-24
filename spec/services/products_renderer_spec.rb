@@ -27,22 +27,22 @@ describe ProductsRenderer do
     end
 
     it "sorts products by the distributor's preferred taxon list" do
-      allow(distributor).to receive(:preferred_shopfront_taxon_order) { "#{t1.id},#{t2.id}" }
+      allow(distributor).to(receive(:preferred_shopfront_taxon_order) { "#{t1.id},#{t2.id}" })
       products = products_renderer.send(:products)
-      expect(products).to eq([p2, p4, p1, p3])
+      expect(products).to(eq([p2, p4, p1, p3]))
     end
 
     it "sorts products by the distributor's preferred producer list" do
-      allow(distributor).to receive(:preferred_shopfront_product_sorting_method) { "by_producer" }
-      allow(distributor).to receive(:preferred_shopfront_producer_order) { "#{s2.id},#{s1.id}" }
+      allow(distributor).to(receive(:preferred_shopfront_product_sorting_method) { "by_producer" })
+      allow(distributor).to(receive(:preferred_shopfront_producer_order) { "#{s2.id},#{s1.id}" })
       products = products_renderer.send(:products)
-      expect(products).to eq([p2, p4, p1, p3])
+      expect(products).to(eq([p2, p4, p1, p3]))
     end
 
     it "alphabetizes products by name when taxon list is not set" do
-      allow(distributor).to receive(:preferred_shopfront_taxon_order) { "" }
+      allow(distributor).to(receive(:preferred_shopfront_taxon_order) { "" })
       products = products_renderer.send(:products)
-      expect(products).to eq([p1, p2, p3, p4])
+      expect(products).to(eq([p1, p2, p3, p4]))
     end
   end
 
@@ -55,39 +55,39 @@ describe ProductsRenderer do
     end
 
     it "only returns products for the current order cycle" do
-      expect(products_renderer.products_json).to include product.name
+      expect(products_renderer.products_json).to(include(product.name))
     end
 
     it "doesn't return products not in stock" do
       variant.update_attribute(:on_demand, false)
       variant.update_attribute(:on_hand, 0)
-      expect(products_renderer.products_json).not_to include product.name
+      expect(products_renderer.products_json).not_to(include(product.name))
     end
 
     it "strips html from description" do
       product.update_attribute(:description, "<a href='44'>turtles</a> frogs")
       json = products_renderer.products_json
-      expect(json).to include "frogs"
-      expect(json).not_to include "<a href"
+      expect(json).to(include("frogs"))
+      expect(json).not_to(include("<a href"))
     end
 
     it "returns price including fees" do
       # Price is 19.99
       allow_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator)
-        .to receive(:indexed_fees_for).and_return 978.01
+        .to(receive(:indexed_fees_for).and_return(978.01))
 
-      expect(products_renderer.products_json).to include "998.0"
+      expect(products_renderer.products_json).to(include("998.0"))
     end
 
     it "includes the primary taxon" do
       taxon = create(:taxon)
-      allow_any_instance_of(Spree::Product).to receive(:primary_taxon).and_return taxon
-      expect(products_renderer.products_json).to include taxon.name
+      allow_any_instance_of(Spree::Product).to(receive(:primary_taxon).and_return(taxon))
+      expect(products_renderer.products_json).to(include(taxon.name))
     end
 
     it "loads tag_list for variants" do
       VariantOverride.create(variant: variant, hub: distributor, tag_list: 'lalala')
-      expect(products_renderer.products_json).to include "[\"lalala\"]"
+      expect(products_renderer.products_json).to(include("[\"lalala\"]"))
     end
   end
 
@@ -120,25 +120,25 @@ unit_value: 9,
     let(:variants) { products_renderer.send(:variants_for_shop_by_id) }
 
     it "scopes variants to distribution" do
-      expect(variants[p.id]).to include v1
-      expect(variants[p.id]).to_not include v2
+      expect(variants[p.id]).to(include(v1))
+      expect(variants[p.id]).to_not(include(v2))
     end
 
     it "does not render variants that have been hidden by the hub" do
       # but does render 'new' variants, ie. v1
-      expect(variants[p.id]).to include v1, v3
-      expect(variants[p.id]).to_not include v4
+      expect(variants[p.id]).to(include(v1, v3))
+      expect(variants[p.id]).to_not(include(v4))
     end
 
     context "when hub opts to only see variants in its inventory" do
       before do
-        allow(hub).to receive(:prefers_product_selection_from_inventory_only?) { true }
+        allow(hub).to(receive(:prefers_product_selection_from_inventory_only?) { true })
       end
 
       it "does not render variants that have not been explicitly added to the inventory for the hub" do
         # but does render 'new' variants, ie. v1
-        expect(variants[p.id]).to include v3
-        expect(variants[p.id]).to_not include v1, v4
+        expect(variants[p.id]).to(include(v3))
+        expect(variants[p.id]).to_not(include(v1, v4))
       end
     end
   end

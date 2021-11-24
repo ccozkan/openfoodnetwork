@@ -19,9 +19,9 @@ class RegistrationController < BaseController
 
   def check_user
     if spree_current_user.nil?
-      redirect_to registration_auth_path(anchor: "signup?after_login=#{request.env['PATH_INFO']}")
+      redirect_to(registration_auth_path(anchor: "signup?after_login=#{request.env['PATH_INFO']}"))
     elsif !spree_current_user.can_own_more_enterprises?
-      render :limit_reached
+      render(:limit_reached)
     end
   end
 end

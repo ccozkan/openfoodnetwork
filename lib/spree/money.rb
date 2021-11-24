@@ -60,7 +60,7 @@ module Spree
       when :after
         '%n %u'
       else
-        raise 'Invalid symbol position'
+        raise('Invalid symbol position')
       end
     end
   end

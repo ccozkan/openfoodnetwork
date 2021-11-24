@@ -15,27 +15,27 @@ module Admin
 
     def bulk_update
       # Ensure we're authorised to update all variant overrides
-      @vo_set.collection.each { |vo| authorize! :update, vo }
+      @vo_set.collection.each { |vo| authorize!(:update, vo) }
 
       if @vo_set.save
         # Return saved VOs with IDs
-        render json: @vo_set.collection, each_serializer: Api::Admin::VariantOverrideSerializer
+        render(json: @vo_set.collection, each_serializer: Api::Admin::VariantOverrideSerializer)
       elsif @vo_set.errors.present?
-        render json: { errors: @vo_set.errors }, status: :bad_request
+        render(json: { errors: @vo_set.errors }, status: :bad_request)
       else
-        render body: nil, status: :internal_server_error
+        render(body: nil, status: :internal_server_error)
       end
     end
 
     def bulk_reset
       # Ensure we're authorised to update all variant overrides.
-      @collection.each { |vo| authorize! :bulk_reset, vo }
+      @collection.each { |vo| authorize!(:bulk_reset, vo) }
       @collection.each(&:reset_stock!)
 
       if collection_errors.present?
-        render json: { errors: collection_errors }, status: :bad_request
+        render(json: { errors: collection_errors }, status: :bad_request)
       else
-        render json: @collection, each_serializer: Api::Admin::VariantOverrideSerializer
+        render(json: @collection, each_serializer: Api::Admin::VariantOverrideSerializer)
       end
     end
 
@@ -98,7 +98,7 @@ module Admin
     # This method is also present in ModelSet
     # This is useful for compiling a list of errors on any generic collection
     def collection_errors
-      errors = ActiveModel::Errors.new self
+      errors = ActiveModel::Errors.new(self)
       full_messages = @collection.map { |element| element.errors.full_messages }
 .flatten
       full_messages.each { |fm| errors.add(:base, fm) }

@@ -38,7 +38,7 @@ describe Spree::Gateway::StripeSCA, type: :model do
 
       response = subject.purchase(order.total, credit_card, gateway_options)
 
-      expect(response.success?).to eq true
+      expect(response.success?).to(eq(true))
     end
 
     it "provides an error message to help developer debug" do
@@ -47,8 +47,8 @@ describe Spree::Gateway::StripeSCA, type: :model do
 
       response = subject.purchase(order.total, credit_card, gateway_options)
 
-      expect(response.success?).to eq false
-      expect(response.message).to eq "Invalid payment state: succeeded"
+      expect(response.success?).to(eq(false))
+      expect(response.message).to(eq("Invalid payment state: succeeded"))
     end
 
     context "when payment intent state is not in 'requires_capture' state" do
@@ -61,22 +61,22 @@ describe Spree::Gateway::StripeSCA, type: :model do
           .with(body: { "amount_to_capture" => order.total })
           .to_return(status: 200, body: capture_successful)
 
-        allow(Stripe::PaymentIntentValidator).to receive_message_chain(:new, :call)
-          .and_return(double(status: "requires_capture"))
+        allow(Stripe::PaymentIntentValidator).to(receive_message_chain(:new, :call)
+          .and_return(double(status: "requires_capture")))
 
         response = subject.purchase(order.total, credit_card, gateway_options)
 
-        expect(response.success?).to eq true
+        expect(response.success?).to(eq(true))
       end
 
       it "does not succeed if payment intent state is not requires_capture" do
-        allow(Stripe::PaymentIntentValidator).to receive_message_chain(:new, :call)
-          .and_return(double(status: "not_ready_yet"))
+        allow(Stripe::PaymentIntentValidator).to(receive_message_chain(:new, :call)
+          .and_return(double(status: "not_ready_yet")))
 
         response = subject.purchase(order.total, credit_card, gateway_options)
 
-        expect(response.success?).to eq false
-        expect(response.message).to eq "Invalid payment state: not_ready_yet"
+        expect(response.success?).to(eq(false))
+        expect(response.message).to(eq("Invalid payment state: not_ready_yet"))
       end
     end
   end

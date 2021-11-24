@@ -17,7 +17,7 @@ RSpec.configure do |config|
     if Webpacker.dev_server.running?
       next
     else
-      $stdout.puts "\n Precompiling assets.\n"
+      $stdout.puts("\n Precompiling assets.\n")
 
       Webpacker.compile
     end

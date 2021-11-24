@@ -58,7 +58,7 @@ distributor: distributor,
 
         rows = find("table#listing_orders").all("thead tr")
         table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-        expect(table).to eq(
+        expect(table).to(eq(
 [
                               [
 "Hub",
@@ -72,8 +72,8 @@ distributor: distributor,
 "TempControlled?"
 ].map(&:upcase)
                             ]
-)
-        expect(page).to have_selector 'table#listing_orders tbody tr', count: 5 # Totals row per order
+))
+        expect(page).to(have_selector('table#listing_orders tbody tr', count: 5)) # Totals row per order
       end
 
       it "sorts alphabetically" do
@@ -82,7 +82,7 @@ distributor: distributor,
 
         rows = find("table#listing_orders").all("tr")
         table = rows.map { |r| r.all("th,td").map { |c| c.text.strip }[3] }
-        expect(table).to eq(
+        expect(table).to(eq(
 [
                               "LAST NAME",
                               order2.bill_address.lastname,
@@ -91,7 +91,7 @@ distributor: distributor,
                               order1.bill_address.lastname,
                               ""
                             ]
-)
+))
       end
     end
 
@@ -104,7 +104,7 @@ distributor: distributor,
 
         rows = find("table#listing_orders").all("thead tr")
         table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-        expect(table).to eq(
+        expect(table).to(eq(
 [
                               [
 "Hub",
@@ -118,8 +118,8 @@ distributor: distributor,
 "TempControlled?"
 ].map(&:upcase)
                             ]
-)
-        expect(all('table#listing_orders tbody tr').count).to eq(4) # Totals row per supplier
+))
+        expect(all('table#listing_orders tbody tr').count).to(eq(4)) # Totals row per supplier
       end
     end
   end
@@ -164,8 +164,8 @@ distributor: distributor
 
           find("button[type='submit']").click
 
-          expect(page).to have_content li1.product.name
-          expect(page).to have_content li2.product.name
+          expect(page).to(have_content(li1.product.name))
+          expect(page).to(have_content(li2.product.name))
         end
       end
     end

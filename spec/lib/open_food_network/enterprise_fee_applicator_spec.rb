@@ -18,21 +18,21 @@ module OpenFoodNetwork
 
     describe "#create_line_item_adjustment" do
       it "creates an adjustment for a line item" do
-        allow(applicator).to receive(:line_item_adjustment_label) { 'label' }
-        applicator.create_line_item_adjustment line_item
+        allow(applicator).to(receive(:line_item_adjustment_label) { 'label' })
+        applicator.create_line_item_adjustment(line_item)
 
         adjustment = Spree::Adjustment.last
-        expect(adjustment.label).to eq('label')
-        expect(adjustment.adjustable).to eq(line_item)
-        expect(adjustment.originator).to eq(enterprise_fee)
-        expect(adjustment.tax_category).to eq(tax_category)
-        expect(adjustment).to be_mandatory
+        expect(adjustment.label).to(eq('label'))
+        expect(adjustment.adjustable).to(eq(line_item))
+        expect(adjustment.originator).to(eq(enterprise_fee))
+        expect(adjustment.tax_category).to(eq(tax_category))
+        expect(adjustment).to(be_mandatory)
 
         metadata = adjustment.metadata
-        expect(metadata.enterprise).to eq(enterprise_fee.enterprise)
-        expect(metadata.fee_name).to eq(enterprise_fee.name)
-        expect(metadata.fee_type).to eq(enterprise_fee.fee_type)
-        expect(metadata.enterprise_role).to eq('role')
+        expect(metadata.enterprise).to(eq(enterprise_fee.enterprise))
+        expect(metadata.fee_name).to(eq(enterprise_fee.name))
+        expect(metadata.fee_type).to(eq(enterprise_fee.fee_type))
+        expect(metadata.enterprise_role).to(eq('role'))
       end
     end
 
@@ -43,21 +43,21 @@ module OpenFoodNetwork
       let(:order) { line_item.order }
 
       it "creates an adjustment for an order" do
-        allow(applicator).to receive(:order_adjustment_label) { 'label' }
-        applicator.create_order_adjustment order
+        allow(applicator).to(receive(:order_adjustment_label) { 'label' })
+        applicator.create_order_adjustment(order)
 
         adjustment = Spree::Adjustment.last
-        expect(adjustment.label).to eq('label')
-        expect(adjustment.adjustable).to eq(order)
-        expect(adjustment.originator).to eq(enterprise_fee)
-        expect(adjustment.tax_category).to eq(tax_category)
-        expect(adjustment).to be_mandatory
+        expect(adjustment.label).to(eq('label'))
+        expect(adjustment.adjustable).to(eq(order))
+        expect(adjustment.originator).to(eq(enterprise_fee))
+        expect(adjustment.tax_category).to(eq(tax_category))
+        expect(adjustment).to(be_mandatory)
 
         metadata = adjustment.metadata
-        expect(metadata.enterprise).to eq(enterprise_fee.enterprise)
-        expect(metadata.fee_name).to eq(enterprise_fee.name)
-        expect(metadata.fee_type).to eq(enterprise_fee.fee_type)
-        expect(metadata.enterprise_role).to eq('role')
+        expect(metadata.enterprise).to(eq(enterprise_fee.enterprise))
+        expect(metadata.fee_name).to(eq(enterprise_fee.name))
+        expect(metadata.fee_type).to(eq(enterprise_fee.fee_type))
+        expect(metadata.enterprise_role).to(eq('role'))
       end
     end
 
@@ -70,21 +70,21 @@ fee_type: 'packing',
                  enterprise: double(:enterprise, name: 'Ballantyne')
 )
       end
-      let(:applicator) { EnterpriseFeeApplicator.new enterprise_fee, variant, 'distributor' }
+      let(:applicator) { EnterpriseFeeApplicator.new(enterprise_fee, variant, 'distributor') }
 
       describe "#line_item_adjustment_label" do
         it "makes an adjustment label for a line item" do
           expect(applicator.send(:line_item_adjustment_label))
-            .to eq("Bananas - packing fee by distributor Ballantyne")
+            .to(eq("Bananas - packing fee by distributor Ballantyne"))
         end
       end
 
       describe "#order_adjustment_label" do
-        let(:applicator) { EnterpriseFeeApplicator.new enterprise_fee, nil, 'distributor' }
+        let(:applicator) { EnterpriseFeeApplicator.new(enterprise_fee, nil, 'distributor') }
 
         it "makes an adjustment label for an order" do
           expect(applicator.send(:order_adjustment_label))
-            .to eq("Whole order - packing fee by distributor Ballantyne")
+            .to(eq("Whole order - packing fee by distributor Ballantyne"))
         end
       end
     end

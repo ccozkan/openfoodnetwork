@@ -11,7 +11,7 @@ feature "bulk coop" do
     select "Bulk Co-op Supplier Report", from: "report_report_type"
     click_button 'Generate Report'
 
-    expect(page).to have_table_row [
+    expect(page).to(have_table_row([
       "Supplier",
       "Product",
       "Bulk Unit Size",
@@ -23,7 +23,7 @@ feature "bulk coop" do
       "Units Required",
       "Unallocated",
       "Max Quantity Excess"
-    ]
+    ]))
   end
 
   scenario "generating Bulk Co-op Allocation report" do
@@ -31,7 +31,7 @@ feature "bulk coop" do
     select "Bulk Co-op Allocation", from: "report_report_type"
     click_button 'Generate Report'
 
-    expect(page).to have_table_row [
+    expect(page).to(have_table_row([
       "Customer",
       "Product",
       "Bulk Unit Size",
@@ -43,7 +43,7 @@ feature "bulk coop" do
       "Total available",
       "Unallocated",
       "Max Quantity Excess"
-    ]
+    ]))
   end
 
   scenario "generating Bulk Co-op Packing Sheets report" do
@@ -51,7 +51,7 @@ feature "bulk coop" do
     select "Bulk Co-op Packing Sheets", from: "report_report_type"
     click_button 'Generate Report'
 
-    expect(page).to have_table_row ["Customer", "Product", "Variant", "Sum Total"]
+    expect(page).to(have_table_row(["Customer", "Product", "Variant", "Sum Total"]))
   end
 
   scenario "generating Bulk Co-op Customer Payments report" do
@@ -59,12 +59,12 @@ feature "bulk coop" do
     select "Bulk Co-op Customer Payments", from: "report_report_type"
     click_button 'Generate Report'
 
-    expect(page).to have_table_row [
+    expect(page).to(have_table_row([
       "Customer",
       "Date of Order",
       "Total Cost",
       "Amount Owing",
       "Amount Paid"
-    ]
+    ]))
   end
 end

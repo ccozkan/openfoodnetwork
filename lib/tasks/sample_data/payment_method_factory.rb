@@ -9,7 +9,7 @@ module SampleData
     include Addressing
 
     def create_samples(enterprises)
-      log "Creating payment methods:"
+      log("Creating payment methods:")
       distributors = enterprises.select(&:is_distributor)
       distributors.each do |enterprise|
         create_payment_methods(enterprise)
@@ -21,7 +21,7 @@ module SampleData
     def create_payment_methods(enterprise)
       return if enterprise.payment_methods.present?
 
-      log "- #{enterprise.name}"
+      log("- #{enterprise.name}")
       create_cash_method(enterprise)
       create_card_method(enterprise)
     end

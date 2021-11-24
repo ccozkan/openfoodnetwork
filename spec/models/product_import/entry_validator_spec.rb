@@ -57,10 +57,10 @@ describe ProductImport::EntryValidator do
 
   describe "inventory validation" do
     before do
-      allow(entry_validator).to receive(:import_into_inventory?) { true }
-      allow(entry_validator).to receive(:enterprise_validation) {}
-      allow(entry_validator).to receive(:producer_validation) {}
-      allow(entry_validator).to receive(:variant_of_product_validation) {}
+      allow(entry_validator).to(receive(:import_into_inventory?) { true })
+      allow(entry_validator).to(receive(:enterprise_validation) {})
+      allow(entry_validator).to(receive(:producer_validation) {})
+      allow(entry_validator).to(receive(:variant_of_product_validation) {})
     end
 
     context "products exist" do
@@ -91,13 +91,13 @@ describe ProductImport::EntryValidator do
       it "validates a spreadsheet entry in g" do
         entries = [entry_g]
         entry_validator.validate_all(entries)
-        expect(entries.first.errors.count).to eq(0)
+        expect(entries.first.errors.count).to(eq(0))
       end
 
       it "validates a spreadsheet entry in kg" do
         entries = [entry_kg]
         entry_validator.validate_all(entries)
-        expect(entries.first.errors.count).to eq(0)
+        expect(entries.first.errors.count).to(eq(0))
       end
     end
 

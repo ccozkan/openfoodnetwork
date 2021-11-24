@@ -8,10 +8,10 @@ module ShopWorkflow
   end
 
   def wait_for_cart
-    within find_body do
+    within(find_body) do
       # We ignore visibility in case the cart dropdown is not open.
-      within '.cart-sidebar', visible: false do
-        expect(page).to_not have_link "Updating cart...", visible: false
+      within('.cart-sidebar', visible: false) do
+        expect(page).to_not(have_link("Updating cart...", visible: false))
       end
     end
   end
@@ -19,14 +19,14 @@ module ShopWorkflow
   def edit_cart
     wait_for_cart
     toggle_cart
-    within '.cart-sidebar' do
-      expect(page).to have_link I18n.t('shared.menu.cart_sidebar.edit_cart')
+    within('.cart-sidebar') do
+      expect(page).to(have_link(I18n.t('shared.menu.cart_sidebar.edit_cart')))
     end
     first("a.edit-cart").click
   end
 
   def have_price(price)
-    have_selector ".variant-price", text: price
+    have_selector(".variant-price", text: price)
   end
 
   def add_enterprise_fee(enterprise_fee)
@@ -34,9 +34,9 @@ module ShopWorkflow
   end
 
   def set_order(order)
-    allow_any_instance_of(ApplicationController).to receive(:session).and_return(
+    allow_any_instance_of(ApplicationController).to(receive(:session).and_return(
       order_id: order.id, access_token: order.token
-    )
+    ))
   end
 
   def add_product_to_cart(order, product, quantity: 1)
@@ -50,22 +50,22 @@ module ShopWorkflow
   # Add an item to the cart
   def click_add_to_cart(variant = nil, quantity = 1)
     within_variant(variant) do
-      click_button "Add"
-      (quantity - 1).times { click_button increase_quantity_symbol }
+      click_button("Add")
+      (quantity - 1).times { click_button(increase_quantity_symbol) }
     end
     wait_for_cart
   end
 
   def click_remove_from_cart(variant = nil, quantity = 1)
     within_variant(variant) do
-      quantity.times { click_button decrease_quantity_symbol }
+      quantity.times { click_button(decrease_quantity_symbol) }
     end
     wait_for_cart
   end
 
   def click_add_bulk_to_cart(variant = nil, quantity = 1)
     within_variant(variant) do
-      click_button "Add"
+      click_button("Add")
     end
     within(".reveal-modal") do
       (quantity - 1).times do
@@ -86,7 +86,7 @@ module ShopWorkflow
 
   def within_variant(variant = nil, &block)
     selector = variant ? "#variant-#{variant.id}" : ".variants"
-    expect(page).to have_selector selector
+    expect(page).to(have_selector(selector))
     within(selector, &block)
   end
 

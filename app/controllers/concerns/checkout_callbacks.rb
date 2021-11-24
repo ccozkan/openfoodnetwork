@@ -65,11 +65,11 @@ c.states.map do |s|
   def redirect_to_cart_path
     respond_to do |format|
       format.html do
-        redirect_to main_app.cart_path
+        redirect_to(main_app.cart_path)
       end
 
       format.json do
-        render json: { path: main_app.cart_path }, status: :bad_request
+        render(json: { path: main_app.cart_path }, status: :bad_request)
       end
     end
   end
@@ -81,11 +81,11 @@ c.states.map do |s|
   end
 
   def ensure_order_not_completed
-    redirect_to main_app.cart_path if @order.completed?
+    redirect_to(main_app.cart_path) if @order.completed?
   end
 
   def ensure_checkout_allowed
-    redirect_to main_app.cart_path unless @order.checkout_allowed?
+    redirect_to(main_app.cart_path) unless @order.checkout_allowed?
   end
 
   def check_authorization

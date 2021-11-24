@@ -18,7 +18,7 @@ module OpenFoodNetwork
     def visible_enterprises
       return Enterprise.where("1=0") if @coordinator.blank?
 
-      if managed_enterprise_ids.include? @coordinator.id
+      if managed_enterprise_ids.include?(@coordinator.id)
         coordinator_permitted_ids = [@coordinator]
         all_active_ids = []
 
@@ -290,7 +290,7 @@ module OpenFoodNetwork
 
     def order_cycle_exchange_ids_involving_my_enterprises
       # Any exchanges that my managed enterprises are involved in directly
-      @order_cycle.exchanges.involving(managed_enterprise_ids).pluck :id
+      @order_cycle.exchanges.involving(managed_enterprise_ids).pluck(:id)
     end
 
     def order_cycle_exchange_ids_with_distributable_variants
@@ -303,7 +303,7 @@ module OpenFoodNetwork
                                                   scope: Enterprise.is_primary_producer
 )
       permitted_exchange_ids = @order_cycle
-        .exchanges.incoming.where(sender_id: producer_ids).pluck :id
+        .exchanges.incoming.where(sender_id: producer_ids).pluck(:id)
 
       # TODO: remove active_exchanges when we think it is safe to do so
       # active_exchanges is for backward compatability, before we restricted variants in each
@@ -323,21 +323,21 @@ module OpenFoodNetwork
       producer_ids = Enterprise.joins(:supplied_products)
         .where(spree_products: { id: product_ids }).pluck(:id).uniq
 
-      active_exchange_ids = @order_cycle.exchanges.incoming.where(sender_id: producer_ids).pluck :id
+      active_exchange_ids = @order_cycle.exchanges.incoming.where(sender_id: producer_ids).pluck(:id)
 
       permitted_exchange_ids | active_exchange_ids
     end
 
     def order_cycle_exchange_ids_distributing_my_variants
       # Find my producers in this order cycle
-      producer_ids = managed_participating_producers.pluck :id
+      producer_ids = managed_participating_producers.pluck(:id)
       # Outgoing exchanges with distributor that has been granted P-OC by 1 or more of the producers
       hub_ids = related_enterprises_granted(
 :add_to_order_cycle,
                                             by: producer_ids,
                                             scope: Enterprise.is_hub
 )
-      permitted_exchange_ids = @order_cycle.exchanges.outgoing.where(receiver_id: hub_ids).pluck :id
+      permitted_exchange_ids = @order_cycle.exchanges.outgoing.where(receiver_id: hub_ids).pluck(:id)
 
       # TODO: remove active_exchanges when we think it is safe to do so
       # active_exchanges is for backward compatability, before we restricted variants in each
@@ -345,7 +345,7 @@ module OpenFoodNetwork
       # For any of my managed producers, any outgoing exchanges with their variants
       variants = variants_from_suppliers(producer_ids)
       active_exchange_ids = @order_cycle
-        .exchanges.outgoing.with_any_variant(variants.select("spree_variants.id")).pluck :id
+        .exchanges.outgoing.with_any_variant(variants.select("spree_variants.id")).pluck(:id)
 
       permitted_exchange_ids | active_exchange_ids
     end

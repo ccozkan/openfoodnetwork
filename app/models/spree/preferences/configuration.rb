@@ -37,7 +37,7 @@ module Spree
 
       def reset
         preferences.each do |name, _value|
-          set_preference name, preference_default(name)
+          set_preference(name, preference_default(name))
         end
       end
 
@@ -49,21 +49,21 @@ module Spree
       def set(*args)
         options = args.extract_options!
         options.each do |name, value|
-          set_preference name, value
+          set_preference(name, value)
         end
 
         return unless args.size == 2
 
-        set_preference args[0], args[1]
+        set_preference(args[0], args[1])
       end
 
       def method_missing(method, *args)
         name = method.to_s.gsub('=', '')
-        if has_preference? name
+        if has_preference?(name)
           if method.to_s =~ /=$/
             set_preference(name, args.first)
           else
-            get_preference name
+            get_preference(name)
           end
         else
           super

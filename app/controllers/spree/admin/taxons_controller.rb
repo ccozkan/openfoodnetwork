@@ -10,13 +10,13 @@ module Spree
         @taxon = @taxonomy.taxons.build(params[:taxon])
         if @taxon.save
           respond_with(@taxon) do |format|
-            format.json { render json: @taxon.to_json }
+            format.json { render(json: @taxon.to_json) }
           end
         else
           flash[:error] = Spree.t('errors.messages.could_not_create_taxon')
           respond_with(@taxon) do |format|
             format.html do
-              if redirect_to @taxonomy
+              if redirect_to(@taxonomy)
                 spree.edit_admin_taxonomy_url(@taxonomy)
               else
                 spree.admin_taxonomies_url
@@ -78,7 +78,7 @@ module Spree
           end
         end
 
-        if params.key? "permalink_part"
+        if params.key?("permalink_part")
           parent_permalink = @taxon.permalink.split("/")[0...-1].join("/")
           parent_permalink += "/" if parent_permalink.present?
           params[:taxon][:permalink] = parent_permalink + params[:permalink_part]
@@ -102,15 +102,15 @@ module Spree
         end
 
         respond_with(@taxon) do |format|
-          format.html { redirect_to spree.edit_admin_taxonomy_url(@taxonomy) }
-          format.json { render json: @taxon.to_json }
+          format.html { redirect_to(spree.edit_admin_taxonomy_url(@taxonomy)) }
+          format.json { render(json: @taxon.to_json) }
         end
       end
 
       def destroy
         @taxon = Taxon.find(params[:id])
         @taxon.destroy
-        respond_with(@taxon) { |format| format.json { render json: '' } }
+        respond_with(@taxon) { |format| format.json { render(json: '') } }
       end
 
       private

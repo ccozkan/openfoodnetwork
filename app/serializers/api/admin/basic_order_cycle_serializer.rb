@@ -11,7 +11,7 @@ module Api
       has_many :distributors, serializer: Api::Admin::IdNameSerializer
 
       def status
-        order_cycle_status_class object
+        order_cycle_status_class(object)
       end
 
       def orders_open_at

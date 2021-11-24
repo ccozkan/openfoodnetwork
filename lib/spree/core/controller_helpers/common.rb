@@ -41,12 +41,12 @@ module Spree
           def render_404(_exception = nil)
             respond_to do |type|
               type.html do
-                render status: :not_found,
+                render(status: :not_found,
                        file: Rails.root.join("public/404.html"),
                        formats: [:html],
-                       layout: nil
+                       layout: nil)
               end
-              type.all { render status: :not_found, body: nil }
+              type.all { render(status: :not_found, body: nil) }
             end
           end
 

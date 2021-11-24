@@ -19,7 +19,7 @@ describe ' As a Super User I want to setup users to manage an enterprise ' do
   describe "creating an enterprise user" do
     context "with a limitted number of owned enterprises" do
       it "setting the enterprise ownership limit" do
-        expect(user.enterprise_limit).to eq 5
+        expect(user.enterprise_limit).to(eq(5))
         login_as_admin_and_visit spree.admin_users_path
         click_link user.email
 
@@ -27,7 +27,7 @@ describe ' As a Super User I want to setup users to manage an enterprise ' do
 
         click_button 'Update'
         user.reload
-        expect(user.enterprise_limit).to eq 2
+        expect(user.enterprise_limit).to(eq(2))
       end
     end
   end
@@ -40,12 +40,12 @@ describe ' As a Super User I want to setup users to manage an enterprise ' do
 
     it "should not be able to see system configuration" do
       visit spree.edit_admin_general_settings_path
-      expect(page).to have_content 'Unauthorized'
+      expect(page).to(have_content('Unauthorized'))
     end
 
     it "should not be able to see user management" do
       visit spree.admin_users_path
-      expect(page).to have_content 'Unauthorized'
+      expect(page).to(have_content('Unauthorized'))
     end
   end
 end

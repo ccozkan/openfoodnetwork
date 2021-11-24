@@ -9,8 +9,8 @@ module OpenFoodNetwork
 
     def scope(variant)
       variant.extend(OpenFoodNetwork::ScopeVariantToHub::ScopeVariantToHub)
-      variant.instance_variable_set :@hub, @hub
-      variant.instance_variable_set :@variant_override, @variant_overrides[variant]
+      variant.instance_variable_set(:@hub, @hub)
+      variant.instance_variable_set(:@variant_override, @variant_overrides[variant])
     end
 
     module ScopeVariantToHub
@@ -49,7 +49,7 @@ module OpenFoodNetwork
         return if @variant_override&.on_demand
 
         if @variant_override&.stock_overridden?
-          @variant_override.move_stock! quantity
+          @variant_override.move_stock!(quantity)
         else
           super
         end

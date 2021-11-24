@@ -14,8 +14,8 @@ module PermittedAttributes
       it "keeps permitted and removes not permitted" do
         permitted_attributes = oc_permitted_attributes.call
 
-        expect(permitted_attributes[:id]).to be nil
-        expect(permitted_attributes[:name]).to eq "First Order Cycle"
+        expect(permitted_attributes[:id]).to(be(nil))
+        expect(permitted_attributes[:name]).to(eq("First Order Cycle"))
       end
     end
 
@@ -38,8 +38,8 @@ variants: []
         permitted_attributes = oc_permitted_attributes.call
 
         exchange = permitted_attributes[:incoming_exchanges].first
-        expect(exchange[:name]).to be nil
-        expect(exchange[:sender_id]).to eq "2"
+        expect(exchange[:name]).to(be(nil))
+        expect(exchange[:sender_id]).to(eq("2"))
       end
     end
 
@@ -63,8 +63,8 @@ variants: {
         permitted_attributes = oc_permitted_attributes.call
 
         exchange_variants = permitted_attributes[:incoming_exchanges].first[:variants]
-        expect(exchange_variants["7"]).to be true
-        expect(exchange_variants["12"]).to be true
+        expect(exchange_variants["7"]).to(be(true))
+        expect(exchange_variants["12"]).to(be(true))
       end
     end
   end

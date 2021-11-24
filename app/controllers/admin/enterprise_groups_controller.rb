@@ -14,7 +14,7 @@ module Admin
         @enterprise_group = find_resource
         @enterprise_group.move_higher
       end
-      redirect_to main_app.admin_enterprise_groups_path
+      redirect_to(main_app.admin_enterprise_groups_path)
     end
 
     def move_down
@@ -22,7 +22,7 @@ module Admin
         @enterprise_group = find_resource
         @enterprise_group.move_lower
       end
-      redirect_to main_app.admin_enterprise_groups_path
+      redirect_to(main_app.admin_enterprise_groups_path)
     end
 
     protected

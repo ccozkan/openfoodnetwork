@@ -25,8 +25,8 @@ class OrderCycle < ApplicationRecord
 
   # These scope names are prepended with "cached_" because there are existing accessor methods
   # :incoming_exchanges and :outgoing_exchanges.
-  has_many :cached_incoming_exchanges, -> { where incoming: true }, class_name: "Exchange"
-  has_many :cached_outgoing_exchanges, -> { where incoming: false }, class_name: "Exchange"
+  has_many :cached_incoming_exchanges, -> { where(incoming: true) }, class_name: "Exchange"
+  has_many :cached_outgoing_exchanges, -> { where(incoming: false) }, class_name: "Exchange"
 
   has_many :suppliers, -> { distinct }, source: :sender, through: :cached_incoming_exchanges
   has_many :distributors, -> { distinct }, source: :receiver, through: :cached_outgoing_exchanges
@@ -217,11 +217,11 @@ lambda { |user|
   end
 
   def has_distributor?(distributor)
-    distributors.include? distributor
+    distributors.include?(distributor)
   end
 
   def has_variant?(variant)
-    variants.include? variant
+    variants.include?(variant)
   end
 
   def dated?
@@ -275,7 +275,7 @@ lambda { |user|
   end
 
   def coordinated_by?(user)
-    coordinator.users.include? user
+    coordinator.users.include?(user)
   end
 
   def items_bought_by_user(user, distributor)

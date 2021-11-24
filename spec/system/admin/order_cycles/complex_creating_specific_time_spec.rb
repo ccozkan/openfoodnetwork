@@ -61,11 +61,11 @@ child: distributor,
     click_button "Continue >"
 
     # I cannot save before filling in the required fields
-    expect(page).to have_button("Create", disabled: true)
+    expect(page).to(have_button("Create", disabled: true))
 
     # The Create button is enabled once Name is entered
     fill_in 'order_cycle_name', with: 'Plums & Avos'
-    expect(page).to have_button("Create", disabled: false)
+    expect(page).to(have_button("Create", disabled: false))
 
     # If I fill in the basic fields
     find('#order_cycle_orders_open_at').click
@@ -95,11 +95,11 @@ child: distributor,
     select 'Coord fee', from: 'order_cycle_coordinator_fee_0_id'
 
     click_button 'Create'
-    expect(page).to have_content 'Your order cycle has been created.'
+    expect(page).to(have_content('Your order cycle has been created.'))
 
     # I should not be able to add a blank supplier
-    expect(page).to have_select 'new_supplier_id', selected: ''
-    expect(page).to have_button 'Add supplier', disabled: true
+    expect(page).to(have_select('new_supplier_id', selected: ''))
+    expect(page).to(have_button('Add supplier', disabled: true))
 
     # And I add a supplier and some products
     select 'My supplier', from: 'new_supplier_id'
@@ -110,9 +110,9 @@ child: distributor,
     check "order_cycle_incoming_exchange_0_variants_#{v2.id}"
 
     # I should not be able to re-add the supplier
-    expect(page).not_to have_select 'new_supplier_id', with_options: ['My supplier']
-    expect(page).to have_button 'Add supplier', disabled: true
-    expect(page.all("td.supplier_name").map(&:text)).to eq(['My supplier'])
+    expect(page).not_to(have_select('new_supplier_id', with_options: ['My supplier']))
+    expect(page).to(have_button('Add supplier', disabled: true))
+    expect(page.all("td.supplier_name").map(&:text)).to(eq(['My supplier']))
 
     # And I add a supplier fee
     within("tr.supplier-#{supplier.id}") { click_button 'Add fee' }
@@ -135,7 +135,7 @@ child: distributor,
 
     page.find('table.exchanges tr.distributor td.tags').click
     within ".exchange-tags" do
-      find(:css, "tags-input .tags input").set "wholesale\n"
+      find(:css, "tags-input .tags input").set("wholesale\n")
     end
 
     # And I add a distributor fee
@@ -149,34 +149,34 @@ child: distributor,
     oc = OrderCycle.last
     toggle_columns "Producers", "Shops"
 
-    expect(page).to have_input "oc#{oc.id}[name]", value: "Plums & Avos"
-    expect(page).to have_input "oc#{oc.id}[orders_open_at]",
+    expect(page).to(have_input("oc#{oc.id}[name]", value: "Plums & Avos"))
+    expect(page).to(have_input("oc#{oc.id}[orders_open_at]",
                                value: Time.zone.at(order_cycle_opening_time),
-visible: false
-    expect(page).to have_input "oc#{oc.id}[orders_close_at]",
+visible: false))
+    expect(page).to(have_input("oc#{oc.id}[orders_close_at]",
                                value: Time.zone.at(order_cycle_closing_time),
-visible: false
-    expect(page).to have_content "My coordinator"
+visible: false))
+    expect(page).to(have_content("My coordinator"))
 
-    expect(page).to have_selector 'td.producers', text: 'My supplier'
-    expect(page).to have_selector 'td.shops', text: 'My distributor'
+    expect(page).to(have_selector('td.producers', text: 'My supplier'))
+    expect(page).to(have_selector('td.shops', text: 'My distributor'))
 
     # And it should have some fees
-    expect(oc.exchanges.incoming.first.enterprise_fees).to eq([supplier_fee])
-    expect(oc.coordinator_fees).to                         eq([coordinator_fee])
-    expect(oc.exchanges.outgoing.first.enterprise_fees).to eq([distributor_fee])
+    expect(oc.exchanges.incoming.first.enterprise_fees).to(eq([supplier_fee]))
+    expect(oc.coordinator_fees).to(                        eq([coordinator_fee]))
+    expect(oc.exchanges.outgoing.first.enterprise_fees).to(eq([distributor_fee]))
 
     # And it should have some variants selected
-    expect(oc.exchanges.first.variants.count).to eq(2)
-    expect(oc.exchanges.last.variants.count).to eq(2)
+    expect(oc.exchanges.first.variants.count).to(eq(2))
+    expect(oc.exchanges.last.variants.count).to(eq(2))
 
     # And my receival and pickup time and instructions should have been saved
     exchange = oc.exchanges.incoming.first
-    expect(exchange.receival_instructions).to eq('receival instructions')
+    expect(exchange.receival_instructions).to(eq('receival instructions'))
 
     exchange = oc.exchanges.outgoing.first
-    expect(exchange.pickup_time).to eq('pickup time')
-    expect(exchange.pickup_instructions).to eq('pickup instructions')
-    expect(exchange.tag_list).to eq(['wholesale'])
+    expect(exchange.pickup_time).to(eq('pickup time'))
+    expect(exchange.pickup_instructions).to(eq('pickup instructions'))
+    expect(exchange.tag_list).to(eq(['wholesale']))
   end
 end

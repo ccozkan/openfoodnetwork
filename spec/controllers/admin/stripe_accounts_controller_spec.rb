@@ -11,13 +11,13 @@ describe Admin::StripeAccountsController, type: :controller do
 
   describe "#connect" do
     before do
-      allow(controller).to receive(:spree_current_user) { enterprise.owner }
+      allow(controller).to(receive(:spree_current_user) { enterprise.owner })
     end
 
     it "redirects to Stripe Authorization url constructed OAuth" do
       get :connect, params: { enterprise_id: 1 } # A deterministic id results in a deterministic state JWT token
 
-      expect(response).to redirect_to("https://connect.stripe.com/oauth/authorize?state=eyJhbGciOiJIUzI1NiJ9.eyJlbnRlcnByaXNlX2lkIjoiMSJ9.jSSFGn0bLhwuiQYK5ORmHWW7aay1l030bcfGwn1JbFg&scope=read_write&client_id=some_id&response_type=code")
+      expect(response).to(redirect_to("https://connect.stripe.com/oauth/authorize?state=eyJhbGciOiJIUzI1NiJ9.eyJlbnRlcnByaXNlX2lkIjoiMSJ9.jSSFGn0bLhwuiQYK5ORmHWW7aay1l030bcfGwn1JbFg&scope=read_write&client_id=some_id&response_type=code"))
     end
   end
 
@@ -35,41 +35,41 @@ describe Admin::StripeAccountsController, type: :controller do
 
       before do
         # So that we can stub #deauthorize_and_destroy
-        allow(StripeAccount).to receive(:find) { stripe_account }
+        allow(StripeAccount).to(receive(:find) { stripe_account })
         params[:id] = stripe_account.id
       end
 
       context "when I don't manage the enterprise linked to the stripe account" do
         let(:some_user) { create(:user) }
 
-        before { allow(controller).to receive(:spree_current_user) { some_user } }
+        before { allow(controller).to(receive(:spree_current_user) { some_user }) }
 
         it "redirects to unauthorized" do
           spree_delete :destroy, params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
       context "when I manage the enterprise linked to the stripe account" do
-        before { allow(controller).to receive(:spree_current_user) { enterprise.owner } }
+        before { allow(controller).to(receive(:spree_current_user) { enterprise.owner }) }
 
         context "and the attempt to deauthorize_and_destroy succeeds" do
-          before { allow(stripe_account).to receive(:deauthorize_and_destroy) { stripe_account } }
+          before { allow(stripe_account).to(receive(:deauthorize_and_destroy) { stripe_account }) }
 
           it "redirects to unauthorized" do
             spree_delete :destroy, params
-            expect(response).to redirect_to edit_admin_enterprise_path(enterprise)
-            expect(flash[:success]).to eq "Stripe account disconnected."
+            expect(response).to(redirect_to(edit_admin_enterprise_path(enterprise)))
+            expect(flash[:success]).to(eq("Stripe account disconnected."))
           end
         end
 
         context "and the attempt to deauthorize_and_destroy fails" do
-          before { allow(stripe_account).to receive(:deauthorize_and_destroy) { false } }
+          before { allow(stripe_account).to(receive(:deauthorize_and_destroy) { false }) }
 
           it "redirects to unauthorized" do
             spree_delete :destroy, params
-            expect(response).to redirect_to edit_admin_enterprise_path(enterprise)
-            expect(flash[:error]).to eq "Failed to disconnect Stripe."
+            expect(response).to(redirect_to(edit_admin_enterprise_path(enterprise)))
+            expect(flash[:error]).to(eq("Failed to disconnect Stripe."))
           end
         end
       end
@@ -94,25 +94,25 @@ describe Admin::StripeAccountsController, type: :controller do
       let(:user) { create(:user) }
 
       before do
-        allow(controller).to receive(:spree_current_user) { user }
+        allow(controller).to(receive(:spree_current_user) { user })
       end
 
       it "redirects to unauthorized" do
         get :status, params: params
-        expect(response).to redirect_to unauthorized_path
+        expect(response).to(redirect_to(unauthorized_path))
       end
     end
 
     context "when I manage the specified enterprise" do
       before do
-        allow(controller).to receive(:spree_current_user) { enterprise.owner }
+        allow(controller).to(receive(:spree_current_user) { enterprise.owner })
       end
 
       context "when Stripe is not enabled" do
         it "returns with a status of 'stripe_disabled'" do
           get :status, params: params
           json_response = JSON.parse(response.body)
-          expect(json_response["status"]).to eq "stripe_disabled"
+          expect(json_response["status"]).to(eq("stripe_disabled"))
         end
       end
 
@@ -123,7 +123,7 @@ describe Admin::StripeAccountsController, type: :controller do
           it "returns with a status of 'account_missing'" do
             get :status, params: params
             json_response = JSON.parse(response.body)
-            expect(json_response["status"]).to eq "account_missing"
+            expect(json_response["status"]).to(eq("account_missing"))
           end
         end
 
@@ -143,7 +143,7 @@ describe Admin::StripeAccountsController, type: :controller do
             it "returns with a status of 'access_revoked'" do
               get :status, params: params
               json_response = JSON.parse(response.body)
-              expect(json_response["status"]).to eq "access_revoked"
+              expect(json_response["status"]).to(eq("access_revoked"))
             end
           end
 
@@ -167,11 +167,11 @@ describe Admin::StripeAccountsController, type: :controller do
             it "returns with a status of 'connected'" do
               get :status, params: params
               json_response = JSON.parse(response.body)
-              expect(json_response["status"]).to eq "connected"
+              expect(json_response["status"]).to(eq("connected"))
               # serializes required attrs
-              expect(json_response["business_name"]).to eq "My Org"
+              expect(json_response["business_name"]).to(eq("My Org"))
               # ignores other attrs
-              expect(json_response["some_other_attr"]).to be nil
+              expect(json_response["some_other_attr"]).to(be(nil))
             end
           end
         end

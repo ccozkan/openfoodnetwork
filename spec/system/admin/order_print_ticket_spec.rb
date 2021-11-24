@@ -62,7 +62,7 @@ order.number,
               taxes_in_print_data,
               display_checkout_total_less_tax(order).format(with_currency: false)
             ]
-            expect(print_data.join).to include(*elements_in_print_data.flatten)
+            expect(print_data.join).to(include(*elements_in_print_data.flatten))
           end
         end
       end

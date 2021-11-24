@@ -92,7 +92,7 @@ options[:label],
         name = options[:name] || I18n.t(:delete)
         options[:class] = "delete-resource"
         options[:data] = { confirm: I18n.t(:are_you_sure), action: 'remove' }
-        link_to_with_icon 'icon-trash', name, url, options
+        link_to_with_icon('icon-trash', name, url, options)
       end
 
       def link_to_with_icon(icon_name, text, url, options = {})

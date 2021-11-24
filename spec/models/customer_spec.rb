@@ -10,13 +10,13 @@ describe Customer, type: :model do
       code = "code one"
       customer.code = code
       customer.save
-      expect(customer.code).to eq code
+      expect(customer.code).to(eq(code))
     end
 
     it "can remove its code" do
       customer.code = ""
       customer.save
-      expect(customer.code).to be nil
+      expect(customer.code).to(be(nil))
     end
   end
 
@@ -24,7 +24,7 @@ describe Customer, type: :model do
     let(:customer) { create(:customer) }
 
     it 'updates the shipping address' do
-      expect(customer.shipping_address).to be_nil
+      expect(customer.shipping_address).to(be_nil)
 
       ship_address = {
 firstname: 'fname',
@@ -38,9 +38,9 @@ country_id: 1
 }
       customer.update!(ship_address_attributes: ship_address)
 
-      expect(customer.ship_address.city).to eq 'Melbourne'
-      expect(customer.ship_address.firstname).to eq 'fname'
-      expect(customer.ship_address.lastname).to eq 'lname'
+      expect(customer.ship_address.city).to(eq('Melbourne'))
+      expect(customer.ship_address.firstname).to(eq('fname'))
+      expect(customer.ship_address.lastname).to(eq('lname'))
     end
   end
 
@@ -54,23 +54,23 @@ country_id: 1
 enterprise: enterprise,
 email: 'some-email-not-associated-with-a-user@email.com'
 )
-      expect(c.user).to be_nil
+      expect(c.user).to(be_nil)
     end
 
     it "associates an existing user using email" do
       non_existing_email = 'some-email-not-associated-with-a-user@email.com'
       c1 = Customer.create(enterprise: enterprise, email: non_existing_email, user: user1)
-      expect(c1.user).to eq user1
-      expect(c1.email).to eq non_existing_email
-      expect(c1.email).to_not eq user1.email
+      expect(c1.user).to(eq(user1))
+      expect(c1.email).to(eq(non_existing_email))
+      expect(c1.email).to_not(eq(user1.email))
 
       c2 = Customer.create(enterprise: enterprise, email: user2.email)
-      expect(c2.user).to eq user2
+      expect(c2.user).to(eq(user2))
     end
 
     it "associates an existing user using email case-insensitive" do
       c = Customer.create(enterprise: enterprise, email: user2.email.upcase)
-      expect(c.user).to eq user2
+      expect(c.user).to(eq(user2))
     end
   end
 end

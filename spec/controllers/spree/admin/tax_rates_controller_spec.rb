@@ -32,60 +32,60 @@ zone: default_tax_zone
 
             it "updates the record" do
               expect do
-                spree_put :update, id: tax_rate.id, tax_rate: params
-              end.to_not change { Spree::TaxRate.with_deleted.count }
+                spree_put(:update, id: tax_rate.id, tax_rate: params)
+              end.to_not(change { Spree::TaxRate.with_deleted.count })
 
-              expect(response).to redirect_to spree.admin_tax_rates_url
-              expect(tax_rate.reload.name).to eq "Updated Rate"
-              expect(tax_rate.amount).to eq 0.1
+              expect(response).to(redirect_to(spree.admin_tax_rates_url))
+              expect(tax_rate.reload.name).to(eq("Updated Rate"))
+              expect(tax_rate.amount).to(eq(0.1))
             end
           end
 
           context "when the amount is changed" do
             it "duplicates the record and soft-deletes the duplicate" do
               expect do
-                spree_put :update,
+                spree_put(:update,
 id: tax_rate.id,
-                                   tax_rate: { name: "Changed Rate", amount: "0.5" }
-              end.to change { Spree::TaxRate.with_deleted.count }
-.by(1)
+                                   tax_rate: { name: "Changed Rate", amount: "0.5" })
+              end.to(change { Spree::TaxRate.with_deleted.count }
+.by(1))
 
-              expect(response).to redirect_to spree.admin_tax_rates_url
+              expect(response).to(redirect_to(spree.admin_tax_rates_url))
 
               deprecated_rate = tax_rate.reload
-              expect(deprecated_rate.name).to eq "Original Rate"
-              expect(deprecated_rate.amount).to eq 0.1
-              expect(deprecated_rate.deleted?).to be true
+              expect(deprecated_rate.name).to(eq("Original Rate"))
+              expect(deprecated_rate.amount).to(eq(0.1))
+              expect(deprecated_rate.deleted?).to(be(true))
 
               updated_rate = Spree::TaxRate.last
-              expect(updated_rate.name).to eq "Changed Rate"
-              expect(updated_rate.amount).to eq 0.5
-              expect(updated_rate.deleted?).to be false
+              expect(updated_rate.name).to(eq("Changed Rate"))
+              expect(updated_rate.amount).to(eq(0.5))
+              expect(updated_rate.deleted?).to(be(false))
             end
           end
 
           context "when included_in_price is changed" do
             it "duplicates the record and soft-deletes the duplicate" do
               expect do
-                spree_put :update,
+                spree_put(:update,
 id: tax_rate.id,
-                                   tax_rate: { name: "Changed Rate", included_in_price: "1" }
-              end.to change { Spree::TaxRate.with_deleted.count }
-.by(1)
+                                   tax_rate: { name: "Changed Rate", included_in_price: "1" })
+              end.to(change { Spree::TaxRate.with_deleted.count }
+.by(1))
 
-              expect(response).to redirect_to spree.admin_tax_rates_url
+              expect(response).to(redirect_to(spree.admin_tax_rates_url))
 
               deprecated_rate = tax_rate.reload
-              expect(deprecated_rate.name).to eq "Original Rate"
-              expect(deprecated_rate.amount).to eq 0.1
-              expect(deprecated_rate.included_in_price).to be false
-              expect(deprecated_rate.deleted?).to be true
+              expect(deprecated_rate.name).to(eq("Original Rate"))
+              expect(deprecated_rate.amount).to(eq(0.1))
+              expect(deprecated_rate.included_in_price).to(be(false))
+              expect(deprecated_rate.deleted?).to(be(true))
 
               updated_rate = Spree::TaxRate.last
-              expect(updated_rate.name).to eq "Changed Rate"
-              expect(updated_rate.amount).to eq 0.1
-              expect(updated_rate.included_in_price).to be true
-              expect(updated_rate.deleted?).to be false
+              expect(updated_rate.name).to(eq("Changed Rate"))
+              expect(updated_rate.amount).to(eq(0.1))
+              expect(updated_rate.included_in_price).to(be(true))
+              expect(updated_rate.deleted?).to(be(false))
             end
           end
         end

@@ -14,7 +14,7 @@ describe Admin::SubscriptionsHelper, type: :helper do
 
     context "when a shop has no shipping methods present" do
       before { customer; payment_method; schedule }
-      it { expect(helper.subscriptions_setup_complete?([shop])).to be false }
+      it { expect(helper.subscriptions_setup_complete?([shop])).to(be(false)) }
     end
 
     context "when a shop has no Cash or Stripe payment methods present" do
@@ -22,17 +22,17 @@ describe Admin::SubscriptionsHelper, type: :helper do
         Spree::Gateway::PayPalExpress.create!(name: "PayPalExpress", distributor_ids: [shop.id])
       end
       before { customer; shipping_method; schedule }
-      it { expect(helper.subscriptions_setup_complete?([shop])).to be false }
+      it { expect(helper.subscriptions_setup_complete?([shop])).to(be(false)) }
     end
 
     context "when a shop has no customers present" do
       before { shipping_method; payment_method; schedule }
-      it { expect(helper.subscriptions_setup_complete?([shop])).to be false }
+      it { expect(helper.subscriptions_setup_complete?([shop])).to(be(false)) }
     end
 
     context "when a shop does not coordinate any schedules" do
       before { customer; shipping_method; payment_method; }
-      it { expect(helper.subscriptions_setup_complete?([shop])).to be false }
+      it { expect(helper.subscriptions_setup_complete?([shop])).to(be(false)) }
     end
 
     context "when a shop meets all requirements" do
@@ -40,15 +40,15 @@ describe Admin::SubscriptionsHelper, type: :helper do
       let(:some_other_shop) { create(:distributor_enterprise) }
 
       context "but it is not passed in" do
-        it { expect(helper.subscriptions_setup_complete?([some_other_shop])).to be false }
+        it { expect(helper.subscriptions_setup_complete?([some_other_shop])).to(be(false)) }
       end
 
       context "and it is passed in" do
-        it { expect(helper.subscriptions_setup_complete?([shop])).to be true }
+        it { expect(helper.subscriptions_setup_complete?([shop])).to(be(true)) }
       end
 
       context "and it is passed in with other shops that do not meet the requirements" do
-        it { expect(helper.subscriptions_setup_complete?([shop, some_other_shop])).to be true }
+        it { expect(helper.subscriptions_setup_complete?([shop, some_other_shop])).to(be(true)) }
       end
     end
   end

@@ -43,54 +43,54 @@ order_cycle: order_cycle1,
     end
 
     it "returns proxy orders that meet all of the criteria" do
-      expect(proxy_orders).to include proxy_order
+      expect(proxy_orders).to(include(proxy_order))
     end
 
     it "returns proxy orders for paused subscriptions" do
       subscription.update!(paused_at: 1.minute.ago)
-      expect(proxy_orders).to include proxy_order
+      expect(proxy_orders).to(include(proxy_order))
     end
 
     it "returns proxy orders for cancelled subscriptions" do
       subscription.update!(canceled_at: 1.minute.ago)
-      expect(proxy_orders).to include proxy_order
+      expect(proxy_orders).to(include(proxy_order))
     end
 
     it "ignores proxy orders where the OC closed more than 1 hour ago" do
       proxy_order.update!(order_cycle_id: order_cycle2.id)
-      expect(proxy_orders).to_not include proxy_order
+      expect(proxy_orders).to_not(include(proxy_order))
     end
 
     it "ignores cancelled proxy orders" do
       proxy_order.update!(canceled_at: 5.minutes.ago)
-      expect(proxy_orders).to_not include proxy_order
+      expect(proxy_orders).to_not(include(proxy_order))
     end
 
     it "ignores proxy orders without a completed order" do
       proxy_order.order.completed_at = nil
       proxy_order.order.save!
-      expect(proxy_orders).to_not include proxy_order
+      expect(proxy_orders).to_not(include(proxy_order))
     end
 
     it "ignores proxy orders without an associated order" do
       proxy_order.update!(order_id: nil)
-      expect(proxy_orders).to_not include proxy_order
+      expect(proxy_orders).to_not(include(proxy_order))
     end
 
     it "ignores proxy orders that haven't been placed yet" do
       proxy_order.update!(placed_at: nil)
-      expect(proxy_orders).to_not include proxy_order
+      expect(proxy_orders).to_not(include(proxy_order))
     end
 
     it "ignores proxy orders that have already been confirmed" do
       proxy_order.update!(confirmed_at: 1.second.ago)
-      expect(proxy_orders).to_not include proxy_order
+      expect(proxy_orders).to_not(include(proxy_order))
     end
 
     it "ignores orders that have been cancelled" do
       setup_email
       proxy_order.order.cancel!
-      expect(proxy_orders).to_not include proxy_order
+      expect(proxy_orders).to_not(include(proxy_order))
     end
   end
 
@@ -100,25 +100,25 @@ order_cycle: order_cycle1,
 
       before do
         proxy_order.initialise_order!
-        allow(job).to receive(:unconfirmed_proxy_orders) { ProxyOrder.where(id: proxy_order.id) }
-        allow(job).to receive(:confirm_order!)
-        allow(job).to receive(:send_confirmation_summary_emails)
+        allow(job).to(receive(:unconfirmed_proxy_orders) { ProxyOrder.where(id: proxy_order.id) })
+        allow(job).to(receive(:confirm_order!))
+        allow(job).to(receive(:send_confirmation_summary_emails))
       end
 
       it "marks confirmable proxy_orders as processed by setting confirmed_at" do
         expect { job.perform }
-.to change { proxy_order.reload.confirmed_at }
-        expect(proxy_order.confirmed_at).to be_within(5.seconds).of Time.zone.now
+.to(change { proxy_order.reload.confirmed_at })
+        expect(proxy_order.confirmed_at).to(be_within(5.seconds).of(Time.zone.now))
       end
 
       it "processes confirmable proxy_orders" do
         job.perform
-        expect(job).to have_received(:confirm_order!).with(proxy_order.reload.order)
+        expect(job).to(have_received(:confirm_order!).with(proxy_order.reload.order))
       end
 
       it "sends a summary email" do
         job.perform
-        expect(job).to have_received(:send_confirmation_summary_emails)
+        expect(job).to(have_received(:send_confirmation_summary_emails))
       end
     end
   end
@@ -140,8 +140,8 @@ order_cycle: order_cycle1,
 
     it "returns closed order cycles whose orders_close_at or updated_at date is within the last hour" do
       order_cycles = job.send(:recently_closed_order_cycles)
-      expect(order_cycles).to include order_cycle3, order_cycle4
-      expect(order_cycles).to_not include order_cycle1, order_cycle2, order_cycle5
+      expect(order_cycles).to(include(order_cycle3, order_cycle4))
+      expect(order_cycles).to_not(include(order_cycle1, order_cycle2, order_cycle5))
     end
   end
 
@@ -156,10 +156,10 @@ order_cycle: order_cycle1,
 
     before do
       OrderWorkflow.new(order).complete!
-      allow(job).to receive(:send_confirmation_email).and_call_original
-      allow(job).to receive(:send_payment_authorization_emails).and_call_original
+      allow(job).to(receive(:send_confirmation_email).and_call_original)
+      allow(job).to(receive(:send_payment_authorization_emails).and_call_original)
       setup_email
-      expect(job).to receive(:record_order)
+      expect(job).to(receive(:record_order))
     end
 
     context "when Stripe payments need to be processed" do
@@ -168,8 +168,8 @@ order_cycle: order_cycle1,
       end
 
       before do
-        allow(order).to receive(:payment_required?) { true }
-        expect(job).to receive(:setup_payment!) { true }
+        allow(order).to(receive(:payment_required?) { true })
+        expect(job).to(receive(:setup_payment!) { true })
         stub_request(:post, "https://api.stripe.com/v1/charges")
           .with(body: /amount/)
           .to_return(charge_response_mock)
@@ -183,23 +183,23 @@ order_cycle: order_cycle1,
         let(:provider) { double }
 
         before do
-          allow_any_instance_of(Stripe::CreditCardCloner).to receive(:find_or_clone) {
+          allow_any_instance_of(Stripe::CreditCardCloner).to(receive(:find_or_clone) {
                                                                ["cus_123", "pm_1234"]
-                                                             }
-          allow(order).to receive(:pending_payments) { [stripe_sca_payment] }
-          allow(stripe_sca_payment_method).to receive(:provider) { provider }
-          allow(stripe_sca_payment_method.provider).to receive(:purchase) { true }
-          allow(stripe_sca_payment_method.provider).to receive(:capture) { true }
+                                                             })
+          allow(order).to(receive(:pending_payments) { [stripe_sca_payment] })
+          allow(stripe_sca_payment_method).to(receive(:provider) { provider })
+          allow(stripe_sca_payment_method.provider).to(receive(:purchase) { true })
+          allow(stripe_sca_payment_method.provider).to(receive(:capture) { true })
         end
 
         it "runs the charges in offline mode" do
           job.send(:confirm_order!, order)
-          expect(stripe_sca_payment_method.provider).to have_received(:purchase)
+          expect(stripe_sca_payment_method.provider).to(have_received(:purchase))
         end
 
         it "uses #capture if the payment is already authorized" do
-          allow(stripe_sca_payment).to receive(:preauthorized?) { true }
-          expect(stripe_sca_payment_method.provider).to receive(:capture)
+          allow(stripe_sca_payment).to(receive(:preauthorized?) { true })
+          expect(stripe_sca_payment_method.provider).to(receive(:capture))
           job.send(:confirm_order!, order)
         end
       end
@@ -211,13 +211,13 @@ order_cycle: order_cycle1,
         end
 
         before do
-          allow(order).to receive(:pending_payments) { [stripe_connect_payment] }
-          allow(stripe_connect_payment_method).to receive(:purchase) { true }
+          allow(order).to(receive(:pending_payments) { [stripe_connect_payment] })
+          allow(stripe_connect_payment_method).to(receive(:purchase) { true })
         end
 
         it "runs the charges in offline mode" do
           job.send(:confirm_order!, order)
-          expect(stripe_connect_payment_method).to have_received(:purchase)
+          expect(stripe_connect_payment_method).to(have_received(:purchase))
         end
       end
     end
@@ -227,37 +227,37 @@ order_cycle: order_cycle1,
       let(:payment) { create(:payment, amount: 10) }
 
       before do
-        allow(order).to receive(:payment_required?) { true }
-        allow(order).to receive(:pending_payments) { [payment] }
+        allow(order).to(receive(:payment_required?) { true })
+        allow(order).to(receive(:pending_payments) { [payment] })
       end
 
       context "and an error is added to the order when updating payments" do
         before do
-          expect(job).to receive(:setup_payment!) { |order|
+          expect(job).to(receive(:setup_payment!) { |order|
                            order.errors.add(:base, "a payment error")
-                         }
+                         })
         end
 
         it "sends a failed payment email" do
-          expect(job).to receive(:send_failed_payment_email)
-          expect(job).to_not receive(:send_confirmation_email)
+          expect(job).to(receive(:send_failed_payment_email))
+          expect(job).to_not(receive(:send_confirmation_email))
           job.send(:confirm_order!, order)
         end
       end
 
       context "and no errors are added when updating payments" do
-        before { expect(job).to receive(:setup_payment!) { true } }
+        before { expect(job).to(receive(:setup_payment!) { true }) }
 
         context "when an error occurs while processing the payment" do
           before do
-            expect(payment).to receive(:process_offline!).and_raise Spree::Core::GatewayError,
-                                                                    "payment failure error"
+            expect(payment).to(receive(:process_offline!).and_raise(Spree::Core::GatewayError,
+                                                                    "payment failure error"))
           end
 
           it "sends a failed payment email" do
-            expect(job).to receive(:send_failed_payment_email)
-            expect(job).to_not receive(:send_confirmation_email)
-            expect(job).to_not receive(:send_payment_authorization_emails)
+            expect(job).to(receive(:send_failed_payment_email))
+            expect(job).to_not(receive(:send_confirmation_email))
+            expect(job).to_not(receive(:send_payment_authorization_emails))
             job.send(:confirm_order!, order)
           end
         end
@@ -268,15 +268,15 @@ order_cycle: order_cycle1,
           end
 
           before do
-            expect(payment).to receive(:process_offline!) { true }
-            expect(payment).to receive(:completed?) { true }
+            expect(payment).to(receive(:process_offline!) { true })
+            expect(payment).to(receive(:completed?) { true })
           end
 
           it "sends only a subscription confirm email, no regular confirmation emails" do
             expect { job.send(:confirm_order!, order) }
-              .to_not have_enqueued_mail(Spree::OrderMailer, :confirm_email_for_customer)
+              .to_not(have_enqueued_mail(Spree::OrderMailer, :confirm_email_for_customer))
 
-            expect(job).to have_received(:send_confirmation_email).once
+            expect(job).to(have_received(:send_confirmation_email).once)
           end
         end
       end
@@ -288,15 +288,15 @@ order_cycle: order_cycle1,
     let(:mail_mock) { double(:mailer_mock, deliver_now: true) }
 
     before do
-      allow(SubscriptionMailer).to receive(:confirmation_email) { mail_mock }
+      allow(SubscriptionMailer).to(receive(:confirmation_email) { mail_mock })
     end
 
     it "records a success and sends the email" do
-      expect(order).to receive(:update_order!)
-      expect(job).to receive(:record_success).with(order).once
+      expect(order).to(receive(:update_order!))
+      expect(job).to(receive(:record_success).with(order).once)
       job.send(:send_confirmation_email, order)
-      expect(SubscriptionMailer).to have_received(:confirmation_email).with(order)
-      expect(mail_mock).to have_received(:deliver_now)
+      expect(SubscriptionMailer).to(have_received(:confirmation_email).with(order))
+      expect(mail_mock).to(have_received(:deliver_now))
     end
   end
 
@@ -305,15 +305,15 @@ order_cycle: order_cycle1,
     let(:mail_mock) { double(:mailer_mock, deliver_now: true) }
 
     before do
-      allow(SubscriptionMailer).to receive(:failed_payment_email) { mail_mock }
+      allow(SubscriptionMailer).to(receive(:failed_payment_email) { mail_mock })
     end
 
     it "records and logs an error and sends the email" do
-      expect(order).to receive(:update_order!)
-      expect(job).to receive(:record_and_log_error).with(:failed_payment, order, nil).once
+      expect(order).to(receive(:update_order!))
+      expect(job).to(receive(:record_and_log_error).with(:failed_payment, order, nil).once)
       job.send(:send_failed_payment_email, order)
-      expect(SubscriptionMailer).to have_received(:failed_payment_email).with(order)
-      expect(mail_mock).to have_received(:deliver_now)
+      expect(SubscriptionMailer).to(have_received(:failed_payment_email).with(order))
+      expect(mail_mock).to(have_received(:deliver_now))
     end
   end
 end

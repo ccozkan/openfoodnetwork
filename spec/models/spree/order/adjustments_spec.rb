@@ -12,8 +12,8 @@ describe Spree::Order do
 
     context "#ship_total" do
       it "should return the correct amount" do
-        allow(order).to receive_message_chain :all_adjustments, shipping: adjustments
-        expect(order.ship_total).to eq 15
+        allow(order).to(receive_message_chain(:all_adjustments, shipping: adjustments))
+        expect(order.ship_total).to(eq(15))
       end
     end
   end
@@ -21,7 +21,7 @@ describe Spree::Order do
   context "line item adjustments" do
     before do
       @order = Spree::Order.create!
-      allow(@order).to receive_messages line_items: [line_item1, line_item2]
+      allow(@order).to(receive_messages(line_items: [line_item1, line_item2]))
     end
 
     let(:line_item1) { create(:line_item, order: @order) }
@@ -29,7 +29,7 @@ describe Spree::Order do
 
     context "when there are no line item adjustments" do
       it "should return nothing if line items have no adjustments" do
-        expect(@order.line_item_adjustments).to be_empty
+        expect(@order.line_item_adjustments).to(be_empty)
       end
     end
 
@@ -41,8 +41,8 @@ describe Spree::Order do
       end
 
       it "should return the adjustments for that line item" do
-        expect(@order.line_item_adjustments).to include @adj1
-        expect(@order.line_item_adjustments).to include @adj2
+        expect(@order.line_item_adjustments).to(include(@adj1))
+        expect(@order.line_item_adjustments).to(include(@adj2))
       end
     end
 
@@ -54,8 +54,8 @@ describe Spree::Order do
       end
 
       it "should return the adjustments for each line item" do
-        expect(@order.line_item_adjustments).to include @adj1
-        expect(@order.line_item_adjustments).to include @adj2
+        expect(@order.line_item_adjustments).to(include(@adj1))
+        expect(@order.line_item_adjustments).to(include(@adj2))
       end
     end
   end

@@ -19,24 +19,24 @@ module Api
         end
 
         @enterprise.update!(attachment_name => nil)
-        render json: @enterprise,
+        render(json: @enterprise,
                serializer: Admin::EnterpriseSerializer,
-               spree_current_user: spree_current_user
+               spree_current_user: spree_current_user)
       end
 
       protected
 
       def attachment_name
-        raise MissingImplementationError, "Method attachment_name should be defined"
+        raise(MissingImplementationError, "Method attachment_name should be defined")
       end
 
       def enterprise_authorize_action
-        raise MissingImplementationError, "Method enterprise_authorize_action should be defined"
+        raise(MissingImplementationError, "Method enterprise_authorize_action should be defined")
       end
 
       def load_enterprise
         @enterprise = Enterprise.find_by(permalink: params[:enterprise_id].to_s)
-        raise UnknownEnterpriseAuthorizationActionError if enterprise_authorize_action.blank?
+        raise(UnknownEnterpriseAuthorizationActionError) if enterprise_authorize_action.blank?
 
         authorize!(enterprise_authorize_action, @enterprise)
       end

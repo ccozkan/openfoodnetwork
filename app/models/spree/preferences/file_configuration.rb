@@ -5,30 +5,30 @@ module Spree
     class FileConfiguration < Configuration
       def self.preference(name, type, *args)
         if type == :file
-          super "#{name}_file_name",    :string,  *args
-          super "#{name}_content_type", :string,  *args
-          super "#{name}_file_size",    :integer, *args
-          super "#{name}_updated_at",   :string,  *args
+          super("#{name}_file_name",    :string,  *args)
+          super("#{name}_content_type", :string,  *args)
+          super("#{name}_file_size",    :integer, *args)
+          super("#{name}_updated_at",   :string,  *args)
 
         else
-          super name, type, *args
+          super(name, type, *args)
         end
       end
 
       def get_preference(key)
         if !has_preference?(key) && has_attachment?(key)
-          public_send key
+          public_send(key)
         else
-          super key
+          super(key)
         end
       end
       alias [] get_preference
 
       def preference_type(name)
-        if has_attachment? name
+        if has_attachment?(name)
           :file
         else
-          super name
+          super(name)
         end
       end
 

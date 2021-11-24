@@ -12,11 +12,11 @@ describe "Test Flatpickr", js: true do
       open_datepicker('#q_completed_at_gteq')
       # Looks for the close button and click it
       within(".flatpickr-calendar.open") do
-        expect(page).to have_selector '.shortcut-buttons-flatpickr-buttons'
+        expect(page).to(have_selector('.shortcut-buttons-flatpickr-buttons'))
         find("button", text: "CLOSE").click
       end
       # Should no more have opened flatpickr
-      expect(page).not_to have_selector '.flatpickr-calendar.open'
+      expect(page).not_to(have_selector('.flatpickr-calendar.open'))
     end
 
     it "opens the datepicker and sets date to today" do
@@ -31,7 +31,7 @@ describe "Test Flatpickr", js: true do
       open_datepicker('#q_completed_at_gteq')
       find("#admin-menu").click
       # Should no more have opened flatpickr
-      expect(page).not_to have_selector '.flatpickr-calendar.open'
+      expect(page).not_to(have_selector('.flatpickr-calendar.open'))
     end
   end
 
@@ -41,11 +41,11 @@ describe "Test Flatpickr", js: true do
     # Opens a datepicker
     find(field).click
     # Should have opened flatpickr
-    expect(page).to have_selector '.flatpickr-calendar.open'
+    expect(page).to(have_selector('.flatpickr-calendar.open'))
   end
 
   def check_fielddate(field, date)
     # Check the value is correct
-    expect(find(field, match: :first).value).to eq date.to_datetime.strftime("%Y-%m-%d")
+    expect(find(field, match: :first).value).to(eq(date.to_datetime.strftime("%Y-%m-%d")))
   end
 end

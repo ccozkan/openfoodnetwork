@@ -14,9 +14,9 @@ describe Checkout::PostCheckoutActions do
     let(:reset_order_service) { instance_double(OrderCompletionReset) }
 
     before do
-      expect(OrderCompletionReset).to receive(:new)
-        .with(controller, order).and_return(reset_order_service)
-      expect(reset_order_service).to receive(:call)
+      expect(OrderCompletionReset).to(receive(:new)
+        .with(controller, order).and_return(reset_order_service))
+      expect(reset_order_service).to(receive(:call))
     end
 
     it "resets the order" do
@@ -28,13 +28,13 @@ describe Checkout::PostCheckoutActions do
 
       it "does not set customer's terms_and_conditions to the current time if terms have not been accepted" do
         postCheckoutActions.success(controller, params, current_user)
-        expect(order.customer.terms_and_conditions_accepted_at).to be_nil
+        expect(order.customer.terms_and_conditions_accepted_at).to(be_nil)
       end
 
       it "sets customer's terms_and_conditions to the current time if terms have been accepted" do
         params = { order: { terms_and_conditions_accepted: true } }
         postCheckoutActions.success(controller, params, current_user)
-        expect(order.customer.terms_and_conditions_accepted_at).to_not be_nil
+        expect(order.customer.terms_and_conditions_accepted_at).to_not(be_nil)
       end
     end
 
@@ -42,20 +42,20 @@ describe Checkout::PostCheckoutActions do
       let(:user_default_address_setter) { instance_double(UserDefaultAddressSetter) }
 
       before do
-        expect(UserDefaultAddressSetter).to receive(:new)
-          .with(order, current_user).and_return(user_default_address_setter)
+        expect(UserDefaultAddressSetter).to(receive(:new)
+          .with(order, current_user).and_return(user_default_address_setter))
       end
 
       it "sets user default bill address is option selected in params" do
         params[:order][:default_bill_address] = true
-        expect(user_default_address_setter).to receive(:set_default_bill_address)
+        expect(user_default_address_setter).to(receive(:set_default_bill_address))
 
         postCheckoutActions.success(controller, params, current_user)
       end
 
       it "sets user default ship address is option selected in params" do
         params[:order][:default_ship_address] = true
-        expect(user_default_address_setter).to receive(:set_default_ship_address)
+        expect(user_default_address_setter).to(receive(:set_default_ship_address))
 
         postCheckoutActions.success(controller, params, current_user)
       end
@@ -66,14 +66,14 @@ describe Checkout::PostCheckoutActions do
     let(:restart_checkout_service) { instance_double(OrderCheckoutRestart) }
 
     it "restarts the checkout process" do
-      expect(OrderCheckoutRestart).to receive(:new).with(order).and_return(restart_checkout_service)
-      expect(restart_checkout_service).to receive(:call)
+      expect(OrderCheckoutRestart).to(receive(:new).with(order).and_return(restart_checkout_service))
+      expect(restart_checkout_service).to(receive(:call))
 
       postCheckoutActions.failure
     end
 
     it "fixes the ship address for collection orders with the distributor's address" do
-      expect(order.updater).to receive(:shipping_address_from_distributor)
+      expect(order.updater).to(receive(:shipping_address_from_distributor))
 
       postCheckoutActions.failure
     end

@@ -16,16 +16,16 @@ module OrderManagement
       it 'builds a package with all the items' do
         package = subject.package
 
-        expect(package.contents.size).to eq 5
-        expect(package.weight).to be_positive
+        expect(package.contents.size).to(eq(5))
+        expect(package.weight).to(be_positive)
       end
 
       it 'variants are added as backordered without enough on_hand' do
-        expect(stock_location).to receive(:fill_status).exactly(5).times.and_return([2, 3])
+        expect(stock_location).to(receive(:fill_status).exactly(5).times.and_return([2, 3]))
 
         package = subject.package
-        expect(package.on_hand.size).to eq 5
-        expect(package.backordered.size).to eq 5
+        expect(package.on_hand.size).to(eq(5))
+        expect(package.backordered.size).to(eq(5))
       end
 
       it "accounts for variant overrides" do
@@ -35,9 +35,9 @@ module OrderManagement
         variant.save
         expect do
           create(:variant_override, variant: variant, hub: distributor, count_on_hand: 10)
-        end.to change {
+        end.to(change {
           subject.package.on_hand.size
-        }.from(4).to(5)
+        }.from(4).to(5))
       end
     end
   end

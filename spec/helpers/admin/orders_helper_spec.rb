@@ -9,7 +9,7 @@ describe Admin::OrdersHelper, type: :helper do
     it "selects eligible adjustments" do
       adjustment = create(:adjustment, order: order, adjustable: order, amount: 1)
 
-      expect(helper.order_adjustments_for_display(order)).to eq [adjustment]
+      expect(helper.order_adjustments_for_display(order)).to(eq([adjustment]))
     end
 
     it "filters shipping method adjustments" do
@@ -21,7 +21,7 @@ amount: 1,
              originator_type: "Spree::ShippingMethod"
 )
 
-      expect(helper.order_adjustments_for_display(order)).to eq []
+      expect(helper.order_adjustments_for_display(order)).to(eq([]))
     end
 
     it "filters ineligible payment adjustments" do
@@ -34,7 +34,7 @@ eligible: false,
 order: order
 )
 
-      expect(helper.order_adjustments_for_display(order)).to eq []
+      expect(helper.order_adjustments_for_display(order)).to(eq([]))
     end
 
     it "filters out line item adjustments" do
@@ -47,7 +47,7 @@ eligible: false,
 order: order
 )
 
-      expect(helper.order_adjustments_for_display(order)).to eq []
+      expect(helper.order_adjustments_for_display(order)).to(eq([]))
     end
   end
 end

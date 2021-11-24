@@ -27,10 +27,10 @@ class SplitCheckoutController < ::BaseController
     else
       flash.now[:error] = I18n.t('split_checkout.errors.global')
 
-      render operations: cable_car
+      render(operations: cable_car
         .replace("#checkout", partial("split_checkout/checkout"))
         .replace("#flashes", partial("shared/flashes", locals: { flashes: flash })),
-             status: :unprocessable_entity
+             status: :unprocessable_entity)
     end
   end
 
@@ -66,13 +66,13 @@ class SplitCheckoutController < ::BaseController
   def validate_details!
     return true if params[:shipping_method_id].present?
 
-    @order.errors.add :shipping_method, I18n.t('split_checkout.errors.select_a_shipping_method')
+    @order.errors.add(:shipping_method, I18n.t('split_checkout.errors.select_a_shipping_method'))
   end
 
   def validate_payment!
     return true if params.dig(:order, :payments_attributes).present?
 
-    @order.errors.add :payment_method, I18n.t('split_checkout.errors.select_a_payment_method')
+    @order.errors.add(:payment_method, I18n.t('split_checkout.errors.select_a_payment_method'))
   end
 
   def validate_summary!
@@ -88,13 +88,13 @@ class SplitCheckoutController < ::BaseController
   def redirect_to_step
     case @order.state
     when "cart", "address", "delivery"
-      redirect_to checkout_step_path(:details)
+      redirect_to(checkout_step_path(:details))
     when "payment"
-      redirect_to checkout_step_path(:payment)
+      redirect_to(checkout_step_path(:payment))
     when "confirmation"
-      redirect_to checkout_step_path(:summary)
+      redirect_to(checkout_step_path(:summary))
     else
-      redirect_to order_path(@order)
+      redirect_to(order_path(@order))
     end
   end
 end

@@ -6,8 +6,8 @@ module ActionController
   class Base
     def respond_with(*resources, &block)
       if self.class.mimes_for_respond_to.empty?
-        raise "In order to use respond_with, first you need to declare the formats your " \
-              "controller responds to in the class level"
+        raise("In order to use respond_with, first you need to declare the formats your " \
+              "controller responds to in the class level")
       end
 
       return unless (collector = retrieve_collector_from_mimes(&block))
@@ -22,7 +22,7 @@ module ActionController
 )
 
         if action = options.delete(:action)
-          render action: action
+          render(action: action)
         else
           defined_response.call
         end
@@ -46,7 +46,7 @@ module ActionController
         _process_format(format)
         collector
       else
-        raise ActionController::UnknownFormat
+        raise(ActionController::UnknownFormat)
       end
     end
   end
@@ -75,14 +75,14 @@ module Spree
             action_value = options.values.first
 
             if action_name.blank? || action_value.blank?
-              raise ArgumentError, "invalid values supplied #{options.inspect}"
+              raise(ArgumentError, "invalid values supplied #{options.inspect}")
             end
 
             format_name = action_value.keys.first
             format_value = action_value.values.first
 
             if format_name.blank? || format_value.blank?
-              raise ArgumentError, "invalid values supplied #{options.inspect}"
+              raise(ArgumentError, "invalid values supplied #{options.inspect}")
             end
 
             if format_value.is_a?(Proc)

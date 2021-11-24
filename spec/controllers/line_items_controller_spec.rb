@@ -21,17 +21,17 @@ line_items_count: 1
     end
 
     before do
-      allow(controller).to receive_messages spree_current_user: user
-      allow(controller).to receive_messages current_order_cycle: order_cycle
-      allow(controller).to receive_messages current_distributor: distributor
+      allow(controller).to(receive_messages(spree_current_user: user))
+      allow(controller).to(receive_messages(current_order_cycle: order_cycle))
+      allow(controller).to(receive_messages(current_distributor: distributor))
     end
 
     it "lists items bought by the user from the same shop in the same order_cycle" do
       get :bought, format: :json
-      expect(response.status).to eq 200
+      expect(response.status).to(eq(200))
       json_response = JSON.parse(response.body)
-      expect(json_response.length).to eq completed_order.line_items.reload.count
-      expect(json_response[0]['id']).to eq completed_order.line_items.first.id
+      expect(json_response.length).to(eq(completed_order.line_items.reload.count))
+      expect(json_response[0]['id']).to(eq(completed_order.line_items.first.id))
     end
   end
 
@@ -53,7 +53,7 @@ distributors: [distributor],
 )
       end
 
-      before { allow(controller).to receive_messages spree_current_user: item.order.user }
+      before { allow(controller).to(receive_messages(spree_current_user: item.order.user)) }
 
       context "with a line item id" do
         let(:params) { { format: :json, id: item } }
@@ -61,20 +61,20 @@ distributors: [distributor],
         context "where the item's order is not associated with the user" do
           it "denies deletion" do
             delete :destroy, params: params
-            expect(response.status).to eq 403
+            expect(response.status).to(eq(403))
           end
         end
 
         context "where the item's order is associated with the current user" do
           before do
             order.update!(user_id: user.id)
-            allow(controller).to receive_messages spree_current_user: item.order.user
+            allow(controller).to(receive_messages(spree_current_user: item.order.user))
           end
 
           context "without an order cycle or distributor" do
             it "denies deletion" do
               delete :destroy, params: params
-              expect(response.status).to eq 403
+              expect(response.status).to(eq(403))
             end
           end
 
@@ -84,7 +84,7 @@ distributors: [distributor],
             context "where changes are not allowed" do
               it "denies deletion" do
                 delete :destroy, params: params
-                expect(response.status).to eq 403
+                expect(response.status).to(eq(403))
               end
             end
 
@@ -93,9 +93,9 @@ distributors: [distributor],
 
               it "deletes the line item" do
                 delete :destroy, params: params
-                expect(response.status).to eq 204
+                expect(response.status).to(eq(204))
                 expect { item.reload }
-.to raise_error ActiveRecord::RecordNotFound
+.to(raise_error(ActiveRecord::RecordNotFound))
               end
 
               context "after a payment is captured" do
@@ -105,10 +105,10 @@ distributors: [distributor],
                 before { payment.capture! }
 
                 it 'updates the payment state' do
-                  expect(order.payment_state).to eq 'paid'
+                  expect(order.payment_state).to(eq('paid'))
                   delete :destroy, params: params
                   order.reload
-                  expect(order.payment_state).to eq 'credit_owed'
+                  expect(order.payment_state).to(eq('credit_owed'))
                 end
               end
             end
@@ -143,7 +143,7 @@ payment_fee: payment_fee,
       end
 
       before do
-        allow(order).to receive(:tax_zone) { zone }
+        allow(order).to(receive(:tax_zone) { zone })
         order.reload
         order.create_tax_charge!
       end
@@ -153,22 +153,22 @@ payment_fee: payment_fee,
         item_num = order.line_items.length
         initial_fees = item_num * (shipping_fee + payment_fee)
 
-        expect(order.shipment.adjustments.tax.count).to eq 1
-        expect(order.shipment.included_tax_total).to eq 1.2
+        expect(order.shipment.adjustments.tax.count).to(eq(1))
+        expect(order.shipment.included_tax_total).to(eq(1.2))
 
         # Delete the item
         item = order.line_items.first
-        allow(controller).to receive_messages spree_current_user: order.user
+        allow(controller).to(receive_messages(spree_current_user: order.user))
         delete :destroy, format: :json, params: { id: item }
-        expect(response.status).to eq 204
+        expect(response.status).to(eq(204))
 
         # Check the fees again
         order.reload
         order.shipment.reload
-        expect(order.adjustment_total).to eq initial_fees - shipping_fee - payment_fee
-        expect(order.shipment.adjustment_total).to eq shipping_fee
-        expect(order.payments.first.adjustment.amount).to eq payment_fee
-        expect(order.shipment.included_tax_total).to eq 0.6
+        expect(order.adjustment_total).to(eq(initial_fees - shipping_fee - payment_fee))
+        expect(order.shipment.adjustment_total).to(eq(shipping_fee))
+        expect(order.payments.first.adjustment.amount).to(eq(payment_fee))
+        expect(order.shipment.included_tax_total).to(eq(0.6))
       end
     end
 
@@ -213,13 +213,13 @@ line_items_count: 2
       let(:params) { { format: :json, id: order.line_items.first } }
 
       it "updates the fees" do
-        expect(order.reload.adjustment_total).to eq calculator.preferred_discount_amount
+        expect(order.reload.adjustment_total).to(eq(calculator.preferred_discount_amount))
 
-        allow(controller).to receive_messages spree_current_user: user
+        allow(controller).to(receive_messages(spree_current_user: user))
         delete :destroy, params: params
-        expect(response.status).to eq 204
+        expect(response.status).to(eq(204))
 
-        expect(order.reload.adjustment_total).to eq calculator.preferred_normal_amount
+        expect(order.reload.adjustment_total).to(eq(calculator.preferred_normal_amount))
       end
     end
   end

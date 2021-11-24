@@ -134,7 +134,7 @@ module VariantStock
 
   def raise_error_if_no_stock_item_available
     message = 'You need to save the variant to create a stock item before you can set stock levels.'
-    raise message if stock_items.empty?
+    raise(message) if stock_items.empty?
   end
 
   # Overwrites stock_item.count_on_hand

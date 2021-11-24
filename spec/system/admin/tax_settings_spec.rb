@@ -16,7 +16,7 @@ describe 'Account and Billing Settings' do
         login_as_admin_and_visit spree.edit_admin_general_settings_path
         click_link "Tax Settings"
 
-        expect(page).to have_unchecked_field 'preferences_products_require_tax_category'
+        expect(page).to(have_unchecked_field('preferences_products_require_tax_category'))
       end
 
       it "attributes can be changed" do
@@ -26,7 +26,7 @@ describe 'Account and Billing Settings' do
 
         click_button "Update"
 
-        expect(Spree::Config.products_require_tax_category).to be true
+        expect(Spree::Config.products_require_tax_category).to(be(true))
       end
     end
   end

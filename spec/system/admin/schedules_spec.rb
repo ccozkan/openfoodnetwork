@@ -35,42 +35,42 @@ distributors: [managed_enterprise],
       it "immediately shows the schedule in the order cycle list once created" do
         visit spree.admin_dashboard_path
         click_link 'Order Cycles'
-        expect(page).to have_selector ".order-cycle-#{oc1.id}"
+        expect(page).to(have_selector(".order-cycle-#{oc1.id}"))
         find('a', text: 'NEW SCHEDULE').click
 
         within "#schedule-dialog" do
           # Only order cycles coordinated by managed enterprises are available to select
-          expect(page).to have_selector '#available-order-cycles .order-cycle', text: oc1.name
-          expect(page).to have_selector '#available-order-cycles .order-cycle', text: oc2.name
-          expect(page).to have_selector '#available-order-cycles .order-cycle', text: oc3.name
-          expect(page).to have_no_selector '#available-order-cycles .order-cycle', text: oc4.name
-          expect(page).to have_selector '#available-order-cycles .order-cycle', text: oc5.name
+          expect(page).to(have_selector('#available-order-cycles .order-cycle', text: oc1.name))
+          expect(page).to(have_selector('#available-order-cycles .order-cycle', text: oc2.name))
+          expect(page).to(have_selector('#available-order-cycles .order-cycle', text: oc3.name))
+          expect(page).to(have_no_selector('#available-order-cycles .order-cycle', text: oc4.name))
+          expect(page).to(have_selector('#available-order-cycles .order-cycle', text: oc5.name))
           fill_in 'name', with: "Fortnightly"
           find("#available-order-cycles .order-cycle", text: oc1.name).click
           find("#add-remove-buttons a.add").click
           # Selection of an order cycles limits available options to those with the same coordinator
-          expect(page).to have_no_selector '#available-order-cycles .order-cycle', text: oc5.name
+          expect(page).to(have_no_selector('#available-order-cycles .order-cycle', text: oc5.name))
           find("#available-order-cycles .order-cycle", text: oc3.name).click
           find("#add-remove-buttons a.add").click
           click_button "Create Schedule"
         end
 
         save_bar = find("#save-bar")
-        expect(save_bar).to have_content "Created schedule: 'Fortnightly'"
+        expect(save_bar).to(have_content("Created schedule: 'Fortnightly'"))
 
         within ".order-cycle-#{oc1.id} td.schedules" do
-          expect(page).to have_selector "a", text: "Weekly"
-          expect(page).to have_selector "a", text: "Fortnightly"
+          expect(page).to(have_selector("a", text: "Weekly"))
+          expect(page).to(have_selector("a", text: "Fortnightly"))
         end
 
         within ".order-cycle-#{oc2.id} td.schedules" do
-          expect(page).to have_selector "a", text: "Weekly"
-          expect(page).to have_no_selector "a", text: "Fortnightly"
+          expect(page).to(have_selector("a", text: "Weekly"))
+          expect(page).to(have_no_selector("a", text: "Fortnightly"))
         end
 
         within ".order-cycle-#{oc3.id} td.schedules" do
-          expect(page).to have_selector "a", text: "Weekly"
-          expect(page).to have_selector "a", text: "Fortnightly"
+          expect(page).to(have_selector("a", text: "Weekly"))
+          expect(page).to(have_selector("a", text: "Fortnightly"))
         end
       end
     end
@@ -87,7 +87,7 @@ distributors: [managed_enterprise],
           find('a', text: "Weekly").click
         end
 
-        expect(page).to have_selector "#schedule-dialog"
+        expect(page).to(have_selector("#schedule-dialog"))
         within "#schedule-dialog" do
           find("#selected-order-cycles .order-cycle", text: oc3.name).click
           find("#add-remove-buttons a.remove").click
@@ -95,21 +95,21 @@ distributors: [managed_enterprise],
         end
 
         save_bar = find("#save-bar")
-        expect(save_bar).to have_content "Updated schedule: 'Weekly'"
+        expect(save_bar).to(have_content("Updated schedule: 'Weekly'"))
 
         within ".order-cycle-#{oc1.id} td.schedules" do
-          expect(page).to have_selector "a", text: "Weekly"
-          expect(page).to have_selector "a", text: "Fortnightly"
+          expect(page).to(have_selector("a", text: "Weekly"))
+          expect(page).to(have_selector("a", text: "Fortnightly"))
         end
 
         within ".order-cycle-#{oc2.id} td.schedules" do
-          expect(page).to have_selector "a", text: "Weekly"
-          expect(page).to have_no_selector "a", text: "Fortnightly"
+          expect(page).to(have_selector("a", text: "Weekly"))
+          expect(page).to(have_no_selector("a", text: "Fortnightly"))
         end
 
         within ".order-cycle-#{oc3.id} td.schedules" do
-          expect(page).to have_no_selector "a", text: "Weekly"
-          expect(page).to have_selector "a", text: "Fortnightly"
+          expect(page).to(have_no_selector("a", text: "Weekly"))
+          expect(page).to(have_selector("a", text: "Fortnightly"))
         end
       end
     end
@@ -129,25 +129,25 @@ distributors: [managed_enterprise],
         end
 
         save_bar = find("#save-bar")
-        expect(save_bar).to have_content "Deleted schedule: 'Weekly'"
+        expect(save_bar).to(have_content("Deleted schedule: 'Weekly'"))
 
         within ".order-cycle-#{oc1.id} td.schedules" do
-          expect(page).to have_no_selector "a", text: "Weekly"
+          expect(page).to(have_no_selector("a", text: "Weekly"))
         end
 
         within ".order-cycle-#{oc2.id} td.schedules" do
-          expect(page).to have_no_selector "a", text: "Weekly"
+          expect(page).to(have_no_selector("a", text: "Weekly"))
         end
 
         within ".order-cycle-#{oc3.id} td.schedules" do
-          expect(page).to have_no_selector "a", text: "Weekly"
+          expect(page).to(have_no_selector("a", text: "Weekly"))
         end
 
-        expect(Schedule.find_by(id: weekly_schedule.id)).to be_nil
-        expect(oc1.reload.schedules).to eq []
-        expect(oc2.reload.schedules).to eq []
-        expect(oc3.reload.schedules).to eq []
-        expect(oc4.reload.schedules).to eq []
+        expect(Schedule.find_by(id: weekly_schedule.id)).to(be_nil)
+        expect(oc1.reload.schedules).to(eq([]))
+        expect(oc2.reload.schedules).to(eq([]))
+        expect(oc3.reload.schedules).to(eq([]))
+        expect(oc4.reload.schedules).to(eq([]))
       end
     end
   end

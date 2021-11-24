@@ -7,7 +7,7 @@ describe TermsOfServiceFile do
 
   describe ".current" do
     it "returns nil" do
-      expect(TermsOfServiceFile.current).to be_nil
+      expect(TermsOfServiceFile.current).to(be_nil)
     end
 
     it "returns the last one" do
@@ -16,7 +16,7 @@ describe TermsOfServiceFile do
         TermsOfServiceFile.create!(attachment: pdf),
       ]
 
-      expect(TermsOfServiceFile.current).to eq existing.last
+      expect(TermsOfServiceFile.current).to(eq(existing.last))
     end
   end
 
@@ -24,13 +24,13 @@ describe TermsOfServiceFile do
     let(:subject) { TermsOfServiceFile.current_url }
 
     it "points to the old default" do
-      expect(subject).to eq "/Terms-of-service.pdf"
+      expect(subject).to(eq("/Terms-of-service.pdf"))
     end
 
     it "points to the last uploaded file with timestamp parameter" do
       file = TermsOfServiceFile.create!(attachment: pdf)
 
-      expect(subject).to match %r{^/system/terms_of_service_files/attachments.*Terms-of-service\.pdf\?\d+$}
+      expect(subject).to(match(%r{^/system/terms_of_service_files/attachments.*Terms-of-service\.pdf\?\d+$}))
     end
   end
 
@@ -39,7 +39,7 @@ describe TermsOfServiceFile do
 
     it "gives the most conservative time if not known" do
       Timecop.freeze do
-        expect(subject).to eq Time.zone.now
+        expect(subject).to(eq(Time.zone.now))
       end
     end
 
@@ -48,7 +48,7 @@ describe TermsOfServiceFile do
       file = TermsOfServiceFile.create!(attachment: pdf, updated_at: update_time)
 
       # The database isn't as precise as Ruby's time and rounds.
-      expect(subject).to be_within(0.001).of(update_time)
+      expect(subject).to(be_within(0.001).of(update_time))
     end
   end
 end

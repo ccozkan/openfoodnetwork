@@ -59,8 +59,8 @@ description: "blue",
   let!(:payment_method) { create(:payment_method, distributors: [distributor]) }
 
   before do
-    allow(Flipper).to receive(:enabled?).with(:split_checkout).and_return(true)
-    allow(Flipper).to receive(:enabled?).with(:split_checkout, anything).and_return(true)
+    allow(Flipper).to(receive(:enabled?).with(:split_checkout).and_return(true))
+    allow(Flipper).to(receive(:enabled?).with(:split_checkout, anything).and_return(true))
 
     add_enterprise_fee enterprise_fee
     set_order order
@@ -76,20 +76,20 @@ description: "blue",
     end
 
     it "should display the split checkout page" do
-      expect(page).to have_content distributor.name
-      expect(page).to have_current_path("/checkout/details")
-      expect(page).to have_content("1 - Your details")
-      expect(page).to have_selector("div.checkout-tab.selected", text: "1 - Your details")
-      expect(page).to have_content("2 - Payment method")
-      expect(page).to have_content("3 - Order summary")
+      expect(page).to(have_content(distributor.name))
+      expect(page).to(have_current_path("/checkout/details"))
+      expect(page).to(have_content("1 - Your details"))
+      expect(page).to(have_selector("div.checkout-tab.selected", text: "1 - Your details"))
+      expect(page).to(have_content("2 - Payment method"))
+      expect(page).to(have_content("3 - Order summary"))
     end
 
     it "should display error when fields are empty" do
       click_button "Next - Payment method"
-      expect(page).to have_content("Saving failed, please update the highlighted fields")
-      expect(page).to have_css 'span.field_with_errors label', count: 4
-      expect(page).to have_css 'span.field_with_errors input', count: 4
-      expect(page).to have_css 'span.formError', count: 5
+      expect(page).to(have_content("Saving failed, please update the highlighted fields"))
+      expect(page).to(have_css('span.field_with_errors label', count: 4))
+      expect(page).to(have_css('span.field_with_errors input', count: 4))
+      expect(page).to(have_css('span.formError', count: 5))
     end
 
     it "should validate once each needed field is filled" do
@@ -102,7 +102,7 @@ description: "blue",
       choose free_shipping.name
 
       click_button "Next - Payment method"
-      expect(page).to have_current_path("/checkout/payment")
+      expect(page).to(have_current_path("/checkout/payment"))
     end
   end
 end

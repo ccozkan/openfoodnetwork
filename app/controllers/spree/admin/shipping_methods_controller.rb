@@ -14,8 +14,8 @@ module Spree
         collection = super
         collection = collection.managed_by(spree_current_user).by_name
 
-        if params.key? :enterprise_id
-          distributor = Enterprise.find params[:enterprise_id]
+        if params.key?(:enterprise_id)
+          distributor = Enterprise.find(params[:enterprise_id])
           collection = collection.for_distributor(distributor)
         end
 
@@ -35,11 +35,11 @@ module Spree
           redirect_to(collection_url) && return
         end
 
-        @object.touch :deleted_at
+        @object.touch(:deleted_at)
         flash[:success] = flash_message_for(@object, :successfully_removed)
 
         respond_with(@object) do |format|
-          format.html { redirect_to collection_url }
+          format.html { redirect_to(collection_url) }
         end
       end
 
@@ -55,7 +55,7 @@ module Spree
         
         @hubs =
  Enterprise.managed_by(spree_current_user).is_distributor.to_a.sort_by! do |d|
-          [(@shipping_method.has_distributor? d) ? 0 : 1, d.name]
+          [(@shipping_method.has_distributor?(d)) ? 0 : 1, d.name]
         end
         
       end
@@ -106,7 +106,7 @@ distributor_ids: [],
 
         unless shipping_amount.nil? || Float(shipping_amount, exception: false)
           flash[:error] = I18n.t(:calculator_preferred_value_error)
-          return redirect_to location_after_save
+          return redirect_to(location_after_save)
         end
       end
     end

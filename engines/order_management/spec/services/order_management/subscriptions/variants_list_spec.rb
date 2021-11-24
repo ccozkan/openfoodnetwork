@@ -50,7 +50,7 @@ orders_open_at: 2.weeks.ago,
           let!(:producer) { shop }
 
           it "is eligible" do
-            expect(described_class.eligible_variants(shop)).to include(variant)
+            expect(described_class.eligible_variants(shop)).to(include(variant))
           end
         end
 
@@ -65,7 +65,7 @@ child: shop,
           end
 
           it "is eligible" do
-            expect(described_class.eligible_variants(shop)).to include(variant)
+            expect(described_class.eligible_variants(shop)).to(include(variant))
           end
         end
 
@@ -84,7 +84,7 @@ variants: [variant]
             end
 
             it "is not eligible" do
-              expect(described_class.eligible_variants(shop)).to_not include(variant)
+              expect(described_class.eligible_variants(shop)).to_not(include(variant))
             end
           end
 
@@ -102,7 +102,7 @@ variants: [variant]
               let!(:order_cycle) { current_order_cycle }
 
               it "is eligible" do
-                expect(described_class.eligible_variants(shop)).to include(variant)
+                expect(described_class.eligible_variants(shop)).to(include(variant))
               end
             end
 
@@ -110,7 +110,7 @@ variants: [variant]
               let!(:order_cycle) { future_order_cycle }
 
               it "is eligible" do
-                expect(described_class.eligible_variants(shop)).to include(variant)
+                expect(described_class.eligible_variants(shop)).to(include(variant))
               end
             end
 
@@ -118,7 +118,7 @@ variants: [variant]
               let!(:order_cycle) { past_order_cycle }
 
               it "is eligible" do
-                expect(described_class.eligible_variants(shop)).to include(variant)
+                expect(described_class.eligible_variants(shop)).to(include(variant))
               end
             end
           end
@@ -126,7 +126,7 @@ variants: [variant]
 
         context "if the variant is unrelated" do
           it "is not eligible" do
-            expect(described_class.eligible_variants(shop)).to_not include(variant)
+            expect(described_class.eligible_variants(shop)).to_not(include(variant))
           end
         end
       end
@@ -152,11 +152,11 @@ variants: [variant]
             end
 
             it "is is false" do
-              expect(described_class).not_to be_in_open_and_upcoming_order_cycles(
+              expect(described_class).not_to(be_in_open_and_upcoming_order_cycles(
 shop,
                                                                                   schedule,
                                                                                   variant
-)
+))
             end
           end
 
@@ -171,22 +171,22 @@ variants: [variant]
             end
 
             it "is true" do
-              expect(described_class).to be_in_open_and_upcoming_order_cycles(
+              expect(described_class).to(be_in_open_and_upcoming_order_cycles(
 shop,
                                                                               schedule,
                                                                               variant
-)
+))
             end
           end
         end
 
         context "if the variant is unrelated" do
           it "is false" do
-            expect(described_class).to_not be_in_open_and_upcoming_order_cycles(
+            expect(described_class).to_not(be_in_open_and_upcoming_order_cycles(
 shop,
                                                                                 schedule,
                                                                                 variant
-)
+))
           end
         end
       end

@@ -5,7 +5,7 @@ module Web
     helper Web::Engine.helpers
 
     def show
-      render params[:id].to_s, layout: nil
+      render(params[:id].to_s, layout: nil)
     end
   end
 end

@@ -12,7 +12,7 @@ module Stripe
       context "when url not found in response" do
         it "does nothing" do
           new_response = patcher.call!
-          expect(new_response).to eq response
+          expect(new_response).to(eq(response))
         end
       end
 
@@ -29,7 +29,7 @@ module Stripe
 
         it "patches response.cvv_result.message with the url in the response" do
           new_response = patcher.call!
-          expect(new_response.cvv_result['message']).to eq "https://www.stripe.com/authorize"
+          expect(new_response.cvv_result['message']).to(eq("https://www.stripe.com/authorize"))
         end
       end
     end

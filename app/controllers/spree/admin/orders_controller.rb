@@ -30,7 +30,7 @@ only: [
         @order = Order.create
         @order.created_by = spree_current_user
         @order.save
-        redirect_to spree.edit_admin_order_url(@order)
+        redirect_to(spree.edit_admin_order_url(@order))
       end
 
       def edit
@@ -54,14 +54,14 @@ only: [
           end
 
           flash[:error] = @order.errors.full_messages.join(', ') if @order.errors.present?
-          return redirect_to spree.edit_admin_order_path(@order)
+          return redirect_to(spree.edit_admin_order_path(@order))
         end
 
         if @order.complete?
-          redirect_to spree.edit_admin_order_path(@order)
+          redirect_to(spree.edit_admin_order_path(@order))
         else
           # Jump to next step if order is not complete
-          redirect_to spree.admin_order_customer_path(@order)
+          redirect_to(spree.admin_order_customer_path(@order))
         end
       end
 
@@ -79,7 +79,7 @@ only: [
       rescue Spree::Core::GatewayError => e
         flash[:error] = e.message.to_s
       ensure
-        redirect_back fallback_location: spree.admin_dashboard_path
+        redirect_back(fallback_location: spree.admin_dashboard_path)
       end
 
       def resend
@@ -96,16 +96,16 @@ only: [
         flash[:success] = t('admin.orders.invoice_email_sent')
 
         respond_with(@order) do |format|
-          format.html { redirect_to spree.edit_admin_order_path(@order) }
+          format.html { redirect_to(spree.edit_admin_order_path(@order)) }
         end
       end
 
       def print
-        render_with_wicked_pdf InvoiceRenderer.new.args(@order)
+        render_with_wicked_pdf(InvoiceRenderer.new.args(@order))
       end
 
       def print_ticket
-        render template: "spree/admin/orders/ticket", layout: false
+        render(template: "spree/admin/orders/ticket", layout: false)
       end
 
       private
@@ -121,7 +121,7 @@ only: [
           @order = Order.includes(:adjustments, :shipments, line_items: :adjustments)
             .find_by!(number: params[:id])
         end
-        authorize! action, @order
+        authorize!(action, @order)
       end
 
       def model_class
@@ -136,7 +136,7 @@ only: [
                           enterprise_name: @order.distributor.name
 )
         respond_with(@order) do |format|
-          format.html { redirect_to spree.edit_admin_order_path(@order) }
+          format.html { redirect_to(spree.edit_admin_order_path(@order)) }
         end
       end
 
@@ -155,7 +155,7 @@ only: [
         end
         return if @order.distribution_set?
 
-        render 'set_distribution', locals: { order: @order }
+        render('set_distribution', locals: { order: @order })
       end
     end
   end

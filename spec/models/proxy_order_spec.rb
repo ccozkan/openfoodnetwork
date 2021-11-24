@@ -22,9 +22,9 @@ describe ProxyOrder, type: :model do
         let(:order) { nil }
 
         it "returns true and sets canceled_at to the current time" do
-          expect(proxy_order.cancel).to be true
+          expect(proxy_order.cancel).to(be(true))
           expect_cancelled_now proxy_order
-          expect(proxy_order.state).to eq 'canceled'
+          expect(proxy_order.state).to(eq('canceled'))
         end
       end
 
@@ -32,13 +32,13 @@ describe ProxyOrder, type: :model do
         let(:order) { create(:completed_order_with_totals) }
 
         it "returns true and sets canceled_at to the current time, and cancels the order" do
-          expect(Spree::OrderMailer).to receive(:cancel_email) {
+          expect(Spree::OrderMailer).to(receive(:cancel_email) {
                                           double(:email, deliver_later: true)
-                                        }
-          expect(proxy_order.cancel).to be true
+                                        })
+          expect(proxy_order.cancel).to(be(true))
           expect_cancelled_now proxy_order
-          expect(order.reload.state).to eq 'canceled'
-          expect(proxy_order.state).to eq 'canceled'
+          expect(order.reload.state).to(eq('canceled'))
+          expect(proxy_order.state).to(eq('canceled'))
         end
       end
 
@@ -46,10 +46,10 @@ describe ProxyOrder, type: :model do
         let(:order) { create(:order) }
 
         it "returns true and sets canceled_at to the current time" do
-          expect(proxy_order.cancel).to be true
+          expect(proxy_order.cancel).to(be(true))
           expect_cancelled_now proxy_order
-          expect(order.reload.state).to eq 'cart'
-          expect(proxy_order.state).to eq 'canceled'
+          expect(order.reload.state).to(eq('cart'))
+          expect(proxy_order.state).to(eq('canceled'))
         end
       end
     end
@@ -64,9 +64,9 @@ describe ProxyOrder, type: :model do
         let(:order) { nil }
 
         it "returns false and does nothing" do
-          expect(proxy_order.cancel).to be false
-          expect(proxy_order.reload.canceled_at).to be nil
-          expect(proxy_order.state).to eq 'pending'
+          expect(proxy_order.cancel).to(be(false))
+          expect(proxy_order.reload.canceled_at).to(be(nil))
+          expect(proxy_order.state).to(eq('pending'))
         end
       end
 
@@ -74,10 +74,10 @@ describe ProxyOrder, type: :model do
         let(:order) { create(:order) }
 
         it "returns false and does nothing" do
-          expect(proxy_order.cancel).to be false
-          expect(proxy_order.reload.canceled_at).to be nil
-          expect(order.reload.state).to eq 'cart'
-          expect(proxy_order.state).to eq 'cart'
+          expect(proxy_order.cancel).to(be(false))
+          expect(proxy_order.reload.canceled_at).to(be(nil))
+          expect(order.reload.state).to(eq('cart'))
+          expect(proxy_order.state).to(eq('cart'))
         end
       end
     end
@@ -108,26 +108,26 @@ ship_address: create(:address),
         let(:order) { nil }
 
         it "returns true and clears canceled_at" do
-          expect(proxy_order.resume).to be true
-          expect(proxy_order.reload.canceled_at).to be nil
-          expect(proxy_order.state).to eq 'pending'
+          expect(proxy_order.resume).to(be(true))
+          expect(proxy_order.reload.canceled_at).to(be(nil))
+          expect(proxy_order.state).to(eq('pending'))
         end
       end
 
       context "and the order has already been cancelled" do
         before do
-          allow(Spree::OrderMailer).to receive(:cancel_email) {
+          allow(Spree::OrderMailer).to(receive(:cancel_email) {
                                          double(:email, deliver_later: true)
-                                       }
+                                       })
           break unless order.next! while !order.completed?
           order.cancel
         end
 
         it "returns true, clears canceled_at and resumes the order" do
-          expect(proxy_order.resume).to be true
-          expect(proxy_order.reload.canceled_at).to be nil
-          expect(order.reload.state).to eq 'resumed'
-          expect(proxy_order.state).to eq 'resumed'
+          expect(proxy_order.resume).to(be(true))
+          expect(proxy_order.reload.canceled_at).to(be(nil))
+          expect(order.reload.state).to(eq('resumed'))
+          expect(proxy_order.state).to(eq('resumed'))
         end
       end
 
@@ -135,10 +135,10 @@ ship_address: create(:address),
         before { break unless order.next! while !order.completed? }
 
         it "returns true and clears canceled_at" do
-          expect(proxy_order.resume).to be true
-          expect(proxy_order.reload.canceled_at).to be nil
-          expect(order.reload.state).to eq 'complete'
-          expect(proxy_order.state).to eq 'cart'
+          expect(proxy_order.resume).to(be(true))
+          expect(proxy_order.reload.canceled_at).to(be(nil))
+          expect(order.reload.state).to(eq('complete'))
+          expect(proxy_order.state).to(eq('cart'))
         end
       end
     end
@@ -150,26 +150,26 @@ ship_address: create(:address),
         let(:order) { nil }
 
         it "returns false and does nothing" do
-          expect(proxy_order.resume).to eq false
+          expect(proxy_order.resume).to(eq(false))
           expect_cancelled_now proxy_order
-          expect(proxy_order.state).to eq 'canceled'
+          expect(proxy_order.state).to(eq('canceled'))
         end
       end
 
       context "and the order has been cancelled" do
         before do
-          allow(Spree::OrderMailer).to receive(:cancel_email) {
+          allow(Spree::OrderMailer).to(receive(:cancel_email) {
                                          double(:email, deliver_later: true)
-                                       }
+                                       })
           break unless order.next! while !order.completed?
           order.cancel
         end
 
         it "returns false and does nothing" do
-          expect(proxy_order.resume).to eq false
+          expect(proxy_order.resume).to(eq(false))
           expect_cancelled_now proxy_order
-          expect(order.reload.state).to eq 'canceled'
-          expect(proxy_order.state).to eq 'canceled'
+          expect(order.reload.state).to(eq('canceled'))
+          expect(proxy_order.state).to(eq('canceled'))
         end
       end
 
@@ -177,10 +177,10 @@ ship_address: create(:address),
         before { break unless order.next! while !order.completed? }
 
         it "returns false and does nothing" do
-          expect(proxy_order.resume).to eq false
+          expect(proxy_order.resume).to(eq(false))
           expect_cancelled_now proxy_order
-          expect(order.reload.state).to eq 'complete'
-          expect(proxy_order.state).to eq 'canceled'
+          expect(order.reload.state).to(eq('complete'))
+          expect(proxy_order.state).to(eq('canceled'))
         end
       end
     end
@@ -193,9 +193,9 @@ ship_address: create(:address),
 
     context "when the order has not already been initialised" do
       it "creates a new order using the OrderFactory, and returns it" do
-        expect(OrderFactory).to receive(:new) { factory }
-        expect(factory).to receive(:create) { order }
-        expect(proxy_order.initialise_order!).to eq order
+        expect(OrderFactory).to(receive(:new) { factory })
+        expect(factory).to(receive(:create) { order })
+        expect(proxy_order.initialise_order!).to(eq(order))
       end
     end
 
@@ -207,9 +207,9 @@ ship_address: create(:address),
       end
 
       it "returns the existing order" do
-        expect(OrderFactory).to_not receive(:new)
-        expect(proxy_order).to_not receive(:save!)
-        expect(proxy_order.initialise_order!).to eq existing_order
+        expect(OrderFactory).to_not(receive(:new))
+        expect(proxy_order).to_not(receive(:save!))
+        expect(proxy_order.initialise_order!).to(eq(existing_order))
       end
     end
   end
@@ -220,6 +220,6 @@ ship_address: create(:address),
     # We still need to use be_within, because the Database timestamp is not as
     # accurate as the Rails timestamp. If we use `eq`, we have differing nano
     # seconds.
-    expect(subject.reload.canceled_at).to be_within(2.seconds).of Time.zone.now
+    expect(subject.reload.canceled_at).to(be_within(2.seconds).of(Time.zone.now))
   end
 end

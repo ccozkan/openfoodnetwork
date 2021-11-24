@@ -10,8 +10,8 @@ describe ShopController, type: :controller, performance: true do
   end
 
   before do
-    allow(controller).to receive(:current_distributor) { d }
-    allow(controller).to receive(:current_order_cycle) { order_cycle }
+    allow(controller).to(receive(:current_distributor) { d })
+    allow(controller).to(receive(:current_order_cycle) { order_cycle })
     Spree::Config.currency = 'AUD'
   end
 
@@ -28,12 +28,12 @@ describe ShopController, type: :controller, performance: true do
     before do
       11.times do
         p = create(:simple_product)
-        p.set_property 'Organic Certified', 'NASAA 12345'
+        p.set_property('Organic Certified', 'NASAA 12345')
         v1 = create(:variant, product: p)
         v2 = create(:variant, product: p)
-        Spree::Image.create! viewable_id: p.master.id,
+        Spree::Image.create!(viewable_id: p.master.id,
 viewable_type: 'Spree::Variant',
-                             attachment: image
+                             attachment: image)
 
         exchange.variants << [v1, v2]
       end
@@ -42,8 +42,8 @@ viewable_type: 'Spree::Variant',
     it "returns products via json" do
       results =
  multi_benchmark(3, cache_key_patterns: cache_key_patterns) do
-        get :products, xhr: true
-        expect(response.status).to eq 200
+        get(:products, xhr: true)
+        expect(response.status).to(eq(200))
       end
     end
   end

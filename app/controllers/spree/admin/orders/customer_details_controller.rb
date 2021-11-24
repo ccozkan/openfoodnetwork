@@ -10,7 +10,7 @@ module Spree
 
         def show
           edit
-          render action: :edit
+          render(action: :edit)
         end
 
         def edit
@@ -28,9 +28,9 @@ module Spree
             OrderWorkflow.new(@order).advance_to_payment
 
             flash[:success] = Spree.t('customer_details_updated')
-            redirect_to spree.admin_order_customer_path(@order)
+            redirect_to(spree.admin_order_customer_path(@order))
           else
-            render action: :edit
+            render(action: :edit)
           end
         end
 
@@ -82,7 +82,7 @@ module Spree
           action = params[:action].to_sym
           action = :edit if action == :show # show route renders :edit for this controller
 
-          authorize! action, resource, session[:access_token]
+          authorize!(action, resource, session[:access_token])
         end
 
         def set_guest_checkout_status

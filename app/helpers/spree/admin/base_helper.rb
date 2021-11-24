@@ -42,7 +42,7 @@ module Spree
         when :text
           text_area_tag(name, value, preference_field_options(options))
         when :file
-          file_field_tag name, preference_field_options(options)
+          file_field_tag(name, preference_field_options(options))
         else
           text_field_tag(name, value, preference_field_options(options))
         end
@@ -167,7 +167,7 @@ class: "remove_fields #{options[:class]}",
 data: { action: 'remove' },
 title: t(:remove)
 }
-        html_options.merge!(options[:html]) if options.key? :html
+        html_options.merge!(options[:html]) if options.key?(:html)
 
         link_to_with_icon('icon-trash', name, '#', html_options) + form.hidden_field(:_destroy)
       end

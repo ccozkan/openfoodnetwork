@@ -14,9 +14,9 @@ describe "Terms of Service files" do
       visit spree.edit_admin_general_settings_path
       click_link "Terms of Service"
 
-      expect(page).to have_content "No terms of services have been uploaded yet."
-      expect(page).to have_content "your old Terms of service"
-      expect(page).to have_link "Terms of service", href: "/Terms-of-service.pdf"
+      expect(page).to(have_content("No terms of services have been uploaded yet."))
+      expect(page).to(have_content("your old Terms of service"))
+      expect(page).to(have_link("Terms of service", href: "/Terms-of-service.pdf"))
     end
 
     it "can be uploaded" do
@@ -24,12 +24,12 @@ describe "Terms of Service files" do
       attach_file "Attachment", Rails.root.join(test_file_path)
       click_button "Create Terms of service file"
 
-      expect(page).to have_link "Terms of Service"
+      expect(page).to(have_link("Terms of Service"))
     end
 
     it "provides Rails' standard action for a new file" do
       visit new_admin_terms_of_service_files_path
-      expect(page).to have_button "Create Terms of service file"
+      expect(page).to(have_button("Create Terms of service file"))
     end
 
     it "can delete the current file", js: true do
@@ -40,7 +40,7 @@ describe "Terms of Service files" do
 
       accept_alert { click_link "Delete" }
 
-      expect(page).to have_content "No terms of services have been uploaded yet."
+      expect(page).to(have_content("No terms of services have been uploaded yet."))
     end
   end
 end

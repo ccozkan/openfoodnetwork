@@ -15,7 +15,7 @@ describe Admin::ProxyOrdersController, type: :controller do
     end
 
     before do
-      allow(controller).to receive(:spree_current_user) { user }
+      allow(controller).to(receive(:spree_current_user) { user })
     end
 
     context 'json' do
@@ -24,7 +24,7 @@ describe Admin::ProxyOrdersController, type: :controller do
       context 'as a regular user' do
         it 'redirects to unauthorized' do
           spree_put :cancel, params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
@@ -35,7 +35,7 @@ describe Admin::ProxyOrdersController, type: :controller do
 
           it 'redirects to unauthorized' do
             spree_put :cancel, params
-            expect(response).to redirect_to unauthorized_path
+            expect(response).to(redirect_to(unauthorized_path))
           end
         end
 
@@ -46,9 +46,9 @@ describe Admin::ProxyOrdersController, type: :controller do
             it 'renders the cancelled proxy_order as json' do
               get :cancel, params: params
               json_response = JSON.parse(response.body)
-              expect(json_response['state']).to eq "canceled"
-              expect(json_response['id']).to eq proxy_order.id
-              expect(proxy_order.reload.canceled_at).to be_within(5.seconds).of Time.zone.now
+              expect(json_response['state']).to(eq("canceled"))
+              expect(json_response['id']).to(eq(proxy_order.id))
+              expect(proxy_order.reload.canceled_at).to(be_within(5.seconds).of(Time.zone.now))
             end
           end
 
@@ -58,7 +58,7 @@ describe Admin::ProxyOrdersController, type: :controller do
             it "shows an error" do
               get :cancel, params: params
               json_response = JSON.parse(response.body)
-              expect(json_response['errors']).to eq ['Could not cancel the order']
+              expect(json_response['errors']).to(eq(['Could not cancel the order']))
             end
           end
         end
@@ -82,11 +82,11 @@ describe Admin::ProxyOrdersController, type: :controller do
 
     before do
       # Processing order to completion
-      allow(Spree::OrderMailer).to receive(:cancel_email) { double(:email, deliver_later: true) }
+      allow(Spree::OrderMailer).to(receive(:cancel_email) { double(:email, deliver_later: true) })
       OrderWorkflow.new(order).complete!
       proxy_order.reload
       proxy_order.cancel
-      allow(controller).to receive(:spree_current_user) { user }
+      allow(controller).to(receive(:spree_current_user) { user })
     end
 
     context 'json' do
@@ -95,7 +95,7 @@ describe Admin::ProxyOrdersController, type: :controller do
       context 'as a regular user' do
         it 'redirects to unauthorized' do
           spree_put :resume, params
-          expect(response).to redirect_to unauthorized_path
+          expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
@@ -106,7 +106,7 @@ describe Admin::ProxyOrdersController, type: :controller do
 
           it 'redirects to unauthorized' do
             spree_put :resume, params
-            expect(response).to redirect_to unauthorized_path
+            expect(response).to(redirect_to(unauthorized_path))
           end
         end
 
@@ -117,9 +117,9 @@ describe Admin::ProxyOrdersController, type: :controller do
             it 'renders the resumed proxy_order as json' do
               get :resume, params: params
               json_response = JSON.parse(response.body)
-              expect(json_response['state']).to eq "resumed"
-              expect(json_response['id']).to eq proxy_order.id
-              expect(proxy_order.reload.canceled_at).to be nil
+              expect(json_response['state']).to(eq("resumed"))
+              expect(json_response['id']).to(eq(proxy_order.id))
+              expect(proxy_order.reload.canceled_at).to(be(nil))
             end
           end
 
@@ -129,7 +129,7 @@ describe Admin::ProxyOrdersController, type: :controller do
             it "shows an error" do
               get :resume, params: params
               json_response = JSON.parse(response.body)
-              expect(json_response['errors']).to eq ['Could not resume the order']
+              expect(json_response['errors']).to(eq(['Could not resume the order']))
             end
           end
         end

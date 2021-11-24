@@ -6,7 +6,7 @@ module Admin
     # GET /admin/bulk_line_items.json
     #
     def index
-      order_params = params[:q]&.delete :order
+      order_params = params[:q]&.delete(:order)
       orders = order_permissions.editable_orders.ransack(order_params).result
 
       @line_items = order_permissions
@@ -17,7 +17,7 @@ module Admin
 
       @pagy, @line_items = pagy(@line_items) if pagination_required?
 
-      render json: { line_items: serialized_line_items, pagination: pagination_data }
+      render(json: { line_items: serialized_line_items, pagination: pagination_data })
     end
 
     # PUT /admin/bulk_line_items/:id.json
@@ -32,9 +32,9 @@ module Admin
       # and https://www.postgresql.org/docs/current/static/sql-select.html#SQL-FOR-UPDATE-SHARE
       order.with_lock do
         if order.contents.update_item(@line_item, line_item_params)
-          render body: nil, status: :no_content # No Content, does not trigger ng resource auto-update
+          render(body: nil, status: :no_content) # No Content, does not trigger ng resource auto-update
         else
-          render json: { errors: @line_item.errors }, status: :precondition_failed
+          render(json: { errors: @line_item.errors }, status: :precondition_failed)
         end
       end
     end
@@ -43,10 +43,10 @@ module Admin
     #
     def destroy
       load_line_item
-      authorize! :update, order
+      authorize!(:update, order)
 
       order.contents.remove(@line_item.variant)
-      render body: nil, status: :no_content # No Content, does not trigger ng resource auto-update
+      render(body: nil, status: :no_content) # No Content, does not trigger ng resource auto-update
     end
 
     private
@@ -66,8 +66,8 @@ module Admin
     end
 
     def authorize_update!
-      authorize! :update, order
-      authorize! :read, order
+      authorize!(:update, order)
+      authorize!(:read, order)
     end
 
     def order

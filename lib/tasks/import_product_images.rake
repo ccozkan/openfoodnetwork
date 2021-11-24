@@ -15,7 +15,7 @@ namespace :ofn do
 
       csv.each.with_index do |entry, index|
         puts "#{index} #{entry[:producer]}, #{entry[:name]}"
-        enterprise = Enterprise.find_by! name: entry[:producer]
+        enterprise = Enterprise.find_by!(name: entry[:producer])
 
         product = Spree::Product.where(
 supplier: enterprise,

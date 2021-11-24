@@ -23,7 +23,7 @@ feature "enterprise fee summaries", js: true do
       it "shows link and allows access to the report" do
         visit spree.admin_reports_path
         click_on I18n.t("admin.reports.enterprise_fee_summary.name")
-        expect(page).to have_button(I18n.t("filters.generate_report", scope: i18n_scope))
+        expect(page).to(have_button(I18n.t("filters.generate_report", scope: i18n_scope)))
       end
     end
 
@@ -33,7 +33,7 @@ feature "enterprise fee summaries", js: true do
       it "shows link and allows access to the report" do
         visit spree.admin_reports_path
         click_on I18n.t("admin.reports.enterprise_fee_summary.name")
-        expect(page).to have_button(I18n.t("filters.generate_report", scope: i18n_scope))
+        expect(page).to(have_button(I18n.t("filters.generate_report", scope: i18n_scope)))
       end
     end
 
@@ -42,9 +42,9 @@ feature "enterprise fee summaries", js: true do
 
       it "does not allow access to the report" do
         visit spree.admin_reports_path
-        expect(page).to have_no_link(I18n.t("admin.reports.enterprise_fee_summary.name"))
+        expect(page).to(have_no_link(I18n.t("admin.reports.enterprise_fee_summary.name")))
         visit main_app.new_order_management_reports_enterprise_fee_summary_path
-        expect(page).to have_content(I18n.t("unauthorized"))
+        expect(page).to(have_content(I18n.t("unauthorized")))
       end
     end
   end
@@ -58,7 +58,7 @@ feature "enterprise fee summaries", js: true do
       let(:current_user) { create(:admin_user) }
 
       it "shows all available options" do
-        expect(page).to have_select "report_order_cycle_ids", with_options: [order_cycle.name]
+        expect(page).to(have_select("report_order_cycle_ids", with_options: [order_cycle.name]))
       end
     end
 
@@ -73,7 +73,7 @@ order_cycle: order_cycle,
       let(:current_user) { distributor.owner }
 
       it "shows available options for the enterprise" do
-        expect(page).to have_select "report_order_cycle_ids", options: [order_cycle.name]
+        expect(page).to(have_select("report_order_cycle_ids", options: [order_cycle.name]))
       end
     end
   end
@@ -102,8 +102,8 @@ order_cycle: order_cycle,
           check I18n.t("filters.report_format_csv", scope: i18n_scope)
           click_on I18n.t("filters.generate_report", scope: i18n_scope)
 
-          expect(downloaded_filename).to include ".csv"
-          expect(downloaded_content).to have_content(distributor.name)
+          expect(downloaded_filename).to(include(".csv"))
+          expect(downloaded_content).to(have_content(distributor.name))
         end
       end
 
@@ -128,10 +128,10 @@ order_cycle: other_order_cycle,
           check I18n.t("filters.report_format_csv", scope: i18n_scope)
           click_on I18n.t("filters.generate_report", scope: i18n_scope)
 
-          expect(downloaded_filename).to include ".csv"
+          expect(downloaded_filename).to(include(".csv"))
           csv_content = downloaded_content
-          expect(csv_content).to have_content(distributor.name)
-          expect(csv_content).not_to have_content(other_distributor.name)
+          expect(csv_content).to(have_content(distributor.name))
+          expect(csv_content).not_to(have_content(other_distributor.name))
         end
       end
     end
@@ -166,10 +166,10 @@ order_cycle: second_order_cycle,
         check I18n.t("filters.report_format_csv", scope: i18n_scope)
         click_on I18n.t("filters.generate_report", scope: i18n_scope)
 
-        expect(downloaded_filename).to include ".csv"
+        expect(downloaded_filename).to(include(".csv"))
         csv_content = downloaded_content
-        expect(csv_content).to have_content(distributor.name)
-        expect(csv_content).not_to have_content(second_distributor.name)
+        expect(csv_content).to(have_content(distributor.name))
+        expect(csv_content).not_to(have_content(second_distributor.name))
       end
     end
   end

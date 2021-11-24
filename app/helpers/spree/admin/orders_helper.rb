@@ -149,7 +149,7 @@ icon: "icon-#{event}",
         unless manifest_item.variant.on_demand
           html_options.merge!(max: manifest_item.variant.on_hand + manifest_item.quantity)
         end
-        number_field_tag :quantity, manifest_item.quantity, html_options
+        number_field_tag(:quantity, manifest_item.quantity, html_options)
       end
     end
   end

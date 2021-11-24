@@ -25,11 +25,11 @@ describe ProductImport::InventoryResetStrategy do
           instance_double(ActiveRecord::Relation, update_all: true)
         end
 
-        before { allow(VariantOverride).to receive(:where) { relation } }
+        before { allow(VariantOverride).to(receive(:where) { relation }) }
 
         it 'does not update any DB record' do
           inventory_reset.reset(supplier_ids)
-          expect(relation).not_to have_received(:update_all)
+          expect(relation).not_to(have_received(:update_all))
         end
       end
 
@@ -39,11 +39,11 @@ describe ProductImport::InventoryResetStrategy do
           instance_double(ActiveRecord::Relation, update_all: true)
         end
 
-        before { allow(VariantOverride).to receive(:where) { relation } }
+        before { allow(VariantOverride).to(receive(:where) { relation }) }
 
         it 'does not update any DB record' do
           inventory_reset.reset(supplier_ids)
-          expect(relation).not_to have_received(:update_all)
+          expect(relation).not_to(have_received(:update_all))
         end
       end
 
@@ -73,8 +73,8 @@ describe ProductImport::InventoryResetStrategy do
 
         it 'does not update the count_on_hand or on_demand setting of the excluded items' do
           inventory_reset.reset(supplier_ids)
-          expect(variant_override_with_count_on_hand.reload.count_on_hand).to eq(10)
-          expect(variant_override_on_demand.reload.on_demand).to eq(true)
+          expect(variant_override_with_count_on_hand.reload.count_on_hand).to(eq(10))
+          expect(variant_override_on_demand.reload.on_demand).to(eq(true))
         end
 
         it 'updates the count_on_hand or on_demand setting of the non-excluded items' do
@@ -92,8 +92,8 @@ describe ProductImport::InventoryResetStrategy do
             variant: variant
           )
           inventory_reset.reset(supplier_ids)
-          expect(non_excluded_variant_override_with_count_on_hand.reload.count_on_hand).to eq(0)
-          expect(non_excluded_variant_override_on_demand.reload.on_demand).to eq(false)
+          expect(non_excluded_variant_override_with_count_on_hand.reload.count_on_hand).to(eq(0))
+          expect(non_excluded_variant_override_on_demand.reload.on_demand).to(eq(false))
         end
       end
     end
@@ -107,11 +107,11 @@ describe ProductImport::InventoryResetStrategy do
           instance_double(ActiveRecord::Relation, update_all: true)
         end
 
-        before { allow(VariantOverride).to receive(:where) { relation } }
+        before { allow(VariantOverride).to(receive(:where) { relation }) }
 
         it 'does not update any DB record' do
           inventory_reset.reset(supplier_ids)
-          expect(relation).not_to have_received(:update_all)
+          expect(relation).not_to(have_received(:update_all))
         end
       end
 
@@ -121,11 +121,11 @@ describe ProductImport::InventoryResetStrategy do
           instance_double(ActiveRecord::Relation, update_all: true)
         end
 
-        before { allow(VariantOverride).to receive(:where) { relation } }
+        before { allow(VariantOverride).to(receive(:where) { relation }) }
 
         it 'does not update any DB record' do
           inventory_reset.reset(supplier_ids)
-          expect(relation).not_to have_received(:update_all)
+          expect(relation).not_to(have_received(:update_all))
         end
       end
 
@@ -146,7 +146,7 @@ describe ProductImport::InventoryResetStrategy do
 
           it 'sets their count_on_hand to 0' do
             inventory_reset.reset(supplier_ids)
-            expect(variant_override.reload.count_on_hand).to eq(0)
+            expect(variant_override.reload.count_on_hand).to(eq(0))
           end
         end
 
@@ -163,7 +163,7 @@ describe ProductImport::InventoryResetStrategy do
 
           it 'turns off their on_demand setting' do
             inventory_reset.reset(supplier_ids)
-            expect(variant_override.reload.on_demand).to eq(false)
+            expect(variant_override.reload.on_demand).to(eq(false))
           end
         end
       end
@@ -178,11 +178,11 @@ describe ProductImport::InventoryResetStrategy do
           instance_double(ActiveRecord::Relation, update_all: true)
         end
 
-        before { allow(VariantOverride).to receive(:where) { relation } }
+        before { allow(VariantOverride).to(receive(:where) { relation }) }
 
         it 'does not update any DB record' do
           inventory_reset.reset(supplier_ids)
-          expect(relation).not_to have_received(:update_all)
+          expect(relation).not_to(have_received(:update_all))
         end
       end
 
@@ -192,11 +192,11 @@ describe ProductImport::InventoryResetStrategy do
           instance_double(ActiveRecord::Relation, update_all: true)
         end
 
-        before { allow(VariantOverride).to receive(:where) { relation } }
+        before { allow(VariantOverride).to(receive(:where) { relation }) }
 
         it 'does not update any DB record' do
           inventory_reset.reset(supplier_ids)
-          expect(relation).not_to have_received(:update_all)
+          expect(relation).not_to(have_received(:update_all))
         end
       end
 
@@ -217,7 +217,7 @@ describe ProductImport::InventoryResetStrategy do
 
           it 'sets their count_on_hand to 0' do
             inventory_reset.reset(supplier_ids)
-            expect(variant_override.reload.count_on_hand).to eq(0)
+            expect(variant_override.reload.count_on_hand).to(eq(0))
           end
         end
 
@@ -234,7 +234,7 @@ describe ProductImport::InventoryResetStrategy do
 
           it 'turns off their on_demand setting' do
             inventory_reset.reset(supplier_ids)
-            expect(variant_override.reload.on_demand).to eq(false)
+            expect(variant_override.reload.on_demand).to(eq(false))
           end
         end
       end

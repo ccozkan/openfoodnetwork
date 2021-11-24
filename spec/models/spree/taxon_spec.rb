@@ -14,7 +14,7 @@ module Spree
       let!(:p1) { create(:simple_product, supplier: e, taxons: [t1, t2]) }
 
       it "finds taxons" do
-        expect(Taxon.supplied_taxons).to eq(e.id => Set.new(p1.taxons.map(&:id)))
+        expect(Taxon.supplied_taxons).to(eq(e.id => Set.new(p1.taxons.map(&:id))))
       end
     end
 
@@ -29,11 +29,11 @@ module Spree
       let!(:p_closed) { create(:simple_product, primary_taxon: t2) }
 
       it "finds all distributed taxons" do
-        expect(Taxon.distributed_taxons(:all)).to eq(e.id => Set.new([t1.id, t2.id]))
+        expect(Taxon.distributed_taxons(:all)).to(eq(e.id => Set.new([t1.id, t2.id])))
       end
 
       it "finds currently distributed taxons" do
-        expect(Taxon.distributed_taxons(:current)).to eq(e.id => Set.new([t1.id]))
+        expect(Taxon.distributed_taxons(:current)).to(eq(e.id => Set.new([t1.id])))
       end
     end
 
@@ -45,50 +45,50 @@ module Spree
 
       it "is touched when a taxon is applied to a product" do
         expect { product.taxons << taxon3 }
-.to change { taxon3.reload.updated_at }
+.to(change { taxon3.reload.updated_at })
       end
 
       it "is touched when assignment of primary_taxon on a product changes" do
         expect do
           product.primary_taxon = taxon2
           product.save
-        end.to change { taxon2.reload.updated_at }
+        end.to(change { taxon2.reload.updated_at })
       end
     end
 
     context "set_permalink" do
       it "should set permalink correctly when no parent present" do
         taxon.set_permalink
-        expect(taxon.permalink).to eq "ruby-on-rails"
+        expect(taxon.permalink).to(eq("ruby-on-rails"))
       end
 
       it "should support Chinese characters" do
         taxon.name = "你好"
         taxon.set_permalink
-        expect(taxon.permalink).to eq 'ni-hao'
+        expect(taxon.permalink).to(eq('ni-hao'))
       end
 
       context "with parent taxon" do
         before do
-          allow(taxon).to receive_messages parent_id: 123
-          allow(taxon).to receive_messages parent: build_stubbed(:taxon, permalink: "brands")
+          allow(taxon).to(receive_messages(parent_id: 123))
+          allow(taxon).to(receive_messages(parent: build_stubbed(:taxon, permalink: "brands")))
         end
 
         it "should set permalink correctly when taxon has parent" do
           taxon.set_permalink
-          expect(taxon.permalink).to eq "brands/ruby-on-rails"
+          expect(taxon.permalink).to(eq("brands/ruby-on-rails"))
         end
 
         it "should set permalink correctly with existing permalink present" do
           taxon.permalink = "b/rubyonrails"
           taxon.set_permalink
-          expect(taxon.permalink).to eq "brands/rubyonrails"
+          expect(taxon.permalink).to(eq("brands/rubyonrails"))
         end
 
         it "should support Chinese characters" do
           taxon.name = "我"
           taxon.set_permalink
-          expect(taxon.permalink).to eq "brands/wo"
+          expect(taxon.permalink).to(eq("brands/wo"))
         end
       end
     end
@@ -100,7 +100,7 @@ module Spree
       it "does not error out" do
         expect do
           taxonomy.root.children.where(name: "Some name").first_or_create
-        end.not_to raise_error
+        end.not_to(raise_error)
       end
     end
   end

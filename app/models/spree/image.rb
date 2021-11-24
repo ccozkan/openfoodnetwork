@@ -62,10 +62,10 @@ large: "600x600>"
 
       if errors.all? { |e| e.type == "Paperclip::Errors::NotIdentifiedByImageMagickError" }
         attachment.errors.clear
-        errors.add :base, I18n.t('spree.admin.products.image_upload_error')
+        errors.add(:base, I18n.t('spree.admin.products.image_upload_error'))
       else
-        errors.add :attachment,
-                   I18n.t('spree.admin.products.paperclip_image_error', attachment_file_name: attachment_file_name)
+        errors.add(:attachment,
+                   I18n.t('spree.admin.products.paperclip_image_error', attachment_file_name: attachment_file_name))
       end
       false
     end

@@ -54,7 +54,7 @@ child: producer_managed,
         click_link 'Products'
         click_link 'Inventory'
 
-        expect(page).to have_select2 'hub_id', options: [hub.name] # Selects the hub automatically when only one is available
+        expect(page).to(have_select2('hub_id', options: [hub.name])) # Selects the hub automatically when only one is available
       end
     end
 
@@ -103,69 +103,69 @@ variant_unit: 'weight',
 
         context "with no overrides" do
           it "displays the list of products with variants" do
-            expect(page).to have_table_row ['PRODUCER', 'PRODUCT', 'PRICE', 'ON HAND', 'ON DEMAND?']
-            expect(page).to have_table_row [producer.name, product.name, '', '', '']
-            expect(page).to have_input "variant-overrides-#{variant.id}-price", placeholder: '1.23'
-            expect(page).to have_input "variant-overrides-#{variant.id}-count_on_hand",
-                                       placeholder: '12'
+            expect(page).to(have_table_row(['PRODUCER', 'PRODUCT', 'PRICE', 'ON HAND', 'ON DEMAND?']))
+            expect(page).to(have_table_row([producer.name, product.name, '', '', '']))
+            expect(page).to(have_input("variant-overrides-#{variant.id}-price", placeholder: '1.23'))
+            expect(page).to(have_input("variant-overrides-#{variant.id}-count_on_hand",
+                                       placeholder: '12'))
 
-            expect(page).to have_table_row [producer_related.name, product_related.name, '', '', '']
-            expect(page).to have_input "variant-overrides-#{variant_related.id}-price",
-                                       placeholder: '2.34'
-            expect(page).to have_input "variant-overrides-#{variant_related.id}-count_on_hand",
-                                       placeholder: '23'
+            expect(page).to(have_table_row([producer_related.name, product_related.name, '', '', '']))
+            expect(page).to(have_input("variant-overrides-#{variant_related.id}-price",
+                                       placeholder: '2.34'))
+            expect(page).to(have_input("variant-overrides-#{variant_related.id}-count_on_hand",
+                                       placeholder: '23'))
 
             # filters the products to those the hub can override
-            expect(page).not_to have_content producer_managed.name
-            expect(page).not_to have_content product_managed.name
-            expect(page).not_to have_content producer_unrelated.name
-            expect(page).not_to have_content product_unrelated.name
+            expect(page).not_to(have_content(producer_managed.name))
+            expect(page).not_to(have_content(product_managed.name))
+            expect(page).not_to(have_content(producer_unrelated.name))
+            expect(page).not_to(have_content(product_unrelated.name))
 
             # Filters based on the producer select filter
-            expect(page).to have_selector "#v_#{variant.id}"
-            expect(page).to have_selector "#v_#{variant_related.id}"
+            expect(page).to(have_selector("#v_#{variant.id}"))
+            expect(page).to(have_selector("#v_#{variant_related.id}"))
             select2_select producer.name, from: 'producer_filter'
-            expect(page).to have_selector "#v_#{variant.id}"
-            expect(page).to have_no_selector "#v_#{variant_related.id}"
+            expect(page).to(have_selector("#v_#{variant.id}"))
+            expect(page).to(have_no_selector("#v_#{variant_related.id}"))
             select2_select 'All', from: 'producer_filter'
 
             # Filters based on the quick search box
-            expect(page).to have_selector "#v_#{variant.id}"
-            expect(page).to have_selector "#v_#{variant_related.id}"
+            expect(page).to(have_selector("#v_#{variant.id}"))
+            expect(page).to(have_selector("#v_#{variant_related.id}"))
             fill_in 'query', with: product.name
-            expect(page).to have_selector "#v_#{variant.id}"
-            expect(page).to have_no_selector "#v_#{variant_related.id}"
+            expect(page).to(have_selector("#v_#{variant.id}"))
+            expect(page).to(have_no_selector("#v_#{variant_related.id}"))
             fill_in 'query', with: ''
 
             # Clears the filters
-            expect(page).to have_selector "tr#v_#{variant.id}"
-            expect(page).to have_selector "tr#v_#{variant_related.id}"
+            expect(page).to(have_selector("tr#v_#{variant.id}"))
+            expect(page).to(have_selector("tr#v_#{variant_related.id}"))
             select2_select producer.name, from: 'producer_filter'
             fill_in 'query', with: product_related.name
-            expect(page).to have_no_selector "tr#v_#{variant.id}"
-            expect(page).to have_no_selector "tr#v_#{variant_related.id}"
+            expect(page).to(have_no_selector("tr#v_#{variant.id}"))
+            expect(page).to(have_no_selector("tr#v_#{variant_related.id}"))
             click_button 'Clear All'
-            expect(page).to have_selector "tr#v_#{variant.id}"
-            expect(page).to have_selector "tr#v_#{variant_related.id}"
+            expect(page).to(have_selector("tr#v_#{variant.id}"))
+            expect(page).to(have_selector("tr#v_#{variant_related.id}"))
 
             # Show/Hide products
             toggle_columns "Hide"
-            expect(page).to have_selector "tr#v_#{variant.id}"
-            expect(page).to have_selector "tr#v_#{variant_related.id}"
+            expect(page).to(have_selector("tr#v_#{variant.id}"))
+            expect(page).to(have_selector("tr#v_#{variant_related.id}"))
             within "tr#v_#{variant.id}" do click_button 'Hide' end
-            expect(page).to have_no_selector "tr#v_#{variant.id}"
-            expect(page).to have_selector "tr#v_#{variant_related.id}"
+            expect(page).to(have_no_selector("tr#v_#{variant.id}"))
+            expect(page).to(have_selector("tr#v_#{variant_related.id}"))
             first("div#views-dropdown").click
             first("div#views-dropdown div.menu div.menu_item", text: "Hidden Products").click
-            expect(page).to have_selector "tr#v_#{variant.id}"
-            expect(page).to have_no_selector "tr#v_#{variant_related.id}"
+            expect(page).to(have_selector("tr#v_#{variant.id}"))
+            expect(page).to(have_no_selector("tr#v_#{variant_related.id}"))
             within "tr#v_#{variant.id}" do click_button 'Add' end
-            expect(page).to have_no_selector "tr#v_#{variant.id}"
-            expect(page).to have_no_selector "tr#v_#{variant_related.id}"
+            expect(page).to(have_no_selector("tr#v_#{variant.id}"))
+            expect(page).to(have_no_selector("tr#v_#{variant_related.id}"))
             first("div#views-dropdown").click
             first("div#views-dropdown div.menu div.menu_item", text: "Inventory Products").click
-            expect(page).to have_selector "tr#v_#{variant.id}"
-            expect(page).to have_selector "tr#v_#{variant_related.id}"
+            expect(page).to(have_selector("tr#v_#{variant.id}"))
+            expect(page).to(have_selector("tr#v_#{variant_related.id}"))
           end
 
           it "creates new overrides" do
@@ -175,20 +175,20 @@ variant_unit: 'weight',
             fill_in "variant-overrides-#{variant.id}-price", with: '777.77'
             select_on_demand variant, :no
             fill_in "variant-overrides-#{variant.id}-count_on_hand", with: '123'
-            expect(page).to have_content "Changes to one override remain unsaved."
+            expect(page).to(have_content("Changes to one override remain unsaved."))
 
             expect do
-              click_button 'Save Changes'
-              expect(page).to have_content "Changes saved."
-            end.to change(VariantOverride, :count).by(1)
+              click_button('Save Changes')
+              expect(page).to(have_content("Changes saved."))
+            end.to(change(VariantOverride, :count).by(1))
 
             vo = VariantOverride.last
-            expect(vo.variant_id).to eq(variant.id)
-            expect(vo.hub_id).to eq(hub.id)
-            expect(vo.sku).to eq("NEWSKU")
-            expect(vo.price).to eq(777.77)
-            expect(vo.on_demand).to eq(false)
-            expect(vo.count_on_hand).to eq(123)
+            expect(vo.variant_id).to(eq(variant.id))
+            expect(vo.hub_id).to(eq(hub.id))
+            expect(vo.sku).to(eq("NEWSKU"))
+            expect(vo.price).to(eq(777.77))
+            expect(vo.on_demand).to(eq(false))
+            expect(vo.count_on_hand).to(eq(123))
           end
 
           describe "creating and then updating the new override" do
@@ -197,62 +197,62 @@ variant_unit: 'weight',
               fill_in "variant-overrides-#{variant.id}-price", with: '777.77'
               select_on_demand variant, :no
               fill_in "variant-overrides-#{variant.id}-count_on_hand", with: '123'
-              expect(page).to have_content "Changes to one override remain unsaved."
+              expect(page).to(have_content("Changes to one override remain unsaved."))
 
               expect do
-                click_button 'Save Changes'
-                expect(page).to have_content "Changes saved."
-              end.to change(VariantOverride, :count).by(1)
+                click_button('Save Changes')
+                expect(page).to(have_content("Changes saved."))
+              end.to(change(VariantOverride, :count).by(1))
 
               # And I update its settings without reloading the page
               fill_in "variant-overrides-#{variant.id}-price", with: '111.11'
               fill_in "variant-overrides-#{variant.id}-count_on_hand", with: '111'
-              expect(page).to have_content "Changes to one override remain unsaved."
+              expect(page).to(have_content("Changes to one override remain unsaved."))
 
               # Then I shouldn't see a new override
               expect do
-                click_button 'Save Changes'
-                expect(page).to have_content "Changes saved."
-              end.to change(VariantOverride, :count).by(0)
+                click_button('Save Changes')
+                expect(page).to(have_content("Changes saved."))
+              end.to(change(VariantOverride, :count).by(0))
 
               # And the override should be updated
               vo = VariantOverride.last
-              expect(vo.variant_id).to eq(variant.id)
-              expect(vo.hub_id).to eq(hub.id)
-              expect(vo.price).to eq(111.11)
-              expect(vo.on_demand).to eq(false)
-              expect(vo.count_on_hand).to eq(111)
+              expect(vo.variant_id).to(eq(variant.id))
+              expect(vo.hub_id).to(eq(hub.id))
+              expect(vo.price).to(eq(111.11))
+              expect(vo.on_demand).to(eq(false))
+              expect(vo.count_on_hand).to(eq(111))
             end
           end
 
           it "displays an error when unauthorised to access the page" do
             fill_in "variant-overrides-#{variant.id}-price", with: '777.77'
             fill_in "variant-overrides-#{variant.id}-count_on_hand", with: '123'
-            expect(page).to have_content "Changes to one override remain unsaved."
+            expect(page).to(have_content("Changes to one override remain unsaved."))
 
             # Set a user without suficient permissions
-            allow_any_instance_of(Spree::Admin::BaseController).to receive(:current_spree_user).and_return(build(:user))
+            allow_any_instance_of(Spree::Admin::BaseController).to(receive(:current_spree_user).and_return(build(:user)))
 
             expect do
-              click_button 'Save Changes'
+              click_button('Save Changes')
 
               # We need to wait_until because the save action is not fast enough for the have_content matcher
               wait_until { page.find("#status-message").text != "Saving..." }
-              expect(page).to have_content "I couldn't get authorisation to save those changes, so they remain unsaved."
-            end.to change(VariantOverride, :count).by(0)
+              expect(page).to(have_content("I couldn't get authorisation to save those changes, so they remain unsaved."))
+            end.to(change(VariantOverride, :count).by(0))
           end
 
           it "displays an error when unauthorised to update a particular override" do
             fill_in "variant-overrides-#{variant_related.id}-price", with: '777.77'
             fill_in "variant-overrides-#{variant_related.id}-count_on_hand", with: '123'
-            expect(page).to have_content "Changes to one override remain unsaved."
+            expect(page).to(have_content("Changes to one override remain unsaved."))
 
             er2.destroy
 
             expect do
-              click_button 'Save Changes'
-              expect(page).to have_content "I couldn't get authorisation to save those changes, so they remain unsaved."
-            end.to change(VariantOverride, :count).by(0)
+              click_button('Save Changes')
+              expect(page).to(have_content("I couldn't get authorisation to save those changes, so they remain unsaved."))
+            end.to(change(VariantOverride, :count).by(0))
           end
         end
 
@@ -318,60 +318,60 @@ resettable: false
           end
 
           it "product values are affected by overrides" do
-            expect(page).to have_input "variant-overrides-#{variant.id}-price",
+            expect(page).to(have_input("variant-overrides-#{variant.id}-price",
 with: '77.77',
-                                                                                placeholder: '1.23'
-            expect(page).to have_input "variant-overrides-#{variant.id}-count_on_hand",
+                                                                                placeholder: '1.23'))
+            expect(page).to(have_input("variant-overrides-#{variant.id}-count_on_hand",
 with: "",
-                                                                                        placeholder: I18n.t("js.variants.on_demand.yes")
-            expect(page).to have_select "variant-overrides-#{variant.id}-on_demand",
-                                        selected: I18n.t("js.variant_overrides.on_demand.yes")
+                                                                                        placeholder: I18n.t("js.variants.on_demand.yes")))
+            expect(page).to(have_select("variant-overrides-#{variant.id}-on_demand",
+                                        selected: I18n.t("js.variant_overrides.on_demand.yes")))
 
-            expect(page).to have_input "variant-overrides-#{variant2.id}-count_on_hand",
+            expect(page).to(have_input("variant-overrides-#{variant2.id}-count_on_hand",
                                        with: "40",
-placeholder: ""
+placeholder: ""))
           end
 
           it "updates existing overrides" do
             fill_in "variant-overrides-#{variant.id}-price", with: '22.22'
             select_on_demand variant, :no
             fill_in "variant-overrides-#{variant.id}-count_on_hand", with: '8888'
-            expect(page).to have_content "Changes to one override remain unsaved."
+            expect(page).to(have_content("Changes to one override remain unsaved."))
 
             expect do
-              click_button 'Save Changes'
-              expect(page).to have_content "Changes saved."
-            end.to change(VariantOverride, :count).by(0)
+              click_button('Save Changes')
+              expect(page).to(have_content("Changes saved."))
+            end.to(change(VariantOverride, :count).by(0))
 
             vo.reload
-            expect(vo.variant_id).to eq(variant.id)
-            expect(vo.hub_id).to eq(hub.id)
-            expect(vo.price).to eq(22.22)
-            expect(vo.on_demand).to eq(false)
-            expect(vo.count_on_hand).to eq(8888)
+            expect(vo.variant_id).to(eq(variant.id))
+            expect(vo.hub_id).to(eq(hub.id))
+            expect(vo.price).to(eq(22.22))
+            expect(vo.on_demand).to(eq(false))
+            expect(vo.count_on_hand).to(eq(8888))
           end
 
           it "updates on_demand settings" do
             select_on_demand variant, :no
             click_button I18n.t("save_changes")
-            expect(page).to have_content I18n.t("js.changes_saved")
+            expect(page).to(have_content(I18n.t("js.changes_saved")))
 
             vo.reload
-            expect(vo.on_demand).to eq(false)
+            expect(vo.on_demand).to(eq(false))
 
             select_on_demand variant, :yes
             click_button I18n.t("save_changes")
-            expect(page).to have_content I18n.t("js.changes_saved")
+            expect(page).to(have_content(I18n.t("js.changes_saved")))
 
             vo.reload
-            expect(vo.on_demand).to eq(true)
+            expect(vo.on_demand).to(eq(true))
 
             select_on_demand variant, :use_producer_settings
             click_button I18n.t("save_changes")
-            expect(page).to have_content I18n.t("js.changes_saved")
+            expect(page).to(have_content(I18n.t("js.changes_saved")))
 
             vo.reload
-            expect(vo.on_demand).to be_nil
+            expect(vo.on_demand).to(be_nil)
           end
 
           # Any new fields added to the VO model need to be added to this test
@@ -398,16 +398,16 @@ placeholder: ""
                 end
               end
             end
-            page.uncheck "variant-overrides-#{variant.id}-resettable"
-            expect(page).to have_content "Changes to 2 overrides remain unsaved."
+            page.uncheck("variant-overrides-#{variant.id}-resettable")
+            expect(page).to(have_content("Changes to 2 overrides remain unsaved."))
 
             expect do
-              click_button 'Save Changes'
-              expect(page).to have_content "Changes saved."
-            end.to change(VariantOverride, :count).by(-2)
+              click_button('Save Changes')
+              expect(page).to(have_content("Changes saved."))
+            end.to(change(VariantOverride, :count).by(-2))
 
-            expect(VariantOverride.where(id: vo.id)).to be_empty
-            expect(VariantOverride.where(id: vo3.id)).to be_empty
+            expect(VariantOverride.where(id: vo.id)).to(be_empty)
+            expect(VariantOverride.where(id: vo3.id)).to(be_empty)
           end
 
           it "resets stock to defaults" do
@@ -416,12 +416,12 @@ placeholder: ""
 "div#bulk-actions-dropdown div.menu div.menu_item",
                   text: "Reset Stock Levels To Defaults"
 ).click
-            expect(page).to have_content 'Stocks reset to defaults.'
+            expect(page).to(have_content('Stocks reset to defaults.'))
             vo.reload
-            expect(page).to have_input "variant-overrides-#{variant.id}-count_on_hand",
+            expect(page).to(have_input("variant-overrides-#{variant.id}-count_on_hand",
                                        with: "1000",
-placeholder: ""
-            expect(vo.count_on_hand).to eq(1000)
+placeholder: ""))
+            expect(vo.count_on_hand).to(eq(1000))
           end
 
           it "doesn't reset stock levels if the behaviour is disabled" do
@@ -431,10 +431,10 @@ placeholder: ""
                   text: "Reset Stock Levels To Defaults"
 ).click
             vo_no_reset.reload
-            expect(page).to have_input "variant-overrides-#{variant2.id}-count_on_hand",
+            expect(page).to(have_input("variant-overrides-#{variant2.id}-count_on_hand",
                                        with: "40",
-placeholder: ""
-            expect(vo_no_reset.count_on_hand).to eq(40)
+placeholder: ""))
+            expect(vo_no_reset.count_on_hand).to(eq(40))
           end
 
           it "prompts to save changes before reset if any are pending" do
@@ -444,7 +444,7 @@ placeholder: ""
 "div#bulk-actions-dropdown div.menu div.menu_item",
                   text: "Reset Stock Levels To Defaults"
 ).click
-            expect(page).to have_content "Save changes first"
+            expect(page).to(have_content("Save changes first"))
           end
 
           describe "ensuring that on demand and count on hand settings are compatible" do
@@ -453,20 +453,20 @@ placeholder: ""
               select_on_demand variant, :no
               fill_in "variant-overrides-#{variant.id}-count_on_hand", with: "200"
               select_on_demand variant, :yes
-              expect(page).to have_input "variant-overrides-#{variant.id}-count_on_hand", with: ""
+              expect(page).to(have_input("variant-overrides-#{variant.id}-count_on_hand", with: ""))
 
               # It clears count_on_hand when selecting nil on_demand.
               select_on_demand variant, :no
               fill_in "variant-overrides-#{variant.id}-count_on_hand", with: "200"
               select_on_demand variant, :use_producer_settings
-              expect(page).to have_input "variant-overrides-#{variant.id}-count_on_hand", with: ""
+              expect(page).to(have_input("variant-overrides-#{variant.id}-count_on_hand", with: ""))
 
               # It saves the changes.
               click_button I18n.t("save_changes")
-              expect(page).to have_content I18n.t("js.changes_saved")
+              expect(page).to(have_content(I18n.t("js.changes_saved")))
               vo.reload
-              expect(vo.count_on_hand).to be_nil
-              expect(vo.on_demand).to be_nil
+              expect(vo.count_on_hand).to(be_nil)
+              expect(vo.on_demand).to(be_nil)
             end
 
             it "provides explanation when attempting to save variant override with incompatible stock settings" do
@@ -474,7 +474,7 @@ placeholder: ""
               select_on_demand variant, :no
               fill_in "variant-overrides-#{variant.id}-count_on_hand", with: "1111"
               click_button I18n.t("save_changes")
-              expect(page).to have_content I18n.t("js.changes_saved")
+              expect(page).to(have_content(I18n.t("js.changes_saved")))
 
               # Make stock settings incompatible.
               select_on_demand variant, :no
@@ -482,12 +482,12 @@ placeholder: ""
 
               # It does not save the changes.
               click_button I18n.t("save_changes")
-              expect(page).to have_content I18n.t("activerecord.errors.models.variant_override.count_on_hand.limited_stock_but_no_count_on_hand")
-              expect(page).to have_no_content I18n.t("js.changes_saved")
+              expect(page).to(have_content(I18n.t("activerecord.errors.models.variant_override.count_on_hand.limited_stock_but_no_count_on_hand")))
+              expect(page).to(have_no_content(I18n.t("js.changes_saved")))
 
               vo.reload
-              expect(vo.count_on_hand).to eq(1111)
-              expect(vo.on_demand).to eq(false)
+              expect(vo.count_on_hand).to(eq(1111))
+              expect(vo.on_demand).to(eq(false))
             end
           end
         end
@@ -510,8 +510,8 @@ placeholder: ""
       it "shows the overridden price" do
         select2_select product.name, from: 'add_variant_id', search: true
         find('button.add_variant').click
-        expect(page).to have_selector("table.index tbody tr") # Wait for JS
-        expect(page).to have_content(product.variants.first.variant_overrides.first.price)
+        expect(page).to(have_selector("table.index tbody tr")) # Wait for JS
+        expect(page).to(have_content(product.variants.first.variant_overrides.first.price))
       end
     end
 
@@ -531,30 +531,30 @@ placeholder: ""
         end
 
         it "alerts the user to the presence of new products, and allows them to be added or hidden" do
-          expect(page).to have_no_selector "table#variant-overrides tr#v_#{variant1.id}"
-          expect(page).to have_no_selector "table#variant-overrides tr#v_#{variant2.id}"
+          expect(page).to(have_no_selector("table#variant-overrides tr#v_#{variant1.id}"))
+          expect(page).to(have_no_selector("table#variant-overrides tr#v_#{variant2.id}"))
 
-          expect(page).to have_selector '.alert-row span.message',
-                                        text: "There are 1 new products available to add to your inventory."
+          expect(page).to(have_selector('.alert-row span.message',
+                                        text: "There are 1 new products available to add to your inventory."))
           click_button "Review Now"
 
-          expect(page).to have_table_row ['PRODUCER', 'PRODUCT', 'VARIANT', 'ADD', 'HIDE']
-          expect(page).to have_selector "table#new-products tr#v_#{variant1.id}"
-          expect(page).to have_selector "table#new-products tr#v_#{variant2.id}"
+          expect(page).to(have_table_row(['PRODUCER', 'PRODUCT', 'VARIANT', 'ADD', 'HIDE']))
+          expect(page).to(have_selector("table#new-products tr#v_#{variant1.id}"))
+          expect(page).to(have_selector("table#new-products tr#v_#{variant2.id}"))
           within "table#new-products tr#v_#{variant1.id}" do click_button 'Add' end
           within "table#new-products tr#v_#{variant2.id}" do click_button 'Hide' end
-          expect(page).to have_no_selector "table#new-products tr#v_#{variant1.id}"
-          expect(page).to have_no_selector "table#new-products tr#v_#{variant2.id}"
+          expect(page).to(have_no_selector("table#new-products tr#v_#{variant1.id}"))
+          expect(page).to(have_no_selector("table#new-products tr#v_#{variant2.id}"))
           click_button "Back to my inventory"
 
-          expect(page).to have_selector "table#variant-overrides tr#v_#{variant1.id}"
-          expect(page).to have_no_selector "table#variant-overrides tr#v_#{variant2.id}"
+          expect(page).to(have_selector("table#variant-overrides tr#v_#{variant1.id}"))
+          expect(page).to(have_no_selector("table#variant-overrides tr#v_#{variant2.id}"))
 
           first("div#views-dropdown").click
           first("div#views-dropdown div.menu div.menu_item", text: "Hidden Products").click
 
-          expect(page).to have_no_selector "table#hidden-products tr#v_#{variant1.id}"
-          expect(page).to have_selector "table#hidden-products tr#v_#{variant2.id}"
+          expect(page).to(have_no_selector("table#hidden-products tr#v_#{variant1.id}"))
+          expect(page).to(have_selector("table#hidden-products tr#v_#{variant2.id}"))
         end
       end
     end
@@ -579,19 +579,19 @@ placeholder: ""
       login_as supplier.users.first
       visit admin_inventory_path
 
-      expect(page).to have_text first_variant.name
-      expect(page).to have_selector "tr.product", count: 10
-      expect(page).to have_button "Show more"
-      expect(page).to have_button "Show all (91  More)"
+      expect(page).to(have_text(first_variant.name))
+      expect(page).to(have_selector("tr.product", count: 10))
+      expect(page).to(have_button("Show more"))
+      expect(page).to(have_button("Show all (91  More)"))
 
       click_button "Show all (91  More)"
-      expect(page).to have_selector "tr.product", count: 101
-      expect(page).to have_text last_variant.name
+      expect(page).to(have_selector("tr.product", count: 101))
+      expect(page).to(have_text(last_variant.name))
     end
   end
 
   def select_on_demand(variant, value_sym)
     option_label = I18n.t(value_sym, scope: "js.variant_overrides.on_demand")
-    select option_label, from: "variant-overrides-#{variant.id}-on_demand"
+    select(option_label, from: "variant-overrides-#{variant.id}-on_demand")
   end
 end

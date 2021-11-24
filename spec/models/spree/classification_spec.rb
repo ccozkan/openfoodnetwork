@@ -11,9 +11,9 @@ module Spree
       classification = Classification.create(taxon: taxon, product: product)
       product.update(primary_taxon: taxon)
 
-      expect(classification.destroy).to be false
-      expect(classification.errors.messages[:base]).to eq(["Taxon #{taxon.name} is the primary taxon of #{product.name} and cannot be deleted"])
-      expect(classification.reload).to be
+      expect(classification.destroy).to(be(false))
+      expect(classification.errors.messages[:base]).to(eq(["Taxon #{taxon.name} is the primary taxon of #{product.name} and cannot be deleted"]))
+      expect(classification.reload).to(be)
     end
   end
 end

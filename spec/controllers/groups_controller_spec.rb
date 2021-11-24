@@ -10,6 +10,6 @@ describe GroupsController, type: :controller do
 
   it "loads all enterprises for group" do
     get :index
-    expect(response.body).to have_text enterprise.id
+    expect(response.body).to(have_text(enterprise.id))
   end
 end

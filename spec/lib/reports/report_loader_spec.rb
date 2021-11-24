@@ -20,7 +20,7 @@ describe Reporting::ReportLoader do
   let(:report_subtypes) { ["green", "yellow"] }
 
   before do
-    allow(report_base_class).to receive(:report_subtypes).and_return(report_subtypes)
+    allow(report_base_class).to(receive(:report_subtypes).and_return(report_subtypes))
   end
 
   describe "#report_class" do
@@ -28,7 +28,7 @@ describe Reporting::ReportLoader do
       let(:arguments) { ["bananas", "yellow"] }
 
       it "returns a report class when given type and subtype" do
-        expect(service.report_class).to eq Reporting::Reports::Bananas::Yellow
+        expect(service.report_class).to(eq(Reporting::Reports::Bananas::Yellow))
       end
     end
 
@@ -37,7 +37,7 @@ describe Reporting::ReportLoader do
         let(:arguments) { ["bananas"] }
 
         it "returns first listed report type" do
-          expect(service.report_class).to eq Reporting::Reports::Bananas::Green
+          expect(service.report_class).to(eq(Reporting::Reports::Bananas::Green))
         end
       end
 
@@ -46,7 +46,7 @@ describe Reporting::ReportLoader do
         let(:report_subtypes) { [] }
 
         it "returns base class" do
-          expect(service.report_class).to eq Reporting::Reports::Bananas::Base
+          expect(service.report_class).to(eq(Reporting::Reports::Bananas::Base))
         end
       end
 
@@ -56,7 +56,7 @@ describe Reporting::ReportLoader do
 
         it "raises an error" do
           expect { service.report_class }
-.to raise_error(Reporting::Errors::ReportNotFound)
+.to(raise_error(Reporting::Errors::ReportNotFound))
         end
       end
     end
@@ -67,7 +67,7 @@ describe Reporting::ReportLoader do
       let(:arguments) { ["bananas"] }
 
       it "returns the first report type" do
-        expect(service.default_report_subtype).to eq report_base_class.report_subtypes.first
+        expect(service.default_report_subtype).to(eq(report_base_class.report_subtypes.first))
       end
     end
 
@@ -76,7 +76,7 @@ describe Reporting::ReportLoader do
       let(:report_subtypes) { [] }
 
       it "returns base" do
-        expect(service.default_report_subtype).to eq "base"
+        expect(service.default_report_subtype).to(eq("base"))
       end
     end
 
@@ -86,7 +86,7 @@ describe Reporting::ReportLoader do
 
       it "raises an error" do
         expect { service.report_class }
-.to raise_error(Reporting::Errors::ReportNotFound)
+.to(raise_error(Reporting::Errors::ReportNotFound))
       end
     end
   end
@@ -96,7 +96,7 @@ describe Reporting::ReportLoader do
       let(:arguments) { ["bananas"] }
 
       it "returns a list of report subtypes for a given report" do
-        expect(service.report_subtypes).to eq report_subtypes
+        expect(service.report_subtypes).to(eq(report_subtypes))
       end
     end
 
@@ -105,7 +105,7 @@ describe Reporting::ReportLoader do
       let(:report_subtypes) { [] }
 
       it "returns an empty array" do
-        expect(service.report_subtypes).to eq []
+        expect(service.report_subtypes).to(eq([]))
       end
     end
   end

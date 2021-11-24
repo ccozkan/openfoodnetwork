@@ -24,13 +24,13 @@ module Spree
       end
 
       def generate_template(form_builder, method, options = {})
-        escape_javascript generate_html(form_builder, method, options)
+        escape_javascript(generate_html(form_builder, method, options))
       end
 
       def remove_nested(fields)
         out = ''
         out << fields.hidden_field(:_destroy) unless fields.object.new_record?
-        out << (link_to icon('icon-remove'), "#", class: 'remove')
+        out << (link_to(icon('icon-remove'), "#", class: 'remove'))
         out.html_safe
       end
     end

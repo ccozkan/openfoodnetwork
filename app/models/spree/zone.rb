@@ -46,7 +46,7 @@ allow_destroy: true,
       return unless matches =
  includes(:zone_members)
    .order('zone_members_count', 'created_at')
-   .select { |zone| zone.include? address }
+   .select { |zone| zone.include?(address) }
 
       ['state', 'country'].each do |zone_kind|
         if match = matches.detect { |zone| zone_kind == zone.kind }

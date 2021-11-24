@@ -22,15 +22,15 @@ module Admin
     private
 
     def export_report
-      render report_format.to_sym => @report.public_send("to_#{report_format}"),
-             :filename => report_filename
+      render(report_format.to_sym => @report.public_send("to_#{report_format}"),
+             :filename => report_filename)
     end
 
     def render_report
       assign_view_data
       load_form_options
 
-      render report_type
+      render(report_type)
     end
 
     def assign_view_data

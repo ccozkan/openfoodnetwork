@@ -10,7 +10,7 @@ module Spree
     context '#save' do
       it 'should update inventory, totals, and tax' do
         # Regression check for Spree #1481
-        expect(line_item.order).to receive(:create_tax_charge!)
+        expect(line_item.order).to(receive(:create_tax_charge!))
         line_item.quantity = 2
         line_item.save
       end
@@ -19,18 +19,18 @@ module Spree
     context '#destroy' do
       # Regression test for Spree #1481
       it "applies tax adjustments" do
-        expect(line_item.order).to receive(:create_tax_charge!)
+        expect(line_item.order).to(receive(:create_tax_charge!))
         line_item.destroy
       end
 
       it "fetches deleted products" do
         line_item.product.destroy
-        expect(line_item.reload.product).to be_a Spree::Product
+        expect(line_item.reload.product).to(be_a(Spree::Product))
       end
 
       it "fetches deleted variants" do
         line_item.variant.destroy
-        expect(line_item.reload.variant).to be_a Spree::Variant
+        expect(line_item.reload.variant).to(be_a(Spree::Variant))
       end
     end
 
@@ -41,8 +41,8 @@ module Spree
         line_item.currency = nil
         line_item.copy_price
         variant = line_item.variant
-        expect(line_item.price).to eq variant.price
-        expect(line_item.currency).to eq variant.currency
+        expect(line_item.price).to(eq(variant.price))
+        expect(line_item.currency).to(eq(variant.currency))
       end
     end
 
@@ -51,7 +51,7 @@ module Spree
       it "copies over a variant's tax category" do
         line_item.tax_category = nil
         line_item.copy_tax_category
-        expect(line_item.tax_category).to eq line_item.variant.product.tax_category
+        expect(line_item.tax_category).to(eq(line_item.variant.product.tax_category))
       end
     end
 
@@ -68,14 +68,14 @@ module Spree
       end
 
       it "returns a Spree::Money representing the total for this line item" do
-        expect(line_item.money.to_s).to eq "$7.00"
+        expect(line_item.money.to_s).to(eq("$7.00"))
       end
     end
 
     describe '.single_money' do
       before { line_item.price = 3.50 }
       it "returns a Spree::Money representing the price for one variant" do
-        expect(line_item.single_money.to_s).to eq "$3.50"
+        expect(line_item.single_money.to_s).to(eq("$3.50"))
       end
     end
 
@@ -85,7 +85,7 @@ module Spree
 
       context "nothing left on stock" do
         before do
-          variant.stock_items.update_all count_on_hand: 5, backorderable: false
+          variant.stock_items.update_all(count_on_hand: 5, backorderable: false)
           order.contents.add(variant, 5)
           order.create_proposed_shipments
           order.finalize!
@@ -97,7 +97,7 @@ module Spree
           line_item.target_shipment = order.shipments.first
 
           line_item.save
-          expect(line_item.errors[:quantity]).to be_empty
+          expect(line_item.errors[:quantity]).to(be_empty)
         end
 
         it "doesnt allow to increase item quantity" do
@@ -106,13 +106,13 @@ module Spree
           line_item.target_shipment = order.shipments.first
 
           line_item.save
-          expect(line_item.errors[:quantity].first).to include "is out of stock"
+          expect(line_item.errors[:quantity].first).to(include("is out of stock"))
         end
       end
 
       context "2 items left on stock" do
         before do
-          variant.stock_items.update_all count_on_hand: 7, backorderable: false
+          variant.stock_items.update_all(count_on_hand: 7, backorderable: false)
           order.contents.add(variant, 5)
           order.create_proposed_shipments
           order.finalize!
@@ -124,7 +124,7 @@ module Spree
           line_item.target_shipment = order.shipments.first
 
           line_item.save
-          expect(line_item.errors[:quantity]).to be_empty
+          expect(line_item.errors[:quantity]).to(be_empty)
         end
 
         it "doesnt allow to increase quantity over stock availability" do
@@ -133,7 +133,7 @@ module Spree
           line_item.target_shipment = order.shipments.first
 
           line_item.save
-          expect(line_item.errors[:quantity].first).to include "is out of stock"
+          expect(line_item.errors[:quantity].first).to(include("is out of stock"))
         end
       end
     end
@@ -165,9 +165,9 @@ module Spree
 
       it "finds line items for products supplied by one of a number of enterprises" do
         li1; li2
-        expect(LineItem.supplied_by_any([s1])).to eq([li1])
-        expect(LineItem.supplied_by_any([s2])).to eq([li2])
-        expect(LineItem.supplied_by_any([s1, s2])).to match_array [li1, li2]
+        expect(LineItem.supplied_by_any([s1])).to(eq([li1]))
+        expect(LineItem.supplied_by_any([s2])).to(eq([li2]))
+        expect(LineItem.supplied_by_any([s1, s2])).to(match_array([li1, li2]))
       end
 
       describe "finding line items with and without tax" do
@@ -183,29 +183,29 @@ module Spree
         end
 
         it "finds line items with tax" do
-          expect(LineItem.with_tax).to eq([li1])
+          expect(LineItem.with_tax).to(eq([li1]))
         end
 
         it "finds line items without tax" do
-          expect(LineItem.without_tax).to eq([li2])
+          expect(LineItem.without_tax).to(eq([li2]))
         end
       end
 
       describe "#sorted_by_name_and_unit_value" do
         it "finds line items sorted by name and unit_value" do
-          expect(o.line_items.sorted_by_name_and_unit_value).to eq([li6, li5, li4, li3])
+          expect(o.line_items.sorted_by_name_and_unit_value).to(eq([li6, li5, li4, li3]))
         end
 
         it "includes soft-deleted products/variants" do
           li3.variant.product.destroy
 
-          expect(o.line_items.reload.sorted_by_name_and_unit_value).to eq([li6, li5, li4, li3])
-          expect(o.line_items.sorted_by_name_and_unit_value.to_sql).to_not match "deleted_at"
+          expect(o.line_items.reload.sorted_by_name_and_unit_value).to(eq([li6, li5, li4, li3]))
+          expect(o.line_items.sorted_by_name_and_unit_value.to_sql).to_not(match("deleted_at"))
         end
       end
 
       it "finds line items from a given order cycle" do
-        expect(LineItem.from_order_cycle(oc_order.order_cycle).first.id).to eq oc_order.line_items.first.id
+        expect(LineItem.from_order_cycle(oc_order.order_cycle).first.id).to(eq(oc_order.line_items.first.id))
       end
     end
 
@@ -214,39 +214,39 @@ module Spree
       let!(:li) { create(:line_item, variant: v, quantity: 10, max_quantity: 10) }
 
       before do
-        v.update! on_hand: 5
+        v.update!(on_hand: 5)
       end
 
       it "caps quantity" do
         li.cap_quantity_at_stock!
-        expect(li.reload.quantity).to eq 5
+        expect(li.reload.quantity).to(eq(5))
       end
 
       it "does not cap max_quantity" do
         li.cap_quantity_at_stock!
-        expect(li.reload.max_quantity).to eq 10
+        expect(li.reload.max_quantity).to(eq(10))
       end
 
       it "works for products without max_quantity" do
-        li.update_column :max_quantity, nil
+        li.update_column(:max_quantity, nil)
         li.cap_quantity_at_stock!
         li.reload
-        expect(li.quantity).to eq 5
-        expect(li.max_quantity).to be nil
+        expect(li.quantity).to(eq(5))
+        expect(li.max_quantity).to(be(nil))
       end
 
       it "does nothing for on_demand items" do
-        v.update! on_demand: true
+        v.update!(on_demand: true)
         li.cap_quantity_at_stock!
         li.reload
-        expect(li.quantity).to eq 10
-        expect(li.max_quantity).to eq 10
+        expect(li.quantity).to(eq(10))
+        expect(li.max_quantity).to(eq(10))
       end
 
       it "caps at zero when stock is negative" do
         v.__send__(:stock_item).update_column(:count_on_hand, -2)
         li.cap_quantity_at_stock!
-        expect(li.reload.quantity).to eq 0
+        expect(li.reload.quantity).to(eq(0))
       end
 
       context "when a variant override is in place" do
@@ -263,7 +263,7 @@ module Spree
 
         it "caps quantity to override stock level" do
           li.cap_quantity_at_stock!
-          expect(li.quantity).to eq 2
+          expect(li.quantity).to(eq(2))
         end
       end
     end
@@ -298,32 +298,32 @@ module Spree
         end
 
         it "creates a shipment without backordered items" do
-          expect(order.shipment.manifest.count).to eq 1
-          expect(order.shipment.manifest.first.quantity).to eq 10
-          expect(order.shipment.manifest.first.states).to eq 'on_hand' => 10
-          expect(order.shipment.manifest.first.variant).to eq line_item.variant
+          expect(order.shipment.manifest.count).to(eq(1))
+          expect(order.shipment.manifest.first.quantity).to(eq(10))
+          expect(order.shipment.manifest.first.states).to(eq('on_hand' => 10))
+          expect(order.shipment.manifest.first.variant).to(eq(line_item.variant))
         end
 
         it "does not reduce the variant's stock level" do
-          expect(variant_on_demand.reload.on_hand).to eq 1
+          expect(variant_on_demand.reload.on_hand).to(eq(1))
         end
 
         it "does not mark inventory units as backorderd" do
           backordered_units = order.shipments.first.inventory_units.any?(&:backordered?)
-          expect(backordered_units).to be false
+          expect(backordered_units).to(be(false))
         end
 
         it "does not mark the shipment as backorderd" do
-          expect(order.shipments.first.backordered?).to be false
+          expect(order.shipments.first.backordered?).to(be(false))
         end
 
         it "allows the order to be shipped" do
-          expect(order.ready_to_ship?).to be true
+          expect(order.ready_to_ship?).to(be(true))
         end
 
         it "does not change stock levels when cancelled" do
           order.cancel!
-          expect(variant_on_demand.reload.on_hand).to eq 1
+          expect(variant_on_demand.reload.on_hand).to(eq(1))
         end
       end
     end
@@ -339,21 +339,21 @@ module Spree
           let!(:vo) { create(:variant_override, hub: shop, variant: variant, count_on_hand: 3) }
 
           it "draws stock from the variant override" do
-            expect(vo.reload.count_on_hand).to eq 3
+            expect(vo.reload.count_on_hand).to(eq(3))
             expect { line_item.increment!(:quantity) }
-.to_not change {
+.to_not(change {
                                                                Spree::Variant.find(variant.id).on_hand
-                                                             }
-            expect(vo.reload.count_on_hand).to eq 2
+                                                             })
+            expect(vo.reload.count_on_hand).to(eq(2))
           end
         end
 
         context "when a variant override does not apply" do
           it "draws stock from the variant" do
             expect { line_item.increment!(:quantity) }
-.to change {
+.to(change {
                                                            Spree::Variant.find(variant.id).on_hand
-                                                         }.by(-1)
+                                                         }.by(-1))
           end
         end
       end
@@ -370,18 +370,18 @@ module Spree
           let!(:vo) { create(:variant_override, hub: shop, variant: variant, count_on_hand: 3) }
 
           it "restores stock to the variant override" do
-            expect(vo.reload.count_on_hand).to eq 3
+            expect(vo.reload.count_on_hand).to(eq(3))
             expect { line_item.destroy }
-.to_not change { Spree::Variant.find(variant.id).on_hand }
-            expect(vo.reload.count_on_hand).to eq 4
+.to_not(change { Spree::Variant.find(variant.id).on_hand })
+            expect(vo.reload.count_on_hand).to(eq(4))
           end
         end
 
         context "when a variant override does not apply" do
           it "restores stock to the variant" do
             expect { line_item.destroy }
-.to change { Spree::Variant.find(variant.id).on_hand }
-.by(1)
+.to(change { Spree::Variant.find(variant.id).on_hand }
+.by(1))
           end
         end
       end
@@ -398,31 +398,31 @@ module Spree
       end
 
       context "when the variant is on_demand" do
-        it { expect(li_on_demand.sufficient_stock?).to be true }
+        it { expect(li_on_demand.sufficient_stock?).to(be(true)) }
       end
 
       context "when stock on the variant is sufficient" do
-        it { expect(li.sufficient_stock?).to be true }
+        it { expect(li.sufficient_stock?).to(be(true)) }
       end
 
       context "when the stock on the variant is not sufficient" do
         before { v.update(on_hand: 4) }
 
         context "when no variant override is in place" do
-          it { expect(li.sufficient_stock?).to be false }
+          it { expect(li.sufficient_stock?).to(be(false)) }
         end
 
         context "when a variant override is in place" do
           let!(:vo) { create(:variant_override, hub: hub, variant: v, count_on_hand: 5) }
 
           context "and stock on the variant override is sufficient" do
-            it { expect(li.sufficient_stock?).to be true }
+            it { expect(li.sufficient_stock?).to(be(true)) }
           end
 
           context "and stock on the variant override is not sufficient" do
             before { vo.update(count_on_hand: 4) }
 
-            it { expect(li.sufficient_stock?).to be false }
+            it { expect(li.sufficient_stock?).to(be(false)) }
           end
         end
       end
@@ -432,10 +432,10 @@ module Spree
       it "does not return fractional cents" do
         li = LineItem.new
 
-        allow(li).to receive(:price) { 55.55 }
-        allow(li).to receive_message_chain(:adjustments, :enterprise_fee, :sum) { 11.11 }
-        allow(li).to receive(:quantity) { 2 }
-        expect(li.price_with_adjustments).to eq(61.11)
+        allow(li).to(receive(:price) { 55.55 })
+        allow(li).to(receive_message_chain(:adjustments, :enterprise_fee, :sum) { 11.11 })
+        allow(li).to(receive(:quantity) { 2 })
+        expect(li.price_with_adjustments).to(eq(61.11))
       end
     end
 
@@ -443,10 +443,10 @@ module Spree
       it "returns a value consistent with price_with_adjustments" do
         li = LineItem.new
 
-        allow(li).to receive(:price) { 55.55 }
-        allow(li).to receive_message_chain(:adjustments, :enterprise_fee, :sum) { 11.11 }
-        allow(li).to receive(:quantity) { 2 }
-        expect(li.amount_with_adjustments).to eq(122.22)
+        allow(li).to(receive(:price) { 55.55 })
+        allow(li).to(receive_message_chain(:adjustments, :enterprise_fee, :sum) { 11.11 })
+        allow(li).to(receive(:quantity) { 2 })
+        expect(li.amount_with_adjustments).to(eq(122.22))
       end
     end
 
@@ -467,21 +467,21 @@ included: true
 
       context "checking if a line item has tax included" do
         it "returns true when it does" do
-          expect(li_tax).to have_tax
+          expect(li_tax).to(have_tax)
         end
 
         it "returns false otherwise" do
-          expect(li_no_tax).to_not have_tax
+          expect(li_no_tax).to_not(have_tax)
         end
       end
 
       context "calculating the amount of included tax" do
         it "returns the included tax when present" do
-          expect(li_tax.included_tax).to eq 10.00
+          expect(li_tax.included_tax).to(eq(10.00))
         end
 
         it "returns 0.00 otherwise" do
-          expect(li_no_tax.included_tax).to eq 0.00
+          expect(li_no_tax.included_tax).to(eq(0.00))
         end
       end
     end
@@ -504,9 +504,9 @@ variant_unit_scale: 1,
             let(:li) { build(:line_item, order: o, variant: v, quantity: 3) }
 
             it "initializes final_weight_volume from the variant's unit_value" do
-              expect(li.final_weight_volume).to be nil
+              expect(li.final_weight_volume).to(be(nil))
               li.save
-              expect(li.final_weight_volume).to eq 3000
+              expect(li.final_weight_volume).to(eq(3000))
             end
           end
 
@@ -516,9 +516,9 @@ variant_unit_scale: 1,
             end
 
             it "uses the changed value" do
-              expect(li.final_weight_volume).to eq 2000
+              expect(li.final_weight_volume).to(eq(2000))
               li.save
-              expect(li.final_weight_volume).to eq 2000
+              expect(li.final_weight_volume).to(eq(2000))
             end
           end
         end
@@ -527,7 +527,7 @@ variant_unit_scale: 1,
           let!(:li) { create(:line_item, order: o, variant: v, quantity: 3) }
 
           before do
-            expect(li.final_weight_volume).to eq 3000
+            expect(li.final_weight_volume).to(eq(3000))
           end
 
           context "when final_weight_volume is changed" do
@@ -539,7 +539,7 @@ variant_unit_scale: 1,
               end
 
               it "uses the value given" do
-                expect(li.final_weight_volume).to eq 2000
+                expect(li.final_weight_volume).to(eq(2000))
               end
             end
 
@@ -550,7 +550,7 @@ variant_unit_scale: 1,
               end
 
               it "uses the value given" do
-                expect(li.final_weight_volume).to eq 2000
+                expect(li.final_weight_volume).to(eq(2000))
               end
             end
           end
@@ -564,7 +564,7 @@ variant_unit_scale: 1,
               end
 
               it "does not change final_weight_volume" do
-                expect(li.final_weight_volume).to eq 3000
+                expect(li.final_weight_volume).to(eq(3000))
               end
             end
 
@@ -572,13 +572,13 @@ variant_unit_scale: 1,
               context "from > 0" do
                 context "and a final_weight_volume has been set" do
                   before do
-                    expect(li.final_weight_volume).to eq 3000
+                    expect(li.final_weight_volume).to(eq(3000))
                     attrs[:quantity] = 4
                     li.update(attrs)
                   end
 
                   it "scales the final_weight_volume based on the change in quantity" do
-                    expect(li.final_weight_volume).to eq 4000
+                    expect(li.final_weight_volume).to(eq(4000))
                   end
                 end
 
@@ -590,7 +590,7 @@ variant_unit_scale: 1,
                   end
 
                   it "calculates a final_weight_volume from the variants unit_value" do
-                    expect(li.final_weight_volume).to eq 1000
+                    expect(li.final_weight_volume).to(eq(1000))
                   end
                 end
               end
@@ -600,13 +600,13 @@ variant_unit_scale: 1,
 
                 context "and a final_weight_volume has been set" do
                   before do
-                    expect(li.final_weight_volume).to eq 0
+                    expect(li.final_weight_volume).to(eq(0))
                     attrs[:quantity] = 4
                     li.update(attrs)
                   end
 
                   it "recalculates a final_weight_volume from the variants unit_value" do
-                    expect(li.final_weight_volume).to eq 4000
+                    expect(li.final_weight_volume).to(eq(4000))
                   end
                 end
 
@@ -618,7 +618,7 @@ variant_unit_scale: 1,
                   end
 
                   it "calculates a final_weight_volume from the variants unit_value" do
-                    expect(li.final_weight_volume).to eq 1000
+                    expect(li.final_weight_volume).to(eq(1000))
                   end
                 end
               end
@@ -632,45 +632,45 @@ variant_unit_scale: 1,
 
         context "when display_name is blank" do
           before do
-            allow(li).to receive(:unit_to_display) { 'unit_to_display' }
-            allow(li).to receive(:display_name) { '' }
+            allow(li).to(receive(:unit_to_display) { 'unit_to_display' })
+            allow(li).to(receive(:display_name) { '' })
           end
 
           it "returns unit_to_display" do
-            expect(li.full_name).to eq('unit_to_display')
+            expect(li.full_name).to(eq('unit_to_display'))
           end
         end
 
         context "when unit_to_display contains display_name" do
           before do
-            allow(li).to receive(:unit_to_display) { '1kg Jar' }
-            allow(li).to receive(:display_name) { '1kg' }
+            allow(li).to(receive(:unit_to_display) { '1kg Jar' })
+            allow(li).to(receive(:display_name) { '1kg' })
           end
 
           it "returns unit_to_display" do
-            expect(li.full_name).to eq('1kg Jar')
+            expect(li.full_name).to(eq('1kg Jar'))
           end
         end
 
         context "when display_name contains unit_to_display" do
           before do
-            allow(li).to receive(:unit_to_display) { '10kg' }
-            allow(li).to receive(:display_name) { '10kg Box' }
+            allow(li).to(receive(:unit_to_display) { '10kg' })
+            allow(li).to(receive(:display_name) { '10kg Box' })
           end
 
           it "returns display_name" do
-            expect(li.full_name).to eq('10kg Box')
+            expect(li.full_name).to(eq('10kg Box'))
           end
         end
 
         context "otherwise" do
           before do
-            allow(li).to receive(:unit_to_display) { '1 Loaf' }
-            allow(li).to receive(:display_name) { 'Spelt Sourdough' }
+            allow(li).to(receive(:unit_to_display) { '1 Loaf' })
+            allow(li).to(receive(:display_name) { 'Spelt Sourdough' })
           end
 
           it "returns unit_to_display" do
-            expect(li.full_name).to eq('Spelt Sourdough (1 Loaf)')
+            expect(li.full_name).to(eq('Spelt Sourdough (1 Loaf)'))
           end
         end
       end
@@ -678,21 +678,21 @@ variant_unit_scale: 1,
       describe "generating the product and variant name" do
         let(:li) { LineItem.new }
         let(:p) { double(:product, name: 'product') }
-        before { allow(li).to receive(:product) { p } }
+        before { allow(li).to(receive(:product) { p }) }
 
         context "when full_name starts with the product name" do
-          before { allow(li).to receive(:full_name) { p.name + " - something" } }
+          before { allow(li).to(receive(:full_name) { p.name + " - something" }) }
 
           it "does not show the product name twice" do
-            expect(li.product_and_full_name).to eq('product - something')
+            expect(li.product_and_full_name).to(eq('product - something'))
           end
         end
 
         context "when full_name does not start with the product name" do
-          before { allow(li).to receive(:full_name) { "display_name (unit)" } }
+          before { allow(li).to(receive(:full_name) { "display_name (unit)" }) }
 
           it "prepends the product name to the full name" do
-            expect(li.product_and_full_name).to eq('product - display_name (unit)')
+            expect(li.product_and_full_name).to(eq('product - display_name (unit)'))
           end
         end
       end
@@ -700,7 +700,7 @@ variant_unit_scale: 1,
       describe "getting name for display" do
         it "returns product name" do
           li = build_stubbed(:line_item)
-          expect(li.name_to_display).to eq(li.product.name)
+          expect(li.name_to_display).to(eq(li.product.name))
         end
       end
 
@@ -715,13 +715,13 @@ variant_unit_scale: 1,
 
         it "returns options_text" do
           li = build_stubbed(:line_item)
-          allow(li).to receive(:options_text).and_return "ponies"
-          expect(li.unit_to_display).to eq("ponies")
+          allow(li).to(receive(:options_text).and_return("ponies"))
+          expect(li.unit_to_display).to(eq("ponies"))
         end
 
         it "returns options_text based on units" do
-          expect(li1.options_text).to eq("500g")
-          expect(li2.options_text).to eq("1lb")
+          expect(li1.options_text).to(eq("500g"))
+          expect(li2.options_text).to(eq("1lb"))
         end
       end
 
@@ -735,16 +735,16 @@ variant_unit_scale: 1,
         it "removes the old option value and assigns the new one" do
           ov_orig = li.option_values.last
           ov_var  = v.option_values.last
-          allow(li).to receive(:unit_description) { 'foo' }
+          allow(li).to(receive(:unit_description) { 'foo' })
 
           expect do
             li.update_attribute(:final_weight_volume, 10)
-          end.to change(Spree::OptionValue, :count).by(1)
+          end.to(change(Spree::OptionValue, :count).by(1))
 
-          expect(li.option_values).not_to include ov_orig
-          expect(li.option_values).not_to include ov_var
+          expect(li.option_values).not_to(include(ov_orig))
+          expect(li.option_values).not_to(include(ov_var))
           ov = li.option_values.last
-          expect(ov.name).to eq("10g foo")
+          expect(ov.name).to(eq("10g foo"))
         end
       end
 
@@ -758,14 +758,14 @@ variant_unit_scale: 1,
         it "removes the old option value and assigns the new one" do
           ov_orig = li.option_values.last
           ov_new  = v.option_values.last
-          allow(li).to receive(:unit_description) { 'bar' }
+          allow(li).to(receive(:unit_description) { 'bar' })
 
           expect do
             li.update_attribute(:final_weight_volume, 10)
-          end.to change(Spree::OptionValue, :count).by(0)
+          end.to(change(Spree::OptionValue, :count).by(0))
 
-          expect(li.option_values).not_to include ov_orig
-          expect(li.option_values).to     include ov_new
+          expect(li.option_values).not_to(include(ov_orig))
+          expect(li.option_values).to(    include(ov_new))
         end
       end
 
@@ -778,7 +778,7 @@ variant_unit_scale: 1,
             it "returns the unit_value of the variant" do
               # Though note that this has been calculated
               # backwards from the final_weight_volume
-              expect(li.unit_value).to eq 10
+              expect(li.unit_value).to(eq(10))
             end
           end
 
@@ -786,7 +786,7 @@ variant_unit_scale: 1,
             before { li.final_weight_volume = 35 }
 
             it "returns the unit_value of the variant" do
-              expect(li.unit_value).to eq 7
+              expect(li.unit_value).to(eq(7))
             end
           end
 
@@ -794,7 +794,7 @@ variant_unit_scale: 1,
             before { li.final_weight_volume = nil }
 
             it "returns the unit_value of the variant" do
-              expect(li.unit_value).to eq 10
+              expect(li.unit_value).to(eq(10))
             end
           end
         end
@@ -803,7 +803,7 @@ variant_unit_scale: 1,
           before { li.quantity = 0 }
 
           it "returns the unit_value of the variant" do
-            expect(li.unit_value).to eq 10
+            expect(li.unit_value).to(eq(10))
           end
         end
       end
@@ -811,19 +811,19 @@ variant_unit_scale: 1,
 
     describe "deleting unit option values" do
       let!(:p) { create(:simple_product, variant_unit: 'weight', variant_unit_scale: 1) }
-      let!(:ot) { Spree::OptionType.find_by name: 'unit_weight' }
+      let!(:ot) { Spree::OptionType.find_by(name: 'unit_weight') }
       let!(:li) { create(:line_item, product: p) }
 
       it "removes option value associations for unit option types" do
         expect do
           li.delete_unit_option_values
-        end.to change(li.option_values, :count).by(-1)
+        end.to(change(li.option_values, :count).by(-1))
       end
 
       it "does not delete option values" do
         expect do
           li.delete_unit_option_values
-        end.to change(Spree::OptionValue, :count).by(0)
+        end.to(change(Spree::OptionValue, :count).by(0))
       end
     end
 
@@ -834,8 +834,8 @@ variant_unit_scale: 1,
       it "returns the associated variant or product" do
         line_item.variant.delete
 
-        expect(line_item.variant).to eq variant
-        expect(line_item.product).to eq variant.product
+        expect(line_item.variant).to(eq(variant))
+        expect(line_item.product).to(eq(variant.product))
       end
     end
   end

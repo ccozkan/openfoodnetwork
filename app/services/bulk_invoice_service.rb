@@ -8,11 +8,11 @@ class BulkInvoiceService
   end
 
   def start_pdf_job(order_ids)
-    BulkInvoiceJob.perform_later order_ids, "#{file_directory}/#{@id}.pdf"
+    BulkInvoiceJob.perform_later(order_ids, "#{file_directory}/#{@id}.pdf")
   end
 
   def invoice_created?(invoice_id)
-    File.exist? filepath(invoice_id)
+    File.exist?(filepath(invoice_id))
   end
 
   def filepath(invoice_id)

@@ -11,8 +11,8 @@ describe Api::Admin::IndexEnterpriseSerializer do
     end
 
     it "sets 'owned' to false" do
-      serializer = Api::Admin::IndexEnterpriseSerializer.new enterprise, spree_current_user: user
-      expect(serializer.to_json).to match "\"owned\":false"
+      serializer = Api::Admin::IndexEnterpriseSerializer.new(enterprise, spree_current_user: user)
+      expect(serializer.to_json).to(match("\"owned\":false"))
     end
   end
 
@@ -20,8 +20,8 @@ describe Api::Admin::IndexEnterpriseSerializer do
     let(:user) { enterprise.owner }
 
     it "sets 'owned' to true" do
-      serializer = Api::Admin::IndexEnterpriseSerializer.new enterprise, spree_current_user: user
-      expect(serializer.to_json).to match "\"owned\":true"
+      serializer = Api::Admin::IndexEnterpriseSerializer.new(enterprise, spree_current_user: user)
+      expect(serializer.to_json).to(match("\"owned\":true"))
     end
   end
 
@@ -29,8 +29,8 @@ describe Api::Admin::IndexEnterpriseSerializer do
     let(:user) { create(:admin_user) }
 
     it "sets 'owned' to true" do
-      serializer = Api::Admin::IndexEnterpriseSerializer.new enterprise, spree_current_user: user
-      expect(serializer.to_json).to match "\"owned\":true"
+      serializer = Api::Admin::IndexEnterpriseSerializer.new(enterprise, spree_current_user: user)
+      expect(serializer.to_json).to(match("\"owned\":true"))
     end
   end
 end

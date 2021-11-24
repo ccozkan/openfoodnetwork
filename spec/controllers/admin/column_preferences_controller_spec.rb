@@ -48,7 +48,7 @@ visible: true
 
       context "where I don't own the preferences submitted" do
         before do
-          allow(controller).to receive(:spree_current_user) { user2 }
+          allow(controller).to(receive(:spree_current_user) { user2 })
         end
 
         it "prevents me from updating the column preferences" do
@@ -56,13 +56,13 @@ visible: true
 format: :json,
 action_name: "enterprises_index",
                                   column_preferences: column_preference_params
-          expect(ColumnPreference.count).to be 1
+          expect(ColumnPreference.count).to(be(1))
         end
       end
 
       context "where I own the preferences submitted" do
         before do
-          allow(controller).to receive(:spree_current_user) { user1 }
+          allow(controller).to(receive(:spree_current_user) { user1 })
         end
 
         it "allows me to update the column preferences" do
@@ -75,7 +75,7 @@ ColumnPreference.where(
 user_id: user1.id,
 action_name: 'enterprises_index'
 ).count
-).to be 3
+).to(be(3))
         end
       end
     end

@@ -11,8 +11,8 @@ module OpenFoodNetwork
 
     def scope(product)
       product.extend(OpenFoodNetwork::ScopeProductToHub::ScopeProductToHub)
-      product.instance_variable_set :@hub, @hub
-      product.instance_variable_set :@variant_overrides, @variant_overrides
+      product.instance_variable_set(:@hub, @hub)
+      product.instance_variable_set(:@variant_overrides, @variant_overrides)
     end
 
     module ScopeProductToHub

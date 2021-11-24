@@ -16,7 +16,7 @@ describe Spree::UserSessionsController, type: :controller do
           spree_post :create,
 spree_user: { email: user.email, password: user.password },
                               use_route: :spree
-          expect(response).to redirect_to root_path
+          expect(response).to(redirect_to(root_path))
         end
       end
 
@@ -27,7 +27,7 @@ spree_user: { email: user.email, password: user.password },
           spree_post :create,
 spree_user: { email: user.email, password: user.password },
                               use_route: :spree
-          expect(response).to redirect_to checkout_path
+          expect(response).to(redirect_to(checkout_path))
         end
       end
     end

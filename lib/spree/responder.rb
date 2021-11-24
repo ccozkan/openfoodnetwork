@@ -40,11 +40,11 @@ module Spree
     private
 
     def handler(controller, result, status)
-      return result if result.respond_to? :call
+      return result if result.respond_to?(:call)
 
       case result
       when Hash
-        if result[status].is_a? Symbol
+        if result[status].is_a?(Symbol)
           controller.method(result[status])
         else
           result[status]

@@ -11,7 +11,7 @@ describe ProductImport::Settings do
 
     context 'when there are no settings' do
       it 'returns false' do
-        expect(settings.defaults(entry)).to be_falsey
+        expect(settings.defaults(entry)).to(be_falsey)
       end
     end
 
@@ -23,7 +23,7 @@ describe ProductImport::Settings do
 
       context 'and there is no data for the specified entry' do
         it 'returns a falsey' do
-          expect(settings.defaults(entry)).to be_falsey
+          expect(settings.defaults(entry)).to(be_falsey)
         end
       end
 
@@ -34,7 +34,7 @@ describe ProductImport::Settings do
           end
 
           it 'returns a falsey' do
-            expect(settings.defaults(entry)).to be_falsey
+            expect(settings.defaults(entry)).to(be_falsey)
           end
         end
 
@@ -44,7 +44,7 @@ describe ProductImport::Settings do
           end
 
           it 'returns a truthy' do
-            expect(settings.defaults(entry)).to eq('default value')
+            expect(settings.defaults(entry)).to(eq('default value'))
           end
         end
       end
@@ -56,7 +56,7 @@ describe ProductImport::Settings do
       let(:import_settings) { { settings: { foo: 'bar' } } }
 
       it 'returns them' do
-        expect(settings.settings).to eq(foo: 'bar')
+        expect(settings.settings).to(eq(foo: 'bar'))
       end
     end
 
@@ -64,7 +64,7 @@ describe ProductImport::Settings do
       let(:import_settings) { {} }
 
       it 'returns nil' do
-        expect(settings.settings).to be_nil
+        expect(settings.settings).to(be_nil)
       end
     end
   end
@@ -74,7 +74,7 @@ describe ProductImport::Settings do
       let(:import_settings) { { updated_ids: [2] } }
 
       it 'returns them' do
-        expect(settings.updated_ids).to eq([2])
+        expect(settings.updated_ids).to(eq([2]))
       end
     end
 
@@ -82,7 +82,7 @@ describe ProductImport::Settings do
       let(:import_settings) { {} }
 
       it 'returns nil' do
-        expect(settings.updated_ids).to be_nil
+        expect(settings.updated_ids).to(be_nil)
       end
     end
   end
@@ -92,7 +92,7 @@ describe ProductImport::Settings do
       let(:import_settings) { { enterprises_to_reset: [2] } }
 
       it 'returns them' do
-        expect(settings.enterprises_to_reset).to eq([2])
+        expect(settings.enterprises_to_reset).to(eq([2]))
       end
     end
 
@@ -100,7 +100,7 @@ describe ProductImport::Settings do
       let(:import_settings) { {} }
 
       it 'returns nil' do
-        expect(settings.enterprises_to_reset).to be_nil
+        expect(settings.enterprises_to_reset).to(be_nil)
       end
     end
   end
@@ -111,7 +111,7 @@ describe ProductImport::Settings do
         let(:import_settings) { { settings: {} } }
 
         it 'returns false' do
-          expect(settings.importing_into_inventory?).to eq(false)
+          expect(settings.importing_into_inventory?).to(eq(false))
         end
       end
 
@@ -121,7 +121,7 @@ describe ProductImport::Settings do
         end
 
         it 'returns true' do
-          expect(settings.importing_into_inventory?).to eq(true)
+          expect(settings.importing_into_inventory?).to(eq(true))
         end
       end
 
@@ -131,7 +131,7 @@ describe ProductImport::Settings do
         end
 
         it 'returns false' do
-          expect(settings.importing_into_inventory?).to eq(false)
+          expect(settings.importing_into_inventory?).to(eq(false))
         end
       end
     end
@@ -140,7 +140,7 @@ describe ProductImport::Settings do
       let(:import_settings) { {} }
 
       it 'returns falsy' do
-        expect(settings.importing_into_inventory?).to be_falsy
+        expect(settings.importing_into_inventory?).to(be_falsy)
       end
     end
   end
@@ -151,7 +151,7 @@ describe ProductImport::Settings do
 
       it 'raises' do
         expect { settings.reset_all_absent? }
-.to raise_error(NoMethodError)
+.to(raise_error(NoMethodError))
       end
     end
 
@@ -161,7 +161,7 @@ describe ProductImport::Settings do
       end
 
       it 'returns nil' do
-        expect(settings.reset_all_absent?).to be_nil
+        expect(settings.reset_all_absent?).to(be_nil)
       end
     end
 
@@ -171,7 +171,7 @@ describe ProductImport::Settings do
       end
 
       it 'returns true' do
-        expect(settings.reset_all_absent?).to eq(true)
+        expect(settings.reset_all_absent?).to(eq(true))
       end
     end
   end
@@ -186,7 +186,7 @@ describe ProductImport::Settings do
       end
 
       it 'returns false' do
-        expect(settings.data_for_stock_reset?).to eq(false)
+        expect(settings.data_for_stock_reset?).to(eq(false))
       end
     end
 
@@ -199,7 +199,7 @@ describe ProductImport::Settings do
       end
 
       it 'returns false' do
-        expect(settings.data_for_stock_reset?).to eq(false)
+        expect(settings.data_for_stock_reset?).to(eq(false))
       end
     end
 
@@ -212,7 +212,7 @@ describe ProductImport::Settings do
       end
 
       it 'returns false' do
-        expect(settings.data_for_stock_reset?).to eq(false)
+        expect(settings.data_for_stock_reset?).to(eq(false))
       end
     end
 
@@ -226,7 +226,7 @@ describe ProductImport::Settings do
       end
 
       it 'returns true' do
-        expect(settings.data_for_stock_reset?).to eq(true)
+        expect(settings.data_for_stock_reset?).to(eq(true))
       end
     end
   end

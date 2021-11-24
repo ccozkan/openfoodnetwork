@@ -19,7 +19,7 @@ class HomeController < BaseController
   def sell; end
 
   def unauthorized
-    render 'shared/unauthorized', status: :unauthorized
+    render('shared/unauthorized', status: :unauthorized)
   end
 
   private

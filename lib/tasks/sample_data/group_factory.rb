@@ -9,7 +9,7 @@ module SampleData
     include Addressing
 
     def create_samples
-      log "Creating groups"
+      log("Creating groups")
       return if EnterpriseGroup.where(name: "Producer group").exists?
 
       create_group(

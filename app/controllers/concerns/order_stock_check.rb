@@ -7,7 +7,7 @@ module OrderStockCheck
     return if sufficient_stock?
 
     flash[:error] = Spree.t(:inventory_error_flash_for_insufficient_quantity)
-    redirect_to main_app.cart_path
+    redirect_to(main_app.cart_path)
   end
 
   private

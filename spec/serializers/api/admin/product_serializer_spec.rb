@@ -7,6 +7,6 @@ describe Api::Admin::ProductSerializer do
   let(:serializer) { described_class.new(product) }
 
   it "serializes a product" do
-    expect(serializer.to_json).to match(product.name)
+    expect(serializer.to_json).to(match(product.name))
   end
 end

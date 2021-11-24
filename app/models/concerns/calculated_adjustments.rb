@@ -69,7 +69,7 @@ module CalculatedAdjustments
 
   def order_object_for(target)
     # Temporary method for adjustments transition.
-    if target.is_a? Spree::Order
+    if target.is_a?(Spree::Order)
       target
     elsif target.respond_to?(:order)
       target.order

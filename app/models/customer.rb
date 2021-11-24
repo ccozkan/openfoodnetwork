@@ -54,6 +54,6 @@ presence: true,
     return true unless orders.any?
 
     errors.add(:base, I18n.t('admin.customers.destroy.has_associated_orders'))
-    throw :abort
+    throw(:abort)
   end
 end

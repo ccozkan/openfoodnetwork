@@ -63,8 +63,8 @@ order: {
 
   before do
     order_cycle_distributed_variants = double(:order_cycle_distributed_variants)
-    allow(OrderCycleDistributedVariants).to receive(:new).and_return(order_cycle_distributed_variants)
-    allow(order_cycle_distributed_variants).to receive(:distributes_order_variants?).and_return(true)
+    allow(OrderCycleDistributedVariants).to(receive(:new).and_return(order_cycle_distributed_variants))
+    allow(order_cycle_distributed_variants).to(receive(:distributes_order_variants?).and_return(true))
 
     order.reload.update_totals
     set_order order
@@ -87,12 +87,12 @@ order: {
 
       # Checking out a BogusGateway without a source fails at :payment
       # Shipments and payments should then be cleared before rendering checkout
-      expect(response.status).to be 400
-      expect(flash[:error]).to eq I18n.t(:payment_processing_failed)
+      expect(response.status).to(be(400))
+      expect(flash[:error]).to(eq(I18n.t(:payment_processing_failed)))
       order.reload
-      expect(order.shipments.count).to be 0
-      expect(order.payments.count).to be 0
-      expect(order.adjustment_total).to eq 0
+      expect(order.shipments.count).to(be(0))
+      expect(order.payments.count).to(be(0))
+      expect(order.adjustment_total).to(eq(0))
 
       # Add another line item to change the fee totals
       create(:line_item, order: order, quantity: 3, price: 5.00)
@@ -102,13 +102,13 @@ order: {
 
       put update_checkout_path, params: params, as: :json
 
-      expect(response.status).to be 200
+      expect(response.status).to(be(200))
       order.reload
-      expect(order.total).to eq 36
-      expect(order.adjustment_total).to eq 6
-      expect(order.item_total).to eq 30
-      expect(order.shipments.count).to eq 1
-      expect(order.payments.count).to eq 1
+      expect(order.total).to(eq(36))
+      expect(order.adjustment_total).to(eq(6))
+      expect(order.item_total).to(eq(30))
+      expect(order.shipments.count).to(eq(1))
+      expect(order.payments.count).to(eq(1))
     end
   end
 end

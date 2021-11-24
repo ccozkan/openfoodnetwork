@@ -37,7 +37,7 @@ module Api
       check_authorization
 
       def respond_with_conflict(json_hash)
-        render json: json_hash, status: :conflict
+        render(json: json_hash, status: :conflict)
       end
 
       private

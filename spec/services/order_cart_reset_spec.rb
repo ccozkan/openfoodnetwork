@@ -12,7 +12,7 @@ describe OrderCartReset do
     it "empties order" do
       OrderCartReset.new(order, new_distributor.id.to_s).reset_distributor
 
-      expect(order.line_items).to be_empty
+      expect(order.line_items).to(be_empty)
     end
   end
 
@@ -21,26 +21,26 @@ describe OrderCartReset do
     let(:order_cycle_list) { instance_double(Shop::OrderCyclesList) }
 
     before do
-      expect(Shop::OrderCyclesList).to receive(:new).and_return(order_cycle_list)
-      order.update_attribute :order_cycle, order_cycle
+      expect(Shop::OrderCyclesList).to(receive(:new).and_return(order_cycle_list))
+      order.update_attribute(:order_cycle, order_cycle)
     end
 
     it "empties order and makes order cycle nil" do
-      expect(order_cycle_list).to receive(:call).and_return([])
+      expect(order_cycle_list).to(receive(:call).and_return([]))
 
       OrderCartReset.new(order, distributor.id.to_s).reset_other!(nil, nil)
 
-      expect(order.line_items).to be_empty
-      expect(order.order_cycle).to be_nil
+      expect(order.line_items).to(be_empty)
+      expect(order.order_cycle).to(be_nil)
     end
 
     it "selects default Order Cycle if there's one" do
       other_order_cycle = create(:simple_order_cycle, distributors: [distributor])
-      expect(order_cycle_list).to receive(:call).and_return([other_order_cycle])
+      expect(order_cycle_list).to(receive(:call).and_return([other_order_cycle]))
 
       OrderCartReset.new(order, distributor.id.to_s).reset_other!(nil, nil)
 
-      expect(order.order_cycle).to eq other_order_cycle
+      expect(order.order_cycle).to(eq(other_order_cycle))
     end
   end
 end

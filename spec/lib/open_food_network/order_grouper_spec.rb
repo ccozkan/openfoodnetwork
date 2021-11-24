@@ -54,11 +54,11 @@ proc { |is|
                                                                         }
 ]
 
-        subject = OrderGrouper.new rules, columns
+        subject = OrderGrouper.new(rules, columns)
 
         tree = double(:tree)
-        expect(subject).to receive(:build_tree).with(@items, rules).and_return(tree)
-        expect(subject).to receive(:build_table).with(tree)
+        expect(subject).to(receive(:build_tree).with(@items, rules).and_return(tree))
+        expect(subject).to(receive(:build_table).with(tree))
 
         subject.table(@items)
       end
@@ -70,10 +70,10 @@ proc { |is|
         column1 = double(:col1)
         column2 = double(:col2)
         columns = [column1, column2]
-        subject = OrderGrouper.new rules, columns
+        subject = OrderGrouper.new(rules, columns)
 
-        expect(rules).to receive(:clone).and_return(rules)
-        expect(subject.build_tree(@items, rules)).to eq(@items)
+        expect(rules).to(receive(:clone).and_return(rules))
+        expect(subject.build_tree(@items, rules)).to(eq(@items))
       end
     end
 
@@ -89,50 +89,50 @@ proc { |is|
       end
 
       it "builds branches by removing a rule from 'rules' and running group_and_sort" do
-        subject = OrderGrouper.new @rules, @columns
+        subject = OrderGrouper.new(@rules, @columns)
 
-        expect(@rules).to receive(:clone).and_return(@rules)
-        expect(@rules).to receive(:delete_at).with(0)
+        expect(@rules).to(receive(:clone).and_return(@rules))
+        expect(@rules).to(receive(:delete_at).with(0))
         grouped_tree = double(:grouped_tree)
-        expect(subject).to receive(:group_and_sort).and_return(grouped_tree)
+        expect(subject).to(receive(:group_and_sort).and_return(grouped_tree))
 
-        expect(subject.build_tree(@items, @rules)).to eq(grouped_tree)
+        expect(subject.build_tree(@items, @rules)).to(eq(grouped_tree))
       end
 
       it "separates the first rule from rules before sending to group_and_sort" do
-        subject = OrderGrouper.new @rules, @columns
+        subject = OrderGrouper.new(@rules, @columns)
 
         grouped_tree = double(:grouped_tree)
-        expect(subject).to receive(:group_and_sort).with(
+        expect(subject).to(receive(:group_and_sort).with(
 @rule1,
 @rules[1..-1],
                                                          @items
-).and_return(grouped_tree)
+).and_return(grouped_tree))
 
-        expect(subject.build_tree(@items, @rules)).to eq(grouped_tree)
+        expect(subject.build_tree(@items, @rules)).to(eq(grouped_tree))
       end
 
       it "should group, then sort, send each group to build_tree, and return a branch" do
         summary_columns_object = double(:summary_columns)
-        allow(@rule1).to receive(:[]).with(:summary_columns) { summary_columns_object }
+        allow(@rule1).to(receive(:[]).with(:summary_columns) { summary_columns_object })
 
-        subject = OrderGrouper.new @rules, @columns
+        subject = OrderGrouper.new(@rules, @columns)
 
         number_of_categories = 3
         groups = double(:groups)
-        expect(@items).to receive(:group_by).and_return(groups)
+        expect(@items).to(receive(:group_by).and_return(groups))
         sorted_groups = {}
         1.upto(number_of_categories) do |i|
           sorted_groups[i] = double(:group, name: "Group " + i.to_s)
         end
-        expect(groups).to receive(:sort_by).and_return(sorted_groups)
+        expect(groups).to(receive(:sort_by).and_return(sorted_groups))
         group = { group1: 1, group2: 2, group3: 3 }
-        expect(subject).to receive(:build_tree).exactly(number_of_categories).times.and_return(group)
+        expect(subject).to(receive(:build_tree).exactly(number_of_categories).times.and_return(group))
 
         group_tree = {}
         1.upto(number_of_categories) { |i| group_tree[i] = group }
         1.upto(number_of_categories) { |i| group_tree[i][:summary_row] = summary_columns_object }
-        expect(subject.group_and_sort(@rule1, @remaining_rules, @items)).to eq(group_tree)
+        expect(subject.group_and_sort(@rule1, @remaining_rules, @items)).to(eq(group_tree))
       end
     end
 
@@ -157,24 +157,24 @@ proc { |is|
         @items3 = [item3, item1]
       end
       it "should return columns when given an Array" do
-        subject = OrderGrouper.new @rules, @columns
+        subject = OrderGrouper.new(@rules, @columns)
 
-        expect(@column1).to receive(:call)
-        expect(@column2).to receive(:call)
+        expect(@column1).to(receive(:call))
+        expect(@column2).to(receive(:call))
 
-        expect(subject.build_table(@items1)).to eq([["Column1", "Column2"]])
+        expect(subject.build_table(@items1)).to(eq([["Column1", "Column2"]]))
       end
 
       it "should return a row for each key-value pair when given a Hash" do
         groups = { items1: @items1, items2: @items2, items3: @items3 }
 
-        subject = OrderGrouper.new @rules, @columns
+        subject = OrderGrouper.new(@rules, @columns)
 
         # subject.should_receive(:build_table).exactly(2).times
 
         expected_return = []
         groups.length.times { expected_return << ["Column1", "Column2"] }
-        expect(subject.build_table(groups)).to eq(expected_return)
+        expect(subject.build_table(groups)).to(eq(expected_return))
       end
 
       it "should return an extra row when a :summary_row key appears in a given Hash" do
@@ -185,7 +185,7 @@ items3: @items3,
 summary_row: { items: { items2: @items2, items3: @items3 }, columns: @sumcols }
 }
 
-        subject = OrderGrouper.new @rules, @columns
+        subject = OrderGrouper.new(@rules, @columns)
 
         expected_return = []
         groups.each do |key, _group|
@@ -195,7 +195,7 @@ summary_row: { items: { items2: @items2, items3: @items3 }, columns: @sumcols }
                                ["Column1", "Column2"]
                              end
         end
-        expect(subject.build_table(groups)).to eq(expected_return)
+        expect(subject.build_table(groups)).to(eq(expected_return))
       end
     end
   end

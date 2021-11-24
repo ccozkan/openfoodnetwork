@@ -18,20 +18,20 @@ module Api
       private
 
       def render_report
-        render json: { data: @report.as_json }
+        render(json: { data: @report.as_json })
       end
 
       def render_error(error)
-        render json: { error: error.message }, status: :unprocessable_entity
+        render(json: { error: error.message }, status: :unprocessable_entity)
       end
 
       def validate_report
-        raise ::Reporting::Errors::NoReportType if report_type.blank?
-        raise ::Reporting::Errors::ReportNotFound if report_class.blank?
+        raise(::Reporting::Errors::NoReportType) if report_type.blank?
+        raise(::Reporting::Errors::ReportNotFound) if report_class.blank?
       end
 
       def validate_query
-        raise ::Reporting::Errors::MissingQueryParams if ransack_params.blank?
+        raise(::Reporting::Errors::MissingQueryParams) if ransack_params.blank?
       end
     end
   end

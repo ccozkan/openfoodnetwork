@@ -18,9 +18,9 @@ describe SearchOrders do
     let(:service) { SearchOrders.new(params, enterprise_user) }
 
     it 'returns orders' do
-      expect(service.orders.count).to eq 5
+      expect(service.orders.count).to(eq(5))
       service.orders.each do |order|
-        expect(order.id).not_to eq(order_empty.id)
+        expect(order.id).not_to(eq(order_empty.id))
       end
     end
   end

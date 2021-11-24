@@ -10,16 +10,16 @@ module Api
       it "serializes a subscription line item with the product name" do
         serializer = described_class.new(subscription_line_item)
 
-        expect(serializer.to_json).to match subscription_line_item.variant.product.name
+        expect(serializer.to_json).to(match(subscription_line_item.variant.product.name))
       end
 
       context "when the variant of the subscription line item is soft deleted" do
         it "serializers the subscription line item with the product name" do
-          subscription_line_item.variant.update_attribute :deleted_at, Time.zone.now
+          subscription_line_item.variant.update_attribute(:deleted_at, Time.zone.now)
 
           serializer = described_class.new(subscription_line_item.reload)
 
-          expect(serializer.to_json).to match subscription_line_item.variant.product.name
+          expect(serializer.to_json).to(match(subscription_line_item.variant.product.name))
         end
       end
     end

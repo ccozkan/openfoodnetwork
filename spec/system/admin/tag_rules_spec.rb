@@ -15,13 +15,13 @@ describe 'Tag Rules', js: true do
 
     it "allows creation of rules of each type" do
       # Creating a new tag
-      expect(page).to have_content 'No tags apply to this enterprise yet'
-      expect(page).to have_no_selector '.customer_tag'
+      expect(page).to(have_content('No tags apply to this enterprise yet'))
+      expect(page).to(have_no_selector('.customer_tag'))
       click_button '+ Add A New Tag'
       fill_in_tag "volunteer"
 
       # New FilterShippingMethods Rule
-      expect(page).to have_content 'No rules apply to this tag yet'
+      expect(page).to(have_content('No rules apply to this tag yet'))
       click_button '+ Add A New Rule'
       select2_select 'Show or Hide shipping methods at checkout', from: 'rule_type_selector'
       click_button "Add Rule"
@@ -67,35 +67,35 @@ describe 'Tag Rules', js: true do
       click_button "Add Rule"
       within(".default_rules #tr_0") do
         fill_in_tag "wholesale"
-        expect(page).to have_content "not visible"
+        expect(page).to(have_content("not visible"))
       end
 
       click_button 'Update'
 
       tag_rule = TagRule::FilterShippingMethods.last
-      expect(tag_rule.preferred_customer_tags).to eq "volunteer"
-      expect(tag_rule.preferred_shipping_method_tags).to eq "volunteers-only"
-      expect(tag_rule.preferred_matched_shipping_methods_visibility).to eq "hidden"
+      expect(tag_rule.preferred_customer_tags).to(eq("volunteer"))
+      expect(tag_rule.preferred_shipping_method_tags).to(eq("volunteers-only"))
+      expect(tag_rule.preferred_matched_shipping_methods_visibility).to(eq("hidden"))
 
       tag_rule = TagRule::FilterProducts.last
-      expect(tag_rule.preferred_customer_tags).to eq "volunteer"
-      expect(tag_rule.preferred_variant_tags).to eq "volunteers-only1"
-      expect(tag_rule.preferred_matched_variants_visibility).to eq "visible"
+      expect(tag_rule.preferred_customer_tags).to(eq("volunteer"))
+      expect(tag_rule.preferred_variant_tags).to(eq("volunteers-only1"))
+      expect(tag_rule.preferred_matched_variants_visibility).to(eq("visible"))
 
       tag_rule = TagRule::FilterPaymentMethods.last
-      expect(tag_rule.preferred_customer_tags).to eq "volunteer"
-      expect(tag_rule.preferred_payment_method_tags).to eq "volunteers-only2"
-      expect(tag_rule.preferred_matched_payment_methods_visibility).to eq "visible"
+      expect(tag_rule.preferred_customer_tags).to(eq("volunteer"))
+      expect(tag_rule.preferred_payment_method_tags).to(eq("volunteers-only2"))
+      expect(tag_rule.preferred_matched_payment_methods_visibility).to(eq("visible"))
 
       tag_rule = TagRule::FilterOrderCycles.all.reject(&:is_default).last
-      expect(tag_rule.preferred_customer_tags).to eq "volunteer"
-      expect(tag_rule.preferred_exchange_tags).to eq "volunteers-only3"
-      expect(tag_rule.preferred_matched_order_cycles_visibility).to eq "hidden"
+      expect(tag_rule.preferred_customer_tags).to(eq("volunteer"))
+      expect(tag_rule.preferred_exchange_tags).to(eq("volunteers-only3"))
+      expect(tag_rule.preferred_matched_order_cycles_visibility).to(eq("hidden"))
 
       tag_rule = TagRule::FilterOrderCycles.all.select(&:is_default).last
-      expect(tag_rule.preferred_customer_tags).to eq ""
-      expect(tag_rule.preferred_exchange_tags).to eq "wholesale"
-      expect(tag_rule.preferred_matched_order_cycles_visibility).to eq "hidden"
+      expect(tag_rule.preferred_customer_tags).to(eq(""))
+      expect(tag_rule.preferred_exchange_tags).to(eq("wholesale"))
+      expect(tag_rule.preferred_matched_order_cycles_visibility).to(eq("hidden"))
     end
   end
 
@@ -152,19 +152,19 @@ preferred_shipping_method_tags: "local"
 
     it "saves changes to rules of each type" do
       # Tag groups exist
-      expect(page).to have_selector '.customer_tag .header', text: "For customers tagged:", count: 4
-      expect(page).to have_selector '.customer_tag .header tags-input .tag-list ti-tag-item',
+      expect(page).to(have_selector('.customer_tag .header', text: "For customers tagged:", count: 4))
+      expect(page).to(have_selector('.customer_tag .header tags-input .tag-list ti-tag-item',
                                     text: "member",
-count: 1
-      expect(page).to have_selector '.customer_tag .header tags-input .tag-list ti-tag-item',
+count: 1))
+      expect(page).to(have_selector('.customer_tag .header tags-input .tag-list ti-tag-item',
                                     text: "local",
-count: 1
-      expect(page).to have_selector '.customer_tag .header tags-input .tag-list ti-tag-item',
+count: 1))
+      expect(page).to(have_selector('.customer_tag .header tags-input .tag-list ti-tag-item',
                                     text: "wholesale",
-count: 1
-      expect(page).to have_selector '.customer_tag .header tags-input .tag-list ti-tag-item',
+count: 1))
+      expect(page).to(have_selector('.customer_tag .header tags-input .tag-list ti-tag-item',
                                     text: "trusted",
-count: 1
+count: 1))
       all(:css, ".customer_tag .header tags-input").each do |node|
         node.find("li.tag-item a.remove-button").click
         within(:xpath, node.path) { fill_in_tag "volunteer", ".tags input" }
@@ -174,15 +174,15 @@ count: 1
       within ".default_rules #tr_0" do
         within "li.tag-item", text: "local ✖" do find("a.remove-button").click end
         fill_in_tag "volunteers-only"
-        expect(page).to have_content "not visible"
+        expect(page).to(have_content("not visible"))
       end
 
       # FilterProducts rule
       within ".customer_tag #tr_1" do
         within "li.tag-item", text: "member ✖" do find("a.remove-button").click end
         fill_in_tag "volunteers-only1"
-        expect(page).to have_select2 "enterprise_tag_rules_attributes_1_preferred_matched_variants_visibility",
-                                     selected: 'VISIBLE'
+        expect(page).to(have_select2("enterprise_tag_rules_attributes_1_preferred_matched_variants_visibility",
+                                     selected: 'VISIBLE'))
         select2_select 'NOT VISIBLE',
                        from: "enterprise_tag_rules_attributes_1_preferred_matched_variants_visibility"
       end
@@ -191,8 +191,8 @@ count: 1
       within ".customer_tag #tr_2" do
         within "li.tag-item", text: "trusted ✖" do find("a.remove-button").click end
         fill_in_tag "volunteers-only2"
-        expect(page).to have_select2 "enterprise_tag_rules_attributes_2_preferred_matched_payment_methods_visibility",
-                                     selected: 'NOT VISIBLE'
+        expect(page).to(have_select2("enterprise_tag_rules_attributes_2_preferred_matched_payment_methods_visibility",
+                                     selected: 'NOT VISIBLE'))
         select2_select 'VISIBLE',
                        from: "enterprise_tag_rules_attributes_2_preferred_matched_payment_methods_visibility"
       end
@@ -201,8 +201,8 @@ count: 1
       within ".customer_tag #tr_3" do
         within "li.tag-item", text: "wholesale ✖" do find("a.remove-button").click end
         fill_in_tag "volunteers-only3"
-        expect(page).to have_select2 "enterprise_tag_rules_attributes_3_preferred_matched_order_cycles_visibility",
-                                     selected: 'VISIBLE'
+        expect(page).to(have_select2("enterprise_tag_rules_attributes_3_preferred_matched_order_cycles_visibility",
+                                     selected: 'VISIBLE'))
         select2_select 'NOT VISIBLE',
                        from: "enterprise_tag_rules_attributes_3_preferred_matched_order_cycles_visibility"
       end
@@ -211,8 +211,8 @@ count: 1
       within ".customer_tag #tr_4" do
         within "li.tag-item", text: "local ✖" do find("a.remove-button").click end
         fill_in_tag "volunteers-only4"
-        expect(page).to have_select2 "enterprise_tag_rules_attributes_4_preferred_matched_shipping_methods_visibility",
-                                     selected: 'NOT VISIBLE'
+        expect(page).to(have_select2("enterprise_tag_rules_attributes_4_preferred_matched_shipping_methods_visibility",
+                                     selected: 'NOT VISIBLE'))
         select2_select 'VISIBLE',
                        from: "enterprise_tag_rules_attributes_4_preferred_matched_shipping_methods_visibility"
       end
@@ -267,15 +267,15 @@ count: 1
     it "deletes both default and customer rules from the database" do
       expect do
         accept_alert do
-          within "#tr_1" do first("a.delete-tag-rule").click end
+          within("#tr_1") do first("a.delete-tag-rule").click end
         end
-        expect(page).to have_no_selector "#tr_1"
+        expect(page).to(have_no_selector("#tr_1"))
         accept_alert do
-          within "#tr_0" do first("a.delete-tag-rule").click end
+          within("#tr_0") do first("a.delete-tag-rule").click end
         end
-        expect(page).to have_no_selector "#tr_0"
-      end.to change { TagRule.count }
-.by(-2)
+        expect(page).to(have_no_selector("#tr_0"))
+      end.to(change { TagRule.count }
+.by(-2))
 
       # After deleting tags, the form is dirty and we need to confirm leaving
       # the page. If we don't do it here, Capybara may timeout waiting for the
@@ -287,8 +287,8 @@ count: 1
   end
 
   def visit_tag_rules
-    login_as_admin_and_visit main_app.edit_admin_enterprise_path(enterprise)
-    expect(page).to have_content "PRIMARY DETAILS"
-    click_link "Tag Rules"
+    login_as_admin_and_visit(main_app.edit_admin_enterprise_path(enterprise))
+    expect(page).to(have_content("PRIMARY DETAILS"))
+    click_link("Tag Rules")
   end
 end

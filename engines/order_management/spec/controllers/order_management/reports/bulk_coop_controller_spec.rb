@@ -10,15 +10,15 @@ describe OrderManagement::Reports::BulkCoopController, type: :controller do
   let(:current_user) { distributor.owner }
 
   before do
-    allow(controller).to receive(:spree_current_user) { current_user }
+    allow(controller).to(receive(:spree_current_user) { current_user })
   end
 
   describe "#new" do
     it "renders the report form" do
       get :new
 
-      expect(response.status).to eq 200
-      expect(response).to render_template(new_template_path)
+      expect(response.status).to(eq(200))
+      expect(response).to(render_template(new_template_path))
     end
   end
 
@@ -34,9 +34,9 @@ params: {
 report_format: "csv"
         }
 
-        expect(response.status).to eq 200
-        expect(response.body).not_to be_blank
-        expect(response.header["Content-Type"]).to eq("text/csv")
+        expect(response.status).to(eq(200))
+        expect(response.body).not_to(be_blank)
+        expect(response.header["Content-Type"]).to(eq("text/csv"))
       end
     end
 
@@ -51,8 +51,8 @@ params: {
 report_format: "csv"
         }
 
-        expect(flash[:error]).to eq(I18n.t("invalid_filter_parameters", scope: i18n_scope))
-        expect(response).to render_template(new_template_path)
+        expect(flash[:error]).to(eq(I18n.t("invalid_filter_parameters", scope: i18n_scope)))
+        expect(response).to(render_template(new_template_path))
       end
     end
 
@@ -72,8 +72,8 @@ params: {
 report_format: "csv"
         }
 
-        expect(flash[:error]).to eq(report_klass::Authorizer.parameter_not_allowed_error_message)
-        expect(response).to render_template(new_template_path)
+        expect(flash[:error]).to(eq(report_klass::Authorizer.parameter_not_allowed_error_message))
+        expect(response).to(render_template(new_template_path))
       end
     end
 
@@ -86,7 +86,7 @@ report_format: "csv"
       it "applies permissions to report" do
         post :create, params: { report: {}, report_format: "csv" }
 
-        expect(assigns(:permissions).allowed_distributors.to_a).to eq([distributor])
+        expect(assigns(:permissions).allowed_distributors.to_a).to(eq([distributor]))
       end
     end
   end

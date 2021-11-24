@@ -45,7 +45,7 @@ module ProductImport
       @entries.each do |entry|
         enterprise_name = import_into_inventory? ? entry.distributor : entry.producer
 
-        next if @enterprises_index.key? enterprise_name
+        next if @enterprises_index.key?(enterprise_name)
 
         enterprise = Enterprise.select([:id, :is_primary_producer])
           .where(name: enterprise_name).first

@@ -6,8 +6,8 @@ require 'tasks/data/truncate_data'
 describe TruncateData do
   describe '#call' do
     before do
-      allow(Spree::ReturnAuthorization).to receive(:delete_all)
-      allow(Rails.logger).to receive(:info)
+      allow(Spree::ReturnAuthorization).to(receive(:delete_all))
+      allow(Rails.logger).to(receive(:info))
     end
 
     context 'when months_to_keep is not specified' do
@@ -19,7 +19,7 @@ describe TruncateData do
 
         TruncateData.new.call
 
-        expect(OrderCycle.all).to be_empty
+        expect(OrderCycle.all).to(be_empty)
       end
     end
 
@@ -32,7 +32,7 @@ describe TruncateData do
 
         TruncateData.new(nil).call
 
-        expect(OrderCycle.all).to be_empty
+        expect(OrderCycle.all).to(be_empty)
       end
     end
 
@@ -49,7 +49,7 @@ describe TruncateData do
 
         TruncateData.new(6).call
 
-        expect(OrderCycle.all).to contain_exactly(recent_order_cycle)
+        expect(OrderCycle.all).to(contain_exactly(recent_order_cycle))
       end
     end
   end

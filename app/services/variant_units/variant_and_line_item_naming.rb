@@ -42,7 +42,7 @@ module VariantUnits
     end
 
     def product_and_full_name
-      return "#{product.name} - #{full_name}" unless full_name.start_with? product.name
+      return "#{product.name} - #{full_name}" unless full_name.start_with?(product.name)
 
       full_name
     end
@@ -55,8 +55,8 @@ module VariantUnits
     #     Bread - Spelt Sourdough (1kg)   # if display_name is "Spelt Sourdough" and unit_to_display is "1kg"
     def full_name
       return unit_to_display if display_name.blank?
-      return display_name    if display_name.downcase.include? unit_to_display.downcase
-      return unit_to_display if unit_to_display.downcase.include? display_name.downcase
+      return display_name    if display_name.downcase.include?(unit_to_display.downcase)
+      return unit_to_display if unit_to_display.downcase.include?(display_name.downcase)
 
       "#{display_name} (#{unit_to_display})"
     end
@@ -93,7 +93,7 @@ presentation: name
 
     def delete_unit_option_values
       ovs = option_values.where(option_type_id: Spree::Product.all_variant_unit_option_types)
-      option_values.destroy ovs
+      option_values.destroy(ovs)
     end
 
     def weight_from_unit_value
@@ -110,7 +110,7 @@ presentation: name
       if has_attribute?(:display_as) && display_as.present?
         display_as
       else
-        option_value_namer = VariantUnits::OptionValueNamer.new self
+        option_value_namer = VariantUnits::OptionValueNamer.new(self)
         option_value_namer.name
       end
     end

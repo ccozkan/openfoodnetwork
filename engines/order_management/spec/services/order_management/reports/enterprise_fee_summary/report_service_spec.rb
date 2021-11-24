@@ -138,7 +138,7 @@ amount: 8.0,
     it "groups and sorts entries correctly" do
       totals = service.list
 
-      expect(totals.length).to eq(16)
+      expect(totals.length).to(eq(16))
 
       # Data is sorted by the following, in order:
       # * fee_type
@@ -333,7 +333,7 @@ nil,
       it "is included" do
         totals = service.list
 
-        expect(totals.length).to eq(1)
+        expect(totals.length).to(eq(1))
 
         expected_result = [
           [
@@ -382,7 +382,7 @@ amount: 0
       it "is included" do
         totals = service.list
 
-        expect(totals.length).to eq(2)
+        expect(totals.length).to(eq(2))
 
         expected_result = [
           [
@@ -423,7 +423,7 @@ nil,
       it "is included" do
         totals = service.list
 
-        expect(totals.length).to eq(1)
+        expect(totals.length).to(eq(1))
 
         expected_result = [
           [
@@ -498,7 +498,7 @@ amount: 4.0,
       it "fetches data correctly" do
         totals = service.list
 
-        expect(totals.length).to eq(6)
+        expect(totals.length).to(eq(6))
 
         expected_result = [
           [
@@ -655,7 +655,7 @@ outgoing_exchange_fees: variant_outgoing_exchange_fees
       it "fetches data correctly" do
         totals = service.list
 
-        expect(totals.length).to eq(11)
+        expect(totals.length).to(eq(11))
 
         entire_orders_text = i18n_translate(
 "fee_calculated_on_transfer_through_entire_orders",
@@ -1118,11 +1118,11 @@ total.fee_placement,
 total.tax_category_name,
                              total.total_amount
 ]
-    expect(actual_attribute_list).to eq(expected_attribute_list)
+    expect(actual_attribute_list).to(eq(expected_attribute_list))
   end
 
   def expect_total_matches(totals, count, attributes)
-    expect(count_totals(totals, attributes)).to eq(count)
+    expect(count_totals(totals, attributes)).to(eq(count))
   end
 
   def default_order_options

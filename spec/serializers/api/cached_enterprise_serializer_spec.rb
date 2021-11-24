@@ -27,7 +27,7 @@ describe Api::CachedEnterpriseSerializer do
 
       it "serializes combined product and producer properties without duplicates" do
         properties = cached_enterprise_serializer.supplied_properties
-        expect(properties).to eq([property, different_property])
+        expect(properties).to(eq([property, different_property]))
       end
     end
 
@@ -42,7 +42,7 @@ describe Api::CachedEnterpriseSerializer do
 
       it "does not serialize supplied properties" do
         properties = cached_enterprise_serializer.supplied_properties
-        expect(properties).to eq([])
+        expect(properties).to(eq([]))
       end
     end
   end
@@ -78,7 +78,7 @@ describe Api::CachedEnterpriseSerializer do
 
       it 'does not serialize distributed properties' do
         properties = cached_enterprise_serializer.distributed_properties
-        expect(properties).to eq []
+        expect(properties).to(eq([]))
       end
     end
 
@@ -89,7 +89,7 @@ describe Api::CachedEnterpriseSerializer do
 
       it 'does not duplicate properties' do
         properties = cached_enterprise_serializer.distributed_properties
-        expect(properties.map(&:presentation)).to eq([property.presentation])
+        expect(properties.map(&:presentation)).to(eq([property.presentation]))
       end
 
       it 'fetches producer properties' do
@@ -97,7 +97,7 @@ describe Api::CachedEnterpriseSerializer do
           .distributed_producer_properties
 
         expect(distributed_producer_properties.map(&:presentation))
-          .to eq(producer.producer_properties.map(&:property).map(&:presentation))
+          .to(eq(producer.producer_properties.map(&:property).map(&:presentation)))
       end
     end
   end
@@ -105,21 +105,21 @@ describe Api::CachedEnterpriseSerializer do
   describe '#icon' do
     context "enterpise has a unrecognized category" do
       before do
-        allow(enterprise).to receive(:category) { "unknown_category" }
+        allow(enterprise).to(receive(:category) { "unknown_category" })
       end
 
       it "returns the map producer icon" do
-        expect(cached_enterprise_serializer.icon).to eq("/map_icons/map_001-producer-only.svg")
+        expect(cached_enterprise_serializer.icon).to(eq("/map_icons/map_001-producer-only.svg"))
       end
     end
 
     context "enterpise has a nil category" do
       before do
-        allow(enterprise).to receive(:category) { nil }
+        allow(enterprise).to(receive(:category) { nil })
       end
 
       it "returns the map producer icon" do
-        expect(cached_enterprise_serializer.icon).to eq("/map_icons/map_001-producer-only.svg")
+        expect(cached_enterprise_serializer.icon).to(eq("/map_icons/map_001-producer-only.svg"))
       end
     end
   end

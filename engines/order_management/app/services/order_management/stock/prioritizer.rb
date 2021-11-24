@@ -32,7 +32,7 @@ module OrderManagement
 
       def visit_packages(adjuster)
         packages.each do |package|
-          item = package.find_item adjuster.variant, adjuster.status
+          item = package.find_item(adjuster.variant, adjuster.status)
           adjuster.adjust(item) if item
         end
       end

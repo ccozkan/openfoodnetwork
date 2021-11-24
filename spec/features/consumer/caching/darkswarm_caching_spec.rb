@@ -30,13 +30,13 @@ taxons: [taxon],
 
   describe "caching injected taxons and properties" do
     it "caches taxons and properties" do
-      expect(Spree::Taxon).to receive(:all).at_least(:once).and_call_original
-      expect(Spree::Property).to receive(:all).at_least(:once).and_call_original
+      expect(Spree::Taxon).to(receive(:all).at_least(:once).and_call_original)
+      expect(Spree::Property).to(receive(:all).at_least(:once).and_call_original)
 
       visit shops_path
 
-      expect(Spree::Taxon).to_not receive(:all)
-      expect(Spree::Property).to_not receive(:all)
+      expect(Spree::Taxon).to_not(receive(:all))
+      expect(Spree::Property).to_not(receive(:all))
 
       visit shops_path
     end
@@ -53,8 +53,8 @@ taxons: [taxon],
       toggle_filters
 
       within "#hubs .filter-row" do
-        expect(page).to have_content taxon.name
-        expect(page).to have_content property.presentation
+        expect(page).to(have_content(taxon.name))
+        expect(page).to(have_content(property.presentation))
       end
 
       # Update rows which should also update the timestamp.
@@ -69,7 +69,7 @@ taxons: [taxon],
       visit shops_path
 
       # Wait for /shops page to load properly before checking for new timestamps
-      expect(page).to_not have_selector ".row.filter-row", visible: true
+      expect(page).to_not(have_selector(".row.filter-row", visible: true))
 
       taxon_timestamp2 = CacheService.latest_timestamp_by_class(Spree::Taxon)
       expect_cached "views/#{CacheService::FragmentCaching.ams_all_taxons[0]}"
@@ -77,24 +77,24 @@ taxons: [taxon],
       property_timestamp2 = CacheService.latest_timestamp_by_class(Spree::Property)
       expect_cached "views/#{CacheService::FragmentCaching.ams_all_properties[0]}"
 
-      expect(taxon_timestamp1).to_not eq taxon_timestamp2
-      expect(property_timestamp1).to_not eq property_timestamp2
+      expect(taxon_timestamp1).to_not(eq(taxon_timestamp2))
+      expect(property_timestamp1).to_not(eq(property_timestamp2))
 
       toggle_filters
 
       within "#hubs .filter-row" do
-        expect(page).to have_content "Changed Taxon"
-        expect(page).to have_content "Changed Property"
+        expect(page).to(have_content("Changed Taxon"))
+        expect(page).to(have_content("Changed Property"))
       end
     end
   end
 
   def expect_cached(key)
-    expect(Rails.cache.exist?(key)).to be true
+    expect(Rails.cache.exist?(key)).to(be(true))
   end
 
   def clear_shops_cache
     cache_key = "views/#{CacheService::FragmentCaching.ams_shops[0]}"
-    Rails.cache.delete cache_key
+    Rails.cache.delete(cache_key)
   end
 end

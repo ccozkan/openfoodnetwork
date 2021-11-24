@@ -50,7 +50,7 @@ module Spree
     belongs_to :supplier, class_name: 'Enterprise', touch: true
     belongs_to :primary_taxon, class_name: 'Spree::Taxon', touch: true
 
-    has_one :master, -> { where is_master: true }, class_name: 'Spree::Variant', dependent: :destroy
+    has_one :master, -> { where(is_master: true) }, class_name: 'Spree::Variant', dependent: :destroy
 
     has_many :variants,
 lambda {
@@ -115,9 +115,9 @@ presence: true,
                              if: proc { Spree::Config[:products_require_tax_category] }
 
     validates :variant_unit, presence: true
-    validates :unit_value, presence: { if: ->(p) { %w(weight volume).include? p.variant_unit } }
+    validates :unit_value, presence: { if: ->(p) { %w(weight volume).include?(p.variant_unit) } }
     validates :variant_unit_scale,
-              presence: { if: ->(p) { %w(weight volume).include? p.variant_unit } }
+              presence: { if: ->(p) { %w(weight volume).include?(p.variant_unit) } }
     validates :variant_unit_name, presence: { if: ->(p) { p.variant_unit == 'items' } }
 
     attr_accessor :option_values_hash
@@ -162,7 +162,7 @@ lambda {
 
     scope :imported_on,
 lambda { |import_date|
-      import_date = Time.zone.parse import_date if import_date.is_a? String
+      import_date = Time.zone.parse(import_date) if import_date.is_a?(String)
       import_date = import_date.to_date
       joins(:variants).merge(
 Spree::Variant
@@ -317,11 +317,11 @@ lambda {
     end
 
     def self.like_any(fields, values)
-      where fields.map { |field|
+      where(fields.map { |field|
         values.map do |value|
           arel_table[field].matches("%#{value}%")
         end.inject(:or)
-      }.inject(:or)
+      }.inject(:or))
     end
 
     def property(property_name)
@@ -367,11 +367,11 @@ property: property
     end
 
     def in_distributor?(distributor)
-      self.class.in_distributor(distributor).include? self
+      self.class.in_distributor(distributor).include?(self)
     end
 
     def in_order_cycle?(order_cycle)
-      self.class.in_order_cycle(order_cycle).include? self
+      self.class.in_order_cycle(order_cycle).include?(self)
     end
 
     def variants_distributed_by(order_cycle, distributor)
@@ -466,7 +466,7 @@ variants_including_master.with_deleted
 
     def punch_permalink
       # Punch permalink with date prefix
-      update_attribute :permalink, "#{Time.now.to_i}_#{permalink}"
+      update_attribute(:permalink, "#{Time.now.to_i}_#{permalink}")
     end
 
     def set_available_on_to_now
@@ -476,7 +476,7 @@ variants_including_master.with_deleted
     def update_units
       return unless saved_change_to_variant_unit?
 
-      option_types.delete self.class.all_variant_unit_option_types
+      option_types.delete(self.class.all_variant_unit_option_types)
       option_types << variant_unit_option_type if variant_unit.present?
       variants_including_master.each(&:update_units)
     end
@@ -486,7 +486,7 @@ variants_including_master.with_deleted
     end
 
     def add_primary_taxon_to_taxons
-      taxons << primary_taxon unless taxons.include? primary_taxon
+      taxons << primary_taxon unless taxons.include?(primary_taxon)
     end
 
     def remove_previous_primary_taxon_from_taxons

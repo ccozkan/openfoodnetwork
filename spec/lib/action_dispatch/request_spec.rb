@@ -4,17 +4,17 @@ require 'spec_helper'
 
 describe ActionDispatch::Request do
   it "strips nils from arrays" do
-    expect(parse_query_parameters('key[]=value&key[]')).to eq({ "key" => ["value"] })
+    expect(parse_query_parameters('key[]=value&key[]')).to(eq({ "key" => ["value"] }))
   end
 
   it "strips nils from nested arrays" do
     expect(
       parse_query_parameters('key1[key2][]=value&key1[key2][]')
-    ).to eq({ "key1" => { "key2" => ["value"] } })
+    ).to(eq({ "key1" => { "key2" => ["value"] } }))
   end
 
   it "doesn't convert an empty array to nil" do
-    expect(parse_query_parameters('key[]')).to eq({ "key" => [] })
+    expect(parse_query_parameters('key[]')).to(eq({ "key" => [] }))
   end
 
   private
