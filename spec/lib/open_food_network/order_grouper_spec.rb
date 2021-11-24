@@ -123,7 +123,7 @@ proc { |is|
         expect(@items).to receive(:group_by).and_return(groups)
         sorted_groups = {}
         1.upto(number_of_categories) { |i|
-          sorted_groups[i] = double(:group, name: "Group " + i.to_s )
+          sorted_groups[i] = double(:group, name: "Group " + i.to_s)
         }
         expect(groups).to receive(:sort_by).and_return(sorted_groups)
         group = { group1: 1, group2: 2, group3: 3 }

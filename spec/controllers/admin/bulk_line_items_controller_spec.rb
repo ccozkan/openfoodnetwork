@@ -453,7 +453,7 @@ inherits_tax_category: false,
     let(:line_item_fee2) {
       create(:enterprise_fee, :per_item, amount: 2, inherits_tax_category: true)
     }
-    let(:order_fee) { create(:enterprise_fee, :flat_rate, amount: 3, tax_category: tax_cat15 ) }
+    let(:order_fee) { create(:enterprise_fee, :flat_rate, amount: 3, tax_category: tax_cat15) }
 
     before do
       outgoing_exchange.variants << [line_item1.variant, line_item2.variant]

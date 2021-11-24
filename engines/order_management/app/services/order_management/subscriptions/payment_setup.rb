@@ -21,7 +21,7 @@ module OrderManagement
         payment = OrderPaymentFinder.new(@order).last_pending_payment
         return payment if payment.present?
 
-        @order.payments.create( payment_method_id: @order.subscription.payment_method_id )
+        @order.payments.create(payment_method_id: @order.subscription.payment_method_id)
       end
     end
   end

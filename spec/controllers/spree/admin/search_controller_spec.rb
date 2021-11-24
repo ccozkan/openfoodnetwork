@@ -4,9 +4,9 @@ require 'spec_helper'
 
 describe Spree::Admin::SearchController, type: :controller do
   context "Distributor Enterprise User" do
-    let!(:owner) { create(:user, email: "test1@email.com" ) }
-    let!(:manager) { create(:user, email: "test2@email.com" ) }
-    let!(:random) { create(:user, email: "test3@email.com" ) }
+    let!(:owner) { create(:user, email: "test1@email.com") }
+    let!(:manager) { create(:user, email: "test2@email.com") }
+    let!(:random) { create(:user, email: "test3@email.com") }
     let!(:enterprise) { create(:enterprise, owner: owner, users: [owner, manager]) }
     before { controller_login_as_enterprise_user [enterprise] }
 

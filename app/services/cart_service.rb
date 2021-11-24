@@ -115,7 +115,7 @@ class CartService
                             }
 )
       else
-        variants_array.push( { variant_id: variant_id.to_i, quantity: quantity.to_i } )
+        variants_array.push({ variant_id: variant_id.to_i, quantity: quantity.to_i })
       end
     end
     variants_array

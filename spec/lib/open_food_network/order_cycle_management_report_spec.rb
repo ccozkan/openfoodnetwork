@@ -122,7 +122,7 @@ module OpenFoodNetwork
           order2 = create(:order, payments: [create(:payment, payment_method: pm2)])
           order3 = create(:order, payments: [create(:payment, payment_method: pm3)])
 
-          allow(subject).to receive(:params).and_return(payment_method_in: [pm1.id, pm3.id] )
+          allow(subject).to receive(:params).and_return(payment_method_in: [pm1.id, pm3.id])
           expect(subject.filter(orders)).to match_array [order1, order3]
         end
 

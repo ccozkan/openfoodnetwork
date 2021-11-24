@@ -87,9 +87,9 @@ describe Spree::OrderMailer do
     let(:order) { create(:order_with_totals_and_distribution) }
 
     before do
-      order.adjustments.create( label: "Eligible Adjustment", amount: 10, eligible: true )
+      order.adjustments.create(label: "Eligible Adjustment", amount: 10, eligible: true)
 
-      order.adjustments.create!( label: "Ineligible Adjustment", amount: 0, )
+      order.adjustments.create!(label: "Ineligible Adjustment", amount: 0,)
     end
 
     let!(:confirmation_email) { Spree::OrderMailer.confirm_email_for_customer(order) }

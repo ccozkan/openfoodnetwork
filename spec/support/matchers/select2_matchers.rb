@@ -22,7 +22,7 @@ RSpec::Matchers.define :have_select2 do |id, options = {}|
       results << all_options_present(from, options[:with_options]) if options.key? :with_options
       results << exact_options_present(from, options[:options]) if options.key? :options
       if options.key? :without_options
-        results << all_options_absent( from, options[:without_options] )
+        results << all_options_absent(from, options[:without_options])
       end
     end
 

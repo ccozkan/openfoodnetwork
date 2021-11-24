@@ -63,8 +63,8 @@ module OpenFoodNetwork
     end
 
     describe "filtering results" do
-      let!(:enterprise1) { create(:enterprise, owner: create(:user) ) }
-      let!(:enterprise2) { create(:enterprise, owner: create(:user) ) }
+      let!(:enterprise1) { create(:enterprise, owner: create(:user)) }
+      let!(:enterprise2) { create(:enterprise, owner: create(:user)) }
 
       describe "for owners and enterprises" do
         describe "by enterprise id" do

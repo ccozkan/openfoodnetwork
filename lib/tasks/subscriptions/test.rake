@@ -11,7 +11,7 @@ namespace :ofn do
         order_cycle_id = request_order_cycle_id
 
         # Open Order Cycle by moving close_at to the future and open_at to the past
-        set_order_cycle_times( order_cycle_id, 15.minutes.ago, 15.minutes.from_now )
+        set_order_cycle_times(order_cycle_id, 15.minutes.ago, 15.minutes.from_now)
 
         # Reset Proxy Orders of the Order Cycle
         #   by detatching them from existing orders and resetting placed and confirmed dates
@@ -32,7 +32,7 @@ namespace :ofn do
         order_cycle_id = request_order_cycle_id
 
         # Close Orde Cycle by moving close_at to the past
-        set_order_cycle_times( order_cycle_id, 30.minutes.ago, 15.minutes.ago )
+        set_order_cycle_times(order_cycle_id, 30.minutes.ago, 15.minutes.ago)
 
         # Run Confirm Job to process payments
         SubscriptionConfirmJob.perform_now

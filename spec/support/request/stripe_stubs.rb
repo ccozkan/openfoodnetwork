@@ -51,7 +51,7 @@ module StripeStubs
 
   def stub_list_customers_request(email:, response: {})
     stub = stub_request(:get, "https://api.stripe.com/v1/customers?email=#{email}&limit=100")
-    stub = stub.with( headers: { 'Stripe-Account' => 'abc123' } )
+    stub = stub.with(headers: { 'Stripe-Account' => 'abc123' })
     stub.to_return(list_customers_response_mock(response))
   end
 
@@ -59,14 +59,14 @@ module StripeStubs
     stub = stub_request(
       :get, "https://api.stripe.com/v1/payment_methods?customer=#{customer}&limit=100&type=card"
     )
-    stub = stub.with( headers: { 'Stripe-Account' => 'abc123' } )
+    stub = stub.with(headers: { 'Stripe-Account' => 'abc123' })
     stub.to_return(get_customer_payment_methods_response_mock(response))
   end
 
   def stub_add_metadata_request(payment_method: "pm_456", response: {})
     stub = stub_request(:post, "https://api.stripe.com/v1/payment_methods/#{payment_method}")
     stub = stub.with(body: { metadata: { "ofn-clone": true } })
-    stub = stub.with( headers: { 'Stripe-Account' => 'abc123' } )
+    stub = stub.with(headers: { 'Stripe-Account' => 'abc123' })
     stub.to_return(add_metadata_response_mock(response))
   end
 
@@ -139,7 +139,7 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] }
   def payment_failed_capture_mock(options)
     { 
 status: options[:code] || 402,
-body: JSON.generate( error: { message: options[:message] || "payment-method-failure" } ) 
+body: JSON.generate(error: { message: options[:message] || "payment-method-failure" }) 
 }
   end
 
@@ -154,14 +154,14 @@ body: JSON.generate(id: options[:pm_id] || "pm_456", customer: "cus_A123")
     customer_id = options[:customer_id] || "cus_A123"
     { 
 status: 200,
-body: JSON.generate( id: customer_id, sources: { data: [id: customer_id] } ) 
+body: JSON.generate(id: customer_id, sources: { data: [id: customer_id] }) 
 }
   end
 
   def payment_successful_refund_mock
     { 
 status: 200,
-body: JSON.generate( object: "refund", amount: 2000, charge: "ch_1234" ) 
+body: JSON.generate(object: "refund", amount: 2000, charge: "ch_1234") 
 }
   end
 

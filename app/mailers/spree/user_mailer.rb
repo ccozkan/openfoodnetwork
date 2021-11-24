@@ -40,7 +40,7 @@ subject: t(:welcome_to) + ' ' + Spree::Config[:site_name]
 
       I18n.with_locale valid_locale(@user) do
         subject = t('spree.user_mailer.confirmation_instructions.subject')
-        mail( to: confirmation_email_address, from: from_address, subject: subject )
+        mail(to: confirmation_email_address, from: from_address, subject: subject)
       end
     end
 

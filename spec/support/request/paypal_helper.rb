@@ -16,7 +16,7 @@ module PaypalHelper
   # Additional request to re-confirm the payment, when the order is finalised.
   def stub_paypal_confirm
     stub_request(:post, "https://api-3t.sandbox.paypal.com/2.0/")
-      .to_return(status: 200, body: mocked_xml_response )
+      .to_return(status: 200, body: mocked_xml_response)
   end
 
   private

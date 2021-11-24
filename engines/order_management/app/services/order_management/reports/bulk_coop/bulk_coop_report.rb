@@ -126,16 +126,16 @@ proc { |lis| lis.first.product.supplier.name },
                                    }
                                  },
                                  proc { |lis|
-                                   ( if (lis.first.product.group_buy_unit_size || 0).zero?
+                                   (if (lis.first.product.group_buy_unit_size || 0).zero?
                                        0
                                      else
-                                       ( lis.sum { |li|
+                                       (lis.sum { |li|
                                            [
 li.max_quantity || 0,
                                             li.quantity || 0
 ].max * (li.weight_from_unit_value || 0)
-                                         } / lis.first.product.group_buy_unit_size )
-                                     end ).floor
+                                         } / lis.first.product.group_buy_unit_size)
+                                     end).floor
                                  },
                                  proc { |lis|
                                    lis.sum { |li|
@@ -143,16 +143,16 @@ li.max_quantity || 0,
 li.max_quantity || 0,
                                       li.quantity || 0
 ].max * (li.weight_from_unit_value || 0)
-                                   } - ( ( if (lis.first.product.group_buy_unit_size || 0).zero?
+                                   } - ((if (lis.first.product.group_buy_unit_size || 0).zero?
                                              0
                                            else
-                                             ( lis.sum { |li|
+                                             (lis.sum { |li|
                                                  [
 li.max_quantity || 0,
                                                   li.quantity || 0
 ].max * (li.weight_from_unit_value || 0)
-                                               } / lis.first.product.group_buy_unit_size )
-                                           end ).floor * (lis.first.product.group_buy_unit_size || 0) )
+                                               } / lis.first.product.group_buy_unit_size)
+                                           end).floor * (lis.first.product.group_buy_unit_size || 0))
                                  }
 ] 
 },
@@ -332,7 +332,7 @@ sort_by: proc { |full_name| full_name }
           if group_buy_unit_size(line_items).zero?
             0
           else
-            ( total_amount(line_items) / group_buy_unit_size(line_items) ).ceil
+            (total_amount(line_items) / group_buy_unit_size(line_items)).ceil
           end
         end
 

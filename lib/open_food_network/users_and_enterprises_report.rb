@@ -91,7 +91,7 @@ module OpenFoodNetwork
     end
 
     def users_and_enterprises
-      sort( owners_and_enterprises.concat(managers_and_enterprises) )
+      sort(owners_and_enterprises.concat(managers_and_enterprises))
     end
 
     def filter_by_int_list_if_present(query, filtered_field_name, int_list)

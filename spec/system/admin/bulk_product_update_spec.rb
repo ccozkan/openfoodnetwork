@@ -118,8 +118,8 @@ variant_unit_scale: nil,
     end
 
     it "displays a list of variants for each product" do
-      v1 = FactoryBot.create(:variant, display_name: "something1" )
-      v2 = FactoryBot.create(:variant, display_name: "something2" )
+      v1 = FactoryBot.create(:variant, display_name: "something1")
+      v2 = FactoryBot.create(:variant, display_name: "something2")
 
       visit spree.admin_products_path
       expect(page).to have_selector "a.view-variants", count: 2
@@ -206,7 +206,7 @@ display_as: "bin"
       let!(:product) { create(:product) }
       let(:variant) { product.variants.first }
       let(:hub) { create(:distributor_enterprise) }
-      let!(:override) { create(:variant_override, variant: variant, hub: hub ) }
+      let!(:override) { create(:variant_override, variant: variant, hub: hub) }
       let(:variant_overrides_tip) {
         I18n.t('spree.admin.products.index.products_variant.variant_has_n_overrides', n: 1)
       }
@@ -532,7 +532,7 @@ unit_description: '(bottle)'
       let!(:p2) { FactoryBot.create(:product) }
       let!(:v1) { p1.variants.first }
       let!(:v2) { p2.variants.first }
-      let!(:v3) { FactoryBot.create(:variant, product: p2 ) }
+      let!(:v3) { FactoryBot.create(:variant, product: p2) }
 
       before do
         login_as_admin

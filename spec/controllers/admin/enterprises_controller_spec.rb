@@ -11,7 +11,7 @@ describe Admin::EnterprisesController, type: :controller do
   let(:distributor_owner) { create(:user, enterprise_limit: 10) }
   let(:supplier_owner) { create(:user) }
 
-  let(:distributor) { create(:distributor_enterprise, owner: distributor_owner ) }
+  let(:distributor) { create(:distributor_enterprise, owner: distributor_owner) }
   let(:supplier) { create(:supplier_enterprise, owner: supplier_owner) }
   let(:country) { Spree::Country.find_by name: 'Australia' }
   let(:state) { Spree::State.find_by name: 'Victoria' }
@@ -451,8 +451,8 @@ distributor_manager.id,
   describe "bulk updating enterprises" do
     let!(:original_owner) { create(:user) }
     let!(:new_owner) { create(:user) }
-    let!(:profile_enterprise1) { create(:enterprise, sells: 'none', owner: original_owner ) }
-    let!(:profile_enterprise2) { create(:enterprise, sells: 'none', owner: original_owner ) }
+    let!(:profile_enterprise1) { create(:enterprise, sells: 'none', owner: original_owner) }
+    let!(:profile_enterprise2) { create(:enterprise, sells: 'none', owner: original_owner) }
 
     context "as manager" do
       it "does not allow 'sells' or 'owner' to be changed" do
@@ -643,7 +643,7 @@ spree_current_user: user
       let!(:user) { create(:user) }
       let!(:enterprise1) { create(:enterprise, sells: 'any', owner: user) }
       let!(:enterprise2) { create(:enterprise, sells: 'own', owner: user) }
-      let!(:enterprise3) { create(:enterprise, sells: 'any', owner: create(:user) ) }
+      let!(:enterprise3) { create(:enterprise, sells: 'any', owner: create(:user)) }
 
       before do
         allow(controller).to receive_messages spree_current_user: super_admin
@@ -668,7 +668,7 @@ spree_current_user: user
       let!(:user) { create(:user) }
       let!(:enterprise1) { create(:enterprise, sells: 'any', owner: user) }
       let!(:enterprise2) { create(:enterprise, sells: 'own', owner: user) }
-      let!(:enterprise3) { create(:enterprise, sells: 'any', owner: create(:user) ) }
+      let!(:enterprise3) { create(:enterprise, sells: 'any', owner: create(:user)) }
 
       before do
         allow(controller).to receive_messages spree_current_user: user

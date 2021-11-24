@@ -54,13 +54,13 @@ module Spree
         end
 
         it "should be false when order payment_state is not 'credit_owed'" do
-          payment = build_stubbed( :payment, order: create(:order, payment_state: 'paid') )
+          payment = build_stubbed(:payment, order: create(:order, payment_state: 'paid'))
           allow(payment).to receive(:completed?) { true }
           expect(credit_card.can_credit?(payment)).to be_falsy
         end
 
         it "should be false when credit_allowed is zero" do
-          payment = build_stubbed( :payment, order: create(:order, payment_state: 'credit_owed') )
+          payment = build_stubbed(:payment, order: create(:order, payment_state: 'credit_owed'))
           allow(payment).to receive_messages completed?: true, credit_allowed: 0
 
           expect(credit_card.can_credit?(payment)).to be_falsy

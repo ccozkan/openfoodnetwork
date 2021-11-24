@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe DfcProvider::SuppliedProductSerializer do
-  let!(:product) { create(:simple_product ) }
+  let!(:product) { create(:simple_product) }
   let!(:variant) { product.variants.first }
 
   subject { described_class.new(variant) }
@@ -26,7 +26,7 @@ describe DfcProvider::SuppliedProductSerializer do
 
   describe '#unit' do
     it 'returns the rdfs label value' do
-      expect(subject.unit).to eq( '@id' => '/unit/piece', 'rdfs:label' => 'piece' )
+      expect(subject.unit).to eq('@id' => '/unit/piece', 'rdfs:label' => 'piece')
     end
   end
 end

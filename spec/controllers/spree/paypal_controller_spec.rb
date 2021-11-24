@@ -61,7 +61,7 @@ module Spree
       let(:order) { create(:order_with_distributor) }
       let(:response) { true }
       let(:provider_success_url) { "https://test.com/success" }
-      let(:response_mock) { double(:response, success?: response, errors: [] ) }
+      let(:response_mock) { double(:response, success?: response, errors: []) }
       let(:provider_mock) {
         double(
 :provider, 

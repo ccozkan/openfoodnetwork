@@ -14,7 +14,7 @@ namespace :karma do
   private
 
   def with_tmp_config(command, args = nil)
-    Tempfile.open('karma_unit.js', Rails.root.join('tmp') ) do |f|
+    Tempfile.open('karma_unit.js', Rails.root.join('tmp')) do |f|
       f.write unit_js(application_spec_files << i18n_file)
       f.flush
       trap('SIGINT') { puts "Killing Karma"; exit }

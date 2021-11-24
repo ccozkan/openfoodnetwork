@@ -7,7 +7,7 @@ describe DfcProvider::Api::SuppliedProductsController, type: :controller do
 
   let!(:user) { create(:user) }
   let!(:enterprise) { create(:distributor_enterprise, owner: user) }
-  let!(:product) { create(:simple_product, supplier: enterprise ) }
+  let!(:product) { create(:simple_product, supplier: enterprise) }
   let!(:variant) { product.variants.first }
 
   describe '.show' do

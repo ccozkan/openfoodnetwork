@@ -17,7 +17,7 @@ describe Calculator::FlatPercentItemTotal do
   end
 
   it "computes amount correctly for a given OrderManagement::Stock::Package" do
-    order = double(:order, line_items: [line_item] )
+    order = double(:order, line_items: [line_item])
     package = double(:package, order: order)
 
     expect(calculator.compute(package)).to eq(1.0)

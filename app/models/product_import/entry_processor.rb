@@ -44,7 +44,7 @@ module ProductImport
       end
 
       if total_saved_count.zero?
-        @importer.errors.add( :importer, I18n.t(:product_importer_products_save_error) )
+        @importer.errors.add(:importer, I18n.t(:product_importer_products_save_error))
       end
     end
 

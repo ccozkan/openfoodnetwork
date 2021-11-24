@@ -90,7 +90,7 @@ order_cycle: oc1,
       it do
         user = create(:admin_user)
         d2 = create(:distributor_enterprise)
-        o2 = create( :order, distributor: d2, order_cycle: oc1, completed_at: Time.zone.now )
+        o2 = create(:order, distributor: d2, order_cycle: oc1, completed_at: Time.zone.now)
         li2 = build(:line_item_with_shipment)
         o2.line_items << li2
 

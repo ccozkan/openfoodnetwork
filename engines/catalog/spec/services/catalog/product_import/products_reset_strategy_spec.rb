@@ -43,7 +43,7 @@ module Catalog
             end
 
             it 'updates the on_hand of the non-excluded items' do
-              non_excluded_variant = create( :variant, product: variant.product )
+              non_excluded_variant = create(:variant, product: variant.product)
               non_excluded_variant.on_hand = 3
               products_reset.reset(supplier_ids)
               expect(non_excluded_variant.reload.on_hand).to eq(0)

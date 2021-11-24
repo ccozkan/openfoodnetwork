@@ -8,7 +8,7 @@ module PermittedAttributes
 
     describe "with basic attributes" do
       let(:params) {
-        ActionController::Parameters.new(order_cycle: { id: "2", name: "First Order Cycle" } )
+        ActionController::Parameters.new(order_cycle: { id: "2", name: "First Order Cycle" })
       }
 
       it "keeps permitted and removes not permitted" do

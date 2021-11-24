@@ -80,7 +80,7 @@ describe VariantStock do
 
       context 'when the stock items is not backorderable' do
         it 'returns false' do
-          variant = build_stubbed( :variant, stock_locations: [build_stubbed(:stock_location)] )
+          variant = build_stubbed(:variant, stock_locations: [build_stubbed(:stock_location)])
           expect(variant.on_demand).to be_falsy
         end
       end

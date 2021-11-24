@@ -9,7 +9,7 @@ describe Admin::SubscriptionsHelper, type: :helper do
     let(:shipping_method) { create(:shipping_method, distributors: [shop]) }
     let(:payment_method) { create(:payment_method, distributors: [shop]) }
     let(:schedule) {
-      create(:schedule, order_cycles: [create(:simple_order_cycle, coordinator: shop)] )
+      create(:schedule, order_cycles: [create(:simple_order_cycle, coordinator: shop)])
     }
 
     context "when a shop has no shipping methods present" do

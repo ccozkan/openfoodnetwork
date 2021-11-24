@@ -186,7 +186,7 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
 
     describe "#show" do
       let!(:order) {
-        create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor )
+        create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor)
       }
 
       context "Resource not found" do
@@ -239,7 +239,7 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
 
       context "as distributor owner" do
         let!(:order) {
-          create(:completed_order_with_fees, order_cycle: order_cycle, distributor: distributor )
+          create(:completed_order_with_fees, order_cycle: order_cycle, distributor: distributor)
         }
 
         before { allow(controller).to receive(:spree_current_user) { order.distributor.owner } }

@@ -174,7 +174,7 @@ product_tag_rule2,
       end
 
       context "when subject is an array" do
-        let(:element) { double(:element, ) }
+        let(:element) { double(:element,) }
         let(:subject) { [element] }
 
         context "when rule_class reponds to tagged_children_for" do
@@ -253,10 +253,10 @@ product_tag_rule2,
         OpenFoodNetwork::TagRuleApplicator.new(enterprise, "FilterProducts", ["tag1"])
       }
       let(:customer_rule) {
-        double(:customer_rule, reject_matched?: "customer_rule.reject_matched?" )
+        double(:customer_rule, reject_matched?: "customer_rule.reject_matched?")
       }
       let(:default_rule) {
-        double(:customer_rule, reject_matched?: "default_rule.reject_matched?" )
+        double(:customer_rule, reject_matched?: "default_rule.reject_matched?")
       }
       let(:dummy) { double(:dummy) }
 

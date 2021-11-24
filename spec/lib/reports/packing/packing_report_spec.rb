@@ -96,7 +96,7 @@ child: distributor,
 
         it "shows line items supplied by my producers, with names hidden" do
           expect(report_contents).to include line_item2.product.name
-          expect(report_data.first["first_name"]).to eq( I18n.t('admin.reports.hidden_field') )
+          expect(report_data.first["first_name"]).to eq(I18n.t('admin.reports.hidden_field'))
         end
 
         context "where the distributor allows suppliers to see customer names" do

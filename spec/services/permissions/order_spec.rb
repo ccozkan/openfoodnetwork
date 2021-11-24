@@ -13,13 +13,13 @@ module Permissions
       create(:simple_order_cycle, coordinator: coordinator, distributors: [distributor])
     }
     let(:order_completed) {
-      create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor )
+      create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor)
     }
     let(:order_cancelled) {
-      create(:order, order_cycle: order_cycle, distributor: distributor, state: 'canceled' )
+      create(:order, order_cycle: order_cycle, distributor: distributor, state: 'canceled')
     }
     let(:order_cart) {
-      create(:order, order_cycle: order_cycle, distributor: distributor, state: 'cart' )
+      create(:order, order_cycle: order_cycle, distributor: distributor, state: 'cart')
     }
     let(:order_from_last_year) {
       create(
@@ -34,7 +34,7 @@ distributor: distributor,
 
     describe "finding orders that are visible in reports" do
       let(:random_enterprise) { create(:distributor_enterprise) }
-      let(:order) { create(:order, order_cycle: order_cycle, distributor: distributor ) }
+      let(:order) { create(:order, order_cycle: order_cycle, distributor: distributor) }
       let!(:line_item) { create(:line_item, order: order) }
       let!(:producer) { create(:supplier_enterprise) }
 
@@ -127,7 +127,7 @@ child: distributor,
 
     describe "finding line items that are visible in reports" do
       let(:random_enterprise) { create(:distributor_enterprise) }
-      let(:order) { create(:order, order_cycle: order_cycle, distributor: distributor ) }
+      let(:order) { create(:order, order_cycle: order_cycle, distributor: distributor) }
       let!(:line_item1) { create(:line_item, order: order) }
       let!(:line_item2) { create(:line_item, order: order) }
       let!(:producer) { create(:supplier_enterprise) }

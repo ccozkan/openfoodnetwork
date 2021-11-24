@@ -12,7 +12,7 @@ describe "spree/shared/_order_details.html.haml" do
 
   before do
     assign(:order, order)
-    allow(view).to receive_messages( order: order, current_order: order )
+    allow(view).to receive_messages(order: order, current_order: order)
   end
 
   it "shows how the order is paid for" do

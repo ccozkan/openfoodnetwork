@@ -13,7 +13,7 @@ class EnterpriseMailer < Spree::BaseMailer
                   enterprise: @enterprise.name,
                   sitename: Spree::Config[:site_name]
 )
-      mail( to: enterprise.contact.email, from: from_address, subject: subject )
+      mail(to: enterprise.contact.email, from: from_address, subject: subject)
     end
   end
 
@@ -24,7 +24,7 @@ class EnterpriseMailer < Spree::BaseMailer
 
     I18n.with_locale valid_locale(@enterprise.owner) do
       subject = t('enterprise_mailer.invite_manager.subject', enterprise: @enterprise.name)
-      mail( to: user.email, from: from_address, subject: subject )
+      mail(to: user.email, from: from_address, subject: subject)
     end
   end
 

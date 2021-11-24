@@ -115,7 +115,7 @@ child: e2,
     let!(:d1) { create(:distributor_enterprise) }
     let!(:d2) { create(:distributor_enterprise) }
     let!(:d3) { create(:distributor_enterprise) }
-    let(:enterprise_user) { create(:user, enterprises: [d1] ) }
+    let(:enterprise_user) { create(:user, enterprises: [d1]) }
 
     let!(:er1) { create(:enterprise_relationship, parent: d1, child: d2) }
     let!(:er2) { create(:enterprise_relationship, parent: d2, child: d1) }

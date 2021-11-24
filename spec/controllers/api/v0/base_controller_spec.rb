@@ -22,7 +22,7 @@ describe Api::V0::BaseController do
 
     it "can make a request" do
       api_get :index
-      expect(json_response).to eq( "products" => [] )
+      expect(json_response).to eq("products" => [])
       expect(response.status).to eq(200)
     end
   end
@@ -39,13 +39,13 @@ describe Api::V0::BaseController do
     it "with an invalid API key" do
       request.headers["X-Spree-Token"] = "fake_key"
       get :index, {}
-      expect(json_response).to eq( "error" => "Invalid API key (fake_key) specified." )
+      expect(json_response).to eq("error" => "Invalid API key (fake_key) specified.")
       expect(response.status).to eq(401)
     end
 
     it "using an invalid token param" do
       get :index, params: { token: "fake_key" }
-      expect(json_response).to eq( "error" => "Invalid API key (fake_key) specified." )
+      expect(json_response).to eq("error" => "Invalid API key (fake_key) specified.")
     end
   end
 
@@ -53,14 +53,14 @@ describe Api::V0::BaseController do
     expect(subject).to receive(:authenticate_user).and_return(true)
     expect(subject).to receive(:index).and_raise(Exception.new("no joy"))
     get :index
-    expect(json_response).to eq( "exception" => "no joy" )
+    expect(json_response).to eq("exception" => "no joy")
   end
 
   it 'handles record not found' do
     expect(subject).to receive(:authenticate_user).and_return(true)
     expect(subject).to receive(:index).and_raise(ActiveRecord::RecordNotFound.new)
     get :index
-    expect(json_response).to eq( "error" => "The resource you were looking for could not be found." )
+    expect(json_response).to eq("error" => "The resource you were looking for could not be found.")
     expect(response.status).to eq(404)
   end
 end

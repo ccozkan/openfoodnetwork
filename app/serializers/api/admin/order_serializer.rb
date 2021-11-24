@@ -31,7 +31,7 @@ module Api
       has_one :order_cycle, serializer: Api::Admin::IdSerializer
 
       def full_name
-        object.billing_address.nil? ? "" : ( object.billing_address.full_name || "" )
+        object.billing_address.nil? ? "" : (object.billing_address.full_name || "")
       end
 
       def distributor_name
@@ -76,7 +76,7 @@ module Api
       end
 
       def phone
-        object.billing_address.nil? ? "a" : ( object.billing_address.phone || "" )
+        object.billing_address.nil? ? "a" : (object.billing_address.phone || "")
       end
 
       def created_at

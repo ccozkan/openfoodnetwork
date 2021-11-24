@@ -89,7 +89,7 @@ describe Enterprise do
     describe "ownership" do
       let(:u1) { create(:user) }
       let(:u2) { create(:user) }
-      let!(:e) { create(:enterprise, owner: u1 ) }
+      let!(:e) { create(:enterprise, owner: u1) }
 
       it "adds new owner to list of managers" do
         expect(e.owner).to eq u1

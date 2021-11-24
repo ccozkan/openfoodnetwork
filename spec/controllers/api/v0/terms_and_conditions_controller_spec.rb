@@ -7,7 +7,7 @@ module Api
     include AuthenticationHelper
 
     let(:enterprise_owner) { create(:user) }
-    let(:enterprise) { create(:enterprise, owner: enterprise_owner ) }
+    let(:enterprise) { create(:enterprise, owner: enterprise_owner) }
     let(:enterprise_manager) { create(:user, enterprises: [enterprise]) }
 
     describe "removing terms and conditions file" do

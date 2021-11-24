@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe DfcProvider::CatalogItemSerializer do
-  let!(:product) { create(:simple_product ) }
+  let!(:product) { create(:simple_product) }
   let!(:variant) { product.variants.first }
 
   subject { described_class.new(variant) }
@@ -36,7 +36,7 @@ describe DfcProvider::CatalogItemSerializer do
     }
 
     it 'returns the expected value' do
-      expect(subject.references).to eq( "@id" => supplied_product_id, "@type" => "@id" )
+      expect(subject.references).to eq("@id" => supplied_product_id, "@type" => "@id")
     end
   end
 end

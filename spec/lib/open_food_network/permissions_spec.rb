@@ -149,7 +149,7 @@ child: hub,
       end
 
       it "returns enterprises as hub_id => [producer, ...]" do
-        expect(permissions.variant_override_enterprises_per_hub).to eq( hub.id => [producer.id] )
+        expect(permissions.variant_override_enterprises_per_hub).to eq(hub.id => [producer.id])
       end
 
       it "returns only permissions relating to managed hubs" do
@@ -160,7 +160,7 @@ child: e2,
                           permissions_list: [:create_variant_overrides]
 )
 
-        expect(permissions.variant_override_enterprises_per_hub).to eq( hub.id => [producer.id] )
+        expect(permissions.variant_override_enterprises_per_hub).to eq(hub.id => [producer.id])
       end
 
       it "returns only create_variant_overrides permissions" do
@@ -172,7 +172,7 @@ child: e2,
                           permissions_list: [:manage_products]
 )
 
-        expect(permissions.variant_override_enterprises_per_hub).to eq( hub.id => [producer.id] )
+        expect(permissions.variant_override_enterprises_per_hub).to eq(hub.id => [producer.id])
       end
 
       describe "hubs connected to the user by relationships only" do
@@ -214,8 +214,8 @@ child: producer_managed,
     end
 
     describe "finding editable products" do
-      let!(:p1) { create(:simple_product, supplier: create(:supplier_enterprise) ) }
-      let!(:p2) { create(:simple_product, supplier: create(:supplier_enterprise) ) }
+      let!(:p1) { create(:simple_product, supplier: create(:supplier_enterprise)) }
+      let!(:p2) { create(:simple_product, supplier: create(:supplier_enterprise)) }
 
       before do
         allow(permissions).to receive(:managed_enterprise_products) { Spree::Product.where('1=0') }
@@ -237,9 +237,9 @@ child: producer_managed,
     end
 
     describe "finding visible products" do
-      let!(:p1) { create(:simple_product, supplier: create(:supplier_enterprise) ) }
-      let!(:p2) { create(:simple_product, supplier: create(:supplier_enterprise) ) }
-      let!(:p3) { create(:simple_product, supplier: create(:supplier_enterprise) ) }
+      let!(:p1) { create(:simple_product, supplier: create(:supplier_enterprise)) }
+      let!(:p2) { create(:simple_product, supplier: create(:supplier_enterprise)) }
+      let!(:p3) { create(:simple_product, supplier: create(:supplier_enterprise)) }
 
       before do
         allow(permissions).to receive(:managed_enterprise_products) { Spree::Product.where("1=0") }

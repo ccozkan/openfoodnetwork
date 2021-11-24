@@ -11,7 +11,7 @@ describe RegistrationController, type: :controller do
   end
 
   describe "redirecting when user has reached enterprise ownership limit" do
-    let!(:user) { create(:user, enterprise_limit: 1 ) }
+    let!(:user) { create(:user, enterprise_limit: 1) }
     let!(:enterprise) { create(:distributor_enterprise, owner: user) }
 
     before do

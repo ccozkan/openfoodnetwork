@@ -25,7 +25,7 @@ describe VariantOverridesIndexed do
         let(:vo_distributor) { distributor }
 
         it 'they are included in the mapping' do
-          expect(result).to eq( distributor.id => { variant => variant_override } )
+          expect(result).to eq(distributor.id => { variant => variant_override })
         end
       end
 

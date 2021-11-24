@@ -41,7 +41,7 @@ module Admin
     end
 
     def settings_params
-      params.require(:settings).permit( :stripe_connect_enabled, )
+      params.require(:settings).permit(:stripe_connect_enabled,)
     end
   end
 end

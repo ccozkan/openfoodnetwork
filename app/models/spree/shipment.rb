@@ -172,7 +172,7 @@ if: lambda { |shipment|
     def update_amounts
       return unless fee_adjustment&.amount != cost
 
-      update_columns( cost: fee_adjustment&.amount || 0.0, updated_at: Time.zone.now )
+      update_columns(cost: fee_adjustment&.amount || 0.0, updated_at: Time.zone.now)
       recalculate_adjustments
     end
 
@@ -209,7 +209,7 @@ if: lambda { |shipment|
     def update!(order)
       old_state = state
       new_state = determine_state(order)
-      update_columns( state: new_state, updated_at: Time.zone.now )
+      update_columns(state: new_state, updated_at: Time.zone.now)
       after_ship if new_state == 'shipped' && old_state != 'shipped'
     end
 
@@ -267,7 +267,7 @@ if: lambda { |shipment|
         fee_adjustment.save!
         fee_adjustment.reload
       elsif shipping_method
-        shipping_method.create_adjustment( adjustment_label, self, true, "open" )
+        shipping_method.create_adjustment(adjustment_label, self, true, "open")
         reload # ensure adjustment is present on later saves
       end
 
@@ -335,7 +335,7 @@ if: lambda { |shipment|
 
     def update_order_shipment_state
       new_state = order.updater.update_shipment_state
-      order.update_columns( shipment_state: new_state, updated_at: Time.zone.now, )
+      order.update_columns(shipment_state: new_state, updated_at: Time.zone.now,)
     end
 
     def send_shipped_email

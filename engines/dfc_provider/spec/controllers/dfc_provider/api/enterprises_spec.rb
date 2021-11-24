@@ -7,7 +7,7 @@ describe DfcProvider::Api::EnterprisesController, type: :controller do
 
   let!(:user) { create(:user) }
   let!(:enterprise) { create(:distributor_enterprise, owner: user) }
-  let!(:product) { create(:simple_product, supplier: enterprise ) }
+  let!(:product) { create(:simple_product, supplier: enterprise) }
 
   describe '.show' do
     context 'with authorization token' do

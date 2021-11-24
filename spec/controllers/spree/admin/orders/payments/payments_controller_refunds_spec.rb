@@ -45,7 +45,7 @@ amount: order.total
             stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds")
               .with(basic_auth: ["sk_test_12345", ""])
               .to_return(status: 200,
-                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
+                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded'))
           end
 
           it "voids the payment" do
@@ -64,7 +64,7 @@ amount: order.total
           before do
             stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds")
               .with(basic_auth: ["sk_test_12345", ""])
-              .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
+              .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }))
           end
 
           it "does not void the payment" do
@@ -110,7 +110,7 @@ amount: order.total + 5
             stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds")
               .with(basic_auth: ["sk_test_12345", ""])
               .to_return(status: 200,
-                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
+                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded'))
           end
 
           it "partially refunds the payment" do
@@ -129,7 +129,7 @@ amount: order.total + 5
           before do
             stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds")
               .with(basic_auth: ["sk_test_12345", ""])
-              .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
+              .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }))
           end
 
           it "does not void the payment" do
@@ -184,7 +184,7 @@ amount: order.total
                 .to_return(status: 200,
                            body: JSON.generate(id: 're_123', 
 object: 'refund', 
-status: 'succeeded') )
+status: 'succeeded'))
             end
 
             it "voids the payment" do
@@ -204,7 +204,7 @@ status: 'succeeded') )
               stub_payment_intent_get_request(response: { intent_status: "succeeded" })
               stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
                 .with(basic_auth: ["sk_test_12345", ""])
-                .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
+                .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }))
             end
 
             it "does not void the payment" do
@@ -233,7 +233,7 @@ amount_refunded: 200
                 .to_return(status: 200,
                            body: JSON.generate(id: 're_123', 
 object: 'refund', 
-status: 'succeeded') )
+status: 'succeeded'))
             end
 
             it "can still void the payment" do
@@ -259,7 +259,7 @@ status: 'succeeded') )
 id: 'pi_123', 
 object: 'payment_intent',
 status: 'canceled'
-) )
+))
           end
 
           it "voids the payment" do
@@ -306,7 +306,7 @@ amount: order.total + 5
             stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
               .with(basic_auth: ["sk_test_12345", ""])
               .to_return(status: 200,
-                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
+                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded'))
           end
 
           it "partially refunds the payment" do
@@ -325,7 +325,7 @@ amount: order.total + 5
           before do
             stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
               .with(basic_auth: ["sk_test_12345", ""])
-              .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
+              .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }))
           end
 
           it "does not void the payment" do

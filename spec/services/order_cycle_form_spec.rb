@@ -63,17 +63,17 @@ describe OrderCycleForm do
     let!(:managed_coordinator) { create(:enterprise, owner: user) }
     let!(:managed_enterprise) { create(:enterprise, owner: user) }
     let!(:coordinated_order_cycle) {
-      create(:simple_order_cycle, coordinator: managed_coordinator )
+      create(:simple_order_cycle, coordinator: managed_coordinator)
     }
     let!(:coordinated_order_cycle2) {
-      create(:simple_order_cycle, coordinator: managed_enterprise )
+      create(:simple_order_cycle, coordinator: managed_enterprise)
     }
     let!(:uncoordinated_order_cycle) {
-      create(:simple_order_cycle, coordinator: create(:enterprise) )
+      create(:simple_order_cycle, coordinator: create(:enterprise))
     }
-    let!(:coordinated_schedule) { create(:schedule, order_cycles: [coordinated_order_cycle] ) }
-    let!(:coordinated_schedule2) { create(:schedule, order_cycles: [coordinated_order_cycle2] ) }
-    let!(:uncoordinated_schedule) { create(:schedule, order_cycles: [uncoordinated_order_cycle] ) }
+    let!(:coordinated_schedule) { create(:schedule, order_cycles: [coordinated_order_cycle]) }
+    let!(:coordinated_schedule2) { create(:schedule, order_cycles: [coordinated_order_cycle2]) }
+    let!(:uncoordinated_schedule) { create(:schedule, order_cycles: [uncoordinated_order_cycle]) }
 
     context "where I manage the order_cycle's coordinator" do
       let(:form) { OrderCycleForm.new(coordinated_order_cycle, params, user) }

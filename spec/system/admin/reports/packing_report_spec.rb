@@ -35,7 +35,7 @@ distributor: distributor,
 )
     }
     let(:supplier) { create(:supplier_enterprise, name: "Supplier") }
-    let(:product1) { create(:simple_product, name: "Product 1", supplier: supplier ) }
+    let(:product1) { create(:simple_product, name: "Product 1", supplier: supplier) }
     let(:variant1) { create(:variant, product: product1, unit_description: "Big") }
     let(:variant2) { create(:variant, product: product1, unit_description: "Small") }
     let(:product2) { create(:simple_product, name: "Product 2", supplier: supplier) }

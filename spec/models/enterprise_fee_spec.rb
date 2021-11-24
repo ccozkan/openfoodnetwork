@@ -151,7 +151,7 @@ label: 'hello'
 
   describe "soft-deletion" do
     let(:tax_category) { create(:tax_category) }
-    let(:enterprise_fee) { create(:enterprise_fee, tax_category: tax_category ) }
+    let(:enterprise_fee) { create(:enterprise_fee, tax_category: tax_category) }
     let!(:adjustment) { create(:adjustment, originator: enterprise_fee) }
 
     before do

@@ -22,7 +22,7 @@ module DfcProvider
     end
 
     def id
-      dfc_provider_routes.api_dfc_provider_person_url( id: object.id, host: host )
+      dfc_provider_routes.api_dfc_provider_person_url(id: object.id, host: host)
     end
 
     def type

@@ -147,7 +147,7 @@ amount: order.total,
         order.ship_address = evaluator.ship_address
         break unless order.next! while !order.completed?
 
-        order.update_columns( completed_at: evaluator.completed_at, state: evaluator.state )
+        order.update_columns(completed_at: evaluator.completed_at, state: evaluator.state)
       end
     end
   end

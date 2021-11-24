@@ -9,8 +9,8 @@ module Admin
     let!(:enterprise_owner) { create(:user) }
     let!(:other_enterprise_user) { create(:user) }
     let!(:existing_user) { create(:user) }
-    let!(:enterprise) { create(:enterprise, owner: enterprise_owner ) }
-    let!(:enterprise2) { create(:enterprise, owner: other_enterprise_user ) }
+    let!(:enterprise) { create(:enterprise, owner: enterprise_owner) }
+    let!(:enterprise2) { create(:enterprise, owner: other_enterprise_user) }
     let(:admin) { create(:admin_user) }
 
     describe "#create" do

@@ -96,6 +96,6 @@ class ExchangeProductsRenderer
       .visible_enterprises
     return enterprises if enterprises.empty?
 
-    enterprises.includes( supplied_products: [:supplier, :variants, { master: [:images] }] )
+    enterprises.includes(supplied_products: [:supplier, :variants, { master: [:images] }])
   end
 end

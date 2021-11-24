@@ -30,7 +30,7 @@ module InjectionHelper
   end
 
   def inject_enterprise_shopfront(enterprise)
-    inject_json( "shopfront", enterprise, Api::EnterpriseShopfrontSerializer )
+    inject_json("shopfront", enterprise, Api::EnterpriseShopfrontSerializer)
   end
 
   def inject_enterprise_shopfront_list

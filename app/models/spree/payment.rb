@@ -171,7 +171,7 @@ foreign_key: :source_id
       return unless adjustment.try(:reload)
       return if adjustment.finalized?
 
-      adjustment.update( eligible: false, state: "finalized" )
+      adjustment.update(eligible: false, state: "finalized")
     end
 
     def validate_source
@@ -206,7 +206,7 @@ foreign_key: :source_id
       order.payments.with_state('checkout').where.not(id: id).each do |payment|
         # Using update_column skips validations and so it skips validate_source. As we are just
         # invalidating past payments here, we don't want to validate all of them at this stage.
-        payment.update_columns( state: 'invalid', updated_at: Time.zone.now )
+        payment.update_columns(state: 'invalid', updated_at: Time.zone.now)
         payment.ensure_correct_adjustment
       end
     end

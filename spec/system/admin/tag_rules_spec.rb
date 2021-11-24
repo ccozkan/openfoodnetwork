@@ -256,10 +256,10 @@ count: 1
 
   context "deleting" do
     let!(:tag_rule) {
-      create(:filter_products_tag_rule, enterprise: enterprise, preferred_customer_tags: "member" )
+      create(:filter_products_tag_rule, enterprise: enterprise, preferred_customer_tags: "member")
     }
     let!(:default_rule) {
-      create(:filter_products_tag_rule, is_default: true, enterprise: enterprise )
+      create(:filter_products_tag_rule, is_default: true, enterprise: enterprise)
     }
 
     before do

@@ -41,7 +41,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
 
       rows = find("table#listing_customers").all("thead tr")
       table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-      expect(table.sort).to eq( [["Email", "First Name", "Last Name", "Suburb"]].sort )
+      expect(table.sort).to eq([["Email", "First Name", "Last Name", "Suburb"]].sort)
     end
 
     it "customers report" do
@@ -459,12 +459,12 @@ product1.group_buy_unit_size.to_s,
   end
 
   describe "users and enterprises report" do
-    let!(:enterprise1) { create( :enterprise, owner: create(:user) ) }
-    let!(:enterprise2) { create( :enterprise, owner: create(:user) ) }
-    let!(:enterprise3) { create( :enterprise, owner: create(:user) ) }
+    let!(:enterprise1) { create(:enterprise, owner: create(:user)) }
+    let!(:enterprise2) { create(:enterprise, owner: create(:user)) }
+    let!(:enterprise3) { create(:enterprise, owner: create(:user)) }
 
     before do
-      enterprise3.enterprise_roles.build( user: enterprise1.owner ).save
+      enterprise3.enterprise_roles.build(user: enterprise1.owner).save
 
       login_as_admin_and_visit spree.admin_reports_path
 
@@ -682,13 +682,13 @@ tax_category: tax_category
         click_button "Search"
         expect(xero_invoice_table).to match_table [
           xero_invoice_header,
-          xero_invoice_summary_row( 'Total untaxable produce (no tax)', 12.54, 'GST Free Income' ),
+          xero_invoice_summary_row('Total untaxable produce (no tax)', 12.54, 'GST Free Income'),
           xero_invoice_summary_row(
 'Total taxable produce (tax inclusive)',  
 1500.45,
                                    'GST on Income'
 ),
-          xero_invoice_summary_row( 'Total untaxable fees (no tax)', 10.0, 'GST Free Income' ),
+          xero_invoice_summary_row('Total untaxable fees (no tax)', 10.0, 'GST Free Income'),
           xero_invoice_summary_row('Total taxable fees (tax inclusive)',     20.0, 'GST on Income'),
           xero_invoice_summary_row(
 'Delivery Shipping Cost (tax inclusive)', 

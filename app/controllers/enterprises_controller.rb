@@ -47,7 +47,7 @@ data: OpenFoodNetwork::EnterpriseInjectionData.new
     end
 
     begin
-      Rails.application.routes.recognize_path( "/#{params[:permalink]}" )
+      Rails.application.routes.recognize_path("/#{params[:permalink]}")
       render plain: params[:permalink], status: :conflict
     rescue ActionController::RoutingError
       render plain: params[:permalink], status: :ok

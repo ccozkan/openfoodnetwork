@@ -414,7 +414,7 @@ line_items_attributes: {
       let(:variant2) { create(:variant) }
       let(:distributor) { create(:distributor_enterprise, allow_order_changes: true) }
       let(:order_cycle) { create(:simple_order_cycle, distributors: [distributor]) }
-      let(:enterprise_fee) { create(:enterprise_fee, calculator: build(:calculator_per_item) ) }
+      let(:enterprise_fee) { create(:enterprise_fee, calculator: build(:calculator_per_item)) }
       let!(:exchange) {
         create(
 :exchange, 

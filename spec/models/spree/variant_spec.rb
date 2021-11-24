@@ -339,10 +339,10 @@ variants: [v2]
         let!(:visible_variant) { create(:variant) }
 
         let!(:hidden_inventory_item) {
-          create(:inventory_item, enterprise: enterprise, variant: hidden_variant, visible: false )
+          create(:inventory_item, enterprise: enterprise, variant: hidden_variant, visible: false)
         }
         let!(:visible_inventory_item) {
-          create(:inventory_item, enterprise: enterprise, variant: visible_variant, visible: true )
+          create(:inventory_item, enterprise: enterprise, variant: visible_variant, visible: true)
         }
 
         context "finding variants that are not hidden from an enterprise's inventory" do
@@ -412,11 +412,11 @@ variant: hidden_variant,
         let(:shop) { create(:distributor_enterprise) }
         let(:add_to_oc_producer) { create(:supplier_enterprise) }
         let(:other_producer) { create(:supplier_enterprise) }
-        let!(:v1) { create(:variant, product: create(:simple_product, supplier: shop ) ) }
+        let!(:v1) { create(:variant, product: create(:simple_product, supplier: shop)) }
         let!(:v2) {
-          create(:variant, product: create(:simple_product, supplier: add_to_oc_producer ) )
+          create(:variant, product: create(:simple_product, supplier: add_to_oc_producer))
         }
-        let!(:v3) { create(:variant, product: create(:simple_product, supplier: other_producer ) ) }
+        let!(:v3) { create(:variant, product: create(:simple_product, supplier: other_producer)) }
 
         before do
           create(

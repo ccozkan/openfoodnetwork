@@ -28,7 +28,7 @@ end
 # Allow connections to selenium whilst raising errors when connecting to external sites
 require 'webmock/rspec'
 WebMock.enable!
-WebMock.disable_net_connect!( allow_localhost: true, allow: 'chromedriver.storage.googleapis.com' )
+WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage.googleapis.com')
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

@@ -47,7 +47,7 @@ module Spree
 
       def order_referenced_by_shipping_method
         Order.joins(shipments: :shipping_rates)
-          .where( spree_shipping_rates: { shipping_method_id: @object } )
+          .where(spree_shipping_rates: { shipping_method_id: @object })
           .first
       end
 

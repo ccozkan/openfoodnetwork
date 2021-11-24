@@ -288,7 +288,7 @@ orders_close_at: 3.days.from_now
       let(:product2) { create(:simple_product, group_buy: false) }
 
       describe "with variants on the product" do
-        let(:variant) { create(:variant, product: product, on_hand: 10 ) }
+        let(:variant) { create(:variant, product: product, on_hand: 10) }
         before do
           add_variant_to_order_cycle(exchange, variant)
           set_order_cycle(order, oc1)

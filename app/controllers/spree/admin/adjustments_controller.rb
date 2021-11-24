@@ -46,7 +46,7 @@ module Spree
       end
 
       def permitted_resource_params
-        params.require(:adjustment).permit( :label, :amount, :tax_category_id )
+        params.require(:adjustment).permit(:label, :amount, :tax_category_id)
       end
     end
   end

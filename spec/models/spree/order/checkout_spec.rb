@@ -151,10 +151,10 @@ StateMachines::InvalidTransition,
   end
 
   describe "order with products with different shipping categories" do
-    let(:order) { create(:order_with_totals_and_distribution, ship_address: create(:address) ) }
+    let(:order) { create(:order_with_totals_and_distribution, ship_address: create(:address)) }
     let(:shipping_method) { create(:shipping_method, distributors: [order.distributor]) }
     let(:other_shipping_category) { create(:shipping_category) }
-    let(:other_product) { create(:product, shipping_category: other_shipping_category ) }
+    let(:other_product) { create(:product, shipping_category: other_shipping_category) }
     let(:other_variant) { other_product.variants.first }
 
     before do

@@ -85,7 +85,7 @@ module Spree
       end
 
       def permitted_resource_params
-        params.require(:image).permit( :attachment, :viewable_id, :alt )
+        params.require(:image).permit(:attachment, :viewable_id, :alt)
       end
     end
   end

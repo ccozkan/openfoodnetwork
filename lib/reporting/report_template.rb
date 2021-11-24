@@ -23,7 +23,7 @@ to: :renderer
     def initialize(current_user, ransack_params, options = {})
       @current_user = current_user
       @ransack_params = ransack_params.with_indifferent_access
-      @options = ( options || {} ).with_indifferent_access
+      @options = (options || {}).with_indifferent_access
     end
 
     def report_data

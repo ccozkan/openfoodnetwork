@@ -70,7 +70,7 @@ describe OrderShipment do
 
       context "when multiple shipping_methods exist in the shipment" do
         let(:expensive_shipping_method) { create(:shipping_method_with, :expensive_name) }
-        before { shipment.add_shipping_method(expensive_shipping_method, false ) }
+        before { shipment.add_shipping_method(expensive_shipping_method, false) }
 
         it "selects a shipping method that was not selected by default and persists the selection in the database" do
           expect(shipment.shipping_method).to eq shipping_method

@@ -11,7 +11,7 @@ describe CartService do
   let(:cart_service) { CartService.new(order) }
 
   before do
-    allow(order).to receive(:currency).and_return( currency )
+    allow(order).to receive(:currency).and_return(currency)
   end
 
   context "end-to-end" do
@@ -119,7 +119,7 @@ distributors: [distributor],
       variant_data = { variant_id: variant.id, quantity: 2 }
 
       expect(cart_service).to receive(:line_item_for_variant).with(variant).and_return(nil)
-      expect(cart_service.send(:varies_from_cart, variant_data, variant )).to be true
+      expect(cart_service.send(:varies_from_cart, variant_data, variant)).to be true
     end
 
     it "returns true when item is not in cart and a max_quantity is specified" do

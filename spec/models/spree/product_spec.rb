@@ -657,13 +657,13 @@ orders_close_at: Date.tomorrow
         let!(:visible_variant2) { create(:variant, product: product) }
 
         let!(:hidden_inventory_item) {
-          create(:inventory_item, enterprise: enterprise, variant: hidden_variant, visible: false )
+          create(:inventory_item, enterprise: enterprise, variant: hidden_variant, visible: false)
         }
         let!(:visible_inventory_item1) {
-          create(:inventory_item, enterprise: enterprise, variant: visible_variant1, visible: true )
+          create(:inventory_item, enterprise: enterprise, variant: visible_variant1, visible: true)
         }
         let!(:visible_inventory_item2) {
-          create(:inventory_item, enterprise: enterprise, variant: visible_variant2, visible: true )
+          create(:inventory_item, enterprise: enterprise, variant: visible_variant2, visible: true)
         }
 
         let!(:products) { Spree::Product.visible_for(enterprise) }
@@ -679,9 +679,9 @@ orders_close_at: Date.tomorrow
         let(:shop) { create(:distributor_enterprise) }
         let(:add_to_oc_producer) { create(:supplier_enterprise) }
         let(:other_producer) { create(:supplier_enterprise) }
-        let!(:p1) { create(:simple_product, supplier: shop ) }
-        let!(:p2) { create(:simple_product, supplier: add_to_oc_producer ) }
-        let!(:p3) { create(:simple_product, supplier: other_producer ) }
+        let!(:p1) { create(:simple_product, supplier: shop) }
+        let!(:p2) { create(:simple_product, supplier: add_to_oc_producer) }
+        let!(:p3) { create(:simple_product, supplier: other_producer) }
 
         before do
           create(

@@ -133,7 +133,7 @@ entry,
     def name_presence_error(entry)
       return if entry.enterprise.present?
 
-      mark_as_invalid( entry, attribute: enterprise_field, error: I18n.t(:error_required) )
+      mark_as_invalid(entry, attribute: enterprise_field, error: I18n.t(:error_required))
       true
     end
 
@@ -143,7 +143,7 @@ entry,
       mark_as_invalid(
 entry,
                       attribute: enterprise_field,
-                      error: I18n.t( :error_not_found_in_database, name: entry.enterprise )
+                      error: I18n.t(:error_not_found_in_database, name: entry.enterprise)
 )
       true
     end
@@ -154,7 +154,7 @@ entry,
       mark_as_invalid(
 entry,
                       attribute: enterprise_field,
-                      error: I18n.t( :error_no_permission_for_enterprise, name: entry.enterprise )
+                      error: I18n.t(:error_no_permission_for_enterprise, name: entry.enterprise)
 )
       true
     end
@@ -166,7 +166,7 @@ entry,
       mark_as_invalid(
 entry,
                       attribute: enterprise_field,
-                      error: I18n.t( :error_not_primary_producer, name: entry.enterprise )
+                      error: I18n.t(:error_not_primary_producer, name: entry.enterprise)
 )
       true
     end
@@ -324,7 +324,7 @@ attribute: 'product',
         mark_as_invalid(
 entry, 
 attribute: "category",
-       error: I18n.t( :error_not_found_in_database, name: category_name )
+       error: I18n.t(:error_not_found_in_database, name: category_name)
 )
       end
     end
@@ -346,7 +346,7 @@ attribute: "#{type}_category",
     def shipping_presence_validation(entry)
       return if entry.shipping_category_id
 
-      mark_as_invalid( entry, attribute: "shipping_category", error: I18n.t(:error_required) )
+      mark_as_invalid(entry, attribute: "shipping_category", error: I18n.t(:error_required))
     end
 
     def product_validation(entry)

@@ -34,12 +34,12 @@ shipment_state: 'ready',
                          completed_at: Time.zone.now 
 )
       }
-      let!(:o3) { create(:order_with_distributor, state: 'address', completed_at: nil ) }
-      let!(:o4) { create(:order_with_distributor, state: 'complete', completed_at: Time.zone.now ) }
-      let!(:o5) { create(:order_with_distributor, state: 'complete', completed_at: Time.zone.now ) }
+      let!(:o3) { create(:order_with_distributor, state: 'address', completed_at: nil) }
+      let!(:o4) { create(:order_with_distributor, state: 'complete', completed_at: Time.zone.now) }
+      let!(:o5) { create(:order_with_distributor, state: 'complete', completed_at: Time.zone.now) }
       let!(:li1) { create(:line_item_with_shipment, order: o1) }
       let!(:li2) { create(:line_item_with_shipment, order: o2) }
-      let!(:li3) { create(:line_item, order: o3 ) }
+      let!(:li3) { create(:line_item, order: o3) }
       let!(:li4) { create(:line_item_with_shipment, order: o4) }
       let!(:li5) { create(:line_item_with_shipment, order: o5) }
 
@@ -82,7 +82,7 @@ completed_at: Time.zone.now,
       }
       let!(:li1) { create(:line_item_with_shipment, order: o1) }
       let!(:li2) {
-        create(:line_item_with_shipment, order: o2, product: create(:product_with_option_types) )
+        create(:line_item_with_shipment, order: o2, product: create(:product_with_option_types))
       }
 
       before :each do
@@ -209,7 +209,7 @@ shipment_state: 'ready',
                          completed_at: Time.zone.now 
 )
       }
-      let!(:li1) { create(:line_item_with_shipment, order: o1, quantity: 5 ) }
+      let!(:li1) { create(:line_item_with_shipment, order: o1, quantity: 5) }
 
       before :each do
         visit_bulk_order_management
@@ -374,10 +374,10 @@ completed_at: Time.zone.now,
 )
         }
         let!(:li1) {
-          create(:line_item_with_shipment, order: o1, product: create(:product, supplier: s1) )
+          create(:line_item_with_shipment, order: o1, product: create(:product, supplier: s1))
         }
         let!(:li2) {
-          create(:line_item_with_shipment, order: o1, product: create(:product, supplier: s2) )
+          create(:line_item_with_shipment, order: o1, product: create(:product, supplier: s2))
         }
 
         before :each do
@@ -433,8 +433,8 @@ distributor: d2,
                          order_cycle: create(:simple_order_cycle) 
 )
         }
-        let!(:li1) { create(:line_item_with_shipment, order: o1 ) }
-        let!(:li2) { create(:line_item_with_shipment, order: o2 ) }
+        let!(:li1) { create(:line_item_with_shipment, order: o1) }
+        let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
         before :each do
           visit_bulk_order_management
@@ -486,8 +486,8 @@ completed_at: Time.zone.now,
                          order_cycle: oc2 
 )
         }
-        let!(:li1) { create(:line_item_with_shipment, order: o1 ) }
-        let!(:li2) { create(:line_item_with_shipment, order: o2 ) }
+        let!(:li1) { create(:line_item_with_shipment, order: o1) }
+        let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
         before do
           visit_bulk_order_management
@@ -521,8 +521,8 @@ completed_at: Time.zone.now,
         let!(:s2) { create(:supplier_enterprise) }
         let!(:d1) { create(:distributor_enterprise) }
         let!(:d2) { create(:distributor_enterprise) }
-        let!(:oc1) { create(:simple_order_cycle, suppliers: [s1], distributors: [d1] ) }
-        let!(:oc2) { create(:simple_order_cycle, suppliers: [s2], distributors: [d2] ) }
+        let!(:oc1) { create(:simple_order_cycle, suppliers: [s1], distributors: [d1]) }
+        let!(:oc2) { create(:simple_order_cycle, suppliers: [s2], distributors: [d2]) }
         let!(:p1) { create(:product, supplier: s1) }
         let!(:p2) { create(:product, supplier: s2) }
         let!(:o1) {
@@ -545,8 +545,8 @@ distributor: d2,
                          order_cycle: oc2 
 )
         }
-        let!(:li1) { create(:line_item_with_shipment, order: o1, product: p1 ) }
-        let!(:li2) { create(:line_item_with_shipment, order: o2, product: p2 ) }
+        let!(:li1) { create(:line_item_with_shipment, order: o1, product: p1) }
+        let!(:li2) { create(:line_item_with_shipment, order: o2, product: p2) }
 
         before :each do
           visit_bulk_order_management
@@ -615,9 +615,9 @@ shipment_state: 'ready',
                          completed_at: Time.zone.now 
 )
       }
-      let!(:li1) { create(:line_item_with_shipment, order: o1 ) }
-      let!(:li2) { create(:line_item_with_shipment, order: o2 ) }
-      let!(:li3) { create(:line_item_with_shipment, order: o3 ) }
+      let!(:li1) { create(:line_item_with_shipment, order: o1) }
+      let!(:li2) { create(:line_item_with_shipment, order: o2) }
+      let!(:li3) { create(:line_item_with_shipment, order: o3) }
 
       before :each do
         visit_bulk_order_management
@@ -667,10 +667,10 @@ shipment_state: 'ready',
                          completed_at: Time.zone.now.end_of_day + 1.second
 )
       }
-      let!(:li1) { create(:line_item_with_shipment, order: o1, quantity: 1 ) }
-      let!(:li2) { create(:line_item_with_shipment, order: o2, quantity: 2 ) }
-      let!(:li3) { create(:line_item_with_shipment, order: o3, quantity: 3 ) }
-      let!(:li4) { create(:line_item_with_shipment, order: o4, quantity: 4 ) }
+      let!(:li1) { create(:line_item_with_shipment, order: o1, quantity: 1) }
+      let!(:li2) { create(:line_item_with_shipment, order: o2, quantity: 2) }
+      let!(:li3) { create(:line_item_with_shipment, order: o3, quantity: 3) }
+      let!(:li4) { create(:line_item_with_shipment, order: o4, quantity: 4) }
 
       before :each do
         visit_bulk_order_management
@@ -759,8 +759,8 @@ shipment_state: 'ready',
                          completed_at: Time.zone.now 
 )
       }
-      let!(:li1) { create(:line_item_with_shipment, order: o1 ) }
-      let!(:li2) { create(:line_item_with_shipment, order: o2 ) }
+      let!(:li1) { create(:line_item_with_shipment, order: o1) }
+      let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
       before :each do
         visit_bulk_order_management
@@ -800,7 +800,7 @@ shipment_state: 'ready',
             check "bulk"
           end
           find("div#bulk-actions-dropdown").click
-          find("div#bulk-actions-dropdown div.menu_item", text: "Delete Selected" ).click
+          find("div#bulk-actions-dropdown div.menu_item", text: "Delete Selected").click
           expect(page).to have_selector "tr#li_#{li1.id}"
           expect(page).to have_no_selector "tr#li_#{li2.id}"
         end
@@ -823,7 +823,7 @@ shipment_state: 'ready',
           fill_in "quick_search", with: o1.number
           expect(page).to have_no_selector "tr#li_#{li2.id}"
           find("div#bulk-actions-dropdown").click
-          find("div#bulk-actions-dropdown div.menu_item", text: "Delete Selected" ).click
+          find("div#bulk-actions-dropdown div.menu_item", text: "Delete Selected").click
           expect(page).to have_no_selector "tr#li_#{li1.id}"
           expect(page).to have_selector "#quick_search"
           fill_in "quick_search", with: ''
@@ -855,8 +855,8 @@ shipment_state: 'ready',
                          completed_at: Time.zone.now 
 )
         }
-        let!(:li1) { create(:line_item_with_shipment, order: o1 ) }
-        let!(:li2) { create(:line_item_with_shipment, order: o2 ) }
+        let!(:li1) { create(:line_item_with_shipment, order: o1) }
+        let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
         before :each do
           visit_bulk_order_management
@@ -905,8 +905,8 @@ shipment_state: 'ready',
                          completed_at: Time.zone.now 
 )
         }
-        let!(:li1) { create(:line_item_with_shipment, order: o1 ) }
-        let!(:li2) { create(:line_item_with_shipment, order: o2 ) }
+        let!(:li1) { create(:line_item_with_shipment, order: o1) }
+        let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
         before :each do
           visit_bulk_order_management
@@ -942,8 +942,8 @@ shipment_state: 'ready',
                          completed_at: Time.zone.now 
 )
       }
-      let!(:li1) { create(:line_item_with_shipment, order: o1 ) }
-      let!(:li2) { create(:line_item_with_shipment, order: o2 ) }
+      let!(:li1) { create(:line_item_with_shipment, order: o1) }
+      let!(:li2) { create(:line_item_with_shipment, order: o2) }
       let!(:p3) {
         create(
 :product_with_option_types, 
@@ -963,10 +963,10 @@ shipment_state: 'ready',
 )
       }
       let!(:li3) {
-        create(:line_item_with_shipment, order: o3, variant: v3, quantity: 3, max_quantity: 6 )
+        create(:line_item_with_shipment, order: o3, variant: v3, quantity: 3, max_quantity: 6)
       }
       let!(:li4) {
-        create(:line_item_with_shipment, order: o2, variant: v3, quantity: 1, max_quantity: 3 )
+        create(:line_item_with_shipment, order: o2, variant: v3, quantity: 1, max_quantity: 3)
       }
 
       before :each do
@@ -1044,10 +1044,10 @@ completed_at: Time.zone.now,
 )
     }
     let!(:line_item_distributed) {
-      create(:line_item_with_shipment, order: o1, product: create(:product, supplier: s1) )
+      create(:line_item_with_shipment, order: o1, product: create(:product, supplier: s1))
     }
     let!(:line_item_not_distributed) {
-      create(:line_item_with_shipment, order: o2, product: create(:product, supplier: s1) )
+      create(:line_item_with_shipment, order: o2, product: create(:product, supplier: s1))
     }
 
     before(:each) do

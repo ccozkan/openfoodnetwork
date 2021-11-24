@@ -524,7 +524,7 @@ create(:line_item, price: 1.0, quantity: 2),
     let(:li) { create(:line_item, order: o) }
 
     it "returns the sum of eligible enterprise fee adjustments" do
-      ef = create(:enterprise_fee, calculator: Calculator::FlatRate.new )
+      ef = create(:enterprise_fee, calculator: Calculator::FlatRate.new)
       ef.calculator.set_preference :amount, 123.45
       a = ef.create_adjustment("adjustment", o, true)
 
@@ -532,7 +532,7 @@ create(:line_item, price: 1.0, quantity: 2),
     end
 
     it "does not include ineligible adjustments" do
-      ef = create(:enterprise_fee, calculator: Calculator::FlatRate.new )
+      ef = create(:enterprise_fee, calculator: Calculator::FlatRate.new)
       ef.calculator.set_preference :amount, 123.45
       a = ef.create_adjustment("adjustment", o, true)
 
@@ -542,7 +542,7 @@ create(:line_item, price: 1.0, quantity: 2),
     end
 
     it "does not include adjustments that do not originate from enterprise fees" do
-      sm = create(:shipping_method, calculator: Calculator::FlatRate.new )
+      sm = create(:shipping_method, calculator: Calculator::FlatRate.new)
       sm.calculator.set_preference :amount, 123.45
       sm.create_adjustment("adjustment", o, true)
 
@@ -550,7 +550,7 @@ create(:line_item, price: 1.0, quantity: 2),
     end
 
     it "does not include adjustments whose source is a line item" do
-      ef = create(:enterprise_fee, calculator: Calculator::PerItem.new )
+      ef = create(:enterprise_fee, calculator: Calculator::PerItem.new)
       ef.calculator.set_preference :amount, 123.45
       ef.create_adjustment("adjustment", li, true)
 
@@ -1011,7 +1011,7 @@ distributors: [new_distributor],
       before { allow(order).to receive(:email_for_customer) { "existing@email.com" } }
 
       context "and a customer for order.distributor and order#email_for_customer already exists" do
-        let!(:customer) { create(:customer, enterprise: distributor, email: "existing@email.com" ) }
+        let!(:customer) { create(:customer, enterprise: distributor, email: "existing@email.com") }
 
         it "associates the order with the existing customer, and returns the customer" do
           result = order.send(:associate_customer)
@@ -1050,7 +1050,7 @@ distributors: [new_distributor],
     let!(:order) { create(:order, distributor: distributor) }
 
     context "when a customer has already been linked to the order" do
-      let!(:customer) { create(:customer, enterprise: distributor, email: "existing@email.com" ) }
+      let!(:customer) { create(:customer, enterprise: distributor, email: "existing@email.com") }
       before { order.update_attribute(:customer_id, customer.id) }
 
       it "does nothing" do
@@ -1200,7 +1200,7 @@ shipping_fee: shipping_fee,
 
       it "updates shipping fees" do
         order.shipments = [
-create( :shipment_with, :shipping_method, shipping_method: shipping_method )
+create(:shipment_with, :shipping_method, shipping_method: shipping_method)
 ]
         order.save
 

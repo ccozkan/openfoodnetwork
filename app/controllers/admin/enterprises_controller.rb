@@ -249,7 +249,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
     def create_calculator_for(rule, attrs)
       if attrs[:calculator_type].present? && attrs[:calculator_attributes].present?
         rule.update(calculator_type: attrs[:calculator_type])
-        attrs[:calculator_attributes].merge!( id: rule.calculator.id )
+        attrs[:calculator_attributes].merge!(id: rule.calculator.id)
       end
     end
 
@@ -282,7 +282,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
     end
 
     def check_can_change_owner
-      unless ( spree_current_user == @enterprise.owner ) || spree_current_user.admin?
+      unless (spree_current_user == @enterprise.owner) || spree_current_user.admin?
         enterprise_params.delete :owner_id
       end
     end
@@ -296,7 +296,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
     end
 
     def check_can_change_managers
-      unless ( spree_current_user == @enterprise.owner ) || spree_current_user.admin?
+      unless (spree_current_user == @enterprise.owner) || spree_current_user.admin?
         enterprise_params.delete :user_ids
       end
     end

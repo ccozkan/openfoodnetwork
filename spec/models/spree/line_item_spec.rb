@@ -336,7 +336,7 @@ module Spree
         let!(:variant) { line_item.variant }
 
         context "when a variant override applies" do
-          let!(:vo) { create(:variant_override, hub: shop, variant: variant, count_on_hand: 3 ) }
+          let!(:vo) { create(:variant_override, hub: shop, variant: variant, count_on_hand: 3) }
 
           it "draws stock from the variant override" do
             expect(vo.reload.count_on_hand).to eq 3
@@ -367,7 +367,7 @@ module Spree
         let!(:variant) { line_item.variant }
 
         context "when a variant override applies" do
-          let!(:vo) { create(:variant_override, hub: shop, variant: variant, count_on_hand: 3 ) }
+          let!(:vo) { create(:variant_override, hub: shop, variant: variant, count_on_hand: 3) }
 
           it "restores stock to the variant override" do
             expect(vo.reload.count_on_hand).to eq 3
@@ -493,7 +493,7 @@ included: true
 :product, 
 variant_unit: "weight", 
 variant_unit_scale: 1,
-          master: create(:variant, unit_value: 1000 )
+          master: create(:variant, unit_value: 1000)
 )
         }
         let!(:v) { p.variants.first }

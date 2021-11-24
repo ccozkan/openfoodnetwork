@@ -50,7 +50,7 @@ order: order,
     describe "setting the adjustment's tax" do
       let(:order) { create(:order) }
       let(:zone) { create(:zone_with_member) }
-      let(:tax_rate) { create(:tax_rate, amount: 0.1, zone: zone, included_in_price: true ) }
+      let(:tax_rate) { create(:tax_rate, amount: 0.1, zone: zone, included_in_price: true) }
 
       describe "creating an adjustment" do
         let(:tax_category_param) { '' }

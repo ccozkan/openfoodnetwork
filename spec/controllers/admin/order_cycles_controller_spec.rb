@@ -14,16 +14,16 @@ module Admin
       describe "when the user manages a coordinator" do
         let!(:coordinator) { create(:distributor_enterprise, owner: distributor_owner) }
         let!(:oc1) {
-          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 60.days.ago )
+          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 60.days.ago)
         }
         let!(:oc2) {
-          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 40.days.ago )
+          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 40.days.ago)
         }
         let!(:oc3) {
-          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 20.days.ago )
+          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 20.days.ago)
         }
         let!(:oc4) {
-          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: nil )
+          create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: nil)
         }
 
         context "html" do

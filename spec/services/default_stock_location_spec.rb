@@ -37,7 +37,7 @@ describe DefaultStockLocation do
       let!(:location) do
         country = create(:country)
         state = Spree::State.create(name: 'Alabama', country: country)
-        Spree::StockLocation.create!( name: 'default', country_id: country.id, state_id: state.id )
+        Spree::StockLocation.create!(name: 'default', country_id: country.id, state_id: state.id)
       end
 
       it 'returns the location' do

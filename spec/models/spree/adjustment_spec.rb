@@ -215,7 +215,7 @@ amount: 0
         let(:tax_rate) {
           create(:tax_rate, included_in_price: inclusive_tax, zone: zone, amount: 0.25)
         }
-        let(:tax_category)    { create(:tax_category, name: "Shipping", tax_rates: [tax_rate] ) }
+        let(:tax_category)    { create(:tax_category, name: "Shipping", tax_rates: [tax_rate]) }
         let(:hub)             { create(:distributor_enterprise, charges_sales_tax: true) }
         let(:order)           { create(:order, distributor: hub) }
         let(:line_item)       { create(:line_item, order: order) }

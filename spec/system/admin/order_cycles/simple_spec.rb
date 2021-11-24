@@ -387,8 +387,8 @@ coordinator: distributor_managed,
 distributors: [distributor_managed, distributor_permitted, distributor_unmanaged], 
 name: 'Order Cycle 1' 
 )
-        v1 = create(:variant, product: create(:product, supplier: supplier_managed) )
-        v2 = create(:variant, product: create(:product, supplier: supplier_managed) )
+        v1 = create(:variant, product: create(:product, supplier: supplier_managed))
+        v2 = create(:variant, product: create(:product, supplier: supplier_managed))
 
         # Incoming exchange
         ex_in = oc.exchanges.where(
@@ -484,8 +484,8 @@ coordinator: distributor_managed,
 distributors: [my_distributor, distributor_managed, distributor_permitted, distributor_unmanaged], 
 name: 'Order Cycle 1' 
 )
-        v1 = create(:variant, product: create(:product, supplier: supplier_managed) )
-        v2 = create(:variant, product: create(:product, supplier: supplier_managed) )
+        v1 = create(:variant, product: create(:product, supplier: supplier_managed))
+        v2 = create(:variant, product: create(:product, supplier: supplier_managed))
 
         # Incoming exchange
         ex_in = oc.exchanges.where(

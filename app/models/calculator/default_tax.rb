@@ -97,7 +97,7 @@ order.distributor,
     end
 
     def deduced_total_by_rate(total, rate)
-      round_to_two_places(total - ( total / (1 + rate.amount) ) )
+      round_to_two_places(total - (total / (1 + rate.amount)))
     end
   end
 end
