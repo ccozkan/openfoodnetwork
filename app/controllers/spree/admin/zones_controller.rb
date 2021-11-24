@@ -31,7 +31,7 @@ module Spree
 :description,
 :default_tax,
 :kind,
-          zone_members_attributes: [:id, :zoneable_id, :zoneable_type, :_destroy]
+          zone_members_attributes: %i[id zoneable_id zoneable_type _destroy]
         )
       end
 

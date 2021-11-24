@@ -55,7 +55,7 @@ module Sets
     end
 
     def update_product_only_attributes(product, attributes)
-      variant_related_attrs = [:id, :variants_attributes, :master_attributes]
+      variant_related_attrs = %i[id variants_attributes master_attributes]
       product_related_attrs = attributes.except(*variant_related_attrs)
       return true if product_related_attrs.blank?
 

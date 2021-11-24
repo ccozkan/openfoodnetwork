@@ -26,7 +26,7 @@ class Enterprise < ApplicationRecord
   # Allow hubs to restrict visible variants to only those in their inventory
   preference :product_selection_from_inventory_only, :boolean, default: false
 
-  has_paper_trail only: [:owner_id, :sells], on: [:update]
+  has_paper_trail only: %i[owner_id sells], on: [:update]
 
   has_many :relationships_as_parent,
 class_name: 'EnterpriseRelationship',
@@ -519,9 +519,9 @@ permissions_list: hub_permissions
         EnterpriseRelationship.create!(
 parent: enterprise,
 child: self,
-permissions_list: [
-:add_to_order_cycle,
-                                                          :create_variant_overrides
+permissions_list: %i[
+add_to_order_cycle
+                                                          create_variant_overrides
 ]
 )
       end

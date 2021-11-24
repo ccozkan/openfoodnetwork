@@ -9,7 +9,7 @@ module Api
     let(:taxonomy) { create(:taxonomy) }
     let(:taxon) { create(:taxon, name: 'Ruby', taxonomy: taxonomy) }
     let(:taxon2) { create(:taxon, name: 'Rails', taxonomy: taxonomy) }
-    let(:attributes) { [:id, :name] }
+    let(:attributes) { %i[id name] }
 
     before do
       allow(controller).to(receive(:spree_current_user) { current_api_user })

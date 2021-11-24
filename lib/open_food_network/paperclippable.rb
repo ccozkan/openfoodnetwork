@@ -14,7 +14,7 @@ module OpenFoodNetwork
       # Paperclip required callbacks
       base.define_model_callbacks(:save, only: [:after])
       base.define_model_callbacks(:commit, only: [:after])
-      base.define_model_callbacks(:destroy, only: [:before, :after])
+      base.define_model_callbacks(:destroy, only: %i[before after])
 
       # Initialise an ID
       base.__send__(:attr_accessor, :id)

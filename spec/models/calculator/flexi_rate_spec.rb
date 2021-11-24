@@ -38,6 +38,6 @@ preferred_max_items: 1
 
   context 'extends LocalizedNumber' do
     it_behaves_like 'a model using the LocalizedNumber module',
-                    [:preferred_first_item, :preferred_additional_item]
+                    %i[preferred_first_item preferred_additional_item]
   end
 end

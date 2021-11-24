@@ -23,7 +23,7 @@ class Exchange < ApplicationRecord
   has_many :enterprise_fees, through: :exchange_fees
 
   validates :order_cycle, :sender, :receiver, presence: true
-  validates :sender_id, uniqueness: { scope: [:order_cycle_id, :receiver_id, :incoming] }
+  validates :sender_id, uniqueness: { scope: %i[order_cycle_id receiver_id incoming] }
 
   after_save :touch_receiver
 

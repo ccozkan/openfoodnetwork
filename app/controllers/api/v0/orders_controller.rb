@@ -62,7 +62,7 @@ module Api
       def order
         @order ||= Spree::Order
           .where(number: params[:id])
-          .includes(line_items: { variant: [:product, :stock_items, :default_price] })
+          .includes(line_items: { variant: %i[product stock_items default_price] })
           .first!
       end
     end

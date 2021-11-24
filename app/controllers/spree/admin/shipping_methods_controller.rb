@@ -4,9 +4,9 @@ module Spree
   module Admin
     class ShippingMethodsController < ::Admin::ResourceController
       before_action :load_data, except: [:index]
-      before_action :set_shipping_category, only: [:create, :update]
-      before_action :set_zones, only: [:create, :update]
-      before_action :load_hubs, only: [:new, :edit, :create, :update]
+      before_action :set_shipping_category, only: %i[create update]
+      before_action :set_zones, only: %i[create update]
+      before_action :load_hubs, only: %i[new edit create update]
       before_action :check_shipping_fee_input, only: [:update]
 
       # Sort shipping methods by distributor name

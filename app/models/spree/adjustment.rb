@@ -61,7 +61,7 @@ module Spree
       end
 
       event :finalize do
-        transition from: [:open, :closed], to: :finalized
+        transition from: %i[open closed], to: :finalized
       end
     end
 

@@ -22,7 +22,7 @@ module InjectionHelper
     inject_json_array(
       'groups',
       EnterpriseGroup.on_front_page.by_position.select(select_only)
-        .includes(enterprises: [:shipping_methods, { address: [:state, :country] }],
+        .includes(enterprises: [:shipping_methods, { address: %i[state country] }],
                   address: :state)
         .all,
       Api::GroupListSerializer
@@ -38,7 +38,7 @@ module InjectionHelper
 
     inject_json_array(
       'enterprises',
-      Enterprise.activated.visible.select(select_only).includes(address: [:state, :country]).all,
+      Enterprise.activated.visible.select(select_only).includes(address: %i[state country]).all,
       Api::EnterpriseShopfrontListSerializer
     )
   end
@@ -47,7 +47,7 @@ module InjectionHelper
     enterprises_and_relatives = current_distributor
       .relatives_including_self
       .activated
-      .includes(:properties, address: [:state, :country], supplied_products: :properties)
+      .includes(:properties, address: %i[state country], supplied_products: :properties)
       .all
 
     inject_json_array('enterprises',
@@ -172,7 +172,7 @@ id: @orders.pluck(:distributor_id).uniq | customers.pluck(:enterprise_id)
   private
 
   def default_enterprise_query
-    Enterprise.activated.includes(address: [:state, :country]).all
+    Enterprise.activated.includes(address: %i[state country]).all
   end
 
   def enterprise_injection_data

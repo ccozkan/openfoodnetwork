@@ -13,9 +13,9 @@ module Spree
       include EnterprisesHelper
 
       before_action :load_data
-      before_action :load_form_data, only: [:index, :new, :create, :edit, :update]
-      before_action :load_spree_api_key, only: [:index, :variant_overrides]
-      before_action :strip_new_properties, only: [:create, :update]
+      before_action :load_form_data, only: %i[index new create edit update]
+      before_action :load_spree_api_key, only: %i[index variant_overrides]
+      before_action :strip_new_properties, only: %i[create update]
 
       def new
         @object.shipping_category = DefaultShippingCategory.find_or_create
@@ -134,12 +134,12 @@ module Spree
       def product_includes
         [
 { variants: [:images, { option_values: :option_type }] },
-         { master: [:images, :default_price] }
+         { master: %i[images default_price] }
 ]
       end
 
       def collection_actions
-        [:index, :bulk_update]
+        %i[index bulk_update]
       end
 
       private

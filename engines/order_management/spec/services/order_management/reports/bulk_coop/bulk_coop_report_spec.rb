@@ -180,12 +180,12 @@ bill_address: create(:address),
 
       it 'returns' do
         expect(subject.columns).to(eq(
-          [
-            :order_billing_address_name,
-            :order_completed_at,
-            :customer_payments_total_cost,
-            :customer_payments_amount_owed,
-            :customer_payments_amount_paid,
+          %i[
+            order_billing_address_name
+            order_completed_at
+            customer_payments_total_cost
+            customer_payments_amount_owed
+            customer_payments_amount_paid
           ]
         ))
       end

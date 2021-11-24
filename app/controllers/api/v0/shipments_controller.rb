@@ -8,8 +8,8 @@ module Api
       respond_to :json
 
       before_action :find_order
-      before_action :refuse_changing_cancelled_orders, only: [:add, :remove]
-      before_action :find_and_update_shipment, only: [:ship, :ready, :add, :remove]
+      before_action :refuse_changing_cancelled_orders, only: %i[add remove]
+      before_action :find_and_update_shipment, only: %i[ship ready add remove]
 
       def create
         variant = scoped_variant(params[:variant_id])

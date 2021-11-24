@@ -47,7 +47,7 @@ module ProductImport
 
         next if @enterprises_index.key?(enterprise_name)
 
-        enterprise = Enterprise.select([:id, :is_primary_producer])
+        enterprise = Enterprise.select(%i[id is_primary_producer])
           .where(name: enterprise_name).first
 
         @enterprises_index[enterprise_name] =
@@ -63,7 +63,7 @@ module ProductImport
 
         producer_name = entry.producer
         producer_id = @producers_index[producer_name] ||
-                      Enterprise.select([:id, :name]).where(name: producer_name).first.try(:id)
+                      Enterprise.select(%i[id name]).where(name: producer_name).first.try(:id)
         @producers_index[producer_name] = producer_id
       end
       @producers_index
@@ -74,7 +74,7 @@ module ProductImport
       @entries.each do |entry|
         category_name = entry.category
         category_id = @categories_index[category_name] ||
-                      Spree::Taxon.select([:id, :name]).where(name: category_name).first.try(:id)
+                      Spree::Taxon.select(%i[id name]).where(name: category_name).first.try(:id)
         @categories_index[category_name] = category_id
       end
       @categories_index
@@ -82,13 +82,13 @@ module ProductImport
 
     def create_tax_index
       @tax_index = {}
-      Spree::TaxCategory.select([:id, :name]).map { |tc| @tax_index[tc.name] = tc.id }
+      Spree::TaxCategory.select(%i[id name]).map { |tc| @tax_index[tc.name] = tc.id }
       @tax_index
     end
 
     def create_shipping_index
       @shipping_index = {}
-      Spree::ShippingCategory.select([:id, :name]).map { |sc| @shipping_index[sc.name] = sc.id }
+      Spree::ShippingCategory.select(%i[id name]).map { |sc| @shipping_index[sc.name] = sc.id }
       @shipping_index
     end
   end

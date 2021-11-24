@@ -10,16 +10,16 @@ describe Api::V0::VariantsController, type: :controller do
   let!(:variant2) { FactoryBot.create(:variant) }
   let!(:variant3) { FactoryBot.create(:variant) }
   let(:attributes) do
-    [
-:id,
-:options_text,
-:price,
-:on_hand,
-:unit_value,
-:unit_description,
-:on_demand,
-:display_as,
-     :display_name
+    %i[
+id
+options_text
+price
+on_hand
+unit_value
+unit_description
+on_demand
+display_as
+     display_name
 ]
   end
 

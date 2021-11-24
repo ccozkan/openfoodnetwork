@@ -5,7 +5,7 @@ module Admin
     include OrderCyclesHelper
     include PaperTrailLogging
 
-    prepend_before_action :set_order_cycle_id, only: [:incoming, :outgoing]
+    prepend_before_action :set_order_cycle_id, only: %i[incoming outgoing]
     before_action :load_data_for_index, only: :index
     before_action :require_coordinator, only: :new
     before_action :remove_protected_attrs, only: [:update]
@@ -114,7 +114,7 @@ edit_path: main_app.admin_order_cycle_incoming_path(@order_cycle)
     end
 
     def collection_actions
-      [:index, :bulk_update]
+      %i[index bulk_update]
     end
 
     private
@@ -212,7 +212,7 @@ orders_close_at_null: true
 
       unless Enterprise.managed_by(spree_current_user).include?(@order_cycle.coordinator)
         order_cycle_params.delete_if do |k, _v|
-          [:name, :orders_open_at, :orders_close_at].include?(k.to_sym)
+          %i[name orders_open_at orders_close_at].include?(k.to_sym)
         end
       end
     end
@@ -244,7 +244,7 @@ orders_close_at_null: true
     end
 
     def ams_prefix_whitelist
-      [:basic, :index]
+      %i[basic index]
     end
 
     def order_cycle_params

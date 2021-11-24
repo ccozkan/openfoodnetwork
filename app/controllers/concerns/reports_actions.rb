@@ -44,7 +44,7 @@ module ReportsActions
   end
 
   def form_options_required?
-    [:packing, :customers, :products_and_inventory, :order_cycle_management]
+    %i[packing customers products_and_inventory order_cycle_management]
       .include?(report_type.to_sym)
   end
 

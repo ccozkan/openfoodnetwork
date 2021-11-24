@@ -22,7 +22,7 @@ json: {
     private
 
     def collection_actions
-      [:index, :map_by_tag]
+      %i[index map_by_tag]
     end
 
     def collection

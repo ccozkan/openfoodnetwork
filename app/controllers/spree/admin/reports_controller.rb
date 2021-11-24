@@ -22,14 +22,14 @@ module Spree
       include Spree::ReportsHelper
       helper ::ReportsHelper
 
-      ORDER_MANAGEMENT_ENGINE_REPORTS = [:bulk_coop, :enterprise_fee_summary].freeze
+      ORDER_MANAGEMENT_ENGINE_REPORTS = %i[bulk_coop enterprise_fee_summary].freeze
 
       helper_method :render_content?
 
       before_action :cache_search_state
       # Fetches user's distributors, suppliers and order_cycles
       before_action :load_basic_data,
-only: [:customers, :products_and_inventory, :order_cycle_management]
+only: %i[customers products_and_inventory order_cycle_management]
       before_action :load_associated_data, only: [:orders_and_fulfillment]
 
       respond_to :html
@@ -258,19 +258,19 @@ spree_current_user,
       end
 
       def authorized_reports
-        all_reports = [
-          :orders_and_distributors,
-          :bulk_coop,
-          :payments,
-          :orders_and_fulfillment,
-          :customers,
-          :products_and_inventory,
-          :users_and_enterprises,
-          :enterprise_fee_summary,
-          :order_cycle_management,
-          :sales_tax,
-          :xero_invoices,
-          :packing
+        all_reports = %i[
+          orders_and_distributors
+          bulk_coop
+          payments
+          orders_and_fulfillment
+          customers
+          products_and_inventory
+          users_and_enterprises
+          enterprise_fee_summary
+          order_cycle_management
+          sales_tax
+          xero_invoices
+          packing
         ]
         reports = all_reports.select { |action| can?(action, Spree::Admin::ReportsController) }
         reports.map { |report| [report, describe_report(report)] }

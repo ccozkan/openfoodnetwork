@@ -12,7 +12,7 @@ module Api
 
       before_action :set_default_available_on, only: :create
 
-      skip_authorization_check only: [:show, :bulk_products, :overridable]
+      skip_authorization_check only: %i[show bulk_products overridable]
 
       def show
         @product = find_product(params[:id])
@@ -124,7 +124,7 @@ module Api
       def paged_products_for_producers(producer_ids)
         Spree::Product.where(nil)
           .merge(product_scope)
-          .includes(variants: [:product, :default_price, :stock_items])
+          .includes(variants: %i[product default_price stock_items])
           .where(supplier_id: producer_ids)
           .by_producer.by_name
           .ransack(params[:q]).result

@@ -25,18 +25,18 @@ module OrderManagement
             {
               group_by: proc { |line_item| line_item.product },
               sort_by: proc { |product| product.name },
-              summary_columns: [
-                :total_label,
-                :variant_product_name,
-                :variant_product_group_buy_unit_size_f,
-                :empty_cell,
-                :empty_cell,
-                :empty_cell,
-                :empty_cell,
-                :total_amount,
-                :total_available,
-                :remainder,
-                :max_quantity_excess
+              summary_columns: %i[
+                total_label
+                variant_product_name
+                variant_product_group_buy_unit_size_f
+                empty_cell
+                empty_cell
+                empty_cell
+                empty_cell
+                total_amount
+                total_available
+                remainder
+                max_quantity_excess
               ]
             },
             {
@@ -47,18 +47,18 @@ module OrderManagement
         end
 
         def columns
-          [
-            :order_billing_address_name,
-            :product_name,
-            :product_group_buy_unit_size,
-            :full_name,
-            :option_value_value,
-            :option_value_unit,
-            :weight_from_unit_value,
-            :total_amount,
-            :empty_cell,
-            :empty_cell,
-            :empty_cell
+          %i[
+            order_billing_address_name
+            product_name
+            product_group_buy_unit_size
+            full_name
+            option_value_value
+            option_value_unit
+            weight_from_unit_value
+            total_amount
+            empty_cell
+            empty_cell
+            empty_cell
           ]
         end
       end

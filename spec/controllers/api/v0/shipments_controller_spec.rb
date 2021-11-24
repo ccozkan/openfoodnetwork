@@ -7,7 +7,7 @@ describe Api::V0::ShipmentsController, type: :controller do
 
   let!(:shipment) { create(:shipment) }
   let!(:attributes) do
-    [:id, :tracking, :number, :cost, :shipped_at, :stock_location_name, :order_id]
+    %i[id tracking number cost shipped_at stock_location_name order_id]
   end
   let(:current_api_user) { build(:user) }
 

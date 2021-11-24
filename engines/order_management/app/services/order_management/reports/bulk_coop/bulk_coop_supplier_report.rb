@@ -29,18 +29,18 @@ sort_by: proc { |supplier| supplier.name }
             {
 group_by: proc { |line_item| line_item.product },
 sort_by: proc { |product| product.name },
-summary_columns: [
-                :variant_product_supplier_name,
-                :variant_product_name,
-                :variant_product_group_buy_unit_size_f,
-                :empty_cell,
-                :empty_cell,
-                :empty_cell,
-                :empty_cell,
-                :total_amount,
-                :units_required,
-                :remainder,
-                :max_quantity_excess
+summary_columns: %i[
+                variant_product_supplier_name
+                variant_product_name
+                variant_product_group_buy_unit_size_f
+                empty_cell
+                empty_cell
+                empty_cell
+                empty_cell
+                total_amount
+                units_required
+                remainder
+                max_quantity_excess
               ]
 },
             {
@@ -51,18 +51,18 @@ sort_by: proc { |full_name| full_name }
         end
 
         def columns
-          [
-            :variant_product_supplier_name,
-            :variant_product_name,
-            :variant_product_group_buy_unit_size_f,
-            :full_name,
-            :option_value_value,
-            :option_value_unit,
-            :weight_from_unit_value,
-            :total_amount,
-            :empty_cell,
-            :empty_cell,
-            :empty_cell
+          %i[
+            variant_product_supplier_name
+            variant_product_name
+            variant_product_group_buy_unit_size_f
+            full_name
+            option_value_value
+            option_value_unit
+            weight_from_unit_value
+            total_amount
+            empty_cell
+            empty_cell
+            empty_cell
           ]
         end
       end

@@ -92,7 +92,7 @@ module Admin
     end
 
     def collection_actions
-      [:index, :bulk_update, :bulk_reset]
+      %i[index bulk_update bulk_reset]
     end
 
     # This method is also present in ModelSet
@@ -107,17 +107,17 @@ module Admin
 
     def variant_overrides_params
       params.permit(
-        variant_overrides: [
-          :id,
-:variant_id,
-:hub_id,
-          :price,
-:count_on_hand,
-:sku,
-:on_demand,
-          :default_stock,
-:resettable,
-:tag_list
+        variant_overrides: %i[
+          id
+variant_id
+hub_id
+          price
+count_on_hand
+sku
+on_demand
+          default_stock
+resettable
+tag_list
         ]
       ).to_h[:variant_overrides]
     end

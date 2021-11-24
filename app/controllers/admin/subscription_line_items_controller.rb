@@ -35,7 +35,7 @@ schedule: @schedule)
     end
 
     def new_actions
-      [:new, :create, :build] # Added build
+      %i[new create build] # Added build
     end
 
     def ensure_shop

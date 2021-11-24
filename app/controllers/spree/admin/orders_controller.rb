@@ -9,16 +9,16 @@ module Spree
       helper CheckoutHelper
 
       before_action :load_order,
-only: [
-:edit,
-:update,
-:fire,
-:resend,
-                                        :invoice,
-:print,
-:print_ticket
+only: %i[
+edit
+update
+fire
+resend
+                                        invoice
+print
+print_ticket
 ]
-      before_action :load_distribution_choices, only: [:new, :edit, :update]
+      before_action :load_distribution_choices, only: %i[new edit update]
 
       # Ensure that the distributor is set for an order when
       before_action :ensure_distribution, only: :new

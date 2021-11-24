@@ -7,11 +7,11 @@ module SampleData
     include Logging
 
     def create_samples(enterprises)
-      all_permissions = [
-        :add_to_order_cycle,
-        :manage_products,
-        :edit_profile,
-        :create_variant_overrides
+      all_permissions = %i[
+        add_to_order_cycle
+        manage_products
+        edit_profile
+        create_variant_overrides
       ]
       enterprises.each do |enterprise|
         log("#{enterprise.name} permits everybody to do everything.")

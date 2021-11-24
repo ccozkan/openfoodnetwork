@@ -222,15 +222,15 @@ I18n.t(:report_header_billing_postcode),
         [
 {
 variant: [{ option_values: :option_type }, { product: :supplier }],
-order: [
-:bill_address,
-:ship_address,
-:order_cycle,
-:adjustments,
-:payments,
-                   :user,
-:distributor,
-:shipments
+order: %i[
+bill_address
+ship_address
+order_cycle
+adjustments
+payments
+                   user
+distributor
+shipments
 ]
 }
 ]

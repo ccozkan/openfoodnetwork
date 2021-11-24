@@ -3,7 +3,7 @@
 module Spree
   class ShippingMethod < ApplicationRecord
     include CalculatedAdjustments
-    DISPLAY = [:both, :front_end, :back_end].freeze
+    DISPLAY = %i[both front_end back_end].freeze
 
     acts_as_paranoid
     acts_as_taggable

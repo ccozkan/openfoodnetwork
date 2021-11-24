@@ -7,12 +7,12 @@ module PreferenceSections
     end
 
     def preferences
-      [
-        :open_street_map_enabled,
-        :open_street_map_provider_name,
-        :open_street_map_provider_options,
-        :open_street_map_default_latitude,
-        :open_street_map_default_longitude
+      %i[
+        open_street_map_enabled
+        open_street_map_provider_name
+        open_street_map_provider_options
+        open_street_map_default_latitude
+        open_street_map_default_longitude
       ]
     end
   end

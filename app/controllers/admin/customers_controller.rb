@@ -72,8 +72,8 @@ json: {
         CustomersWithBalance.new(managed_enterprise_id).query
           .includes(
             :enterprise,
-            { bill_address: [:state, :country] },
-            { ship_address: [:state, :country] },
+            { bill_address: %i[state country] },
+            { ship_address: %i[state country] },
             user: :credit_cards
           )
       else

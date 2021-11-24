@@ -12,7 +12,7 @@ module AbilityHelper
     end
 
     def have_direct_access_to_enterprise_fee_summary
-      have_ability([:admin, :new, :create], for: :enterprise_fee_summary)
+      have_ability(%i[admin new create], for: :enterprise_fee_summary)
     end
   end
 end

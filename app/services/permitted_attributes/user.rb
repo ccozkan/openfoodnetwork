@@ -14,7 +14,7 @@ module PermittedAttributes
     private
 
     def permitted_attributes
-      [:email, :password, :password_confirmation]
+      %i[email password password_confirmation]
     end
   end
 end

@@ -191,7 +191,7 @@ module Spree
       params.require(:order).permit(
         :distributor_id,
 :order_cycle_id,
-        line_items_attributes: [:id, :quantity]
+        line_items_attributes: %i[id quantity]
       )
     end
   end

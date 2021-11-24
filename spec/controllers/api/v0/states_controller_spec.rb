@@ -7,7 +7,7 @@ module Api
     render_views
 
     let!(:state) { create(:state, name: 'Victoria') }
-    let(:attributes) { [:id, :name, :abbr, :country_id] }
+    let(:attributes) { %i[id name abbr country_id] }
     let(:current_user) { create(:user) }
 
     before do

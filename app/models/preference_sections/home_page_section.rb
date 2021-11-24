@@ -7,10 +7,10 @@ module PreferenceSections
     end
 
     def preferences
-      [
-        :home_page_alert_html,
-        :home_hero,
-        :home_show_stats
+      %i[
+        home_page_alert_html
+        home_hero
+        home_show_stats
       ]
     end
   end

@@ -5,10 +5,10 @@ module Api
     class EnterprisesController < Api::V0::BaseController
       include GeocodeEnterpriseAddress
 
-      before_action :override_owner, only: [:create, :update]
+      before_action :override_owner, only: %i[create update]
       before_action :check_type, only: :update
-      before_action :override_sells, only: [:create, :update]
-      before_action :override_visible, only: [:create, :update]
+      before_action :override_sells, only: %i[create update]
+      before_action :override_visible, only: %i[create update]
       respond_to :json
 
       def create

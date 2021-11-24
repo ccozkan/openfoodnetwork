@@ -7,10 +7,10 @@ module PreferenceSections
     end
 
     def preferences
-      [
-        :hub_signup_pricing_table_html,
-        :hub_signup_case_studies_html,
-        :hub_signup_detail_html
+      %i[
+        hub_signup_pricing_table_html
+        hub_signup_case_studies_html
+        hub_signup_detail_html
       ]
     end
   end

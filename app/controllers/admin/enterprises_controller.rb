@@ -13,20 +13,20 @@ module Admin
     prepend_before_action :override_sells, only: :create
 
     before_action :load_enterprise_set, only: :index
-    before_action :load_countries, except: [:index, :register, :check_permalink]
-    before_action :load_methods_and_fees, only: [:edit, :update]
-    before_action :load_groups, only: [:new, :edit, :update, :create]
-    before_action :load_taxons, only: [:new, :edit, :update, :create]
+    before_action :load_countries, except: %i[index register check_permalink]
+    before_action :load_methods_and_fees, only: %i[edit update]
+    before_action :load_groups, only: %i[new edit update create]
+    before_action :load_taxons, only: %i[new edit update create]
     before_action :check_can_change_sells, only: :update
     before_action :check_can_change_bulk_sells, only: :bulk_update
     before_action :check_can_change_owner, only: :update
     before_action :check_can_change_bulk_owner, only: :bulk_update
     before_action :check_can_change_managers, only: :update
-    before_action :strip_new_properties, only: [:create, :update]
-    before_action :load_properties, only: [:edit, :update]
+    before_action :strip_new_properties, only: %i[create update]
+    before_action :load_properties, only: %i[edit update]
     before_action :setup_property, only: [:edit]
 
-    after_action  :geocode_address_if_use_geocoder, only: [:create, :update]
+    after_action  :geocode_address_if_use_geocoder, only: %i[create update]
 
     helper 'spree/products'
     include OrderCyclesHelper
@@ -44,7 +44,7 @@ ams_prefix: params[:ams_prefix],
 
     def edit
       @object = Enterprise.where(permalink: params[:id])
-        .includes(users: [:ship_address, :bill_address]).first
+        .includes(users: %i[ship_address bill_address]).first
       super
     end
 
@@ -194,7 +194,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
     end
 
     def collection_actions
-      [:index, :for_order_cycle, :visible, :bulk_update]
+      %i[index for_order_cycle visible bulk_update]
     end
 
     def load_methods_and_fees
@@ -341,7 +341,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
     end
 
     def ams_prefix_whitelist
-      [:index, :basic]
+      %i[index basic]
     end
 
     def enterprise_params

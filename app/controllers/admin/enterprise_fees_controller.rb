@@ -88,7 +88,7 @@ spree_current_user,
     end
 
     def collection_actions
-      [:index, :for_order_cycle, :bulk_update]
+      %i[index for_order_cycle bulk_update]
     end
 
     def current_enterprise

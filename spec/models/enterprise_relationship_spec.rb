@@ -175,7 +175,7 @@ child: e1,
 :enterprise_relationship,
 child: hub,
 parent: producer,
-                          permissions_list: [:add_to_order_cycles, :create_variant_overrides]
+                          permissions_list: %i[add_to_order_cycles create_variant_overrides]
 )
         end
         let!(:some_other_er) do
@@ -183,7 +183,7 @@ parent: producer,
 :enterprise_relationship,
 child: hub,
 parent: some_other_producer,
-                          permissions_list: [:add_to_order_cycles, :create_variant_overrides]
+                          permissions_list: %i[add_to_order_cycles create_variant_overrides]
 )
         end
         let!(:vo1) do
@@ -288,7 +288,7 @@ permission_revoked_at: Time.now.in_time_zone
 
         context 'and is then added' do
           before do
-            er.permissions_list = [:add_to_order_cycles, :create_variant_overrides]
+            er.permissions_list = %i[add_to_order_cycles create_variant_overrides]
  er.save!
           end
           it 'should set permission_revoked_at to nil for all relevant variant overrides' do
@@ -302,7 +302,7 @@ permission_revoked_at: Time.now.in_time_zone
         end
 
         context 'and then some other permission is added' do
-          before { er.permissions_list = [:add_to_order_cycles, :manage_products]
+          before { er.permissions_list = %i[add_to_order_cycles manage_products]
  er.save! }
 
           it 'should have no effect on existing variant_overrides' do

@@ -41,7 +41,7 @@ class OrderCycleForm
   end
 
   def exchanges_unchanged?
-    [:incoming_exchanges, :outgoing_exchanges].all? do |direction|
+    %i[incoming_exchanges outgoing_exchanges].all? do |direction|
       order_cycle_params[direction].nil?
     end
   end

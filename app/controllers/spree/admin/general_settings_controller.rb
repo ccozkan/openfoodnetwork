@@ -4,15 +4,15 @@ module Spree
   module Admin
     class GeneralSettingsController < Spree::Admin::BaseController
       def edit
-        @preferences_general = [
-:site_name,
-:default_seo_title,
-:default_meta_keywords,
-                                :default_meta_description,
-:site_url
+        @preferences_general = %i[
+site_name
+default_seo_title
+default_meta_keywords
+                                default_meta_description
+site_url
 ]
-        @preferences_security = [:allow_ssl_in_production, :allow_ssl_in_staging]
-        @preferences_currency = [:display_currency, :hide_cents]
+        @preferences_security = %i[allow_ssl_in_production allow_ssl_in_staging]
+        @preferences_currency = %i[display_currency hide_cents]
       end
 
       def update

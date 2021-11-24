@@ -3,10 +3,10 @@
 module Spree
   module Admin
     class PaymentMethodsController < ::Admin::ResourceController
-      skip_before_action :load_resource, only: [:create, :show_provider_preferences]
+      skip_before_action :load_resource, only: %i[create show_provider_preferences]
       before_action :load_data
       before_action :validate_payment_method_provider, only: [:create]
-      before_action :load_hubs, only: [:new, :edit, :update]
+      before_action :load_hubs, only: %i[new edit update]
       before_action :validate_calculator_preferred_value, only: [:update]
 
       respond_to :html
@@ -187,16 +187,16 @@ module Spree
       end
 
       def calculator_preferred_values
-        [
-          :preferred_amount,
-          :preferred_flat_percent,
-          :preferred_flat_percent,
-          :preferred_first_item,
-          :preferred_additional_item,
-          :preferred_max_items,
-          :preferred_normal_amount,
-          :preferred_discount_amount,
-          :preferred_minimal_amount
+        %i[
+          preferred_amount
+          preferred_flat_percent
+          preferred_flat_percent
+          preferred_first_item
+          preferred_additional_item
+          preferred_max_items
+          preferred_normal_amount
+          preferred_discount_amount
+          preferred_minimal_amount
         ]
       end
     end

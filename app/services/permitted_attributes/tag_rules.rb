@@ -18,7 +18,7 @@ module PermittedAttributes
 :preferred_variant_tags,
         :preferred_matched_variants_visibility,
 :calculator_type,
-        { calculator_attributes: [:id, :preferred_flat_percent] }
+        { calculator_attributes: %i[id preferred_flat_percent] }
       ]
     end
   end

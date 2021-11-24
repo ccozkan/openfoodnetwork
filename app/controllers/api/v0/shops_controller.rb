@@ -4,7 +4,7 @@ module Api
   module V0
     class ShopsController < BaseController
       respond_to :json
-      skip_authorization_check only: [:show, :closed_shops]
+      skip_authorization_check only: %i[show closed_shops]
 
       def show
         enterprise = Enterprise.find_by(id: params[:id])

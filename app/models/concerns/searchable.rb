@@ -13,8 +13,8 @@
 module Searchable
   extend ActiveSupport::Concern
 
-  DEFAULT_SEARCHABLE_ATTRIBUTES = [
-    :id, :name, :description, :created_at, :updated_at, :completed_at, :deleted_at
+  DEFAULT_SEARCHABLE_ATTRIBUTES = %i[
+    id name description created_at updated_at completed_at deleted_at
   ].freeze
 
   included do

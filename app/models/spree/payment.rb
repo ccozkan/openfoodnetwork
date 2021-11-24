@@ -60,30 +60,30 @@ foreign_key: :source_id
     state_machine initial: :checkout do
       # With card payments, happens before purchase or authorization happens
       event :started_processing do
-        transition from: [:checkout, :pending, :completed, :processing, :requires_authorization],
+        transition from: %i[checkout pending completed processing requires_authorization],
                    to: :processing
       end
       # When processing during checkout fails
       event :failure do
-        transition from: [:pending, :processing, :requires_authorization], to: :failed
+        transition from: %i[pending processing requires_authorization], to: :failed
       end
       # With card payments this represents authorizing the payment
       event :pend do
-        transition from: [:checkout, :processing], to: :pending
+        transition from: %i[checkout processing], to: :pending
       end
       # With card payments this represents completing a purchase or capture transaction
       event :complete do
-        transition from: [:processing, :pending, :checkout, :requires_authorization], to: :completed
+        transition from: %i[processing pending checkout requires_authorization], to: :completed
       end
       event :void do
-        transition from: [:pending, :completed, :requires_authorization, :checkout], to: :void
+        transition from: %i[pending completed requires_authorization checkout], to: :void
       end
       # when the card brand isnt supported
       event :invalidate do
         transition from: [:checkout], to: :invalid
       end
       event :require_authorization do
-        transition from: [:checkout, :processing], to: :requires_authorization
+        transition from: %i[checkout processing], to: :requires_authorization
       end
       event :fail_authorization do
         transition from: [:requires_authorization], to: :failed

@@ -7,18 +7,18 @@ module PreferenceSections
     end
 
     def preferences
-      [
-        :footer_logo,
-        :footer_facebook_url,
-        :footer_twitter_url,
-        :footer_instagram_url,
-        :footer_linkedin_url,
-        :footer_googleplus_url,
-        :footer_pinterest_url,
-        :footer_email,
-        :community_forum_url,
-        :footer_links_md,
-        :footer_about_url
+      %i[
+        footer_logo
+        footer_facebook_url
+        footer_twitter_url
+        footer_instagram_url
+        footer_linkedin_url
+        footer_googleplus_url
+        footer_pinterest_url
+        footer_email
+        community_forum_url
+        footer_links_md
+        footer_about_url
       ]
     end
   end

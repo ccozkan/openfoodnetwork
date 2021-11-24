@@ -23,7 +23,7 @@ module Admin
     def permitted_params
       params.permit(
         :action_name,
-        column_preferences: [:id, :user_id, :action_name, :column_name, :name, :visible]
+        column_preferences: %i[id user_id action_name column_name name visible]
       )
     end
 

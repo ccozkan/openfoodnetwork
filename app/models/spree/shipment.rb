@@ -54,7 +54,7 @@ if: lambda { |shipment|
       after_transition to: :shipped, do: :after_ship
 
       event :cancel do
-        transition to: :canceled, from: [:pending, :ready]
+        transition to: :canceled, from: %i[pending ready]
       end
       after_transition to: :canceled, do: :after_cancel
 
@@ -71,7 +71,7 @@ if: lambda { |shipment|
         }
         transition from: :canceled, to: :pending
       end
-      after_transition from: :canceled, to: [:pending, :ready], do: :after_resume
+      after_transition from: :canceled, to: %i[pending ready], do: :after_resume
     end
 
     def to_param

@@ -6,7 +6,7 @@ module Spree
       include FullUrlHelper
 
       before_action :load_order, except: [:show]
-      before_action :load_payment, only: [:fire, :show]
+      before_action :load_payment, only: %i[fire show]
       before_action :load_data
       before_action :can_transition_to_payment
       # We ensure that items are in stock before all screens if the order is in the Payment state.

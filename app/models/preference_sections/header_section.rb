@@ -7,10 +7,10 @@ module PreferenceSections
     end
 
     def preferences
-      [
-        :logo,
-        :logo_mobile,
-        :logo_mobile_svg
+      %i[
+        logo
+        logo_mobile
+        logo_mobile_svg
       ]
     end
   end

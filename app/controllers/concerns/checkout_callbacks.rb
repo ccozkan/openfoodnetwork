@@ -6,7 +6,7 @@ module CheckoutCallbacks
   included do
     # We need pessimistic locking to avoid race conditions.
     # Otherwise we fail on duplicate indexes or end up with negative stock.
-    prepend_around_action CurrentOrderLocker, only: [:edit, :update]
+    prepend_around_action CurrentOrderLocker, only: %i[edit update]
 
     prepend_before_action :check_hub_ready_for_checkout
     prepend_before_action :check_order_cycle_expiry

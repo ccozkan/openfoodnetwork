@@ -5,7 +5,7 @@ module Api
     class VariantsController < Api::V0::BaseController
       respond_to :json
 
-      skip_authorization_check only: [:index, :show]
+      skip_authorization_check only: %i[index show]
       before_action :product
 
       def index

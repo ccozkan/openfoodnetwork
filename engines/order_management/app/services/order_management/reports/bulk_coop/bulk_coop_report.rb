@@ -6,11 +6,11 @@ module OrderManagement
   module Reports
     module BulkCoop
       class BulkCoopReport
-        REPORT_TYPES = [
-          :bulk_coop_supplier_report,
-          :bulk_coop_allocation,
-          :bulk_coop_packing_sheets,
-          :bulk_coop_customer_payments
+        REPORT_TYPES = %i[
+          bulk_coop_supplier_report
+          bulk_coop_allocation
+          bulk_coop_packing_sheets
+          bulk_coop_customer_payments
         ].freeze
 
         attr_reader :params
@@ -171,31 +171,31 @@ sort_by: proc { |full_name| full_name }
           when 'bulk_coop_allocation'
             @allocation_report.columns
           when 'bulk_coop_packing_sheets'
-            [
-              :order_billing_address_name,
-              :product_name,
-              :full_name,
-              :total_quantity
+            %i[
+              order_billing_address_name
+              product_name
+              full_name
+              total_quantity
             ]
           when 'bulk_coop_customer_payments'
-            [
-              :order_billing_address_name,
-              :order_completed_at,
-              :customer_payments_total_cost,
-              :customer_payments_amount_owed,
-              :customer_payments_amount_paid
+            %i[
+              order_billing_address_name
+              order_completed_at
+              customer_payments_total_cost
+              customer_payments_amount_owed
+              customer_payments_amount_paid
             ]
           else
-            [
-              :product_supplier_name,
-              :product_name,
-              :product_group_buy_unit_size,
-              :full_name,
-              :weight_from_unit_value,
-              :total_quantity,
-              :total_max_quantity,
-              :empty_cell,
-              :empty_cell
+            %i[
+              product_supplier_name
+              product_name
+              product_group_buy_unit_size
+              full_name
+              weight_from_unit_value
+              total_quantity
+              total_max_quantity
+              empty_cell
+              empty_cell
             ]
           end
         end

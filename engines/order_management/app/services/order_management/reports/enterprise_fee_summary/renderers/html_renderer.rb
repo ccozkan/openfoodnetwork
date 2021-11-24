@@ -27,15 +27,15 @@ module OrderManagement
           private
 
           def data_row_attributes
-            [
-              :fee_type,
-              :enterprise_name,
-              :fee_name,
-              :customer_name,
-              :fee_placement,
-              :fee_calculated_on_transfer_through_name,
-              :tax_category_name,
-              :total_amount
+            %i[
+              fee_type
+              enterprise_name
+              fee_name
+              customer_name
+              fee_placement
+              fee_calculated_on_transfer_through_name
+              tax_category_name
+              total_amount
             ]
           end
 

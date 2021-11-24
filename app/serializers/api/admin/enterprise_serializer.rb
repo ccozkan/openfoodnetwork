@@ -42,11 +42,11 @@ module Api
       has_one :business_address, serializer: Api::AddressSerializer
 
       def logo
-        attachment_urls(object.logo, [:thumb, :small, :medium])
+        attachment_urls(object.logo, %i[thumb small medium])
       end
 
       def promo_image
-        attachment_urls(object.promo_image, [:thumb, :medium, :large])
+        attachment_urls(object.promo_image, %i[thumb medium large])
       end
 
       def terms_and_conditions

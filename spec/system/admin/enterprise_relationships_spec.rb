@@ -26,7 +26,7 @@ child: e2,
 :enterprise_relationship,
 parent: e3,
 child: e4,
-                          permissions_list: [:add_to_order_cycle, :manage_products]
+                          permissions_list: %i[add_to_order_cycle manage_products]
 )
 
       # When I go to the relationships page

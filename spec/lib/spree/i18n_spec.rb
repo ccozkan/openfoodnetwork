@@ -80,7 +80,7 @@ describe 'i18n' do
       end
 
       it 'logs missing translations' do
-        Spree.t(:missing, scope: [:else, :where])
+        Spree.t(:missing, scope: %i[else where])
         Spree.check_missing_translations
         assert_missing_translation('else')
         assert_missing_translation('else.where')

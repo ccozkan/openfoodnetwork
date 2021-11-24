@@ -16,7 +16,7 @@ class ShopsListService
       .activated
       .visible
       .is_distributor
-      .includes(address: [:state, :country])
+      .includes(address: %i[state country])
       .includes(:properties)
       .includes(supplied_products: :properties)
   end

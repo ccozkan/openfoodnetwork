@@ -7,7 +7,7 @@ module Api
       include ApiActionCaching
 
       skip_authorization_check
-      skip_before_action :authenticate_user, :ensure_api_key, only: [:taxons, :properties]
+      skip_before_action :authenticate_user, :ensure_api_key, only: %i[taxons properties]
 
       caches_action :taxons,
 :properties,
@@ -81,10 +81,10 @@ module Api
       end
 
       def permitted_ransack_params
-        [
-:name_or_meta_keywords_or_variants_display_as_or_variants_display_name_or_supplier_name_cont,
-         :properties_id_or_supplier_properties_id_in_any,
-         :primary_taxon_id_in_any
+        %i[
+name_or_meta_keywords_or_variants_display_as_or_variants_display_name_or_supplier_name_cont
+         properties_id_or_supplier_properties_id_in_any
+         primary_taxon_id_in_any
 ]
       end
 

@@ -39,9 +39,9 @@ module Spree
       return price unless price.is_a?(String)
 
       separator, _delimiter = I18n.t(
-[
-:'number.currency.format.separator',
-                                      :'number.currency.format.delimiter'
+%i[
+number.currency.format.separator
+                                      number.currency.format.delimiter
 ]
 )
       non_price_characters = /[^0-9\-#{separator}]/

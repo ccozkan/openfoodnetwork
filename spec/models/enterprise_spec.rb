@@ -471,10 +471,10 @@ product.id,
 
           should_have_enterprise_relationship from: producer1,
 to: hub1,
-                                              with: [:add_to_order_cycle, :create_variant_overrides]
+                                              with: %i[add_to_order_cycle create_variant_overrides]
           should_have_enterprise_relationship from: producer1,
 to: hub2,
-                                              with: [:add_to_order_cycle, :create_variant_overrides]
+                                              with: %i[add_to_order_cycle create_variant_overrides]
         end
 
         it 'does not create any other links' do
@@ -492,10 +492,10 @@ to: hub2,
 
           should_have_enterprise_relationship from: producer1,
 to: hub1,
-                                              with: [:add_to_order_cycle, :create_variant_overrides]
+                                              with: %i[add_to_order_cycle create_variant_overrides]
           should_have_enterprise_relationship from: producer2,
 to: hub1,
-                                              with: [:add_to_order_cycle, :create_variant_overrides]
+                                              with: %i[add_to_order_cycle create_variant_overrides]
         end
 
         it 'creates links from the new hub to all hubs owned by the same user, granting add_to_order_cycle permission' do

@@ -7,7 +7,7 @@ describe Exchange do
     expect(build(:exchange)).to(be_valid)
   end
 
-  [:order_cycle, :sender, :receiver].each do |attr|
+  %i[order_cycle sender receiver].each do |attr|
     it "should not be valid without #{attr}" do
       e = build(:exchange)
       e.send("#{attr}=", nil)

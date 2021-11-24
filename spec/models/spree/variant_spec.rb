@@ -766,7 +766,7 @@ child: shop,
     context 'extends LocalizedNumber' do
       subject! { build_stubbed(:variant) }
 
-      it_behaves_like 'a model using the LocalizedNumber module', [:price, :weight]
+      it_behaves_like 'a model using the LocalizedNumber module', %i[price weight]
     end
 
     context 'in a circular order cycle setup' do

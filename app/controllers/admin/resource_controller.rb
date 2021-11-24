@@ -8,7 +8,7 @@ module Admin
     rescue_from CanCan::AccessDenied, with: :unauthorized
 
     respond_to :html
-    respond_to :js, except: [:show, :index]
+    respond_to :js, except: %i[show index]
 
     def new
       respond_with(@object) do |format|
@@ -234,7 +234,7 @@ options)
     end
 
     def new_actions
-      [:new, :create]
+      %i[new create]
     end
 
     private

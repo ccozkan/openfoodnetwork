@@ -5,7 +5,7 @@ module Api
     class TaxonsController < Api::V0::BaseController
       respond_to :json
 
-      skip_authorization_check only: [:index, :show, :jstree]
+      skip_authorization_check only: %i[index show jstree]
 
       def index
         @taxons =
@@ -74,7 +74,7 @@ module Api
       def taxon_params
         return if params[:taxon].blank?
 
-        params.require(:taxon).permit([:name, :parent_id])
+        params.require(:taxon).permit(%i[name parent_id])
       end
     end
   end
