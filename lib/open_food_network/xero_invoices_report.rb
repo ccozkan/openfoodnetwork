@@ -291,7 +291,7 @@ order.bill_address&.full_name,
     end
 
     def tax_on_shipping_s(order)
-      tax_on_shipping = order.shipments.sum("additional_tax_total + included_tax_total").positive?
+      tax_on_shipping = order.shipments.sum('additional_tax_total + included_tax_total').positive?
       tax_on_shipping ? I18n.t(:report_header_gst_on_income) : I18n.t(:report_header_gst_free_income)
     end
 

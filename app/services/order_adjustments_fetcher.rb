@@ -24,11 +24,11 @@ class OrderAdjustmentsFetcher
   end
 
   def payment_fee
-    sum_adjustments("payment_fee")
+    sum_adjustments('payment_fee')
   end
 
   def ship_total
-    sum_adjustments("shipping")
+    sum_adjustments('shipping')
   end
 
   private
@@ -69,7 +69,7 @@ class OrderAdjustmentsFetcher
       end
     else
       adjustments.eligible
-        .where("originator_type = ? AND adjustable_type != ?", 'EnterpriseFee', 'Spree::LineItem')
+        .where('originator_type = ? AND adjustable_type != ?', 'EnterpriseFee', 'Spree::LineItem')
     end
   end
 

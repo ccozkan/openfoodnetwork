@@ -23,26 +23,26 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
   let(:user) { create(:user) }
   let(:admin_user) { create(:admin_user) }
 
-  describe "fetching orders" do
+  describe 'fetching orders' do
     before { order.line_items << line_item }
 
-    context "as a site admin" do
+    context 'as a site admin' do
       subject { described_class.new(admin_user, {}, true) }
 
-      it "fetches completed orders" do
+      it 'fetches completed orders' do
         o2 = create(:order)
         o2.line_items << build(:line_item)
         expect(subject.table_items).to(eq([line_item]))
       end
 
-      it "does not show cancelled orders" do
-        o2 = create(:order, state: "canceled", completed_at: 1.day.ago)
+      it 'does not show cancelled orders' do
+        o2 = create(:order, state: 'canceled', completed_at: 1.day.ago)
         o2.line_items << build(:line_item_with_shipment)
         expect(subject.table_items).to(eq([line_item]))
       end
     end
 
-    context "as a manager of a supplier" do
+    context 'as a manager of a supplier' do
       subject { described_class.new(user, {}, true) }
 
       let(:s1) { create(:supplier_enterprise) }
@@ -51,7 +51,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
         s1.enterprise_roles.create!(user: user)
       end
 
-      context "that has granted P-OC to the distributor" do
+      context 'that has granted P-OC to the distributor' do
         let(:o2) do
           create(
             :order,
@@ -75,17 +75,17 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
           )
         end
 
-        it "shows line items supplied by my producers, with names hidden" do
+        it 'shows line items supplied by my producers, with names hidden' do
           expect(subject.table_items).to(eq([li2]))
-          expect(subject.table_items.first.order.bill_address.firstname).to(eq("HIDDEN"))
+          expect(subject.table_items.first.order.bill_address.firstname).to(eq('HIDDEN'))
         end
 
-        context "where the distributor allows suppliers to see customer names" do
+        context 'where the distributor allows suppliers to see customer names' do
           before do
             distributor.update_columns(show_customer_names_to_suppliers: true)
           end
 
-          it "shows line items supplied by my producers, with names shown" do
+          it 'shows line items supplied by my producers, with names shown' do
             expect(subject.table_items).to(eq([li2]))
             expect(subject.table_items.first.order.bill_address.firstname)
               .to(eq(order.bill_address.firstname))
@@ -93,7 +93,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
         end
       end
 
-      context "that has not granted P-OC to the distributor" do
+      context 'that has not granted P-OC to the distributor' do
         let(:o2) do
           create(
             :order,
@@ -111,30 +111,30 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
           o2.line_items << li2
         end
 
-        it "does not show line items supplied by my producers" do
+        it 'does not show line items supplied by my producers' do
           expect(subject.table_items).to(eq([]))
         end
 
-        context "where the distributor allows suppliers to see customer names" do
+        context 'where the distributor allows suppliers to see customer names' do
           before do
             distributor.show_customer_names_to_suppliers = true
           end
 
-          it "does not show line items supplied by my producers" do
+          it 'does not show line items supplied by my producers' do
             expect(subject.table_items).to(eq([]))
           end
         end
       end
     end
 
-    context "as a manager of a distributor" do
+    context 'as a manager of a distributor' do
       subject { described_class.new(user, {}, true) }
 
       before do
         distributor.enterprise_roles.create!(user: user)
       end
 
-      it "only shows line items distributed by enterprises managed by the current user" do
+      it 'only shows line items distributed by enterprises managed by the current user' do
         d2 = create(:distributor_enterprise)
         d2.enterprise_roles.create!(user: create(:user))
         o2 = create(:order, distributor: d2, completed_at: 1.day.ago)
@@ -142,7 +142,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
         expect(subject.table_items).to(eq([line_item]))
       end
 
-      it "only shows the selected order cycle" do
+      it 'only shows the selected order cycle' do
         oc2 = create(:simple_order_cycle)
         o2 = create(:order, distributor: distributor, order_cycle: oc2)
         o2.line_items << build(:line_item)
@@ -152,14 +152,14 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
     end
   end
 
-  describe "columns are aligned" do
+  describe 'columns are aligned' do
     it 'has aligned columsn' do
       report_types = [
-        "",
-        "order_cycle_supplier_totals",
-        "order_cycle_supplier_totals_by_distributor",
-        "order_cycle_distributor_totals_by_supplier",
-        "order_cycle_customer_totals"
+        '',
+        'order_cycle_supplier_totals',
+        'order_cycle_supplier_totals_by_distributor',
+        'order_cycle_distributor_totals_by_supplier',
+        'order_cycle_customer_totals'
       ]
 
       report_types.each do |report_type|
@@ -169,17 +169,17 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
     end
   end
 
-  describe "order_cycle_customer_totals" do
+  describe 'order_cycle_customer_totals' do
     let!(:product) { line_item.product }
     let!(:fuji) do
-      create(:variant, product: product, display_name: "Fuji", sku: "FUJI", on_hand: 100)
+      create(:variant, product: product, display_name: 'Fuji', sku: 'FUJI', on_hand: 100)
     end
     let!(:gala) do
-      create(:variant, product: product, display_name: "Gala", sku: "GALA", on_hand: 100)
+      create(:variant, product: product, display_name: 'Gala', sku: 'GALA', on_hand: 100)
     end
 
     let(:items) do
-      report = described_class.new(admin_user, { report_type: "order_cycle_customer_totals" }, true)
+      report = described_class.new(admin_user, { report_type: 'order_cycle_customer_totals' }, true)
       OpenFoodNetwork::OrderGrouper.new(report.rules, report.columns).table(report.table_items)
     end
 
@@ -189,14 +189,14 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
       order.line_items << build(:line_item_with_shipment, variant: gala, price: nil, quantity: 2)
     end
 
-    it "has a product row" do
+    it 'has a product row' do
       product_name_field = items.first[5]
       expect(product_name_field).to(eq(product.name))
     end
 
-    it "has a summary row" do
+    it 'has a summary row' do
       product_name_field = items.last[5]
-      expect(product_name_field).to(eq("TOTAL"))
+      expect(product_name_field).to(eq('TOTAL'))
     end
 
     # Expected Report for Scenario:
@@ -206,10 +206,10 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
     # Row 3: Bartoletti Brooklyn, Fuji Apple, price: 1 + 4
     # Row 4: Bartoletti Brooklyn, Gala Apple, price: 2
     # Row 5: SUMMARY
-    describe "grouping of line items" do
-      let!(:address) { create(:address, last_name: "Bartoletti", first_name: "Brooklyn") }
+    describe 'grouping of line items' do
+      let!(:address) { create(:address, last_name: 'Bartoletti', first_name: 'Brooklyn') }
 
-      let!(:second_address) { create(:address, last_name: "Armstrong", first_name: "Amari") }
+      let!(:second_address) { create(:address, last_name: 'Armstrong', first_name: 'Amari') }
       let!(:second_order) do
         create(
 :order,
@@ -232,7 +232,7 @@ price: nil,
 )
       end
 
-      it "groups line items by variant and order" do
+      it 'groups line items by variant and order' do
         expect(items.length).to(eq(5))
 
         # Row 1: Armstrong Amari, Fuji Apple, price: 8
@@ -268,7 +268,7 @@ price: nil,
     end
 
     def totals_row?(row_data)
-      row_data[5] == I18n.t("admin.reports.total")
+      row_data[5] == I18n.t('admin.reports.total')
     end
 
     def customer_name(row_data)

@@ -17,7 +17,7 @@ module Api
 :import_date
 
       def tag_list
-        object.tag_list.join(",")
+        object.tag_list.join(',')
       end
 
       def tags

@@ -9,12 +9,12 @@ module OrderManagement
       # - Variants that are in outgoing exchanges where the hub is receiver
       def self.eligible_variants(distributor)
         variant_conditions = [
-"spree_products.supplier_id IN (?)",
+'spree_products.supplier_id IN (?)',
                               permitted_producer_ids(distributor)
 ]
         exchange_variant_ids = outgoing_exchange_variant_ids(distributor)
         if exchange_variant_ids.present?
-          variant_conditions[0] << " OR spree_variants.id IN (?)"
+          variant_conditions[0] << ' OR spree_variants.id IN (?)'
           variant_conditions << exchange_variant_ids
         end
 
@@ -39,7 +39,7 @@ module OrderManagement
       end
 
       def self.outgoing_exchange_variant_ids(distributor)
-        ExchangeVariant.select("DISTINCT exchange_variants.variant_id").joins(:exchange)
+        ExchangeVariant.select('DISTINCT exchange_variants.variant_id').joins(:exchange)
           .where(exchanges: { incoming: false, receiver_id: distributor.id })
           .pluck(:variant_id)
       end

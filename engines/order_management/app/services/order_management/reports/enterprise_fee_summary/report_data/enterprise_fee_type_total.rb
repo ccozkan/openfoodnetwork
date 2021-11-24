@@ -28,7 +28,7 @@ module OrderManagement
               fee_calculated_on_transfer_through_name,
               tax_category_name,
               total_amount
-            ].map { |attribute| attribute || "" }
+            ].map { |attribute| attribute || '' }
           end
         end
       end

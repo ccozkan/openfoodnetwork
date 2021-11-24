@@ -36,7 +36,7 @@ describe RemoveTransientData do
       expect(RemoveTransientData::Session.all).to(be_empty)
     end
 
-    describe "deleting old carts" do
+    describe 'deleting old carts' do
       let(:product) { create(:product) }
       let(:variant) { product.variants.first }
 
@@ -70,7 +70,7 @@ describe RemoveTransientData do
 .to(raise_error(ActiveRecord::RecordNotFound))
       end
 
-      it "removes any defunct line item option value records" do
+      it 'removes any defunct line item option value records' do
         line_item.delete
 
         expect { RemoveTransientData.new.call }

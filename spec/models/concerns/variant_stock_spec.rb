@@ -154,11 +154,11 @@ describe VariantStock do
         allow(variant).to(receive(:stock_items).and_return([stock_item]))
       end
 
-      it "returns true for zero" do
+      it 'returns true for zero' do
         expect(variant.can_supply?(0)).to(eq(true))
       end
 
-      it "returns true for large quantity" do
+      it 'returns true for large quantity' do
         expect(variant.can_supply?(100_000)).to(eq(true))
       end
     end
@@ -173,15 +173,15 @@ describe VariantStock do
           )
         end
 
-        it "returns true for zero" do
+        it 'returns true for zero' do
           expect(variant.can_supply?(0)).to(eq(true))
         end
 
-        it "returns true for number equal to stock level" do
+        it 'returns true for number equal to stock level' do
           expect(variant.can_supply?(variant.total_on_hand)).to(eq(true))
         end
 
-        it "returns false for number above stock level" do
+        it 'returns false for number above stock level' do
           expect(variant.can_supply?(variant.total_on_hand + 1)).to(eq(false))
         end
       end
@@ -189,11 +189,11 @@ describe VariantStock do
       context 'when variant out of stock' do
         before { variant.on_hand = 0 }
 
-        it "returns true for zero" do
+        it 'returns true for zero' do
           expect(variant.can_supply?(0)).to(eq(true))
         end
 
-        it "returns false for one" do
+        it 'returns false for one' do
           expect(variant.can_supply?(1)).to(eq(false))
         end
       end

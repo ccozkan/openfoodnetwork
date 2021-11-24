@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "active_support/concern"
+require 'active_support/concern'
 
 module CalculatedAdjustments
   extend ActiveSupport::Concern
 
   included do
-    has_one :calculator, as: :calculable, class_name: "Spree::Calculator", dependent: :destroy
+    has_one :calculator, as: :calculable, class_name: 'Spree::Calculator', dependent: :destroy
     accepts_nested_attributes_for :calculator
     validates :calculator, presence: true
   end
@@ -40,7 +40,7 @@ module CalculatedAdjustments
   #   (which is any class that has_many :adjustments) and sets amount based on the
   #   calculator as applied to the given calculable (Order, LineItems[], Shipment, etc.)
   # By default the adjustment will not be considered mandatory
-  def create_adjustment(label, adjustable, mandatory = false, state = "closed", tax_category = nil)
+  def create_adjustment(label, adjustable, mandatory = false, state = 'closed', tax_category = nil)
     amount = compute_amount(adjustable)
     return if amount.zero? && !mandatory
 

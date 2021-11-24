@@ -18,9 +18,9 @@ describe Spree::StockMovement do
     end.to(raise_error(ActiveRecord::ReadOnlyRecord))
   end
 
-  context "when quantity is negative" do
-    context "after save" do
-      it "should decrement the stock item count on hand" do
+  context 'when quantity is negative' do
+    context 'after save' do
+      it 'should decrement the stock item count on hand' do
         subject.quantity = -1
         subject.save
         stock_item.reload
@@ -29,9 +29,9 @@ describe Spree::StockMovement do
     end
   end
 
-  context "when quantity is positive" do
-    context "after save" do
-      it "should increment the stock item count on hand" do
+  context 'when quantity is positive' do
+    context 'after save' do
+      it 'should increment the stock item count on hand' do
         subject.quantity = 1
         subject.save
         stock_item.reload

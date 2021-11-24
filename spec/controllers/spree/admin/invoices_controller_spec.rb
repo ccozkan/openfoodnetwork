@@ -11,19 +11,19 @@ describe Spree::Admin::InvoicesController, type: :controller do
     allow(controller).to(receive(:spree_current_user) { enterprise_user })
   end
 
-  describe "#create" do
-    it "enqueues a job to create a bulk invoice and returns the filename" do
+  describe '#create' do
+    it 'enqueues a job to create a bulk invoice and returns the filename' do
       expect do
         spree_post(:create, order_ids: [order.id])
       end.to(enqueue_job(BulkInvoiceJob))
     end
   end
 
-  describe "#poll" do
+  describe '#poll' do
     let(:invoice_id) { '479186263' }
 
-    context "when the file is available" do
-      it "returns true" do
+    context 'when the file is available' do
+      it 'returns true' do
         allow(File).to(receive(:exist?))
         allow(File).to(receive(:exist?).with("tmp/invoices/#{invoice_id}.pdf").and_return(true))
 
@@ -34,8 +34,8 @@ describe Spree::Admin::InvoicesController, type: :controller do
       end
     end
 
-    context "when the file is not available" do
-      it "returns false" do
+    context 'when the file is not available' do
+      it 'returns false' do
         spree_get :poll, invoice_id: invoice_id
 
         expect(response.body).to(eq({ created: false }.to_json))

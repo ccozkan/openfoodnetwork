@@ -36,9 +36,9 @@ module Reporting
               distributor_alias[:name],
               supplier_alias[:name],
               sql_grouping(grouping_fields),
-              Arel.sql("product"),
-              Arel.sql("variant"),
-              Arel.sql("last_name")
+              Arel.sql('product'),
+              Arel.sql('variant'),
+              Arel.sql('last_name')
             ]
           end
         end

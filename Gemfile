@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby "2.7.3"
+ruby '2.7.3'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}.git" }
 
 gem 'dotenv-rails', require: 'dotenv/rails-now' # Load ENV vars before other gems
@@ -21,20 +21,20 @@ gem 'i18n-js', '~> 3.9.0'
 gem 'rails-i18n'
 gem 'rails_safe_tasks', '~> 1.0'
 
-gem "activerecord-import"
-gem "db2fog", github: "openfoodfoundation/db2fog", branch: "rails-6"
-gem "fog-aws", "~> 2.0" # db2fog does not support v3
+gem 'activerecord-import'
+gem 'db2fog', github: 'openfoodfoundation/db2fog', branch: 'rails-6'
+gem 'fog-aws', '~> 2.0' # db2fog does not support v3
 
-gem "valid_email2"
+gem 'valid_email2'
 
-gem "catalog", path: "./engines/catalog"
+gem 'catalog', path: './engines/catalog'
 gem 'dfc_provider', path: './engines/dfc_provider'
-gem "order_management", path: "./engines/order_management"
+gem 'order_management', path: './engines/order_management'
 gem 'web', path: './engines/web'
 
-gem "activerecord-postgresql-adapter"
-gem "arel-helpers", "~> 2.12"
-gem "pg", "~> 1.2.3"
+gem 'activerecord-postgresql-adapter'
+gem 'arel-helpers', '~> 2.12'
+gem 'pg', '~> 1.2.3'
 
 gem 'acts_as_list', '1.0.4'
 gem 'cancancan', '~> 1.15.0'
@@ -67,7 +67,7 @@ gem 'redcarpet'
 gem 'actionpack-action_caching'
 # AMS 0.9.x and 0.10.x are very different from 0.8.4 and the upgrade is not straight forward
 #   AMS is deprecated, we will introduce an alternative at some point
-gem "active_model_serializers", "0.8.4"
+gem 'active_model_serializers', '0.8.4'
 gem 'activerecord-session_store'
 gem 'acts-as-taggable-on', '~> 8.1'
 gem 'angularjs-file-upload-rails', '~> 2.4.1'
@@ -89,7 +89,7 @@ gem 'redis', '>= 4.0', require: ['redis', 'redis/connection/hiredis']
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
 
-gem "cable_ready", "5.0.0.pre2"
+gem 'cable_ready', '5.0.0.pre2'
 
 gem 'combine_pdf'
 gem 'wicked_pdf'
@@ -117,7 +117,7 @@ gem 'foundation-rails', '= 5.5.2.1'
 
 gem 'jquery-rails', '4.4.0'
 gem 'jquery-ui-rails', '~> 4.2'
-gem "select2-rails", github: "openfoodfoundation/select2-rails", branch: "v349_with_thor_v1"
+gem 'select2-rails', github: 'openfoodfoundation/select2-rails', branch: 'v349_with_thor_v1'
 
 gem 'ofn-qz', github: 'openfoodfoundation/ofn-qz', branch: 'ofn-rails-4'
 
@@ -127,7 +127,7 @@ gem 'flipper'
 gem 'flipper-active_record'
 gem 'flipper-ui'
 
-gem "view_component", require: "view_component/engine"
+gem 'view_component', require: 'view_component/engine'
 
 group :production, :staging do
   gem 'ddtrace'
@@ -142,12 +142,12 @@ group :test, :development do
   gem 'capybara'
   gem 'cuprite'
   gem 'database_cleaner', require: false
-  gem "factory_bot_rails", '6.2.0', require: false
+  gem 'factory_bot_rails', '6.2.0', require: false
   gem 'fuubar', '~> 2.5.1'
   gem 'json_spec', '~> 1.1.4'
   gem 'knapsack'
   gem 'letter_opener', '>= 1.4.1'
-  gem 'rspec-rails', ">= 3.5.2"
+  gem 'rspec-rails', '>= 3.5.2'
   gem 'rspec-retry'
   gem 'rswag'
   gem 'selenium-webdriver'
@@ -179,7 +179,7 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'web-console'
 
-  gem "view_component_storybook", require: "view_component/storybook/engine"
+  gem 'view_component_storybook', require: 'view_component/storybook/engine'
 
   gem 'rack-mini-profiler', '< 3.0.0'
 end

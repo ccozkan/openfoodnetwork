@@ -25,13 +25,13 @@ describe ProductImport::EntryValidator do
     )
   end
 
-  let(:enterprise) { create(:enterprise, name: "User Enterprise") }
+  let(:enterprise) { create(:enterprise, name: 'User Enterprise') }
 
   let(:entry_g) do
     ProductImport::SpreadsheetEntry.new(
-      unscaled_units: "500",
-      units: "500",
-      unit_type: "g",
+      unscaled_units: '500',
+      units: '500',
+      unit_type: 'g',
       name: 'Tomato',
       enterprise: enterprise,
       enterprise_id: enterprise.id,
@@ -43,9 +43,9 @@ describe ProductImport::EntryValidator do
 
   let(:entry_kg) do
     ProductImport::SpreadsheetEntry.new(
-      unscaled_units: "1",
-      units: "1",
-      unit_type: "kg",
+      unscaled_units: '1',
+      units: '1',
+      unit_type: 'kg',
       name: 'Potatoes',
       enterprise: enterprise,
       enterprise_id: enterprise.id,
@@ -55,7 +55,7 @@ describe ProductImport::EntryValidator do
     )
   end
 
-  describe "inventory validation" do
+  describe 'inventory validation' do
     before do
       allow(entry_validator).to(receive(:import_into_inventory?) { true })
       allow(entry_validator).to(receive(:enterprise_validation) {})
@@ -63,7 +63,7 @@ describe ProductImport::EntryValidator do
       allow(entry_validator).to(receive(:variant_of_product_validation) {})
     end
 
-    context "products exist" do
+    context 'products exist' do
       let!(:product_g) do
         create(
           :simple_product,
@@ -88,29 +88,29 @@ describe ProductImport::EntryValidator do
         )
       end
 
-      it "validates a spreadsheet entry in g" do
+      it 'validates a spreadsheet entry in g' do
         entries = [entry_g]
         entry_validator.validate_all(entries)
         expect(entries.first.errors.count).to(eq(0))
       end
 
-      it "validates a spreadsheet entry in kg" do
+      it 'validates a spreadsheet entry in kg' do
         entries = [entry_kg]
         entry_validator.validate_all(entries)
         expect(entries.first.errors.count).to(eq(0))
       end
     end
 
-    context "products do not exist" do
+    context 'products do not exist' do
       # stub
     end
   end
 
-  describe "enterprise validation" do
+  describe 'enterprise validation' do
     # stub
   end
 
-  describe "producer_validation" do
+  describe 'producer_validation' do
     # stub
   end
 end

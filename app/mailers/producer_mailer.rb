@@ -53,7 +53,7 @@ class ProducerMailer < Spree::BaseMailer
   def distributors_pickup_times_for(line_items)
     @order_cycle.distributors
       .joins(:distributed_orders)
-      .where("spree_orders.id IN (?)", line_items.map(&:order_id).uniq)
+      .where('spree_orders.id IN (?)', line_items.map(&:order_id).uniq)
       .map do |distributor|
       [distributor.name, @order_cycle.pickup_time_for(distributor)]
     end
@@ -65,7 +65,7 @@ class ProducerMailer < Spree::BaseMailer
       .from_order_cycle(order_cycle)
       .sorted_by_name_and_unit_value
       .merge(Spree::Product.with_deleted.in_supplier(producer))
-      .merge(Spree::Order.by_state(["complete", "resumed"]))
+      .merge(Spree::Order.by_state(['complete', 'resumed']))
   end
 
   def total_from_line_items(line_items)

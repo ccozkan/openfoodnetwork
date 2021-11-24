@@ -13,7 +13,7 @@ module Spree
     DISPLAY = [:both, :front_end, :back_end].freeze
     default_scope -> { where(deleted_at: nil) }
 
-    has_many :credit_cards, class_name: "Spree::CreditCard"
+    has_many :credit_cards, class_name: 'Spree::CreditCard'
 
     validates :name, presence: true
     validate :distributor_validation
@@ -105,7 +105,7 @@ lambda { |display_on = 'both'|
     end
 
     def self.clean_name
-      i18n_key = "spree.admin.payment_methods.providers." + name.demodulize.downcase
+      i18n_key = 'spree.admin.payment_methods.providers.' + name.demodulize.downcase
       I18n.t(i18n_key)
     end
 

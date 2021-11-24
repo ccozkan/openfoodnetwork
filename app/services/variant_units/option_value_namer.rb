@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "open_food_network/i18n_inflections"
+require 'open_food_network/i18n_inflections'
 
 module VariantUnits
   class OptionValueNamer

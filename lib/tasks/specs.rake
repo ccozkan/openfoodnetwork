@@ -4,7 +4,7 @@ namespace :ofn do
   namespace :specs do
     namespace :run do
       def spec_folders
-        Pathname("spec/").children.select(&:directory?).map do |p|
+        Pathname('spec/').children.select(&:directory?).map do |p|
           p.split.last.to_s
         end - %w[support factories javascripts performance]
       end
@@ -18,22 +18,22 @@ namespace :ofn do
       end
 
       def execute_rspec_for_spec_folders(folders)
-        folders = folders.join(",")
+        folders = folders.join(',')
         execute_rspec_for_pattern("spec/{#{folders}}/{,/*/**}/*_spec.rb")
       end
 
-      desc "Run Rspec tests excluding folders"
+      desc 'Run Rspec tests excluding folders'
       task :excluding_folders, [:folders] => :environment do |_task, args|
         success = execute_rspec_for_spec_folders(
-          spec_folders - (args[:folders].split(",") + args.extras)
+          spec_folders - (args[:folders].split(',') + args.extras)
         )
-        abort "Failure when running tests" unless success
+        abort 'Failure when running tests' unless success
       end
     end
 
     namespace :engines do
       def detect_engine_paths
-        Pathname("engines/").children.select(&:directory?)
+        Pathname('engines/').children.select(&:directory?)
       end
 
       def engine_name_for_engine(engine_path)
@@ -59,7 +59,7 @@ namespace :ofn do
       end
 
       namespace :all do
-        desc "Run RSpec tests for all engines"
+        desc 'Run RSpec tests for all engines'
         task rspec: :environment do
           success = true
 
@@ -67,12 +67,12 @@ namespace :ofn do
             success = !!execute_rspec_for_engine(engine_path) && success
           end
 
-          abort "Failure encountered when running tests for engines" unless success
+          abort 'Failure encountered when running tests for engines' unless success
         end
       end
 
-      desc "Alias for openfoodnetwork:specs:engines:all:rspec"
-      task rspec: "all:rspec"
+      desc 'Alias for openfoodnetwork:specs:engines:all:rspec'
+      task rspec: 'all:rspec'
     end
   end
 end

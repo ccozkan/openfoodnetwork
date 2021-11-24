@@ -16,18 +16,18 @@ describe Api::OrderSerializer do
     end
     let!(:payment) { create(:payment, order: order, state: 'checkout', amount: 123.45) }
 
-    it "serializes an order" do
+    it 'serializes an order' do
       expect(serializer.serializable_hash[:number]).to(eq(order.number))
     end
 
-    it "convert the state attributes to translatable keys" do
+    it 'convert the state attributes to translatable keys' do
       hash = serializer.serializable_hash
 
-      expect(hash[:state]).to(eq("complete"))
-      expect(hash[:payment_state]).to(eq("balance_due"))
+      expect(hash[:state]).to(eq('complete'))
+      expect(hash[:payment_state]).to(eq('balance_due'))
     end
 
-    it "only serializes completed payments" do
+    it 'only serializes completed payments' do
       hash = serializer.serializable_hash
 
       expect(hash[:payments].first[:amount]).to(eq(completed_payment.amount))

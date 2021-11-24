@@ -105,7 +105,7 @@ only: [
       end
 
       def print_ticket
-        render(template: "spree/admin/orders/ticket", layout: false)
+        render(template: 'spree/admin/orders/ticket', layout: false)
       end
 
       private

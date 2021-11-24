@@ -10,13 +10,13 @@ describe Spree::ShipmentMailer do
     line_item = build(:line_item, variant: variant, order: order, quantity: 1, price: 5)
     shipment = build(:shipment)
     allow(shipment).to(receive_messages(line_items: [line_item], order: order))
-    allow(shipment).to(receive_messages(tracking_url: "TRACK_ME"))
+    allow(shipment).to(receive_messages(tracking_url: 'TRACK_ME'))
     shipment
   end
   let(:distributor) { shipment.order.distributor }
 
-  context ":from not set explicitly" do
-    it "falls back to spree config" do
+  context ':from not set explicitly' do
+    it 'falls back to spree config' do
       message = Spree::ShipmentMailer.shipped_email(shipment)
       expect(message.from).to(eq([Spree::Config[:mails_from]]))
     end
@@ -28,7 +28,7 @@ describe Spree::ShipmentMailer do
     expect(shipment_email.body).to_not(include(%(Out of Stock)))
   end
 
-  it "shipment_email accepts an shipment id as an alternative to an Shipment object" do
+  it 'shipment_email accepts an shipment id as an alternative to an Shipment object' do
     expect(Spree::Shipment).to(receive(:find).with(shipment.id).and_return(shipment))
     expect do
       Spree::ShipmentMailer.shipped_email(shipment.id).deliver_now

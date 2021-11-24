@@ -4,7 +4,7 @@ require 'spec_helper'
 
 module Spree
   describe CreditCard do
-    describe "original specs from Spree" do
+    describe 'original specs from Spree' do
       let(:valid_credit_card_attributes) do
         {
           number: '4111111111111111',
@@ -24,30 +24,30 @@ module Spree
 
       let(:credit_card) { Spree::CreditCard.new }
 
-      context "#can_capture?" do
-        it "should be true if payment is pending" do
+      context '#can_capture?' do
+        it 'should be true if payment is pending' do
           payment = build_stubbed(:payment, created_at: Time.zone.now)
           allow(payment).to(receive(:pending?) { true })
           expect(credit_card.can_capture?(payment)).to(be_truthy)
         end
 
-        it "should be true if payment is checkout" do
+        it 'should be true if payment is checkout' do
           payment = build_stubbed(:payment, created_at: Time.zone.now)
           allow(payment).to(receive_messages(pending?: false, checkout?: true))
           expect(credit_card.can_capture?(payment)).to(be_truthy)
         end
       end
 
-      context "#can_void?" do
-        it "should be true if payment is not void" do
+      context '#can_void?' do
+        it 'should be true if payment is not void' do
           payment = build_stubbed(:payment)
           allow(payment).to(receive(:void?) { false })
           expect(credit_card.can_void?(payment)).to(be_truthy)
         end
       end
 
-      context "#can_credit?" do
-        it "should be false if payment is not completed" do
+      context '#can_credit?' do
+        it 'should be false if payment is not completed' do
           payment = build_stubbed(:payment)
           allow(payment).to(receive(:completed?) { false })
           expect(credit_card.can_credit?(payment)).to(be_falsy)
@@ -59,7 +59,7 @@ module Spree
           expect(credit_card.can_credit?(payment)).to(be_falsy)
         end
 
-        it "should be false when credit_allowed is zero" do
+        it 'should be false when credit_allowed is zero' do
           payment = build_stubbed(:payment, order: create(:order, payment_state: 'credit_owed'))
           allow(payment).to(receive_messages(completed?: true, credit_allowed: 0))
 
@@ -67,55 +67,55 @@ module Spree
         end
       end
 
-      context "#valid?" do
-        it "should validate presence of number" do
+      context '#valid?' do
+        it 'should validate presence of number' do
           credit_card.attributes = valid_credit_card_attributes.except(:number)
           expect(credit_card).to_not(be_valid)
           expect(credit_card.errors[:number]).to(eq(["can't be blank"]))
         end
 
-        it "should validate presence of security code" do
+        it 'should validate presence of security code' do
           credit_card.attributes = valid_credit_card_attributes.except(:verification_value)
           expect(credit_card).to_not(be_valid)
           expect(credit_card.errors[:verification_value]).to(eq(["can't be blank"]))
         end
 
-        it "should validate expiration is not in the past" do
+        it 'should validate expiration is not in the past' do
           credit_card.month = 1.month.ago.month
           credit_card.year = 1.month.ago.year
           expect(credit_card).to_not(be_valid)
-          expect(credit_card.errors[:base]).to(eq(["has expired"]))
+          expect(credit_card.errors[:base]).to(eq(['has expired']))
         end
 
-        it "does not run expiration in the past validation if month is not set" do
+        it 'does not run expiration in the past validation if month is not set' do
           credit_card.month = nil
           credit_card.year = Time.zone.now.year
           expect(credit_card).to_not(be_valid)
           expect(credit_card.errors[:base]).to(be_blank)
         end
 
-        it "does not run expiration in the past validation if year is not set" do
+        it 'does not run expiration in the past validation if year is not set' do
           credit_card.month = Time.zone.now.month
           credit_card.year = nil
           expect(credit_card).to_not(be_valid)
           expect(credit_card.errors[:base]).to(be_blank)
         end
 
-        it "does not run expiration in the past validation if year and month are empty" do
-          credit_card.year = ""
-          credit_card.month = ""
+        it 'does not run expiration in the past validation if year and month are empty' do
+          credit_card.year = ''
+          credit_card.month = ''
           expect(credit_card).to_not(be_valid)
           expect(credit_card.errors[:card]).to(be_blank)
         end
 
-        it "should only validate on create" do
+        it 'should only validate on create' do
           credit_card.attributes = valid_credit_card_attributes
           credit_card.save
           expect(credit_card).to(be_valid)
         end
       end
 
-      context "#save" do
+      context '#save' do
         before do
           credit_card.attributes = valid_credit_card_attributes
           credit_card.save!
@@ -123,32 +123,32 @@ module Spree
 
         let!(:persisted_card) { Spree::CreditCard.find(credit_card.id) }
 
-        it "should not actually store the number" do
+        it 'should not actually store the number' do
           expect(persisted_card.number).to(be_blank)
         end
 
-        it "should not actually store the security code" do
+        it 'should not actually store the security code' do
           expect(persisted_card.verification_value).to(be_blank)
         end
       end
 
-      context "#number=" do
-        it "should strip non-numeric characters from card input" do
-          credit_card.number = "6011000990139424"
-          expect(credit_card.number).to(eq("6011000990139424"))
+      context '#number=' do
+        it 'should strip non-numeric characters from card input' do
+          credit_card.number = '6011000990139424'
+          expect(credit_card.number).to(eq('6011000990139424'))
 
-          credit_card.number = "  6011-0009-9013-9424  "
-          expect(credit_card.number).to(eq("6011000990139424"))
+          credit_card.number = '  6011-0009-9013-9424  '
+          expect(credit_card.number).to(eq('6011000990139424'))
         end
 
-        it "should not raise an exception on non-string input" do
+        it 'should not raise an exception on non-string input' do
           credit_card.number = ({})
           expect(credit_card.number).to(be_nil)
         end
       end
 
-      context "#cc_type=" do
-        it "converts between the different types" do
+      context '#cc_type=' do
+        it 'converts between the different types' do
           credit_card.cc_type = 'mastercard'
           expect(credit_card.cc_type).to(eq('master'))
 
@@ -166,79 +166,79 @@ module Spree
         end
       end
 
-      context "#associations" do
-        it "should be able to access its payments" do
+      context '#associations' do
+        it 'should be able to access its payments' do
           expect { credit_card.payments.to_a }
 .not_to(raise_error)
         end
       end
 
-      context "#to_active_merchant" do
+      context '#to_active_merchant' do
         before do
-          credit_card.number = "4111111111111111"
+          credit_card.number = '4111111111111111'
           credit_card.year = Time.zone.now.year
           credit_card.month = Time.zone.now.month
-          credit_card.first_name = "Bob"
-          credit_card.last_name = "Boblaw"
+          credit_card.first_name = 'Bob'
+          credit_card.last_name = 'Boblaw'
           credit_card.verification_value = 123
         end
 
-        it "converts to an ActiveMerchant::Billing::CreditCard object" do
+        it 'converts to an ActiveMerchant::Billing::CreditCard object' do
           am_card = credit_card.to_active_merchant
-          expect(am_card.number).to(eq("4111111111111111"))
+          expect(am_card.number).to(eq('4111111111111111'))
           expect(am_card.year).to(eq(Time.zone.now.year))
           expect(am_card.month).to(eq(Time.zone.now.month))
-          expect(am_card.first_name).to(eq("Bob"))
-          am_card.last_name = "Boblaw"
+          expect(am_card.first_name).to(eq('Bob'))
+          am_card.last_name = 'Boblaw'
           expect(am_card.verification_value).to(eq(123))
         end
       end
     end
 
-    describe "setting default credit card for a user" do
+    describe 'setting default credit card for a user' do
       let(:user) { create(:user) }
       let(:onetime_card_attrs) do
-        { user: user, gateway_payment_profile_id: "tok_1EY..." }
+        { user: user, gateway_payment_profile_id: 'tok_1EY...' }
       end
       let(:stored_card_attrs) do
         {
           user: user,
-          gateway_customer_profile_id: "cus_F2T...",
-          gateway_payment_profile_id: "card_1EY..."
+          gateway_customer_profile_id: 'cus_F2T...',
+          gateway_payment_profile_id: 'card_1EY...'
         }
       end
       let(:stored_default_card_attrs) do
         stored_card_attrs.merge(is_default: true)
       end
 
-      context "when a card is already set as the default" do
+      context 'when a card is already set as the default' do
         let!(:card1) { create(:credit_card, stored_default_card_attrs) }
 
-        context "and I create a new card" do
-          context "without specifying it as the default" do
+        context 'and I create a new card' do
+          context 'without specifying it as the default' do
             let!(:card2) { create(:credit_card, stored_card_attrs) }
 
-            it "keeps the existing default" do
+            it 'keeps the existing default' do
               expect(card1.reload.is_default).to(be(true))
               expect(card2.reload.is_default).to(be(false))
             end
           end
 
-          context "and I specify it as the default" do
+          context 'and I specify it as the default' do
             let!(:card2) { create(:credit_card, stored_default_card_attrs) }
 
-            it "switches the default to the new card" do
+            it 'switches the default to the new card' do
               expect(card1.reload.is_default).to(be(false))
               expect(card2.reload.is_default).to(be(true))
             end
           end
         end
 
-        context "and I update another card" do
+        context 'and I update another card' do
           let!(:card2) { create(:credit_card, user: user) }
 
-          context "without specifying it as the default" do
-            it "keeps the existing default" do
+          context 'without specifying it as the default' do
+            it 'keeps the existing default' do
               card2.update!(stored_card_attrs)
 
               expect(card1.reload.is_default).to(be(true))
@@ -246,8 +246,8 @@ module Spree
             end
           end
 
-          context "and I specify it as the default" do
-            it "switches the default to the updated card" do
+          context 'and I specify it as the default' do
+            it 'switches the default to the updated card' do
               card2.update!(stored_default_card_attrs)
 
               expect(card1.reload.is_default).to(be(false))
@@ -257,32 +257,32 @@ module Spree
         end
       end
 
-      context "when no card is currently set as the default for a user" do
-        context "and I create a new card" do
-          context "without specifying it as the default" do
+      context 'when no card is currently set as the default for a user' do
+        context 'and I create a new card' do
+          context 'without specifying it as the default' do
             let!(:card1) { create(:credit_card, stored_card_attrs) }
 
-            it "sets it as the default anyway" do
+            it 'sets it as the default anyway' do
               expect(card1.reload.is_default).to(be(true))
             end
           end
 
-          context "and I specify it as the default" do
+          context 'and I specify it as the default' do
             let!(:card1) { create(:credit_card, stored_default_card_attrs) }
 
-            it "sets it as the default" do
+            it 'sets it as the default' do
               expect(card1.reload.is_default).to(be(true))
             end
           end
         end
 
-        context "and the checkout creates a card" do
+        context 'and the checkout creates a card' do
           let!(:card1) { create(:credit_card, onetime_card_attrs) }
           let(:store_card_profile_attrs) do
             {
-              cc_type: "visa",
-              gateway_customer_profile_id: "cus_FH9HflKAJw6Kxy",
-              gateway_payment_profile_id: "card_1EmayNBZvgSKc1B2wctIzzoh"
+              cc_type: 'visa',
+              gateway_customer_profile_id: 'cus_FH9HflKAJw6Kxy',
+              gateway_payment_profile_id: 'card_1EmayNBZvgSKc1B2wctIzzoh'
             }
           end
 
@@ -290,7 +290,7 @@ module Spree
             expect(card1.reload.is_default).to(be(false))
           end
 
-          it "sets a re-usable card as the default" do
+          it 'sets a re-usable card as the default' do
             # The checkout first creates a one-time card and then converts it
             # to a re-usable card.
             # This imitates Stripe::ProfileStorer.

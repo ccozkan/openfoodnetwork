@@ -25,7 +25,7 @@ module Api
           load_data_from_other_params
         end
 
-        render_variant_count && return if params[:action_name] == "variant_count"
+        render_variant_count && return if params[:action_name] == 'variant_count'
 
         render_paginated_products
       end
@@ -65,7 +65,7 @@ module Api
         if exchange_params[:order_cycle_id]
           @order_cycle = OrderCycle.find_by(id: exchange_params[:order_cycle_id])
         elsif !@incoming
-          raise("order_cycle_id is required to list products for new outgoing exchange")
+          raise('order_cycle_id is required to list products for new outgoing exchange')
         end
       end
 

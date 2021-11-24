@@ -49,11 +49,11 @@ order.email,
           [
 ba.firstname,
            ba.lastname,
-           [ba.address1, ba.address2, ba.city].join(" "),
+           [ba.address1, ba.address2, ba.city].join(' '),
            order.email,
            ba.phone,
            order.distributor&.name,
-           [da&.address1, da&.address2, da&.city].join(" "),
+           [da&.address1, da&.address2, da&.city].join(' '),
            order.shipping_method&.name
 ]
         end
@@ -72,7 +72,7 @@ ba.firstname,
       if params[:supplier_id].to_i > 0
         orders.select do |order|
           order.line_items.includes(:product)
-            .where("spree_products.supplier_id = ?", params[:supplier_id].to_i)
+            .where('spree_products.supplier_id = ?', params[:supplier_id].to_i)
             .references(:product)
             .count
             .positive?
@@ -101,7 +101,7 @@ ba.firstname,
     private
 
     def is_mailing_list?
-      params[:report_type] == "mailing_list"
+      params[:report_type] == 'mailing_list'
     end
   end
 end

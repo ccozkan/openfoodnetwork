@@ -10,12 +10,12 @@ describe 'shipping methods' do
     @shipping_method = create(:shipping_method)
   end
 
-  context "as a site admin" do
+  context 'as a site admin' do
     before(:each) do
       login_as_admin
     end
 
-    it "creating a shipping method owned by some distributors" do
+    it 'creating a shipping method owned by some distributors' do
       # Given some distributors
       distributor1 = create(:distributor_enterprise, name: 'Alice Farm Hub')
       distributor2 = create(:distributor_enterprise, name: 'Bob Farm Shop')
@@ -32,20 +32,20 @@ describe 'shipping methods' do
       fill_in 'shipping_method_name', with: 'Carrier Pidgeon'
       check "shipping_method_distributor_ids_#{distributor1.id}"
       check "shipping_method_distributor_ids_#{distributor2.id}"
-      check "shipping_method_shipping_categories_"
-      click_button I18n.t("actions.create")
+      check 'shipping_method_shipping_categories_'
+      click_button I18n.t('actions.create')
 
-      expect(page).to(have_no_button(I18n.t("actions.create")))
+      expect(page).to(have_no_button(I18n.t('actions.create')))
 
       # Then the shipping method should have its distributor set
-      expect(flash_message).to(include("Carrier Pidgeon", "successfully created!"))
+      expect(flash_message).to(include('Carrier Pidgeon', 'successfully created!'))
 
       sm = Spree::ShippingMethod.last
       expect(sm.name).to(eq('Carrier Pidgeon'))
       expect(sm.distributors).to(match_array([distributor1, distributor2]))
     end
 
-    it "deleting a shipping method" do
+    it 'deleting a shipping method' do
       visit spree.admin_shipping_methods_path
 
       accept_alert 'Are you sure?' do
@@ -55,14 +55,14 @@ describe 'shipping methods' do
       expect(Spree::ShippingMethod.where(id: @shipping_method.id)).to(be_empty)
     end
 
-    it "checking a single distributor is checked by default" do
+    it 'checking a single distributor is checked by default' do
       first_distributor = Enterprise.first
       visit spree.new_admin_shipping_method_path
       expect(page).to(have_field("shipping_method_distributor_ids_#{first_distributor.id}",
                                  checked: true))
     end
 
-    it "checking more than a distributor displays no default choice" do
+    it 'checking more than a distributor displays no default choice' do
       distributor1 = create(:distributor_enterprise, name: 'Alice Farm Shop')
       distributor2 = create(:distributor_enterprise, name: 'Bob Farm Hub')
       visit spree.new_admin_shipping_method_path
@@ -73,7 +73,7 @@ describe 'shipping methods' do
     end
   end
 
-  context "as an enterprise user", js: true do
+  context 'as an enterprise user', js: true do
     let(:enterprise_user) { create(:user) }
     let(:distributor1) { create(:distributor_enterprise, name: 'First Distributor') }
     let(:distributor2) { create(:distributor_enterprise, name: 'Second Distributor') }
@@ -91,11 +91,11 @@ describe 'shipping methods' do
       login_as enterprise_user
     end
 
-    it "creating a shipping method" do
+    it 'creating a shipping method' do
       visit admin_enterprises_path
       within("#e_#{distributor1.id}") { click_link 'Settings' }
-      within(".side_menu") do
-        click_link "Shipping Methods"
+      within('.side_menu') do
+        click_link 'Shipping Methods'
       end
       click_link 'Create One Now'
 
@@ -112,24 +112,24 @@ describe 'shipping methods' do
       fill_in 'shipping_method_name', with: 'Teleport'
 
       check "shipping_method_distributor_ids_#{distributor1.id}"
-      find(:css, "tags-input .tags input").set("local\n")
-      within(".tags .tag-list") do
-        expect(page).to(have_css('.tag-item', text: "local"))
+      find(:css, 'tags-input .tags input').set("local\n")
+      within('.tags .tag-list') do
+        expect(page).to(have_css('.tag-item', text: 'local'))
       end
 
-      click_button I18n.t("actions.create")
+      click_button I18n.t('actions.create')
 
       expect(page).to(have_content(I18n.t('spree.admin.shipping_methods.edit.editing_shipping_method')))
-      expect(flash_message).to(include("Teleport", "successfully created!"))
+      expect(flash_message).to(include('Teleport', 'successfully created!'))
 
-      expect(first('tags-input .tag-list ti-tag-item')).to(have_content("local"))
+      expect(first('tags-input .tag-list ti-tag-item')).to(have_content('local'))
 
       shipping_method = Spree::ShippingMethod.find_by(name: 'Teleport')
       expect(shipping_method.distributors).to(eq([distributor1]))
-      expect(shipping_method.tag_list).to(eq(["local"]))
+      expect(shipping_method.tag_list).to(eq(['local']))
     end
 
-    it "shows me only shipping methods I have access to" do
+    it 'shows me only shipping methods I have access to' do
       shipping_method1
       shipping_method2
       sm3
@@ -141,7 +141,7 @@ describe 'shipping methods' do
       expect(page).not_to(have_content(sm3.name))
     end
 
-    it "does not show duplicates of shipping methods" do
+    it 'does not show duplicates of shipping methods' do
       shipping_method1
       shipping_method2
 
@@ -150,15 +150,15 @@ describe 'shipping methods' do
       expect(page).to(have_selector('td', text: 'Two', count: 1))
     end
 
-    it "shows me only shipping methods for the enterprise I select" do
+    it 'shows me only shipping methods for the enterprise I select' do
       shipping_method1
       shipping_method2
 
       visit admin_enterprises_path
       within("#e_#{distributor1.id}") { click_link 'Settings' }
 
-      within(".side_menu") do
-        click_link "Shipping Methods"
+      within('.side_menu') do
+        click_link 'Shipping Methods'
       end
 
       expect(page).to(have_content(shipping_method1.name))
@@ -170,8 +170,8 @@ describe 'shipping methods' do
       click_link 'Enterprises'
       within("#e_#{distributor2.id}") { click_link 'Settings' }
 
-      within(".side_menu") do
-        click_link "Shipping Methods"
+      within('.side_menu') do
+        click_link 'Shipping Methods'
       end
 
       expect(page).to(    have_content(shipping_method1.name))

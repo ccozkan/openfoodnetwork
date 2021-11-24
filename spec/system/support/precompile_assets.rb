@@ -7,7 +7,7 @@ RSpec.configure do |config|
   #    rspec --tag ~type:system
   #
   # In this case, we don't need to precompile assets.
-  if config.filter.opposite.rules[:type] == "system" || config.exclude_pattern.match?(%r{spec/system})
+  if config.filter.opposite.rules[:type] == 'system' || config.exclude_pattern.match?(%r{spec/system})
     next
   end
 

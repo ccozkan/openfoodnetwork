@@ -8,7 +8,7 @@ describe ' As an administrator I want to manage enterprise fees ', js: true do
 
   let!(:tax_category_gst) { create(:tax_category, name: 'GST') }
 
-  it "listing enterprise fees" do
+  it 'listing enterprise fees' do
     fee = create(
 :enterprise_fee,
 name: '$0.50 / kg',
@@ -20,18 +20,18 @@ fee_type: 'packing',
     login_as_admin_and_visit spree.edit_admin_general_settings_path
     click_link 'Enterprise Fees'
 
-    expect(page).to(have_select("sets_enterprise_fee_set_collection_attributes_0_enterprise_id"))
-    expect(page).to(have_select("sets_enterprise_fee_set_collection_attributes_0_fee_type",
+    expect(page).to(have_select('sets_enterprise_fee_set_collection_attributes_0_enterprise_id'))
+    expect(page).to(have_select('sets_enterprise_fee_set_collection_attributes_0_fee_type',
                                 selected: 'Packing fee'))
     expect(page).to(have_selector("input[value='$0.50 / kg']"))
-    expect(page).to(have_select("sets_enterprise_fee_set_collection_attributes_0_tax_category_id",
+    expect(page).to(have_select('sets_enterprise_fee_set_collection_attributes_0_tax_category_id',
                                 selected: 'GST'))
-    expect(page).to(have_select("sets_enterprise_fee_set_collection_attributes_0_calculator_type",
+    expect(page).to(have_select('sets_enterprise_fee_set_collection_attributes_0_calculator_type',
                                 selected: 'Flat Rate (per item)'))
     expect(page).to(have_selector("input[value='#{amount}']"))
   end
 
-  it "creating an enterprise fee" do
+  it 'creating an enterprise fee' do
     # Given an enterprise
     e = create(:supplier_enterprise, name: 'Feedme')
 
@@ -47,7 +47,7 @@ fee_type: 'packing',
     click_button 'Update'
 
     # Then I should see my fee and fields for the calculator
-    expect(page).to(have_content("Your enterprise fees have been updated."))
+    expect(page).to(have_content('Your enterprise fees have been updated.'))
     expect(page).to(have_selector("input[value='Hello!']"))
 
     # When I fill in the calculator fields and click update
@@ -59,7 +59,7 @@ fee_type: 'packing',
     expect(page).to(have_selector("#sets_enterprise_fee_set_collection_attributes_0_calculator_attributes_preferred_flat_percent[value='12.34']"))
   end
 
-  it "editing an enterprise fee" do
+  it 'editing an enterprise fee' do
     # Given an enterprise fee
     fee = create(:enterprise_fee)
     enterprise = create(:enterprise, name: 'Foo')
@@ -77,27 +77,27 @@ fee_type: 'packing',
     click_button 'Update'
 
     # Then I should see the updated fields for my fee
-    expect(page).to(have_select("sets_enterprise_fee_set_collection_attributes_0_enterprise_id",
+    expect(page).to(have_select('sets_enterprise_fee_set_collection_attributes_0_enterprise_id',
                                 selected: 'Foo'))
-    expect(page).to(have_select("sets_enterprise_fee_set_collection_attributes_0_fee_type",
+    expect(page).to(have_select('sets_enterprise_fee_set_collection_attributes_0_fee_type',
                                 selected: 'Admin fee'))
     expect(page).to(have_selector("input[value='Greetings!']"))
     expect(page).to(have_select('sets_enterprise_fee_set_collection_attributes_0_tax_category_id',
                                 selected: 'Inherit From Product'))
-    expect(page).to(have_selector("option[selected]", text: 'Flat Percent (per item)'))
+    expect(page).to(have_selector('option[selected]', text: 'Flat Percent (per item)'))
 
     fee.reload
     expect(fee.enterprise).to(eq(enterprise))
     expect(fee.name).to(eq('Greetings!'))
     expect(fee.fee_type).to(eq('admin'))
-    expect(fee.calculator_type).to(eq("Calculator::FlatPercentPerItem"))
+    expect(fee.calculator_type).to(eq('Calculator::FlatPercentPerItem'))
 
     # Sets tax_category and inherits_tax_category
     expect(fee.tax_category).to(eq(nil))
     expect(fee.inherits_tax_category).to(eq(true))
   end
 
-  it "deleting an enterprise fee" do
+  it 'deleting an enterprise fee' do
     # Given an enterprise fee
     fee = create(:enterprise_fee)
 
@@ -106,7 +106,7 @@ fee_type: 'packing',
 
     # And I click delete
     accept_alert do
-      find("a.delete-resource").click
+      find('a.delete-resource').click
     end
 
     # Then my enterprise fee should have been deleted
@@ -114,7 +114,7 @@ fee_type: 'packing',
     expect(page).to(have_no_selector("input[value='#{fee.name}']"))
   end
 
-  context "as an enterprise manager" do
+  context 'as an enterprise manager' do
     let(:enterprise_user) { create(:user) }
     let(:distributor1) { create(:distributor_enterprise, name: 'First Distributor') }
     let(:distributor2) { create(:distributor_enterprise, name: 'Second Distributor') }
@@ -128,10 +128,10 @@ fee_type: 'packing',
       login_as enterprise_user
     end
 
-    it "creates enterprise fees" do
+    it 'creates enterprise fees' do
       visit edit_admin_enterprise_path(distributor1)
-      within(".side_menu") { click_link 'Enterprise Fees' }
-      click_link "Create One Now"
+      within('.side_menu') { click_link 'Enterprise Fees' }
+      click_link 'Create One Now'
 
       select distributor1.name,
              from: 'sets_enterprise_fee_set_collection_attributes_0_enterprise_id'
@@ -151,35 +151,35 @@ fee_type: 'packing',
       expect(enterprise_fee.enterprise).to(eq(distributor1))
     end
 
-    it "shows me only enterprise fees for the enterprise I select" do
+    it 'shows me only enterprise fees for the enterprise I select' do
       ef1
       ef2
 
       visit edit_admin_enterprise_path(distributor1)
-      within(".side_menu") { click_link 'Enterprise Fees' }
-      click_link "Manage Enterprise Fees"
+      within('.side_menu') { click_link 'Enterprise Fees' }
+      click_link 'Manage Enterprise Fees'
       expect(page).to(    have_field('sets_enterprise_fee_set_collection_attributes_0_name',
                                      with: 'One'))
       expect(page).not_to(have_field('sets_enterprise_fee_set_collection_attributes_1_name',
                                      with: 'Two'))
 
       visit edit_admin_enterprise_path(distributor2)
-      within(".side_menu") { click_link 'Enterprise Fees' }
-      click_link "Manage Enterprise Fees"
+      within('.side_menu') { click_link 'Enterprise Fees' }
+      click_link 'Manage Enterprise Fees'
       expect(page).not_to(have_field('sets_enterprise_fee_set_collection_attributes_0_name',
                                      with: 'One'))
       expect(page).to(    have_field('sets_enterprise_fee_set_collection_attributes_0_name',
                                      with: 'Two'))
     end
 
-    it "only allows me to select enterprises I have access to" do
+    it 'only allows me to select enterprises I have access to' do
       ef1
       ef2
       distributor3
 
       visit edit_admin_enterprise_path(distributor2)
-      within(".side_menu") { click_link 'Enterprise Fees' }
-      click_link "Manage Enterprise Fees"
+      within('.side_menu') { click_link 'Enterprise Fees' }
+      click_link 'Manage Enterprise Fees'
       expect(page).to(have_select(
 'sets_enterprise_fee_set_collection_attributes_0_enterprise_id',
                                   selected: 'Second Distributor',

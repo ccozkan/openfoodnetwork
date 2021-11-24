@@ -123,7 +123,7 @@ FactoryBot.define do
 
   factory :stripe_account do
     enterprise { FactoryBot.create(:distributor_enterprise) }
-    stripe_user_id { "abc123" }
-    stripe_publishable_key { "xyz456" }
+    stripe_user_id { 'abc123' }
+    stripe_publishable_key { 'xyz456' }
   end
 end

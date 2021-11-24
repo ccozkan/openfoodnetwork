@@ -16,7 +16,7 @@ describe InjectionHelper, type: :helper, performance: true do
     end
   end
 
-  it "is performant in injecting enterprises" do
+  it 'is performant in injecting enterprises' do
     results = []
     4.times do |i|
       ActiveRecord::Base.connection.query_cache.clear

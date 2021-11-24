@@ -7,7 +7,7 @@ module Api
 
       def full_name
         full_name = object.full_name
-        object.product.name + (full_name.blank? ? "" : ": #{full_name}")
+        object.product.name + (full_name.blank? ? '' : ": #{full_name}")
       end
     end
   end

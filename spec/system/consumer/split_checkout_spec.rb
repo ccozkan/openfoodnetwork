@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "system_helper"
+require 'system_helper'
 
-describe "As a consumer, I want to checkout my order", js: true do
+describe 'As a consumer, I want to checkout my order', js: true do
   include ShopWorkflow
 
   let!(:zone) { create(:zone_with_member) }
@@ -39,8 +39,8 @@ bill_address_id: nil,
     create(
 :shipping_method,
 require_ship_address: true,
-name: "Free Shipping",
-description: "yellow",
+name: 'Free Shipping',
+description: 'yellow',
                   calculator: Calculator::FlatRate.new(preferred_amount: 0.00)
 )
   end
@@ -51,8 +51,8 @@ description: "yellow",
 :shipping_method,
 require_ship_address: false,
 tax_category: shipping_tax_category,
-                  name: "Shipping with Fee",
-description: "blue",
+                  name: 'Shipping with Fee',
+description: 'blue',
                   calculator: Calculator::FlatRate.new(preferred_amount: 4.56)
 )
   end
@@ -70,39 +70,39 @@ description: "blue",
     distributor.shipping_methods << shipping_with_fee
   end
 
-  context "guest checkout" do
+  context 'guest checkout' do
     before do
       visit checkout_path
     end
 
-    it "should display the split checkout page" do
+    it 'should display the split checkout page' do
       expect(page).to(have_content(distributor.name))
-      expect(page).to(have_current_path("/checkout/details"))
-      expect(page).to(have_content("1 - Your details"))
-      expect(page).to(have_selector("div.checkout-tab.selected", text: "1 - Your details"))
-      expect(page).to(have_content("2 - Payment method"))
-      expect(page).to(have_content("3 - Order summary"))
+      expect(page).to(have_current_path('/checkout/details'))
+      expect(page).to(have_content('1 - Your details'))
+      expect(page).to(have_selector('div.checkout-tab.selected', text: '1 - Your details'))
+      expect(page).to(have_content('2 - Payment method'))
+      expect(page).to(have_content('3 - Order summary'))
     end
 
-    it "should display error when fields are empty" do
-      click_button "Next - Payment method"
-      expect(page).to(have_content("Saving failed, please update the highlighted fields"))
+    it 'should display error when fields are empty' do
+      click_button 'Next - Payment method'
+      expect(page).to(have_content('Saving failed, please update the highlighted fields'))
       expect(page).to(have_css('span.field_with_errors label', count: 4))
       expect(page).to(have_css('span.field_with_errors input', count: 4))
       expect(page).to(have_css('span.formError', count: 5))
     end
 
-    it "should validate once each needed field is filled" do
-      fill_in "First Name", with: "Jane"
-      fill_in "Last Name", with: "Doe"
-      fill_in "Phone number", with: "07987654321"
-      fill_in "Address (Street + House Number)", with: "Flat 1 Elm apartments"
-      fill_in "City", with: "London"
-      fill_in "Postcode", with: "SW1A 1AA"
+    it 'should validate once each needed field is filled' do
+      fill_in 'First Name', with: 'Jane'
+      fill_in 'Last Name', with: 'Doe'
+      fill_in 'Phone number', with: '07987654321'
+      fill_in 'Address (Street + House Number)', with: 'Flat 1 Elm apartments'
+      fill_in 'City', with: 'London'
+      fill_in 'Postcode', with: 'SW1A 1AA'
       choose free_shipping.name
 
-      click_button "Next - Payment method"
-      expect(page).to(have_current_path("/checkout/payment"))
+      click_button 'Next - Payment method'
+      expect(page).to(have_current_path('/checkout/payment'))
     end
   end
 end

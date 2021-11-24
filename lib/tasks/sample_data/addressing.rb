@@ -5,7 +5,7 @@ module Addressing
 
   def address(string)
     state = country.states.first
-    parts = string.split(", ")
+    parts = string.split(', ')
     Spree::Address.new(
       address1: parts[0],
       city: parts[1],

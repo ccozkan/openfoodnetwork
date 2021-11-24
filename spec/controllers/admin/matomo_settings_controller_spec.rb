@@ -3,13 +3,13 @@
 require 'spec_helper'
 
 describe Admin::MatomoSettingsController, type: :controller do
-  describe "#update" do
+  describe '#update' do
     let(:params) do
       {
         preferences: {
-          matomo_url: "test url",
-          matomo_site_id: "42",
-          matomo_tag_manager_url: "test manager url",
+          matomo_url: 'test url',
+          matomo_site_id: '42',
+          matomo_tag_manager_url: 'test manager url',
         }
       }
     end
@@ -18,7 +18,7 @@ describe Admin::MatomoSettingsController, type: :controller do
       allow(controller).to(receive(:spree_current_user) { create(:admin_user) })
     end
 
-    it "changes Matomo settings" do
+    it 'changes Matomo settings' do
       expect do
         post(:update, params: params)
       end.to(change {
@@ -29,9 +29,9 @@ describe Admin::MatomoSettingsController, type: :controller do
         ]
       }.to(
         [
-          "test url",
-          "42",
-          "test manager url",
+          'test url',
+          '42',
+          'test manager url',
         ]
       ))
     end

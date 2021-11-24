@@ -5,8 +5,8 @@ require 'spec_helper'
 describe Spree::Admin::Orders::CustomerDetailsController, type: :controller do
   include AuthenticationHelper
 
-  describe "#update" do
-    context "adding customer details via newly created admin order" do
+  describe '#update' do
+    context 'adding customer details via newly created admin order' do
       let!(:user) { create(:user) }
       let(:address) { create(:address) }
       let!(:distributor) { create(:distributor_enterprise) }
@@ -41,7 +41,7 @@ describe Spree::Admin::Orders::CustomerDetailsController, type: :controller do
         controller_login_as_enterprise_user [order.distributor]
       end
 
-      it "advances the order state" do
+      it 'advances the order state' do
         expect do
           spree_post(:update,
 order: {
@@ -51,11 +51,11 @@ ship_address_attributes: address_params
 },
                               order_id: order.number)
         end.to(change { order.reload.state }
-.from("cart").to("payment"))
+.from('cart').to('payment'))
       end
 
-      context "when adding details of a registered user" do
-        it "redirects to shipments on success" do
+      context 'when adding details of a registered user' do
+        it 'redirects to shipments on success' do
           spree_post :update,
                      order: { email: user.email, bill_address_attributes: address_params, ship_address_attributes: address_params },
 order_id: order.number
@@ -66,8 +66,8 @@ order_id: order.number
         end
       end
 
-      context "when adding details of an unregistered user" do
-        it "redirects to shipments on success" do
+      context 'when adding details of an unregistered user' do
+        it 'redirects to shipments on success' do
           spree_post :update,
                      order: { email: 'unregistered@email.com', bill_address_attributes: address_params, ship_address_attributes: address_params },
 order_id: order.number

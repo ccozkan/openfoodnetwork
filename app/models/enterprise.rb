@@ -16,12 +16,12 @@ class Enterprise < ApplicationRecord
                     :ready_for_checkout,
 :not_ready_for_checkout
 
-  preference :shopfront_message, :text, default: ""
-  preference :shopfront_closed_message, :text, default: ""
-  preference :shopfront_taxon_order, :string, default: ""
-  preference :shopfront_producer_order, :string, default: ""
-  preference :shopfront_order_cycle_order, :string, default: "orders_close_at"
-  preference :shopfront_product_sorting_method, :string, default: "by_category"
+  preference :shopfront_message, :text, default: ''
+  preference :shopfront_closed_message, :text, default: ''
+  preference :shopfront_taxon_order, :string, default: ''
+  preference :shopfront_producer_order, :string, default: ''
+  preference :shopfront_order_cycle_order, :string, default: 'orders_close_at'
+  preference :shopfront_product_sorting_method, :string, default: 'by_category'
 
   # Allow hubs to restrict visible variants to only those in their inventory
   preference :product_selection_from_inventory_only, :boolean, default: false
@@ -81,15 +81,15 @@ allow_destroy: true,
                                             }
 
   has_attached_file :logo,
-                    styles: { medium: "300x300>", small: "180x180>", thumb: "100x100>" },
+                    styles: { medium: '300x300>', small: '180x180>', thumb: '100x100>' },
                     url: '/images/enterprises/logos/:id/:style/:basename.:extension',
                     path: 'public/images/enterprises/logos/:id/:style/:basename.:extension'
 
   has_attached_file :promo_image,
                     styles: {
-                      large: ["1200x260#", :jpg],
-                      medium: ["720x156#", :jpg],
-                      thumb: ["100x100>", :jpg]
+                      large: ['1200x260#', :jpg],
+                      medium: ['720x156#', :jpg],
+                      thumb: ['100x100>', :jpg]
                     },
                     url: '/images/enterprises/promo_images/:id/:style/:basename.:extension',
                     path: 'public/images/enterprises/promo_images/:id/:style/:basename.:extension'
@@ -100,7 +100,7 @@ allow_destroy: true,
                     url: '/files/enterprises/terms_and_conditions/:id/:basename.:extension',
                     path: 'public/files/enterprises/terms_and_conditions/:id/:basename.:extension'
   validates_attachment_content_type :terms_and_conditions,
-                                    content_type: "application/pdf",
+                                    content_type: 'application/pdf',
                                     message: I18n.t(:enterprise_terms_and_conditions_type_error)
 
   supports_s3 :logo
@@ -146,12 +146,12 @@ lambda {
       .select('DISTINCT enterprises.id')
 
     if ready_enterprises.any?
-      where("enterprises.id NOT IN (?)", ready_enterprises)
+      where('enterprises.id NOT IN (?)', ready_enterprises)
     else
       where(nil)
     end
   }
-  scope :is_primary_producer, -> { where("enterprises.is_primary_producer IS TRUE") }
+  scope :is_primary_producer, -> { where('enterprises.is_primary_producer IS TRUE') }
   scope :is_distributor, -> { where('sells != ?', 'none') }
   scope :is_hub, -> { where(sells: 'any') }
   scope :supplying_variant_in,
@@ -168,7 +168,7 @@ lambda {
       LEFT OUTER JOIN exchanges
         ON (exchanges.sender_id = enterprises.id AND exchanges.incoming = 't')"
 )
-      .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
+      .joins('LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)')
   }
 
   scope :with_order_cycles_as_distributor_outer,
@@ -178,7 +178,7 @@ lambda {
       LEFT OUTER JOIN exchanges
         ON (exchanges.receiver_id = enterprises.id AND exchanges.incoming = 'f')"
 )
-      .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
+      .joins('LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)')
   }
 
   scope :with_order_cycles_outer,
@@ -188,14 +188,14 @@ lambda {
       LEFT OUTER JOIN exchanges
         ON (exchanges.receiver_id = enterprises.id OR exchanges.sender_id = enterprises.id)"
 )
-      .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
+      .joins('LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)')
   }
 
   scope :with_order_cycles_and_exchange_variants_outer,
 lambda {
     with_order_cycles_as_distributor_outer
-      .joins("LEFT OUTER JOIN exchange_variants ON (exchange_variants.exchange_id = exchanges.id)")
-      .joins("LEFT OUTER JOIN spree_variants ON (spree_variants.id = exchange_variants.variant_id)")
+      .joins('LEFT OUTER JOIN exchange_variants ON (exchange_variants.exchange_id = exchanges.id)')
+      .joins('LEFT OUTER JOIN spree_variants ON (spree_variants.id = exchange_variants.variant_id)')
   }
 
   scope :distributors_with_active_order_cycles,
@@ -269,7 +269,7 @@ others
   end
 
   def update_contact(user_id)
-    enterprise_roles.update_all(["receives_notifications=(user_id=?)", user_id])
+    enterprise_roles.update_all(['receives_notifications=(user_id=?)', user_id])
   end
 
   def activated?
@@ -351,7 +351,7 @@ id
   end
 
   def is_distributor
-    sells != "none"
+    sells != 'none'
   end
 
   def is_hub
@@ -361,22 +361,22 @@ id
   # Simplify enterprise categories for frontend logic and icons, and maybe other things.
   def category
     # Make this crazy logic human readable so we can argue about it sanely.
-    cat = is_primary_producer ? "producer_" : "non_producer_"
-    cat << ("sells_" + sells)
+    cat = is_primary_producer ? 'producer_' : 'non_producer_'
+    cat << ('sells_' + sells)
 
     # Map backend cases to front end cases.
     case cat
-    when "producer_sells_any"
+    when 'producer_sells_any'
       :producer_hub # Producer hub who sells own and others produce and supplies other hubs.
-    when "producer_sells_own"
+    when 'producer_sells_own'
       :producer_shop # Producer with shopfront and supplies other hubs.
-    when "producer_sells_none"
+    when 'producer_sells_none'
       :producer # Producer only supplies through others.
-    when "non_producer_sells_any"
+    when 'non_producer_sells_any'
       :hub # Hub selling others products in order cycles.
-    when "non_producer_sells_own"
+    when 'non_producer_sells_own'
       :hub # Wholesaler selling through own shopfront? Does this need a separate name or even exist?
-    when "non_producer_sells_none"
+    when 'non_producer_sells_none'
       :hub_profile # Hub selling outside the system.
     end
   end
@@ -391,7 +391,7 @@ id
 
   def current_distributed_taxons
     Spree::Taxon
-      .select("DISTINCT spree_taxons.*")
+      .select('DISTINCT spree_taxons.*')
       .joins(products: :variants_including_master)
       .joins("INNER JOIN (#{current_exchange_variants.to_sql}) \
         AS exchange_variants ON spree_variants.id = exchange_variants.variant_id")
@@ -411,11 +411,11 @@ id
 
   def self.find_available_permalink(test_permalink)
     test_permalink = test_permalink.parameterize
-    test_permalink = "my-enterprise" if test_permalink.blank?
+    test_permalink = 'my-enterprise' if test_permalink.blank?
     existing = Enterprise
       .select(:permalink)
       .order(:permalink)
-      .where("permalink LIKE ?", "#{test_permalink}%")
+      .where('permalink LIKE ?', "#{test_permalink}%")
       .map(&:permalink)
 
     if existing.include?(test_permalink)
@@ -446,8 +446,8 @@ id
   def current_exchange_variants
     ExchangeVariant.joins(exchange: :order_cycle)
       .merge(Exchange.outgoing)
-      .select("DISTINCT exchange_variants.variant_id, exchanges.receiver_id AS enterprise_id")
-      .where("exchanges.receiver_id = ?", id)
+      .select('DISTINCT exchange_variants.variant_id, exchanges.receiver_id AS enterprise_id')
+      .where('exchanges.receiver_id = ?', id)
       .merge(OrderCycle.active.with_distributor(id))
   end
 
@@ -530,13 +530,13 @@ permissions_list: [
 
   def shopfront_taxons
     unless preferred_shopfront_taxon_order =~ /\A((\d+,)*\d+)?\z/
-      errors.add(:shopfront_category_ordering, "must contain a list of taxons.")
+      errors.add(:shopfront_category_ordering, 'must contain a list of taxons.')
     end
   end
 
   def shopfront_producers
     unless preferred_shopfront_producer_order =~ /\A((\d+,)*\d+)?\z/
-      errors.add(:shopfront_category_ordering, "must contain a list of producers.")
+      errors.add(:shopfront_category_ordering, 'must contain a list of producers.')
     end
   end
 

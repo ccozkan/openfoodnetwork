@@ -3,9 +3,9 @@
 namespace :ofn do
   namespace :subs do
     namespace :test do
-      desc "Repeat placement job for a specific Order Cycle"
+      desc 'Repeat placement job for a specific Order Cycle'
       task repeat_placement_job: :environment do
-        puts "WARNING: this task will generate new, and potentially duplicate, customer orders"
+        puts 'WARNING: this task will generate new, and potentially duplicate, customer orders'
         exit_in_production
 
         order_cycle_id = request_order_cycle_id
@@ -24,9 +24,9 @@ namespace :ofn do
         SubscriptionPlacementJob.perform_now
       end
 
-      desc "Force confirmation job for a specific Order Cycle"
+      desc 'Force confirmation job for a specific Order Cycle'
       task force_confirmation_job: :environment do
-        puts "WARNING: this task will process payments in customer orders"
+        puts 'WARNING: this task will process payments in customer orders'
         exit_in_production
 
         order_cycle_id = request_order_cycle_id
@@ -41,7 +41,7 @@ namespace :ofn do
       def exit_in_production
         return unless Rails.env.production?
 
-        puts("Oops, we are in production environment. Exiting.")
+        puts('Oops, we are in production environment. Exiting.')
         exit
       end
 
@@ -53,7 +53,7 @@ namespace :ofn do
       end
 
       def request_order_cycle_id
-        puts("Please input Order Cycle ID to reset")
+        puts('Please input Order Cycle ID to reset')
         input = STDIN.gets.chomp
         exit if input.blank? || !Integer(input)
         Integer(input)

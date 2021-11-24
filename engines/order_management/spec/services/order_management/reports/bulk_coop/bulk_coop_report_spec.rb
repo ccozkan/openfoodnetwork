@@ -16,11 +16,11 @@ describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
 
     before { o1.line_items << li1 }
 
-    context "as a site admin" do
+    context 'as a site admin' do
       context 'when searching' do
         let(:params) { { q: { completed_at_gt: '', completed_at_lt: '', distributor_id_in: [] } } }
 
-        it "fetches completed orders" do
+        it 'fetches completed orders' do
           o2 = create(:order, state: 'cart')
           o2.line_items << build(:line_item)
           expect(subject.table_items).to(eq([li1]))
@@ -43,7 +43,7 @@ order_cycle: oc1,
       context 'when not searching' do
         let(:params) { {} }
 
-        it "fetches completed orders" do
+        it 'fetches completed orders' do
           o2 = create(:order, state: 'cart')
           o2.line_items << build(:line_item)
           expect(subject.table_items).to(eq([li1]))
@@ -64,7 +64,7 @@ order_cycle: oc1,
       end
     end
 
-    context "filtering by date" do
+    context 'filtering by date' do
       it do
         user = create(:admin_user)
         o2 = create(:order, completed_at: 3.days.ago, order_cycle: oc1, distributor: d1)
@@ -86,7 +86,7 @@ order_cycle: oc1,
       end
     end
 
-    context "filtering by distributor" do
+    context 'filtering by distributor' do
       it do
         user = create(:admin_user)
         d2 = create(:distributor_enterprise)
@@ -109,7 +109,7 @@ order_cycle: oc1,
       end
     end
 
-    context "as a manager of a supplier" do
+    context 'as a manager of a supplier' do
       let!(:user) { create(:user) }
       subject { OrderManagement::Reports::BulkCoop::BulkCoopReport.new(user, {}, true) }
 
@@ -119,7 +119,7 @@ order_cycle: oc1,
         s1.enterprise_roles.create!(user: user)
       end
 
-      context "that has granted P-OC to the distributor" do
+      context 'that has granted P-OC to the distributor' do
         let(:o2) do
           create(
 :order,
@@ -143,13 +143,13 @@ child: d1,
 )
         end
 
-        it "shows line items supplied by my producers, with names hidden" do
+        it 'shows line items supplied by my producers, with names hidden' do
           expect(subject.table_items).to(eq([li2]))
-          expect(subject.table_items.first.order.bill_address.firstname).to(eq("HIDDEN"))
+          expect(subject.table_items.first.order.bill_address.firstname).to(eq('HIDDEN'))
         end
       end
 
-      context "that has not granted P-OC to the distributor" do
+      context 'that has not granted P-OC to the distributor' do
         let(:o2) do
           create(
 :order,
@@ -167,7 +167,7 @@ bill_address: create(:address),
           o2.line_items << li2
         end
 
-        it "does not show line items supplied by my producers" do
+        it 'does not show line items supplied by my producers' do
           expect(subject.table_items).to(eq([]))
         end
       end

@@ -5,8 +5,8 @@ module OpenFoodNetwork
     attr_reader :enterprise, :rule_class, :customer_tags
 
     def initialize(enterprise, rule_type, customer_tags = [])
-      raise("Enterprise cannot be nil") if enterprise.nil?
-      raise("Rule Type cannot be nil") if rule_type.nil?
+      raise('Enterprise cannot be nil') if enterprise.nil?
+      raise('Rule Type cannot be nil') if rule_type.nil?
 
       @enterprise = enterprise
       @rule_class = "TagRule::#{rule_type}".constantize
@@ -60,7 +60,7 @@ module OpenFoodNetwork
     end
 
     def customer_tags_match?(rule)
-      preferred_tags = rule.preferred_customer_tags.split(",")
+      preferred_tags = rule.preferred_customer_tags.split(',')
       (customer_tags & preferred_tags).any?
     end
   end

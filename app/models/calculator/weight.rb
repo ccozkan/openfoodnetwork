@@ -5,7 +5,7 @@ require 'spree/localized_number'
 module Calculator
   class Weight < Spree::Calculator
     extend Spree::LocalizedNumber
-    preference :unit_from_list, :string, default: "kg"
+    preference :unit_from_list, :string, default: 'kg'
     preference :per_unit, :decimal, default: 0.0
 
     localize_number :preferred_per_unit
@@ -15,7 +15,7 @@ module Calculator
     end
 
     def set_preference(name, value)
-      if name == :unit_from_list && !["kg", "lb"].include?(value)
+      if name == :unit_from_list && !['kg', 'lb'].include?(value)
         calculable.errors.add(:preferred_unit_from_list, I18n.t(:calculator_preferred_unit_error))
       else
         __send__(self.class.preference_setter_method(name), value)
@@ -28,7 +28,7 @@ module Calculator
     end
 
     def preferred_unit_from_list_values
-      ["kg", "lb"]
+      ['kg', 'lb']
     end
 
     private
@@ -83,11 +83,11 @@ module Calculator
     end
 
     def convert_weight(value)
-      return 0 unless value && ["kg", "lb"].include?(preferences[:unit_from_list])
+      return 0 unless value && ['kg', 'lb'].include?(preferences[:unit_from_list])
 
-      if preferences[:unit_from_list] == "kg"
+      if preferences[:unit_from_list] == 'kg'
         value / 1000
-      elsif preferences[:unit_from_list] == "lb"
+      elsif preferences[:unit_from_list] == 'lb'
         value / 453.6
       end
     end

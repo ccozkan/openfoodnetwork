@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Base controller for OFN's API
-require "spree/api/controller_setup"
+require 'spree/api/controller_setup'
 
 module Api
   module V0
@@ -62,7 +62,7 @@ module Api
       end
 
       def set_content_type
-        headers["Content-Type"] = "application/json"
+        headers['Content-Type'] = 'application/json'
       end
 
       def error_during_processing(exception)
@@ -76,7 +76,7 @@ module Api
       end
 
       def api_key
-        request.headers["X-Spree-Token"] || params[:token]
+        request.headers['X-Spree-Token'] || params[:token]
       end
       helper_method :api_key
 
@@ -84,7 +84,7 @@ module Api
         @resource = resource
         render(
 json: {
-error: I18n.t(:invalid_resource, scope: "spree.api"),
+error: I18n.t(:invalid_resource, scope: 'spree.api'),
 errors: @resource.errors
 },
 status: :unprocessable_entity
@@ -93,21 +93,21 @@ status: :unprocessable_entity
 
       def invalid_api_key
         render(
-json: { error: I18n.t(:invalid_api_key, key: api_key, scope: "spree.api") },
+json: { error: I18n.t(:invalid_api_key, key: api_key, scope: 'spree.api') },
 status: :unauthorized
 ) && return
       end
 
       def unauthorized
         render(
-json: { error: I18n.t(:unauthorized, scope: "spree.api") },
+json: { error: I18n.t(:unauthorized, scope: 'spree.api') },
 status: :unauthorized
 ) && return
       end
 
       def not_found
         render(
-json: { error: I18n.t(:resource_not_found, scope: "spree.api") },
+json: { error: I18n.t(:resource_not_found, scope: 'spree.api') },
 status: :not_found
 ) && return
       end

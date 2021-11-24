@@ -115,7 +115,7 @@ module ProductImport
     def attributes
       attrs = {}
       instance_variables.each do |var|
-        attrs[var.to_s.delete("@")] = instance_variable_get(var)
+        attrs[var.to_s.delete('@')] = instance_variable_get(var)
       end
       attrs.except(*NON_PRODUCT_ATTRIBUTES)
     end
@@ -128,7 +128,7 @@ module ProductImport
       # Modified attributes list for displaying in user feedback
       attrs = {}
       instance_variables.each do |var|
-        attrs[var.to_s.delete("@")] = instance_variable_get(var)
+        attrs[var.to_s.delete('@')] = instance_variable_get(var)
       end
       attrs.except(*NON_PRODUCT_ATTRIBUTES, *NON_DISPLAY_ATTRIBUTES)
     end

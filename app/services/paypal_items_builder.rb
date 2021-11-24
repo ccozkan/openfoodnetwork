@@ -38,7 +38,7 @@ class PaypalItemsBuilder
         currencyID: item.order.currency,
         value: item.price
       },
-      ItemCategory: "Physical"
+      ItemCategory: 'Physical'
     }
   end
 

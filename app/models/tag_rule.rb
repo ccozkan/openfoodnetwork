@@ -3,7 +3,7 @@
 class TagRule < ApplicationRecord
   belongs_to :enterprise
 
-  preference :customer_tags, :string, default: ""
+  preference :customer_tags, :string, default: ''
 
   validates :enterprise, presence: true
 
@@ -12,7 +12,7 @@ class TagRule < ApplicationRecord
 
   def self.mapping_for(enterprises)
     self.for(enterprises).each_with_object({}) do |rule, mapping|
-      rule.preferred_customer_tags.split(",").each do |tag|
+      rule.preferred_customer_tags.split(',').each do |tag|
         if mapping[tag]
           mapping[tag][:rules] += 1
         else

@@ -4,7 +4,7 @@ module Reporting
   module Reports
     module Packing
       class Base < ReportTemplate
-        SUBTYPES = ["customer", "supplier"]
+        SUBTYPES = ['customer', 'supplier']
 
         def primary_model
           Spree::LineItem

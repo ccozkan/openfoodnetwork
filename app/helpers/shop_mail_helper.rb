@@ -5,6 +5,6 @@ module ShopMailHelper
   #
   # Example: "Fri Aug 31 @ 11:00PM"
   def mail_long_datetime_format
-    "%a %b %d @ %l:%M%p"
+    '%a %b %d @ %l:%M%p'
   end
 end

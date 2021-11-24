@@ -37,10 +37,10 @@ module Spree
     preference :allow_ssl_in_staging, :boolean, default: true
     # Replace with the name of a zone if you would like to limit the countries
     preference :checkout_zone, :string, default: nil
-    preference :currency, :string, default: "USD"
-    preference :currency_decimal_mark, :string, default: "."
-    preference :currency_symbol_position, :string, default: "before"
-    preference :currency_thousands_separator, :string, default: ","
+    preference :currency, :string, default: 'USD'
+    preference :currency_decimal_mark, :string, default: '.'
+    preference :currency_symbol_position, :string, default: 'before'
+    preference :currency_thousands_separator, :string, default: ','
     preference :display_currency, :boolean, default: false
     preference :default_country_id, :integer
     preference :default_meta_description, :string, default: 'OFN demo site'
@@ -79,12 +79,12 @@ module Spree
     preference :attachment_url, :string, default: '/spree/products/:id/:style/:basename.:extension'
     preference :attachment_styles,
 :string,
-               default: "{\"mini\":\"48x48>\",\"small\":\"100x100>\",\"product\":\"240x240>\",\"large\":\"600x600>\"}"
+               default: '{"mini":"48x48>","small":"100x100>","product":"240x240>","large":"600x600>"}'
     preference :attachment_default_style, :string, default: 'product'
     preference :s3_access_key, :string
     preference :s3_bucket, :string
     preference :s3_secret, :string
-    preference :s3_headers, :string, default: "{\"Cache-Control\":\"max-age=31557600\"}"
+    preference :s3_headers, :string, default: '{"Cache-Control":"max-age=31557600"}'
     preference :use_s3, :boolean, default: false # Use S3 for images rather than the file system
     preference :s3_protocol, :string
     preference :s3_host_alias, :string
@@ -110,7 +110,7 @@ module Spree
     preference :embedded_shopfronts_whitelist, :text, default: nil
 
     # Legal Preferences
-    preference :footer_tos_url, :string, default: "/Terms-of-service.pdf"
+    preference :footer_tos_url, :string, default: '/Terms-of-service.pdf'
     preference :enterprises_require_tos, :boolean, default: false
     preference :shoppers_require_tos, :boolean, default: false
     preference :privacy_policy_url, :string, default: nil
@@ -145,6 +145,6 @@ module Spree
                default: (Rails.env.production? || Rails.env.staging?)
 
     # Available units
-    preference :available_units, :string, default: "g,kg,T,mL,L,kL"
+    preference :available_units, :string, default: 'g,kg,T,mL,L,kL'
   end
 end

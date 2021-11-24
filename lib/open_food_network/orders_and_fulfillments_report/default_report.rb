@@ -50,7 +50,7 @@ module OpenFoodNetwork
           proc { |line_items| line_items.to_a.sum(&:quantity) },
           proc { |line_items| line_items.first.price },
           proc { |line_items| line_items.sum { |li| li.quantity * li.price } },
-          proc { |_line_items| "" },
+          proc { |_line_items| '' },
           proc { |_line_items| I18n.t(:report_header_incoming_transport) }
         ]
       end

@@ -10,7 +10,7 @@ describe ' As an administrator I want to manage enterprise groups ' do
     login_to_admin_section
   end
 
-  it "listing enterprise groups" do
+  it 'listing enterprise groups' do
     e = create(:enterprise)
     group = create(:enterprise_group, enterprises: [e], on_front_page: true)
 
@@ -21,7 +21,7 @@ describe ' As an administrator I want to manage enterprise groups ' do
     expect(page).to(have_selector('td', text: e.name))
   end
 
-  it "creating a new enterprise group", js: true do
+  it 'creating a new enterprise group', js: true do
     e1 = create(:enterprise)
     e2 = create(:enterprise)
     e3 = create(:enterprise)
@@ -52,13 +52,13 @@ describe ' As an administrator I want to manage enterprise groups ' do
     expect(eg.enterprises).to(match_array([e1, e2]))
   end
 
-  it "editing an enterprise group" do
+  it 'editing an enterprise group' do
     e1 = create(:enterprise)
     e2 = create(:enterprise)
     eg = create(:enterprise_group, name: 'EGEGEG', on_front_page: true, enterprises: [e1, e2])
 
     click_link 'Groups'
-    first("a.edit-enterprise-group").click
+    first('a.edit-enterprise-group').click
 
     expect(page).to(have_field('enterprise_group_name', with: 'EGEGEG'))
     expect(page).to(have_checked_field('enterprise_group_on_front_page'))
@@ -79,25 +79,25 @@ describe ' As an administrator I want to manage enterprise groups ' do
     expect(eg.enterprises).to(eq([e2]))
   end
 
-  it "re-ordering enterprise groups" do
+  it 're-ordering enterprise groups' do
     eg1 = create(:enterprise_group, name: 'A')
     eg2 = create(:enterprise_group, name: 'B')
 
     click_link 'Groups'
 
     expect(page.all('td.name').map(&:text)).to(eq(['A', 'B']))
-    all("a.move-down").first.click
+    all('a.move-down').first.click
     expect(page.all('td.name').map(&:text)).to(eq(['B', 'A']))
-    all("a.move-up").last.click
+    all('a.move-up').last.click
     expect(page.all('td.name').map(&:text)).to(eq(['A', 'B']))
   end
 
-  it "deleting an enterprise group", js: true do
+  it 'deleting an enterprise group', js: true do
     eg = create(:enterprise_group, name: 'EGEGEG')
 
     click_link 'Groups'
     accept_alert do
-      first("a.delete-resource").click
+      first('a.delete-resource').click
     end
 
     expect(page).to(have_no_content('EGEGEG'))
@@ -105,12 +105,12 @@ describe ' As an administrator I want to manage enterprise groups ' do
     expect(EnterpriseGroup.all).not_to(include(eg))
   end
 
-  context "as an enterprise user" do
+  context 'as an enterprise user' do
     let(:user) { create(:user) }
     let!(:enterprise) { create(:distributor_enterprise, owner: user) }
     let!(:group) { create(:enterprise_group, name: 'My Group', owner: user) }
 
-    it "lets me access enterprise groups" do
+    it 'lets me access enterprise groups' do
       login_as user
       visit spree.admin_dashboard_path
       click_link 'Groups'

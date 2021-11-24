@@ -8,16 +8,16 @@ module OpenFoodNetwork
     def header
       # NOTE: These are NOT to be translated, they need to be in this exact format to work with LettucShare
       [
-        "PRODUCT",
-        "Description",
-        "Qty",
-        "Pack Size",
-        "Unit",
-        "Unit Price",
-        "Total",
-        "GST incl.",
-        "Grower and growing method",
-        "Taxon"
+        'PRODUCT',
+        'Description',
+        'Qty',
+        'Pack Size',
+        'Unit',
+        'Unit Price',
+        'Total',
+        'GST incl.',
+        'Grower and growing method',
+        'Taxon'
       ]
     end
 

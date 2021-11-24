@@ -19,7 +19,7 @@ module Stripe
 
     def verify_webhook
       payload = request.raw_post
-      signature = request.headers["HTTP_STRIPE_SIGNATURE"]
+      signature = request.headers['HTTP_STRIPE_SIGNATURE']
       @event = Webhook.construct_event(payload, signature, Stripe.endpoint_secret)
     rescue JSON::ParserError
       render(body: nil, status: :bad_request)

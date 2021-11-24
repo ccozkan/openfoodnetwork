@@ -17,7 +17,7 @@ module Api
       end
 
       def completed_at
-        object.completed_at.blank? ? "" : object.completed_at.strftime("%F %T")
+        object.completed_at.blank? ? '' : object.completed_at.strftime('%F %T')
       end
 
       def edit_path

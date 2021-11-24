@@ -32,7 +32,7 @@ module OpenFoodNetwork
       # environment is essentially cached if multiple requests are made in the same `it` block,
       # meaning subsequent requests will not be handled well. This resets the environment.
       # This edge case is quite rare though; normally we only do one request per test.
-      @request.env.delete("RAW_POST_DATA")
+      @request.env.delete('RAW_POST_DATA')
     end
   end
 end

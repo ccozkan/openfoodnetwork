@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 require 'open_food_network/orders_and_fulfillments_report'
 require 'open_food_network/orders_and_fulfillments_report/customer_totals_report'
 require 'open_food_network/order_grouper'
@@ -19,7 +19,7 @@ RSpec.describe(OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
     OpenFoodNetwork::OrderGrouper.new(report.rules, report.columns).table(report.table_items)
   end
 
-  context "viewing the report" do
+  context 'viewing the report' do
     let!(:order) do
       create(
 :completed_order_with_totals,
@@ -30,11 +30,11 @@ distributor: distributor
 )
     end
 
-    it "generates the report" do
+    it 'generates the report' do
       expect(report_table.length).to(eq(2))
     end
 
-    it "has a line item row" do
+    it 'has a line item row' do
       distributor_name_field = report_table.first[0]
       expect(distributor_name_field).to(eq(distributor.name))
 
@@ -42,7 +42,7 @@ distributor: distributor
       expect(customer_name_field).to(eq(order.bill_address.full_name))
 
       total_field = report_table.last[5]
-      expect(total_field).to(eq(I18n.t("admin.reports.total")))
+      expect(total_field).to(eq(I18n.t('admin.reports.total')))
     end
 
     it 'includes the order number and date in item rows' do
@@ -50,7 +50,7 @@ distributor: distributor
       expect(order_number_and_date_fields).to(eq(
 [
                                                    order.number,
-                                                   order.completed_at.strftime("%F %T"),
+                                                   order.completed_at.strftime('%F %T'),
                                                  ]
 ))
     end
@@ -60,21 +60,21 @@ distributor: distributor
       expect(order_number_and_date_fields).to(eq(
 [
                                                    order.number,
-                                                   order.completed_at.strftime("%F %T"),
+                                                   order.completed_at.strftime('%F %T'),
                                                  ]
 ))
     end
   end
 
-  context "loading shipping methods" do
+  context 'loading shipping methods' do
     let!(:shipping_method1) do
-      create(:shipping_method, distributors: [distributor], name: "First")
+      create(:shipping_method, distributors: [distributor], name: 'First')
     end
     let!(:shipping_method2) do
-      create(:shipping_method, distributors: [distributor], name: "Second")
+      create(:shipping_method, distributors: [distributor], name: 'Second')
     end
     let!(:shipping_method3) do
-      create(:shipping_method, distributors: [distributor], name: "Third")
+      create(:shipping_method, distributors: [distributor], name: 'Third')
     end
     let!(:order) do
       create(
@@ -91,14 +91,14 @@ distributor: distributor
       order.select_shipping_method(shipping_method2.id)
     end
 
-    it "displays the correct shipping_method" do
+    it 'displays the correct shipping_method' do
       shipping_method_name_field = report_table.first[15]
       expect(shipping_method_name_field).to(eq(shipping_method2.name))
     end
   end
 
-  context "displaying payment fees" do
-    context "with both failed and completed payments present" do
+  context 'displaying payment fees' do
+    context 'with both failed and completed payments present' do
       let!(:order) do
         create(
 :order_ready_to_ship,
@@ -108,14 +108,14 @@ distributor: distributor
 )
       end
       let(:completed_payment) { order.payments.completed.first }
-      let!(:failed_payment) { create(:payment, order: order, state: "failed") }
+      let!(:failed_payment) { create(:payment, order: order, state: 'failed') }
 
       before do
         completed_payment.adjustment.update(amount: 123.00)
-        failed_payment.adjustment.update(amount: 456.00, eligible: false, state: "finalized")
+        failed_payment.adjustment.update(amount: 456.00, eligible: false, state: 'finalized')
       end
 
-      it "shows the correct payment fee amount for the order" do
+      it 'shows the correct payment fee amount for the order' do
         payment_fee_field = report_table.last[12]
         expect(payment_fee_field).to(eq(completed_payment.adjustment.amount))
       end

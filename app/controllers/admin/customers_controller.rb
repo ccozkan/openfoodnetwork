@@ -55,7 +55,7 @@ json: {
       if @object.destroy
         respond_with(@object) do |format|
           format.html { redirect_to(location_after_destroy) }
-          format.js   { render(partial: "spree/admin/shared/destroy") }
+          format.js   { render(partial: 'spree/admin/shared/destroy') }
         end
       else
         respond_with(@object) do |format|

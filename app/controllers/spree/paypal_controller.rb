@@ -26,7 +26,7 @@ module Spree
             Spree.t(
 'flash.generic_error',
 scope: 'paypal',
-                       reasons: pp_response.errors.map(&:long_message).join(" ")
+                       reasons: pp_response.errors.map(&:long_message).join(' ')
 )
           redirect_to(main_app.checkout_state_path(:payment))
         end
@@ -55,7 +55,7 @@ scope: 'paypal',
       @order.next
       if @order.complete?
         flash.notice = Spree.t(:order_processed_successfully)
-        flash[:commerce_tracking] = "nothing special"
+        flash[:commerce_tracking] = 'nothing special'
         session[:order_id] = nil
         redirect_to(completion_route(@order))
       else
@@ -85,9 +85,9 @@ scope: 'paypal',
             payment_method_id: params[:payment_method_id], utm_nooverride: 1
           ),
           CancelURL: spree.cancel_paypal_url,
-          SolutionType: payment_method.preferred_solution.presence || "Mark",
-          LandingPage: payment_method.preferred_landing_page.presence || "Billing",
-          cppheaderimage: payment_method.preferred_logourl.presence || "",
+          SolutionType: payment_method.preferred_solution.presence || 'Mark',
+          LandingPage: payment_method.preferred_landing_page.presence || 'Billing',
+          cppheaderimage: payment_method.preferred_logourl.presence || '',
           NoShipping: 1,
           PaymentDetails: [payment_details(order)]
         }
@@ -171,8 +171,8 @@ scope: 'paypal',
           },
           ShipToAddress: address_options,
           PaymentDetailsItem: items,
-          ShippingMethod: "Shipping Method Name Goes Here",
-          PaymentAction: "Sale"
+          ShippingMethod: 'Shipping Method Name Goes Here',
+          PaymentAction: 'Sale'
         }
       end
     end

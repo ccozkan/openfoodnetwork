@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
-describe "Shops caching", js: true, caching: true do
+describe 'Shops caching', js: true, caching: true do
   include WebHelper
   include UIComponentHelper
 
@@ -13,40 +13,40 @@ describe "Shops caching", js: true, caching: true do
     create(:open_order_cycle, distributors: [distributor], coordinator: distributor)
   end
 
-  describe "caching enterprises AMS data" do
-    it "caches data for all enterprises, with the provided options" do
+  describe 'caching enterprises AMS data' do
+    it 'caches data for all enterprises, with the provided options' do
       visit shops_path
 
       key, options = CacheService::FragmentCaching.ams_shops
       expect_cached "views/#{key}", options
     end
 
-    it "keeps data cached for a short time on subsequent requests" do
+    it 'keeps data cached for a short time on subsequent requests' do
       # Ensure sufficient time for requests to load and timed caches to expire
       Timecop.travel(10.minutes.ago) do
         visit shops_path
 
         expect(page).to(have_content(distributor.name))
 
-        distributor.name = "New Name"
+        distributor.name = 'New Name'
         distributor.save!
 
         visit shops_path
 
-        expect(page).to_not(have_content("New Name")) # Displayed name is unchanged
+        expect(page).to_not(have_content('New Name')) # Displayed name is unchanged
       end
 
       # A while later...
       visit shops_path
-      expect(page).to(have_content("New Name")) # Displayed name is now changed
+      expect(page).to(have_content('New Name')) # Displayed name is now changed
     end
   end
 
-  describe "API action caching on taxons and properties" do
-    let!(:taxon) { create(:taxon, name: "Cached Taxon") }
-    let!(:taxon2) { create(:taxon, name: "New Taxon") }
-    let!(:property) { create(:property, presentation: "Cached Property") }
-    let!(:property2) { create(:property, presentation: "New Property") }
+  describe 'API action caching on taxons and properties' do
+    let!(:taxon) { create(:taxon, name: 'Cached Taxon') }
+    let!(:taxon2) { create(:taxon, name: 'New Taxon') }
+    let!(:property) { create(:property, presentation: 'Cached Property') }
+    let!(:property2) { create(:property, presentation: 'New Property') }
     let!(:product) do
       create(:product, taxons: [taxon], primary_taxon: taxon, properties: [property])
     end
@@ -67,17 +67,17 @@ describe "Shops caching", js: true, caching: true do
       exchange.variants << product.variants.first
     end
 
-    it "caches rendered response for taxons and properties, with the provided options" do
+    it 'caches rendered response for taxons and properties, with the provided options' do
       visit enterprise_shop_path(distributor)
 
-      expect(page).to(have_content("Cached Taxon"))
-      expect(page).to(have_content("Cached Property"))
+      expect(page).to(have_content('Cached Taxon'))
+      expect(page).to(have_content('Cached Property'))
 
       expect_cached taxons_key, options
       expect_cached properties_key, options
     end
 
-    it "keeps data cached for a short time on subsequent requests" do
+    it 'keeps data cached for a short time on subsequent requests' do
       # Ensure sufficient time for requests to load and timed caches to expire
       Timecop.travel(10.minutes.ago) do
         visit enterprise_shop_path(distributor)

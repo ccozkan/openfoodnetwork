@@ -28,8 +28,8 @@ class SplitCheckoutController < ::BaseController
       flash.now[:error] = I18n.t('split_checkout.errors.global')
 
       render(operations: cable_car
-        .replace("#checkout", partial("split_checkout/checkout"))
-        .replace("#flashes", partial("shared/flashes", locals: { flashes: flash })),
+        .replace('#checkout', partial('split_checkout/checkout'))
+        .replace('#flashes', partial('shared/flashes', locals: { flashes: flash })),
              status: :unprocessable_entity)
     end
   end
@@ -78,7 +78,7 @@ class SplitCheckoutController < ::BaseController
   def validate_summary!
     return true if params[:accept_terms]
 
-    @order.errors.add(:terms_and_conditions, t("split_checkout.errors.terms_not_accepted"))
+    @order.errors.add(:terms_and_conditions, t('split_checkout.errors.terms_not_accepted'))
   end
 
   def order_params
@@ -87,11 +87,11 @@ class SplitCheckoutController < ::BaseController
 
   def redirect_to_step
     case @order.state
-    when "cart", "address", "delivery"
+    when 'cart', 'address', 'delivery'
       redirect_to(checkout_step_path(:details))
-    when "payment"
+    when 'payment'
       redirect_to(checkout_step_path(:payment))
-    when "confirmation"
+    when 'confirmation'
       redirect_to(checkout_step_path(:summary))
     else
       redirect_to(order_path(@order))

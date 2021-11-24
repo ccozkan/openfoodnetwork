@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "open_food_network/scope_variant_to_hub"
+require 'open_food_network/scope_variant_to_hub'
 
 class Api::ProductSerializer < ActiveModel::Serializer
   attributes :id, :name, :permalink, :meta_keywords

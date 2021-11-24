@@ -27,7 +27,7 @@ product,
     add_variant_to_order_cycle(exchange, variant1)
   end
 
-  it "serializes various attributes" do
+  it 'serializes various attributes' do
     expect(serializer.serializable_hash.keys).to(eq([
       :id,
 :name,
@@ -46,13 +46,13 @@ product,
     ]))
   end
 
-  it "serializes product properties" do
+  it 'serializes product properties' do
     product_property = { id: property.id, name: property.presentation, value: nil }
 
     expect(serializer.serializable_hash[:properties_with_values]).to(include(product_property))
   end
 
-  it "serializes taxons" do
+  it 'serializes taxons' do
     expect(serializer.serializable_hash[:taxons]).to(eq([id: taxon.id]))
   end
 end

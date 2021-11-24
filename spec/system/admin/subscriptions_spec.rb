@@ -7,7 +7,7 @@ describe 'Subscriptions' do
   include AuthenticationHelper
   include WebHelper
 
-  context "as an enterprise user", js: true do
+  context 'as an enterprise user', js: true do
     let!(:user) { create(:user) }
     let!(:shop) { create(:distributor_enterprise, owner: user, enable_subscriptions: true) }
     let!(:shop2) { create(:distributor_enterprise, owner: user, enable_subscriptions: true) }
@@ -19,7 +19,7 @@ describe 'Subscriptions' do
       let!(:subscription) do
         create(:subscription, shop: shop, with_items: true, with_proxy_orders: true)
       end
-      let!(:customer) { create(:customer, name: "Customer A") }
+      let!(:customer) { create(:customer, name: 'Customer A') }
       let!(:other_subscription) do
         create(
 :subscription,
@@ -43,34 +43,34 @@ with_items: true,
         end
       end
 
-      it "passes the smoke test" do
+      it 'passes the smoke test' do
         visit spree.admin_dashboard_path
         click_link 'Orders'
         click_link 'Subscriptions'
 
-        expect(page).to(have_select2("shop_id",
+        expect(page).to(have_select2('shop_id',
 with_options: [shop.name, shop2.name],
                                                 without_options: [shop_unmanaged.name]))
 
-        select2_select shop2.name, from: "shop_id"
+        select2_select shop2.name, from: 'shop_id'
 
         # Loads the right subscriptions
         expect(page).to(have_selector("tr#so_#{subscription2.id}"))
         expect(page).to(have_no_selector("tr#so_#{subscription.id}"))
         expect(page).to(have_no_selector("tr#so_#{subscription_unmanaged.id}"))
         within "tr#so_#{subscription2.id}" do
-          expect(page).to(have_selector("td.customer", text: subscription2.customer.email))
+          expect(page).to(have_selector('td.customer', text: subscription2.customer.email))
         end
 
         # Changing Shops
-        select2_select shop.name, from: "shop_id"
+        select2_select shop.name, from: 'shop_id'
 
         # Loads the right subscriptions
         expect(page).to(have_selector("tr#so_#{subscription.id}"))
         expect(page).to(have_no_selector("tr#so_#{subscription2.id}"))
         expect(page).to(have_no_selector("tr#so_#{subscription_unmanaged.id}"))
         within "tr#so_#{subscription.id}" do
-          expect(page).to(have_selector("td.customer", text: subscription.customer.email))
+          expect(page).to(have_selector('td.customer', text: subscription.customer.email))
         end
 
         # Using the Quick Search
@@ -98,43 +98,43 @@ with_options: [shop.name, shop2.name],
         expect(page).to(have_selector("tr#so_#{other_subscription.id}"))
 
         # Toggling columns
-        expect(page).to(have_selector("th.customer"))
+        expect(page).to(have_selector('th.customer'))
         expect(page).to(have_content(subscription.customer.email))
-        toggle_columns "Customer"
-        expect(page).to(have_no_selector("th.customer"))
+        toggle_columns 'Customer'
+        expect(page).to(have_no_selector('th.customer'))
         expect(page).to(have_no_content(subscription.customer.email))
 
         # Viewing Products
         open_subscription_products_panel
 
-        within "#subscription-line-items" do
-          expect(page).to(have_selector("span#order_subtotal", text: "$15.00")) # 3 x $5 items
-          expect(page).to(have_selector("span#order_fees", text: "$3.50")) # $3.5 shipping
-          expect(page).to(have_selector("span#order_form_total", text: "$18.50")) # 3 x $5 items + $3.5 shipping
+        within '#subscription-line-items' do
+          expect(page).to(have_selector('span#order_subtotal', text: '$15.00')) # 3 x $5 items
+          expect(page).to(have_selector('span#order_fees', text: '$3.50')) # $3.5 shipping
+          expect(page).to(have_selector('span#order_form_total', text: '$18.50')) # 3 x $5 items + $3.5 shipping
         end
 
         # Viewing Orders
         within "tr#so_#{subscription.id}" do
-          expect(page).to(have_selector("td.orders.panel-toggle", text: 1))
-          page.find("td.orders.panel-toggle").click
+          expect(page).to(have_selector('td.orders.panel-toggle', text: 1))
+          page.find('td.orders.panel-toggle').click
         end
 
-        within ".subscription-orders" do
-          expect(page).to(have_selector("tr.proxy_order", count: 1))
-          expect(page).to(have_content("$18.50")) # 3 x $5 items + $3.5 shipping
+        within '.subscription-orders' do
+          expect(page).to(have_selector('tr.proxy_order', count: 1))
+          expect(page).to(have_content('$18.50')) # 3 x $5 items + $3.5 shipping
 
           proxy_order = subscription.proxy_orders.first
           within "tr#po_#{proxy_order.id}" do
             expect(page).to(have_no_content('CANCELLED'))
             accept_alert 'Are you sure?' do
-              find("a.cancel-order").click
+              find('a.cancel-order').click
             end
             expect(page).to(have_content('CANCELLED'))
             expect(proxy_order.reload.canceled_at).to(be_within(5.seconds).of(Time.zone.now))
 
             # Resuming an order
             accept_alert 'Are you sure?' do
-              find("a.resume-order").click
+              find('a.resume-order').click
             end
             # NOTE: the order itself was not complete when 'cancelled', so state remained as cart
             expect(page).to(have_content('PENDING'))
@@ -144,54 +144,54 @@ with_options: [shop.name, shop2.name],
 
         # Pausing a subscription
         within "tr#so_#{subscription.id}" do
-          find("a.pause-subscription").click
+          find('a.pause-subscription').click
         end
         click_button "Yes, I'm sure"
         within "tr#so_#{subscription.id}" do
-          expect(page).to(have_selector(".state.paused", text: "PAUSED"))
+          expect(page).to(have_selector('.state.paused', text: 'PAUSED'))
           expect(subscription.reload.paused_at).to(be_within(5.seconds).of(Time.zone.now))
         end
 
         # Unpausing a subscription
         within "tr#so_#{subscription.id}" do
-          find("a.unpause-subscription").click
+          find('a.unpause-subscription').click
         end
         click_button "Yes, I'm sure"
         within "tr#so_#{subscription.id}" do
-          expect(page).to(have_selector(".state.active", text: "ACTIVE"))
+          expect(page).to(have_selector('.state.active', text: 'ACTIVE'))
           expect(subscription.reload.paused_at).to(be(nil))
         end
 
         # Cancelling a subscription
         within "tr#so_#{subscription.id}" do
-          find("a.cancel-subscription").click
+          find('a.cancel-subscription').click
         end
         click_button "Yes, I'm sure"
         within "tr#so_#{subscription.id}" do
-          expect(page).to(have_selector(".state.canceled", text: "CANCELLED"))
+          expect(page).to(have_selector('.state.canceled', text: 'CANCELLED'))
           expect(subscription.reload.canceled_at).to(be_within(5.seconds).of(Time.zone.now))
         end
       end
 
-      context "editing subscription products quantity" do
-        it "updates quantity" do
+      context 'editing subscription products quantity' do
+        it 'updates quantity' do
           visit admin_subscriptions_path
-          select2_select shop.name, from: "shop_id"
+          select2_select shop.name, from: 'shop_id'
           open_subscription_products_panel
 
-          within "#sli_0" do
-            fill_in 'quantity', with: "5"
+          within '#sli_0' do
+            fill_in 'quantity', with: '5'
           end
 
-          page.find("a.button.update").click
+          page.find('a.button.update').click
           expect(page).to(have_content('SAVED'))
         end
       end
 
       def open_subscription_products_panel
         within("tr#so_#{subscription.id}") do
-          expect(page).to(have_selector("td.items.panel-toggle", text: 3))
-          page.find("td.items.panel-toggle").click
+          expect(page).to(have_selector('td.items.panel-toggle', text: 3))
+          page.find('td.items.panel-toggle').click
         end
       end
     end
@@ -220,11 +220,11 @@ user: customer_user,
       end
       let!(:test_product) { create(:product, supplier: shop) }
       let!(:test_variant) do
-        create(:variant, product: test_product, unit_value: "100", price: 12.00, option_values: [])
+        create(:variant, product: test_product, unit_value: '100', price: 12.00, option_values: [])
       end
       let!(:shop_product) { create(:product, supplier: shop) }
       let!(:shop_variant) do
-        create(:variant, product: shop_product, unit_value: "1000", price: 6.00, option_values: [])
+        create(:variant, product: shop_product, unit_value: '1000', price: 6.00, option_values: [])
       end
       let!(:enterprise_fee) { create(:enterprise_fee, amount: 1.75) }
       let!(:order_cycle) do
@@ -251,12 +251,12 @@ enterprise_fees: [enterprise_fee]
 
       before do
         visit admin_subscriptions_path
-        click_link "New Subscription"
-        select2_select shop.name, from: "new_subscription_shop_id"
-        click_button "Continue"
+        click_link 'New Subscription'
+        select2_select shop.name, from: 'new_subscription_shop_id'
+        click_button 'Continue'
       end
 
-      it "passes the smoke test" do
+      it 'passes the smoke test' do
         select2_select customer.email, from: 'customer_id'
         select2_select schedule.name, from: 'schedule_id'
         select2_select payment_method.name, from: 'payment_method_id'
@@ -272,35 +272,35 @@ enterprise_fees: [enterprise_fee]
         click_button('Next')
         expect(page).to(have_content('BILLING ADDRESS'))
         # Customer bill address has been pre-loaded
-        expect(page).to(have_input("bill_address_firstname", with: address.firstname))
-        expect(page).to(have_input("bill_address_lastname", with: address.lastname))
-        expect(page).to(have_input("bill_address_address1", with: address.address1))
+        expect(page).to(have_input('bill_address_firstname', with: address.firstname))
+        expect(page).to(have_input('bill_address_lastname', with: address.lastname))
+        expect(page).to(have_input('bill_address_address1', with: address.address1))
 
         # Clear some elements of bill address
-        fill_in "bill_address_firstname", with: ''
-        fill_in "bill_address_lastname", with: ''
-        fill_in "bill_address_address1", with: ''
-        fill_in "bill_address_city", with: ''
-        fill_in "bill_address_zipcode", with: ''
-        fill_in "bill_address_phone", with: ''
+        fill_in 'bill_address_firstname', with: ''
+        fill_in 'bill_address_lastname', with: ''
+        fill_in 'bill_address_address1', with: ''
+        fill_in 'bill_address_city', with: ''
+        fill_in 'bill_address_zipcode', with: ''
+        fill_in 'bill_address_phone', with: ''
         click_button('Next')
         expect(page).to(have_content('can\'t be blank', count: 6))
 
         # Re-setting the billing address
-        fill_in "bill_address_firstname", with: 'Freda'
-        fill_in "bill_address_lastname", with: 'Figapple'
-        fill_in "bill_address_address1", with: '7 Tempany Lane'
-        fill_in "bill_address_city", with: 'Natte Yallock'
-        fill_in "bill_address_zipcode", with: '3465'
-        fill_in "bill_address_phone", with: '0400 123 456'
-        select2_select "Australia", from: "bill_address_country_id"
-        select2_select "Victoria", from: "bill_address_state_id"
+        fill_in 'bill_address_firstname', with: 'Freda'
+        fill_in 'bill_address_lastname', with: 'Figapple'
+        fill_in 'bill_address_address1', with: '7 Tempany Lane'
+        fill_in 'bill_address_city', with: 'Natte Yallock'
+        fill_in 'bill_address_zipcode', with: '3465'
+        fill_in 'bill_address_phone', with: '0400 123 456'
+        select2_select 'Australia', from: 'bill_address_country_id'
+        select2_select 'Victoria', from: 'bill_address_state_id'
 
         # Use copy button to fill in ship address
-        click_link "Copy"
-        expect(page).to(have_input("ship_address_firstname", with: 'Freda'))
-        expect(page).to(have_input("ship_address_lastname", with: 'Figapple'))
-        expect(page).to(have_input("ship_address_address1", with: '7 Tempany Lane'))
+        click_link 'Copy'
+        expect(page).to(have_input('ship_address_firstname', with: 'Freda'))
+        expect(page).to(have_input('ship_address_lastname', with: 'Figapple'))
+        expect(page).to(have_input('ship_address_address1', with: '7 Tempany Lane'))
 
         click_button('Next')
         expect(page).to(have_content('NAME OR SKU'))
@@ -312,14 +312,14 @@ enterprise_fees: [enterprise_fee]
         within 'table#subscription-line-items tr.item', match: :first do
           expect(page).to(have_selector('.description',
                                         text: "#{test_product.name} - #{test_variant.full_name}"))
-          expect(page).to(have_selector('td.price', text: "$13.75"))
-          expect(page).to(have_input('quantity', with: "2"))
-          expect(page).to(have_selector('td.total', text: "$27.50"))
+          expect(page).to(have_selector('td.price', text: '$13.75'))
+          expect(page).to(have_input('quantity', with: '2'))
+          expect(page).to(have_selector('td.total', text: '$27.50'))
         end
 
         # Deleting the existing product
         within 'table#subscription-line-items tr.item', match: :first do
-          find("a.delete-item").click
+          find('a.delete-item').click
         end
 
         click_button('Next')
@@ -337,9 +337,9 @@ enterprise_fees: [enterprise_fee]
         within 'table#subscription-line-items tr.item', match: :first do
           expect(page).to(have_selector('.description',
                                         text: "#{shop_product.name} - #{shop_variant.full_name}"))
-          expect(page).to(have_selector('td.price', text: "$7.75"))
-          expect(page).to(have_input('quantity', with: "3"))
-          expect(page).to(have_selector('td.total', text: "$23.25"))
+          expect(page).to(have_selector('td.price', text: '$7.75'))
+          expect(page).to(have_input('quantity', with: '3'))
+          expect(page).to(have_selector('td.total', text: '$23.25'))
         end
 
         click_button('Next')
@@ -349,17 +349,17 @@ enterprise_fees: [enterprise_fee]
           expect(page).to(have_current_path(admin_subscriptions_path))
         end.to(change(Subscription, :count).by(1))
 
-        select2_select shop.name, from: "shop_id"
-        expect(page).to(have_selector("td.items.panel-toggle"))
-        first("td.items.panel-toggle").click
+        select2_select shop.name, from: 'shop_id'
+        expect(page).to(have_selector('td.items.panel-toggle'))
+        first('td.items.panel-toggle').click
 
         # Prices are shown in the index
         within 'table#subscription-line-items tr.item', match: :first do
           expect(page).to(have_selector('.description',
                                         text: "#{shop_product.name} - #{shop_variant.full_name}"))
-          expect(page).to(have_selector('td.price', text: "$7.75"))
-          expect(page).to(have_input('quantity', with: "3"))
-          expect(page).to(have_selector('td.total', text: "$23.25"))
+          expect(page).to(have_selector('td.price', text: '$7.75'))
+          expect(page).to(have_input('quantity', with: '3'))
+          expect(page).to(have_selector('td.total', text: '$23.25'))
         end
 
         # Basic properties of subscription are set
@@ -442,7 +442,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2, price_estimate: 
 )
       end
 
-      it "passes the smoke test" do
+      it 'passes the smoke test' do
         visit edit_admin_subscription_path(subscription)
 
         # Customer and Schedule cannot be edited
@@ -460,15 +460,15 @@ create(:subscription_line_item, variant: variant1, quantity: 2, price_estimate: 
 
         # Existing products should be visible
         click_button 'edit-products'
-        within "#sli_0" do
+        within '#sli_0' do
           expect(page).to(have_selector('.description',
                                         text: "#{product1.name} - #{variant1.full_name}"))
-          expect(page).to(have_selector('td.price', text: "$13.75"))
-          expect(page).to(have_input('quantity', with: "2"))
-          expect(page).to(have_selector('td.total', text: "$27.50"))
+          expect(page).to(have_selector('td.price', text: '$13.75'))
+          expect(page).to(have_input('quantity', with: '2'))
+          expect(page).to(have_selector('td.total', text: '$27.50'))
 
           # Remove variant1 from the subscription
-          find("a.delete-item").click
+          find('a.delete-item').click
         end
 
         # Attempting to submit without a product
@@ -477,78 +477,78 @@ create(:subscription_line_item, variant: variant1, quantity: 2, price_estimate: 
 
         # Add variant2 to the subscription
         add_variant_to_subscription(variant2, 1)
-        within "#sli_0" do
+        within '#sli_0' do
           expect(page).to(have_selector('.description',
                                         text: "#{product2.name} - #{variant2.full_name}"))
-          expect(page).to(have_selector('td.price', text: "$7.75"))
-          expect(page).to(have_input('quantity', with: "1"))
-          expect(page).to(have_selector('td.total', text: "$7.75"))
+          expect(page).to(have_selector('td.price', text: '$7.75'))
+          expect(page).to(have_input('quantity', with: '1'))
+          expect(page).to(have_selector('td.total', text: '$7.75'))
         end
 
         # Total should be $7.75
-        expect(page).to(have_selector('#order_form_total', text: "$7.75"))
+        expect(page).to(have_selector('#order_form_total', text: '$7.75'))
 
         # Add variant3 to the subscription (even though it is not available)
         add_variant_to_subscription(variant3, 1)
-        within "#sli_1" do
+        within '#sli_1' do
           expect(page).to(have_selector('.description',
                                         text: "#{product3.name} - #{variant3.full_name}"))
-          expect(page).to(have_selector('td.price', text: "$22.00"))
-          expect(page).to(have_input('quantity', with: "1"))
-          expect(page).to(have_selector('td.total', text: "$22.00"))
+          expect(page).to(have_selector('td.price', text: '$22.00'))
+          expect(page).to(have_input('quantity', with: '1'))
+          expect(page).to(have_selector('td.total', text: '$22.00'))
         end
 
         # Total should be $29.75
-        expect(page).to(have_selector('#order_form_total', text: "$29.75"))
+        expect(page).to(have_selector('#order_form_total', text: '$29.75'))
 
         # Remove variant3 from the subscription
         within '#sli_1' do
-          find("a.delete-item").click
+          find('a.delete-item').click
         end
 
         click_button 'Save Changes'
         expect(page).to(have_current_path(admin_subscriptions_path))
 
-        select2_select shop.name, from: "shop_id"
-        expect(page).to(have_selector("td.items.panel-toggle"))
-        first("td.items.panel-toggle").click
+        select2_select shop.name, from: 'shop_id'
+        expect(page).to(have_selector('td.items.panel-toggle'))
+        first('td.items.panel-toggle').click
 
         # Total should be $7.75
-        expect(page).to(have_selector('#order_form_total', text: "$7.75"))
+        expect(page).to(have_selector('#order_form_total', text: '$7.75'))
         expect(page).to(have_selector('tr.item', count: 1))
         expect(subscription.reload.subscription_line_items.length).to(eq(1))
         expect(subscription.subscription_line_items.first.variant).to(eq(variant2))
       end
 
-      context "with initialised order that has been changed" do
+      context 'with initialised order that has been changed' do
         let(:proxy_order) { subscription.proxy_orders.first }
         let(:order) { proxy_order.initialise_order! }
         let(:line_item) { order.line_items.first }
 
         before { line_item.update(quantity: 3) }
 
-        it "reports issues encountered during the update" do
+        it 'reports issues encountered during the update' do
           visit edit_admin_subscription_path(subscription)
           click_button 'edit-products'
 
-          within "#sli_0" do
-            fill_in 'quantity', with: "1"
+          within '#sli_0' do
+            fill_in 'quantity', with: '1'
           end
 
           click_button 'Save Changes'
           expect(page).to(have_content('Saved'))
 
-          expect(page).to(have_selector("#order_update_issues_dialog .message",
-                                        text: I18n.t("admin.subscriptions.order_update_issues_msg")))
+          expect(page).to(have_selector('#order_update_issues_dialog .message',
+                                        text: I18n.t('admin.subscriptions.order_update_issues_msg')))
         end
       end
     end
 
-    describe "allowed variants" do
+    describe 'allowed variants' do
       let!(:customer) { create(:customer, enterprise: shop) }
       let!(:credit_card) { create(:stored_credit_card, user: customer.user) }
       let!(:shop_product) { create(:product, supplier: shop) }
-      let!(:shop_variant) { create(:variant, product: shop_product, unit_value: "2000") }
+      let!(:shop_variant) { create(:variant, product: shop_product, unit_value: '2000') }
       let!(:permitted_supplier) do
         create(:supplier_enterprise).tap do |supplier|
           create(
@@ -561,11 +561,11 @@ parent: supplier,
       end
       let!(:permitted_supplier_product) { create(:product, supplier: permitted_supplier) }
       let!(:permitted_supplier_variant) do
-        create(:variant, product: permitted_supplier_product, unit_value: "2000")
+        create(:variant, product: permitted_supplier_product, unit_value: '2000')
       end
       let!(:incoming_exchange_product) { create(:product) }
       let!(:incoming_exchange_variant) do
-        create(:variant, product: incoming_exchange_product, unit_value: "2000").tap do |variant|
+        create(:variant, product: incoming_exchange_product, unit_value: '2000').tap do |variant|
           create(
 :exchange,
 order_cycle: order_cycle,
@@ -577,7 +577,7 @@ receiver: shop,
       end
       let!(:outgoing_exchange_product) { create(:product) }
       let!(:outgoing_exchange_variant) do
-        create(:variant, product: outgoing_exchange_product, unit_value: "2000").tap do |variant|
+        create(:variant, product: outgoing_exchange_product, unit_value: '2000').tap do |variant|
           create(
 :exchange,
 order_cycle: order_cycle,
@@ -595,21 +595,21 @@ receiver: shop,
 
       before do
         visit admin_subscriptions_path
-        click_link "New Subscription"
-        select2_select shop.name, from: "new_subscription_shop_id"
-        click_button "Continue"
+        click_link 'New Subscription'
+        select2_select shop.name, from: 'new_subscription_shop_id'
+        click_button 'Continue'
       end
 
-      it "permit creating and editing of the subscription" do
+      it 'permit creating and editing of the subscription' do
         customer.update(allow_charges: true)
         # Fill in other details
         fill_in_subscription_basic_details
-        click_button "Next"
-        expect(page).to(have_content("BILLING ADDRESS"))
-        click_button "Next"
+        click_button 'Next'
+        expect(page).to(have_content('BILLING ADDRESS'))
+        click_button 'Next'
 
         # Add products
-        expect(page).to(have_content("NAME OR SKU"))
+        expect(page).to(have_content('NAME OR SKU'))
         add_variant_to_subscription shop_variant, 3
         expect_not_in_open_or_upcoming_order_cycle_warning 1
         add_variant_to_subscription permitted_supplier_variant, 4
@@ -618,11 +618,11 @@ receiver: shop,
         expect_not_in_open_or_upcoming_order_cycle_warning 3
         add_variant_to_subscription outgoing_exchange_variant, 6
         expect_not_in_open_or_upcoming_order_cycle_warning 3
-        click_button "Next"
+        click_button 'Next'
 
         # Submit form
         expect do
-          click_button("Create Subscription")
+          click_button('Create Subscription')
           expect(page).to(have_current_path(admin_subscriptions_path))
         end.to(change(Subscription, :count).by(1))
 
@@ -634,30 +634,30 @@ receiver: shop,
         visit edit_admin_subscription_path(subscription)
 
         # Remove shop_variant from the subscription
-        click_button "edit-products"
-        within "#sli_0" do
-          expect(page).to(have_selector(".description", text: shop_variant.name))
-          find("a.delete-item").click
+        click_button 'edit-products'
+        within '#sli_0' do
+          expect(page).to(have_selector('.description', text: shop_variant.name))
+          find('a.delete-item').click
         end
 
         # Submit form
-        click_button "Save Changes"
+        click_button 'Save Changes'
         expect(page).to(have_current_path(admin_subscriptions_path))
 
         # Subscription is saved
         visit edit_admin_subscription_path(subscription)
-        expect(page).to(have_selector("#subscription-line-items .item", count: 3))
+        expect(page).to(have_selector('#subscription-line-items .item', count: 3))
       end
     end
   end
 
   def fill_in_subscription_basic_details
-    select2_select(customer.email, from: "customer_id")
-    select2_select(schedule.name, from: "schedule_id")
-    select2_select(payment_method.name, from: "payment_method_id")
-    select2_select(shipping_method.name, from: "shipping_method_id")
+    select2_select(customer.email, from: 'customer_id')
+    select2_select(schedule.name, from: 'schedule_id')
+    select2_select(payment_method.name, from: 'payment_method_id')
+    select2_select(shipping_method.name, from: 'shipping_method_id')
 
-    find_field("begins_at").click
+    find_field('begins_at').click
     choose_today_from_datepicker
   end
 
@@ -666,18 +666,18 @@ receiver: shop,
   end
 
   def add_variant_to_subscription(variant, quantity)
-    row_count = all("#subscription-line-items .item").length
+    row_count = all('#subscription-line-items .item').length
     variant_name = variant.full_name.present? ? "#{variant.name} - #{variant.full_name}" : variant.name
-    select2_select(variant.name, from: "add_variant_id", search: true, select_text: variant_name)
-    fill_in("add_quantity", with: quantity)
-    click_link("Add")
-    expect(page).to(have_selector("#subscription-line-items .item", count: row_count + 1))
+    select2_select(variant.name, from: 'add_variant_id', search: true, select_text: variant_name)
+    fill_in('add_quantity', with: quantity)
+    click_link('Add')
+    expect(page).to(have_selector('#subscription-line-items .item', count: row_count + 1))
   end
 
   def variant_not_in_open_or_upcoming_order_cycle_warning
     I18n.t(
-"not_in_open_and_upcoming_order_cycles_warning",
-           scope: "admin.subscriptions.subscription_line_items"
+'not_in_open_and_upcoming_order_cycles_warning',
+           scope: 'admin.subscriptions.subscription_line_items'
 )
   end
 end

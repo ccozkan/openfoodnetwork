@@ -12,7 +12,7 @@ describe Spree::OrderInventory do
     expect(units.map(&:variant_id)).to(eq([line_item.variant.id]))
   end
 
-  context "when order is missing inventory units" do
+  context 'when order is missing inventory units' do
     before do
       line_item.update_column(:quantity, 2)
     end
@@ -28,11 +28,11 @@ describe Spree::OrderInventory do
     end
   end
 
-  context "#add_to_shipment" do
+  context '#add_to_shipment' do
     let(:shipment) { order.shipments.first }
     let(:variant) { create :variant }
 
-    context "order is not completed" do
+    context 'order is not completed' do
       before { allow(order).to(receive_messages(completed?: false)) }
 
       it "doesn't unstock items" do
@@ -84,7 +84,7 @@ describe Spree::OrderInventory do
       let(:shipment) { order.shipments.first }
       let(:variant) { order.line_items.first.variant }
 
-      context "order is not completed" do
+      context 'order is not completed' do
         before { allow(order).to(receive_messages(completed?: false)) }
 
         it "doesn't restock items" do

@@ -23,7 +23,7 @@ module Spree
 
       def provider
         ::PayPal::SDK.configure(
-          mode: preferred_server.presence || "sandbox",
+          mode: preferred_server.presence || 'sandbox',
           username: preferred_login,
           password: preferred_password,
           signature: preferred_signature
@@ -43,7 +43,7 @@ module Spree
 
         pp_request = provider.build_do_express_checkout_payment(
           DoExpressCheckoutPaymentRequestDetails: {
-            PaymentAction: "Sale",
+            PaymentAction: 'Sale',
             Token: express_checkout.token,
             PayerID: express_checkout.payer_id,
             PaymentDetails: pp_details_response
@@ -71,7 +71,7 @@ module Spree
         else
           class << pp_response
             def to_s
-              errors.map(&:long_message).join(" ")
+              errors.map(&:long_message).join(' ')
             end
           end
           pp_response
@@ -79,7 +79,7 @@ module Spree
       end
 
       def refund(payment, amount)
-        refund_type = payment.amount == amount.to_f ? "Full" : "Partial"
+        refund_type = payment.amount == amount.to_f ? 'Full' : 'Partial'
         refund_transaction = provider.build_refund_transaction(
           TransactionID: payment.source.transaction_id,
           RefundType: refund_type,
@@ -87,14 +87,14 @@ module Spree
             currencyID: payment.currency,
             value: amount
           },
-          RefundSource: "any"
+          RefundSource: 'any'
         )
         refund_transaction_response = provider.refund_transaction(refund_transaction)
         if refund_transaction_response.success?
           payment.source.update(
             refunded_at: Time.now,
             refund_transaction_id: refund_transaction_response.RefundTransactionID,
-            state: "refunded",
+            state: 'refunded',
             refund_type: refund_type
           )
 

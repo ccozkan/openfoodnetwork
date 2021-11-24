@@ -15,7 +15,7 @@ class InvoiceRenderer
       pdf: "invoice-#{order.number}.pdf",
       template: invoice_template,
       formats: [:html],
-      encoding: "UTF-8"
+      encoding: 'UTF-8'
     }
   end
 
@@ -25,9 +25,9 @@ class InvoiceRenderer
 
   def invoice_template
     if Spree::Config.invoice_style2?
-      "spree/admin/orders/invoice2"
+      'spree/admin/orders/invoice2'
     else
-      "spree/admin/orders/invoice"
+      'spree/admin/orders/invoice'
     end
   end
 end

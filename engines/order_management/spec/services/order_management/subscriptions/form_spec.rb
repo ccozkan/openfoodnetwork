@@ -5,7 +5,7 @@ require 'spec_helper'
 module OrderManagement
   module Subscriptions
     describe Form do
-      describe "creating a new subscription" do
+      describe 'creating a new subscription' do
         let!(:shop) { create(:distributor_enterprise) }
         let!(:customer) { create(:customer, enterprise: shop) }
         let!(:product1) { create(:product, supplier: shop) }
@@ -121,7 +121,7 @@ enterprise_fees: [enterprise_fee]
 
         let(:form) { OrderManagement::Subscriptions::Form.new(subscription, params) }
 
-        it "creates orders for each order cycle in the schedule" do
+        it 'creates orders for each order cycle in the schedule' do
           expect(form.save).to(be(true))
 
           expect(subscription.proxy_orders.count).to(be(2))

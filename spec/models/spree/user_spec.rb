@@ -5,13 +5,13 @@ require 'spec_helper'
 describe Spree::User do
   include OpenFoodNetwork::EmailHelper
 
-  describe "associations" do
+  describe 'associations' do
     it { is_expected.to(have_many(:owned_enterprises)) }
 
-    describe "addresses" do
+    describe 'addresses' do
       let(:user) { create(:user, bill_address: create(:address)) }
 
-      context "updating addresses via nested attributes" do
+      context 'updating addresses via nested attributes' do
         it 'updates billing address with new address' do
           old_bill_address = user.bill_address
           new_bill_address = create(:address, firstname: 'abc')
@@ -39,17 +39,17 @@ ship_address_attributes: new_ship_address.dup.attributes.except!('created_at', '
       end
     end
 
-    describe "enterprise ownership" do
+    describe 'enterprise ownership' do
       let(:u1) { create(:user, enterprise_limit: 2) }
       let(:u2) { create(:user, enterprise_limit: 1) }
       let!(:e1) { create(:enterprise, owner: u1) }
       let!(:e2) { create(:enterprise, owner: u1) }
 
-      it "provides access to owned enterprises" do
+      it 'provides access to owned enterprises' do
         expect(u1.owned_enterprises.reload).to(include(e1, e2))
       end
 
-      it "enforces the limit on the number of enterprise owned" do
+      it 'enforces the limit on the number of enterprise owned' do
         expect(u2.owned_enterprises.reload).to(eq([]))
         u2.owned_enterprises << e1
         expect { u2.save! }
@@ -62,14 +62,14 @@ ship_address_attributes: new_ship_address.dup.attributes.except!('created_at', '
       end
     end
 
-    describe "group ownership" do
+    describe 'group ownership' do
       let(:u1) { create(:user) }
       let(:u2) { create(:user) }
       let!(:g1) { create(:enterprise_group, owner: u1) }
       let!(:g2) { create(:enterprise_group, owner: u1) }
       let!(:g3) { create(:enterprise_group, owner: u2) }
 
-      it "provides access to owned groups" do
+      it 'provides access to owned groups' do
         expect(u1.owned_groups.reload).to(match_array([g1, g2]))
         expect(u2.owned_groups.reload).to(match_array([g3]))
       end
@@ -84,8 +84,8 @@ ship_address_attributes: new_ship_address.dup.attributes.except!('created_at', '
     end
   end
 
-  context "#create" do
-    it "should send a confirmation email" do
+  context '#create' do
+    it 'should send a confirmation email' do
       setup_email
 
       performing_deliveries do
@@ -94,10 +94,10 @@ ship_address_attributes: new_ship_address.dup.attributes.except!('created_at', '
         end.to(enqueue_job(ActionMailer::DeliveryJob))
       end
 
-      expect(enqueued_jobs.last.to_s).to(match("confirmation_instructions"))
+      expect(enqueued_jobs.last.to_s).to(match('confirmation_instructions'))
     end
 
-    context "with the the same email as existing customers" do
+    context 'with the the same email as existing customers' do
       let(:email) { generate(:random_email) }
       let(:enterprise1) { create(:enterprise) }
       let(:enterprise2) { create(:enterprise) }
@@ -105,7 +105,7 @@ ship_address_attributes: new_ship_address.dup.attributes.except!('created_at', '
       let!(:customer2) { create(:customer, user: nil, email: email, enterprise: enterprise2) }
       let!(:user) { create(:user, email: email) }
 
-      it "should associate these customers with the created user" do
+      it 'should associate these customers with the created user' do
         expect(user.customers.reload).to(include(customer1, customer2))
         expect(user.customer_of(enterprise1)).to(be_truthy)
         expect(user.customer_of(enterprise2)).to(be_truthy)
@@ -113,26 +113,26 @@ ship_address_attributes: new_ship_address.dup.attributes.except!('created_at', '
     end
   end
 
-  context "confirming email" do
-    it "should send a welcome email" do
+  context 'confirming email' do
+    it 'should send a welcome email' do
       setup_email
 
       expect do
         create(:user, confirmed_at: nil).confirm
       end.to(enqueue_job(ActionMailer::DeliveryJob))
 
-      expect(enqueued_jobs.last.to_s).to(match("signup_confirmation"))
+      expect(enqueued_jobs.last.to_s).to(match('signup_confirmation'))
     end
   end
 
-  describe "known_users" do
+  describe 'known_users' do
     let!(:u1) { create(:user) }
     let!(:u2) { create(:user) }
     let!(:u3) { create(:user) }
     let!(:e1) { create(:enterprise, owner: u1, users: [u1, u2]) }
 
-    describe "as an enterprise user" do
-      it "returns a list of users which manage shared enterprises" do
+    describe 'as an enterprise user' do
+      it 'returns a list of users which manage shared enterprises' do
         expect(u1.known_users).to(include(u1, u2))
         expect(u1.known_users).to_not(include(u3))
         expect(u2.known_users).to(include(u1, u2))
@@ -141,38 +141,38 @@ ship_address_attributes: new_ship_address.dup.attributes.except!('created_at', '
       end
     end
 
-    describe "as admin" do
+    describe 'as admin' do
       let(:admin) { create(:admin_user) }
 
-      it "returns all users" do
+      it 'returns all users' do
         expect(admin.known_users).to(include(u1, u2, u3))
       end
     end
   end
 
-  describe "default_card" do
+  describe 'default_card' do
     let(:user) { create(:user) }
 
-    context "when the user has no credit cards" do
-      it "returns nil" do
+    context 'when the user has no credit cards' do
+      it 'returns nil' do
         expect(user.default_card).to(be(nil))
       end
     end
 
-    context "when the user has one credit card" do
+    context 'when the user has one credit card' do
       let!(:card) { create(:stored_credit_card, user: user) }
 
-      it "should be assigned as the default and be returned" do
+      it 'should be assigned as the default and be returned' do
         expect(card.reload.is_default).to(be(true))
         expect(user.default_card.id).to(be(card.id))
       end
     end
 
-    context "when the user has more than one card" do
+    context 'when the user has more than one card' do
       let!(:non_default_card) { create(:stored_credit_card, user: user) }
       let!(:default_card) { create(:stored_credit_card, user: user, is_default: true) }
 
-      it "returns the card which is specified as the default" do
+      it 'returns the card which is specified as the default' do
         expect(user.default_card.id).to(be(default_card.id))
       end
     end
@@ -199,10 +199,10 @@ ship_address_attributes: new_ship_address.dup.attributes.except!('created_at', '
     end
   end
 
-  describe "#flipper_id" do
-    it "provides a unique id" do
+  describe '#flipper_id' do
+    it 'provides a unique id' do
       user = Spree::User.new(id: 42)
-      expect(user.flipper_id).to(eq("Spree::User;42"))
+      expect(user.flipper_id).to(eq('Spree::User;42'))
     end
   end
 end

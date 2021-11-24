@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
-describe "Check out with Paypal", js: true do
+describe 'Check out with Paypal', js: true do
   include ShopWorkflow
   include CheckoutRequestsHelper
   include AuthenticationHelper
@@ -33,8 +33,8 @@ describe "Check out with Paypal", js: true do
   let(:free_shipping) { create(:shipping_method) }
   let!(:paypal) do
     Spree::Gateway::PayPalExpress.create!(
-      name: "Paypal",
-      environment: "test",
+      name: 'Paypal',
+      environment: 'test',
       distributor_ids: [distributor.id]
     )
   end
@@ -46,8 +46,8 @@ describe "Check out with Paypal", js: true do
     add_product_to_cart order, product
   end
 
-  context "as a guest" do
-    it "fails with an error message" do
+  context 'as a guest' do
+    it 'fails with an error message' do
       visit checkout_path
       checkout_as_guest
       fill_out_form(free_shipping.name, paypal.name, save_default_addresses: false)
@@ -55,14 +55,14 @@ describe "Check out with Paypal", js: true do
       stub_paypal_response success: false
 
       place_order
-      expect(page).to(have_content("PayPal failed."))
+      expect(page).to(have_content('PayPal failed.'))
     end
   end
 
-  context "as a registered user" do
+  context 'as a registered user' do
     before { login_as user }
 
-    it "completes the checkout after successful Paypal payment" do
+    it 'completes the checkout after successful Paypal payment' do
       visit checkout_path
       fill_out_details
       fill_out_form(free_shipping.name, paypal.name, save_default_addresses: false)
@@ -73,15 +73,15 @@ describe "Check out with Paypal", js: true do
       stub_paypal_response(
         success: true,
         redirect: spree.confirm_paypal_path(
-          payment_method_id: paypal.id, token: "t123", PayerID: 'p123'
+          payment_method_id: paypal.id, token: 't123', PayerID: 'p123'
         )
       )
       stub_paypal_confirm
 
       place_order
-      expect(page).to(have_content("Your order has been processed successfully"))
+      expect(page).to(have_content('Your order has been processed successfully'))
 
-      expect(order.reload.state).to(eq("complete"))
+      expect(order.reload.state).to(eq('complete'))
       expect(order.payments.count).to(eq(1))
     end
   end

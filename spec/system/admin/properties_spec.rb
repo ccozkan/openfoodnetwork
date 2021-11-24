@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "system_helper"
+require 'system_helper'
 
 describe ' As an admin I want to manage product properties ' do
   include AuthenticationHelper
 
-  it "creating and editing a property" do
+  it 'creating and editing a property' do
     login_as_admin_and_visit spree.admin_properties_path
 
     click_link 'New Property'

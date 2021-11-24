@@ -52,7 +52,7 @@ class Api::VariantSerializer < ActiveModel::Serializer
     if object.product.images.present?
       object.product.images.first.attachment.url(:mini)
     else
-      "/noimage/mini.png"
+      '/noimage/mini.png'
     end
   end
 

@@ -31,7 +31,7 @@ module Api
       has_one :order_cycle, serializer: Api::Admin::IdSerializer
 
       def full_name
-        object.billing_address.nil? ? "" : (object.billing_address.full_name || "")
+        object.billing_address.nil? ? '' : (object.billing_address.full_name || '')
       end
 
       def distributor_name
@@ -39,7 +39,7 @@ module Api
       end
 
       def display_outstanding_balance
-        return "" if object.outstanding_balance.zero?
+        return '' if object.outstanding_balance.zero?
 
         object.display_outstanding_balance.to_s
       end
@@ -72,19 +72,19 @@ module Api
       end
 
       def email
-        object.email || ""
+        object.email || ''
       end
 
       def phone
-        object.billing_address.nil? ? "a" : (object.billing_address.phone || "")
+        object.billing_address.nil? ? 'a' : (object.billing_address.phone || '')
       end
 
       def created_at
-        object.created_at.blank? ? "" : I18n.l(object.created_at, format: '%B %d, %Y')
+        object.created_at.blank? ? '' : I18n.l(object.created_at, format: '%B %d, %Y')
       end
 
       def completed_at
-        object.completed_at.blank? ? "" : I18n.l(object.completed_at, format: '%B %d, %Y')
+        object.completed_at.blank? ? '' : I18n.l(object.completed_at, format: '%B %d, %Y')
       end
 
       private

@@ -16,8 +16,8 @@ describe OrderFeesHandler do
     allow(service).to(receive(:calculator) { calculator })
   end
 
-  describe "#create_line_item_fees!" do
-    it "creates per-line-item fee adjustments for line items in the order cycle" do
+  describe '#create_line_item_fees!' do
+    it 'creates per-line-item fee adjustments for line items in the order cycle' do
       allow(service).to(receive(:provided_by_order_cycle?) { true })
       expect(calculator).to(receive(:create_line_item_adjustments_for).with(line_item))
 
@@ -25,8 +25,8 @@ describe OrderFeesHandler do
     end
   end
 
-  describe "#create_order_fees!" do
-    it "creates per-order adjustment for the order cycle" do
+  describe '#create_order_fees!' do
+    it 'creates per-order adjustment for the order cycle' do
       expect(calculator).to(receive(:create_order_adjustments_for).with(order))
       service.create_order_fees!
     end
@@ -39,20 +39,20 @@ describe OrderFeesHandler do
     end
   end
 
-  context "checking if a line item can be provided by the order cycle" do
-    it "returns true when the variant is provided" do
+  context 'checking if a line item can be provided by the order cycle' do
+    it 'returns true when the variant is provided' do
       allow(order_cycle).to(receive(:variants) { [line_item.variant] })
 
       expect(service.__send__(:provided_by_order_cycle?, line_item)).to(be(true))
     end
 
-    it "returns false otherwise" do
+    it 'returns false otherwise' do
       allow(order_cycle).to(receive(:variants) { [] })
 
       expect(service.__send__(:provided_by_order_cycle?, line_item)).to(be(false))
     end
 
-    it "returns false when there is no order cycle" do
+    it 'returns false when there is no order cycle' do
       allow(order).to(receive(:order_cycle) { nil })
 
       expect(service.__send__(:provided_by_order_cycle?, line_item)).to(be(false))

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
-describe "Darkswarm data caching", js: true, caching: true do
-  let!(:taxon) { create(:taxon, name: "Cached Taxon") }
-  let!(:property) { create(:property, presentation: "Cached Property") }
+describe 'Darkswarm data caching', js: true, caching: true do
+  let!(:taxon) { create(:taxon, name: 'Cached Taxon') }
+  let!(:property) { create(:property, presentation: 'Cached Property') }
 
   let!(:producer) { create(:supplier_enterprise) }
   let!(:distributor) do
@@ -28,8 +28,8 @@ taxons: [taxon],
     exchange.variants << product.variants.first
   end
 
-  describe "caching injected taxons and properties" do
-    it "caches taxons and properties" do
+  describe 'caching injected taxons and properties' do
+    it 'caches taxons and properties' do
       expect(Spree::Taxon).to(receive(:all).at_least(:once).and_call_original)
       expect(Spree::Property).to(receive(:all).at_least(:once).and_call_original)
 
@@ -41,7 +41,7 @@ taxons: [taxon],
       visit shops_path
     end
 
-    it "invalidates caches for taxons and properties" do
+    it 'invalidates caches for taxons and properties' do
       visit shops_path
 
       taxon_timestamp1 = CacheService.latest_timestamp_by_class(Spree::Taxon)
@@ -52,7 +52,7 @@ taxons: [taxon],
 
       toggle_filters
 
-      within "#hubs .filter-row" do
+      within '#hubs .filter-row' do
         expect(page).to(have_content(taxon.name))
         expect(page).to(have_content(property.presentation))
       end
@@ -60,8 +60,8 @@ taxons: [taxon],
       # Update rows which should also update the timestamp.
       # The timestamp represents seconds, so waiting one second is enough.
       sleep 1
-      taxon.update!(name: "Changed Taxon")
-      property.update!(presentation: "Changed Property")
+      taxon.update!(name: 'Changed Taxon')
+      property.update!(presentation: 'Changed Property')
 
       # Clear timed shops cache so we can test uncached supplied properties
       clear_shops_cache
@@ -69,7 +69,7 @@ taxons: [taxon],
       visit shops_path
 
       # Wait for /shops page to load properly before checking for new timestamps
-      expect(page).to_not(have_selector(".row.filter-row", visible: true))
+      expect(page).to_not(have_selector('.row.filter-row', visible: true))
 
       taxon_timestamp2 = CacheService.latest_timestamp_by_class(Spree::Taxon)
       expect_cached "views/#{CacheService::FragmentCaching.ams_all_taxons[0]}"
@@ -82,9 +82,9 @@ taxons: [taxon],
 
       toggle_filters
 
-      within "#hubs .filter-row" do
-        expect(page).to(have_content("Changed Taxon"))
-        expect(page).to(have_content("Changed Property"))
+      within '#hubs .filter-row' do
+        expect(page).to(have_content('Changed Taxon'))
+        expect(page).to(have_content('Changed Property'))
       end
     end
   end

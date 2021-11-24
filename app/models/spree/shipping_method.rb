@@ -78,7 +78,7 @@ lambda {
 
     # Some shipping methods are only meant to be set via backend
     def frontend?
-      display_on != "back_end"
+      display_on != 'back_end'
     end
 
     def has_distributor?(distributor)
@@ -99,7 +99,7 @@ lambda {
       Spree::ShippingMethod
           .joins(:distributor_shipping_methods)
           .group('distributor_id')
-          .select("distributor_id")
+          .select('distributor_id')
           .select("BOOL_OR(spree_shipping_methods.require_ship_address = 'f') AS pickup")
           .select("BOOL_OR(spree_shipping_methods.require_ship_address = 't') AS delivery")
           .map { |sm| [sm.distributor_id.to_i, { pickup: sm.pickup, delivery: sm.delivery }] }.to_h
@@ -118,7 +118,7 @@ lambda {
     def at_least_one_shipping_category
       return unless shipping_categories.empty?
 
-      errors.add(:base, "You need to select at least one shipping category")
+      errors.add(:base, 'You need to select at least one shipping category')
     end
 
     def touch_distributors

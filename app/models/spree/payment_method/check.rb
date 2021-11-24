@@ -18,11 +18,11 @@ module Spree
       end
 
       def capture(*_args)
-        ActiveMerchant::Billing::Response.new(true, "", {}, {})
+        ActiveMerchant::Billing::Response.new(true, '', {}, {})
       end
 
       def void(*_args)
-        ActiveMerchant::Billing::Response.new(true, "", {}, {})
+        ActiveMerchant::Billing::Response.new(true, '', {}, {})
       end
 
       def source_required?

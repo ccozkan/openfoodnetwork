@@ -6,7 +6,7 @@ describe Spree::InventoryUnit do
   let(:stock_location) { create(:stock_location_with_items) }
   let(:stock_item) { stock_location.stock_items.order(:id).first }
 
-  context "#backordered_for_stock_item" do
+  context '#backordered_for_stock_item' do
     let(:order) { create(:order) }
 
     let(:shipment) do
@@ -27,7 +27,7 @@ describe Spree::InventoryUnit do
     end
 
     # Regression for Spree #3066
-    it "returns modifiable objects" do
+    it 'returns modifiable objects' do
       units = Spree::InventoryUnit.backordered_for_stock_item(stock_item)
       expect { units.first.save! }
 .to_not(raise_error)
@@ -47,18 +47,18 @@ describe Spree::InventoryUnit do
     end
   end
 
-  context "variants deleted" do
+  context 'variants deleted' do
     let!(:unit) do
       Spree::InventoryUnit.create(variant: stock_item.variant)
     end
 
-    it "can still fetch variant" do
+    it 'can still fetch variant' do
       unit.variant.destroy
       expect(unit.reload.variant).to(be_a(Spree::Variant))
     end
   end
 
-  context "#finalize_units!" do
+  context '#finalize_units!' do
     let!(:stock_location) { create(:stock_location) }
     let(:variant) { create(:variant) }
     let(:inventory_units) do
@@ -68,7 +68,7 @@ describe Spree::InventoryUnit do
       ]
     end
 
-    it "should create a stock movement" do
+    it 'should create a stock movement' do
       Spree::InventoryUnit.finalize_units!(inventory_units)
       expect(inventory_units.any?(&:pending)).to(be_falsy)
     end

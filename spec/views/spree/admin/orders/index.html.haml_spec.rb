@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
-describe "spree/admin/orders/index.html.haml" do
+describe 'spree/admin/orders/index.html.haml' do
   helper Spree::Admin::NavigationHelper
   helper EnterprisesHelper
 
@@ -22,21 +22,21 @@ describe "spree/admin/orders/index.html.haml" do
     allow(view).to(receive_messages(spree_current_user: create(:user)))
   end
 
-  describe "print invoices button" do
-    it "displays button when invoices are enabled" do
+  describe 'print invoices button' do
+    it 'displays button when invoices are enabled' do
       Spree::Config[:enable_invoices?] = true
 
       render
 
-      expect(rendered).to(have_content("Print Invoices"))
+      expect(rendered).to(have_content('Print Invoices'))
     end
 
-    it "does not display button when invoices are disabled" do
+    it 'does not display button when invoices are disabled' do
       Spree::Config[:enable_invoices?] = false
 
       render
 
-      expect(rendered).to_not(have_content("Print Invoices"))
+      expect(rendered).to_not(have_content('Print Invoices'))
     end
   end
 end

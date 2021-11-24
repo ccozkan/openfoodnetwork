@@ -10,14 +10,14 @@ class OrderCycleDistributedProducts
   end
 
   def products_relation
-    Spree::Product.where(id: stocked_products).group("spree_products.id")
+    Spree::Product.where(id: stocked_products).group('spree_products.id')
   end
 
   def variants_relation
     order_cycle
       .variants_distributed_by(distributor)
       .merge(stocked_variants_and_overrides)
-      .select("DISTINCT spree_variants.*")
+      .select('DISTINCT spree_variants.*')
   end
 
   private
@@ -28,7 +28,7 @@ class OrderCycleDistributedProducts
     order_cycle
       .variants_distributed_by(distributor)
       .merge(stocked_variants_and_overrides)
-      .select("DISTINCT spree_variants.product_id")
+      .select('DISTINCT spree_variants.product_id')
   end
 
   def stocked_variants_and_overrides
@@ -50,34 +50,34 @@ class OrderCycleDistributedProducts
   end
 
   def variant_not_overriden
-    "variant_overrides.id IS NULL"
+    'variant_overrides.id IS NULL'
   end
 
   def variant_overriden
-    "variant_overrides.id IS NOT NULL"
+    'variant_overrides.id IS NOT NULL'
   end
 
   def variant_in_stock
-    "spree_stock_items.count_on_hand > 0"
+    'spree_stock_items.count_on_hand > 0'
   end
 
   def variant_on_demand
-    "spree_stock_items.backorderable IS TRUE"
+    'spree_stock_items.backorderable IS TRUE'
   end
 
   def variant_not_on_demand
-    "spree_stock_items.backorderable IS FALSE"
+    'spree_stock_items.backorderable IS FALSE'
   end
 
   def override_on_demand
-    "variant_overrides.on_demand IS TRUE"
+    'variant_overrides.on_demand IS TRUE'
   end
 
   def override_in_stock
-    "variant_overrides.count_on_hand > 0"
+    'variant_overrides.count_on_hand > 0'
   end
 
   def override_on_demand_null
-    "variant_overrides.on_demand IS NULL"
+    'variant_overrides.on_demand IS NULL'
   end
 end

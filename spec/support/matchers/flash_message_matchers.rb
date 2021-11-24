@@ -8,7 +8,7 @@ RSpec::Matchers.define(:have_flash_message) do |message|
     # Ignore leading and trailing whitespace. Later versions of Capybara have :exact_text option.
     # The :exact option is not supported in has_selector?.
     message_substring_regex = substring_match_regex(message)
-    node.has_selector?(".flash", text: message_substring_regex, visible: false)
+    node.has_selector?('.flash', text: message_substring_regex, visible: false)
   end
 
   failure_message do |_actual|
@@ -22,7 +22,7 @@ RSpec::Matchers.define(:have_flash_message) do |message|
     # Ignore leading and trailing whitespace. Later versions of Capybara have :exact_text option.
     # The :exact option is not supported in has_selector?.
     message_substring_regex = substring_match_regex(message)
-    node.has_no_selector?(".flash", text: message_substring_regex, visible: false)
+    node.has_no_selector?('.flash', text: message_substring_regex, visible: false)
   end
 
   failure_message_when_negated do |_actual|

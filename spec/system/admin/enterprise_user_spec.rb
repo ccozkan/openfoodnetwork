@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "system_helper"
+require 'system_helper'
 
 describe ' As a Super User I want to setup users to manage an enterprise ' do
   include WebHelper
@@ -16,14 +16,14 @@ describe ' As a Super User I want to setup users to manage an enterprise ' do
     create(:distributor_enterprise, name: 'Distributor profile', sells: 'none')
   end
 
-  describe "creating an enterprise user" do
-    context "with a limitted number of owned enterprises" do
-      it "setting the enterprise ownership limit" do
+  describe 'creating an enterprise user' do
+    context 'with a limitted number of owned enterprises' do
+      it 'setting the enterprise ownership limit' do
         expect(user.enterprise_limit).to(eq(5))
         login_as_admin_and_visit spree.admin_users_path
         click_link user.email
 
-        fill_in "user_enterprise_limit", with: 2
+        fill_in 'user_enterprise_limit', with: 2
 
         click_button 'Update'
         user.reload
@@ -32,18 +32,18 @@ describe ' As a Super User I want to setup users to manage an enterprise ' do
     end
   end
 
-  describe "system management lockdown" do
+  describe 'system management lockdown' do
     before do
       user.enterprise_roles.create!(enterprise: supplier1)
       login_as user
     end
 
-    it "should not be able to see system configuration" do
+    it 'should not be able to see system configuration' do
       visit spree.edit_admin_general_settings_path
       expect(page).to(have_content('Unauthorized'))
     end
 
-    it "should not be able to see user management" do
+    it 'should not be able to see user management' do
       visit spree.admin_users_path
       expect(page).to(have_content('Unauthorized'))
     end

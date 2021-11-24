@@ -25,12 +25,12 @@ FactoryBot.define do
 
   factory :supplier_enterprise, parent: :enterprise do
     is_primary_producer { true }
-    sells { "none" }
+    sells { 'none' }
   end
 
   factory :distributor_enterprise, parent: :enterprise do
     is_primary_producer { false }
-    sells { "any" }
+    sells { 'any' }
 
     transient do
       with_payment_and_shipping { false }

@@ -48,8 +48,8 @@ module Spree
         end
 
         def redirect_back_or_default(default)
-          redirect_to(session["spree_user_return_to"] || default)
-          session["spree_user_return_to"] = nil
+          redirect_to(session['spree_user_return_to'] || default)
+          session['spree_user_return_to'] = nil
         end
 
         # Need to generate an API key for a user due to some actions potentially

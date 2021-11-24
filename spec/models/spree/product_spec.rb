@@ -21,9 +21,9 @@ module Spree
         end
       end
 
-      context "product has no variants" do
-        context "#destroy" do
-          it "should set deleted_at value" do
+      context 'product has no variants' do
+        context '#destroy' do
+          it 'should set deleted_at value' do
             product.destroy
             expect(product.deleted_at).to_not(be_nil)
             expect(product.master.deleted_at).to_not(be_nil)
@@ -31,13 +31,13 @@ module Spree
         end
       end
 
-      context "product has variants" do
+      context 'product has variants' do
         before do
           create(:variant, product: product)
         end
 
-        context "#destroy" do
-          it "should set deleted_at value" do
+        context '#destroy' do
+          it 'should set deleted_at value' do
             product.destroy
             expect(product.deleted_at).to_not(be_nil)
             expect(product.variants_including_master.all? { |v| !v.deleted_at.nil? }).to(be_truthy)
@@ -45,42 +45,42 @@ module Spree
         end
       end
 
-      context "#price" do
+      context '#price' do
         # Regression test for Spree #1173
         it 'strips non-price characters' do
-          product.price = "$10"
+          product.price = '$10'
           expect(product.price).to(eq(10.0))
         end
       end
 
-      context "#display_price" do
+      context '#display_price' do
         before { product.price = 10.55 }
 
-        context "with display_currency set to true" do
+        context 'with display_currency set to true' do
           before { Spree::Config[:display_currency] = true }
 
-          it "shows the currency" do
+          it 'shows the currency' do
             expect(product.display_price.to_s).to(eq("$10.55 #{Spree::Config[:currency]}"))
           end
         end
 
-        context "with display_currency set to false" do
+        context 'with display_currency set to false' do
           before { Spree::Config[:display_currency] = false }
 
-          it "does not include the currency" do
-            expect(product.display_price.to_s).to(eq("$10.55"))
+          it 'does not include the currency' do
+            expect(product.display_price.to_s).to(eq('$10.55'))
           end
         end
 
-        context "with currency set to JPY" do
+        context 'with currency set to JPY' do
           before do
             product.master.default_price.currency = 'JPY'
             product.master.default_price.save!
             Spree::Config[:currency] = 'JPY'
           end
 
-          it "displays the currency in yen" do
-            expect(product.display_price.to_s).to(eq("¥11"))
+          it 'displays the currency in yen' do
+            expect(product.display_price.to_s).to(eq('¥11'))
           end
         end
       end
@@ -100,31 +100,31 @@ module Spree
       end
     end
 
-    context "permalink" do
-      context "build product with similar name" do
+    context 'permalink' do
+      context 'build product with similar name' do
         let!(:other) { create(:product, name: 'foo bar') }
         let(:product) { build(:product, name: 'foo') }
 
         before { product.valid? }
 
-        it "increments name" do
+        it 'increments name' do
           expect(product.permalink).to(eq('foo-1'))
         end
       end
 
-      context "build permalink with quotes" do
-        it "does not save quotes" do
+      context 'build permalink with quotes' do
+        it 'does not save quotes' do
           product = create(:product, name: "Joe's", permalink: "joe's")
-          expect(product.permalink).to(eq("joe-s"))
+          expect(product.permalink).to(eq('joe-s'))
         end
       end
 
-      context "permalinks must be unique" do
+      context 'permalinks must be unique' do
         before do
           @product1 = create(:product, name: 'foo')
         end
 
-        it "cannot create another product with the same permalink" do
+        it 'cannot create another product with the same permalink' do
           pending '[Spree build] Failing spec'
           @product2 = create(:product, name: 'foo')
           expect do
@@ -133,40 +133,40 @@ module Spree
         end
       end
 
-      it "supports Chinese" do
-        expect(create(:product, name: "你好").permalink).to(eq("ni-hao"))
+      it 'supports Chinese' do
+        expect(create(:product, name: '你好').permalink).to(eq('ni-hao'))
       end
 
-      context "manual permalink override" do
-        let(:product) { create(:product, name: "foo") }
+      context 'manual permalink override' do
+        let(:product) { create(:product, name: 'foo') }
 
-        it "calling save_permalink with a parameter" do
-          product.name = "foobar"
+        it 'calling save_permalink with a parameter' do
+          product.name = 'foobar'
           product.save
-          expect(product.permalink).to(eq("foo"))
+          expect(product.permalink).to(eq('foo'))
 
           product.save_permalink(product.name)
-          expect(product.permalink).to(eq("foobar"))
+          expect(product.permalink).to(eq('foobar'))
         end
       end
 
-      context "override permalink of deleted product" do
-        let(:product) { create(:product, name: "foo") }
+      context 'override permalink of deleted product' do
+        let(:product) { create(:product, name: 'foo') }
 
-        it "should create product with same permalink from name like deleted product" do
-          expect(product.permalink).to(eq("foo"))
+        it 'should create product with same permalink from name like deleted product' do
+          expect(product.permalink).to(eq('foo'))
           product.destroy
 
-          new_product = create(:product, name: "foo")
-          expect(new_product.permalink).to(eq("foo"))
+          new_product = create(:product, name: 'foo')
+          expect(new_product.permalink).to(eq('foo'))
         end
       end
     end
 
-    context "properties" do
+    context 'properties' do
       let(:product) { create(:product) }
 
-      it "should properly assign properties" do
+      it 'should properly assign properties' do
         product.set_property('the_prop', 'value1')
         expect(product.property('the_prop')).to(eq('value1'))
 
@@ -174,7 +174,7 @@ module Spree
         expect(product.property('the_prop')).to(eq('value2'))
       end
 
-      it "should not create duplicate properties when set_property is called" do
+      it 'should not create duplicate properties when set_property is called' do
         expect do
           product.set_property('the_prop', 'value2')
           product.save
@@ -196,18 +196,18 @@ module Spree
         product.set_property('foo', 'value1')
         product.set_property('bar', 'value2')
         expect(Spree::Property.where(name: 'foo').first.presentation).to(eq("Foo's Presentation Name"))
-        expect(Spree::Property.where(name: 'bar').first.presentation).to(eq("bar"))
+        expect(Spree::Property.where(name: 'bar').first.presentation).to(eq('bar'))
       end
     end
 
     # Regression tests for Spree #2352
-    context "classifications and taxons" do
-      it "is joined through classifications" do
+    context 'classifications and taxons' do
+      it 'is joined through classifications' do
         reflection = Spree::Product.reflect_on_association(:taxons)
         reflection.options[:through] = :classifications
       end
 
-      it "will delete all classifications" do
+      it 'will delete all classifications' do
         reflection = Spree::Product.reflect_on_association(:classifications)
         reflection.options[:dependent] = :delete_all
       end
@@ -221,41 +221,41 @@ module Spree
       end
     end
 
-    context "has stock movements" do
+    context 'has stock movements' do
       let(:product) { create(:product) }
       let(:variant) { product.master }
       let(:stock_item) { variant.stock_items.first }
 
-      it "doesnt raise ReadOnlyRecord error" do
+      it 'doesnt raise ReadOnlyRecord error' do
         Spree::StockMovement.create!(stock_item: stock_item, quantity: 1)
         expect { product.destroy }
 .not_to(raise_error)
       end
     end
 
-    describe "associations" do
+    describe 'associations' do
       it { is_expected.to(belong_to(:supplier)) }
       it { is_expected.to(belong_to(:primary_taxon)) }
     end
 
-    describe "validations and defaults" do
-      it "is valid when built from factory" do
+    describe 'validations and defaults' do
+      it 'is valid when built from factory' do
         expect(build(:product)).to(be_valid)
       end
 
-      it "requires a primary taxon" do
+      it 'requires a primary taxon' do
         expect(build(:simple_product, taxons: [], primary_taxon: nil)).not_to(be_valid)
       end
 
-      it "requires a unit value" do
+      it 'requires a unit value' do
         expect(build(:simple_product, unit_value: nil)).not_to(be_valid)
       end
 
-      it "requires a supplier" do
+      it 'requires a supplier' do
         expect(build(:simple_product, supplier: nil)).not_to(be_valid)
       end
 
-      it "does not save when master is invalid" do
+      it 'does not save when master is invalid' do
         product = build(:product)
         product.variant_unit = 'weight'
         product.master.unit_value = nil
@@ -263,44 +263,44 @@ module Spree
         expect(product.save).to(eq(false))
       end
 
-      it "defaults available_on to now" do
+      it 'defaults available_on to now' do
         Timecop.freeze do
           product = Product.new
           expect(product.available_on).to(eq(Time.zone.now))
         end
       end
 
-      describe "permalink" do
-        let(:name) { "Banana Permanenta" }
+      describe 'permalink' do
+        let(:name) { 'Banana Permanenta' }
 
-        it "generates a unique permalink" do
-          product1 = create(:product, name: "Banana Permanenta", permalink: nil)
-          product2 = build_stubbed(:product, name: "Banana Permanenta", permalink: nil)
+        it 'generates a unique permalink' do
+          product1 = create(:product, name: 'Banana Permanenta', permalink: nil)
+          product2 = build_stubbed(:product, name: 'Banana Permanenta', permalink: nil)
           expect(product2).to(be_valid)
           expect(product2.permalink).to_not(eq(product1.permalink))
           # "banana-permanenta" != "banana-permanenta-1" # generated by Spree
         end
 
-        it "generates a unique permalink considering deleted products" do
-          product1 = create(:product, name: "Banana Permanenta", permalink: nil)
+        it 'generates a unique permalink considering deleted products' do
+          product1 = create(:product, name: 'Banana Permanenta', permalink: nil)
           product1.destroy
-          product2 = create(:product, name: "Banana Permanenta", permalink: nil)
+          product2 = create(:product, name: 'Banana Permanenta', permalink: nil)
           expect(product2.permalink).to_not(eq(product1.permalink))
           # "banana-permanenta" != "banana-permanenta1" # generated by OFN
         end
       end
 
-      describe "tax category" do
-        context "when a tax category is required" do
-          it "is invalid when a tax category is not provided" do
+      describe 'tax category' do
+        context 'when a tax category is required' do
+          it 'is invalid when a tax category is not provided' do
             with_products_require_tax_category(true) do
               expect(build(:product, tax_category_id: nil)).not_to(be_valid)
             end
           end
         end
 
-        context "when a tax category is not required" do
-          it "is valid when a tax category is not provided" do
+        context 'when a tax category is not required' do
+          it 'is valid when a tax category is not provided' do
             with_products_require_tax_category(false) do
               expect(build(:product, tax_category_id: nil)).to(be_valid)
             end
@@ -308,28 +308,28 @@ module Spree
         end
       end
 
-      context "when the product has variants" do
+      context 'when the product has variants' do
         let(:product) do
           product = create(:simple_product)
           create(:variant, product: product)
           product.reload
         end
 
-        it "requires a unit" do
+        it 'requires a unit' do
           product.variant_unit = nil
           expect(product).not_to(be_valid)
         end
 
         %w[weight volume].each do |unit|
           context "when unit is #{unit}" do
-            it "is valid when unit scale is set and unit name is not" do
+            it 'is valid when unit scale is set and unit name is not' do
               product.variant_unit = unit
               product.variant_unit_scale = 1
               product.variant_unit_name = nil
               expect(product).to(be_valid)
             end
 
-            it "is invalid when unit scale is not set" do
+            it 'is invalid when unit scale is not set' do
               product.variant_unit = unit
               product.variant_unit_scale = nil
               product.variant_unit_name = nil
@@ -338,15 +338,15 @@ module Spree
           end
         end
 
-        context "saving a new product" do
+        context 'saving a new product' do
           let!(:product) { Spree::Product.new }
 
           before do
             create(:stock_location)
             product.primary_taxon = create(:taxon)
             product.supplier = create(:supplier_enterprise)
-            product.name = "Product1"
-            product.variant_unit = "weight"
+            product.name = 'Product1'
+            product.variant_unit = 'weight'
             product.variant_unit_scale = 1000
             product.unit_value = 1
             product.price = 4.27
@@ -354,29 +354,29 @@ module Spree
             product.save!
           end
 
-          it "copies the properties on master variant to the first standard variant" do
+          it 'copies the properties on master variant to the first standard variant' do
             expect(product.variants.reload.length).to(eq(1))
             standard_variant = product.variants.reload.first
             expect(standard_variant.price).to(eq(product.master.price))
           end
 
-          it "only duplicates master with after_save when no standard variants exist" do
+          it 'only duplicates master with after_save when no standard variants exist' do
             expect(product).to(receive(:ensure_standard_variant))
-            product.name = "Something else"
+            product.name = 'Something else'
             expect { product.save! }
 .to_not(change { product.variants.count })
           end
         end
 
-        context "when the unit is items" do
-          it "is valid when unit name is set and unit scale is not" do
+        context 'when the unit is items' do
+          it 'is valid when unit name is set and unit scale is not' do
             product.variant_unit = 'items'
             product.variant_unit_name = 'loaf'
             product.variant_unit_scale = nil
             expect(product).to(be_valid)
           end
 
-          it "is invalid when unit name is not set" do
+          it 'is invalid when unit name is not set' do
             product.variant_unit = 'items'
             product.variant_unit_name = nil
             product.variant_unit_scale = nil
@@ -385,10 +385,10 @@ module Spree
         end
       end
 
-      context "a basic product" do
+      context 'a basic product' do
         let(:product) { build_stubbed(:simple_product) }
 
-        it "requires variant unit fields" do
+        it 'requires variant unit fields' do
           product.variant_unit = nil
           product.variant_unit_name = nil
           product.variant_unit_scale = nil
@@ -396,7 +396,7 @@ module Spree
           expect(product).to(be_invalid)
         end
 
-        it "requires a unit scale when variant unit is weight" do
+        it 'requires a unit scale when variant unit is weight' do
           product.variant_unit = 'weight'
           product.variant_unit_scale = nil
           product.variant_unit_name = nil
@@ -406,10 +406,10 @@ module Spree
       end
     end
 
-    describe "callbacks" do
+    describe 'callbacks' do
       let(:product) { create(:simple_product) }
 
-      describe "touching affected enterprises when the product is deleted" do
+      describe 'touching affected enterprises when the product is deleted' do
         let(:product) { create(:simple_product) }
         let(:supplier) { product.supplier }
         let(:distributor) { create(:distributor_enterprise) }
@@ -421,17 +421,17 @@ distributors: [distributor],
 )
         end
 
-        it "touches the supplier" do
+        it 'touches the supplier' do
           expect { product.destroy }
 .to(change { supplier.reload.updated_at })
         end
 
-        it "touches all distributors" do
+        it 'touches all distributors' do
           expect { product.destroy }
 .to(change { distributor.reload.updated_at })
         end
 
-        it "removes variants from order cycles" do
+        it 'removes variants from order cycles' do
           expect { product.destroy }
 .to(change { ExchangeVariant.count })
         end
@@ -444,7 +444,7 @@ distributors: [distributor],
         expect(product.taxons).to(include(taxon))
       end
 
-      it "removes the previous primary taxon from the taxon list" do
+      it 'removes the previous primary taxon from the taxon list' do
         original_taxon = create(:taxon)
         product = create(:product, primary_taxon: original_taxon)
         product.primary_taxon = create(:taxon)
@@ -454,9 +454,9 @@ distributors: [distributor],
       end
     end
 
-    describe "scopes" do
-      describe "in_supplier" do
-        it "shows products in supplier" do
+    describe 'scopes' do
+      describe 'in_supplier' do
+        it 'shows products in supplier' do
           s1 = create(:supplier_enterprise)
           s2 = create(:supplier_enterprise)
           p1 = create(:product, supplier: s1)
@@ -465,8 +465,8 @@ distributors: [distributor],
         end
       end
 
-      describe "in_distributor" do
-        it "shows products in order cycle distribution" do
+      describe 'in_distributor' do
+        it 'shows products in order cycle distribution' do
           s = create(:supplier_enterprise)
           d1 = create(:distributor_enterprise)
           d2 = create(:distributor_enterprise)
@@ -477,7 +477,7 @@ distributors: [distributor],
           expect(Product.in_distributor(d1)).to(eq([p1]))
         end
 
-        it "shows products in order cycle distribution by variant" do
+        it 'shows products in order cycle distribution by variant' do
           s = create(:supplier_enterprise)
           d1 = create(:distributor_enterprise)
           d2 = create(:distributor_enterprise)
@@ -503,7 +503,7 @@ distributors: [distributor],
         end
       end
 
-      describe "in_distributors" do
+      describe 'in_distributors' do
         let!(:distributor1) { create(:distributor_enterprise) }
         let!(:distributor2) { create(:distributor_enterprise) }
         let!(:product1) { create(:product) }
@@ -525,14 +525,14 @@ distributors: [distributor2],
 )
         end
 
-        it "returns distributed products for a given Enterprise AR relation" do
+        it 'returns distributed products for a given Enterprise AR relation' do
           distributors = Enterprise.where(id: [distributor1.id, distributor2.id]).to_a
 
           expect(Product.in_distributors(distributors)).to(include(product1, product2, product3))
           expect(Product.in_distributors(distributors)).to_not(include(product4))
         end
 
-        it "returns distributed products for a given array of enterprise ids" do
+        it 'returns distributed products for a given array of enterprise ids' do
           distributors_ids = [distributor1.id, distributor2.id]
 
           expect(Product.in_distributors(distributors_ids)).to(include(product1, product2, product3))
@@ -540,8 +540,8 @@ distributors: [distributor2],
         end
       end
 
-      describe "in_supplier_or_distributor" do
-        it "shows products in supplier" do
+      describe 'in_supplier_or_distributor' do
+        it 'shows products in supplier' do
           s1 = create(:supplier_enterprise)
           s2 = create(:supplier_enterprise)
           p1 = create(:product, supplier: s1)
@@ -549,7 +549,7 @@ distributors: [distributor2],
           expect(Product.in_supplier_or_distributor(s1)).to(eq([p1]))
         end
 
-        it "shows products in order cycle distribution" do
+        it 'shows products in order cycle distribution' do
           s = create(:supplier_enterprise)
           d1 = create(:distributor_enterprise)
           d2 = create(:distributor_enterprise)
@@ -560,7 +560,7 @@ distributors: [distributor2],
           expect(Product.in_supplier_or_distributor(d1)).to(eq([p1]))
         end
 
-        it "shows products in all three without duplicates" do
+        it 'shows products in all three without duplicates' do
           s = create(:supplier_enterprise)
           d = create(:distributor_enterprise)
           p = create(:product, supplier: s)
@@ -569,8 +569,8 @@ distributors: [distributor2],
         end
       end
 
-      describe "in_order_cycle" do
-        it "shows products in order cycle distribution" do
+      describe 'in_order_cycle' do
+        it 'shows products in order cycle distribution' do
           s = create(:supplier_enterprise)
           d1 = create(:distributor_enterprise)
           d2 = create(:distributor_enterprise)
@@ -592,8 +592,8 @@ distributors: [d2],
         end
       end
 
-      describe "in_an_active_order_cycle" do
-        it "shows products in order cycle distribution" do
+      describe 'in_an_active_order_cycle' do
+        it 'shows products in order cycle distribution' do
           s = create(:supplier_enterprise)
           d2 = create(:distributor_enterprise)
           d3 = create(:distributor_enterprise)
@@ -619,7 +619,7 @@ orders_close_at: Date.tomorrow
         end
       end
 
-      describe "access roles" do
+      describe 'access roles' do
         before(:each) do
           @e1 = create(:enterprise)
           @e2 = create(:enterprise)
@@ -627,7 +627,7 @@ orders_close_at: Date.tomorrow
           @p2 = create(:product, supplier: @e2)
         end
 
-        it "shows only products for given user" do
+        it 'shows only products for given user' do
           user = create(:user)
           user.spree_roles = []
           @e1.enterprise_roles.build(user: user).save
@@ -637,7 +637,7 @@ orders_close_at: Date.tomorrow
           expect(product).to(include(@p1))
         end
 
-        it "shows all products for admin user" do
+        it 'shows all products for admin user' do
           user = create(:admin_user)
 
           product = Product.managed_by(user)
@@ -647,7 +647,7 @@ orders_close_at: Date.tomorrow
         end
       end
 
-      describe "visible_for" do
+      describe 'visible_for' do
         let(:enterprise) { create(:distributor_enterprise) }
         let!(:new_variant) { create(:variant) }
         let!(:hidden_variant) { create(:variant) }
@@ -668,7 +668,7 @@ orders_close_at: Date.tomorrow
 
         let!(:products) { Spree::Product.visible_for(enterprise) }
 
-        it "lists any products with variants that are listed as visible=true" do
+        it 'lists any products with variants that are listed as visible=true' do
           expect(products.length).to(eq(1))
           expect(products).to(include(product))
           expect(products).to_not(include(new_variant.product, hidden_variant.product))
@@ -705,20 +705,20 @@ child: shop,
         end
       end
 
-      describe "imported_on" do
+      describe 'imported_on' do
         let!(:v1) { create(:variant, import_date: 1.day.ago) }
         let!(:v2) { create(:variant, import_date: 2.days.ago) }
         let!(:v3) { create(:variant, import_date: 1.day.ago) }
 
-        it "returns products imported on given day" do
+        it 'returns products imported on given day' do
           imported_products = Spree::Product.imported_on(1.day.ago.to_date)
           expect(imported_products).to(include(v1.product, v3.product))
         end
       end
     end
 
-    describe "properties" do
-      it "returns product properties as a hash" do
+    describe 'properties' do
+      it 'returns product properties as a hash' do
         product = create(:simple_product)
         product.set_property('Organic Certified', 'NASAA 12345')
         property = product.properties.last
@@ -727,14 +727,14 @@ child: shop,
 [
 {
 id: property.id,
-name: "Organic Certified",
+name: 'Organic Certified',
 value: 'NASAA 12345'
 }
 ]
 ))
       end
 
-      it "returns producer properties as a hash" do
+      it 'returns producer properties as a hash' do
         supplier = create(:supplier_enterprise)
         product = create(:simple_product, supplier: supplier)
 
@@ -745,14 +745,14 @@ value: 'NASAA 12345'
 [
 {
 id: property.id,
-name: "Organic Certified",
+name: 'Organic Certified',
 value: 'NASAA 54321'
 }
 ]
 ))
       end
 
-      it "overrides producer properties with product properties" do
+      it 'overrides producer properties with product properties' do
         supplier = create(:supplier_enterprise)
         product = create(:simple_product, supplier: supplier)
 
@@ -764,18 +764,18 @@ value: 'NASAA 54321'
 [
 {
 id: property.id,
-name: "Organic Certified",
+name: 'Organic Certified',
 value: 'NASAA 12345'
 }
 ]
 ))
       end
 
-      context "when product has an inherit_properties value set to true" do
+      context 'when product has an inherit_properties value set to true' do
         let(:supplier) { create(:supplier_enterprise) }
         let(:product) { create(:simple_product, supplier: supplier, inherits_properties: true) }
 
-        it "inherits producer properties" do
+        it 'inherits producer properties' do
           supplier.set_producer_property('Organic Certified', 'NASAA 54321')
           property = supplier.properties.last
 
@@ -783,7 +783,7 @@ value: 'NASAA 12345'
 [
 {
 id: property.id,
-name: "Organic Certified",
+name: 'Organic Certified',
 value: 'NASAA 54321'
 }
 ]
@@ -791,18 +791,18 @@ value: 'NASAA 54321'
         end
       end
 
-      context "when product has an inherit_properties value set to false" do
+      context 'when product has an inherit_properties value set to false' do
         let(:supplier) { create(:supplier_enterprise) }
         let(:product) { create(:simple_product, supplier: supplier, inherits_properties: false) }
 
-        it "does not inherit producer properties" do
+        it 'does not inherit producer properties' do
           supplier.set_producer_property('Organic Certified', 'NASAA 54321')
 
           expect(product.properties_including_inherited).to(eq([]))
         end
       end
 
-      it "sorts by position" do
+      it 'sorts by position' do
         supplier = create(:supplier_enterprise)
         product = create(:simple_product, supplier: supplier)
 
@@ -816,16 +816,16 @@ value: 'NASAA 54321'
 
         expect(product.properties_including_inherited).to(eq(
           [
-{ id: pa.id, name: "A", value: '1' },
-           { id: pb.id, name: "B", value: '2' },
-           { id: pc.id, name: "C", value: '3' }
+{ id: pa.id, name: 'A', value: '1' },
+           { id: pb.id, name: 'B', value: '2' },
+           { id: pc.id, name: 'C', value: '3' }
 ]
         ))
       end
     end
 
-    describe "membership" do
-      it "queries its membership of a particular order cycle distribution" do
+    describe 'membership' do
+      it 'queries its membership of a particular order cycle distribution' do
         d1 = create(:distributor_enterprise)
         d2 = create(:distributor_enterprise)
         p1 = create(:product)
@@ -837,7 +837,7 @@ value: 'NASAA 54321'
         expect(p1).not_to(be_in_distributor(d2))
       end
 
-      it "queries its membership of a particular order cycle" do
+      it 'queries its membership of a particular order cycle' do
         d1 = create(:distributor_enterprise)
         d2 = create(:distributor_enterprise)
         p1 = create(:product)
@@ -850,8 +850,8 @@ value: 'NASAA 54321'
       end
     end
 
-    describe "variant units" do
-      context "when the product already has a variant unit set (and all required option types exist)" do
+    describe 'variant units' do
+      context 'when the product already has a variant unit set (and all required option types exist)' do
         let!(:p) do
           create(
 :simple_product,
@@ -863,48 +863,48 @@ value: 'NASAA 54321'
 
         let!(:ot_volume) { create(:option_type, name: 'unit_volume', presentation: 'Volume') }
 
-        it "removes the old option type and assigns the new one" do
+        it 'removes the old option type and assigns the new one' do
           p.update!(variant_unit: 'volume', variant_unit_scale: 0.001)
           expect(p.option_types).to(eq([ot_volume]))
         end
 
-        it "does not remove and re-add the option type if it is not changed" do
+        it 'does not remove and re-add the option type if it is not changed' do
           expect(p.option_types).to(receive(:delete).never)
           p.update!(name: 'foo')
         end
 
-        it "removes the related option values from all its variants and replaces them" do
+        it 'removes the related option values from all its variants and replaces them' do
           ot = Spree::OptionType.find_by(name: 'unit_weight')
           v = create(:variant, unit_value: 1, product: p)
           p.reload
 
-          expect(v.option_values.map(&:name).include?("1L")).to(eq(false))
-          expect(v.option_values.map(&:name).include?("1g")).to(eq(true))
+          expect(v.option_values.map(&:name).include?('1L')).to(eq(false))
+          expect(v.option_values.map(&:name).include?('1g')).to(eq(true))
           expect do
             p.update!(variant_unit: 'volume', variant_unit_scale: 0.001)
           end.to(change(p.master.option_values.reload, :count).by(0))
           v.reload
-          expect(v.option_values.map(&:name).include?("1L")).to(eq(true))
-          expect(v.option_values.map(&:name).include?("1g")).to(eq(false))
+          expect(v.option_values.map(&:name).include?('1L')).to(eq(true))
+          expect(v.option_values.map(&:name).include?('1g')).to(eq(false))
         end
 
-        it "removes the related option values from its master variant and replaces them" do
+        it 'removes the related option values from its master variant and replaces them' do
           ot = Spree::OptionType.find_by(name: 'unit_weight')
           p.master.update!(unit_value: 1)
           p.reload
 
-          expect(p.master.option_values.map(&:name).include?("1L")).to(eq(false))
-          expect(p.master.option_values.map(&:name).include?("1g")).to(eq(true))
+          expect(p.master.option_values.map(&:name).include?('1L')).to(eq(false))
+          expect(p.master.option_values.map(&:name).include?('1g')).to(eq(true))
           expect do
             p.update!(variant_unit: 'volume', variant_unit_scale: 0.001)
           end.to(change(p.master.option_values.reload, :count).by(0))
           p.reload
-          expect(p.master.option_values.map(&:name).include?("1L")).to(eq(true))
-          expect(p.master.option_values.map(&:name).include?("1g")).to(eq(false))
+          expect(p.master.option_values.map(&:name).include?('1L')).to(eq(true))
+          expect(p.master.option_values.map(&:name).include?('1g')).to(eq(false))
         end
       end
 
-      it "finds all variant unit option types" do
+      it 'finds all variant unit option types' do
         ot1 = create(:option_type, name: 'unit_weight', presentation: 'Weight')
         ot2 = create(:option_type, name: 'unit_volume', presentation: 'Volume')
         ot3 = create(:option_type, name: 'unit_items', presentation: 'Items')
@@ -914,9 +914,9 @@ value: 'NASAA 54321'
       end
     end
 
-    describe "option types" do
-      describe "removing an option type" do
-        it "removes the associated option values from all variants" do
+    describe 'option types' do
+      describe 'removing an option type' do
+        it 'removes the associated option values from all variants' do
           # Given a product with a variant unit option type and values
           p = create(:simple_product, variant_unit: 'weight', variant_unit_scale: 1)
           v1 = create(:variant, product: p, unit_value: 100, option_values: [])
@@ -943,17 +943,17 @@ value: 'NASAA 54321'
       end
     end
 
-    describe "taxons" do
+    describe 'taxons' do
       let(:taxon1) { create(:taxon) }
       let(:taxon2) { create(:taxon) }
       let(:product) { create(:simple_product) }
 
-      it "returns the first taxon as the primary taxon" do
+      it 'returns the first taxon as the primary taxon' do
         expect(product.taxons).to(eq([product.primary_taxon]))
       end
     end
 
-    describe "deletion" do
+    describe 'deletion' do
       let(:p)  { create(:simple_product) }
       let(:v)  { create(:variant, product: p) }
       let(:oc) { create(:simple_order_cycle) }
@@ -962,13 +962,13 @@ value: 'NASAA 54321'
         create(:exchange, order_cycle: oc, incoming: true, sender: s, receiver: oc.coordinator)
       end
 
-      it "removes the master variant from all order cycles" do
+      it 'removes the master variant from all order cycles' do
         e.variants << p.master
         p.destroy
         expect(e.variants.reload).to(be_empty)
       end
 
-      it "removes all other variants from order cycles" do
+      it 'removes all other variants from order cycles' do
         e.variants << v
         p.destroy
         expect(e.variants.reload).to(be_empty)
@@ -976,8 +976,8 @@ value: 'NASAA 54321'
     end
   end
 
-  describe "product import" do
-    describe "finding the most recent import date of the variants" do
+  describe 'product import' do
+    describe 'finding the most recent import date of the variants' do
       let!(:product) { create(:product) }
 
       let(:reference_time) { Time.zone.now.beginning_of_day }
@@ -986,16 +986,16 @@ value: 'NASAA 54321'
         product.reload
       end
 
-      context "when the variants do not have an import date" do
+      context 'when the variants do not have an import date' do
         let!(:variant_a) { create(:variant, product: product, import_date: nil) }
         let!(:variant_b) { create(:variant, product: product, import_date: nil) }
 
-        it "returns nil" do
+        it 'returns nil' do
           expect(product.import_date).to(be_nil)
         end
       end
 
-      context "when some variants have import date and some do not" do
+      context 'when some variants have import date and some do not' do
         let!(:variant_a) { create(:variant, product: product, import_date: nil) }
         let!(:variant_b) do
           create(:variant, product: product, import_date: reference_time - 1.hour)
@@ -1004,12 +1004,12 @@ value: 'NASAA 54321'
           create(:variant, product: product, import_date: reference_time - 2.hours)
         end
 
-        it "returns the most recent import date" do
+        it 'returns the most recent import date' do
           expect(product.import_date).to(eq(variant_b.import_date))
         end
       end
 
-      context "when all variants have import date" do
+      context 'when all variants have import date' do
         let!(:variant_a) do
           create(:variant, product: product, import_date: reference_time - 2.hours)
         end
@@ -1020,7 +1020,7 @@ value: 'NASAA 54321'
           create(:variant, product: product, import_date: reference_time - 3.hours)
         end
 
-        it "returns the most recent import date" do
+        it 'returns the most recent import date' do
           expect(product.import_date).to(eq(variant_b.import_date))
         end
       end

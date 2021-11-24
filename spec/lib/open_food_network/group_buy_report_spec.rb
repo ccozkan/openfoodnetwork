@@ -10,9 +10,9 @@ module OpenFoodNetwork
       bill_address = create(:address)
       distributor_address = create(
 :address,
-address1: "distributor address",
+address1: 'distributor address',
 city: 'The Shire',
-          zipcode: "1234"
+          zipcode: '1234'
 )
       distributor = create(:distributor_enterprise, address: distributor_address)
 
@@ -22,7 +22,7 @@ city: 'The Shire',
       @variant1.product.save!
       @variant1.reload
 
-      shipping_instructions = "pick up on thursday please!"
+      shipping_instructions = 'pick up on thursday please!'
 
       order1 = create(
 :order,
@@ -63,23 +63,23 @@ bill_address: bill_address,
       @orders << order3.reload
     end
 
-    it "should return a header row describing the report" do
+    it 'should return a header row describing the report' do
       subject = GroupBuyReport.new([@order1])
       header = subject.header
       expect(header).to(eq(
 [
-"Supplier",
-"Product",
-"Unit Size",
-"Variant",
-"Weight",
-                            "Total Ordered",
-"Total Max"
+'Supplier',
+'Product',
+'Unit Size',
+'Variant',
+'Weight',
+                            'Total Ordered',
+'Total Max'
 ]
 ))
     end
 
-    it "should provide the required variant and quantity information in a table" do
+    it 'should provide the required variant and quantity information in a table' do
       subject = GroupBuyReport.new(@orders)
 
       table = subject.table
@@ -97,7 +97,7 @@ bill_address: bill_address,
 [
 @variant1.product.supplier.name,
 @variant1.product.name,
-"UNITSIZE",
+'UNITSIZE',
                               @variant1.options_text,
 @variant1.weight,
 sum_quantities,
@@ -106,7 +106,7 @@ sum_max_quantities
 ))
     end
 
-    it "should return a table wherein each rows contains the same number of columns as the heading" do
+    it 'should return a table wherein each rows contains the same number of columns as the heading' do
       subject = GroupBuyReport.new(@orders)
 
       table = subject.table
@@ -117,7 +117,7 @@ sum_max_quantities
       end
     end
 
-    it "should split and group line items from multiple suppliers and of multiple variants" do
+    it 'should split and group line items from multiple suppliers and of multiple variants' do
       subject = GroupBuyReport.new(@orders)
 
       table_row_objects = subject.variants_and_quantities

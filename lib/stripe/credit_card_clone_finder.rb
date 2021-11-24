@@ -29,7 +29,7 @@ module Stripe
     private
 
     def clone?(payment_method, fingerprint)
-      payment_method.card.fingerprint == fingerprint && payment_method.metadata["ofn-clone"]
+      payment_method.card.fingerprint == fingerprint && payment_method.metadata['ofn-clone']
     end
 
     def fingerprint_for_card(card)

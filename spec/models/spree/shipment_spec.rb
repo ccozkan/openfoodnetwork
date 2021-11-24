@@ -5,7 +5,7 @@ require 'benchmark'
 
 describe Spree::Shipment do
   let(:order) { build(:order) }
-  let(:shipping_method) { build(:shipping_method, name: "UPS") }
+  let(:shipping_method) { build(:shipping_method, name: 'UPS') }
   let(:shipment) do
     shipment = Spree::Shipment.new(order: order)
     allow(shipment).to(receive_messages(shipping_method: shipping_method))
@@ -25,51 +25,51 @@ describe Spree::Shipment do
     expect(shipment).to(be_backordered)
   end
 
-  context "display_cost" do
-    it "retuns a Spree::Money" do
+  context 'display_cost' do
+    it 'retuns a Spree::Money' do
       allow(shipment).to(receive(:cost) { 21.22 })
       expect(shipment.display_cost).to(eq(Spree::Money.new(21.22)))
     end
   end
 
-  context "display_item_cost" do
-    it "retuns a Spree::Money" do
+  context 'display_item_cost' do
+    it 'retuns a Spree::Money' do
       allow(shipment).to(receive(:item_cost) { 21.22 })
       expect(shipment.display_item_cost).to(eq(Spree::Money.new(21.22)))
     end
   end
 
-  it "#item_cost" do
+  it '#item_cost' do
     shipment = Spree::Shipment.new(
       order: build_stubbed(:order_with_totals, line_items: [build_stubbed(:line_item)])
     )
     expect(shipment.item_cost).to(eql(10.0))
   end
 
-  context "manifest" do
+  context 'manifest' do
     let(:order) { Spree::Order.create }
     let(:variant) { create(:variant) }
     let!(:line_item) { order.contents.add(variant) }
     let!(:shipment) { order.create_proposed_shipments.first }
 
-    it "returns variant expected" do
+    it 'returns variant expected' do
       expect(shipment.manifest.first.variant).to(eq(variant))
     end
 
-    context "variant was removed" do
+    context 'variant was removed' do
       before { variant.product.destroy }
 
-      it "still returns variant expected" do
+      it 'still returns variant expected' do
         expect(shipment.manifest.first.variant).to(eq(variant))
       end
     end
 
-    describe "with soft-deleted products or variants" do
+    describe 'with soft-deleted products or variants' do
       let!(:product) { create(:product) }
       let!(:order) { create(:order, distributor: product.supplier) }
 
-      context "when the variant is soft-deleted" do
-        it "can still access the variant" do
+      context 'when the variant is soft-deleted' do
+        it 'can still access the variant' do
           order.line_items.first.variant.delete
 
           variants = shipment.reload.manifest.map(&:variant).uniq
@@ -77,8 +77,8 @@ describe Spree::Shipment do
         end
       end
 
-      context "when the product is soft-deleted" do
-        it "can still access the variant" do
+      context 'when the product is soft-deleted' do
+        it 'can still access the variant' do
           order.line_items.first.variant.delete
 
           variants = shipment.reload.manifest.map(&:variant)
@@ -163,9 +163,9 @@ describe Spree::Shipment do
     end
   end
 
-  context "#update!" do
-    shared_examples_for "immutable once shipped" do
-      it "should remain in shipped state once shipped" do
+  context '#update!' do
+    shared_examples_for 'immutable once shipped' do
+      it 'should remain in shipped state once shipped' do
         shipment.state = 'shipped'
         expect(shipment).to(receive(:update_columns)
           .with(state: 'shipped', updated_at: kind_of(Time)))
@@ -173,8 +173,8 @@ describe Spree::Shipment do
       end
     end
 
-    shared_examples_for "pending if backordered" do
-      it "should have a state of pending if backordered" do
+    shared_examples_for 'pending if backordered' do
+      it 'should have a state of pending if backordered' do
         unit = create(:inventory_unit)
         allow(unit).to(receive(:backordered?) { true })
         allow(shipment).to(receive_messages(inventory_units: [unit]))
@@ -184,7 +184,7 @@ describe Spree::Shipment do
       end
     end
 
-    context "when order is canceled" do
+    context 'when order is canceled' do
       it "should result in a 'pending' state" do
         allow(order).to(receive(:canceled?) { true })
 
@@ -194,7 +194,7 @@ describe Spree::Shipment do
       end
     end
 
-    context "when order cannot ship" do
+    context 'when order cannot ship' do
       it "should result in a 'pending' state" do
         allow(order).to(receive(:can_ship?) { false })
 
@@ -204,10 +204,10 @@ describe Spree::Shipment do
       end
     end
 
-    context "when order can ship" do
+    context 'when order can ship' do
       before { allow(order).to(receive(:can_ship?) { true }) }
 
-      context "when order is paid" do
+      context 'when order is paid' do
         before { allow(order).to(receive(:paid?) { true }) }
 
         it "should result in a 'ready' state" do
@@ -220,7 +220,7 @@ describe Spree::Shipment do
 
         it_should_behave_like 'pending if backordered'
 
-        context "when order has a credit owed" do
+        context 'when order has a credit owed' do
           before { allow(order).to(receive(:payment_state) { 'credit_owed' }) }
 
           it "should result in a 'ready' state" do
@@ -236,7 +236,7 @@ describe Spree::Shipment do
         end
       end
 
-      context "when order has balance due" do
+      context 'when order has balance due' do
         before { allow(order).to(receive(:paid?) { false }) }
 
         it "should result in a 'pending' state" do
@@ -252,8 +252,8 @@ describe Spree::Shipment do
       end
     end
 
-    context "when shipment state changes to shipped" do
-      it "should call after_ship" do
+    context 'when shipment state changes to shipped' do
+      it 'should call after_ship' do
         shipment.state = 'pending'
         expect(shipment).to(receive(:after_ship))
         allow(shipment).to(receive_messages(determine_state: 'shipped'))
@@ -264,19 +264,19 @@ describe Spree::Shipment do
     end
   end
 
-  context "when order is completed" do
+  context 'when order is completed' do
     before do
       allow(order).to(receive_messages(completed?: true))
       allow(order).to(receive_messages(canceled?: false))
     end
 
-    it "should validate with inventory" do
+    it 'should validate with inventory' do
       shipment.inventory_units = [create(:inventory_unit)]
       expect(shipment.valid?).to(be_truthy)
     end
   end
 
-  context "#cancel" do
+  context '#cancel' do
     it 'cancels the shipment' do
       allow(shipment).to(receive(:ensure_correct_adjustment))
       allow(shipment.order).to(receive(:update_order!))
@@ -297,7 +297,7 @@ describe Spree::Shipment do
     end
   end
 
-  context "#resume" do
+  context '#resume' do
     it 'will determine new state based on order' do
       allow(shipment).to(receive(:ensure_correct_adjustment))
       allow(shipment.order).to(receive(:update_order!))
@@ -331,7 +331,7 @@ describe Spree::Shipment do
     end
   end
 
-  context "#ship" do
+  context '#ship' do
     before do
       allow(order).to(receive(:update_order!))
       allow(shipment).to(receive_messages(update_order: true, state: 'ready'))
@@ -340,7 +340,7 @@ describe Spree::Shipment do
       allow(shipment).to(receive(:ensure_correct_adjustment))
     end
 
-    it "should update shipped_at timestamp" do
+    it 'should update shipped_at timestamp' do
       allow(shipment).to(receive(:send_shipped_email))
       shipment.ship!
       expect(shipment.shipped_at).to_not(be_nil)
@@ -349,7 +349,7 @@ describe Spree::Shipment do
       expect(shipment.shipped_at).to_not(be_nil)
     end
 
-    it "should send a shipment email" do
+    it 'should send a shipment email' do
       mail_message = double('Mail::Message')
       shipment_id = nil
       expect(Spree::ShipmentMailer).to(receive(:shipped_email) { |*args|
@@ -369,33 +369,33 @@ describe Spree::Shipment do
     end
   end
 
-  context "#ready" do
+  context '#ready' do
     # Regression test for #2040
-    it "cannot ready a shipment for an order if the order is unpaid" do
+    it 'cannot ready a shipment for an order if the order is unpaid' do
       allow(order).to(receive_messages(paid?: false))
       assert !shipment.can_ready?
     end
   end
 
-  context "ensure_correct_adjustment" do
+  context 'ensure_correct_adjustment' do
     before do
       shipment.save
       allow(shipment).to(receive(:reload))
     end
 
-    it "should create adjustment when not present" do
+    it 'should create adjustment when not present' do
       allow(shipment).to(receive_messages(fee_adjustment: nil))
       allow(shipment).to(receive_messages(selected_shipping_rate_id: 1))
       expect(shipping_method).to(receive(:create_adjustment).with(
 shipment.adjustment_label,
                                                                   shipment,
 true,
-"open"
+'open'
 ))
       shipment.__send__(:ensure_correct_adjustment)
     end
 
-    it "should update originator when adjustment is present" do
+    it 'should update originator when adjustment is present' do
       allow(shipment)
         .to(receive_messages(selected_shipping_rate: Spree::ShippingRate.new(cost: 10.00)))
       adjustment = build(:adjustment)
@@ -424,8 +424,8 @@ true,
     end
   end
 
-  describe "#update_amounts" do
-    it "persists the shipping cost from the shipping fee adjustment" do
+  describe '#update_amounts' do
+    it 'persists the shipping cost from the shipping fee adjustment' do
       allow(shipment).to(receive(:fee_adjustment) { double(:adjustment, amount: 10) })
       expect(shipment).to(receive(:update_columns).with(cost: 10, updated_at: kind_of(Time)))
 
@@ -433,22 +433,22 @@ true,
     end
   end
 
-  context "after_save" do
-    it "should run correct callbacks" do
+  context 'after_save' do
+    it 'should run correct callbacks' do
       expect(shipment).to(receive(:ensure_correct_adjustment))
       expect(shipment).to(receive(:update_adjustments))
       shipment.run_callbacks(:save)
     end
   end
 
-  context "currency" do
-    it "returns the order currency" do
+  context 'currency' do
+    it 'returns the order currency' do
       expect(shipment.currency).to(eq(order.currency))
     end
   end
 
-  context "#tracking_url" do
-    it "uses shipping method to determine url" do
+  context '#tracking_url' do
+    it 'uses shipping method to determine url' do
       expect(shipping_method).to(receive(:build_tracking_url).with('1Z12345').and_return(:some_url))
       shipment.tracking = '1Z12345'
 
@@ -456,8 +456,8 @@ true,
     end
   end
 
-  context "set up new inventory units" do
-    let(:variant) { double("Variant", id: 9) }
+  context 'set up new inventory units' do
+    let(:variant) { double('Variant', id: 9) }
     let(:inventory_units) { double }
     let(:params) do
       { variant_id: variant.id, state: 'on_hand', order_id: order.id }
@@ -465,15 +465,15 @@ true,
 
     before { allow(shipment).to(receive_messages(inventory_units: inventory_units)) }
 
-    it "associates variant and order" do
+    it 'associates variant and order' do
       expect(inventory_units).to(receive(:create).with(params))
       unit = shipment.set_up_inventory('on_hand', variant, order)
     end
   end
 
   # Regression test for #3349
-  context "#destroy" do
-    it "destroys linked shipping_rates" do
+  context '#destroy' do
+    it 'destroys linked shipping_rates' do
       reflection = Spree::Shipment.reflect_on_association(:shipping_rates)
       reflection.options[:dependent] = :destroy
     end

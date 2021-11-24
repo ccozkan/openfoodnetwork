@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 require 'open_food_network/order_cycle_form_applicator'
 
@@ -8,8 +8,8 @@ module OpenFoodNetwork
   describe OrderCycleFormApplicator do
     let!(:user) { create(:user) }
 
-    context "unit specs" do
-      it "creates new exchanges for incoming_exchanges" do
+    context 'unit specs' do
+      it 'creates new exchanges for incoming_exchanges' do
         coordinator_id = 123
         supplier_id = 456
 
@@ -54,7 +54,7 @@ receival_instructions: 'receival instructions'
         applicator.go!
       end
 
-      it "creates new exchanges for outgoing_exchanges" do
+      it 'creates new exchanges for outgoing_exchanges' do
         coordinator_id = 123
         distributor_id = 456
 
@@ -103,7 +103,7 @@ tag_list: 'wholesale'
         applicator.go!
       end
 
-      it "updates existing exchanges for incoming_exchanges" do
+      it 'updates existing exchanges for incoming_exchanges' do
         coordinator_id = 123
         supplier_id = 456
 
@@ -150,7 +150,7 @@ receival_instructions: 'receival instructions'
         applicator.go!
       end
 
-      it "updates existing exchanges for outgoing_exchanges" do
+      it 'updates existing exchanges for outgoing_exchanges' do
         coordinator_id = 123
         distributor_id = 456
 
@@ -201,8 +201,8 @@ tag_list: 'wholesale'
         applicator.go!
       end
 
-      describe "removing exchanges that are no longer present" do
-        it "destroys untouched exchanges" do
+      describe 'removing exchanges that are no longer present' do
+        it 'destroys untouched exchanges' do
           coordinator_id = 123
           supplier_id = 456
           exchange = double(
@@ -229,7 +229,7 @@ receiver_id: coordinator_id,
           expect(applicator.send(:untouched_exchanges)).to(eq([exchange]))
         end
 
-        it "compares exchanges by id only" do
+        it 'compares exchanges by id only' do
           e1 = double(:exchange1, id: 1, foo: 1)
           e2 = double(:exchange2, id: 1, foo: 2)
           oc = double(:order_cycle, exchanges: [e1])
@@ -242,11 +242,11 @@ receiver_id: coordinator_id,
           expect(applicator.send(:untouched_exchanges)).to(eq([]))
         end
 
-        context "as a manager of the coordinator" do
+        context 'as a manager of the coordinator' do
           let(:applicator) { OrderCycleFormApplicator.new(nil, user) }
           before { allow(applicator).to(receive(:manages_coordinator?) { true }) }
 
-          it "destroys exchanges" do
+          it 'destroys exchanges' do
             exchanges = [double(:exchange), double(:exchange)]
             expect(applicator).to(receive(:untouched_exchanges) { exchanges })
             exchanges.each { |ex| expect(ex).to(receive(:destroy)) }
@@ -255,18 +255,18 @@ receiver_id: coordinator_id,
           end
         end
 
-        context "as a non-manager of the coordinator" do
+        context 'as a non-manager of the coordinator' do
           let(:applicator) { OrderCycleFormApplicator.new(nil, user) }
           before { allow(applicator).to(receive(:manages_coordinator?) { false }) }
 
-          it "does not destroy any exchanges" do
+          it 'does not destroy any exchanges' do
             expect(applicator).to_not(receive(:with_permission))
             applicator.send(:destroy_untouched_exchanges)
           end
         end
       end
 
-      describe "updating the list of variants for a given outgoing exchange" do
+      describe 'updating the list of variants for a given outgoing exchange' do
         let!(:v1) { create(:variant) } # Not Existing + Request Add + Editable + Incoming
         let!(:v2) { create(:variant) } # Not Existing + Request Add + Not Editable + Incoming
         let!(:v3) { create(:variant) } # Existing + Request Add + Editable + Incoming
@@ -313,7 +313,7 @@ incoming: false,
                                })
         end
 
-        it "updates the list of variants for the exchange" do
+        it 'updates the list of variants for the exchange' do
           # Adds variants that are editable
           expect(ids).to(include(v1.id))
 
@@ -340,7 +340,7 @@ incoming: false,
         end
       end
 
-      describe "updating the list of variants for a given incoming exchange" do
+      describe 'updating the list of variants for a given incoming exchange' do
         let!(:v1) { create(:variant) } # Not Existing + Request Add + Editable
         let!(:v2) { create(:variant) } # Not Existing + Request Add + Not Editable
         let!(:v3) { create(:variant) } # Existing + Request Add + Editable
@@ -376,7 +376,7 @@ incoming: false,
                                })
         end
 
-        it "updates the list of variants for the exchange" do
+        it 'updates the list of variants for the exchange' do
           # Adds variants that are editable
           expect(ids).to(include(v1.id))
 
@@ -400,9 +400,9 @@ incoming: false,
         end
       end
 
-      describe "filtering exchanges for permission" do
-        describe "checking permission on a single exchange" do
-          it "returns true when it has permission" do
+      describe 'filtering exchanges for permission' do
+        describe 'checking permission on a single exchange' do
+          it 'returns true when it has permission' do
             e = double(:enterprise)
             ex = double(:exchange, participant: e)
 
@@ -412,7 +412,7 @@ incoming: false,
             expect(applicator.send(:permission_for, ex)).to(be(true))
           end
 
-          it "returns false otherwise" do
+          it 'returns false otherwise' do
             e = double(:enterprise)
             ex = double(:exchange, participant: e)
 
@@ -425,12 +425,12 @@ incoming: false,
       end
     end
 
-    context "integration specs" do
+    context 'integration specs' do
       before(:all) do
         require 'spec_helper'
       end
 
-      it "checks whether exchanges exist" do
+      it 'checks whether exchanges exist' do
         oc = FactoryBot.create(:simple_order_cycle)
         exchange = FactoryBot.create(:exchange, order_cycle: oc)
         applicator = OrderCycleFormApplicator.new(oc, user)
@@ -478,7 +478,7 @@ exchange.receiver_id,
         expect(applicator.send(:exchange_exists?, 999_999, 888_888, exchange.incoming)).to(be(false))
       end
 
-      describe "adding exchanges" do
+      describe 'adding exchanges' do
         let!(:sender) { create(:enterprise) }
         let!(:receiver) { create(:enterprise) }
         let!(:oc) { create(:simple_order_cycle) }
@@ -489,7 +489,7 @@ exchange.receiver_id,
         let!(:enterprise_fee1) { create(:enterprise_fee) }
         let!(:enterprise_fee2) { create(:enterprise_fee) }
 
-        context "as a manager of the coorindator" do
+        context 'as a manager of the coorindator' do
           before do
             allow(applicator).to(receive(:manages_coordinator?) { true })
             applicator.send(:touched_exchanges=, [])
@@ -503,7 +503,7 @@ enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id]
 )
           end
 
-          it "adds new exchanges" do
+          it 'adds new exchanges' do
             exchange = Exchange.last
             expect(exchange.sender).to(eq(sender))
             expect(exchange.receiver).to(eq(receiver))
@@ -515,7 +515,7 @@ enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id]
           end
         end
 
-        context "as a user which does not manage the coorindator" do
+        context 'as a user which does not manage the coorindator' do
           before do
             allow(applicator).to(receive(:manages_coordinator?) { false })
             applicator.send(
@@ -528,13 +528,13 @@ enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id]
 )
           end
 
-          it "does not add new exchanges" do
+          it 'does not add new exchanges' do
             expect(Exchange.last).to(be_nil)
           end
         end
       end
 
-      describe "updating exchanges" do
+      describe 'updating exchanges' do
         let!(:sender) { create(:enterprise) }
         let!(:receiver) { create(:enterprise) }
         let!(:oc) { create(:simple_order_cycle) }
@@ -559,7 +559,7 @@ enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id]
 )
         end
 
-        context "as a manager of the coorindator" do
+        context 'as a manager of the coorindator' do
           before do
             allow(applicator).to(receive(:manages_coordinator?) { true })
             allow(applicator).to(receive(:manager_for) { false })
@@ -578,7 +578,7 @@ tag_list: 'wholesale'
 )
           end
 
-          it "updates the variants, enterprise fees tags, and pickup information of the exchange" do
+          it 'updates the variants, enterprise fees tags, and pickup information of the exchange' do
             exchange.reload
             expect(exchange.variants).to(match_array([variant1, variant3]))
             expect(exchange.enterprise_fees).to(match_array([enterprise_fee2, enterprise_fee3]))
@@ -589,7 +589,7 @@ tag_list: 'wholesale'
           end
         end
 
-        context "as a manager of the participating enterprise" do
+        context 'as a manager of the participating enterprise' do
           before do
             allow(applicator).to(receive(:manages_coordinator?) { false })
             allow(applicator).to(receive(:manager_for) { true })
@@ -608,7 +608,7 @@ tag_list: 'wholesale'
 )
           end
 
-          it "updates the variants, enterprise fees, tags and pickup information of the exchange" do
+          it 'updates the variants, enterprise fees, tags and pickup information of the exchange' do
             exchange.reload
             expect(exchange.variants).to(match_array([variant1, variant3]))
             expect(exchange.enterprise_fees).to(match_array([enterprise_fee2, enterprise_fee3]))
@@ -619,7 +619,7 @@ tag_list: 'wholesale'
           end
         end
 
-        context "where the participating enterprise is permitted for the user" do
+        context 'where the participating enterprise is permitted for the user' do
           before do
             allow(applicator).to(receive(:manages_coordinator?) { false })
             allow(applicator).to(receive(:manager_for) { false })
@@ -638,7 +638,7 @@ tag_list: 'wholesale'
 )
           end
 
-          it "updates the variants in the exchange, but not the fees, tags or pickup information" do
+          it 'updates the variants in the exchange, but not the fees, tags or pickup information' do
             exchange.reload
             expect(exchange.variants).to(match_array([variant1, variant3]))
             expect(exchange.enterprise_fees).to(match_array([enterprise_fee1, enterprise_fee2]))
@@ -650,7 +650,7 @@ tag_list: 'wholesale'
         end
       end
 
-      it "does not add exchanges it is not permitted to touch" do
+      it 'does not add exchanges it is not permitted to touch' do
         sender = FactoryBot.create(:enterprise)
         receiver = FactoryBot.create(:enterprise)
         oc = FactoryBot.create(:simple_order_cycle)
@@ -663,7 +663,7 @@ tag_list: 'wholesale'
         end.to(change(Exchange, :count).by(0))
       end
 
-      it "does not update exchanges it is not permitted to touch" do
+      it 'does not update exchanges it is not permitted to touch' do
         sender = FactoryBot.create(:enterprise)
         receiver = FactoryBot.create(:enterprise)
         oc = FactoryBot.create(:simple_order_cycle)

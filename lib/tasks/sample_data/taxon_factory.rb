@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "tasks/sample_data/logging"
+require 'tasks/sample_data/logging'
 
 module SampleData
   class TaxonFactory
     include Logging
 
     def create_samples
-      log("Creating taxonomies:")
+      log('Creating taxonomies:')
       taxonomy = Spree::Taxonomy.find_or_create_by!(name: 'Products')
       taxons = ['Vegetables', 'Fruit', 'Oils', 'Preserves and Sauces', 'Dairy', 'Fungi']
       taxons.each do |taxon_name|

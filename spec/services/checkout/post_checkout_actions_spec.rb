@@ -6,7 +6,7 @@ describe Checkout::PostCheckoutActions do
   let(:order) { create(:order_with_distributor) }
   let(:postCheckoutActions) { Checkout::PostCheckoutActions.new(order) }
 
-  describe "#success" do
+  describe '#success' do
     let(:controller) {}
     let(:params) { { order: {} } }
     let(:current_user) { order.distributor.owner }
@@ -19,11 +19,11 @@ describe Checkout::PostCheckoutActions do
       expect(reset_order_service).to(receive(:call))
     end
 
-    it "resets the order" do
+    it 'resets the order' do
       postCheckoutActions.success(controller, params, current_user)
     end
 
-    describe "setting customer terms_and_conditions_accepted_at" do
+    describe 'setting customer terms_and_conditions_accepted_at' do
       before { order.customer = build(:customer) }
 
       it "does not set customer's terms_and_conditions to the current time if terms have not been accepted" do
@@ -38,7 +38,7 @@ describe Checkout::PostCheckoutActions do
       end
     end
 
-    describe "setting the user default address" do
+    describe 'setting the user default address' do
       let(:user_default_address_setter) { instance_double(UserDefaultAddressSetter) }
 
       before do
@@ -46,14 +46,14 @@ describe Checkout::PostCheckoutActions do
           .with(order, current_user).and_return(user_default_address_setter))
       end
 
-      it "sets user default bill address is option selected in params" do
+      it 'sets user default bill address is option selected in params' do
         params[:order][:default_bill_address] = true
         expect(user_default_address_setter).to(receive(:set_default_bill_address))
 
         postCheckoutActions.success(controller, params, current_user)
       end
 
-      it "sets user default ship address is option selected in params" do
+      it 'sets user default ship address is option selected in params' do
         params[:order][:default_ship_address] = true
         expect(user_default_address_setter).to(receive(:set_default_ship_address))
 
@@ -62,10 +62,10 @@ describe Checkout::PostCheckoutActions do
     end
   end
 
-  describe "#failure" do
+  describe '#failure' do
     let(:restart_checkout_service) { instance_double(OrderCheckoutRestart) }
 
-    it "restarts the checkout process" do
+    it 'restarts the checkout process' do
       expect(OrderCheckoutRestart).to(receive(:new).with(order).and_return(restart_checkout_service))
       expect(restart_checkout_service).to(receive(:call))
 

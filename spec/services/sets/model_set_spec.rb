@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 describe Sets::ModelSet do
-  describe "updating" do
-    it "creates new models" do
+  describe 'updating' do
+    it 'creates new models' do
       attrs = { collection_attributes: { '1' => { name: 's1' }, '2' => { name: 's2' } } }
 
       ms = Sets::ModelSet.new(
@@ -19,7 +19,7 @@ EnterpriseRelationshipPermission,
       expect(EnterpriseRelationshipPermission.where(name: ['s1', 's2']).count).to(eq(2))
     end
 
-    it "updates existing models" do
+    it 'updates existing models' do
       e1 = create(:enterprise_group)
       e2 = create(:enterprise_group)
 
@@ -38,7 +38,7 @@ collection_attributes: {
       expect(EnterpriseGroup.where(name: ['e1zz', 'e2yy']).count).to(eq(2))
     end
 
-    it "destroys deleted models" do
+    it 'destroys deleted models' do
       e1 = create(:enterprise)
       e2 = create(:enterprise)
 
@@ -64,7 +64,7 @@ nil,
       expect(Enterprise.where(id: e2.id)).to(be_present)
     end
 
-    it "ignores deletable new records" do
+    it 'ignores deletable new records' do
       attributes = { collection_attributes: { '1' => { name: 'deleteme' } } }
 
       ms = Sets::ModelSet.new(

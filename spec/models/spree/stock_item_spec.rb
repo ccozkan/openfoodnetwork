@@ -7,10 +7,10 @@ RSpec.describe(Spree::StockItem) do
 
   subject { stock_location.stock_items.order(:id).first }
 
-  describe "validation" do
+  describe 'validation' do
     let(:stock_item) { stock_location.stock_items.first }
 
-    it "requires count_on_hand to be positive if not backorderable" do
+    it 'requires count_on_hand to be positive if not backorderable' do
       stock_item.backorderable = false
 
       stock_item.__send__(:count_on_hand=, 1)
@@ -23,7 +23,7 @@ RSpec.describe(Spree::StockItem) do
       expect(stock_item.valid?).to(eq(false))
     end
 
-    it "allows count_on_hand to be negative if backorderable" do
+    it 'allows count_on_hand to be negative if backorderable' do
       stock_item.backorderable = true
 
       stock_item.__send__(:count_on_hand=, 1)
@@ -42,17 +42,17 @@ RSpec.describe(Spree::StockItem) do
     expect(subject.variant_name).to(eq(subject.variant.name))
   end
 
-  context "available to be included in shipment" do
-    context "has stock" do
+  context 'available to be included in shipment' do
+    context 'has stock' do
       it { expect(subject).to(be_available) }
     end
 
-    context "backorderable" do
+    context 'backorderable' do
       before { subject.backorderable = true }
       it { expect(subject).to(be_available) }
     end
 
-    context "no stock and not backorderable" do
+    context 'no stock and not backorderable' do
       before do
         subject.backorderable = false
         allow(subject).to(receive_messages(count_on_hand: 0))
@@ -62,7 +62,7 @@ RSpec.describe(Spree::StockItem) do
     end
   end
 
-  context "adjust count_on_hand" do
+  context 'adjust count_on_hand' do
     let!(:current_on_hand) { subject.count_on_hand }
 
     it 'is updated pessimistically' do
@@ -76,7 +76,7 @@ RSpec.describe(Spree::StockItem) do
       expect(copy.count_on_hand).to(eq(current_on_hand + 10))
     end
 
-    context "item out of stock (by two items)" do
+    context 'item out of stock (by two items)' do
       let(:inventory_unit) { double('InventoryUnit') }
       let(:inventory_unit_2) { double('InventoryUnit2') }
 
@@ -90,7 +90,7 @@ RSpec.describe(Spree::StockItem) do
         subject.adjust_count_on_hand(1)
       end
 
-      context "adds new items" do
+      context 'adds new items' do
         before do
           allow(subject).to(receive_messages(
 backordered_inventory_units: [
@@ -100,7 +100,7 @@ inventory_unit,
 ))
         end
 
-        it "fills existing backorders" do
+        it 'fills existing backorders' do
           expect(inventory_unit).to(receive(:fill_backorder))
           expect(inventory_unit_2).to(receive(:fill_backorder))
 
@@ -110,10 +110,10 @@ inventory_unit,
       end
     end
 
-    context "with stock movements" do
+    context 'with stock movements' do
       before { Spree::StockMovement.create(stock_item: subject, quantity: 1) }
 
-      it "doesnt raise ReadOnlyRecord error" do
+      it 'doesnt raise ReadOnlyRecord error' do
         expect { subject.destroy }
 .not_to(raise_error)
       end

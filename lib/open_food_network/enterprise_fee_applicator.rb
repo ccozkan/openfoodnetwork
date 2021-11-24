@@ -15,7 +15,7 @@ module OpenFoodNetwork
 
     def create_adjustment(label, adjustable)
       adjustment = enterprise_fee.create_adjustment(
-        label, adjustable, true, "closed", tax_category(adjustable)
+        label, adjustable, true, 'closed', tax_category(adjustable)
       )
 
       AdjustmentMetadata.create!(adjustment: adjustment,

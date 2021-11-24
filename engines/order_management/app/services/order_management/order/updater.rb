@@ -123,7 +123,7 @@ module OrderManagement
         last_payment_state = order.payment_state
 
         order.payment_state = infer_payment_state
-        cancel_payments_requiring_auth unless last_payment_state == "paid"
+        cancel_payments_requiring_auth unless last_payment_state == 'paid'
         track_payment_state_change(last_payment_state)
 
         order.payment_state
@@ -161,7 +161,7 @@ module OrderManagement
       private
 
       def cancel_payments_requiring_auth
-        return unless order.payment_state == "paid"
+        return unless order.payment_state == 'paid'
 
         payments.to_a.select(&:requires_authorization?).each(&:void_transaction!)
       end

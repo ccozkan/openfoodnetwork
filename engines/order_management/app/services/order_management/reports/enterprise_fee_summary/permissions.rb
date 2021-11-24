@@ -19,7 +19,7 @@ module OrderManagement
         end
 
         def allowed_enterprise_fees
-          return EnterpriseFee.where("1=0") if allowed_order_cycles.blank?
+          return EnterpriseFee.where('1=0') if allowed_order_cycles.blank?
 
           coordinator_enterprise_fees = EnterpriseFee.joins(:coordinator_fees)
             .where(coordinator_fees: { order_cycle_id: allowed_order_cycle_ids })

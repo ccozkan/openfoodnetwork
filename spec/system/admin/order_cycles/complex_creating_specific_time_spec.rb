@@ -14,7 +14,7 @@ js: true do
   let(:order_cycle_opening_time) { 1.day.from_now(Time.zone.now) }
   let(:order_cycle_closing_time) { 2.days.from_now(Time.zone.now) }
 
-  it "creating an order cycle with full interface", js: true do
+  it 'creating an order cycle with full interface', js: true do
     # Given coordinating, supplying and distributing enterprises with some products with variants
     coordinator = create(:distributor_enterprise, name: 'My coordinator')
     supplier = create(:supplier_enterprise, name: 'My supplier')
@@ -58,37 +58,37 @@ child: distributor,
 
     # Select a coordinator since there are two available
     select2_select 'My coordinator', from: 'coordinator_id'
-    click_button "Continue >"
+    click_button 'Continue >'
 
     # I cannot save before filling in the required fields
-    expect(page).to(have_button("Create", disabled: true))
+    expect(page).to(have_button('Create', disabled: true))
 
     # The Create button is enabled once Name is entered
     fill_in 'order_cycle_name', with: 'Plums & Avos'
-    expect(page).to(have_button("Create", disabled: false))
+    expect(page).to(have_button('Create', disabled: false))
 
     # If I fill in the basic fields
     find('#order_cycle_orders_open_at').click
     # select date
     select_date_from_datepicker Time.zone.at(order_cycle_opening_time)
     # select time
-    within(".flatpickr-calendar.open .flatpickr-time") do
+    within('.flatpickr-calendar.open .flatpickr-time') do
       find('.flatpickr-hour').set('%02d' % order_cycle_opening_time.hour)
       find('.flatpickr-minute').set('%02d' % order_cycle_opening_time.min)
     end
     # hide the datetimepicker
-    find("body").send_keys(:escape)
+    find('body').send_keys(:escape)
 
     find('#order_cycle_orders_close_at').click
     # select date
     select_date_from_datepicker Time.zone.at(order_cycle_closing_time)
     # select time
-    within(".flatpickr-calendar.open .flatpickr-time") do
+    within('.flatpickr-calendar.open .flatpickr-time') do
       find('.flatpickr-hour').set('%02d' % order_cycle_closing_time.hour)
       find('.flatpickr-minute').set('%02d' % order_cycle_closing_time.min)
     end
     # hide the datetimepicker
-    find("body").send_keys(:escape)
+    find('body').send_keys(:escape)
 
     # And I add a coordinator fee
     click_button 'Add coordinator fee'
@@ -112,7 +112,7 @@ child: distributor,
     # I should not be able to re-add the supplier
     expect(page).not_to(have_select('new_supplier_id', with_options: ['My supplier']))
     expect(page).to(have_button('Add supplier', disabled: true))
-    expect(page.all("td.supplier_name").map(&:text)).to(eq(['My supplier']))
+    expect(page.all('td.supplier_name').map(&:text)).to(eq(['My supplier']))
 
     # And I add a supplier fee
     within("tr.supplier-#{supplier.id}") { click_button 'Add fee' }
@@ -134,8 +134,8 @@ child: distributor,
     check "order_cycle_outgoing_exchange_0_variants_#{v2.id}"
 
     page.find('table.exchanges tr.distributor td.tags').click
-    within ".exchange-tags" do
-      find(:css, "tags-input .tags input").set("wholesale\n")
+    within '.exchange-tags' do
+      find(:css, 'tags-input .tags input').set("wholesale\n")
     end
 
     # And I add a distributor fee
@@ -147,16 +147,16 @@ child: distributor,
     click_button 'Save and Back to List'
 
     oc = OrderCycle.last
-    toggle_columns "Producers", "Shops"
+    toggle_columns 'Producers', 'Shops'
 
-    expect(page).to(have_input("oc#{oc.id}[name]", value: "Plums & Avos"))
+    expect(page).to(have_input("oc#{oc.id}[name]", value: 'Plums & Avos'))
     expect(page).to(have_input("oc#{oc.id}[orders_open_at]",
                                value: Time.zone.at(order_cycle_opening_time),
 visible: false))
     expect(page).to(have_input("oc#{oc.id}[orders_close_at]",
                                value: Time.zone.at(order_cycle_closing_time),
 visible: false))
-    expect(page).to(have_content("My coordinator"))
+    expect(page).to(have_content('My coordinator'))
 
     expect(page).to(have_selector('td.producers', text: 'My supplier'))
     expect(page).to(have_selector('td.shops', text: 'My distributor'))

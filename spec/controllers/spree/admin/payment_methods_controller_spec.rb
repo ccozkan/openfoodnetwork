@@ -4,16 +4,16 @@ require 'spec_helper'
 
 module Spree
   class GatewayWithPassword < PaymentMethod
-    preference :password, :string, default: "password"
+    preference :password, :string, default: 'password'
   end
 
   describe Admin::PaymentMethodsController, type: :controller do
-    describe "#create and #update" do
+    describe '#create and #update' do
       let!(:enterprise) { create(:distributor_enterprise, owner: user) }
       let(:payment_method) do
         GatewayWithPassword.create!(
-name: "Bogus",
-preferred_password: "haxme",
+name: 'Bogus',
+preferred_password: 'haxme',
 distributor_ids: [enterprise.id]
 )
       end
@@ -21,31 +21,31 @@ distributor_ids: [enterprise.id]
 
       before { allow(controller).to(receive(:spree_current_user) { user }) }
 
-      it "does not clear password on update" do
-        expect(payment_method.preferred_password).to(eq("haxme"))
+      it 'does not clear password on update' do
+        expect(payment_method.preferred_password).to(eq('haxme'))
         spree_put :update,
 id: payment_method.id,
-                           payment_method: { type: payment_method.class.to_s, preferred_password: "" }
+                           payment_method: { type: payment_method.class.to_s, preferred_password: '' }
         expect(response).to(redirect_to(spree.edit_admin_payment_method_path(payment_method)))
 
         payment_method.reload
-        expect(payment_method.preferred_password).to(eq("haxme"))
+        expect(payment_method.preferred_password).to(eq('haxme'))
       end
 
-      context "tries to save invalid payment" do
+      context 'tries to save invalid payment' do
         it "doesn't break, responds nicely" do
           expect do
-            spree_post(:create, payment_method: { name: "", type: "Spree::Gateway::Bogus" })
+            spree_post(:create, payment_method: { name: '', type: 'Spree::Gateway::Bogus' })
           end.not_to(raise_error)
         end
       end
 
-      it "can create a payment method of a valid type" do
+      it 'can create a payment method of a valid type' do
         expect do
           spree_post(:create,
                      payment_method: {
-name: "Test Method",
-type: "Spree::Gateway::Bogus",
+name: 'Test Method',
+type: 'Spree::Gateway::Bogus',
 distributor_ids: [enterprise.id]
 })
         end.to(change(Spree::PaymentMethod, :count).by(1))
@@ -54,12 +54,12 @@ distributor_ids: [enterprise.id]
         expect(response).to(redirect_to(spree.edit_admin_payment_method_path(assigns(:payment_method))))
       end
 
-      it "can not create a payment method of an invalid type" do
+      it 'can not create a payment method of an invalid type' do
         expect do
           spree_post(:create,
                      payment_method: {
-name: "Invalid Payment Method",
-type: "Spree::InvalidType",
+name: 'Invalid Payment Method',
+type: 'Spree::InvalidType',
 distributor_ids: [enterprise.id]
 })
         end.to(change(Spree::PaymentMethod, :count).by(0))
@@ -69,20 +69,20 @@ distributor_ids: [enterprise.id]
       end
     end
 
-    describe "#update" do
-      context "updating a payment method" do
+    describe '#update' do
+      context 'updating a payment method' do
         let!(:payment_method) { create(:payment_method, :flat_rate) }
         let(:params) do
           {
             id: payment_method.id,
             payment_method: {
-              name: "Updated",
-              description: "Updated",
-              type: "Spree::PaymentMethod::Check",
+              name: 'Updated',
+              description: 'Updated',
+              type: 'Spree::PaymentMethod::Check',
               calculator_attributes: {
                 id: payment_method.calculator.id,
                 preferred_amount: 456,
-                preferred_currency: "GBP"
+                preferred_currency: 'GBP'
               }
             }
           }
@@ -90,35 +90,35 @@ distributor_ids: [enterprise.id]
 
         before { controller_login_as_admin }
 
-        it "updates the payment method" do
+        it 'updates the payment method' do
           spree_post :update, params
           payment_method.reload
 
-          expect(payment_method.name).to(eq("Updated"))
-          expect(payment_method.description).to(eq("Updated"))
+          expect(payment_method.name).to(eq('Updated'))
+          expect(payment_method.description).to(eq('Updated'))
           expect(payment_method.calculator.preferred_amount).to(eq(456))
-          expect(payment_method.calculator.preferred_currency).to(eq("GBP"))
+          expect(payment_method.calculator.preferred_currency).to(eq('GBP'))
         end
 
-        context "when the given payment method type does not match" do
+        context 'when the given payment method type does not match' do
           let(:params) do
             {
               id: payment_method.id,
               payment_method: {
-                type: "Spree::Gateway::Bogus"
+                type: 'Spree::Gateway::Bogus'
               }
             }
           end
 
-          it "updates the payment method type" do
+          it 'updates the payment method type' do
             spree_post :update, params
 
-            expect(PaymentMethod.find(payment_method.id).type).to(eq("Spree::Gateway::Bogus"))
+            expect(PaymentMethod.find(payment_method.id).type).to(eq('Spree::Gateway::Bogus'))
           end
         end
       end
 
-      context "on a StripeConnect payment method" do
+      context 'on a StripeConnect payment method' do
         let!(:user) { create(:user, enterprise_limit: 2) }
         let!(:enterprise1) { create(:distributor_enterprise, owner: user) }
         let!(:enterprise2) { create(:distributor_enterprise, owner: create(:user)) }
@@ -132,49 +132,49 @@ distributor_ids: [enterprise1.id, enterprise2.id],
 
         before { allow(controller).to(receive(:spree_current_user) { user }) }
 
-        context "when an attempt is made to change the stripe account holder (preferred_enterprise_id)" do
+        context 'when an attempt is made to change the stripe account holder (preferred_enterprise_id)' do
           let(:params) do
             {
               id: payment_method.id,
               payment_method: {
-                type: "Spree::Gateway::StripeConnect",
+                type: 'Spree::Gateway::StripeConnect',
                 preferred_enterprise_id: enterprise1.id
               }
             }
           end
 
-          context "as a user that does not manage the existing stripe account holder" do
-            it "prevents the stripe account holder from being updated" do
+          context 'as a user that does not manage the existing stripe account holder' do
+            it 'prevents the stripe account holder from being updated' do
               spree_put :update, params
               expect(payment_method.reload.preferred_enterprise_id).to(eq(enterprise2.id))
             end
           end
 
-          context "as a user that manages the existing stripe account holder" do
+          context 'as a user that manages the existing stripe account holder' do
             before { enterprise2.update!(owner_id: user.id) }
 
-            it "allows the stripe account holder to be updated" do
+            it 'allows the stripe account holder to be updated' do
               spree_put :update, params
               expect(payment_method.reload.preferred_enterprise_id).to(eq(enterprise1.id))
             end
 
-            context "when no enterprise is selected as the account holder" do
+            context 'when no enterprise is selected as the account holder' do
               before { payment_method.update_attribute(:preferred_enterprise_id, nil) }
 
-              context "id not provided at all" do
+              context 'id not provided at all' do
                 before { params[:payment_method].delete(:preferred_enterprise_id) }
 
-                it "does not save the payment method" do
+                it 'does not save the payment method' do
                   spree_put :update, params
                   expect(response).to(render_template(:edit))
                   expect(assigns(:payment_method).errors.messages[:stripe_account_owner]).to(include(I18n.t(:error_required)))
                 end
               end
 
-              context "enterprise_id of 0" do
+              context 'enterprise_id of 0' do
                 before { params[:payment_method][:preferred_enterprise_id] = 0 }
 
-                it "does not save the payment method" do
+                it 'does not save the payment method' do
                   spree_put :update, params
                   expect(response).to(render_template(:edit))
                   expect(assigns(:payment_method).errors.messages[:stripe_account_owner]).to(include(I18n.t(:error_required)))
@@ -186,7 +186,7 @@ distributor_ids: [enterprise1.id, enterprise2.id],
       end
     end
 
-    context "Requesting provider preference fields" do
+    context 'Requesting provider preference fields' do
       let(:enterprise) { create(:distributor_enterprise) }
       let(:user) do
         new_user = create(
@@ -205,53 +205,53 @@ password: 'blahblah',
         allow(controller).to(receive_messages(spree_current_user: user))
       end
 
-      context "on an existing payment method" do
+      context 'on an existing payment method' do
         let(:payment_method) { create(:payment_method) }
 
-        context "where I have permission" do
+        context 'where I have permission' do
           before do
             payment_method.distributors << user.enterprises.is_distributor.first
           end
 
-          context "without an altered provider type" do
-            it "renders provider settings with same payment method" do
+          context 'without an altered provider type' do
+            it 'renders provider settings with same payment method' do
               spree_get :show_provider_preferences,
                         pm_id: payment_method.id,
-                        provider_type: "Spree::PaymentMethod::Check"
+                        provider_type: 'Spree::PaymentMethod::Check'
               expect(assigns(:payment_method)).to(eq(payment_method))
               expect(response).to(render_template(partial: '_provider_settings'))
             end
           end
 
-          context "with an altered provider type" do
-            it "renders provider settings with a different payment method" do
+          context 'with an altered provider type' do
+            it 'renders provider settings with a different payment method' do
               spree_get :show_provider_preferences,
                         pm_id: payment_method.id,
-                        provider_type: "Spree::Gateway::Bogus"
+                        provider_type: 'Spree::Gateway::Bogus'
               expect(assigns(:payment_method)).not_to(eq(payment_method))
               expect(response).to(render_template(partial: '_provider_settings'))
             end
           end
         end
 
-        context "where I do not have permission" do
+        context 'where I do not have permission' do
           before do
             payment_method.distributors = []
           end
 
-          it "renders unauthorised" do
+          it 'renders unauthorised' do
             spree_get :show_provider_preferences,
                       pm_id: payment_method.id,
-                      provider_type: "Spree::PaymentMethod::Check"
+                      provider_type: 'Spree::PaymentMethod::Check'
             expect(assigns(:payment_method)).to(eq(payment_method))
-            expect(flash[:error]).to(eq("Authorization Failure"))
+            expect(flash[:error]).to(eq('Authorization Failure'))
           end
         end
       end
 
-      context "on a new payment method" do
-        it "renders provider settings with a new payment method of type" do
-          spree_get :show_provider_preferences, pm_id: "", provider_type: "Spree::Gateway::Bogus"
+      context 'on a new payment method' do
+        it 'renders provider settings with a new payment method of type' do
+          spree_get :show_provider_preferences, pm_id: '', provider_type: 'Spree::Gateway::Bogus'
           expect(assigns(:payment_method)).to(be_a_new(Spree::Gateway::Bogus))
           expect(response).to(render_template(partial: '_provider_settings'))
         end

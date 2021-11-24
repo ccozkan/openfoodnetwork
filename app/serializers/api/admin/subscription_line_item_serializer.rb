@@ -15,7 +15,7 @@ module Api
       end
 
       def price_estimate
-        object.price_estimate&.to_f || "?"
+        object.price_estimate&.to_f || '?'
       end
 
       def in_open_and_upcoming_order_cycles

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "arel-helpers"
+require 'arel-helpers'
 
 module Reporting
   module Queries
@@ -8,11 +8,11 @@ module Reporting
       include Arel::Nodes
 
       def coalesce(field, default = 0)
-        NamedFunction.new("COALESCE", [field, default])
+        NamedFunction.new('COALESCE', [field, default])
       end
 
       def sum_values(field, default = 0)
-        NamedFunction.new("SUM", [coalesce(field, default)])
+        NamedFunction.new('SUM', [coalesce(field, default)])
       end
 
       def sum_grouped(field, _default = 0)
@@ -24,7 +24,7 @@ module Reporting
       end
 
       def round(field, places: 2)
-        NamedFunction.new("ROUND", [field, places])
+        NamedFunction.new('ROUND', [field, places])
       end
 
       def association(base_class, association, alias_node = nil, join_type = InnerJoin)
@@ -70,11 +70,11 @@ module Reporting
       end
 
       def cast(field, type)
-        NamedFunction.new("CAST", [field.as(type)])
+        NamedFunction.new('CAST', [field.as(type)])
       end
 
       def null_if(field, nullif)
-        NamedFunction.new("NULLIF", [field, nullif])
+        NamedFunction.new('NULLIF', [field, nullif])
       end
 
       def parenthesise(args)
@@ -90,7 +90,7 @@ module Reporting
       end
 
       def sql_concat(*args)
-        NamedFunction.new("CONCAT", args)
+        NamedFunction.new('CONCAT', args)
       end
 
       def raw(string)
@@ -102,7 +102,7 @@ module Reporting
       end
 
       def sql_grouping(groupings = grouping_fields)
-        NamedFunction.new("GROUPING", [groupings])
+        NamedFunction.new('GROUPING', [groupings])
       end
 
       def grouping_sets(groupings)

@@ -56,14 +56,14 @@ module Api
       def scope
         if @product
           variants =
- if current_api_user.has_spree_role?("admin") || params[:show_deleted]
+ if current_api_user.has_spree_role?('admin') || params[:show_deleted]
                        @product.variants_including_master.with_deleted
                      else
                        @product.variants_including_master
                      end
         else
           variants = Spree::Variant.where(nil)
-          if current_api_user.has_spree_role?("admin")
+          if current_api_user.has_spree_role?('admin')
             variants = Spree::Variant.active unless params[:show_deleted]
           else
             variants = variants.active

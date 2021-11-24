@@ -27,12 +27,12 @@ legacy_format_report_params,
       private
 
       def respond_to_invalid_parameters
-        flash[:error] = I18n.t("invalid_filter_parameters", scope: i18n_scope)
+        flash[:error] = I18n.t('invalid_filter_parameters', scope: i18n_scope)
         render_report_form
       end
 
       def i18n_scope
-        "order_management.reports.enterprise_fee_summary"
+        'order_management.reports.enterprise_fee_summary'
       end
 
       def render_report_form
@@ -64,9 +64,9 @@ legacy_format_report_params,
 
       def report_renderer_klass
         case params[:report_format]
-        when "csv"
+        when 'csv'
           report_klass::Renderers::CsvRenderer
-        when nil, "", "html"
+        when nil, '', 'html'
           report_klass::Renderers::HtmlRenderer
         else
           raise(Reports::UnsupportedReportFormatException)

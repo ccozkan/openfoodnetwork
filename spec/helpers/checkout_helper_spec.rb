@@ -3,28 +3,28 @@
 require 'spec_helper'
 
 describe CheckoutHelper, type: :helper do
-  it "generates html for validated inputs" do
+  it 'generates html for validated inputs' do
     expect(helper).to(receive(:render).with(
-      "shared/validated_input",
-      name: "test",
-      path: "foo",
+      'shared/validated_input',
+      name: 'test',
+      path: 'foo',
       attributes: {
 :required => true,
 :type => :email,
-:name => "foo",
-:id => "foo",
-"ng-model" => "foo",
-"ng-class" => "{error: !fieldValid('foo')}"
+:name => 'foo',
+:id => 'foo',
+'ng-model' => 'foo',
+'ng-class' => "{error: !fieldValid('foo')}"
 }
     ))
 
-    helper.validated_input("test", "foo", type: :email)
+    helper.validated_input('test', 'foo', type: :email)
   end
 
-  describe "displaying the tax total for an order" do
+  describe 'displaying the tax total for an order' do
     let(:order) { double(:order, total_tax: 123.45, currency: 'AUD') }
 
-    it "retrieves the total tax on the order" do
+    it 'retrieves the total tax on the order' do
       expect(helper.display_checkout_tax_total(order)).to(eq(
 Spree::Money.new(
 123.45,
@@ -34,7 +34,7 @@ Spree::Money.new(
     end
   end
 
-  it "knows if guests can checkout" do
+  it 'knows if guests can checkout' do
     distributor = create(:distributor_enterprise)
     order = create(:order, distributor: distributor)
     allow(helper).to(receive(:current_order) { order })
@@ -44,7 +44,7 @@ Spree::Money.new(
     expect(helper.guest_checkout_allowed?).to(be(false))
   end
 
-  describe "#checkout_adjustments_for" do
+  describe '#checkout_adjustments_for' do
     let(:order) { create(:order_with_totals_and_distribution) }
     let(:enterprise_fee) { create(:enterprise_fee, amount: 123) }
     let!(:fee_adjustment) do
@@ -63,7 +63,7 @@ adjustable: order,
       expect(order.adjustments.enterprise_fee.count).to(eq(1))
     end
 
-    it "collects adjustments on the order" do
+    it 'collects adjustments on the order' do
       adjustments = helper.checkout_adjustments_for(order)
 
       shipping_adjustment = order.shipment_adjustments.first
@@ -74,7 +74,7 @@ adjustable: order,
       expect(admin_fee_summary.amount).to(eq(123))
     end
 
-    context "tax rate adjustments" do
+    context 'tax rate adjustments' do
       let!(:tax_rate) { create(:tax_rate, amount: 0.1, calculator: ::Calculator::DefaultTax.new) }
       let!(:line_item_fee_adjustment) do
         create(
@@ -101,16 +101,16 @@ adjustable: order.line_items.first,
 )
       end
 
-      it "removes tax rate adjustments" do
+      it 'removes tax rate adjustments' do
         expect(order.all_adjustments.tax.count).to(eq(2))
 
         adjustments = helper.checkout_adjustments_for(order)
-        tax_adjustments = adjustments.select { |a| a.originator_type == "Spree::TaxRate" }
+        tax_adjustments = adjustments.select { |a| a.originator_type == 'Spree::TaxRate' }
         expect(tax_adjustments.count).to(eq(0))
       end
     end
 
-    context "with return authorization adjustments" do
+    context 'with return authorization adjustments' do
       let!(:return_adjustment) do
         create(
 :adjustment,
@@ -120,7 +120,7 @@ adjustable: order,
 )
       end
 
-      it "includes return adjustments" do
+      it 'includes return adjustments' do
         adjustments = helper.checkout_adjustments_for(order)
 
         expect(adjustments).to(include(return_adjustment))

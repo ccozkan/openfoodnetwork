@@ -7,8 +7,8 @@ describe ' As an admin I want to manage payments ' do
 
   let(:order) { create(:completed_order_with_fees) }
 
-  describe "payments/new" do
-    it "displays the order balance as the default payment amount" do
+  describe 'payments/new' do
+    it 'displays the order balance as the default payment amount' do
       login_as_admin_and_visit spree.new_admin_order_payment_path(order)
 
       expect(page).to(have_content(I18n.t(:new_payment)))
@@ -16,7 +16,7 @@ describe ' As an admin I want to manage payments ' do
     end
   end
 
-  context "with sensitive payment fee" do
+  context 'with sensitive payment fee' do
     before do
       payment_method = create(:payment_method, distributors: [order.distributor])
 
@@ -26,7 +26,7 @@ describe ' As an admin I want to manage payments ' do
       payment_method.save!
     end
 
-    it "renders the new payment page" do
+    it 'renders the new payment page' do
       login_as_admin_and_visit spree.new_admin_order_payment_path(order)
 
       expect(page).to(have_content(I18n.t(:new_payment)))
@@ -36,29 +36,29 @@ describe ' As an admin I want to manage payments ' do
   context "creating an order's first payment via admin", js: true do
     before do
       order.update_columns(
-        state: "payment",
+        state: 'payment',
         payment_state: nil,
         shipment_state: nil,
         completed_at: nil
       )
     end
 
-    it "creates the payment, completes the order, and updates payment and shipping states" do
+    it 'creates the payment, completes the order, and updates payment and shipping states' do
       login_as_admin_and_visit spree.new_admin_order_payment_path(order)
 
-      expect(page).to(have_content("New Payment"))
+      expect(page).to(have_content('New Payment'))
 
-      within "#new_payment" do
+      within '#new_payment' do
         find('input[type="radio"]').click
       end
 
-      click_button "Update"
-      expect(page).to(have_content("Payments"))
+      click_button 'Update'
+      expect(page).to(have_content('Payments'))
 
       order.reload
-      expect(order.state).to(eq("complete"))
-      expect(order.payment_state).to(eq("balance_due"))
-      expect(order.shipment_state).to(eq("pending"))
+      expect(order.state).to(eq('complete'))
+      expect(order.payment_state).to(eq('balance_due'))
+      expect(order.shipment_state).to(eq('pending'))
     end
   end
 end

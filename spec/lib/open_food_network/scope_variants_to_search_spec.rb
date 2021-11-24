@@ -21,41 +21,41 @@ describe OpenFoodNetwork::ScopeVariantsForSearch do
 
   let(:scoper) { OpenFoodNetwork::ScopeVariantsForSearch.new(params) }
 
-  describe "search" do
+  describe 'search' do
     let(:result) { scoper.search }
 
-    context "when a search query is provided" do
-      let(:params) { { q: "product 1" } }
+    context 'when a search query is provided' do
+      let(:params) { { q: 'product 1' } }
 
-      it "returns all products whose names or SKUs match the query" do
+      it 'returns all products whose names or SKUs match the query' do
         expect(result).to(include(v1, v2))
         expect(result).to_not(include(v3, v4))
       end
     end
 
-    context "when a schedule_id is specified" do
-      let(:params) { { q: "product", schedule_id: s1.id } }
+    context 'when a schedule_id is specified' do
+      let(:params) { { q: 'product', schedule_id: s1.id } }
 
-      it "returns all products distributed through that schedule" do
+      it 'returns all products distributed through that schedule' do
         lala = result
         expect(lala).to(include(v1, v3))
         expect(result).to_not(include(v2, v4))
       end
     end
 
-    context "when an order_cycle_id is specified" do
-      let(:params) { { q: "product", order_cycle_id: oc2.id } }
+    context 'when an order_cycle_id is specified' do
+      let(:params) { { q: 'product', order_cycle_id: oc2.id } }
 
-      it "returns all products distributed through that order cycle" do
+      it 'returns all products distributed through that order cycle' do
         expect(result).to(include(v2))
         expect(result).to_not(include(v1, v3, v4))
       end
     end
 
-    context "when a distributor_id is specified" do
-      let(:params) { { q: "product", distributor_id: d2.id } }
+    context 'when a distributor_id is specified' do
+      let(:params) { { q: 'product', distributor_id: d2.id } }
 
-      it "returns all products distributed through that distributor" do
+      it 'returns all products distributed through that distributor' do
         expect(result).to(include(v4))
         expect(result).to_not(include(v1, v2, v3))
       end

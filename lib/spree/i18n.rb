@@ -33,7 +33,7 @@ module Spree
   def self.virtual_path
     return unless context
 
-    path = context.instance_variable_get("@virtual_path")
+    path = context.instance_variable_get('@virtual_path')
 
     return unless path
 

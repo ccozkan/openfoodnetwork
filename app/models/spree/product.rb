@@ -54,12 +54,12 @@ module Spree
 
     has_many :variants,
 lambda {
-      where(is_master: false).order("spree_variants.position ASC")
+      where(is_master: false).order('spree_variants.position ASC')
     },
 class_name: 'Spree::Variant'
 
     has_many :variants_including_master,
-             -> { order("spree_variants.position ASC") },
+             -> { order('spree_variants.position ASC') },
              class_name: 'Spree::Variant',
              dependent: :destroy
 
@@ -249,7 +249,7 @@ lambda { |user|
       if user.has_spree_role?('admin')
         where(nil)
       else
-        where('supplier_id IN (?)', user.enterprises.select("enterprises.id"))
+        where('supplier_id IN (?)', user.enterprises.select('enterprises.id'))
       end
     }
 
@@ -266,7 +266,7 @@ lambda { |enterprise|
 
     scope :active,
 lambda {
-      where("spree_products.deleted_at IS NULL AND spree_products.available_on <= ?", Time.zone.now)
+      where('spree_products.deleted_at IS NULL AND spree_products.available_on <= ?', Time.zone.now)
     }
 
     def self.group_by_products_id

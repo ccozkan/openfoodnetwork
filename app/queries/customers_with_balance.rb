@@ -10,8 +10,8 @@ class CustomersWithBalance
   def query
     Customer.of(enterprise)
       .joins(left_join_complete_orders)
-      .group("customers.id")
-      .select("customers.*")
+      .group('customers.id')
+      .select('customers.*')
       .select(outstanding_balance_sum)
   end
 

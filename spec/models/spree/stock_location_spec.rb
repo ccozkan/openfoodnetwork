@@ -12,12 +12,12 @@ module Spree
       expect(subject.stock_items.count).to(eq(Variant.count))
     end
 
-    context "handling stock items" do
+    context 'handling stock items' do
       let!(:variant) { create(:variant) }
 
-      context "given a variant" do
-        context "propagate all variants" do
-          subject { StockLocation.new(name: "testing") }
+      context 'given a variant' do
+        context 'propagate all variants' do
+          subject { StockLocation.new(name: 'testing') }
 
           specify do
             expect(subject).to(receive(:propagate_variant).at_least(:once))

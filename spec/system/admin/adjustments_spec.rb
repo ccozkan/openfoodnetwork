@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "system_helper"
+require 'system_helper'
 
 describe ' As an administrator I want to manage adjustments on orders ', js: true do
   include AuthenticationHelper
@@ -36,7 +36,7 @@ tax_category: tax_category
     create(:check_payment, order: order, amount: order.total)
   end
 
-  it "adding taxed adjustments to an order" do
+  it 'adding taxed adjustments to an order' do
     # When I go to the adjustments page for the order
     login_as_admin_and_visit spree.admin_orders_path
     page.find('td.actions a.icon-edit').click
@@ -55,11 +55,11 @@ tax_category: tax_category
     expect(page).to(have_selector('td.tax', text: '10.00'))
   end
 
-  it "modifying taxed adjustments on an order" do
+  it 'modifying taxed adjustments on an order' do
     # Given a taxed adjustment
     adjustment = create(
 :adjustment,
-label: "Extra Adjustment",
+label: 'Extra Adjustment',
 adjustable: order,
              amount: 110,
 tax_category: tax_category,
@@ -83,11 +83,11 @@ order: order
     expect(page).to(have_selector('td.tax', text: '0.00'))
   end
 
-  it "modifying an untaxed adjustment on an order" do
+  it 'modifying an untaxed adjustment on an order' do
     # Given an untaxed adjustment
     adjustment = create(
 :adjustment,
-label: "Extra Adjustment",
+label: 'Extra Adjustment',
 adjustable: order,
              amount: 110,
 tax_category: nil,
@@ -111,11 +111,11 @@ order: order
     expect(page).to(have_selector('td.tax', text: '10.00'))
   end
 
-  it "viewing adjustments on a canceled order" do
+  it 'viewing adjustments on a canceled order' do
     # Given a taxed adjustment
     adjustment = create(
 :adjustment,
-label: "Extra Adjustment",
+label: 'Extra Adjustment',
 adjustable: order,
              amount: 110,
 tax_category: tax_category,

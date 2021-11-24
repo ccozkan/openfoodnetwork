@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "tasks/sample_data/logging"
+require 'tasks/sample_data/logging'
 
 module SampleData
   class UserFactory
     include Logging
 
     def create_samples
-      log("Creating users:")
+      log('Creating users:')
       usernames.map do |name|
         create_user(name)
       end.to_h
@@ -17,14 +17,14 @@ module SampleData
 
     def usernames
       [
-        "Manel Super Admin",
-        "Penny Profile",
-        "Fred Farmer",
-        "Freddy Shop Farmer",
-        "Fredo Hub Farmer",
-        "Mary Retailer",
-        "Maryse Private",
-        "Jane Customer"
+        'Manel Super Admin',
+        'Penny Profile',
+        'Fred Farmer',
+        'Freddy Shop Farmer',
+        'Fredo Hub Farmer',
+        'Mary Retailer',
+        'Maryse Private',
+        'Jane Customer'
       ]
     end
 

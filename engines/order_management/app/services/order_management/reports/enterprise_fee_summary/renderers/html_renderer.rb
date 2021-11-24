@@ -44,7 +44,7 @@ module OrderManagement
           end
 
           def i18n_scope
-            "order_management.reports.enterprise_fee_summary.formats.csv"
+            'order_management.reports.enterprise_fee_summary.formats.csv'
           end
         end
       end

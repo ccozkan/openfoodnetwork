@@ -87,7 +87,7 @@ params[:csv],
         @report = OpenFoodNetwork::SalesTaxReport.new(spree_current_user,
 raw_params,
                                                       render_content?)
-        render_report(@report.header, @report.table, params[:csv], "sales_tax.csv")
+        render_report(@report.header, @report.table, params[:csv], 'sales_tax.csv')
       end
 
       def payments
@@ -308,7 +308,7 @@ spree_current_user,
       end
 
       def timestamp
-        Time.zone.now.strftime("%Y%m%d")
+        Time.zone.now.strftime('%Y%m%d')
       end
 
       def orders_and_fulfillment_default_filters

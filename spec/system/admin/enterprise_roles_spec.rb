@@ -11,10 +11,10 @@ js: true do
   include WebHelper
   include OpenFoodNetwork::EmailHelper
 
-  context "as a site administrator" do
+  context 'as a site administrator' do
     before { login_to_admin_section }
 
-    it "listing relationships" do
+    it 'listing relationships' do
       # Given some users and enterprises with relationships
       u1 = create(:user)
       u2 = create(:user)
@@ -40,7 +40,7 @@ js: true do
       end
     end
 
-    it "creating a relationship" do
+    it 'creating a relationship' do
       u = create(:user, email: 'u@example.com')
       e = create(:enterprise, name: 'One')
 
@@ -55,7 +55,7 @@ js: true do
       expect(EnterpriseRole.where(user_id: u, enterprise_id: e)).to(be_present)
     end
 
-    it "attempting to create a relationship with invalid data" do
+    it 'attempting to create a relationship with invalid data' do
       u = create(:user, email: 'u@example.com')
       e = create(:enterprise, name: 'One')
       create(:enterprise_role, user: u, enterprise: e)
@@ -68,11 +68,11 @@ js: true do
         click_button('Create')
 
         # Then I should see an error message
-        expect(page).to(have_content("That role is already present."))
+        expect(page).to(have_content('That role is already present.'))
       end.to(change(EnterpriseRole, :count).by(0))
     end
 
-    it "deleting a relationship" do
+    it 'deleting a relationship' do
       u = create(:user, email: 'u@example.com')
       e = create(:enterprise, name: 'One')
       er = create(:enterprise_role, user: u, enterprise: e)
@@ -82,7 +82,7 @@ js: true do
 
       within("#enterprise_role_#{er.id}") do
         accept_alert do
-          find("a.delete-enterprise-role").click
+          find('a.delete-enterprise-role').click
         end
       end
 
@@ -92,7 +92,7 @@ js: true do
       expect(EnterpriseRole.where(id: er.id)).to(be_empty)
     end
 
-    describe "using the enterprise managers interface" do
+    describe 'using the enterprise managers interface' do
       let!(:user1) { create(:user, email: 'user1@example.com') }
       let!(:user2) { create(:user, email: 'user2@example.com') }
       let!(:user3) { create(:user, email: 'user3@example.com', confirmed_at: nil) }
@@ -107,10 +107,10 @@ js: true do
         click_link 'Enterprises'
         click_link 'Test Enterprise'
         navigate_to_enterprise_users
-        expect(page).to(have_selector("table.managers"))
+        expect(page).to(have_selector('table.managers'))
       end
 
-      it "lists managers and shows icons for owner, contact, and email confirmation" do
+      it 'lists managers and shows icons for owner, contact, and email confirmation' do
         within 'table.managers' do
           expect(page).to(have_content(user1.email))
           expect(page).to(have_content(user2.email))
@@ -124,7 +124,7 @@ js: true do
         end
       end
 
-      xit "allows adding new managers" do
+      xit 'allows adding new managers' do
         within 'table.managers' do
           select2_select user3.email, from: 'ignored', search: true
 
@@ -136,11 +136,11 @@ js: true do
         end
       end
 
-      xit "shows changes to enterprise contact or owner" do
+      xit 'shows changes to enterprise contact or owner' do
         select2_select user2.email, from: 'receives_notifications_dropdown'
         within('#save-bar') { click_button 'Update' }
         navigate_to_enterprise_users
-        expect(page).to(have_selector("table.managers"))
+        expect(page).to(have_selector('table.managers'))
 
         within 'table.managers' do
           within "tr#manager-#{user1.id}" do
@@ -153,7 +153,7 @@ js: true do
         end
       end
 
-      xit "can invite unregistered users to be managers" do
+      xit 'can invite unregistered users to be managers' do
         setup_email
         find('a.button.help-modal').click
         expect(page).to(have_css('#invite-manager-modal'))
@@ -165,8 +165,8 @@ js: true do
           click_button I18n.t('js.admin.modals.close')
         end
 
-        expect(page).not_to(have_selector("#invite-manager-modal"))
-        expect(page).to(have_selector("table.managers"))
+        expect(page).not_to(have_selector('#invite-manager-modal'))
+        expect(page).to(have_selector('table.managers'))
 
         new_user = Spree::User.find_by(email: new_email, confirmed_at: nil)
         expect(Enterprise.managed_by(new_user)).to(include(enterprise))
@@ -185,8 +185,8 @@ js: true do
   private
 
   def navigate_to_enterprise_users
-    within(".side_menu") do
-      click_link("Users")
+    within('.side_menu') do
+      click_link('Users')
     end
   end
 

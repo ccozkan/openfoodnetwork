@@ -79,13 +79,13 @@ module CheckoutHelper
 
   def display_line_item_tax_rates(line_item)
     line_item.tax_rates.map { |tr| number_to_percentage(tr.amount * 100, precision: 1) }
-.join(", ")
+.join(', ')
   end
 
   def display_adjustment_tax_rates(adjustment)
     tax_rates = TaxRateFinder.tax_rates_of(adjustment)
     tax_rates.map { |tr| number_to_percentage(tr.amount * 100, precision: 1) }
-.join(", ")
+.join(', ')
   end
 
   def display_adjustment_amount(adjustment)
@@ -102,22 +102,22 @@ module CheckoutHelper
       :type => :text,
       :name => path,
       :id => path,
-      "ng-model" => path,
-      "ng-class" => "{error: !fieldValid('#{path}')}"
+      'ng-model' => path,
+      'ng-class' => "{error: !fieldValid('#{path}')}"
     }.merge(args)
 
-    render("shared/validated_input", name: name, path: path, attributes: attributes)
+    render('shared/validated_input', name: name, path: path, attributes: attributes)
   end
 
   def validated_select(name, path, options, args = {})
     attributes = {
       :required => true,
       :id => path,
-      "ng-model" => path,
-      "ng-class" => "{error: !fieldValid('#{path}')}"
+      'ng-model' => path,
+      'ng-class' => "{error: !fieldValid('#{path}')}"
     }.merge(args)
 
-    render("shared/validated_select",
+    render('shared/validated_select',
 name: name,
 path: path,
 options: options,

@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Spree::Admin::ShippingMethodsController, type: :controller do
   include AuthenticationHelper
 
-  describe "#update" do
+  describe '#update' do
     let(:shipping_method) { create(:shipping_method) }
     let(:params) do
       {
@@ -20,18 +20,18 @@ describe Spree::Admin::ShippingMethodsController, type: :controller do
 
     before { controller_login_as_admin }
 
-    it "updates preferred_amount and preferred_currency of a FlatRate calculator" do
+    it 'updates preferred_amount and preferred_currency of a FlatRate calculator' do
       shipping_method.calculator = create(:calculator_flat_rate, calculable: shipping_method)
       params[:shipping_method][:calculator_attributes][:preferred_amount] = 123
-      params[:shipping_method][:calculator_attributes][:preferred_currency] = "EUR"
+      params[:shipping_method][:calculator_attributes][:preferred_currency] = 'EUR'
 
       spree_post :update, params
 
       expect(shipping_method.reload.calculator.preferred_amount).to(eq(123))
-      expect(shipping_method.reload.calculator.preferred_currency).to(eq("EUR"))
+      expect(shipping_method.reload.calculator.preferred_currency).to(eq('EUR'))
     end
 
-    it "diplay error message on update if preferred_amount input is invalid" do
+    it 'diplay error message on update if preferred_amount input is invalid' do
       shipping_method.calculator = create(:calculator_flat_rate, calculable: shipping_method)
       params[:shipping_method][:calculator_attributes][:preferred_amount] = "\'20.0'"
 
@@ -41,7 +41,7 @@ describe Spree::Admin::ShippingMethodsController, type: :controller do
       expect(response).to(redirect_to(spree.edit_admin_shipping_method_path(shipping_method)))
     end
 
-    it "updates preferred_per_unit of a Weight calculator" do
+    it 'updates preferred_per_unit of a Weight calculator' do
       shipping_method.calculator = create(:weight_calculator, calculable: shipping_method)
       params[:shipping_method][:calculator_attributes][:preferred_per_unit] = 10
 
@@ -50,16 +50,16 @@ describe Spree::Admin::ShippingMethodsController, type: :controller do
       expect(shipping_method.reload.calculator.preferred_per_unit).to(eq(10))
     end
 
-    it "updates preferred_unit of a Weight calculator" do
+    it 'updates preferred_unit of a Weight calculator' do
       shipping_method.calculator = create(:weight_calculator, calculable: shipping_method)
-      params[:shipping_method][:calculator_attributes][:preferred_unit_from_list] = "kg"
+      params[:shipping_method][:calculator_attributes][:preferred_unit_from_list] = 'kg'
 
       spree_post :update, params
 
-      expect(shipping_method.reload.calculator.preferred_unit_from_list).to(eq("kg"))
+      expect(shipping_method.reload.calculator.preferred_unit_from_list).to(eq('kg'))
     end
 
-    it "updates preferred_flat_percent of a FlatPercentPerItem calculator" do
+    it 'updates preferred_flat_percent of a FlatPercentPerItem calculator' do
       shipping_method.calculator = Calculator::FlatPercentPerItem.new(
 preferred_flat_percent: 20,
 
@@ -72,7 +72,7 @@ calculable: shipping_method
       expect(shipping_method.reload.calculator.preferred_flat_percent).to(eq(30))
     end
 
-    it "updates details of a FlexiRate calculator" do
+    it 'updates details of a FlexiRate calculator' do
       shipping_method.calculator = Calculator::FlexiRate.new(calculable: shipping_method)
       params[:shipping_method][:calculator_attributes][:preferred_first_item] = 10
       params[:shipping_method][:calculator_attributes][:preferred_additional_item] = 20
@@ -85,7 +85,7 @@ calculable: shipping_method
       expect(shipping_method.reload.calculator.preferred_max_items).to(eq(30))
     end
 
-    it "updates details of a PriceSack calculator" do
+    it 'updates details of a PriceSack calculator' do
       shipping_method.calculator = Calculator::PriceSack.new(calculable: shipping_method)
       params[:shipping_method][:calculator_attributes][:preferred_minimal_amount] = 10
       params[:shipping_method][:calculator_attributes][:preferred_normal_amount] = 20
@@ -99,28 +99,28 @@ calculable: shipping_method
     end
   end
 
-  describe "#delete" do
-    describe "shipping method not referenced by order" do
+  describe '#delete' do
+    describe 'shipping method not referenced by order' do
       let(:shipping_method) { create(:shipping_method) }
 
-      scenario "is soft deleted" do
+      scenario 'is soft deleted' do
         controller_login_as_admin
         expect(shipping_method.deleted_at).to(be_nil)
 
-        spree_delete :destroy, "id" => shipping_method.id
+        spree_delete :destroy, 'id' => shipping_method.id
 
         expect(shipping_method.reload.deleted_at).not_to(be_nil)
       end
     end
 
-    describe "shipping method referenced by order" do
+    describe 'shipping method referenced by order' do
       let(:order) { create(:order_with_line_items) }
 
-      scenario "is not soft deleted" do
+      scenario 'is not soft deleted' do
         controller_login_as_admin
         expect(order.shipping_method.deleted_at).to(be_nil)
 
-        spree_delete :destroy, "id" => order.shipping_method.id
+        spree_delete :destroy, 'id' => order.shipping_method.id
 
         expect(order.shipping_method.reload.deleted_at).to(be_nil)
       end

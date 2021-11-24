@@ -5,8 +5,8 @@ module Spree
     module OrdersHelper
       def event_links
         links = []
-        links << event_link("cancel") if @order.can_cancel?
-        links << event_link("resume") if @order.can_resume?
+        links << event_link('cancel') if @order.can_cancel?
+        links << event_link('resume') if @order.can_resume?
         links.join('&nbsp;').html_safe
       end
 
@@ -17,7 +17,7 @@ module Spree
       def order_links(order)
         @order ||= order
         links = []
-        links << edit_order_link unless action_name == "edit"
+        links << edit_order_link unless action_name == 'edit'
         links.concat(complete_order_links) if @order.complete? || @order.resumed?
         links << ship_order_link if @order.ready_to_ship?
         links << cancel_order_link if @order.can_cancel?
@@ -80,7 +80,7 @@ confirm: t(:confirm_send_invoice)
       def send_invoice_link_without_url
         {
 name: t(:send_invoice),
-url: "#",
+url: '#',
 icon: 'icon-email',
 confirm: t(:must_have_valid_business_number, enterprise_name: @order.distributor.name)
 }
@@ -91,7 +91,7 @@ confirm: t(:must_have_valid_business_number, enterprise_name: @order.distributor
 name: t(:print_invoice),
 url: spree.print_admin_order_path(@order),
 icon: 'icon-print',
-target: "_blank"
+target: '_blank'
 }
       end
 
@@ -100,7 +100,7 @@ target: "_blank"
 name: t(:print_ticket),
 url: print_ticket_admin_order_path(@order),
 icon: 'icon-print',
-target: "_blank"
+target: '_blank'
 }
       end
 
@@ -109,7 +109,7 @@ target: "_blank"
 name: t(:select_ticket_printer),
 url: "#{print_ticket_admin_order_path(@order)}#select-printer",
 icon: 'icon-print',
-target: "_blank"
+target: '_blank'
 }
       end
 
@@ -133,8 +133,8 @@ confirm: t(:are_you_sure)
       end
 
       def event_link(event)
-        event_label = I18n.t(event, scope: "actions")
-        confirm_message = I18n.t("admin.orders.edit.order_sure_want_to", event: event_label)
+        event_label = I18n.t(event, scope: 'actions')
+        confirm_message = I18n.t('admin.orders.edit.order_sure_want_to', event: event_label)
         button_link_to(
 event_label,
                        fire_admin_order_url(@order, e: event),
@@ -145,7 +145,7 @@ icon: "icon-#{event}",
       end
 
       def quantity_field_tag(manifest_item)
-        html_options = { min: 0, class: "line_item_quantity", size: 5 }
+        html_options = { min: 0, class: 'line_item_quantity', size: 5 }
         unless manifest_item.variant.on_demand
           html_options.merge!(max: manifest_item.variant.on_hand + manifest_item.quantity)
         end

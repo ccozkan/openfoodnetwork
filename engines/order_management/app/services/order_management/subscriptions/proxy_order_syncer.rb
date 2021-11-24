@@ -14,8 +14,8 @@ module OrderManagement
         when ActiveRecord::Relation
           @subscriptions = subscriptions.not_ended.not_canceled
         else
-          raise("ProxyOrderSyncer must be initialized with " \
-                "an instance of Subscription or ActiveRecord::Relation")
+          raise('ProxyOrderSyncer must be initialized with ' \
+                'an instance of Subscription or ActiveRecord::Relation')
         end
       end
 
@@ -38,7 +38,7 @@ module OrderManagement
 
       def initialise_proxy_orders!
         uninitialised_order_cycle_ids.each do |order_cycle_id|
-          Rails.logger.info("Initializing Proxy Order " \
+          Rails.logger.info('Initializing Proxy Order ' \
                             "of subscription #{@subscription.id} in order cycle #{order_cycle_id}")
           proxy_orders << ProxyOrder.new(subscription: subscription, order_cycle_id: order_cycle_id)
         end
@@ -53,9 +53,9 @@ module OrderManagement
       def create_proxy_orders!
         return unless not_closed_in_range_order_cycles.any?
 
-        query = "INSERT INTO proxy_orders (subscription_id, order_cycle_id, updated_at, created_at)"
+        query = 'INSERT INTO proxy_orders (subscription_id, order_cycle_id, updated_at, created_at)'
         query << " VALUES #{insert_values}"
-        query << " ON CONFLICT DO NOTHING"
+        query << ' ON CONFLICT DO NOTHING'
 
         ActiveRecord::Base.connection.exec_query(query)
       end
@@ -82,7 +82,7 @@ module OrderManagement
         now = Time.now.utc.iso8601
         not_closed_in_range_order_cycles
           .map { |oc| "(#{subscription.id},#{oc.id},'#{now}','#{now}')" }
-          .join(",")
+          .join(',')
       end
 
       def not_closed_in_range_order_cycles
@@ -91,7 +91,7 @@ module OrderManagement
 
       def in_range_order_cycles
         order_cycles.where(
-"orders_close_at >= ? AND orders_close_at <= ?",
+'orders_close_at >= ? AND orders_close_at <= ?',
                            begins_at,
                            ends_at || 100.years.from_now
 )

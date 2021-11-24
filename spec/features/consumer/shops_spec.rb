@@ -26,53 +26,53 @@ distributors: [distributor],
     producer.set_producer_property('Organic', 'NASAA 12345')
   end
 
-  it "searches by URL" do
-    visit shops_path(anchor: "/?query=xyzzy")
-    expect(page).to(have_content("Sorry, no results found for xyzzy"))
+  it 'searches by URL' do
+    visit shops_path(anchor: '/?query=xyzzy')
+    expect(page).to(have_content('Sorry, no results found for xyzzy'))
   end
 
-  describe "listing shops" do
+  describe 'listing shops' do
     before do
       visit shops_path
     end
 
-    it "shows hubs" do
+    it 'shows hubs' do
       expect(page).to(have_content(distributor.name))
       expand_active_table_node distributor.name
-      expect(page).to(have_content("OUR PRODUCERS"))
+      expect(page).to(have_content('OUR PRODUCERS'))
     end
 
-    it "does not show invisible hubs" do
+    it 'does not show invisible hubs' do
       expect(page).not_to(have_content(invisible_distributor.name))
     end
 
-    it "does not show hubs that are not in an order cycle" do
+    it 'does not show hubs that are not in an order cycle' do
       expect(page).to(have_no_selector('hub.inactive'))
       expect(page).to(have_no_selector('hub',   text: d2.name))
     end
 
-    it "does not show profiles" do
+    it 'does not show profiles' do
       expect(page).not_to(have_content(profile.name))
     end
 
-    it "shows closed shops after clicking the button" do
-      click_link_and_ensure("Show closed shops", -> { page.has_selector?('hub.inactive') })
+    it 'shows closed shops after clicking the button' do
+      click_link_and_ensure('Show closed shops', -> { page.has_selector?('hub.inactive') })
       expect(page).to(have_selector('hub.inactive', text: d2.name))
     end
 
-    it "links to the hub page" do
+    it 'links to the hub page' do
       follow_active_table_node distributor.name
       expect(page).to(have_current_path(enterprise_shop_path(distributor)))
     end
   end
 
-  describe "showing available hubs" do
+  describe 'showing available hubs' do
     let!(:hub) { create(:distributor_enterprise, with_payment_and_shipping: false) }
     let!(:order_cycle) { create(:simple_order_cycle, distributors: [hub], coordinator: hub) }
     let!(:producer) { create(:supplier_enterprise) }
     let!(:er) { create(:enterprise_relationship, parent: hub, child: producer) }
 
-    it "does not show hubs that are not ready for checkout" do
+    it 'does not show hubs that are not ready for checkout' do
       visit shops_path
 
       expect(Enterprise.ready_for_checkout).not_to(include(hub))
@@ -80,7 +80,7 @@ distributors: [distributor],
     end
   end
 
-  describe "filtering by product property" do
+  describe 'filtering by product property' do
     let!(:order_cycle) do
       create(
 :simple_order_cycle,
@@ -102,7 +102,7 @@ distributors: [d1, d2],
       visit shops_path
     end
 
-    it "filters" do
+    it 'filters' do
       toggle_filters
 
       toggle_filter 'Organic'
@@ -118,7 +118,7 @@ distributors: [d1, d2],
     end
   end
 
-  describe "taxon badges" do
+  describe 'taxon badges' do
     let!(:closed_oc) do
       create(:closed_order_cycle, distributors: [shop], variants: [p_closed.variants.first])
     end
@@ -126,14 +126,14 @@ distributors: [d1, d2],
     let(:shop) { create(:distributor_enterprise, with_payment_and_shipping: true) }
     let(:taxon_closed) { create(:taxon, name: 'Closed') }
 
-    describe "open shops" do
+    describe 'open shops' do
       let!(:open_oc) do
         create(:open_order_cycle, distributors: [shop], variants: [p_open.variants.first])
       end
       let!(:p_open) { create(:simple_product, primary_taxon: taxon_open, taxons: [taxon_open]) }
       let(:taxon_open) { create(:taxon, name: 'Open') }
 
-      it "shows taxons for open order cycles only" do
+      it 'shows taxons for open order cycles only' do
         visit shops_path
         expand_active_table_node shop.name
         expect(page).to(    have_selector('.fat-taxons', text: 'Open'))
@@ -141,8 +141,8 @@ distributors: [d1, d2],
       end
     end
 
-    describe "closed shops" do
-      it "shows taxons for any order cycle" do
+    describe 'closed shops' do
+      it 'shows taxons for any order cycle' do
         visit shops_path
         click_link_and_ensure('Show closed shops', -> { page.has_selector?('.active_table_node') })
         expand_active_table_node shop.name
@@ -151,7 +151,7 @@ distributors: [d1, d2],
     end
   end
 
-  describe "property badges" do
+  describe 'property badges' do
     let!(:order_cycle) do
       create(
 :simple_order_cycle,
@@ -166,7 +166,7 @@ variants: [product.variants.first]
       product.set_property('Local', 'XYZ 123')
     end
 
-    it "shows property badges" do
+    it 'shows property badges' do
       # Given a shop with a product with a property
       # And the product's producer has a producer property
 
@@ -182,7 +182,7 @@ variants: [product.variants.first]
     end
   end
 
-  describe "hub producer modal" do
+  describe 'hub producer modal' do
     let!(:product) { create(:simple_product, supplier: producer, taxons: [taxon]) }
     let!(:taxon) { create(:taxon, name: 'Fruit') }
     let!(:order_cycle) do
@@ -194,14 +194,14 @@ variants: [product.variants.first]
 )
     end
 
-    it "shows hub producer modals" do
+    it 'shows hub producer modals' do
       visit shops_path
       expand_active_table_node distributor.name
       expect(page).to(have_content(producer.name))
       open_enterprise_modal producer
       modal_should_be_open_for producer
 
-      within ".reveal-modal" do
+      within '.reveal-modal' do
         expect(page).to(have_content('Fruit'))   # Taxon
         expect(page).to(have_content('Organic')) # Producer property
         expect(page).to(have_content("Shop for #{producer.name} products at:".upcase))
@@ -209,14 +209,14 @@ variants: [product.variants.first]
     end
   end
 
-  describe "viewing closed shops by URL" do
+  describe 'viewing closed shops by URL' do
     before do
       d1
       d2
-      visit shops_path(anchor: "/?show_closed=1")
+      visit shops_path(anchor: '/?show_closed=1')
     end
 
-    it "shows closed shops" do
+    it 'shows closed shops' do
       expect(page).to(have_selector('hub.inactive', text: d2.name))
     end
   end

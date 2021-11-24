@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "spree/core/controller_helpers/auth"
-require "spree/core/controller_helpers/common"
-require "spree/core/controller_helpers/order"
+require 'spree/core/controller_helpers/auth'
+require 'spree/core/controller_helpers/common'
+require 'spree/core/controller_helpers/order'
 
 module Spree
   class UserSessionsController < Devise::SessionsController
@@ -58,8 +58,8 @@ module Spree
     end
 
     def redirect_back_or_default(default)
-      redirect_to(session["spree_user_return_to"] || default)
-      session["spree_user_return_to"] = nil
+      redirect_to(session['spree_user_return_to'] || default)
+      session['spree_user_return_to'] = nil
     end
 
     def ensure_valid_locale_persisted

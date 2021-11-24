@@ -16,7 +16,7 @@ module Reporting
     end
 
     def default_report_subtype
-      report_subtypes.first || "base"
+      report_subtypes.first || 'base'
     end
 
     private

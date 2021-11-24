@@ -134,7 +134,7 @@ describe ProductImport::InventoryResetStrategy do
         let(:enterprise) { variant.product.supplier }
         let(:variant) { create(:variant) }
 
-        context "and variant overrides with count on hand" do
+        context 'and variant overrides with count on hand' do
           let!(:variant_override) do
             create(
               :variant_override,
@@ -205,7 +205,7 @@ describe ProductImport::InventoryResetStrategy do
         let(:enterprise) { variant.product.supplier }
         let(:variant) { create(:variant) }
 
-        context "and variant overrides with count on hand" do
+        context 'and variant overrides with count on hand' do
           let!(:variant_override) do
             create(
               :variant_override,
@@ -221,7 +221,7 @@ describe ProductImport::InventoryResetStrategy do
           end
         end
 
-        context "and variant overrides on demand" do
+        context 'and variant overrides on demand' do
           let!(:variant_override) do
             create(
               :variant_override,

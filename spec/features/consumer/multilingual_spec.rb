@@ -54,14 +54,14 @@ describe 'Multilingual', js: true do
         add_product_to_cart order, product, quantity: 1
       end
 
-      it "in the cart page" do
+      it 'in the cart page' do
         visit main_app.cart_path(locale: 'es')
 
         expect_menu_and_cookie_in_es
         expect(page).to(have_content('Precio'))
       end
 
-      it "in the checkout page" do
+      it 'in the checkout page' do
         visit checkout_path(locale: 'es')
 
         expect_menu_and_cookie_in_es
@@ -98,29 +98,29 @@ describe 'Multilingual', js: true do
     end
   end
 
-  describe "using the language switcher UI" do
+  describe 'using the language switcher UI' do
     before { browse_as_large }
-    context "when there is only one language available" do
+    context 'when there is only one language available' do
       before do
         allow(ENV).to(receive(:[]).and_call_original)
-        allow(ENV).to(receive(:[]).with("LOCALE").and_return("en"))
-        allow(ENV).to(receive(:[]).with("AVAILABLE_LOCALES").and_return("en"))
+        allow(ENV).to(receive(:[]).with('LOCALE').and_return('en'))
+        allow(ENV).to(receive(:[]).with('AVAILABLE_LOCALES').and_return('en'))
       end
 
-      it "hides the dropdown language menu" do
+      it 'hides the dropdown language menu' do
         visit root_path
         expect(page).to(have_no_css('ul.right li.language-switcher.has-dropdown'))
       end
     end
 
-    context "when there are multiple languages available" do
+    context 'when there are multiple languages available' do
       before do
         allow(ENV).to(receive(:[]).and_call_original)
-        allow(ENV).to(receive(:[]).with("LOCALE").and_return("en"))
-        allow(ENV).to(receive(:[]).with("AVAILABLE_LOCALES").and_return("en,es"))
+        allow(ENV).to(receive(:[]).with('LOCALE').and_return('en'))
+        allow(ENV).to(receive(:[]).with('AVAILABLE_LOCALES').and_return('en,es'))
       end
 
-      it "allows switching language via the main navigation" do
+      it 'allows switching language via the main navigation' do
         visit root_path
 
         expect(page).to(have_content('SHOPS'))

@@ -8,12 +8,12 @@ module Reporting
 
     def distributors
       permissions.visible_enterprises_for_order_reports.is_distributor
-        .select("enterprises.id, enterprises.name")
+        .select('enterprises.id, enterprises.name')
     end
 
     def suppliers
       permissions.visible_enterprises_for_order_reports.is_primary_producer
-        .select("enterprises.id, enterprises.name")
+        .select('enterprises.id, enterprises.name')
     end
 
     def order_cycles

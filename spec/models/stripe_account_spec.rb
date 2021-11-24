@@ -4,7 +4,7 @@ require 'spec_helper'
 require 'stripe/oauth'
 
 describe StripeAccount do
-  describe "deauthorize_and_destroy" do
+  describe 'deauthorize_and_destroy' do
     let!(:enterprise) { create(:enterprise) }
     let!(:enterprise2) { create(:enterprise) }
     let(:client_id) { 'ca_abc123' }
@@ -14,39 +14,39 @@ describe StripeAccount do
     end
 
     before do
-      Stripe.api_key = "sk_test_12345"
+      Stripe.api_key = 'sk_test_12345'
       Stripe.client_id = client_id
     end
 
-    context "when the Stripe API disconnect fails" do
+    context 'when the Stripe API disconnect fails' do
       before do
-        stub_request(:post, "https://connect.stripe.com/oauth/deauthorize")
-          .with(body: { "client_id" => client_id, "stripe_user_id" => stripe_user_id })
+        stub_request(:post, 'https://connect.stripe.com/oauth/deauthorize')
+          .with(body: { 'client_id' => client_id, 'stripe_user_id' => stripe_user_id })
           .to_return(status: 400,
-body: JSON.generate(error: 'invalid_grant', error_description: "Some Message"))
+body: JSON.generate(error: 'invalid_grant', error_description: 'Some Message'))
       end
 
-      it "destroys the record and notifies Bugsnag" do
+      it 'destroys the record and notifies Bugsnag' do
         expect(Bugsnag).to(receive(:notify))
         stripe_account.deauthorize_and_destroy
         expect(StripeAccount.all).to_not(include(stripe_account))
       end
     end
 
-    context "when the Stripe API disconnect succeeds" do
+    context 'when the Stripe API disconnect succeeds' do
       before do
-        stub_request(:post, "https://connect.stripe.com/oauth/deauthorize")
-          .with(body: { "client_id" => client_id, "stripe_user_id" => stripe_user_id })
+        stub_request(:post, 'https://connect.stripe.com/oauth/deauthorize')
+          .with(body: { 'client_id' => client_id, 'stripe_user_id' => stripe_user_id })
           .to_return(status: 200, body: JSON.generate(stripe_user_id: stripe_user_id))
       end
 
-      it "destroys the record" do
+      it 'destroys the record' do
         stripe_account.deauthorize_and_destroy
         expect(StripeAccount.all).not_to(include(stripe_account))
       end
     end
 
-    context "if the account is also associated with another Enterprise" do
+    context 'if the account is also associated with another Enterprise' do
       let!(:another_stripe_account) do
         create(:stripe_account, enterprise: enterprise2, stripe_user_id: stripe_user_id)
       end

@@ -31,7 +31,7 @@ module Permissions
     def visible_line_items
       Spree::LineItem.where(
 id:
-        editable_line_items.select(:id) | produced_line_items.select("spree_line_items.id")
+        editable_line_items.select(:id) | produced_line_items.select('spree_line_items.id')
 )
     end
 
@@ -67,7 +67,7 @@ id:
     # Any orders placed through any hub that I manage
     def managed_orders_where_values
       Spree::Order
-        .where(distributor_id: @permissions.managed_enterprises.select("enterprises.id"))
+        .where(distributor_id: @permissions.managed_enterprises.select('enterprises.id'))
         .where_clause.__send__(:predicates)
         .reduce(:and)
     end
@@ -102,15 +102,15 @@ id:
     def granted_distributor_ids
       @granted_distributor_ids ||= @permissions.related_enterprises_granted(
         :add_to_order_cycle,
-        by: @permissions.managed_enterprises.is_primary_producer.select("enterprises.id")
-      ).select("enterprises.id")
+        by: @permissions.managed_enterprises.is_primary_producer.select('enterprises.id')
+      ).select('enterprises.id')
     end
 
     # Any from visible orders, where the product is produced by one of my managed producers
     def produced_line_items
-      Spree::LineItem.where(order_id: visible_orders.select("DISTINCT spree_orders.id"))
+      Spree::LineItem.where(order_id: visible_orders.select('DISTINCT spree_orders.id'))
         .supplied_by_any(
-          @permissions.managed_enterprises.is_primary_producer.select("enterprises.id")
+          @permissions.managed_enterprises.is_primary_producer.select('enterprises.id')
         )
     end
   end

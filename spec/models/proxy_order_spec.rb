@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe ProxyOrder, type: :model do
-  describe "cancel" do
+  describe 'cancel' do
     let(:order_cycle) { create(:simple_order_cycle) }
     let(:subscription) { create(:subscription) }
 
@@ -12,26 +12,26 @@ describe ProxyOrder, type: :model do
       Timecop.freeze(Time.zone.now) { example.run }
     end
 
-    context "when the order cycle is not yet closed" do
+    context 'when the order cycle is not yet closed' do
       let(:proxy_order) do
         create(:proxy_order, subscription: subscription, order: order, order_cycle: order_cycle)
       end
       before { order_cycle.update(orders_open_at: 1.day.ago, orders_close_at: 3.days.from_now) }
 
-      context "and an order has not been initialised" do
+      context 'and an order has not been initialised' do
         let(:order) { nil }
 
-        it "returns true and sets canceled_at to the current time" do
+        it 'returns true and sets canceled_at to the current time' do
           expect(proxy_order.cancel).to(be(true))
           expect_cancelled_now proxy_order
           expect(proxy_order.state).to(eq('canceled'))
         end
       end
 
-      context "and the order has already been completed" do
+      context 'and the order has already been completed' do
         let(:order) { create(:completed_order_with_totals) }
 
-        it "returns true and sets canceled_at to the current time, and cancels the order" do
+        it 'returns true and sets canceled_at to the current time, and cancels the order' do
           expect(Spree::OrderMailer).to(receive(:cancel_email) {
                                           double(:email, deliver_later: true)
                                         })
@@ -42,10 +42,10 @@ describe ProxyOrder, type: :model do
         end
       end
 
-      context "and the order has not already been completed" do
+      context 'and the order has not already been completed' do
         let(:order) { create(:order) }
 
-        it "returns true and sets canceled_at to the current time" do
+        it 'returns true and sets canceled_at to the current time' do
           expect(proxy_order.cancel).to(be(true))
           expect_cancelled_now proxy_order
           expect(order.reload.state).to(eq('cart'))
@@ -54,26 +54,26 @@ describe ProxyOrder, type: :model do
       end
     end
 
-    context "when the order cycle is already closed" do
+    context 'when the order cycle is already closed' do
       let(:proxy_order) do
         create(:proxy_order, subscription: subscription, order: order, order_cycle: order_cycle)
       end
       before { order_cycle.update(orders_open_at: 3.days.ago, orders_close_at: 1.minute.ago) }
 
-      context "and an order has not been initialised" do
+      context 'and an order has not been initialised' do
         let(:order) { nil }
 
-        it "returns false and does nothing" do
+        it 'returns false and does nothing' do
           expect(proxy_order.cancel).to(be(false))
           expect(proxy_order.reload.canceled_at).to(be(nil))
           expect(proxy_order.state).to(eq('pending'))
         end
       end
 
-      context "and an order has been initialised" do
+      context 'and an order has been initialised' do
         let(:order) { create(:order) }
 
-        it "returns false and does nothing" do
+        it 'returns false and does nothing' do
           expect(proxy_order.cancel).to(be(false))
           expect(proxy_order.reload.canceled_at).to(be(nil))
           expect(order.reload.state).to(eq('cart'))
@@ -83,7 +83,7 @@ describe ProxyOrder, type: :model do
     end
   end
 
-  describe "resume" do
+  describe 'resume' do
     let!(:shipment) { create(:shipment) }
     let(:order) do
       create(
@@ -101,20 +101,20 @@ ship_address: create(:address),
       Timecop.freeze(Time.zone.now) { example.run }
     end
 
-    context "when the order cycle is not yet closed" do
+    context 'when the order cycle is not yet closed' do
       before { order_cycle.update(orders_open_at: 1.day.ago, orders_close_at: 3.days.from_now) }
 
-      context "and the order has not been initialised" do
+      context 'and the order has not been initialised' do
         let(:order) { nil }
 
-        it "returns true and clears canceled_at" do
+        it 'returns true and clears canceled_at' do
           expect(proxy_order.resume).to(be(true))
           expect(proxy_order.reload.canceled_at).to(be(nil))
           expect(proxy_order.state).to(eq('pending'))
         end
       end
 
-      context "and the order has already been cancelled" do
+      context 'and the order has already been cancelled' do
         before do
           allow(Spree::OrderMailer).to(receive(:cancel_email) {
                                          double(:email, deliver_later: true)
@@ -123,7 +123,7 @@ ship_address: create(:address),
           order.cancel
         end
 
-        it "returns true, clears canceled_at and resumes the order" do
+        it 'returns true, clears canceled_at and resumes the order' do
           expect(proxy_order.resume).to(be(true))
           expect(proxy_order.reload.canceled_at).to(be(nil))
           expect(order.reload.state).to(eq('resumed'))
@@ -131,10 +131,10 @@ ship_address: create(:address),
         end
       end
 
-      context "and the order has not been cancelled" do
+      context 'and the order has not been cancelled' do
         before { break unless order.next! until order.completed? }
 
-        it "returns true and clears canceled_at" do
+        it 'returns true and clears canceled_at' do
           expect(proxy_order.resume).to(be(true))
           expect(proxy_order.reload.canceled_at).to(be(nil))
           expect(order.reload.state).to(eq('complete'))
@@ -143,20 +143,20 @@ ship_address: create(:address),
       end
     end
 
-    context "when the order cycle is already closed" do
+    context 'when the order cycle is already closed' do
       before { order_cycle.update(orders_open_at: 3.days.ago, orders_close_at: 1.minute.ago) }
 
-      context "and the order has not been initialised" do
+      context 'and the order has not been initialised' do
         let(:order) { nil }
 
-        it "returns false and does nothing" do
+        it 'returns false and does nothing' do
           expect(proxy_order.resume).to(eq(false))
           expect_cancelled_now proxy_order
           expect(proxy_order.state).to(eq('canceled'))
         end
       end
 
-      context "and the order has been cancelled" do
+      context 'and the order has been cancelled' do
         before do
           allow(Spree::OrderMailer).to(receive(:cancel_email) {
                                          double(:email, deliver_later: true)
@@ -165,7 +165,7 @@ ship_address: create(:address),
           order.cancel
         end
 
-        it "returns false and does nothing" do
+        it 'returns false and does nothing' do
           expect(proxy_order.resume).to(eq(false))
           expect_cancelled_now proxy_order
           expect(order.reload.state).to(eq('canceled'))
@@ -173,10 +173,10 @@ ship_address: create(:address),
         end
       end
 
-      context "and the order has not been cancelled" do
+      context 'and the order has not been cancelled' do
         before { break unless order.next! until order.completed? }
 
-        it "returns false and does nothing" do
+        it 'returns false and does nothing' do
           expect(proxy_order.resume).to(eq(false))
           expect_cancelled_now proxy_order
           expect(order.reload.state).to(eq('complete'))
@@ -186,27 +186,27 @@ ship_address: create(:address),
     end
   end
 
-  describe "initialise_order!" do
+  describe 'initialise_order!' do
     let(:order) { create(:order) }
     let(:factory) { instance_double(OrderFactory) }
     let!(:proxy_order) { create(:proxy_order) }
 
-    context "when the order has not already been initialised" do
-      it "creates a new order using the OrderFactory, and returns it" do
+    context 'when the order has not already been initialised' do
+      it 'creates a new order using the OrderFactory, and returns it' do
         expect(OrderFactory).to(receive(:new) { factory })
         expect(factory).to(receive(:create) { order })
         expect(proxy_order.initialise_order!).to(eq(order))
       end
     end
 
-    context "when the order has already been initialised" do
+    context 'when the order has already been initialised' do
       let(:existing_order) { create(:order) }
 
       before do
         proxy_order.update(order: existing_order)
       end
 
-      it "returns the existing order" do
+      it 'returns the existing order' do
         expect(OrderFactory).to_not(receive(:new))
         expect(proxy_order).to_not(receive(:save!))
         expect(proxy_order.initialise_order!).to(eq(existing_order))

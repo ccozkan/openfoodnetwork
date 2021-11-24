@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :state, class: Spree::State do
-    name { "Victoria" }
-    abbr { "Vic" }
+    name { 'Victoria' }
+    abbr { 'Vic' }
     country
   end
 end

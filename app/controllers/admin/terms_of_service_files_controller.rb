@@ -16,7 +16,7 @@ module Admin
       TermsOfServiceFile.create!(file_params)
       redirect_to(main_app.admin_terms_of_service_files_path)
     rescue ActionController::ParameterMissing
-      flash[:error] = t(".select_file")
+      flash[:error] = t('.select_file')
       redirect_to(main_app.admin_terms_of_service_files_path)
     end
 

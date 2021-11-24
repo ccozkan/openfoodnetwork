@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 module Api
   module Admin
@@ -11,20 +11,20 @@ module Api
                                              current_user: order_cycle.coordinator.owner)
       end
 
-      it "serializes an order cycle" do
+      it 'serializes an order cycle' do
         expect(serializer.to_json).to(include(order_cycle.name))
       end
 
-      it "serializes the order cycle with exchanges" do
+      it 'serializes the order cycle with exchanges' do
         expect(serializer.exchanges.to_json).to(include("\"#{order_cycle.variants.first.id}\":true"))
       end
 
-      it "serializes the order cycle with editable_variants_for_incoming_exchanges" do
+      it 'serializes the order cycle with editable_variants_for_incoming_exchanges' do
         expect(serializer.editable_variants_for_incoming_exchanges.to_json).to(include(order_cycle.variants.first.id.to_s))
         expect(serializer.editable_variants_for_incoming_exchanges.to_json).to_not(include(order_cycle.distributors.first.id.to_s))
       end
 
-      it "serializes the order cycle with editable_variants_for_outgoing_exchanges" do
+      it 'serializes the order cycle with editable_variants_for_outgoing_exchanges' do
         expect(serializer.editable_variants_for_outgoing_exchanges.to_json).to(include(order_cycle.variants.first.id.to_s))
       end
     end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "spree/authentication_helpers"
-require "application_responder"
+require 'spree/authentication_helpers'
+require 'application_responder'
 require 'cancan'
 require 'spree/core/controller_helpers/auth'
 require 'spree/core/controller_helpers/respond_with'
@@ -67,7 +67,7 @@ rescue StandardError
     referer_path = OpenFoodNetwork::RefererParser.path(request.referer)
     if referer_path
       is_checkout_path_the_referer = [main_app.checkout_path].include?(referer_path)
-      session["spree_user_return_to"] =
+      session['spree_user_return_to'] =
  if is_checkout_path_the_referer
                                           referer_path
                                         else
@@ -175,9 +175,9 @@ rescue StandardError
 
   # See https://jacopretorius.net/2014/01/force-page-to-reload-on-browser-back-in-rails.html
   def set_cache_headers
-    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
+    response.headers['Cache-Control'] = 'no-cache, no-store, max-age=0, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = 'Fri, 01 Jan 1990 00:00:00 GMT'
   end
 end
 

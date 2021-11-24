@@ -17,16 +17,16 @@ shipping_method_services: {}
 )
   end
 
-  it "serializes an enterprise" do
+  it 'serializes an enterprise' do
     expect(serializer.to_json).to(match(enterprise.name))
   end
 
-  it "serializes taxons as ids only" do
+  it 'serializes taxons as ids only' do
     expect(serializer.serializable_hash[:taxons]).to(eq([{ id: 123 }]))
     expect(serializer.serializable_hash[:supplied_taxons]).to(eq([{ id: 456 }]))
   end
 
-  it "serializes icons" do
-    expect(serializer.to_json).to(match("map_005-hub.svg"))
+  it 'serializes icons' do
+    expect(serializer.to_json).to(match('map_005-hub.svg'))
   end
 end

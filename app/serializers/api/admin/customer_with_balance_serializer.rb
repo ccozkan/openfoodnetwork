@@ -17,11 +17,11 @@ module Api
 
       def balance_status
         if balance_value.positive?
-          "credit_owed"
+          'credit_owed'
         elsif balance_value.negative?
-          "balance_due"
+          'balance_due'
         else
-          ""
+          ''
         end
       end
     end

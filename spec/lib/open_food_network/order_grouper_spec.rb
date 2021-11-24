@@ -9,8 +9,8 @@ module OpenFoodNetwork
       @items = [1, 2, 3, 4]
     end
 
-    context "constructing the table" do
-      it "should build a tree then build a table" do
+    context 'constructing the table' do
+      it 'should build a tree then build a table' do
         rules = [
 {
 group_by: proc { |sentence|
@@ -24,10 +24,10 @@ proc { |is|
                                                                 is.first.paragraph.chapter.name
                                                               },
 proc { |_is|
-                                                                   "TOTAL"
+                                                                   'TOTAL'
                                                                  },
 proc { |_is|
-                                                                      ""
+                                                                      ''
                                                                     },
 proc { |is|
                                                                          is.sum(&:property1)
@@ -64,8 +64,8 @@ proc { |is|
       end
     end
 
-    context "grouping items without rules" do
-      it "returns the original array when no rules are provided" do
+    context 'grouping items without rules' do
+      it 'returns the original array when no rules are provided' do
         rules = []
         column1 = double(:col1)
         column2 = double(:col2)
@@ -77,7 +77,7 @@ proc { |is|
       end
     end
 
-    context "grouping items with rules" do
+    context 'grouping items with rules' do
       before(:each) do
         @rule1 = double(:rule1)
         rule2 = double(:rule2)
@@ -99,7 +99,7 @@ proc { |is|
         expect(subject.build_tree(@items, @rules)).to(eq(grouped_tree))
       end
 
-      it "separates the first rule from rules before sending to group_and_sort" do
+      it 'separates the first rule from rules before sending to group_and_sort' do
         subject = OrderGrouper.new(@rules, @columns)
 
         grouped_tree = double(:grouped_tree)
@@ -112,7 +112,7 @@ proc { |is|
         expect(subject.build_tree(@items, @rules)).to(eq(grouped_tree))
       end
 
-      it "should group, then sort, send each group to build_tree, and return a branch" do
+      it 'should group, then sort, send each group to build_tree, and return a branch' do
         summary_columns_object = double(:summary_columns)
         allow(@rule1).to(receive(:[]).with(:summary_columns) { summary_columns_object })
 
@@ -123,7 +123,7 @@ proc { |is|
         expect(@items).to(receive(:group_by).and_return(groups))
         sorted_groups = {}
         1.upto(number_of_categories) do |i|
-          sorted_groups[i] = double(:group, name: "Group " + i.to_s)
+          sorted_groups[i] = double(:group, name: 'Group ' + i.to_s)
         end
         expect(groups).to(receive(:sort_by).and_return(sorted_groups))
         group = { group1: 1, group2: 2, group3: 3 }
@@ -136,17 +136,17 @@ proc { |is|
       end
     end
 
-    context "building the table Array" do
+    context 'building the table Array' do
       before(:each) do
         rule1 = double(:rule1)
         rule2 = double(:rule2)
         @rules = [rule1, rule2]
-        @column1 = double(:col1, call: "Column1")
-        @column2 = double(:col2, call: "Column2")
+        @column1 = double(:col1, call: 'Column1')
+        @column2 = double(:col2, call: 'Column2')
         @columns = [@column1, @column2]
 
-        sumcol1 = double(:sumcol1, call: "SumColumn1")
-        sumcol2 = double(:sumcol2, call: "SumColumn2")
+        sumcol1 = double(:sumcol1, call: 'SumColumn1')
+        sumcol2 = double(:sumcol2, call: 'SumColumn2')
         @sumcols = [sumcol1, sumcol2]
 
         item1 = double(:item1)
@@ -156,16 +156,16 @@ proc { |is|
         @items2 = [item2, item3]
         @items3 = [item3, item1]
       end
-      it "should return columns when given an Array" do
+      it 'should return columns when given an Array' do
         subject = OrderGrouper.new(@rules, @columns)
 
         expect(@column1).to(receive(:call))
         expect(@column2).to(receive(:call))
 
-        expect(subject.build_table(@items1)).to(eq([["Column1", "Column2"]]))
+        expect(subject.build_table(@items1)).to(eq([['Column1', 'Column2']]))
       end
 
-      it "should return a row for each key-value pair when given a Hash" do
+      it 'should return a row for each key-value pair when given a Hash' do
         groups = { items1: @items1, items2: @items2, items3: @items3 }
 
         subject = OrderGrouper.new(@rules, @columns)
@@ -173,11 +173,11 @@ proc { |is|
         # subject.should_receive(:build_table).exactly(2).times
 
         expected_return = []
-        groups.length.times { expected_return << ["Column1", "Column2"] }
+        groups.length.times { expected_return << ['Column1', 'Column2'] }
         expect(subject.build_table(groups)).to(eq(expected_return))
       end
 
-      it "should return an extra row when a :summary_row key appears in a given Hash" do
+      it 'should return an extra row when a :summary_row key appears in a given Hash' do
         groups = {
 items1: @items1,
 items2: @items2,
@@ -190,9 +190,9 @@ summary_row: { items: { items2: @items2, items3: @items3 }, columns: @sumcols }
         expected_return = []
         groups.each do |key, _group|
           expected_return << if key == :summary_row
-                               ["SumColumn1", "SumColumn2"]
+                               ['SumColumn1', 'SumColumn2']
                              else
-                               ["Column1", "Column2"]
+                               ['Column1', 'Column2']
                              end
         end
         expect(subject.build_table(groups)).to(eq(expected_return))

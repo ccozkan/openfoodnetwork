@@ -2,13 +2,13 @@
 
 require 'spec_helper'
 
-describe "As a consumer I want to view products", js: true do
+describe 'As a consumer I want to view products', js: true do
   include AuthenticationHelper
   include WebHelper
   include ShopWorkflow
   include UIComponentHelper
 
-  describe "Viewing a product" do
+  describe 'Viewing a product' do
     let(:distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
     let(:supplier) { create(:supplier_enterprise) }
     let(:oc1) do
@@ -28,13 +28,13 @@ orders_close_at: 2.days.from_now
       set_order order
     end
 
-    describe "viewing HTML product descriptions" do
+    describe 'viewing HTML product descriptions' do
       before do
-        exchange1.update_attribute(:pickup_time, "monday")
+        exchange1.update_attribute(:pickup_time, 'monday')
         add_variant_to_order_cycle(exchange1, variant)
       end
 
-      it "shows HTML product description" do
+      it 'shows HTML product description' do
         product.description = '<p><b>Formatted</b> product description.</p> Link to an <a href="http://google.fr" target="_blank">external site</a>'
         product.save!
 
@@ -45,7 +45,7 @@ orders_close_at: 2.days.from_now
         expect(page).to(have_selector('.reveal-modal'))
         modal_should_be_open_for product
 
-        within(".reveal-modal") do
+        within('.reveal-modal') do
           expect(html).to(include('<p><b>Formatted</b> product description.</p> Link to an <a href="http://google.fr" target="_blank">external site</a>'))
         end
 
@@ -64,12 +64,12 @@ orders_close_at: 2.days.from_now
         expect(page).to(have_selector('.reveal-modal'))
         modal_should_be_open_for product
 
-        within(".reveal-modal") do
+        within('.reveal-modal') do
           expect(html).to(include('<p><b>Formatted</b> product description.</p> Link to an <a href="http://google.fr" target="_blank">external site</a>'))
         end
       end
 
-      it "does not show unsecure HTML" do
+      it 'does not show unsecure HTML' do
         product.description = "<script>alert('Dangerous!');</script><p>Safe</p>"
         product.save!
 
@@ -80,8 +80,8 @@ orders_close_at: 2.days.from_now
         expect(page).to(have_selector('.reveal-modal'))
         modal_should_be_open_for product
 
-        within(".reveal-modal") do
-          expect(html).to(include("<p>Safe</p>"))
+        within('.reveal-modal') do
+          expect(html).to(include('<p>Safe</p>'))
           expect(html).not_to(include("<script>alert('Dangerous!');</script>"))
         end
       end

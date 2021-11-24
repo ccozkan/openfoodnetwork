@@ -4,14 +4,14 @@ module ShopWorkflow
   # If a spec uses `within` but we want to check something outside of that
   # scope, we can search from the body element instead.
   def find_body
-    page.all("body").first || page.find(:xpath, "ancestor::body")
+    page.all('body').first || page.find(:xpath, 'ancestor::body')
   end
 
   def wait_for_cart
     within(find_body) do
       # We ignore visibility in case the cart dropdown is not open.
       within('.cart-sidebar', visible: false) do
-        expect(page).to_not(have_link("Updating cart...", visible: false))
+        expect(page).to_not(have_link('Updating cart...', visible: false))
       end
     end
   end
@@ -22,11 +22,11 @@ module ShopWorkflow
     within('.cart-sidebar') do
       expect(page).to(have_link(I18n.t('shared.menu.cart_sidebar.edit_cart')))
     end
-    first("a.edit-cart").click
+    first('a.edit-cart').click
   end
 
   def have_price(price)
-    have_selector(".variant-price", text: price)
+    have_selector('.variant-price', text: price)
   end
 
   def add_enterprise_fee(enterprise_fee)
@@ -50,7 +50,7 @@ module ShopWorkflow
   # Add an item to the cart
   def click_add_to_cart(variant = nil, quantity = 1)
     within_variant(variant) do
-      click_button("Add")
+      click_button('Add')
       (quantity - 1).times { click_button(increase_quantity_symbol) }
     end
     wait_for_cart
@@ -65,9 +65,9 @@ module ShopWorkflow
 
   def click_add_bulk_to_cart(variant = nil, quantity = 1)
     within_variant(variant) do
-      click_button("Add")
+      click_button('Add')
     end
-    within(".reveal-modal") do
+    within('.reveal-modal') do
       (quantity - 1).times do
         first(:button, increase_quantity_symbol).click
       end
@@ -76,36 +76,36 @@ module ShopWorkflow
   end
 
   def click_add_bulk_max_to_cart(quantity = 1)
-    within(".reveal-modal") do
+    within('.reveal-modal') do
       quantity.times do
-        page.all("button", text: increase_quantity_symbol).last.click
+        page.all('button', text: increase_quantity_symbol).last.click
       end
     end
     wait_for_cart
   end
 
   def within_variant(variant = nil, &block)
-    selector = variant ? "#variant-#{variant.id}" : ".variants"
+    selector = variant ? "#variant-#{variant.id}" : '.variants'
     expect(page).to(have_selector(selector))
     within(selector, &block)
   end
 
   def open_bulk_quantity_modal(variant)
     within_variant(variant) do
-      page.first("button.bulk-buy").click
+      page.first('button.bulk-buy').click
     end
   end
 
   def increase_quantity_symbol
-    "＋"
+    '＋'
   end
 
   def decrease_quantity_symbol
-    "－"
+    '－'
   end
 
   def toggle_accordion(name)
-    find("dd a", text: name).click
+    find('dd a', text: name).click
   end
 
   def add_variant_to_order_cycle(exchange, variant)

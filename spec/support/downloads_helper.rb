@@ -4,7 +4,7 @@ module DownloadsHelper
   TIMEOUT = 10
 
   def self.path
-    Rails.root.join("tmp", "downloads")
+    Rails.root.join('tmp', 'downloads')
   end
 
   def downloaded_filename
@@ -26,7 +26,7 @@ module DownloadsHelper
   private
 
   def downloaded_filenames
-    Dir[DownloadsHelper.path.join("*")]
+    Dir[DownloadsHelper.path.join('*')]
   end
 
   def wait_for_download

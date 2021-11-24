@@ -7,7 +7,7 @@ describe LineItemsController, type: :controller do
   let(:distributor) { create(:distributor_enterprise) }
   let(:order_cycle) { create(:simple_order_cycle) }
 
-  context "listing bought items" do
+  context 'listing bought items' do
     let!(:completed_order) do
       order = create(
 :completed_order_with_totals,
@@ -26,7 +26,7 @@ line_items_count: 1
       allow(controller).to(receive_messages(current_distributor: distributor))
     end
 
-    it "lists items bought by the user from the same shop in the same order_cycle" do
+    it 'lists items bought by the user from the same shop in the same order_cycle' do
       get :bought, format: :json
       expect(response.status).to(eq(200))
       json_response = JSON.parse(response.body)
@@ -35,8 +35,8 @@ line_items_count: 1
     end
   end
 
-  describe "destroying a line item" do
-    context "on a completed order" do
+  describe 'destroying a line item' do
+    context 'on a completed order' do
       let(:item) do
         order = create(:completed_order_with_totals)
         item = create(:line_item, order: order)
@@ -55,11 +55,11 @@ distributors: [distributor],
 
       before { allow(controller).to(receive_messages(spree_current_user: item.order.user)) }
 
-      context "with a line item id" do
+      context 'with a line item id' do
         let(:params) { { format: :json, id: item } }
 
         context "where the item's order is not associated with the user" do
-          it "denies deletion" do
+          it 'denies deletion' do
             delete :destroy, params: params
             expect(response.status).to(eq(403))
           end
@@ -71,34 +71,34 @@ distributors: [distributor],
             allow(controller).to(receive_messages(spree_current_user: item.order.user))
           end
 
-          context "without an order cycle or distributor" do
-            it "denies deletion" do
+          context 'without an order cycle or distributor' do
+            it 'denies deletion' do
               delete :destroy, params: params
               expect(response.status).to(eq(403))
             end
           end
 
-          context "with an order cycle and distributor" do
+          context 'with an order cycle and distributor' do
             before { order.update!(order_cycle_id: order_cycle.id, distributor_id: distributor.id) }
 
-            context "where changes are not allowed" do
-              it "denies deletion" do
+            context 'where changes are not allowed' do
+              it 'denies deletion' do
                 delete :destroy, params: params
                 expect(response.status).to(eq(403))
               end
             end
 
-            context "where changes are allowed" do
+            context 'where changes are allowed' do
               before { distributor.update!(allow_order_changes: true) }
 
-              it "deletes the line item" do
+              it 'deletes the line item' do
                 delete :destroy, params: params
                 expect(response.status).to(eq(204))
                 expect { item.reload }
 .to(raise_error(ActiveRecord::RecordNotFound))
               end
 
-              context "after a payment is captured" do
+              context 'after a payment is captured' do
                 let(:payment) do
                   create(:check_payment, amount: order.total, order: order, state: 'completed')
                 end
@@ -117,7 +117,7 @@ distributors: [distributor],
       end
     end
 
-    context "on a completed order with shipping and payment fees" do
+    context 'on a completed order with shipping and payment fees' do
       let(:zone) { create(:zone_with_member) }
       let(:shipping_tax_rate) do
         create(
@@ -148,7 +148,7 @@ payment_fee: payment_fee,
         order.create_tax_charge!
       end
 
-      it "updates the fees" do
+      it 'updates the fees' do
         # Sanity check fees
         item_num = order.line_items.length
         initial_fees = item_num * (shipping_fee + payment_fee)
@@ -172,7 +172,7 @@ payment_fee: payment_fee,
       end
     end
 
-    context "on a completed order with enterprise fees" do
+    context 'on a completed order with enterprise fees' do
       let(:user) { create(:user) }
       let(:variant1) { create(:variant) }
       let(:variant2) { create(:variant) }
@@ -212,7 +212,7 @@ line_items_count: 2
       end
       let(:params) { { format: :json, id: order.line_items.first } }
 
-      it "updates the fees" do
+      it 'updates the fees' do
         expect(order.reload.adjustment_total).to(eq(calculator.preferred_discount_amount))
 
         allow(controller).to(receive_messages(spree_current_user: user))

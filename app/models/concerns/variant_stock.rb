@@ -48,7 +48,7 @@ module VariantStock
     # This can be removed unless we have seen this error in Bugsnag recently
     if stock_item.nil?
       Bugsnag.notify(
-        RuntimeError.new("Variant #stock_item called, but the stock_item does not exist!"),
+        RuntimeError.new('Variant #stock_item called, but the stock_item does not exist!'),
         object: as_json
       )
       return Spree::StockLocation.first.backorderable_default

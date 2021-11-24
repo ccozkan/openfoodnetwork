@@ -2,12 +2,12 @@
 
 require 'system_helper'
 
-describe "Credit Cards", js: true do
+describe 'Credit Cards', js: true do
   include AuthenticationHelper
   include StripeHelper
   include StripeStubs
 
-  describe "as a logged in user" do
+  describe 'as a logged in user' do
     let(:user) { create(:user) }
     let!(:customer) { create(:customer, user: user) }
     let!(:default_card) do
@@ -31,25 +31,25 @@ gateway_customer_profile_id: 'cus_AZNMJ',
     before do
       login_as user
 
-      allow(Stripe).to(receive(:api_key).and_return("sk_test_12345"))
-      allow(Stripe.config).to(receive(:api_key).and_return("sk_test_12345"))
-      allow(Stripe).to(receive(:publishable_key).and_return("some_token"))
+      allow(Stripe).to(receive(:api_key).and_return('sk_test_12345'))
+      allow(Stripe.config).to(receive(:api_key).and_return('sk_test_12345'))
+      allow(Stripe).to(receive(:publishable_key).and_return('some_token'))
       Spree::Config.set(stripe_connect_enabled: true)
 
-      stub_request(:get, "https://api.stripe.com/v1/customers/cus_AZNMJ")
-        .to_return(status: 200, body: JSON.generate(id: "cus_AZNMJ"))
+      stub_request(:get, 'https://api.stripe.com/v1/customers/cus_AZNMJ')
+        .to_return(status: 200, body: JSON.generate(id: 'cus_AZNMJ'))
 
-      stub_request(:delete, "https://api.stripe.com/v1/customers/cus_AZNMJ")
-        .to_return(status: 200, body: JSON.generate(deleted: true, id: "cus_AZNMJ"))
-      stub_retrieve_payment_method_request("card_1EY...")
+      stub_request(:delete, 'https://api.stripe.com/v1/customers/cus_AZNMJ')
+        .to_return(status: 200, body: JSON.generate(deleted: true, id: 'cus_AZNMJ'))
+      stub_retrieve_payment_method_request('card_1EY...')
       stub_list_customers_request(email: user.email, response: {})
-      stub_get_customer_payment_methods_request(customer: "cus_AZNMJ", response: {})
+      stub_get_customer_payment_methods_request(customer: 'cus_AZNMJ', response: {})
     end
 
-    it "passes the smoke test" do
-      visit "/account"
+    it 'passes the smoke test' do
+      visit '/account'
 
-      find("a", text: /#{I18n.t('spree.users.show.tabs.cards')}/i).click
+      find('a', text: /#{I18n.t('spree.users.show.tabs.cards')}/i).click
 
       expect(page).to(have_content(I18n.t(:saved_cards)))
 

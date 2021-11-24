@@ -56,10 +56,10 @@ module OrderManagement
           chain_to_scope do
             where(
               adjustable_type: [
-"Spree::Order",
-"Spree::Shipment",
-"Spree::LineItem",
-                                "Spree::Payment"
+'Spree::Order',
+'Spree::Shipment',
+'Spree::LineItem',
+                                'Spree::Payment'
 ]
             )
           end
@@ -69,9 +69,9 @@ module OrderManagement
           chain_to_scope do
             where(
 originator_type: [
-"EnterpriseFee",
-"Spree::PaymentMethod",
-                                    "Spree::ShippingMethod"
+'EnterpriseFee',
+'Spree::PaymentMethod',
+                                    'Spree::ShippingMethod'
 ]
 )
           end
@@ -99,7 +99,7 @@ originator_type: [
                 )
             JOIN_STRING
 
-          join_scope("LEFT OUTER JOIN customers ON (customers.id = spree_orders.customer_id)")
+          join_scope('LEFT OUTER JOIN customers ON (customers.id = spree_orders.customer_id)')
 
           join_scope(
             <<-JOIN_STRING.strip_heredoc)
@@ -307,9 +307,9 @@ originator_type: [
         end
 
         def filter_by_date(params)
-          filter_scope("spree_orders.completed_at >= ?", params.start_at) \
+          filter_scope('spree_orders.completed_at >= ?', params.start_at) \
             if params.start_at.present?
-          filter_scope("spree_orders.completed_at <= ?", params.end_at) if params.end_at.present?
+          filter_scope('spree_orders.completed_at <= ?', params.end_at) if params.end_at.present?
         end
 
         def filter_by_distribution(params)
@@ -331,25 +331,25 @@ originator_type: [
         end
 
         def exclude_groups_with_zero_total
-          filter_scope("spree_adjustments.amount != 0")
+          filter_scope('spree_adjustments.amount != 0')
         end
 
         def group_data
           chain_to_scope do
             group(
-              "enterprise_fees.id",
-              "enterprises.id",
-              "customers.id",
-              "hubs.id",
-              "spree_payment_methods.id",
-              "spree_shipping_methods.id",
-              "adjustment_metadata.enterprise_role",
-              "spree_tax_categories.id",
-              "product_tax_categories.id",
-              "spree_adjustments.adjustable_type",
-              "adjustment_source_distributors.id",
-              "incoming_exchange_enterprises.id",
-              "outgoing_exchange_enterprises.id"
+              'enterprise_fees.id',
+              'enterprises.id',
+              'customers.id',
+              'hubs.id',
+              'spree_payment_methods.id',
+              'spree_shipping_methods.id',
+              'adjustment_metadata.enterprise_role',
+              'spree_tax_categories.id',
+              'product_tax_categories.id',
+              'spree_adjustments.adjustable_type',
+              'adjustment_source_distributors.id',
+              'incoming_exchange_enterprises.id',
+              'outgoing_exchange_enterprises.id'
             )
           end
         end

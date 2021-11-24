@@ -100,7 +100,7 @@ module Spree
  if Rails.env.dev? || Rails.env.test?
                        Gateway.providers.sort_by(&:name)
                      else
-                       Gateway.providers.reject { |p| p.name.include?("Bogus") }
+                       Gateway.providers.reject { |p| p.name.include?('Bogus') }
 .sort_by(&:name)
                      end
         @providers.reject! { |provider| stripe_provider?(provider) } unless show_stripe?
@@ -143,13 +143,13 @@ module Spree
 
       def stripe_payment_method?
         [
-"Spree::Gateway::StripeConnect",
-         "Spree::Gateway::StripeSCA"
+'Spree::Gateway::StripeConnect',
+         'Spree::Gateway::StripeSCA'
 ].include?(@payment_method.try(:type))
       end
 
       def stripe_provider?(provider)
-        provider.name.ends_with?("StripeConnect", "StripeSCA")
+        provider.name.ends_with?('StripeConnect', 'StripeSCA')
       end
 
       def base_params
@@ -169,7 +169,7 @@ module Spree
           params_for_update = base_params.merge(gateway_params)
 
           params_for_update.each do |key, value|
-            params_for_update.delete(key) if key.include?("password") && value.blank?
+            params_for_update.delete(key) if key.include?('password') && value.blank?
           end
 
           params_for_update

@@ -16,8 +16,8 @@ module Stripe
     def create_account
       return false if connection_cancelled_by_user?
 
-      raise(StripeError, params["error_description"]) unless params["code"]
-      raise(CanCan::AccessDenied) unless state.key?("enterprise_id")
+      raise(StripeError, params['error_description']) unless params['code']
+      raise(CanCan::AccessDenied) unless state.key?('enterprise_id')
 
       # Local authorisation issue, so request disconnection from Stripe
       deauthorize unless user_has_permission_to_connect?
@@ -30,11 +30,11 @@ module Stripe
     end
 
     def connection_cancelled_by_user?
-      params[:action] == "connect_callback" && params[:error] == "access_denied"
+      params[:action] == 'connect_callback' && params[:error] == 'access_denied'
     end
 
     def enterprise
-      @enterprise ||= Enterprise.find_by(permalink: state["enterprise_id"])
+      @enterprise ||= Enterprise.find_by(permalink: state['enterprise_id'])
     end
 
     private
@@ -42,12 +42,12 @@ module Stripe
     def state
       # Returns the original payload
       key = Openfoodnetwork::Application.config.secret_token
-      JWT.decode(params["state"], key, true, algorithm: 'HS256')[0]
+      JWT.decode(params['state'], key, true, algorithm: 'HS256')[0]
     end
 
     def token
       # Request an access token based on the code provided
-      @token ||= OAuth.token(grant_type: 'authorization_code', code: params["code"])
+      @token ||= OAuth.token(grant_type: 'authorization_code', code: params['code'])
     end
 
     def deauthorize

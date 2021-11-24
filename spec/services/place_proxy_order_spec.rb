@@ -14,7 +14,7 @@ describe PlaceProxyOrder do
 
   let(:mail_mock) { double(:mailer_mock, deliver_now: true) }
 
-  describe "#call" do
+  describe '#call' do
     let!(:subscription) { create(:subscription, with_items: true) }
     let!(:proxy_order) { create(:proxy_order, subscription: subscription, order: order) }
 
@@ -26,7 +26,7 @@ describe PlaceProxyOrder do
       allow(SubscriptionMailer).to(receive(:empty_email) { mail_mock })
     end
 
-    it "marks placeable proxy_orders as processed by setting placed_at" do
+    it 'marks placeable proxy_orders as processed by setting placed_at' do
       freeze_time do
         expect { subject.call }
 .to(change { proxy_order.reload.placed_at })
@@ -34,7 +34,7 @@ describe PlaceProxyOrder do
       end
     end
 
-    it "tracks exceptions" do
+    it 'tracks exceptions' do
       order.line_items << build(:line_item)
 
       expect(summarizer).to(receive(:record_and_log_error).with(:processing, order, kind_of(String)))
@@ -43,7 +43,7 @@ describe PlaceProxyOrder do
       subject.call
     end
 
-    context "when the order is already complete" do
+    context 'when the order is already complete' do
       let(:summarizer) do
         instance_double(OrderManagement::Subscriptions::Summarizer, record_order: true)
       end
@@ -56,19 +56,19 @@ describe PlaceProxyOrder do
         break unless order.next! until order.completed?
       end
 
-      it "records an issue and ignores it" do
+      it 'records an issue and ignores it' do
         ActionMailer::Base.deliveries.clear
 
         expect(summarizer).to(receive(:record_issue).with(:complete, order).once)
         expect { subject.call }
 .to_not(change { order.reload.state })
-        expect(order.payments.first.state).to(eq("checkout"))
+        expect(order.payments.first.state).to(eq('checkout'))
         expect(ActionMailer::Base.deliveries.count).to(be(0))
       end
     end
 
-    context "when the order is not already complete" do
-      describe "selection of shipping method" do
+    context 'when the order is not already complete' do
+      describe 'selection of shipping method' do
         let(:shop) { create(:distributor_enterprise) }
         let(:shipping_method) { create(:shipping_method, distributors: [shop]) }
         let!(:subscription) do
@@ -81,22 +81,22 @@ describe PlaceProxyOrder do
           proxy_order.order_cycle.save!
         end
 
-        it "uses the same shipping method after advancing the order" do
+        it 'uses the same shipping method after advancing the order' do
           subject.call
 
           proxy_order.reload
-          expect(proxy_order.state).to(eq("complete"))
+          expect(proxy_order.state).to(eq('complete'))
           expect(proxy_order.order.shipping_method).to(eq(shipping_method))
         end
       end
     end
 
-    context "when the proxy order fails to generate an order" do
+    context 'when the proxy order fails to generate an order' do
       before do
         allow(proxy_order).to(receive(:initialise_order!) { nil })
       end
 
-      it "records an error" do
+      it 'records an error' do
         expect(summarizer).to(receive(:record_subscription_issue))
         subject.call
       end
@@ -108,7 +108,7 @@ describe PlaceProxyOrder do
     end
   end
 
-  describe "#send_placement_email" do
+  describe '#send_placement_email' do
     let(:summarizer) do
       instance_double(OrderManagement::Subscriptions::Summarizer, record_order: true)
     end
@@ -122,7 +122,7 @@ describe PlaceProxyOrder do
       allow(OrderWorkflow).to(receive(:new).with(order).and_return(order_workflow))
     end
 
-    context "when no changes are present" do
+    context 'when no changes are present' do
       let(:changes) { {} }
       let(:stock_changes_loader) { instance_double(CapQuantity) }
 
@@ -130,7 +130,7 @@ describe PlaceProxyOrder do
         allow(stock_changes_loader).to(receive(:call).with(order).and_return(changes))
       end
 
-      it "logs a success and sends the email" do
+      it 'logs a success and sends the email' do
         expect(summarizer).to(receive(:record_success).with(order).once)
 
         subject.call
@@ -140,7 +140,7 @@ describe PlaceProxyOrder do
       end
     end
 
-    context "when changes are present" do
+    context 'when changes are present' do
       let(:changes) { double(:changes) }
       let(:stock_changes_loader) { instance_double(CapQuantity) }
 
@@ -148,7 +148,7 @@ describe PlaceProxyOrder do
         allow(stock_changes_loader).to(receive(:call).with(order).and_return(changes))
       end
 
-      it "logs an issue and sends the email" do
+      it 'logs an issue and sends the email' do
         expect(summarizer).to(receive(:record_issue).with(:changes, order).once)
 
         subject.call
@@ -159,7 +159,7 @@ describe PlaceProxyOrder do
     end
   end
 
-  describe "#send_empty_email" do
+  describe '#send_empty_email' do
     let(:summarizer) do
       instance_double(OrderManagement::Subscriptions::Summarizer, record_order: true)
     end
@@ -172,7 +172,7 @@ describe PlaceProxyOrder do
       allow(SubscriptionMailer).to(receive(:empty_email) { mail_mock })
     end
 
-    it "logs an issue and sends the email" do
+    it 'logs an issue and sends the email' do
       expect(summarizer).to(receive(:record_issue).with(:empty, order).once)
 
       subject.call

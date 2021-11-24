@@ -50,7 +50,7 @@ class CheckoutController < ::BaseController
   rescue Spree::Core::GatewayError => e
     rescue_from_spree_gateway_error(e)
   rescue StandardError => e
-    flash[:error] = I18n.t("checkout.failed")
+    flash[:error] = I18n.t('checkout.failed')
     action_failed(e)
   ensure
     @order.update_order!
@@ -120,9 +120,9 @@ class CheckoutController < ::BaseController
     # Stripe payments here as the order will need to be changed and resubmitted (or abandoned).
     @order.payments.incomplete.each do |payment|
       payment.void_transaction!
-      payment.adjustment&.update_columns(eligible: false, state: "finalized")
+      payment.adjustment&.update_columns(eligible: false, state: 'finalized')
     end
-    flash[:notice] = I18n.t("checkout.payment_cancelled_due_to_stock")
+    flash[:notice] = I18n.t('checkout.payment_cancelled_due_to_stock')
   end
 
   def reset_order_to_cart
@@ -150,12 +150,12 @@ class CheckoutController < ::BaseController
   def valid_payment_intent_provided?
     @valid_payment_intent_provided ||=
  begin
-      return false unless params["payment_intent"]&.starts_with?("pi_")
+      return false unless params['payment_intent']&.starts_with?('pi_')
 
       last_payment = OrderPaymentFinder.new(@order).last_payment
-      @order.state == "payment" &&
-        last_payment&.state == "requires_authorization" &&
-        last_payment&.response_code == params["payment_intent"]
+      @order.state == 'payment' &&
+        last_payment&.state == 'requires_authorization' &&
+        last_payment&.response_code == params['payment_intent']
     end
   end
 
@@ -171,14 +171,14 @@ class CheckoutController < ::BaseController
   end
 
   def checkout_workflow(shipping_method_id)
-    while @order.state != "complete"
-      if @order.state == "payment"
+    while @order.state != 'complete'
+      if @order.state == 'payment'
         return if redirect_to_payment_gateway
 
         return action_failed unless @order.process_payments!
       end
 
-      next if OrderWorkflow.new(@order).next({ "shipping_method_id" => shipping_method_id })
+      next if OrderWorkflow.new(@order).next({ 'shipping_method_id' => shipping_method_id })
 
       return action_failed
     end
@@ -208,12 +208,12 @@ class CheckoutController < ::BaseController
       checkout_succeeded
       update_succeeded_response
     else
-      action_failed(RuntimeError.new("Order not complete after the checkout workflow"))
+      action_failed(RuntimeError.new('Order not complete after the checkout workflow'))
     end
   end
 
   def order_complete?
-    @order.state == "complete" || @order.completed?
+    @order.state == 'complete' || @order.completed?
   end
 
   def checkout_succeeded

@@ -12,9 +12,9 @@ module Spree
     searchable_associations :order, :variant, :tax_category, :option_values
     searchable_scopes :with_tax, :without_tax
 
-    belongs_to :order, class_name: "Spree::Order", inverse_of: :line_items
-    belongs_to :variant, -> { with_deleted }, class_name: "Spree::Variant"
-    belongs_to :tax_category, class_name: "Spree::TaxCategory"
+    belongs_to :order, class_name: 'Spree::Order', inverse_of: :line_items
+    belongs_to :variant, -> { with_deleted }, class_name: 'Spree::Variant'
+    belongs_to :tax_category, class_name: 'Spree::TaxCategory'
 
     has_one :product, through: :variant
     has_many :adjustments, as: :adjustable, dependent: :destroy
@@ -96,7 +96,7 @@ lambda { |order_cycle|
 lambda { |enterprises|
       product_ids = Spree::Product.unscoped.where(supplier_id: enterprises).select(:id)
       variant_ids = Spree::Variant.unscoped.where(product_id: product_ids).select(:id)
-      where("spree_line_items.variant_id IN (?)", variant_ids)
+      where('spree_line_items.variant_id IN (?)', variant_ids)
     }
 
     scope :with_tax,
@@ -227,7 +227,7 @@ lambda {
     def unit_price_price_and_unit
       unit_price = UnitPrice.new(variant)
       Spree::Money.new(price_with_adjustments / unit_price.denominator).to_html +
-        "&nbsp;/&nbsp;".html_safe + unit_price.unit
+        '&nbsp;/&nbsp;'.html_safe + unit_price.unit
     end
 
     def scoper

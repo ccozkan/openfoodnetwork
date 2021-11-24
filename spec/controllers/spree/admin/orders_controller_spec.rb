@@ -5,27 +5,27 @@ require 'spec_helper'
 describe Spree::Admin::OrdersController, type: :controller do
   include OpenFoodNetwork::EmailHelper
 
-  describe "#edit" do
+  describe '#edit' do
     let!(:order) { create(:order_with_totals_and_distribution, ship_address: create(:address)) }
 
     before { controller_login_as_admin }
 
-    it "advances the order state" do
+    it 'advances the order state' do
       expect do
         spree_get(:edit, id: order)
       end.to(change { order.reload.state }
-.from("cart").to("payment"))
+.from('cart').to('payment'))
     end
 
-    describe "view" do
+    describe 'view' do
       render_views
 
-      it "does not show ineligible payment adjustments" do
+      it 'does not show ineligible payment adjustments' do
         adjustment = create(
           :adjustment,
           adjustable: build(:payment),
-          originator_type: "Spree::PaymentMethod",
-          label: "invalid adjustment",
+          originator_type: 'Spree::PaymentMethod',
+          label: 'invalid adjustment',
           eligible: false,
           order: order,
           amount: 0
@@ -38,7 +38,7 @@ describe Spree::Admin::OrdersController, type: :controller do
     end
   end
 
-  context "#update" do
+  context '#update' do
     let(:params) do
       {
 id: order,
@@ -52,10 +52,10 @@ order_cycle_id: order.order_cycle_id
 
     before { controller_login_as_admin }
 
-    context "complete order" do
+    context 'complete order' do
       let(:order) { create :completed_order_with_totals }
 
-      it "does not throw an error if no order object is given in params" do
+      it 'does not throw an error if no order object is given in params' do
         params = { id: order }
 
         spree_put :update, params
@@ -63,12 +63,12 @@ order_cycle_id: order.order_cycle_id
         expect(response.status).to(eq(302))
       end
 
-      context "recalculating fees and taxes" do
+      context 'recalculating fees and taxes' do
         before do
           allow(Spree::Order).to(receive_message_chain(:includes, :find_by!) { order })
         end
 
-        it "updates fees and taxes and redirects to order details page" do
+        it 'updates fees and taxes and redirects to order details page' do
           expect(order).to(receive(:recreate_all_fees!))
           expect(order).to(receive(:create_tax_charge!))
 
@@ -78,7 +78,7 @@ order_cycle_id: order.order_cycle_id
         end
       end
 
-      context "recalculating enterprise fees" do
+      context 'recalculating enterprise fees' do
         let(:user) { create(:admin_user) }
         let(:variant1) { create(:variant) }
         let(:variant2) { create(:variant) }
@@ -116,7 +116,7 @@ order_cycle: order_cycle
           allow(controller).to(receive(:order_to_update) { order })
         end
 
-        it "recalculates fees if the orders contents have changed" do
+        it 'recalculates fees if the orders contents have changed' do
           expect(order.total).to(eq(order.item_total + (enterprise_fee.calculator.preferred_amount * 2)))
           expect(order.adjustment_total).to(eq(enterprise_fee.calculator.preferred_amount * 2))
 
@@ -128,8 +128,8 @@ order_cycle: order_cycle
           expect(order.adjustment_total).to(eq(enterprise_fee.calculator.preferred_amount * 3))
         end
 
-        context "if the associated enterprise fee record is soft-deleted" do
-          it "removes adjustments for deleted enterprise fees" do
+        context 'if the associated enterprise fee record is soft-deleted' do
+          it 'removes adjustments for deleted enterprise fees' do
             fee_amount = enterprise_fee.calculator.preferred_amount
 
             expect(order.total).to(eq(order.item_total + (fee_amount * 2)))
@@ -144,10 +144,10 @@ order_cycle: order_cycle
           end
         end
 
-        context "if the associated enterprise fee record is hard-deleted" do
+        context 'if the associated enterprise fee record is hard-deleted' do
           # NOTE: Enterprise fees are soft-deleted now, but we still have hard-deleted
           # enterprise fees referenced as the originator of some adjustments (in production).
-          it "removes adjustments for deleted enterprise fees" do
+          it 'removes adjustments for deleted enterprise fees' do
             fee_amount = enterprise_fee.calculator.preferred_amount
 
             expect(order.total).to(eq(order.item_total + (fee_amount * 2)))
@@ -162,7 +162,7 @@ order_cycle: order_cycle
           end
         end
 
-        context "with taxes on enterprise fees" do
+        context 'with taxes on enterprise fees' do
           let(:zone) { create(:zone_with_member) }
           let(:tax_included) { true }
           let(:tax_rate) do
@@ -176,8 +176,8 @@ order_cycle: order_cycle
             allow(order).to(receive(:tax_zone) { zone })
           end
 
-          context "with included taxes" do
-            it "taxes fees correctly" do
+          context 'with included taxes' do
+            it 'taxes fees correctly' do
               spree_put :update, { id: order.number }
               order.reload
 
@@ -189,10 +189,10 @@ order_cycle: order_cycle
             end
           end
 
-          context "with added taxes" do
+          context 'with added taxes' do
             let(:tax_included) { false }
 
-            it "taxes fees correctly" do
+            it 'taxes fees correctly' do
               spree_put :update, { id: order.number }
               order.reload
 
@@ -203,7 +203,7 @@ order_cycle: order_cycle
               expect(order.additional_tax_total).to(eq(0.5))
             end
 
-            context "when the order has legacy taxes" do
+            context 'when the order has legacy taxes' do
               let(:legacy_tax_adjustment) do
                 create(
 :adjustment,
@@ -212,7 +212,7 @@ included: false,
 originator: tax_rate,
              order: order,
 adjustable: order,
-state: "closed"
+state: 'closed'
 )
               end
 
@@ -221,7 +221,7 @@ state: "closed"
                 order.adjustments << legacy_tax_adjustment
               end
 
-              it "removes legacy tax adjustments before recalculating tax" do
+              it 'removes legacy tax adjustments before recalculating tax' do
                 expect(order.all_adjustments.tax.count).to(eq(1))
                 expect(order.all_adjustments.tax).to(include(legacy_tax_adjustment))
                 expect(order.additional_tax_total).to(eq(0.5))
@@ -239,12 +239,12 @@ state: "closed"
       end
     end
 
-    context "incomplete order" do
+    context 'incomplete order' do
       let(:order) { create(:order) }
       let(:line_item) { create(:line_item) }
 
-      context "without line items" do
-        it "redirects to order details page with flash error" do
+      context 'without line items' do
+        it 'redirects to order details page with flash error' do
           spree_put :update, params
 
           expect(flash[:error]).to(eq("Line items can't be blank"))
@@ -252,7 +252,7 @@ state: "closed"
         end
       end
 
-      context "with line items" do
+      context 'with line items' do
         before do
           order.line_items << line_item
           order.save
@@ -260,8 +260,8 @@ state: "closed"
             [{ id: line_item.id, quantity: line_item.quantity }]
         end
 
-        context "and no errors" do
-          it "updates distribution charges and redirects to customer details page" do
+        context 'and no errors' do
+          it 'updates distribution charges and redirects to customer details page' do
             expect_any_instance_of(Spree::Order).to(receive(:recreate_all_fees!))
 
             spree_put :update, params
@@ -270,13 +270,13 @@ state: "closed"
           end
         end
 
-        context "with invalid distributor" do
-          it "redirects to order details page with flash error" do
+        context 'with invalid distributor' do
+          it 'redirects to order details page with flash error' do
             params[:order][:distributor_id] = create(:distributor_enterprise).id
 
             spree_put :update, params
 
-            expect(flash[:error]).to(eq("Distributor or order cycle cannot supply the products in your cart"))
+            expect(flash[:error]).to(eq('Distributor or order cycle cannot supply the products in your cart'))
             expect(response).to(redirect_to(spree.edit_admin_order_path(order)))
           end
         end
@@ -284,22 +284,22 @@ state: "closed"
     end
   end
 
-  describe "#index" do
-    context "as a regular user" do
+  describe '#index' do
+    context 'as a regular user' do
       before { allow(controller).to(receive(:spree_current_user) { create(:user) }) }
 
-      it "should deny me access to the index action" do
+      it 'should deny me access to the index action' do
         spree_get :index
         expect(response).to(redirect_to(unauthorized_path))
       end
     end
 
-    context "as an enterprise user" do
+    context 'as an enterprise user' do
       let!(:order) { create(:order_with_distributor) }
 
       before { allow(controller).to(receive(:spree_current_user) { order.distributor.owner }) }
 
-      it "should allow access" do
+      it 'should allow access' do
         expect(response.status).to(eq(200))
       end
     end

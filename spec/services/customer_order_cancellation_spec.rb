@@ -8,8 +8,8 @@ describe CustomerOrderCancellation do
     allow(Spree::OrderMailer).to(receive(:cancel_email_for_shop) { mail_mock })
   end
 
-  context "when an order is cancelled successfully" do
-    it "notifies the distributor by email" do
+  context 'when an order is cancelled successfully' do
+    it 'notifies the distributor by email' do
       order = create(:order, completed_at: Time.now, state: 'complete')
 
       CustomerOrderCancellation.new(order).call
@@ -19,7 +19,7 @@ describe CustomerOrderCancellation do
     end
   end
 
-  context "when the order fails to cancel" do
+  context 'when the order fails to cancel' do
     it "doesn't notify the distributor by email" do
       order = create(:order, state: 'canceled')
 

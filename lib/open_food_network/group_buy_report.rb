@@ -24,7 +24,7 @@ product.supplier.name,
 product.name,
 I18n.t('admin.reports.unitsize'),
        I18n.t('admin.reports.total'),
-"",
+'',
 sum_quantities,
 sum_max_quantities
 ]

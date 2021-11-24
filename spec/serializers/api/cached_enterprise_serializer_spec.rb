@@ -16,7 +16,7 @@ describe Api::CachedEnterpriseSerializer do
       enterprise.supplied_products << product
     end
 
-    context "when the enterprise is a producer" do
+    context 'when the enterprise is a producer' do
       let(:enterprise) do
         create(
 :enterprise,
@@ -25,13 +25,13 @@ describe Api::CachedEnterpriseSerializer do
 )
       end
 
-      it "serializes combined product and producer properties without duplicates" do
+      it 'serializes combined product and producer properties without duplicates' do
         properties = cached_enterprise_serializer.supplied_properties
         expect(properties).to(eq([property, different_property]))
       end
     end
 
-    context "when the enterprise is not a producer" do
+    context 'when the enterprise is not a producer' do
       let(:enterprise) do
         create(
 :enterprise,
@@ -40,7 +40,7 @@ describe Api::CachedEnterpriseSerializer do
 )
       end
 
-      it "does not serialize supplied properties" do
+      it 'does not serialize supplied properties' do
         properties = cached_enterprise_serializer.supplied_properties
         expect(properties).to(eq([]))
       end
@@ -103,23 +103,23 @@ describe Api::CachedEnterpriseSerializer do
   end
 
   describe '#icon' do
-    context "enterpise has a unrecognized category" do
+    context 'enterpise has a unrecognized category' do
       before do
-        allow(enterprise).to(receive(:category) { "unknown_category" })
+        allow(enterprise).to(receive(:category) { 'unknown_category' })
       end
 
-      it "returns the map producer icon" do
-        expect(cached_enterprise_serializer.icon).to(eq("/map_icons/map_001-producer-only.svg"))
+      it 'returns the map producer icon' do
+        expect(cached_enterprise_serializer.icon).to(eq('/map_icons/map_001-producer-only.svg'))
       end
     end
 
-    context "enterpise has a nil category" do
+    context 'enterpise has a nil category' do
       before do
         allow(enterprise).to(receive(:category) { nil })
       end
 
-      it "returns the map producer icon" do
-        expect(cached_enterprise_serializer.icon).to(eq("/map_icons/map_001-producer-only.svg"))
+      it 'returns the map producer icon' do
+        expect(cached_enterprise_serializer.icon).to(eq('/map_icons/map_001-producer-only.svg'))
       end
     end
   end

@@ -13,11 +13,11 @@ namespace :ofn do
   desc 'Find payments that got lost'
   task :missing_payments, [:days] => :environment do |_task_, args|
     days = args[:days]&.to_i || 7
-    payments_sequence = Spree::Payment.where("created_at > ?", days.days.ago).order(:id).pluck(:id)
+    payments_sequence = Spree::Payment.where('created_at > ?', days.days.ago).order(:id).pluck(:id)
     missing_payment_ids = payments_range(payments_sequence) - payments_sequence
     puts "Gaps in the payments sequence: #{missing_payment_ids.count}"
     log_entries = Spree::LogEntry.where(
-      source_type: "Spree::Payment",
+      source_type: 'Spree::Payment',
       source_id: missing_payment_ids
     )
     print_csv(log_entries) if log_entries.present?
@@ -49,29 +49,29 @@ namespace :ofn do
 
   def headers
     [
-      "Created",
-"Order",
-"Success",
-"Message",
-"Payment ID",
-"Action",
-      "Amount",
-"Currencty",
-"Receipt"
+      'Created',
+'Order',
+'Success',
+'Message',
+'Payment ID',
+'Action',
+      'Amount',
+'Currencty',
+'Receipt'
     ]
   end
 
   def row(details, params)
     [
-      Time.zone.at(params["created"] || 0).to_datetime,
-      params["description"],
+      Time.zone.at(params['created'] || 0).to_datetime,
+      params['description'],
       details.success?,
       details.message,
-      params["id"],
-      params["object"],
-      params["amount"],
-params["currency"],
-params["receipt_url"]
+      params['id'],
+      params['object'],
+      params['amount'],
+params['currency'],
+params['receipt_url']
     ]
   end
 end

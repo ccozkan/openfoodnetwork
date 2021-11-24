@@ -28,7 +28,7 @@ class UserPasswordsController < Spree::UserPasswordsController
   private
 
   def set_admin_redirect
-    session["spree_user_return_to"] = params[:return_to] if params[:return_to]
+    session['spree_user_return_to'] = params[:return_to] if params[:return_to]
   end
 
   def render_unconfirmed_response

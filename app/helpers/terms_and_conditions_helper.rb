@@ -3,20 +3,20 @@
 module TermsAndConditionsHelper
   def link_to_platform_terms
     link_to(
-t("terms_of_service"),
+t('terms_of_service'),
 TermsOfServiceFile.current_url,
-target: "_blank",
-                                                       rel: "noopener"
+target: '_blank',
+                                                       rel: 'noopener'
 )
   end
 
   def render_terms_and_conditions
     if platform_terms_required? && terms_and_conditions_activated?
-      render("checkout/all_terms_and_conditions")
+      render('checkout/all_terms_and_conditions')
     elsif platform_terms_required?
-      render("checkout/platform_terms_of_service")
+      render('checkout/platform_terms_of_service')
     elsif terms_and_conditions_activated?
-      render("checkout/terms_and_conditions")
+      render('checkout/terms_and_conditions')
     end
   end
 

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "tasks/sample_data/logging"
+require 'tasks/sample_data/logging'
 
 module SampleData
   class ProductFactory
     include Logging
 
     def create_samples(enterprises)
-      log("Creating products:")
+      log('Creating products:')
       product_data(enterprises).map do |hash|
         create_product(hash)
       end
@@ -65,7 +65,7 @@ module SampleData
       params = hash.slice(:name, :price).merge(
         supplier_id: hash[:supplier].id,
         primary_taxon_id: hash[:taxons].first.id,
-        variant_unit: "weight",
+        variant_unit: 'weight',
         variant_unit_scale: 1,
         unit_value: 1,
         shipping_category: DefaultShippingCategory.find_or_create,
@@ -77,7 +77,7 @@ module SampleData
     end
 
     def find_or_create_tax_category
-      tax_category_name = "Tax Category"
+      tax_category_name = 'Tax Category'
       tax_category = Spree::TaxCategory.find_by(name: tax_category_name)
       tax_category ||= Spree::TaxCategory.create!(name: tax_category_name)
       tax_category

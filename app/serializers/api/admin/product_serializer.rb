@@ -28,7 +28,7 @@ module Api
         if object.images.present?
           object.images.first.attachment.url(:product)
         else
-          "/noimage/product.png"
+          '/noimage/product.png'
         end
       end
 
@@ -36,7 +36,7 @@ module Api
         if object.images.present?
           object.images.first.attachment.url(:mini)
         else
-          "/noimage/mini.png"
+          '/noimage/mini.png'
         end
       end
 
@@ -51,7 +51,7 @@ module Api
       end
 
       def available_on
-        object.available_on.blank? ? "" : object.available_on.strftime("%F %T")
+        object.available_on.blank? ? '' : object.available_on.strftime('%F %T')
       end
 
       def permalink_live

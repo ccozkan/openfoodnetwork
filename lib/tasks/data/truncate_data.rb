@@ -29,7 +29,7 @@ class TruncateData
   def logging
     Rails.logger.info("TruncateData started with truncation date #{date}")
     yield
-    Rails.logger.info("TruncateData finished")
+    Rails.logger.info('TruncateData finished')
   end
 
   def truncate_order_associations

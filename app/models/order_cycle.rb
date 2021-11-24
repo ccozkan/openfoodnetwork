@@ -25,8 +25,8 @@ class OrderCycle < ApplicationRecord
 
   # These scope names are prepended with "cached_" because there are existing accessor methods
   # :incoming_exchanges and :outgoing_exchanges.
-  has_many :cached_incoming_exchanges, -> { where(incoming: true) }, class_name: "Exchange"
-  has_many :cached_outgoing_exchanges, -> { where(incoming: false) }, class_name: "Exchange"
+  has_many :cached_incoming_exchanges, -> { where(incoming: true) }, class_name: 'Exchange'
+  has_many :cached_outgoing_exchanges, -> { where(incoming: false) }, class_name: 'Exchange'
 
   has_many :suppliers, -> { distinct }, source: :sender, through: :cached_incoming_exchanges
   has_many :distributors, -> { distinct }, source: :receiver, through: :cached_outgoing_exchanges
@@ -69,7 +69,7 @@ lambda {
     where(
 'order_cycles.orders_close_at < ?',
           Time.zone.now
-).order("order_cycles.orders_close_at DESC")
+).order('order_cycles.orders_close_at DESC')
   }
   scope :undated, -> { where('order_cycles.orders_open_at IS NULL OR orders_close_at IS NULL') }
   scope :dated, -> { where('orders_open_at IS NOT NULL AND orders_close_at IS NOT NULL') }
@@ -112,7 +112,7 @@ lambda { |user|
 
   scope :with_exchanging_enterprises_outer,
 lambda {
-    joins("LEFT OUTER JOIN exchanges ON (exchanges.order_cycle_id = order_cycles.id)")
+    joins('LEFT OUTER JOIN exchanges ON (exchanges.order_cycle_id = order_cycles.id)')
       .joins("LEFT OUTER JOIN enterprises
           ON (enterprises.id = exchanges.sender_id OR enterprises.id = exchanges.receiver_id)")
   }
@@ -170,7 +170,7 @@ lambda { |user|
 
   def clone!
     oc = dup
-    oc.name = I18n.t("models.order_cycle.cloned_order_cycle_name", order_cycle: oc.name)
+    oc.name = I18n.t('models.order_cycle.cloned_order_cycle_name', order_cycle: oc.name)
     oc.orders_open_at = oc.orders_close_at = nil
     oc.coordinator_fee_ids = coordinator_fee_ids
     
@@ -198,7 +198,7 @@ lambda { |user|
   end
 
   def variants_distributed_by(distributor)
-    return Spree::Variant.where("1=0") if distributor.blank?
+    return Spree::Variant.where('1=0') if distributor.blank?
 
     Spree::Variant
       .joins(:exchanges)
@@ -282,7 +282,7 @@ lambda { |user|
     # The Spree::Order.complete scope only checks for completed_at date
     #   it does not ensure state is "complete"
     orders = Spree::Order.complete.where(
-state: "complete",
+state: 'complete',
 user_id: user,
 distributor_id: distributor,
 order_cycle_id: self

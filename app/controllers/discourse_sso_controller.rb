@@ -21,7 +21,7 @@ class DiscourseSsoController < ApplicationController
       begin
         redirect_to(sso_url)
       rescue TypeError
-        render(plain: "Bad SingleSignOn request.", status: :bad_request)
+        render(plain: 'Bad SingleSignOn request.', status: :bad_request)
       end
     else
       redirect_to(login_path)

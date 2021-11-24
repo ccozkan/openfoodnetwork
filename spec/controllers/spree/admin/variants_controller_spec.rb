@@ -7,28 +7,28 @@ module Spree
     describe VariantsController, type: :controller do
       before { controller_login_as_admin }
 
-      describe "#index" do
-        describe "deleted variants" do
+      describe '#index' do
+        describe 'deleted variants' do
           let(:product) { create(:product, name: 'Product A') }
           let(:deleted_variant) do
-            deleted_variant = product.variants.create(unit_value: "2")
+            deleted_variant = product.variants.create(unit_value: '2')
             deleted_variant.delete
             deleted_variant
           end
 
-          it "lists only non-deleted variants with params[:deleted] == off" do
-            spree_get :index, product_id: product.permalink, deleted: "off"
+          it 'lists only non-deleted variants with params[:deleted] == off' do
+            spree_get :index, product_id: product.permalink, deleted: 'off'
             expect(assigns(:variants)).to(eq(product.variants))
           end
 
-          it "lists only deleted variants with params[:deleted] == on" do
-            spree_get :index, product_id: product.permalink, deleted: "on"
+          it 'lists only deleted variants with params[:deleted] == on' do
+            spree_get :index, product_id: product.permalink, deleted: 'on'
             expect(assigns(:variants)).to(eq([deleted_variant]))
           end
         end
       end
 
-      describe "#search" do
+      describe '#search' do
         let!(:p1) { create(:simple_product, name: 'Product 1') }
         let!(:p2) { create(:simple_product, name: 'Product 2') }
         let!(:v1) { p1.variants.first }
@@ -37,23 +37,23 @@ module Spree
         let!(:d)  { create(:distributor_enterprise) }
         let!(:oc) { create(:simple_order_cycle, distributors: [d], variants: [v1]) }
 
-        it "filters by distributor" do
+        it 'filters by distributor' do
           spree_get :search, q: 'Prod', distributor_id: d.id.to_s
           expect(assigns(:variants)).to(eq([v1]))
         end
 
-        it "applies variant overrides" do
+        it 'applies variant overrides' do
           spree_get :search, q: 'Prod', distributor_id: d.id.to_s
           expect(assigns(:variants)).to(eq([v1]))
           expect(assigns(:variants).first.on_hand).to(eq(44))
         end
 
-        it "filters by order cycle" do
+        it 'filters by order cycle' do
           spree_get :search, q: 'Prod', order_cycle_id: oc.id.to_s
           expect(assigns(:variants)).to(eq([v1]))
         end
 
-        it "does not filter when no distributor or order cycle is specified" do
+        it 'does not filter when no distributor or order cycle is specified' do
           spree_get :search, q: 'Prod'
           expect(assigns(:variants)).to(match_array([v1, v2]))
         end

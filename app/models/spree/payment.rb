@@ -18,7 +18,7 @@ module Spree
 
     has_many :offsets,
 -> { where("source_type = 'Spree::Payment' AND amount < 0").completed },
-             class_name: "Spree::Payment",
+             class_name: 'Spree::Payment',
 foreign_key: :source_id
     has_many :log_entries, as: :source, dependent: :destroy
 
@@ -53,7 +53,7 @@ foreign_key: :source_id
     scope :failed, -> { with_state('failed') }
     scope :valid, -> { where.not(state: %w[failed invalid]) }
     scope :authorization_action_required, -> { where.not(cvv_response_message: nil) }
-    scope :requires_authorization, -> { with_state("requires_authorization") }
+    scope :requires_authorization, -> { with_state('requires_authorization') }
     scope :with_payment_intent, ->(code) { where(response_code: code) }
 
     # order state machine (see http://github.com/pluginaweek/state_machine/tree/master for details)
@@ -171,7 +171,7 @@ foreign_key: :source_id
       return unless adjustment.try(:reload)
       return if adjustment.finalized?
 
-      adjustment.update(eligible: false, state: "finalized")
+      adjustment.update(eligible: false, state: 'finalized')
     end
 
     def validate_source

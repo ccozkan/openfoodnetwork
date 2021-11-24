@@ -12,7 +12,7 @@ module OpenFoodNetwork
 
     def header
       case params[:report_type]
-      when "payments_by_payment_type"
+      when 'payments_by_payment_type'
         I18n.t(:report_header_payment_type)
         [
 I18n.t(:report_header_payment_state),
@@ -20,7 +20,7 @@ I18n.t(:report_header_distributor),
 I18n.t(:report_header_payment_type),
          I18n.t(:report_header_total_price, currency: currency_symbol)
 ]
-      when "itemised_payment_totals"
+      when 'itemised_payment_totals'
         [
 I18n.t(:report_header_payment_state),
 I18n.t(:report_header_distributor),
@@ -29,7 +29,7 @@ I18n.t(:report_header_distributor),
          I18n.t(:report_header_outstanding_balance_price, currency: currency_symbol),
          I18n.t(:report_header_total_price, currency: currency_symbol)
 ]
-      when "payment_totals"
+      when 'payment_totals'
         [
 I18n.t(:report_header_payment_state),
 I18n.t(:report_header_distributor),
@@ -63,11 +63,11 @@ I18n.t(:report_header_payment_type),
       end.flatten
 
       case params[:report_type]
-      when "payments_by_payment_type"
+      when 'payments_by_payment_type'
         payments
-      when "itemised_payment_totals"
+      when 'itemised_payment_totals'
         orders
-      when "payment_totals"
+      when 'payment_totals'
         orders
       else
         payments
@@ -76,7 +76,7 @@ I18n.t(:report_header_payment_type),
 
     def rules
       case params[:report_type]
-      when "payments_by_payment_type"
+      when 'payments_by_payment_type'
         [
 {
 group_by: proc { |payment| payment.order.payment_state },
@@ -91,7 +91,7 @@ group_by: proc { |payment| Spree::PaymentMethod.unscoped { payment.payment_metho
 sort_by: proc { |method| method.name }
 }
 ]
-      when "itemised_payment_totals"
+      when 'itemised_payment_totals'
         [
 {
 group_by: proc { |order| order.payment_state },
@@ -102,7 +102,7 @@ group_by: proc { |order| order.distributor },
 sort_by: proc { |distributor| distributor.name }
 }
 ]
-      when "payment_totals"
+      when 'payment_totals'
         [
 {
 group_by: proc { |order| order.payment_state },
@@ -133,14 +133,14 @@ sort_by: proc { |method| method.name }
 
     def columns
       case params[:report_type]
-      when "payments_by_payment_type"
+      when 'payments_by_payment_type'
         [
 proc { |payments| payments.first.order.payment_state },
          proc { |payments| payments.first.order.distributor.name },
          proc { |payments| payments.first.payment_method.name },
          proc { |payments| payments.sum(&:amount) }
 ]
-      when "itemised_payment_totals"
+      when 'itemised_payment_totals'
         [
 proc { |orders| orders.first.payment_state },
          proc { |orders| orders.first.distributor.name },
@@ -149,7 +149,7 @@ proc { |orders| orders.first.payment_state },
          proc { |orders| orders.sum { |order| order.outstanding_balance.to_f } },
          proc { |orders| orders.map(&:total).sum }
 ]
-      when "payment_totals"
+      when 'payment_totals'
         [
 proc { |orders| orders.first.payment_state },
          proc { |orders| orders.first.distributor.name },
@@ -160,7 +160,7 @@ proc { |orders| orders.first.payment_state },
            orders.sum do |o|
              o.payments.select do |payment|
                payment.completed? &&
-                 payment.payment_method.name.to_s.include?("EFT")
+                 payment.payment_method.name.to_s.include?('EFT')
              end.sum(&:amount)
            end
          },
@@ -168,7 +168,7 @@ proc { |orders| orders.first.payment_state },
            orders.sum do |o|
              o.payments.select do |payment|
                payment.completed? &&
-                 payment.payment_method.name.to_s.include?("PayPal")
+                 payment.payment_method.name.to_s.include?('PayPal')
              end.sum(&:amount)
            end
          },

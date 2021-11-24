@@ -46,8 +46,8 @@ FactoryBot.define do
     end
 
     trait :expensive_name do
-      name { "Shipping" }
-      description { "Expensive" }
+      name { 'Shipping' }
+      description { 'Expensive' }
       calculator { Calculator::FlatRate.new(preferred_amount: 100.55) }
     end
 

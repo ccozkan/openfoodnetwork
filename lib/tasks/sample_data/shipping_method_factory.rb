@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "tasks/sample_data/addressing"
-require "tasks/sample_data/logging"
+require 'tasks/sample_data/addressing'
+require 'tasks/sample_data/logging'
 
 module SampleData
   class ShippingMethodFactory
@@ -9,7 +9,7 @@ module SampleData
     include Addressing
 
     def create_samples(enterprises)
-      log("Creating shipping methods:")
+      log('Creating shipping methods:')
       distributors = enterprises.select(&:is_distributor)
       distributors.each do |enterprise|
         create_shipping_methods(enterprise)
@@ -30,9 +30,9 @@ module SampleData
       create_shipping_method(
         enterprise,
         name: "Pickup #{enterprise.name}",
-        description: "pick-up at your awesome hub gathering place",
+        description: 'pick-up at your awesome hub gathering place',
         require_ship_address: false,
-        calculator_type: "Calculator::Weight"
+        calculator_type: 'Calculator::Weight'
       )
     end
 
@@ -40,9 +40,9 @@ module SampleData
       delivery = create_shipping_method(
         enterprise,
         name: "Home delivery #{enterprise.name}",
-        description: "yummy food delivered at your door",
+        description: 'yummy food delivered at your door',
         require_ship_address: true,
-        calculator_type: "Calculator::FlatRate"
+        calculator_type: 'Calculator::FlatRate'
       )
       delivery.calculator.preferred_amount = 2
       delivery.calculator.save!

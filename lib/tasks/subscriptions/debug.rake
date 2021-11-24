@@ -4,7 +4,7 @@
 namespace :ofn do
   namespace :subs do
     namespace :debug do
-      desc "Print standard info about a specific Order Cycle"
+      desc 'Print standard info about a specific Order Cycle'
       task order_cycle: :environment do
         order_cycle_id = request_order_cycle_id
 
@@ -40,14 +40,14 @@ subscription_id: subscription.id
                 puts "Payment #{payment.id} with state #{payment.state}"
                 puts "Amount #{payment.amount}"
                 puts "Source #{payment.source_type} #{payment.source_id}"
-                if payment.source_type == "Spree::CreditCard"
+                if payment.source_type == 'Spree::CreditCard'
                   puts "Source #{payment.source.to_json}"
                 end
                 Spree::LogEntry.where(
-source_type: "Spree::Payment",
+source_type: 'Spree::Payment',
 source_id: payment.id
 ).each do |log_entry|
-                  puts "Log Entries found"
+                  puts 'Log Entries found'
                   puts log_entry.details
                 end
               end
@@ -57,7 +57,7 @@ source_id: payment.id
       end
 
       def request_order_cycle_id
-        puts("Please input Order Cycle ID to debug")
+        puts('Please input Order Cycle ID to debug')
         input = STDIN.gets.chomp
         exit if input.blank? || !Integer(input)
         Integer(input)

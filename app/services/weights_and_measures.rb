@@ -10,12 +10,12 @@ class WeightsAndMeasures
     largest_unit = find_largest_unit(scales_for_variant_unit, system)
     return [nil, nil] unless largest_unit
 
-    [largest_unit[0], largest_unit[1]["name"]]
+    [largest_unit[0], largest_unit[1]['name']]
   end
 
   def system
-    return "custom" unless scales = scales_for_variant_unit
-    return "custom" unless product_scale = @variant.product.variant_unit_scale
+    return 'custom' unless scales = scales_for_variant_unit
+    return 'custom' unless product_scale = @variant.product.variant_unit_scale
 
     scales[product_scale.to_f]['system']
   end

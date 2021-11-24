@@ -70,7 +70,7 @@ bill_address: bill_address,
           expect(table.size).to(eq(1))
           expect(table[0]).to(eq(
 [
-                                   order.reload.completed_at.strftime("%F %T"),
+                                   order.reload.completed_at.strftime('%F %T'),
                                    order.id,
                                    bill_address.full_name,
                                    order.email,
@@ -94,7 +94,7 @@ bill_address: bill_address,
 ))
         end
 
-        it "prints one row per line item" do
+        it 'prints one row per line item' do
           create(:line_item_with_shipment, order: order)
 
           subject = OrderAndDistributorReport.new(create(:admin_user), {}, true)

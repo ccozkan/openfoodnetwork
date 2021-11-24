@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "open_food_network/reports/line_items"
-require "open_food_network/orders_and_fulfillments_report/supplier_totals_report"
-require "open_food_network/orders_and_fulfillments_report/supplier_totals_by_distributor_report"
-require "open_food_network/orders_and_fulfillments_report/distributor_totals_by_supplier_report"
-require "open_food_network/orders_and_fulfillments_report/customer_totals_report"
+require 'open_food_network/reports/line_items'
+require 'open_food_network/orders_and_fulfillments_report/supplier_totals_report'
+require 'open_food_network/orders_and_fulfillments_report/supplier_totals_by_distributor_report'
+require 'open_food_network/orders_and_fulfillments_report/distributor_totals_by_supplier_report'
+require 'open_food_network/orders_and_fulfillments_report/customer_totals_report'
 require 'open_food_network/orders_and_fulfillments_report/default_report'
 
 include Spree::ReportsHelper
@@ -50,7 +50,7 @@ module OpenFoodNetwork
     end
 
     def total_units(line_items)
-      return " " if not_all_have_unit?(line_items)
+      return ' ' if not_all_have_unit?(line_items)
 
       total_units =
  line_items.sum do |li|

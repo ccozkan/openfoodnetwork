@@ -9,7 +9,7 @@ class ColumnPreference < ApplicationRecord
   # setting (ie. the default) for a given column
   attr_accessor :name
 
-  belongs_to :user, class_name: "Spree::User"
+  belongs_to :user, class_name: 'Spree::User'
 
   validates :action_name, presence: true, inclusion: { in: proc { known_actions } }
   validates :column_name,
@@ -50,7 +50,7 @@ column_name: column_name
 
   def self.known_actions
     OpenFoodNetwork::ColumnPreferenceDefaults.private_instance_methods
-      .select { |m| m.to_s.end_with?("_columns") }
+      .select { |m| m.to_s.end_with?('_columns') }
 .map { |m| m.to_s.sub(/_columns$/, '') }
   end
 

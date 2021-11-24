@@ -13,7 +13,7 @@ class CartController < BaseController
 
       render(json: { error: false, stock_levels: stock_levels(order) }, status: :ok)
     else
-      render(json: { error: cart_service.errors.full_messages.join(",") },
+      render(json: { error: cart_service.errors.full_messages.join(',') },
              status: :precondition_failed)
     end
   end

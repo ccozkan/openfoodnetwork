@@ -64,7 +64,7 @@ module Admin
         flash[:success] = flash_message_for(@object, :successfully_removed)
         respond_with(@object) do |format|
           format.html { redirect_to(collection_url) }
-          format.js   { render(partial: "spree/admin/shared/destroy") }
+          format.js   { render(partial: 'spree/admin/shared/destroy') }
         end
       else
         respond_with(@object) do |format|
@@ -145,7 +145,7 @@ module Admin
       return if parent_data.blank?
 
       @parent ||= parent_data[:model_class]
-        .public_send("find_by", parent_data[:find_by] => params["#{model_name}_id"])
+        .public_send('find_by', parent_data[:find_by] => params["#{model_name}_id"])
       instance_variable_set("@#{model_name}", @parent)
     end
 
@@ -214,7 +214,7 @@ options)
     #
     # Example: params.require(object_name).permit(:name)
     def permitted_resource_params
-      raise("All extending controllers need to override the method permitted_resource_params")
+      raise('All extending controllers need to override the method permitted_resource_params')
     end
 
     def collection_url(options = {})
@@ -256,7 +256,7 @@ options)
     end
 
     def spree_controller?
-      controller_path.starts_with?("spree")
+      controller_path.starts_with?('spree')
     end
   end
 end

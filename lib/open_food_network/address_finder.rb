@@ -43,9 +43,9 @@ module OpenFoodNetwork
 
     def types
       {
-        String => "email",
-        Customer => "customer",
-        Spree::User => "user"
+        String => 'email',
+        Customer => 'customer',
+        Spree::User => 'user'
       }
     end
 

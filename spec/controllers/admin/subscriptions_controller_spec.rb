@@ -28,7 +28,7 @@ describe Admin::SubscriptionsController, type: :controller do
         before { shop.update(owner: user) }
         let!(:not_enabled_shop) { create(:distributor_enterprise, owner: user) }
 
-        context "where I manage a shop that is set up for subscriptions" do
+        context 'where I manage a shop that is set up for subscriptions' do
           let!(:subscription) { create(:subscription, shop: shop) }
 
           it 'renders the index page with appropriate data' do
@@ -73,10 +73,10 @@ describe Admin::SubscriptionsController, type: :controller do
           expect(json_response.map { |so| so['id'] }).to(include(subscription.id, subscription2.id))
         end
 
-        context "when ransack predicates are submitted" do
+        context 'when ransack predicates are submitted' do
           before { params.merge!(q: { shop_id_eq: shop2.id }) }
 
-          it "restricts the list of subscriptions" do
+          it 'restricts the list of subscriptions' do
             get :index, params: params
             json_response = JSON.parse(response.body)
             expect(json_response.count).to(be(1))
@@ -472,7 +472,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
       end
 
       context 'as an enterprise user' do
-        context "without authorisation" do
+        context 'without authorisation' do
           let!(:shop2) { create(:distributor_enterprise) }
           before { shop2.update(owner: user) }
 
@@ -482,7 +482,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
           end
         end
 
-        context "with authorisation" do
+        context 'with authorisation' do
           before { shop.update(owner: user) }
 
           context "when at least one associated order is still 'open'" do
@@ -495,7 +495,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             before { break unless order.next! until order.completed? }
 
             context "when no 'open_orders' directive has been provided" do
-              it "renders an error, asking what to do" do
+              it 'renders an error, asking what to do' do
                 spree_put :cancel, params
                 expect(response.status).to(be(409))
                 json_response = JSON.parse(response.body)
@@ -573,7 +573,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
       end
 
       context 'as an enterprise user' do
-        context "without authorisation" do
+        context 'without authorisation' do
           let!(:shop2) { create(:distributor_enterprise) }
           before { shop2.update(owner: user) }
 
@@ -583,7 +583,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
           end
         end
 
-        context "with authorisation" do
+        context 'with authorisation' do
           before { shop.update(owner: user) }
 
           context "when at least one associated order is still 'open'" do
@@ -596,7 +596,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
             before { break unless order.next! until order.completed? }
 
             context "when no 'open_orders' directive has been provided" do
-              it "renders an error, asking what to do" do
+              it 'renders an error, asking what to do' do
                 spree_put :pause, params
                 expect(response.status).to(be(409))
                 json_response = JSON.parse(response.body)
@@ -676,7 +676,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
       end
 
       context 'as an enterprise user' do
-        context "without authorisation" do
+        context 'without authorisation' do
           let!(:shop2) { create(:distributor_enterprise) }
           before { shop2.update(owner: user) }
 
@@ -686,7 +686,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
           end
         end
 
-        context "with authorisation" do
+        context 'with authorisation' do
           before { shop.update(owner: user) }
 
           context "when at least one order in an open order cycle is 'complete'" do
@@ -717,7 +717,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
               end
 
               context "when no 'canceled_orders' directive has been provided" do
-                it "renders a message, informing the user that canceled order can be resumed" do
+                it 'renders a message, informing the user that canceled order can be resumed' do
                   spree_put :unpause, params
                   expect(response.status).to(be(409))
                   json_response = JSON.parse(response.body)
@@ -750,8 +750,8 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
               expect(subscription.reload.paused_at).to(be(nil))
             end
 
-            context "when there is an open OC and no associated orders exist yet for it (OC was opened when the subscription was paused)" do
-              it "creates an associated order" do
+            context 'when there is an open OC and no associated orders exist yet for it (OC was opened when the subscription was paused)' do
+              it 'creates an associated order' do
                 spree_put :unpause, params
 
                 expect(subscription.reload.paused_at).to(be(nil))
@@ -764,7 +764,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
     end
   end
 
-  describe "#load_form_data" do
+  describe '#load_form_data' do
     let!(:user) { create(:user) }
     let!(:shop) { create(:distributor_enterprise, owner: user) }
     let!(:customer1) { create(:customer, enterprise: shop) }
@@ -779,7 +779,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
       controller.instance_variable_set(:@subscription, Subscription.new(shop: shop))
     end
 
-    it "assigns data to instance variables" do
+    it 'assigns data to instance variables' do
       controller.send(:load_form_data)
       expect(assigns(:customers)).to(include(customer1, customer2))
       expect(assigns(:schedules)).to(eq([schedule]))
@@ -788,14 +788,14 @@ create(:subscription_line_item, variant: variant1, quantity: 2)
       expect(assigns(:shipping_methods)).to(eq([shipping_method]))
     end
 
-    context "when other payment methods exist" do
+    context 'when other payment methods exist' do
       let!(:stripe) { create(:stripe_connect_payment_method, distributors: [shop]) }
       let!(:paypal) do
-        Spree::Gateway::PayPalExpress.create!(name: "PayPalExpress", distributor_ids: [shop.id])
+        Spree::Gateway::PayPalExpress.create!(name: 'PayPalExpress', distributor_ids: [shop.id])
       end
       let!(:bogus) { create(:bogus_payment_method, distributors: [shop]) }
 
-      it "only loads Stripe and Cash payment methods" do
+      it 'only loads Stripe and Cash payment methods' do
         controller.send(:load_form_data)
         expect(assigns(:payment_methods)).to(include(payment_method, stripe))
         expect(assigns(:payment_methods)).to_not(include(paypal, bogus))

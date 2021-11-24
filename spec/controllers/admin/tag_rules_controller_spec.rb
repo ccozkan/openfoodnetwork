@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 describe Admin::TagRulesController, type: :controller do
-  describe "destroy" do
-    context "json" do
+  describe 'destroy' do
+    context 'json' do
       let(:format) { :json }
 
       let(:enterprise) { create(:distributor_enterprise) }
@@ -19,13 +19,13 @@ describe Admin::TagRulesController, type: :controller do
           allow(controller).to(receive(:spree_current_user) { user })
         end
 
-        it "redirects to unauthorized" do
+        it 'redirects to unauthorized' do
           spree_delete :destroy, params
           expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
-      context "where I manage the tag rule enterprise" do
+      context 'where I manage the tag rule enterprise' do
         before do
           allow(controller).to(receive(:spree_current_user) { enterprise.owner })
         end

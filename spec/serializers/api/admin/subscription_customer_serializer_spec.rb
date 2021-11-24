@@ -15,7 +15,7 @@ describe Api::Admin::SubscriptionCustomerSerializer do
     allow(serializer).to(receive(:finder) { finder_mock })
   end
 
-  it "serializes a customer " do
+  it 'serializes a customer ' do
     result = JSON.parse(serializer.to_json)
     expect(result['email']).to(eq(customer.email))
     expect(result['ship_address']['id']).to(be(nil))

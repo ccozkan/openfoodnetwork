@@ -27,12 +27,12 @@ module OpenFoodNetwork
           variant.product.supplier.name,
           variant.product.supplier.address.city,
           variant.product.name,
-          variant.product.properties.map(&:name).join(", "),
-          variant.product.taxons.map(&:name).join(", "),
+          variant.product.properties.map(&:name).join(', '),
+          variant.product.taxons.map(&:name).join(', '),
           variant.full_name,
           variant.price,
           variant.product.group_buy_unit_size,
-          "",
+          '',
           sku_for(variant)
         ]
       end

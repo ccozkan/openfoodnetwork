@@ -23,7 +23,7 @@ class SessionCookieUpgrader
       Rack::Utils.set_cookie_header!(
         headers,
         new_key,
-        { value: cookies[old_key], path: "/", domain: @options[:domain] }
+        { value: cookies[old_key], path: '/', domain: @options[:domain] }
       )
 
       # Delete old session cookie

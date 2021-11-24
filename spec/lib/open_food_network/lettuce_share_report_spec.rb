@@ -10,39 +10,39 @@ module OpenFoodNetwork
     let(:report) { LettuceShareReport.new(user, {}, true) }
     let(:variant) { create(:variant) }
 
-    describe "grower and method" do
-      it "shows just the producer when there is no certification" do
-        allow(report).to(receive(:producer_name) { "Producer" })
-        allow(report).to(receive(:certification) { "" })
+    describe 'grower and method' do
+      it 'shows just the producer when there is no certification' do
+        allow(report).to(receive(:producer_name) { 'Producer' })
+        allow(report).to(receive(:certification) { '' })
 
-        expect(report.send(:grower_and_method, variant)).to(eq("Producer"))
+        expect(report.send(:grower_and_method, variant)).to(eq('Producer'))
       end
 
-      it "shows producer and certification when a certification is present" do
-        allow(report).to(receive(:producer_name) { "Producer" })
-        allow(report).to(receive(:certification) { "Method" })
+      it 'shows producer and certification when a certification is present' do
+        allow(report).to(receive(:producer_name) { 'Producer' })
+        allow(report).to(receive(:certification) { 'Method' })
 
-        expect(report.send(:grower_and_method, variant)).to(eq("Producer (Method)"))
+        expect(report.send(:grower_and_method, variant)).to(eq('Producer (Method)'))
       end
     end
 
-    describe "gst" do
-      it "handles tax category without rates" do
+    describe 'gst' do
+      it 'handles tax category without rates' do
         expect(report.send(:gst, variant)).to(eq(0))
       end
     end
 
-    describe "table" do
-      it "handles no items" do
+    describe 'table' do
+      it 'handles no items' do
         expect(report.table).to(eq([]))
       end
 
-      describe "lists" do
+      describe 'lists' do
         let(:variant2) { create(:variant) }
         let(:variant3) { create(:variant) }
         let(:variant4) { create(:variant, on_hand: 0, on_demand: true) }
         let(:hub_address) do
-          create(:address, address1: "distributor address", city: 'The Shire', zipcode: "1234")
+          create(:address, address1: 'distributor address', city: 'The Shire', zipcode: '1234')
         end
         let(:hub) { create(:distributor_enterprise, address: hub_address) }
         let(:variant2_override) { create(:variant_override, hub: hub, variant: variant2) }
@@ -50,14 +50,14 @@ module OpenFoodNetwork
           create(:variant_override, hub: hub, variant: variant3, count_on_hand: 0)
         end
 
-        it "all items" do
+        it 'all items' do
           allow(report).to(receive(:child_variants) {
                              Spree::Variant.where(id: [variant, variant2, variant3])
                            })
           expect(report.table.count).to(eq(3))
         end
 
-        it "only available items" do
+        it 'only available items' do
           variant.on_hand = 0
           allow(report).to(receive(:child_variants) {
                              Spree::Variant.where(id: [variant, variant2, variant3, variant4])
@@ -65,7 +65,7 @@ module OpenFoodNetwork
           expect(report.table.count).to(eq(3))
         end
 
-        it "only available items considering overrides" do
+        it 'only available items considering overrides' do
           create(
 :exchange,
 incoming: false,

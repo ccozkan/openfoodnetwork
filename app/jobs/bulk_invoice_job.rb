@@ -16,7 +16,7 @@ class BulkInvoiceJob < ActiveJob::Base
   private
 
   def orders_from(order_ids)
-    Spree::Order.where(id: order_ids).order("completed_at DESC")
+    Spree::Order.where(id: order_ids).order('completed_at DESC')
   end
 
   def renderer

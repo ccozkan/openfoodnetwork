@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Exchange do
-  it "should be valid when built from factory" do
+  it 'should be valid when built from factory' do
     expect(build(:exchange)).to(be_valid)
   end
 
@@ -15,7 +15,7 @@ describe Exchange do
     end
   end
 
-  it "should not be valid when (sender, receiver, direction) set are not unique for its order cycle" do
+  it 'should not be valid when (sender, receiver, direction) set are not unique for its order cycle' do
     e1 = create(:exchange)
 
     e2 = build(
@@ -39,7 +39,7 @@ incoming: e1.incoming
     expect(e2).to(be_valid)
   end
 
-  it "has exchange variants" do
+  it 'has exchange variants' do
     e = create(:exchange)
     p = create(:product)
 
@@ -47,7 +47,7 @@ incoming: e1.incoming
     expect(e.variants.count).to(eq(1))
   end
 
-  it "has exchange fees" do
+  it 'has exchange fees' do
     e = create(:exchange)
     f = create(:enterprise_fee)
 
@@ -55,7 +55,7 @@ incoming: e1.incoming
     expect(e.enterprise_fees.count).to(eq(1))
   end
 
-  describe "exchange directionality" do
+  describe 'exchange directionality' do
     let(:supplier) { create(:supplier_enterprise) }
     let(:coordinator) { create(:distributor_enterprise) }
     let(:distributor) { create(:distributor_enterprise) }
@@ -67,28 +67,28 @@ incoming: e1.incoming
       oc.exchanges.create!(sender: coordinator, receiver: distributor, incoming: false)
     end
 
-    describe "reporting whether it is an incoming exchange" do
-      it "returns true for incoming exchanges" do
+    describe 'reporting whether it is an incoming exchange' do
+      it 'returns true for incoming exchanges' do
         expect(incoming_exchange).to(be_incoming)
       end
 
-      it "returns false for outgoing exchanges" do
+      it 'returns false for outgoing exchanges' do
         expect(outgoing_exchange).not_to(be_incoming)
       end
     end
 
-    describe "finding the exchange participant (the enterprise other than the coordinator)" do
-      it "returns the sender for incoming exchanges" do
+    describe 'finding the exchange participant (the enterprise other than the coordinator)' do
+      it 'returns the sender for incoming exchanges' do
         expect(incoming_exchange.participant).to(eq(supplier))
       end
 
-      it "returns the receiver for outgoing exchanges" do
+      it 'returns the receiver for outgoing exchanges' do
         expect(outgoing_exchange.participant).to(eq(distributor))
       end
     end
   end
 
-  describe "reporting its role" do
+  describe 'reporting its role' do
     it "returns 'supplier' when it is an incoming exchange" do
       e = Exchange.new
       allow(e).to(receive(:incoming?) { true })
@@ -102,13 +102,13 @@ incoming: e1.incoming
     end
   end
 
-  describe "scopes" do
+  describe 'scopes' do
     let(:supplier) { create(:supplier_enterprise) }
     let(:coordinator) { create(:distributor_enterprise, is_primary_producer: true) }
     let(:distributor) { create(:distributor_enterprise) }
     let(:oc) { create(:simple_order_cycle, coordinator: coordinator) }
 
-    describe "finding exchanges managed by a particular user" do
+    describe 'finding exchanges managed by a particular user' do
       let(:user) do
         user = create(:user)
         user.spree_roles = []
@@ -117,7 +117,7 @@ incoming: e1.incoming
 
       before { Exchange.destroy_all }
 
-      it "returns exchanges where the user manages both the sender and the receiver" do
+      it 'returns exchanges where the user manages both the sender and the receiver' do
         exchange = create(:exchange, order_cycle: oc)
         exchange.sender.users << user
         exchange.receiver.users << user
@@ -125,32 +125,32 @@ incoming: e1.incoming
         expect(Exchange.managed_by(user)).to(eq([exchange]))
       end
 
-      it "does not return exchanges where the user manages only the sender" do
+      it 'does not return exchanges where the user manages only the sender' do
         exchange = create(:exchange, order_cycle: oc)
         exchange.sender.users << user
 
         expect(Exchange.managed_by(user)).to(be_empty)
       end
 
-      it "does not return exchanges where the user manages only the receiver" do
+      it 'does not return exchanges where the user manages only the receiver' do
         exchange = create(:exchange, order_cycle: oc)
         exchange.receiver.users << user
 
         expect(Exchange.managed_by(user)).to(be_empty)
       end
 
-      it "does not return exchanges where the user manages neither enterprise" do
+      it 'does not return exchanges where the user manages neither enterprise' do
         exchange = create(:exchange, order_cycle: oc)
         expect(Exchange.managed_by(user)).to(be_empty)
       end
     end
 
-    it "finds exchanges in a particular order cycle" do
+    it 'finds exchanges in a particular order cycle' do
       ex = create(:exchange, order_cycle: oc)
       expect(Exchange.in_order_cycle(oc)).to(eq([ex]))
     end
 
-    describe "finding exchanges by direction" do
+    describe 'finding exchanges by direction' do
       let!(:incoming_exchange) do
         oc.exchanges.create!(sender: supplier,    receiver: coordinator, incoming: true)
       end
@@ -158,32 +158,32 @@ incoming: e1.incoming
         oc.exchanges.create!(sender: coordinator, receiver: distributor, incoming: false)
       end
 
-      it "finds incoming exchanges" do
+      it 'finds incoming exchanges' do
         expect(Exchange.incoming).to(eq([incoming_exchange]))
       end
 
-      it "finds outgoing exchanges" do
+      it 'finds outgoing exchanges' do
         expect(Exchange.outgoing).to(eq([outgoing_exchange]))
       end
 
-      it "correctly determines direction of exchanges between the same enterprise" do
+      it 'correctly determines direction of exchanges between the same enterprise' do
         incoming_exchange.update(sender: coordinator, incoming: true)
         outgoing_exchange.update(receiver: coordinator, incoming: false)
         expect(Exchange.incoming).to(eq([incoming_exchange]))
         expect(Exchange.outgoing).to(eq([outgoing_exchange]))
       end
 
-      it "finds exchanges coming from an enterprise" do
+      it 'finds exchanges coming from an enterprise' do
         expect(Exchange.from_enterprise(supplier)).to(   eq([incoming_exchange]))
         expect(Exchange.from_enterprise(coordinator)).to(eq([outgoing_exchange]))
       end
 
-      it "finds exchanges going to an enterprise" do
+      it 'finds exchanges going to an enterprise' do
         expect(Exchange.to_enterprise(coordinator)).to(eq([incoming_exchange]))
         expect(Exchange.to_enterprise(distributor)).to(eq([outgoing_exchange]))
       end
 
-      it "finds exchanges coming from any of a number of enterprises" do
+      it 'finds exchanges coming from any of a number of enterprises' do
         expect(Exchange.from_enterprises([coordinator])).to(eq([outgoing_exchange]))
         expect(
 Exchange.from_enterprises(
@@ -198,7 +198,7 @@ incoming_exchange,
 ]))
       end
 
-      it "finds exchanges going to any of a number of enterprises" do
+      it 'finds exchanges going to any of a number of enterprises' do
         expect(Exchange.to_enterprises([coordinator])).to(eq([incoming_exchange]))
         expect(
 Exchange.to_enterprises(
@@ -213,7 +213,7 @@ incoming_exchange,
 ]))
       end
 
-      it "finds exchanges involving any of a number of enterprises" do
+      it 'finds exchanges involving any of a number of enterprises' do
         expect(Exchange.involving([supplier])).to(eq([incoming_exchange]))
         expect(Exchange.involving([coordinator])).to(match_array([
 incoming_exchange,
@@ -223,22 +223,22 @@ incoming_exchange,
       end
     end
 
-    describe "finding exchanges supplying to a distributor" do
-      it "returns incoming exchanges" do
+    describe 'finding exchanges supplying to a distributor' do
+      it 'returns incoming exchanges' do
         d = create(:distributor_enterprise)
         ex = create(:exchange, order_cycle: oc, incoming: true)
 
         expect(oc.exchanges.supplying_to(d)).to(eq([ex]))
       end
 
-      it "returns outgoing exchanges to the distributor" do
+      it 'returns outgoing exchanges to the distributor' do
         d = create(:distributor_enterprise)
         ex = create(:exchange, order_cycle: oc, receiver: d, incoming: false)
 
         expect(oc.exchanges.supplying_to(d)).to(eq([ex]))
       end
 
-      it "does not return outgoing exchanges to a different distributor" do
+      it 'does not return outgoing exchanges to a different distributor' do
         d1 = create(:distributor_enterprise)
         d2 = create(:distributor_enterprise)
         ex = create(:exchange, order_cycle: oc, receiver: d1, incoming: false)
@@ -247,7 +247,7 @@ incoming_exchange,
       end
     end
 
-    it "finds exchanges with a particular variant" do
+    it 'finds exchanges with a particular variant' do
       v = create(:variant)
       ex = create(:exchange)
       ex.variants << v
@@ -255,7 +255,7 @@ incoming_exchange,
       expect(Exchange.with_variant(v)).to(eq([ex]))
     end
 
-    it "finds exchanges with any of a number of variants, without returning duplicates" do
+    it 'finds exchanges with any of a number of variants, without returning duplicates' do
       v1 = create(:variant)
       v2 = create(:variant)
       v3 = create(:variant)
@@ -285,7 +285,7 @@ incoming_exchange,
       expect(Exchange.with_product(p)).to(eq([ex]))
     end
 
-    describe "sorting exchanges by primary enterprise name" do
+    describe 'sorting exchanges by primary enterprise name' do
       let(:e1) { create(:supplier_enterprise,    name: 'ZZZ') }
       let(:e2) { create(:distributor_enterprise, name: 'AAA') }
       let(:e3) { create(:supplier_enterprise,    name: 'CCC') }
@@ -294,18 +294,18 @@ incoming_exchange,
       let!(:ex2) { create(:exchange, receiver: e2, incoming: false) }
       let!(:ex3) { create(:exchange, sender:   e3, incoming: true) }
 
-      it "sorts" do
+      it 'sorts' do
         expect(Exchange.by_enterprise_name).to(eq([ex2, ex3, ex1]))
       end
     end
   end
 
-  it "clones itself" do
+  it 'clones itself' do
     oc = create(:order_cycle)
     new_oc = create(:simple_order_cycle)
 
     ex1 = oc.exchanges.last
-    ex1.update_attribute(:tag_list, "wholesale")
+    ex1.update_attribute(:tag_list, 'wholesale')
     ex2 = ex1.clone!(new_oc)
 
     expect(ex1.sender_id).to(eq(ex2.sender_id))
@@ -317,6 +317,6 @@ incoming_exchange,
     expect(ex1.variant_ids).to(eq(ex2.variant_ids))
     expect(ex1.enterprise_fee_ids).to(eq(ex2.enterprise_fee_ids))
 
-    expect(ex2.reload.tag_list).to(eq(["wholesale"]))
+    expect(ex2.reload.tag_list).to(eq(['wholesale']))
   end
 end

@@ -62,7 +62,7 @@ module Spree
         return unless event && @payment.payment_source
 
         # Because we have a transition method also called void, we do this to avoid conflicts.
-        event = "void_transaction" if event == "void"
+        event = 'void_transaction' if event == 'void'
         if allowed_events.include?(event) && @payment.public_send("#{event}!")
           flash[:success] = t(:payment_updated)
         else
@@ -153,7 +153,7 @@ module Spree
         return if !@order.payment? || @order.insufficient_stock_lines.blank?
 
         flash[:error] = I18n.t(
-"spree.orders.line_item.insufficient_stock",
+'spree.orders.line_item.insufficient_stock',
                                on_hand: "0 #{out_of_stock_item_names}"
 )
         redirect_to(spree.edit_admin_order_url(@order))
@@ -162,7 +162,7 @@ module Spree
       def out_of_stock_item_names
         @order.insufficient_stock_lines.map do |line_item|
           line_item.variant.name
-        end.join(", ")
+        end.join(', ')
       end
 
       def load_order

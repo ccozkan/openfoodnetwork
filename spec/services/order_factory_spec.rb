@@ -19,7 +19,7 @@ describe OrderFactory do
   let(:factory) { OrderFactory.new(attrs, opts) }
   let(:order) { factory.create }
 
-  describe "create" do
+  describe 'create' do
     let(:attrs) do
       attrs = {}
       attrs[:line_items] =
@@ -29,12 +29,12 @@ describe OrderFactory do
       attrs[:order_cycle_id] = order_cycle.id
       attrs[:shipping_method_id] = shipping_method.id
       attrs[:payment_method_id] = payment_method.id
-      attrs[:bill_address_attributes] = bill_address.attributes.except("id")
-      attrs[:ship_address_attributes] = ship_address.attributes.except("id")
+      attrs[:bill_address_attributes] = bill_address.attributes.except('id')
+      attrs[:ship_address_attributes] = ship_address.attributes.except('id')
       attrs
     end
 
-    it "builds a new order based on the provided attributes" do
+    it 'builds a new order based on the provided attributes' do
       expect_new_order
       expect(order.line_items.count).to(eq(2))
       expect(order.customer).to(eq(customer))
@@ -49,7 +49,7 @@ describe OrderFactory do
       expect(order.complete?).to(be(false))
     end
 
-    it "retains address, delivery, and payment attributes until completion of the order" do
+    it 'retains address, delivery, and payment attributes until completion of the order' do
       OrderWorkflow.new(order).complete
 
       order.reload
@@ -62,65 +62,65 @@ describe OrderFactory do
       expect(order.total).to(eq(38.0))
     end
 
-    context "when the customer does not have a user associated with it" do
+    context 'when the customer does not have a user associated with it' do
       before { customer.update_attribute(:user_id, nil) }
 
-      it "initialises the order without a user_id" do
+      it 'initialises the order without a user_id' do
         expect_new_order
         expect(order.user).to(be(nil))
       end
     end
 
-    context "when requested quantity is greater than available stock" do
-      context "when no override is present" do
+    context 'when requested quantity is greater than available stock' do
+      context 'when no override is present' do
         before do
           variant1.update_attribute(:on_hand, 2)
           attrs[:line_items].first[:quantity] = 5
         end
 
-        context "when skip_stock_check is not requested" do
-          it "initialises the order but limits stock to the available amount" do
+        context 'when skip_stock_check is not requested' do
+          it 'initialises the order but limits stock to the available amount' do
             expect_new_order
             expect(variant1_line_item.quantity).to(eq(2))
           end
 
-          context "when variant is on_demand" do
+          context 'when variant is on_demand' do
             before { variant1.update_attribute(:on_demand, true) }
 
-            it "initialises the order with the requested quantity regardless of stock" do
+            it 'initialises the order with the requested quantity regardless of stock' do
               expect_new_order
               expect(variant1_line_item.quantity).to(eq(5))
             end
           end
         end
 
-        context "when skip_stock_check is requested" do
+        context 'when skip_stock_check is requested' do
           let(:opts) { { skip_stock_check: true } }
 
-          it "initialises the order with the requested quantity regardless" do
+          it 'initialises the order with the requested quantity regardless' do
             expect_new_order
             expect(variant1_line_item.quantity).to(eq(5))
           end
         end
       end
 
-      context "when an override is present" do
+      context 'when an override is present' do
         let!(:override) do
           create(:variant_override, hub_id: shop.id, variant_id: variant1.id, count_on_hand: 3)
         end
         before { attrs[:line_items].first[:quantity] = 6 }
 
-        context "when skip_stock_check is not requested" do
-          it "initialised the order but limits stock to the available amount" do
+        context 'when skip_stock_check is not requested' do
+          it 'initialised the order but limits stock to the available amount' do
             expect_new_order
             expect(variant1_line_item.quantity).to(eq(3))
           end
         end
 
-        context "when skip_stock_check is requested" do
+        context 'when skip_stock_check is requested' do
           let(:opts) { { skip_stock_check: true } }
 
-          it "initialises the order with the requested quantity regardless" do
+          it 'initialises the order with the requested quantity regardless' do
             expect_new_order
             expect(variant1_line_item.quantity).to(eq(6))
           end
@@ -128,21 +128,21 @@ describe OrderFactory do
       end
     end
 
-    describe "determining the price for line items" do
-      context "when no override is present" do
-        it "uses the price from the variant" do
+    describe 'determining the price for line items' do
+      context 'when no override is present' do
+        it 'uses the price from the variant' do
           expect_new_order
           expect(variant1_line_item.price).to(eq(5.0))
           expect(order.total).to(eq(38.0))
         end
       end
 
-      context "when an override is present" do
+      context 'when an override is present' do
         let!(:override) do
           create(:variant_override, hub_id: shop.id, variant_id: variant1.id, price: 3.0)
         end
 
-        it "uses the price from the override" do
+        it 'uses the price from the override' do
           expect_new_order
           expect(variant1_line_item.price).to(eq(3.0))
           expect(order.total).to(eq(34.0))

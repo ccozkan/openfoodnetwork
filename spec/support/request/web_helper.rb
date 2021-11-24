@@ -62,7 +62,7 @@ module WebHelper
   end
 
   def get_i18n_locale
-    page.evaluate_script("I18n.locale;")
+    page.evaluate_script('I18n.locale;')
   end
 
   def get_i18n_translation(key = nil)
@@ -81,7 +81,7 @@ module WebHelper
     if elems.none?
       nil
     elsif elems.many?
-      raise("Multiple results returned for script_content")
+      raise('Multiple results returned for script_content')
     else
       elems.first.text(:all)
     end
@@ -90,7 +90,7 @@ module WebHelper
   # http://www.elabs.se/blog/53-why-wait_until-was-removed-from-capybara
   # Do not use this without good reason. Capybara's built-in waiting is very effective.
   def wait_until(secs = nil)
-    require("timeout")
+    require('timeout')
     Timeout.timeout(secs || Capybara.default_max_wait_time) do
       sleep(0.1) until value = yield
       value
@@ -141,11 +141,11 @@ module WebHelper
     page.evaluate_script("#{angular_scope(controller)}.scope().RequestMonitor.loading == false")
   end
 
-  def fill_in_tag(tag_name, selector = "tags-input .tags input")
+  def fill_in_tag(tag_name, selector = 'tags-input .tags input')
     expect(page).to(have_selector(selector))
-    find(:css, selector).send_keys("")
+    find(:css, selector).send_keys('')
     find(:css, selector).set("#{tag_name}\n")
-    expect(page).to(have_selector(".tag-list .tag-item span", text: tag_name))
+    expect(page).to(have_selector('.tag-list .tag-item span', text: tag_name))
   end
 
   private
@@ -158,6 +158,6 @@ module WebHelper
   end
 
   def wait_for_ajax
-    wait_until { page.evaluate_script("$.active").zero? }
+    wait_until { page.evaluate_script('$.active').zero? }
   end
 end

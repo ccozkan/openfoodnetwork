@@ -4,7 +4,7 @@
 module OpenFoodNetwork
   class OrdersAndFulfillmentsReport
     class CustomerTotalsReport
-      REPORT_TYPE = "order_cycle_customer_totals"
+      REPORT_TYPE = 'order_cycle_customer_totals'
 
       attr_reader :context
 
@@ -74,13 +74,13 @@ I18n.t(:report_header_billing_postcode),
             summary_columns: [
               proc { |line_items| line_items.first.order.distributor.name },
               proc { |line_items| line_items.first.order.bill_address.full_name },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
               proc { |_line_items| I18n.t('admin.reports.total') },
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
 
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
               proc { |line_items| line_items.sum(&:amount) },
               proc { |line_items| line_items.sum(&:amount_with_adjustments) },
               proc { |line_items| line_items.first.order.admin_and_handling_total },
@@ -89,31 +89,31 @@ I18n.t(:report_header_billing_postcode),
               proc { |line_items| line_items.first.order.total },
               proc { |line_items| line_items.first.order.paid? ? I18n.t(:yes) : I18n.t(:no) },
 
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
 
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
 
               proc { |line_items| line_items.first.order.special_instructions },
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
 
               proc { |line_items| line_items.first.order.order_cycle&.name },
               proc { |line_items|
                 line_items.first.order.payments.first&.payment_method&.name
               },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
               proc { |line_items| line_items.first.order.number },
-              proc { |line_items| line_items.first.order.completed_at.strftime("%F %T") },
+              proc { |line_items| line_items.first.order.completed_at.strftime('%F %T') },
             ]
           },
           {
@@ -143,7 +143,7 @@ I18n.t(:report_header_billing_postcode),
           proc { |line_items| line_items.first.order.distributor.name },
           proc { |line_items|
             bill_address = line_items.first.order.bill_address
-            bill_address.firstname + " " + bill_address.lastname
+            bill_address.firstname + ' ' + bill_address.lastname
           },
           proc { |line_items| line_items.first.order.email },
           proc { |line_items| line_items.first.order.bill_address.phone },
@@ -154,10 +154,10 @@ I18n.t(:report_header_billing_postcode),
           proc { |line_items| line_items.to_a.sum(&:quantity) },
           proc { |line_items| line_items.sum(&:amount) },
           proc { |line_items| line_items.sum(&:amount_with_adjustments) },
-          proc { |_line_items| "" },
-          proc { |_line_items| "" },
-          proc { |_line_items| "" },
-          proc { |_line_items| "" },
+          proc { |_line_items| '' },
+          proc { |_line_items| '' },
+          proc { |_line_items| '' },
+          proc { |_line_items| '' },
           proc { |line_items|
             line_items.all? { |li| li.order.paid? } ? I18n.t(:yes) : I18n.t(:no)
           },
@@ -181,7 +181,7 @@ I18n.t(:report_header_billing_postcode),
             line_items.first.order.ship_address&.state if rsa.call(line_items)
           },
 
-          proc { |_line_items| "" },
+          proc { |_line_items| '' },
           proc do |line_items|
             line_item = line_items.first
             variant_scoper_for(line_item.order.distributor_id).scope(line_item.variant)
@@ -210,7 +210,7 @@ I18n.t(:report_header_billing_postcode),
           proc { |line_items| line_items.first.order.bill_address&.zipcode },
           proc { |line_items| line_items.first.order.bill_address&.state },
           proc { |line_items| line_items.first.order.number },
-          proc { |line_items| line_items.first.order.completed_at.strftime("%F %T") },
+          proc { |line_items| line_items.first.order.completed_at.strftime('%F %T') },
         ]
       end
       

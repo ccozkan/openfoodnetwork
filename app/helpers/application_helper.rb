@@ -8,7 +8,7 @@ module ApplicationHelper
     object = convert_to_model(object)
     obj = object.respond_to?(:errors) ? object : instance_variable_get("@#{object}")
 
-    return "" unless obj && obj.errors[method].present?
+    return '' unless obj && obj.errors[method].present?
 
     errors = obj.errors[method].map { |err| h(err) }
 .join('<br />').html_safe
@@ -46,7 +46,7 @@ module ApplicationHelper
 
   def body_classes
     classes = []
-    classes << "off-canvas" unless @hide_menu
+    classes << 'off-canvas' unless @hide_menu
     classes << @shopfront_layout
   end
 end

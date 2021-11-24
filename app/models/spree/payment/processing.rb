@@ -196,7 +196,7 @@ shipping_address: order.ship_address.try(:active_merchant_hash)
       private
 
       def preauthorized?
-        response_code.presence&.match("pi_")
+        response_code.presence&.match('pi_')
       end
 
       def validate!

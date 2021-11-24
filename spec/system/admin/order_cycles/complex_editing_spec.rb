@@ -7,7 +7,7 @@ describe ' As an administrator I want to manage complex order cycles ', js: true
   include AuthenticationHelper
   include WebHelper
 
-  it "editing an order cycle" do
+  it 'editing an order cycle' do
     # Given an order cycle with all the settings
     oc = create(:order_cycle)
     oc.suppliers.first.update_attribute(:name, 'AAA')
@@ -22,8 +22,8 @@ describe ' As an administrator I want to manage complex order cycles ', js: true
 
     # Then I should see the basic settings
     expect(page.find('#order_cycle_name').value).to(eq(oc.name))
-    expect(page.find('#order_cycle_orders_open_at').value).to(eq(oc.orders_open_at.strftime("%Y-%m-%d %H:%M")))
-    expect(page.find('#order_cycle_orders_close_at').value).to(eq(oc.orders_close_at.strftime("%Y-%m-%d %H:%M")))
+    expect(page.find('#order_cycle_orders_open_at').value).to(eq(oc.orders_open_at.strftime('%Y-%m-%d %H:%M')))
+    expect(page.find('#order_cycle_orders_close_at').value).to(eq(oc.orders_close_at.strftime('%Y-%m-%d %H:%M')))
     expect(page).to(have_content("COORDINATOR #{oc.coordinator.name}"))
 
     click_button 'Next'
@@ -100,6 +100,6 @@ describe ' As an administrator I want to manage complex order cycles ', js: true
   private
 
   def wait_for_edit_form_to_load_order_cycle(order_cycle)
-    expect(page).to(have_field("order_cycle_name", with: order_cycle.name))
+    expect(page).to(have_field('order_cycle_name', with: order_cycle.name))
   end
 end

@@ -39,7 +39,7 @@ module Spree
 
     belongs_to :adjustable, polymorphic: true
     belongs_to :originator, -> { with_deleted }, polymorphic: true
-    belongs_to :order, class_name: "Spree::Order"
+    belongs_to :order, class_name: 'Spree::Order'
     belongs_to :tax_category, class_name: 'Spree::TaxCategory'
 
     belongs_to :tax_rate,
@@ -70,10 +70,10 @@ module Spree
     scope :optional, -> { where(mandatory: false) }
     scope :charge, -> { where('amount >= 0') }
     scope :credit, -> { where('amount < 0') }
-    scope :return_authorization, -> { where(originator_type: "Spree::ReturnAuthorization") }
+    scope :return_authorization, -> { where(originator_type: 'Spree::ReturnAuthorization') }
     scope :inclusive, -> { where(included: true) }
     scope :additional, -> { where(included: false) }
-    scope :legacy_tax, -> { additional.tax.where(adjustable_type: "Spree::Order") }
+    scope :legacy_tax, -> { additional.tax.where(adjustable_type: 'Spree::Order') }
 
     scope :enterprise_fee, -> { where(originator_type: 'EnterpriseFee') }
     scope :admin,          -> { where(originator_type: nil) }
@@ -127,7 +127,7 @@ module Spree
     end
 
     def immutable?
-      state != "open"
+      state != 'open'
     end
 
     def has_tax?

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "capybara/cuprite"
+require 'capybara/cuprite'
 
 Capybara.register_driver(:cuprite) do |app|
   Capybara::Cuprite::Driver.new(
@@ -11,7 +11,7 @@ Capybara.register_driver(:cuprite) do |app|
       process_timeout: 20,
       timeout: 20,
       # Don't load scripts from external sources, like google maps or stripe
-      url_whitelist: ["http://localhost", "http://0.0.0.0", "http://127.0.0.1"],
+      url_whitelist: ['http://localhost', 'http://0.0.0.0', 'http://127.0.0.1'],
       inspector: true,
       headless: true,
       js_errors: true,

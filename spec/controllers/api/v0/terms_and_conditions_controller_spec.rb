@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 module Api
   describe V0::TermsAndConditionsController, type: :controller do
@@ -10,10 +10,10 @@ module Api
     let(:enterprise) { create(:enterprise, owner: enterprise_owner) }
     let(:enterprise_manager) { create(:user, enterprises: [enterprise]) }
 
-    describe "removing terms and conditions file" do
-      fake_terms_file_path = File.open(Rails.root.join("app", "assets", "images", "logo-black.png"))
+    describe 'removing terms and conditions file' do
+      fake_terms_file_path = File.open(Rails.root.join('app', 'assets', 'images', 'logo-black.png'))
       let(:terms_and_conditions_file) do
-        Rack::Test::UploadedFile.new(fake_terms_file_path, "application/pdf")
+        Rack::Test::UploadedFile.new(fake_terms_file_path, 'application/pdf')
       end
       let(:enterprise) { create(:enterprise, owner: enterprise_owner) }
 
@@ -22,30 +22,30 @@ module Api
         enterprise.update(terms_and_conditions: terms_and_conditions_file)
       end
 
-      context "as manager" do
+      context 'as manager' do
         let(:current_user) { enterprise_manager }
 
-        it "removes terms and conditions file" do
+        it 'removes terms and conditions file' do
           spree_delete :destroy, enterprise_id: enterprise
 
           expect(response.status).to(eq(200))
-          expect(json_response["id"]).to(eq(enterprise.id))
+          expect(json_response['id']).to(eq(enterprise.id))
           enterprise.reload
           expect(enterprise.terms_and_conditions?).to(be(false))
         end
 
-        context "when terms and conditions file does not exist" do
+        context 'when terms and conditions file does not exist' do
           let(:enterprise) { create(:enterprise, owner: enterprise_owner) }
 
           before do
             enterprise.update(terms_and_conditions: nil)
           end
 
-          it "responds with error" do
+          it 'responds with error' do
             spree_delete :destroy, enterprise_id: enterprise
 
             expect(response.status).to(eq(409))
-            expect(json_response["error"]).to(eq(I18n.t("api.enterprise_terms_and_conditions.destroy_attachment_does_not_exist")))
+            expect(json_response['error']).to(eq(I18n.t('api.enterprise_terms_and_conditions.destroy_attachment_does_not_exist')))
           end
         end
       end

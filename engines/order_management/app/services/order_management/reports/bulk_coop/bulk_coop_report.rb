@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "open_food_network/reports/line_items"
+require 'open_food_network/reports/line_items'
 
 module OrderManagement
   module Reports
@@ -27,18 +27,18 @@ module OrderManagement
 
         def header
           case params[:report_type]
-          when "bulk_coop_supplier_report"
+          when 'bulk_coop_supplier_report'
             @supplier_report.header
-          when "bulk_coop_allocation"
+          when 'bulk_coop_allocation'
             @allocation_report.header
-          when "bulk_coop_packing_sheets"
+          when 'bulk_coop_packing_sheets'
             [
 I18n.t(:report_header_customer),
              I18n.t(:report_header_product),
              I18n.t(:report_header_variant),
              I18n.t(:report_header_sum_total)
 ]
-          when "bulk_coop_customer_payments"
+          when 'bulk_coop_customer_payments'
             [
 I18n.t(:report_header_customer),
              I18n.t(:report_header_date_of_order),
@@ -74,11 +74,11 @@ I18n.t(:report_header_supplier),
 
         def rules
           case params[:report_type]
-          when "bulk_coop_supplier_report"
+          when 'bulk_coop_supplier_report'
             @supplier_report.rules
-          when "bulk_coop_allocation"
+          when 'bulk_coop_allocation'
             @allocation_report.rules
-          when "bulk_coop_packing_sheets"
+          when 'bulk_coop_packing_sheets'
             [
 {
 group_by: proc { |li| li.product },
@@ -93,7 +93,7 @@ group_by: proc { |li| li.order },
 sort_by: proc { |order| order.to_s }
 }
 ]
-          when "bulk_coop_customer_payments"
+          when 'bulk_coop_customer_payments'
             [
 {
 group_by: proc { |li| li.order },
@@ -113,8 +113,8 @@ summary_columns: [
 proc { |lis| lis.first.product.supplier.name },
                                  proc { |lis| lis.first.product.name },
                                  proc { |lis| lis.first.product.group_buy_unit_size || 0.0 },
-                                 proc { |_lis| "" },
-                                 proc { |_lis| "" },
+                                 proc { |_lis| '' },
+                                 proc { |_lis| '' },
                                  proc { |lis|
                                    lis.sum do |li|
                                      li.quantity * (li.weight_from_unit_value || 0)
@@ -166,18 +166,18 @@ sort_by: proc { |full_name| full_name }
 
         def columns
           case params[:report_type]
-          when "bulk_coop_supplier_report"
+          when 'bulk_coop_supplier_report'
             @supplier_report.columns
-          when "bulk_coop_allocation"
+          when 'bulk_coop_allocation'
             @allocation_report.columns
-          when "bulk_coop_packing_sheets"
+          when 'bulk_coop_packing_sheets'
             [
               :order_billing_address_name,
               :product_name,
               :full_name,
               :total_quantity
             ]
-          when "bulk_coop_customer_payments"
+          when 'bulk_coop_customer_payments'
             [
               :order_billing_address_name,
               :order_completed_at,
@@ -243,7 +243,7 @@ sort_by: proc { |full_name| full_name }
         end
 
         def empty_cell(_line_items)
-          ""
+          ''
         end
 
         def full_name(line_items)
@@ -276,7 +276,7 @@ sort_by: proc { |full_name| full_name }
 
         def order_billing_address_name(line_items)
           billing_address = line_items.first.order.bill_address
-          billing_address.firstname + " " + billing_address.lastname
+          billing_address.firstname + ' ' + billing_address.lastname
         end
 
         def order_completed_at(line_items)

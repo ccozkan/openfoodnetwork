@@ -11,17 +11,17 @@ module OrderManagement
           include UsingEnterpriseFee
 
           def fee_calculated_on_transfer_through_name
-            i18n_translate("fee_calculated_on_transfer_through_all")
+            i18n_translate('fee_calculated_on_transfer_through_all')
           end
 
           def tax_category_name
-            return data["tax_category_name"] if data["tax_category_name"].present?
+            return data['tax_category_name'] if data['tax_category_name'].present?
 
-            i18n_translate("tax_category_various") if inherits_tax_category?
+            i18n_translate('tax_category_various') if inherits_tax_category?
           end
 
           def inherits_tax_category?
-            data["enterprise_fee_inherits_tax_category"]
+            data['enterprise_fee_inherits_tax_category']
           end
         end
       end

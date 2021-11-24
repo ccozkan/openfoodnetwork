@@ -8,7 +8,7 @@ describe GroupsController, type: :controller do
   let!(:enterprise) { create(:distributor_enterprise) }
   let!(:group) { create(:enterprise_group, enterprises: [enterprise], on_front_page: true) }
 
-  it "loads all enterprises for group" do
+  it 'loads all enterprises for group' do
     get :index
     expect(response.body).to(have_text(enterprise.id))
   end

@@ -7,7 +7,7 @@ describe Spree::UsersController, type: :controller do
 
   include AuthenticationHelper
 
-  describe "show" do
+  describe 'show' do
     let!(:u1) { create(:user) }
     let!(:u2) { create(:user) }
     let!(:distributor1) { create(:distributor_enterprise) }
@@ -29,7 +29,7 @@ describe Spree::UsersController, type: :controller do
       allow(controller).to(receive(:spree_current_user) { u1 })
     end
 
-    it "returns orders placed by the user at normal shops" do
+    it 'returns orders placed by the user at normal shops' do
       get :show
 
       expect(orders).to(include(d1o1, d1o2))
@@ -55,17 +55,17 @@ describe Spree::UsersController, type: :controller do
     end
   end
 
-  describe "registered_email" do
+  describe 'registered_email' do
     routes { Openfoodnetwork::Application.routes }
 
     let!(:user) { create(:user) }
 
-    it "returns true if email corresponds to a registered user" do
+    it 'returns true if email corresponds to a registered user' do
       post :registered_email, params: { email: user.email }
       expect(json_response['registered']).to(eq(true))
     end
 
-    it "returns false if email does not correspond to a registered user" do
+    it 'returns false if email does not correspond to a registered user' do
       post :registered_email, params: { email: 'nonregistereduser@example.com' }
       expect(json_response['registered']).to(eq(false))
     end

@@ -11,57 +11,57 @@ describe Spree::Order do
     allow(order).to(receive(:require_email))
   end
 
-  context "#next!" do
-    context "when current state is payment" do
+  context '#next!' do
+    context 'when current state is payment' do
       before do
-        order.state = "payment"
+        order.state = 'payment'
         order.run_callbacks(:create)
         allow(order).to(receive_messages(payment_required?: true))
         allow(order).to(receive_messages(process_payments!: true))
       end
 
-      context "when payment processing succeeds" do
+      context 'when payment processing succeeds' do
         before { allow(order).to(receive_messages(process_payments!: true)) }
 
-        it "should finalize order when transitioning to complete state" do
+        it 'should finalize order when transitioning to complete state' do
           expect(order).to(receive(:finalize!))
           order.next!
         end
 
-        context "when credit card processing fails" do
+        context 'when credit card processing fails' do
           before { allow(order).to(receive_messages(process_payments!: false)) }
 
-          it "should still complete the order" do
+          it 'should still complete the order' do
             order.next
-            expect(order.state).to(eq("complete"))
+            expect(order.state).to(eq('complete'))
           end
         end
       end
 
-      context "when payment processing fails" do
+      context 'when payment processing fails' do
         before { allow(order).to(receive_messages(process_payments!: false)) }
 
-        it "can transition to complete" do
+        it 'can transition to complete' do
           order.next
-          expect(order.state).to(eq("complete"))
+          expect(order.state).to(eq('complete'))
         end
       end
     end
 
-    context "when current state is delivery" do
+    context 'when current state is delivery' do
       before do
         allow(order).to(receive(:ensure_available_shipping_rates))
-        order.state = "delivery"
+        order.state = 'delivery'
       end
 
-      it "adjusts tax rates when transitioning to payment" do
+      it 'adjusts tax rates when transitioning to payment' do
         expect(Spree::TaxRate).to(receive(:adjust).at_least(:once))
         order.next!
       end
     end
   end
 
-  context "#can_cancel?" do
+  context '#can_cancel?' do
     [:pending, :backorder, :ready].each do |shipment_state|
       it "should be true if shipment_state is #{shipment_state}" do
         allow(order).to(receive_messages(completed?: true))
@@ -80,7 +80,7 @@ describe Spree::Order do
     end
   end
 
-  context "#cancel" do
+  context '#cancel' do
     let!(:variant) { build(:variant) }
     let!(:inventory_units) do
       [
@@ -105,11 +105,11 @@ build(:line_item, variant: variant, quantity: 2)
       allow(order).to(receive_messages(allow_cancel?: true))
     end
 
-    it "should send a cancel email" do
+    it 'should send a cancel email' do
       # Stub methods that cause side-effects in this test
       allow(shipment).to(receive(:cancel!))
       allow(order).to(receive(:restock_items!))
-      mail_message = double("Mail::Message")
+      mail_message = double('Mail::Message')
       order_id = nil
       expect(Spree::OrderMailer).to(receive(:cancel_email) { |*args|
         order_id = args[0]
@@ -120,7 +120,7 @@ build(:line_item, variant: variant, quantity: 2)
       expect(order_id).to(eq(order.id))
     end
 
-    context "restocking inventory" do
+    context 'restocking inventory' do
       before do
         allow(shipment).to(receive(:ensure_correct_adjustment))
         allow(shipment).to(receive(:update_order))
@@ -129,7 +129,7 @@ build(:line_item, variant: variant, quantity: 2)
       end
     end
 
-    context "resets payment state" do
+    context 'resets payment state' do
       before do
         # Stubs methods that cause unwanted side effects in this test
         allow(Spree::OrderMailer).to(receive(:cancel_email).and_return(mail_message = double))
@@ -138,19 +138,19 @@ build(:line_item, variant: variant, quantity: 2)
         allow(shipment).to(receive(:cancel!))
       end
 
-      context "without shipped items" do
+      context 'without shipped items' do
         it "should set payment state to 'credit owed'" do
           order.cancel!
           expect(order.payment_state).to(eq('credit_owed'))
         end
       end
 
-      context "with shipped items" do
+      context 'with shipped items' do
         before do
           allow(order).to(receive_messages(shipment_state: 'partial'))
         end
 
-        it "should not alter the payment state" do
+        it 'should not alter the payment state' do
           order.cancel!
           expect(order.payment_state).to(be_nil)
         end
@@ -159,10 +159,10 @@ build(:line_item, variant: variant, quantity: 2)
   end
 
   # Another regression test for Spree #729
-  context "#resume" do
+  context '#resume' do
     before do
-      allow(order).to(receive_messages(email: "user@spreecommerce.com"))
-      allow(order).to(receive_messages(state: "canceled"))
+      allow(order).to(receive_messages(email: 'user@spreecommerce.com'))
+      allow(order).to(receive_messages(state: 'canceled'))
       allow(order).to(receive_messages(allow_resume?: true))
     end
   end

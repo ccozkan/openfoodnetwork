@@ -53,7 +53,7 @@ module ReportsActions
   end
 
   def file_timestamp
-    Time.zone.now.strftime("%Y%m%d")
+    Time.zone.now.strftime('%Y%m%d')
   end
 
   def i18n_scope

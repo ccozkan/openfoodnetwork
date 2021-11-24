@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 describe Admin::VariantOverridesController, type: :controller do
-  describe "bulk_update" do
-    context "json" do
+  describe 'bulk_update' do
+    context 'json' do
       let(:format) { :json }
 
       let(:hub) { create(:distributor_enterprise) }
@@ -19,7 +19,7 @@ describe Admin::VariantOverridesController, type: :controller do
 id: variant_override.id,
 price: 123.45,
 count_on_hand: 321,
-sku: "MySKU",
+sku: 'MySKU',
 on_demand: false
 }
 ]
@@ -32,19 +32,19 @@ on_demand: false
           allow(controller).to(receive(:spree_current_user) { user })
         end
 
-        it "redirects to unauthorized" do
+        it 'redirects to unauthorized' do
           put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
           expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
-      context "where I manage the variant override hub" do
+      context 'where I manage the variant override hub' do
         before do
           allow(controller).to(receive(:spree_current_user) { hub.owner })
         end
 
-        context "but the producer has not granted VO permission" do
-          it "redirects to unauthorized" do
+        context 'but the producer has not granted VO permission' do
+          it 'redirects to unauthorized' do
             put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
             expect(response).to(redirect_to(unauthorized_path))
           end
@@ -57,7 +57,7 @@ on_demand: false
           end
         end
 
-        context "and the producer has granted VO permission" do
+        context 'and the producer has granted VO permission' do
           before do
             create(
 :enterprise_relationship,
@@ -67,7 +67,7 @@ child: hub,
 )
           end
 
-          it "loads data" do
+          it 'loads data' do
             put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
             expect(assigns[:hubs]).to(eq([hub]))
             expect(assigns[:producers]).to(eq([variant.product.supplier]))
@@ -75,23 +75,23 @@ child: hub,
             expect(assigns[:inventory_items]).to(eq([inventory_item]))
           end
 
-          it "allows me to update the variant override" do
+          it 'allows me to update the variant override' do
             put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
 
             variant_override.reload
             expect(variant_override.price).to(eq(123.45))
             expect(variant_override.count_on_hand).to(eq(321))
-            expect(variant_override.sku).to(eq("MySKU"))
+            expect(variant_override.sku).to(eq('MySKU'))
             expect(variant_override.on_demand).to(eq(false))
           end
 
-          context "where params for a variant override are blank" do
+          context 'where params for a variant override are blank' do
             let(:variant_override_params) do
               [
 {
 id: variant_override.id,
-price: "",
-count_on_hand: "",
+price: '',
+count_on_hand: '',
 default_stock: nil,
 resettable: nil,
 sku: nil,
@@ -100,13 +100,13 @@ on_demand: nil
 ]
             end
 
-            it "destroys the variant override" do
+            it 'destroys the variant override' do
               put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
               expect(VariantOverride.find_by(id: variant_override.id)).to(be_nil)
             end
           end
 
-          context "and there is a variant override for a deleted variant" do
+          context 'and there is a variant override for a deleted variant' do
             let(:deleted_variant) { create(:variant) }
             let!(:variant_override_of_deleted_variant) do
               create(:variant_override, hub: hub, variant: deleted_variant)
@@ -114,7 +114,7 @@ on_demand: nil
 
             before { deleted_variant.update_attribute(:deleted_at, Time.zone.now) }
 
-            it "allows to update other variant overrides" do
+            it 'allows to update other variant overrides' do
               put :bulk_update, as: format, params: { variant_overrides: variant_override_params }
 
               expect(response).to_not(redirect_to(unauthorized_path))
@@ -127,8 +127,8 @@ on_demand: nil
     end
   end
 
-  describe "bulk_reset" do
-    context "json" do
+  describe 'bulk_reset' do
+    context 'json' do
       let(:format) { :json }
 
       let(:hub) { create(:distributor_enterprise) }
@@ -166,25 +166,25 @@ default_stock: 1,
           allow(controller).to(receive(:spree_current_user) { user })
         end
 
-        it "redirects to unauthorized" do
+        it 'redirects to unauthorized' do
           put :bulk_reset, params: params
           expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
-      context "where I manage the variant override hub" do
+      context 'where I manage the variant override hub' do
         before do
           allow(controller).to(receive(:spree_current_user) { hub.owner })
         end
 
-        context "where the producer has not granted create_variant_overrides permission to the hub" do
-          it "restricts access" do
+        context 'where the producer has not granted create_variant_overrides permission to the hub' do
+          it 'restricts access' do
             put :bulk_reset, params: params
             expect(response).to(redirect_to(unauthorized_path))
           end
         end
 
-        context "where the producer has granted create_variant_overrides permission to the hub" do
+        context 'where the producer has granted create_variant_overrides permission to the hub' do
           let!(:er1) do
             create(
 :enterprise_relationship,
@@ -194,7 +194,7 @@ child: hub,
 )
           end
 
-          it "loads data" do
+          it 'loads data' do
             put :bulk_reset, params: params
             expect(assigns[:hubs]).to(eq([hub]))
             expect(assigns[:producers]).to(eq([producer]))
@@ -202,7 +202,7 @@ child: hub,
             expect(assigns[:inventory_items]).to(eq([]))
           end
 
-          it "updates stock to default values where reset is enabled" do
+          it 'updates stock to default values where reset is enabled' do
             expect(variant_override1.reload.count_on_hand).to(eq(5)) # reset enabled
             expect(variant_override2.reload.count_on_hand).to(eq(2)) # reset disabled
             put :bulk_reset, params: params
@@ -210,7 +210,7 @@ child: hub,
             expect(variant_override2.reload.count_on_hand).to(eq(2)) # reset disabled
           end
 
-          context "and the producer has granted create_variant_overrides permission to another hub I manage" do
+          context 'and the producer has granted create_variant_overrides permission to another hub I manage' do
             before { hub.owner.update_attribute(:enterprise_limit, 2) }
             let(:hub2) { create(:distributor_enterprise, owner: hub.owner) }
             let(:product) { create(:product, supplier: producer) }
@@ -234,7 +234,7 @@ child: hub2,
 )
             end
 
-            it "does not reset count_on_hand for variant_overrides not in params" do
+            it 'does not reset count_on_hand for variant_overrides not in params' do
               expect do
                 put(:bulk_reset, params: params)
               end.to_not(change { variant_override3.reload.count_on_hand })

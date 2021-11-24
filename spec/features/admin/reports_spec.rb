@@ -1,129 +1,129 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 describe ' As an administrator I want numbers, all the numbers! ' do
   include WebHelper
   include AuthenticationHelper
 
-  context "Permissions for different reports" do
-    context "As an enterprise user" do
+  context 'Permissions for different reports' do
+    context 'As an enterprise user' do
       let(:user) do
         create(:user, enterprises: [create(:distributor_enterprise)])
       end
 
-      it "does not show super admin only report" do
+      it 'does not show super admin only report' do
         login_to_admin_as user
-        click_link "Reports"
-        expect(page).not_to(have_content("Users & Enterprises"))
+        click_link 'Reports'
+        expect(page).not_to(have_content('Users & Enterprises'))
       end
     end
 
-    context "As an admin user" do
-      it "shows the super admin only report" do
+    context 'As an admin user' do
+      it 'shows the super admin only report' do
         login_to_admin_section
-        click_link "Reports"
-        expect(page).to(have_content("Users & Enterprises"))
+        click_link 'Reports'
+        expect(page).to(have_content('Users & Enterprises'))
       end
     end
   end
 
-  describe "Customers report" do
+  describe 'Customers report' do
     before do
       login_as_admin_and_visit spree.admin_reports_path
     end
 
-    it "customers report" do
-      click_link "Mailing List"
+    it 'customers report' do
+      click_link 'Mailing List'
       expect(page).to(have_select('report_type', selected: 'Mailing List'))
-      expect(page).to(have_content("click on GO"))
-      click_button "Go"
+      expect(page).to(have_content('click on GO'))
+      click_button 'Go'
 
-      rows = find("table#listing_customers").all("thead tr")
-      table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-      expect(table.sort).to(eq([["Email", "First Name", "Last Name", "Suburb"]].sort))
+      rows = find('table#listing_customers').all('thead tr')
+      table = rows.map { |r| r.all('th').map { |c| c.text.strip } }
+      expect(table.sort).to(eq([['Email', 'First Name', 'Last Name', 'Suburb']].sort))
     end
 
-    it "customers report" do
-      click_link "Addresses"
+    it 'customers report' do
+      click_link 'Addresses'
       expect(page).to(have_select('report_type', selected: 'Addresses'))
 
-      click_button "Go"
-      rows = find("table#listing_customers").all("thead tr")
-      table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
+      click_button 'Go'
+      rows = find('table#listing_customers').all('thead tr')
+      table = rows.map { |r| r.all('th').map { |c| c.text.strip } }
       expect(table.sort).to(eq(
 [
         [
-"First Name",
-"Last Name",
-"Billing Address",
-"Email",
-"Phone",
-"Hub",
-"Hub Address",
-         "Shipping Method"
+'First Name',
+'Last Name',
+'Billing Address',
+'Email',
+'Phone',
+'Hub',
+'Hub Address',
+         'Shipping Method'
 ]
       ].sort
 ))
     end
   end
 
-  describe "Order cycle management report" do
+  describe 'Order cycle management report' do
     before do
       login_as_admin_and_visit spree.admin_reports_path
     end
 
-    it "payment method report" do
-      click_link "Payment Methods Report"
-      click_button "Search"
-      rows = find("table#listing_ocm_orders").all("thead tr")
-      table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
+    it 'payment method report' do
+      click_link 'Payment Methods Report'
+      click_button 'Search'
+      rows = find('table#listing_ocm_orders').all('thead tr')
+      table = rows.map { |r| r.all('th').map { |c| c.text.strip } }
       expect(table.sort).to(eq(
 [
         [
-"First Name",
-"Last Name",
-"Hub",
-"Hub Code",
-"Email",
-"Phone",
-"Shipping Method",
-         "Payment Method",
-"Amount",
-"Balance"
+'First Name',
+'Last Name',
+'Hub',
+'Hub Code',
+'Email',
+'Phone',
+'Shipping Method',
+         'Payment Method',
+'Amount',
+'Balance'
 ]
       ].sort
 ))
     end
 
-    it "delivery report" do
-      click_link "Delivery Report"
-      click_button "Search"
-      rows = find("table#listing_ocm_orders").all("thead tr")
-      table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
+    it 'delivery report' do
+      click_link 'Delivery Report'
+      click_button 'Search'
+      rows = find('table#listing_ocm_orders').all('thead tr')
+      table = rows.map { |r| r.all('th').map { |c| c.text.strip } }
       expect(table.sort).to(eq(
 [
         [
-"First Name",
-"Last Name",
-"Hub",
-"Hub Code",
-"Delivery Address",
-"Delivery Postcode",
-         "Phone",
-"Shipping Method",
-"Payment Method",
-"Amount",
-"Balance",
-"Temp Controlled Items?",
-"Special Instructions"
+'First Name',
+'Last Name',
+'Hub',
+'Hub Code',
+'Delivery Address',
+'Delivery Postcode',
+         'Phone',
+'Shipping Method',
+'Payment Method',
+'Amount',
+'Balance',
+'Temp Controlled Items?',
+'Special Instructions'
 ]
       ].sort
 ))
     end
   end
 
-  it "orders and distributors report" do
+  it 'orders and distributors report' do
     login_as_admin_and_visit spree.admin_reports_path
     click_link 'Orders And Distributors'
     click_button 'Search'
@@ -131,7 +131,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
     expect(page).to(have_content('Order date'))
   end
 
-  it "payments reports" do
+  it 'payments reports' do
     login_as_admin_and_visit spree.admin_reports_path
     click_link 'Payment Reports'
     click_button 'Search'
@@ -139,7 +139,7 @@ describe ' As an administrator I want numbers, all the numbers! ' do
     expect(page).to(have_content('Payment State'))
   end
 
-  describe "sales tax report" do
+  describe 'sales tax report' do
     let(:distributor1) do
       create(:distributor_enterprise, with_payment_and_shipping: true, charges_sales_tax: true)
     end
@@ -211,7 +211,7 @@ quantity: 3,
       break unless order1.next! until order1.payment?
       create(
 :payment,
-state: "checkout",
+state: 'checkout',
 order: order1,
 amount: order1.reload.total,
           payment_method: create(:payment_method, distributors: [distributor1])
@@ -219,11 +219,11 @@ amount: order1.reload.total,
       break unless order1.next! until order1.complete?
 
       login_as_admin_and_visit spree.admin_reports_path
-      click_link "Sales Tax"
-      select("Tax types", from: "report_type")
+      click_link 'Sales Tax'
+      select('Tax types', from: 'report_type')
     end
 
-    it "reports" do
+    it 'reports' do
       # Then it should give me access only to managed enterprises
       expect(page).to(    have_select('q_distributor_id_eq',
                                       with_options: [user1.enterprises.first.name]))
@@ -238,36 +238,36 @@ amount: order1.reload.total,
       expect(page).to(have_content(order1.number.to_s))
 
       # And the totals and sales tax should be correct
-      expect(page).to(have_content("1512.99")) # items total
-      expect(page).to(have_content("1500.45")) # taxable items total
-      expect(page).to(have_content("250.08")) # sales tax
-      expect(page).to(have_content("20.0")) # enterprise fee tax
+      expect(page).to(have_content('1512.99')) # items total
+      expect(page).to(have_content('1500.45')) # taxable items total
+      expect(page).to(have_content('250.08')) # sales tax
+      expect(page).to(have_content('20.0')) # enterprise fee tax
 
       # And the shipping cost and tax should be correct
-      expect(page).to(have_content("100.55")) # shipping cost
-      expect(page).to(have_content("16.76")) # shipping tax
+      expect(page).to(have_content('100.55')) # shipping cost
+      expect(page).to(have_content('16.76')) # shipping tax
 
       # And the total tax should be correct
-      expect(page).to(have_content("286.84")) # total tax
+      expect(page).to(have_content('286.84')) # total tax
     end
   end
 
-  describe "orders & fulfilment reports" do
-    it "loads the report page" do
+  describe 'orders & fulfilment reports' do
+    it 'loads the report page' do
       login_as_admin_and_visit spree.admin_reports_path
       click_link 'Orders & Fulfillment Reports'
 
       expect(page).to(have_content('Supplier'))
     end
 
-    context "with two orders on the same day at different times" do
+    context 'with two orders on the same day at different times' do
       let(:bill_address) { create(:address) }
       let(:distributor_address) do
-        create(:address, address1: "distributor address", city: 'The Shire', zipcode: "1234")
+        create(:address, address1: 'distributor address', city: 'The Shire', zipcode: '1234')
       end
       let(:distributor) { create(:distributor_enterprise, address: distributor_address) }
       let(:product) { create(:product) }
-      let(:shipping_instructions) { "pick up on thursday please!" }
+      let(:shipping_instructions) { 'pick up on thursday please!' }
       let(:order1) do
         create(
 :order,
@@ -293,7 +293,7 @@ bill_address: bill_address,
         create(:line_item_with_shipment, product: product, order: order2)
       end
 
-      it "is precise to time of day, not just date" do
+      it 'is precise to time of day, not just date' do
         # When I generate a customer report with a timeframe that includes one order but not the other
         login_as_admin_and_visit spree.orders_and_fulfillment_admin_reports_path
 
@@ -307,11 +307,11 @@ bill_address: bill_address,
       end
     end
 
-    it "handles order cycles with nil opening or closing times" do
+    it 'handles order cycles with nil opening or closing times' do
       distributor = create(:distributor_enterprise)
       oc = create(
 :simple_order_cycle,
-name: "My Order Cycle",
+name: 'My Order Cycle',
 distributors: [distributor],
                      orders_open_at: Time.zone.now,
 orders_close_at: nil
@@ -320,17 +320,17 @@ orders_close_at: nil
 
       login_as_admin_and_visit spree.orders_and_fulfillment_admin_reports_path
 
-      expect(page).to(have_content("My Order Cycle"))
+      expect(page).to(have_content('My Order Cycle'))
     end
   end
 
-  describe "products and inventory report", js: true do
+  describe 'products and inventory report', js: true do
     let(:supplier) { create(:supplier_enterprise, name: 'Supplier Name') }
     let(:taxon)    { create(:taxon, name: 'Taxon Name') }
     let(:product1) do
       create(
 :simple_product,
-name: "Product Name",
+name: 'Product Name',
 price: 100,
 supplier: supplier,
                  primary_taxon: taxon
@@ -339,14 +339,14 @@ supplier: supplier,
     let(:product2) do
       create(
 :simple_product,
-name: "Product 2",
+name: 'Product 2',
 price: 99.0,
 variant_unit: 'weight',
                  variant_unit_scale: 1,
 unit_value: '100',
 supplier: supplier,
 primary_taxon: taxon,
-sku: "product_sku"
+sku: 'product_sku'
 )
     end
     let(:variant1) { product1.variants.first }
@@ -359,77 +359,77 @@ sku: "product_sku"
       product1.taxons = [taxon]
       product2.taxons = [taxon]
       variant1.on_hand = 10
-      variant1.update_column(:sku, "sku1")
+      variant1.update_column(:sku, 'sku1')
       variant2.on_hand = 20
-      variant2.update_column(:sku, "sku2")
+      variant2.update_column(:sku, 'sku2')
       variant3.on_hand = 9
-      variant3.update_column(:sku, "")
-      variant1.option_values = [create(:option_value, presentation: "Test")]
-      variant2.option_values = [create(:option_value, presentation: "Something")]
+      variant3.update_column(:sku, '')
+      variant1.option_values = [create(:option_value, presentation: 'Test')]
+      variant2.option_values = [create(:option_value, presentation: 'Something')]
     end
 
-    it "shows products and inventory report" do
+    it 'shows products and inventory report' do
       login_as_admin_and_visit spree.admin_reports_path
 
-      expect(page).to(have_content("All products"))
-      expect(page).to(have_content("Inventory (on hand)"))
+      expect(page).to(have_content('All products'))
+      expect(page).to(have_content('Inventory (on hand)'))
       click_link 'Products & Inventory'
-      click_button "Go"
-      expect(page).to(have_content("Supplier"))
+      click_button 'Go'
+      expect(page).to(have_content('Supplier'))
       expect(page).to(have_table_row([
-"Supplier",
-"Producer Suburb",
-"Product",
-                                      "Product Properties",
-"Taxons",
-"Variant Value",
-"Price",
-"Group Buy Unit Quantity",
-"Amount",
-"SKU"
+'Supplier',
+'Producer Suburb',
+'Product',
+                                      'Product Properties',
+'Taxons',
+'Variant Value',
+'Price',
+'Group Buy Unit Quantity',
+'Amount',
+'SKU'
 ].map(&:upcase)))
       expect(page).to(have_table_row([
 product1.supplier.name,
 product1.supplier.address.city,
-                                      "Product Name",
-product1.properties.map(&:presentation).join(", "),
+                                      'Product Name',
+product1.properties.map(&:presentation).join(', '),
 product1.primary_taxon.name,
-"Test",
-"100.0",
+'Test',
+'100.0',
 product1.group_buy_unit_size.to_s,
-"",
-"sku1"
+'',
+'sku1'
 ]))
       expect(page).to(have_table_row([
 product1.supplier.name,
 product1.supplier.address.city,
-                                      "Product Name",
-product1.properties.map(&:presentation).join(", "),
+                                      'Product Name',
+product1.properties.map(&:presentation).join(', '),
 product1.primary_taxon.name,
-"Something",
-"80.0",
+'Something',
+'80.0',
 product1.group_buy_unit_size.to_s,
-"",
-"sku2"
+'',
+'sku2'
 ]))
       expect(page).to(have_table_row([
 product2.supplier.name,
 product1.supplier.address.city,
-                                      "Product 2",
-product1.properties.map(&:presentation).join(", "),
+                                      'Product 2',
+product1.properties.map(&:presentation).join(', '),
 product2.primary_taxon.name,
-"100g",
-"99.0",
+'100g',
+'99.0',
 product1.group_buy_unit_size.to_s,
-"",
-"product_sku"
+'',
+'product_sku'
 ]))
     end
 
-    it "shows the LettuceShare report" do
+    it 'shows the LettuceShare report' do
       login_as_admin_and_visit spree.admin_reports_path
       click_link 'LettuceShare'
-      click_button "Go"
+      click_button 'Go'
 
       expect(page).to(have_table_row([
 'PRODUCT',
@@ -458,7 +458,7 @@ product1.group_buy_unit_size.to_s,
     end
   end
 
-  describe "users and enterprises report" do
+  describe 'users and enterprises report' do
     let!(:enterprise1) { create(:enterprise, owner: create(:user)) }
     let!(:enterprise2) { create(:enterprise, owner: create(:user)) }
     let!(:enterprise3) { create(:enterprise, owner: create(:user)) }
@@ -471,45 +471,45 @@ product1.group_buy_unit_size.to_s,
       click_link 'Users & Enterprises'
     end
 
-    it "shows users and enterprises report" do
-      click_button "Search"
+    it 'shows users and enterprises report' do
+      click_button 'Search'
 
-      rows = find("table#users_and_enterprises").all("tr")
-      table = rows.map { |r| r.all("th,td").map { |c| c.text.strip }[0..2] }
+      rows = find('table#users_and_enterprises').all('tr')
+      table = rows.map { |r| r.all('th,td').map { |c| c.text.strip }[0..2] }
 
       expect(table.sort).to(eq(
 [
-        ["User", "Relationship", "Enterprise"],
-        [enterprise1.owner.email, "owns", enterprise1.name],
-        [enterprise1.owner.email, "manages", enterprise1.name],
-        [enterprise2.owner.email, "owns", enterprise2.name],
-        [enterprise2.owner.email, "manages", enterprise2.name],
-        [enterprise3.owner.email, "owns", enterprise3.name],
-        [enterprise3.owner.email, "manages", enterprise3.name],
-        [enterprise1.owner.email, "manages", enterprise3.name]
+        ['User', 'Relationship', 'Enterprise'],
+        [enterprise1.owner.email, 'owns', enterprise1.name],
+        [enterprise1.owner.email, 'manages', enterprise1.name],
+        [enterprise2.owner.email, 'owns', enterprise2.name],
+        [enterprise2.owner.email, 'manages', enterprise2.name],
+        [enterprise3.owner.email, 'owns', enterprise3.name],
+        [enterprise3.owner.email, 'manages', enterprise3.name],
+        [enterprise1.owner.email, 'manages', enterprise3.name]
       ].sort
 ))
     end
 
-    it "filters the list" do
-      select enterprise3.name, from:  "enterprise_id_in"
-      select enterprise1.owner.email, from: "user_id_in"
+    it 'filters the list' do
+      select enterprise3.name, from:  'enterprise_id_in'
+      select enterprise1.owner.email, from: 'user_id_in'
 
-      click_button "Search"
+      click_button 'Search'
 
-      rows = find("table#users_and_enterprises").all("tr")
-      table = rows.map { |r| r.all("th,td").map { |c| c.text.strip }[0..2] }
+      rows = find('table#users_and_enterprises').all('tr')
+      table = rows.map { |r| r.all('th,td').map { |c| c.text.strip }[0..2] }
 
       expect(table.sort).to(eq(
 [
-        ["User", "Relationship", "Enterprise"],
-        [enterprise1.owner.email, "manages", enterprise3.name]
+        ['User', 'Relationship', 'Enterprise'],
+        [enterprise1.owner.email, 'manages', enterprise3.name]
       ].sort
 ))
     end
   end
 
-  describe "Xero invoices report" do
+  describe 'Xero invoices report' do
     let(:distributor1) do
       create(:distributor_enterprise, with_payment_and_shipping: true, charges_sales_tax: true)
     end
@@ -575,7 +575,7 @@ bill_address: bill_address
       create(:taxed_product, zone: zone, price: 500.15, tax_rate_amount: 0.2, sku: 'sku2')
     end
 
-    describe "with adjustments" do
+    describe 'with adjustments' do
       let!(:line_item1) do
         create(
 :line_item,
@@ -602,7 +602,7 @@ quantity: 3,
 :adjustment,
 order: order1,
 adjustable: order1,
-label: "Shipping",
+label: 'Shipping',
              originator: shipping_method,
 amount: 100.55
 )
@@ -613,7 +613,7 @@ amount: 100.55
 order: order1,
 adjustable: order1,
 originator: enterprise_fee1,
-             label: "Enterprise fee untaxed",
+             label: 'Enterprise fee untaxed',
 amount: 10
 )
       end
@@ -623,7 +623,7 @@ amount: 10
 order: order1,
 adjustable: order1,
 originator: enterprise_fee2,
-             label: "Enterprise fee taxed",
+             label: 'Enterprise fee taxed',
 amount: 20,
 tax_category: tax_category
 )
@@ -635,7 +635,7 @@ order: order1,
 adjustable: adj_fee2,
 originator: tax_rate,
 amount: 3,
-             state: "closed"
+             state: 'closed'
 )
       end
       let!(:adj_admin1) do
@@ -644,7 +644,7 @@ amount: 3,
 order: order1,
 adjustable: order1,
 originator: nil,
-             label: "Manual adjustment",
+             label: 'Manual adjustment',
 amount: 30
 )
       end
@@ -654,7 +654,7 @@ amount: 30
 order: order1,
 adjustable: order1,
 originator: nil,
-             label: "Manual adjustment",
+             label: 'Manual adjustment',
 amount: 40,
 tax_category: tax_category
 )
@@ -678,8 +678,8 @@ tax_category: tax_category
         end
       end
 
-      it "shows Xero invoices report" do
-        click_button "Search"
+      it 'shows Xero invoices report' do
+        click_button 'Search'
         expect(xero_invoice_table).to(match_table([
           xero_invoice_header,
           xero_invoice_summary_row('Total untaxable produce (no tax)', 12.54, 'GST Free Income'),
@@ -708,7 +708,7 @@ tax_category: tax_category
         ]))
       end
 
-      it "can customise a number of fields" do
+      it 'can customise a number of fields' do
         fill_in 'initial_invoice_number', with: '5'
         fill_in 'invoice_date', with: '2015-02-12'
         fill_in 'due_date', with: '2015-03-12'
@@ -769,7 +769,7 @@ opts
         ]))
       end
 
-      it "generates a detailed report" do
+      it 'generates a detailed report' do
         select 'Detailed', from: 'report_type'
         click_button 'Search'
 
@@ -806,7 +806,7 @@ opts
     private
 
     def xero_invoice_table
-      find("table#listing_invoices")
+      find('table#listing_invoices')
     end
 
     def xero_invoice_header

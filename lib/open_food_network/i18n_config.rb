@@ -12,7 +12,7 @@ module OpenFoodNetwork
 
     # Locales that can be selected by users.
     def self.selectable_locales
-      ENV["AVAILABLE_LOCALES"]&.split(/[\s,]+/) || []
+      ENV['AVAILABLE_LOCALES']&.split(/[\s,]+/) || []
     end
 
     # All locales that can be accessed by the application, including fallbacks.
@@ -22,13 +22,13 @@ module OpenFoodNetwork
 
     # The default locale that is used when the user doesn't have a preference.
     def self.default_locale
-      ENV["LOCALE"] || ENV["I18N_LOCALE"] || source_locale
+      ENV['LOCALE'] || ENV['I18N_LOCALE'] || source_locale
     end
 
     # This locale is changed with the code and should always be complete.
     # All translations are done from this locale.
     def self.source_locale
-      "en"
+      'en'
     end
   end
 end

@@ -7,7 +7,7 @@ describe ' As an administrator I want to manage simple order cycles ', js: true 
   include AuthenticationHelper
   include WebHelper
 
-  it "updating many order cycle opening/closing times at once", js: true do
+  it 'updating many order cycle opening/closing times at once', js: true do
     # Given three order cycles
     oc1 = create(
 :simple_order_cycle,
@@ -29,55 +29,55 @@ describe ' As an administrator I want to manage simple order cycles ', js: true 
     login_as_admin_and_visit admin_order_cycles_path
 
     ## -- OC1
-    find("input#oc#{oc1.id}_name").set("")
-    fill_in("oc#{oc1.id}_name", with: "Updated Order Cycle 1")
+    find("input#oc#{oc1.id}_name").set('')
+    fill_in("oc#{oc1.id}_name", with: 'Updated Order Cycle 1')
 
     ## -- OC2
-    fill_in("oc#{oc2.id}_name", with: "Updated Order Cycle 2")
+    fill_in("oc#{oc2.id}_name", with: 'Updated Order Cycle 2')
     within("tr.order-cycle-#{oc2.id} .orders_open_at") do
       find('input.datetimepicker', match: :first).click
     end
 
-    within(".flatpickr-calendar.open") do
+    within('.flatpickr-calendar.open') do
       # Then select first of month
-      find('.dayContainer .flatpickr-day', text: "1").click
+      find('.dayContainer .flatpickr-day', text: '1').click
     end
 
     within("tr.order-cycle-#{oc2.id}") do
       # Then that date/time should appear on the form
-      expect(find("input#oc#{oc2.id}_orders_open_at").value).to(eq("2000-12-01 12:12"))
+      expect(find("input#oc#{oc2.id}_orders_open_at").value).to(eq('2000-12-01 12:12'))
     end
 
     # -- OC3
-    fill_in("oc#{oc3.id}_name", with: "Updated Order Cycle 3")
+    fill_in("oc#{oc3.id}_name", with: 'Updated Order Cycle 3')
     within("tr.order-cycle-#{oc3.id} .orders_close_at") do
       find('input.datetimepicker', match: :first).click
     end
 
-    within(".flatpickr-calendar.open") do
+    within('.flatpickr-calendar.open') do
       # Then select first of month
-      find('.dayContainer .flatpickr-day', text: "1").click
+      find('.dayContainer .flatpickr-day', text: '1').click
     end
 
     within("tr.order-cycle-#{oc3.id}") do
-      expect(find("input#oc#{oc3.id}_orders_close_at").value).to(eq("2041-12-01 12:12"))
+      expect(find("input#oc#{oc3.id}_orders_close_at").value).to(eq('2041-12-01 12:12'))
     end
 
     click_button 'Save Changes'
 
     # Then my details should have been saved
-    expect(page).to(have_selector("#save-bar", text: "Order cycles have been updated."))
-    order_cycles = OrderCycle.order("id ASC")
+    expect(page).to(have_selector('#save-bar', text: 'Order cycles have been updated.'))
+    order_cycles = OrderCycle.order('id ASC')
     expect(order_cycles.map(&:name)).to(eq([
-"Updated Order Cycle 1",
-"Updated Order Cycle 2",
-                                            "Updated Order Cycle 3"
+'Updated Order Cycle 1',
+'Updated Order Cycle 2',
+                                            'Updated Order Cycle 3'
 ]))
     expect(order_cycles.map { |oc| oc.orders_open_at.sec }).to(eq([0, 0, 4]))
     expect(order_cycles.map { |oc| oc.orders_close_at.sec }).to(eq([1, 3, 0]))
   end
 
-  it "cloning an order cycle" do
+  it 'cloning an order cycle' do
     # Given an order cycle
     oc = create(:simple_order_cycle)
 
@@ -93,34 +93,34 @@ describe ' As an administrator I want to manage simple order cycles ', js: true 
     expect(occ.name).to(eq("COPY OF #{oc.name}"))
   end
 
-  describe "ensuring that hubs in order cycles have valid shipping and payment methods" do
+  describe 'ensuring that hubs in order cycles have valid shipping and payment methods' do
     context "when they don't" do
       let(:hub) { create(:distributor_enterprise) }
       let!(:oc) { create(:simple_order_cycle, distributors: [hub]) }
 
-      it "displays a warning on the dashboard" do
+      it 'displays a warning on the dashboard' do
         login_to_admin_section
         expect(page).to(have_content("The hub #{hub.name} is listed in an active order cycle, but does not have valid shipping and payment methods. Until you set these up, customers will not be able to shop at this hub."))
       end
 
-      it "displays a warning on the order cycles screen" do
+      it 'displays a warning on the order cycles screen' do
         login_as_admin_and_visit admin_order_cycles_path
         expect(page).to(have_content("The hub #{hub.name} is listed in an active order cycle, but does not have valid shipping and payment methods. Until you set these up, customers will not be able to shop at this hub."))
       end
     end
 
-    context "when they do" do
+    context 'when they do' do
       let(:hub) { create(:distributor_enterprise, with_payment_and_shipping: true) }
       let!(:oc) { create(:simple_order_cycle, distributors: [hub]) }
 
-      it "does not display the warning on the dashboard" do
+      it 'does not display the warning on the dashboard' do
         login_to_admin_section
-        expect(page).not_to(have_content("does not have valid shipping and payment methods"))
+        expect(page).not_to(have_content('does not have valid shipping and payment methods'))
       end
     end
   end
 
-  context "as an enterprise user" do
+  context 'as an enterprise user' do
     let!(:supplier_managed) { create(:supplier_enterprise, name: 'Managed supplier') }
     let!(:supplier_unmanaged) { create(:supplier_enterprise, name: 'Unmanaged supplier') }
     let!(:supplier_permitted) { create(:supplier_enterprise, name: 'Permitted supplier') }
@@ -203,7 +203,7 @@ child: distributor_managed,
 )
     end
 
-    context "that is a manager of the coordinator" do
+    context 'that is a manager of the coordinator' do
       before do
         @new_user = create(:user)
         @new_user.enterprise_roles.build(enterprise: supplier_managed).save
@@ -213,7 +213,7 @@ child: distributor_managed,
         login_as @new_user
       end
 
-      it "viewing a list of order cycles I am coordinating" do
+      it 'viewing a list of order cycles I am coordinating' do
         oc_user_coordinating = create(
 :simple_order_cycle,
                                       suppliers: [supplier_managed, supplier_unmanaged],
@@ -228,13 +228,13 @@ coordinator: supplier_unmanaged,
 )
 
         visit spree.admin_dashboard_path
-        click_link "Order Cycles"
+        click_link 'Order Cycles'
 
         # I should see only the order cycle I am coordinating
         expect(page).to(have_selector("tr.order-cycle-#{oc_user_coordinating.id}"))
         expect(page).to_not(have_selector("tr.order-cycle-#{oc_for_other_user.id}"))
 
-        toggle_columns "Producers", "Shops"
+        toggle_columns 'Producers', 'Shops'
 
         # The order cycle should show all enterprises in the order cycle
         expect(page).to(have_selector('td.producers', text: supplier_managed.name))
@@ -243,7 +243,7 @@ coordinator: supplier_unmanaged,
         expect(page).to(have_selector('td.shops', text: distributor_unmanaged.name))
       end
 
-      it "creating a new order cycle" do
+      it 'creating a new order cycle' do
         distributor_managed.update_attribute(:enable_subscriptions, true)
         visit admin_order_cycles_path
         click_link 'New Order Cycle'
@@ -256,7 +256,7 @@ supplier_managed.name,
           expect(page).not_to(have_select('coordinator_id', with_options: [enterprise_name]))
         end
         select2_select 'Managed distributor', from: 'coordinator_id'
-        click_button "Continue >"
+        click_button 'Continue >'
 
         fill_in 'order_cycle_name', with: 'My order cycle'
         fill_in 'order_cycle_orders_open_at', with: '2040-11-06 06:00:00'
@@ -276,14 +276,14 @@ supplier_managed.name,
         click_button 'Add supplier'
         select 'Permitted supplier', from: 'new_supplier_id'
         click_button 'Add supplier'
-        expect(page).to(have_content("Permitted supplier"))
+        expect(page).to(have_content('Permitted supplier'))
 
         select_incoming_variant supplier_managed, 0, variant_managed
         select_incoming_variant supplier_permitted, 1, variant_permitted
 
         click_button 'Save and Next'
         expect(page).to(have_content('Your order cycle has been updated.'))
-        expect(page).to_not(have_content("Loading..."))
+        expect(page).to_not(have_content('Loading...'))
 
         expect(page).to(have_select('new_distributor_id'))
         expect(page).not_to(have_select('new_distributor_id',
@@ -292,7 +292,7 @@ supplier_managed.name,
         click_button 'Add distributor'
         select 'Permitted distributor', from: 'new_distributor_id'
         click_button 'Add distributor'
-        expect(page).to(have_content("Permitted distributor"))
+        expect(page).to(have_content('Permitted distributor'))
 
         expect(page).to(have_input('order_cycle_outgoing_exchange_0_pickup_time'))
         fill_in 'order_cycle_outgoing_exchange_0_pickup_time', with: 'pickup time'
@@ -303,8 +303,8 @@ supplier_managed.name,
         fill_in 'order_cycle_outgoing_exchange_1_pickup_instructions', with: 'pickup instructions'
 
         page.find("table.exchanges tr.distributor-#{distributor_managed.id} td.tags").click
-        within ".exchange-tags" do
-          find(:css, "tags-input .tags input").set("wholesale\n")
+        within '.exchange-tags' do
+          find(:css, 'tags-input .tags input').set("wholesale\n")
         end
 
         click_button 'Save and Back to List'
@@ -316,10 +316,10 @@ supplier_managed.name,
         expect(order_cycle.distributors).to(match_array([distributor_managed, distributor_permitted]))
         expect(order_cycle.schedules).to(eq([schedule]))
         exchange = order_cycle.exchanges.outgoing.to_enterprise(distributor_managed).first
-        expect(exchange.tag_list).to(eq(["wholesale"]))
+        expect(exchange.tag_list).to(eq(['wholesale']))
       end
 
-      it "editing an order cycle" do
+      it 'editing an order cycle' do
         oc = create(
 :simple_order_cycle,
                     suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged],
@@ -356,7 +356,7 @@ name: 'Order Cycle 1'
         expect(oc.schedules).to(eq([schedule]))
       end
 
-      it "cloning an order cycle" do
+      it 'cloning an order cycle' do
         oc = create(:simple_order_cycle, coordinator: distributor_managed)
 
         visit admin_order_cycles_path
@@ -371,7 +371,7 @@ name: 'Order Cycle 1'
       end
     end
 
-    context "that is a manager of a participating producer" do
+    context 'that is a manager of a participating producer' do
       let(:new_user) { create(:user) }
 
       before do
@@ -379,7 +379,7 @@ name: 'Order Cycle 1'
         login_to_admin_as new_user
       end
 
-      it "editing an order cycle" do
+      it 'editing an order cycle' do
         oc = create(
 :simple_order_cycle,
                     suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged],
@@ -427,7 +427,7 @@ incoming: false
 
         # Open the products list for managed_supplier's incoming exchange
         within "tr.distributor-#{distributor_managed.id}" do
-          page.find("td.products").click
+          page.find('td.products').click
         end
 
         # I should be able to see and toggle v1
@@ -443,7 +443,7 @@ incoming: false
 
         # When I save, any exchanges that I can't manage remain
         click_button 'Save'
-        expect(page).to(have_content("Your order cycle has been updated."))
+        expect(page).to(have_content('Your order cycle has been updated.'))
 
         oc.reload
         expect(oc.suppliers).to(match_array([
@@ -460,7 +460,7 @@ distributor_permitted,
       end
     end
 
-    context "that is the manager of a participating hub" do
+    context 'that is the manager of a participating hub' do
       let(:my_distributor) { create(:distributor_enterprise) }
       let(:new_user) { create(:user) }
 
@@ -476,7 +476,7 @@ child: my_distributor,
         login_to_admin_as new_user
       end
 
-      it "editing an order cycle" do
+      it 'editing an order cycle' do
         oc = create(
 :simple_order_cycle,
                     suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged],
@@ -519,15 +519,15 @@ incoming: false
         expect(page).to(have_selector("tr.supplier-#{supplier_managed.id}"))
         expect(page).to(have_selector('tr.supplier', count: 1))
 
-        expect(page).to_not(have_content("Loading..."))
+        expect(page).to_not(have_content('Loading...'))
 
         # Open the products list for managed_supplier's incoming exchange
         within "tr.supplier-#{supplier_managed.id}" do
-          page.find("td.products").click
+          page.find('td.products').click
         end
 
         # I should be able to see and toggle v1
-        expect(page).to(have_selector(".exchange-product-variant"))
+        expect(page).to(have_selector('.exchange-product-variant'))
         expect(page).to(have_checked_field("order_cycle_incoming_exchange_0_variants_#{v1.id}",
                                            disabled: false))
         uncheck "order_cycle_incoming_exchange_0_variants_#{v1.id}"
@@ -538,7 +538,7 @@ incoming: false
 
         # When I save, any exchange that I can't manage remains
         click_button 'Save and Next'
-        expect(page).to(have_content("Your order cycle has been updated."))
+        expect(page).to(have_content('Your order cycle has been updated.'))
 
         expect(page).to(have_selector("table.exchanges tr.distributor-#{my_distributor.id} td.tags"))
 
@@ -559,7 +559,7 @@ distributor_unmanaged
     end
   end
 
-  describe "simplified interface for enterprise users selling only their own produce" do
+  describe 'simplified interface for enterprise users selling only their own produce' do
     let(:user) { create(:user) }
     let(:enterprise) { create(:enterprise, is_primary_producer: true, sells: 'own') }
     let!(:p1) { create(:simple_product, supplier: enterprise) }
@@ -575,7 +575,7 @@ distributor_unmanaged
       login_to_admin_as user
     end
 
-    it "shows me an index of order cycles without enterprise columns" do
+    it 'shows me an index of order cycles without enterprise columns' do
       create(:simple_order_cycle, coordinator: enterprise)
       visit admin_order_cycles_path
       expect(page).not_to(have_selector('th', text: 'SUPPLIERS'))
@@ -583,7 +583,7 @@ distributor_unmanaged
       expect(page).not_to(have_selector('th', text: 'DISTRIBUTORS'))
     end
 
-    it "creates order cycles", js: true do
+    it 'creates order cycles', js: true do
       # When I go to the new order cycle page
       visit admin_order_cycles_path
       click_link 'New Order Cycle'
@@ -600,11 +600,11 @@ distributor_unmanaged
       find('#order_cycle_orders_open_at').click
       select_datetime_from_datepicker Time.zone.at(Time.zone.local(2040, 10, 17, 0o6, 0o0, 0o0))
       # hide the datetimepicker
-      find("body").send_keys(:escape)
+      find('body').send_keys(:escape)
       find('#order_cycle_orders_close_at').click
       select_datetime_from_datepicker Time.zone.at(Time.zone.local(2040, 10, 24, 17, 0o0, 0o0))
       # hide the datetimepicker
-      find("body").send_keys(:escape)
+      find('body').send_keys(:escape)
       fill_in 'order_cycle_outgoing_exchange_0_pickup_instructions', with: 'pickup instructions'
 
       # Then my products / variants should already be selected
@@ -630,12 +630,12 @@ distributor_unmanaged
 
       oc = OrderCycle.last
 
-      expect(page).to(have_input("oc#{oc.id}[name]", value: "Plums & Avos"))
+      expect(page).to(have_input("oc#{oc.id}[name]", value: 'Plums & Avos'))
       expect(page).to(have_input("oc#{oc.id}[orders_open_at]",
-                                 value: Time.zone.local(2040, 10, 17, 0o6, 0o0, 0o0).strftime("%F %T %z"),
+                                 value: Time.zone.local(2040, 10, 17, 0o6, 0o0, 0o0).strftime('%F %T %z'),
 visible: false))
       expect(page).to(have_input("oc#{oc.id}[orders_close_at]",
-                                 value: Time.zone.local(2040, 10, 24, 17, 0o0, 0o0).strftime("%F %T %z"),
+                                 value: Time.zone.local(2040, 10, 24, 17, 0o0, 0o0).strftime('%F %T %z'),
 visible: false))
 
       # And it should have some variants selected
@@ -651,7 +651,7 @@ visible: false))
       expect(ex.pickup_instructions).to(eq('pickup instructions'))
     end
 
-    it "editing an order cycle" do
+    it 'editing an order cycle' do
       # Given an order cycle with pickup time and instructions
       fee = create(:enterprise_fee, name: 'my fee', enterprise: enterprise)
       oc = create(
@@ -668,7 +668,7 @@ coordinator_fees: [fee]
       # When I edit it
       login_as_admin_and_visit admin_order_cycles_path
       within "tr.order-cycle-#{oc.id}" do
-        find("a.edit-order-cycle").click
+        find('a.edit-order-cycle').click
       end
 
       wait_for_edit_form_to_load_order_cycle(oc)
@@ -676,9 +676,9 @@ coordinator_fees: [fee]
       # Then I should see the basic settings
       expect(page).to(have_field('order_cycle_name', with: oc.name))
       expect(page).to(have_field('order_cycle_orders_open_at',
-                                 with: oc.orders_open_at.strftime("%Y-%m-%d %H:%M")))
+                                 with: oc.orders_open_at.strftime('%Y-%m-%d %H:%M')))
       expect(page).to(have_field('order_cycle_orders_close_at',
-                                 with: oc.orders_close_at.strftime("%Y-%m-%d %H:%M")))
+                                 with: oc.orders_close_at.strftime('%Y-%m-%d %H:%M')))
       expect(page).to(have_field('order_cycle_outgoing_exchange_0_pickup_time', with: 'pickup time'))
       expect(page).to(have_field('order_cycle_outgoing_exchange_0_pickup_instructions',
                                  with: 'pickup instructions'))
@@ -692,7 +692,7 @@ coordinator_fees: [fee]
       expect(page).to(have_select('order_cycle_coordinator_fee_0_id', selected: 'my fee'))
     end
 
-    it "updating an order cycle" do
+    it 'updating an order cycle' do
       # Given an order cycle with pickup time and instructions
       fee1 = create(:enterprise_fee, name: 'my fee', enterprise: enterprise)
       fee2 = create(:enterprise_fee, name: 'that fee', enterprise: enterprise)
@@ -742,12 +742,12 @@ coordinator_fees: [fee1]
       expect(page).to(have_content('Your order cycle has been updated.'))
       oc = OrderCycle.last
 
-      expect(page).to(have_input("oc#{oc.id}[name]", value: "Plums & Avos"))
+      expect(page).to(have_input("oc#{oc.id}[name]", value: 'Plums & Avos'))
       expect(page).to(have_input("oc#{oc.id}[orders_open_at]",
-                                 value: Time.zone.local(2040, 10, 17, 0o6, 0o0, 0o0).strftime("%F %T %z"),
+                                 value: Time.zone.local(2040, 10, 17, 0o6, 0o0, 0o0).strftime('%F %T %z'),
 visible: false))
       expect(page).to(have_input("oc#{oc.id}[orders_close_at]",
-                                 value: Time.zone.local(2040, 10, 24, 17, 0o0, 0o0).strftime("%F %T %z"),
+                                 value: Time.zone.local(2040, 10, 24, 17, 0o0, 0o0).strftime('%F %T %z'),
 visible: false))
 
       # And it should have a variant selected
@@ -764,18 +764,18 @@ visible: false))
     end
   end
 
-  it "modify the minute of a order cycle with the keyboard, check that the modifications are taken into account" do
-    order_cycle = create(:simple_order_cycle, name: "Translusent Berries")
+  it 'modify the minute of a order cycle with the keyboard, check that the modifications are taken into account' do
+    order_cycle = create(:simple_order_cycle, name: 'Translusent Berries')
     login_as_admin_and_visit admin_order_cycles_path
     find("#oc#{order_cycle.id}_orders_close_at").click
     datetime = Time.zone.at(Time.zone.local(2040, 10, 17, 0o6, 0o0, 0o0))
-    input = find(".flatpickr-calendar.open .flatpickr-minute")
-    input.send_keys(datetime.strftime("%M").to_s.strip)
-    expect(page).to(have_content("You have unsaved changes"))
+    input = find('.flatpickr-calendar.open .flatpickr-minute')
+    input.send_keys(datetime.strftime('%M').to_s.strip)
+    expect(page).to(have_content('You have unsaved changes'))
   end
 
-  it "deleting an order cycle" do
-    order_cycle = create(:simple_order_cycle, name: "Translusent Berries")
+  it 'deleting an order cycle' do
+    order_cycle = create(:simple_order_cycle, name: 'Translusent Berries')
     login_as_admin_and_visit admin_order_cycles_path
     expect(page).to(have_selector("tr.order-cycle-#{order_cycle.id}"))
     accept_alert do
@@ -787,7 +787,7 @@ visible: false))
   private
 
   def wait_for_edit_form_to_load_order_cycle(order_cycle)
-    expect(page).to(have_field("order_cycle_name", with: order_cycle.name))
+    expect(page).to(have_field('order_cycle_name', with: order_cycle.name))
   end
 
   def select_incoming_variant(supplier, exchange_no, variant)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 describe Api::V0::ReportsController, type: :controller do
   let(:enterprise_user) { create(:user, enterprises: create(:enterprise)) }
@@ -15,57 +15,57 @@ describe Api::V0::ReportsController, type: :controller do
     allow(controller).to(receive(:spree_current_user) { current_user })
   end
 
-  describe "fetching reports" do
-    context "when the user is not authenticated" do
+  describe 'fetching reports' do
+    context 'when the user is not authenticated' do
       let(:current_user) { nil }
 
-      it "returns unauthorised response" do
+      it 'returns unauthorised response' do
         api_get :show, params
 
         assert_unauthorized!
       end
     end
 
-    context "when the user has no enterprises" do
+    context 'when the user has no enterprises' do
       let(:current_user) { create(:user) }
 
-      it "returns unauthorised response" do
+      it 'returns unauthorised response' do
         api_get :show, params
 
         assert_unauthorized!
       end
     end
 
-    context "when no report type is given" do
+    context 'when no report type is given' do
       let(:current_user) { enterprise_user }
 
-      it "returns an error" do
+      it 'returns an error' do
         api_get :show, q: { example: 'test' }
 
         expect(response.status).to(eq(422))
-        expect(json_response["error"]).to(eq(I18n.t('errors.no_report_type', scope: i18n_scope)))
+        expect(json_response['error']).to(eq(I18n.t('errors.no_report_type', scope: i18n_scope)))
       end
     end
 
     context "given a report type that doesn't exist" do
       let(:current_user) { enterprise_user }
 
-      it "returns an error" do
-        api_get :show, report_type: "xxxxxx", q: { example: 'test' }
+      it 'returns an error' do
+        api_get :show, report_type: 'xxxxxx', q: { example: 'test' }
 
         expect(response.status).to(eq(422))
-        expect(json_response["error"]).to(eq(I18n.t('errors.report_not_found', scope: i18n_scope)))
+        expect(json_response['error']).to(eq(I18n.t('errors.report_not_found', scope: i18n_scope)))
       end
     end
 
-    context "with no query params provided" do
+    context 'with no query params provided' do
       let(:current_user) { enterprise_user }
 
-      it "returns an error" do
-        api_get :show, report_type: "packing"
+      it 'returns an error' do
+        api_get :show, report_type: 'packing'
 
         expect(response.status).to(eq(422))
-        expect(json_response["error"]).to(eq(
+        expect(json_response['error']).to(eq(
           I18n.t('errors.missing_ransack_params', scope: i18n_scope)
         ))
       end
@@ -75,6 +75,6 @@ describe Api::V0::ReportsController, type: :controller do
   private
 
   def i18n_scope
-    "admin.reports"
+    'admin.reports'
   end
 end

@@ -86,9 +86,9 @@ skip_stock_check: skip_stock_check?(line_item.order)
 
   def stock_issue_description(line_item)
     if line_item.variant.in_stock?
-      I18n.t("admin.subscriptions.stock.insufficient_stock")
+      I18n.t('admin.subscriptions.stock.insufficient_stock')
     else
-      I18n.t("admin.subscriptions.stock.out_of_stock")
+      I18n.t('admin.subscriptions.stock.out_of_stock')
     end
   end
 end

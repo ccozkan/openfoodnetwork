@@ -94,7 +94,7 @@ order: order,
       after(:create) do |order, evaluator|
         create(
 :payment,
-state: "checkout",
+state: 'checkout',
 order: order,
 amount: order.total,
           payment_method: evaluator.payment_method
@@ -130,7 +130,7 @@ shipping_fee: proxy.shipping_fee,
     trait :completed do
       transient do
         completed_at { Time.zone.now }
-        state { "complete" }
+        state { 'complete' }
         payment_method { create(:payment_method, distributors: [distributor]) }
         ship_address { create(:address) }
       end
@@ -139,7 +139,7 @@ shipping_fee: proxy.shipping_fee,
         # Ensure order is valid and passes through necessary checkout steps
         create(
 :payment,
-state: "checkout",
+state: 'checkout',
 order: order,
 amount: order.total,
           payment_method: evaluator.payment_method
@@ -160,7 +160,7 @@ amount: order.total,
     transient do
       product_price { 0 }
       tax_rate_amount { 0 }
-      tax_rate_name { "" }
+      tax_rate_name { '' }
       zone { create(:zone_with_member) }
     end
 
@@ -194,7 +194,7 @@ zone: proxy.zone,
 :payment,
 amount: order.total + evaluator.credit_amount,
 order: order,
-          state: "completed"
+          state: 'completed'
 )
       order.reload
     end
@@ -213,7 +213,7 @@ order: order,
 :payment,
 amount: order.total - evaluator.unpaid_amount,
 order: order,
-          state: "completed"
+          state: 'completed'
 )
       order.reload
     end

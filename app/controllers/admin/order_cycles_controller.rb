@@ -106,7 +106,7 @@ edit_path: main_app.admin_order_cycle_incoming_path(@order_cycle)
     protected
 
     def collection
-      return Enterprise.where("1=0") unless json_request?
+      return Enterprise.where('1=0') unless json_request?
       return order_cycles_from_set if params[:order_cycle_set].present?
 
       ocs = order_cycles
@@ -120,9 +120,9 @@ edit_path: main_app.admin_order_cycle_incoming_path(@order_cycle)
     private
 
     def order_cycles
-      if params[:as] == "distributor"
+      if params[:as] == 'distributor'
         order_cycles_as_distributor
-      elsif params[:as] == "producer"
+      elsif params[:as] == 'producer'
         order_cycles_as_producer
       else
         order_cycles_as_both

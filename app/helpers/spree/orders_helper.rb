@@ -36,7 +36,7 @@ module Spree
     end
 
     def shop_changeable_orders_alert_html
-      return "" unless changeable_orders.any?
+      return '' unless changeable_orders.any?
 
       t(
 :shop_changeable_orders_alert_html,
@@ -44,7 +44,7 @@ module Spree
         path: changeable_orders_link_path,
         order: changeable_orders.first.number,
         shop: current_distributor.name,
-        oc_close: l(current_order_cycle.orders_close_at, format: "%A, %b %d, %Y @ %H:%M")
+        oc_close: l(current_order_cycle.orders_close_at, format: '%A, %b %d, %Y @ %H:%M')
 )
     end
   end

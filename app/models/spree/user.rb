@@ -22,16 +22,16 @@ reconfirmable: true
     belongs_to :ship_address, class_name: 'Spree::Address'
     belongs_to :bill_address, class_name: 'Spree::Address'
 
-    has_and_belongs_to_many :spree_roles, join_table: 'spree_roles_users', class_name: "Spree::Role"
+    has_and_belongs_to_many :spree_roles, join_table: 'spree_roles_users', class_name: 'Spree::Role'
 
-    has_many :spree_orders, class_name: "Spree::Order"
+    has_many :spree_orders, class_name: 'Spree::Order'
 
     before_validation :set_login
     before_destroy :check_completed_orders
 
     roles_table_name = Role.table_name
 
-    scope :admin, -> { includes(:spree_roles).where("#{roles_table_name}.name" => "admin") }
+    scope :admin, -> { includes(:spree_roles).where("#{roles_table_name}.name" => 'admin') }
 
     has_many :enterprise_roles, dependent: :destroy
     has_many :enterprises, through: :enterprise_roles
@@ -88,7 +88,7 @@ inverse_of: :owner
         Spree::User
           .includes(:enterprises)
           .references(:enterprises)
-          .where("enterprises.id IN (SELECT enterprise_id FROM enterprise_roles WHERE user_id = ?)",
+          .where('enterprises.id IN (SELECT enterprise_id FROM enterprise_roles WHERE user_id = ?)',
                  id)
       end
     end
@@ -192,7 +192,7 @@ I18n.t(
     def remove_payments_in_checkout(enterprises)
       enterprises.each do |enterprise|
         enterprise.distributed_orders.each do |order|
-          order.payments.keep_if { |payment| payment.state != "checkout" }
+          order.payments.keep_if { |payment| payment.state != 'checkout' }
         end
       end
     end

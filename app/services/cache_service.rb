@@ -51,7 +51,7 @@ class CacheService
 
     def self.ams_shops
       [
-        "shops/index/inject_enterprises",
+        'shops/index/inject_enterprises',
         { expires_in: SHOPS_EXPIRY, skip_digest: true }
       ]
     end

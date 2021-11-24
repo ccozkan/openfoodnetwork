@@ -17,13 +17,13 @@ class StripePaymentStatus
   rescue Stripe::StripeError
     # Stripe::PaymentIntentValidator will raise an error if the response from the Stripe API
     # call indicates the last attempted action on the payment intent failed.
-    "failed"
+    'failed'
   end
 
   # If the payment is a Stripe payment and has been captured in the associated Stripe account,
   # returns true, otherwise false.
   def stripe_captured?
-    stripe_status == "succeeded"
+    stripe_status == 'succeeded'
   end
 
   private

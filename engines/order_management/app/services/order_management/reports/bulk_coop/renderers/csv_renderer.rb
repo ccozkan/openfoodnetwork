@@ -22,7 +22,7 @@ module OrderManagement
           private
 
           def filename
-            timestamp = Time.zone.now.strftime("%Y%m%d")
+            timestamp = Time.zone.now.strftime('%Y%m%d')
             "#{report_data.parameters[:report_type]}_#{timestamp}.csv"
           end
         end

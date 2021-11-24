@@ -5,7 +5,7 @@ require 'spec_helper'
 module OrderManagement
   module Stock
     describe Package do
-      context "base tests" do
+      context 'base tests' do
         let(:variant) { build(:variant, weight: 25.0) }
         let(:stock_location) { build(:stock_location) }
         let(:distributor) { create(:enterprise) }
@@ -94,7 +94,7 @@ Package::ContentItem.new(variant1, 1),
           expect(package.shipping_methods.size).to(eq(2))
         end
 
-        it "can convert to a shipment" do
+        it 'can convert to a shipment' do
           flattened = [
 Package::ContentItem.new(variant, 2, :on_hand),
                        Package::ContentItem.new(variant, 1, :backordered)
@@ -125,15 +125,15 @@ Package::ContentItem.new(variant, 2, :on_hand),
           expect(shipment.shipping_method).to(eq(shipping_method))
         end
 
-        describe "#inpsect" do
-          it "prints the package contents" do
+        describe '#inpsect' do
+          it 'prints the package contents' do
             subject.add(variant, 5)
             expect(subject.inspect).to(match("#{variant.name} 5"))
           end
         end
       end
 
-      context "#shipping_methods and #shipping_categories" do
+      context '#shipping_methods and #shipping_categories' do
         let(:stock_location) { double(:stock_location) }
 
         subject(:package) { Package.new(stock_location, order, contents) }
@@ -174,16 +174,16 @@ Package::ContentItem.new(variant, 2, :on_hand),
           create(:shipping_method, distributors: [enterprise], deleted_at: Time.zone.now)
         end
 
-        describe "#shipping_methods" do
+        describe '#shipping_methods' do
           it "does not return shipping methods not used by the package's order distributor" do
             expect(package.shipping_methods).to(eq([shipping_method1]))
           end
 
-          it "does not return soft-deleted shipping methods" do
+          it 'does not return soft-deleted shipping methods' do
             expect(package.shipping_methods).to_not(include(shipping_method3))
           end
 
-          it "returns an empty array if distributor is nil" do
+          it 'returns an empty array if distributor is nil' do
             allow(order).to(receive(:distributor) { nil })
 
             expect(package.shipping_methods).to(eq([]))

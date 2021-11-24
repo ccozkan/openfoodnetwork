@@ -9,15 +9,15 @@ describe ProductsRenderer do
   let(:customer) { create(:customer) }
   let(:products_renderer) { ProductsRenderer.new(distributor, order_cycle, customer) }
 
-  describe "sorting" do
+  describe 'sorting' do
     let(:t1) { create(:taxon) }
     let(:t2) { create(:taxon) }
     let(:s1) { create(:supplier_enterprise) }
     let(:s2) { create(:supplier_enterprise) }
-    let!(:p1) { create(:product, name: "abc", primary_taxon_id: t2.id, supplier_id: s1.id) }
-    let!(:p2) { create(:product, name: "def", primary_taxon_id: t1.id, supplier_id: s2.id) }
-    let!(:p3) { create(:product, name: "ghi", primary_taxon_id: t2.id, supplier_id: s1.id) }
-    let!(:p4) { create(:product, name: "jkl", primary_taxon_id: t1.id, supplier_id: s2.id) }
+    let!(:p1) { create(:product, name: 'abc', primary_taxon_id: t2.id, supplier_id: s1.id) }
+    let!(:p2) { create(:product, name: 'def', primary_taxon_id: t1.id, supplier_id: s2.id) }
+    let!(:p3) { create(:product, name: 'ghi', primary_taxon_id: t2.id, supplier_id: s1.id) }
+    let!(:p4) { create(:product, name: 'jkl', primary_taxon_id: t1.id, supplier_id: s2.id) }
 
     before do
       exchange.variants << p1.variants.first
@@ -33,20 +33,20 @@ describe ProductsRenderer do
     end
 
     it "sorts products by the distributor's preferred producer list" do
-      allow(distributor).to(receive(:preferred_shopfront_product_sorting_method) { "by_producer" })
+      allow(distributor).to(receive(:preferred_shopfront_product_sorting_method) { 'by_producer' })
       allow(distributor).to(receive(:preferred_shopfront_producer_order) { "#{s2.id},#{s1.id}" })
       products = products_renderer.send(:products)
       expect(products).to(eq([p2, p4, p1, p3]))
     end
 
-    it "alphabetizes products by name when taxon list is not set" do
-      allow(distributor).to(receive(:preferred_shopfront_taxon_order) { "" })
+    it 'alphabetizes products by name when taxon list is not set' do
+      allow(distributor).to(receive(:preferred_shopfront_taxon_order) { '' })
       products = products_renderer.send(:products)
       expect(products).to(eq([p1, p2, p3, p4]))
     end
   end
 
-  context "JSON tests" do
+  context 'JSON tests' do
     let(:product) { create(:product) }
     let(:variant) { product.variants.first }
 
@@ -54,7 +54,7 @@ describe ProductsRenderer do
       exchange.variants << variant
     end
 
-    it "only returns products for the current order cycle" do
+    it 'only returns products for the current order cycle' do
       expect(products_renderer.products_json).to(include(product.name))
     end
 
@@ -64,34 +64,34 @@ describe ProductsRenderer do
       expect(products_renderer.products_json).not_to(include(product.name))
     end
 
-    it "strips html from description" do
+    it 'strips html from description' do
       product.update_attribute(:description, "<a href='44'>turtles</a> frogs")
       json = products_renderer.products_json
-      expect(json).to(include("frogs"))
-      expect(json).not_to(include("<a href"))
+      expect(json).to(include('frogs'))
+      expect(json).not_to(include('<a href'))
     end
 
-    it "returns price including fees" do
+    it 'returns price including fees' do
       # Price is 19.99
       allow_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator)
         .to(receive(:indexed_fees_for).and_return(978.01))
 
-      expect(products_renderer.products_json).to(include("998.0"))
+      expect(products_renderer.products_json).to(include('998.0'))
     end
 
-    it "includes the primary taxon" do
+    it 'includes the primary taxon' do
       taxon = create(:taxon)
       allow_any_instance_of(Spree::Product).to(receive(:primary_taxon).and_return(taxon))
       expect(products_renderer.products_json).to(include(taxon.name))
     end
 
-    it "loads tag_list for variants" do
+    it 'loads tag_list for variants' do
       VariantOverride.create(variant: variant, hub: distributor, tag_list: 'lalala')
-      expect(products_renderer.products_json).to(include("[\"lalala\"]"))
+      expect(products_renderer.products_json).to(include('["lalala"]'))
     end
   end
 
-  describe "loading variants" do
+  describe 'loading variants' do
     let(:hub) { create(:distributor_enterprise) }
     let(:oc) { create(:simple_order_cycle, distributors: [hub], variants: [v1, v3, v4]) }
     let(:p) { create(:simple_product) }
@@ -119,23 +119,23 @@ unit_value: 9,
     let(:products_renderer) { ProductsRenderer.new(hub, oc, customer) }
     let(:variants) { products_renderer.send(:variants_for_shop_by_id) }
 
-    it "scopes variants to distribution" do
+    it 'scopes variants to distribution' do
       expect(variants[p.id]).to(include(v1))
       expect(variants[p.id]).to_not(include(v2))
     end
 
-    it "does not render variants that have been hidden by the hub" do
+    it 'does not render variants that have been hidden by the hub' do
       # but does render 'new' variants, ie. v1
       expect(variants[p.id]).to(include(v1, v3))
       expect(variants[p.id]).to_not(include(v4))
     end
 
-    context "when hub opts to only see variants in its inventory" do
+    context 'when hub opts to only see variants in its inventory' do
       before do
         allow(hub).to(receive(:prefers_product_selection_from_inventory_only?) { true })
       end
 
-      it "does not render variants that have not been explicitly added to the inventory for the hub" do
+      it 'does not render variants that have not been explicitly added to the inventory for the hub' do
         # but does render 'new' variants, ie. v1
         expect(variants[p.id]).to(include(v3))
         expect(variants[p.id]).to_not(include(v1, v4))

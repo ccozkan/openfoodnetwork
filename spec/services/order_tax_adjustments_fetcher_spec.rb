@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 describe OrderTaxAdjustmentsFetcher do
-  describe "#totals" do
+  describe '#totals' do
     let(:zone) { create(:zone_with_member) }
     let(:coordinator) { create(:distributor_enterprise, charges_sales_tax: true) }
 
@@ -75,7 +75,7 @@ enterprise: coordinator,
 order: order,
 amount: 50.0,
 tax_category: tax_category25,
-             label: "Admin Adjustment"
+             label: 'Admin Adjustment'
 ).tap do |adjustment|
                             Spree::TaxRate.adjust(order, [adjustment])
                           end
@@ -118,8 +118,8 @@ order: order,
 adjustable: order,
 amount: 1.23,
 originator: tax_rate30,
-             label: "Additional Tax Adjustment",
-state: "closed"
+             label: 'Additional Tax Adjustment',
+state: 'closed'
 )
     end
 
@@ -133,27 +133,27 @@ state: "closed"
 
     subject { OrderTaxAdjustmentsFetcher.new(order).totals }
 
-    it "returns a hash with all 5 taxes" do
+    it 'returns a hash with all 5 taxes' do
       expect(subject.size).to(eq(5))
     end
 
-    it "contains tax on all line_items" do
+    it 'contains tax on all line_items' do
       expect(subject[tax_rate10]).to(eq(8.0))
     end
 
-    it "contains tax on shipping_fee" do
+    it 'contains tax on shipping_fee' do
       expect(subject[tax_rate15]).to(eq(6.0))
     end
 
-    it "contains tax on enterprise_fee" do
+    it 'contains tax on enterprise_fee' do
       expect(subject[tax_rate20]).to(eq(8.0))
     end
 
-    it "contains tax on admin adjustment" do
+    it 'contains tax on admin adjustment' do
       expect(subject[tax_rate25]).to(eq(10.0))
     end
 
-    it "contains (legacy) additional taxes recorded on the order" do
+    it 'contains (legacy) additional taxes recorded on the order' do
       expect(subject[tax_rate30]).to(eq(1.23))
     end
   end

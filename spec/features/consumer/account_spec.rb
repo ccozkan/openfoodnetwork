@@ -17,12 +17,12 @@ js: true do
   let!(:distributor_credit) { create(:distributor_enterprise) }
   let!(:distributor_without_orders) { create(:distributor_enterprise) }
 
-  context "as a logged in user" do
+  context 'as a logged in user' do
     before do
       login_as user
     end
 
-    context "with completed orders" do
+    context 'with completed orders' do
       let(:order_cycle) { create(:simple_order_cycle) }
       let!(:d1o1) do
         create(
@@ -51,9 +51,9 @@ total: 5000,
         credit_order.update_order!
       end
 
-      it "shows all hubs that have been ordered from with balance or credit" do
+      it 'shows all hubs that have been ordered from with balance or credit' do
         # Single test to avoid re-rendering page
-        visit "/account"
+        visit '/account'
 
         # No distributors allow changes to orders
         expect(page).to(have_no_content(I18n.t('spree.users.orders.open_orders')))
@@ -82,7 +82,7 @@ count: 1
 ))
 
         # Viewing transaction history
-        find("a", text: /#{I18n.t('spree.users.show.tabs.transactions')}/i).click
+        find('a', text: /#{I18n.t('spree.users.show.tabs.transactions')}/i).click
 
         # It shows all hubs that have been ordered from with balance or credit
         expect(page).to(have_content(distributor1.name))
@@ -99,18 +99,18 @@ count: 1
 ))
         expect(page).not_to(have_content(distributor_without_orders.name))
 
-        expect(page).to(have_content(distributor1.name + "\n" + "Balance due"))
+        expect(page).to(have_content(distributor1.name + "\n" + 'Balance due'))
         expect(page).to(have_content(distributor_credit.name + "\nCredit"))
 
         # It reveals table of orders for distributors when clicked
         expand_active_table_node distributor1.name
-        expect(page).to(have_link("Order " + d1o1.number, href: "/orders/#{d1o1.number}"))
+        expect(page).to(have_link('Order ' + d1o1.number, href: "/orders/#{d1o1.number}"))
 
         expand_active_table_node distributor2.name
-        expect(page).not_to(have_content("Order " + d1o1.number.to_s))
+        expect(page).not_to(have_content('Order ' + d1o1.number.to_s))
       end
 
-      context "when there is at least one changeable order" do
+      context 'when there is at least one changeable order' do
         before do
           distributor1.update(allow_order_changes: true)
         end
@@ -134,9 +134,9 @@ count: 2
       end
     end
 
-    context "without any completed orders" do
-      it "displays an appropriate message" do
-        visit "/account"
+    context 'without any completed orders' do
+      it 'displays an appropriate message' do
+        visit '/account'
         expect(page).to(have_content(I18n.t(:you_have_no_orders_yet)))
       end
     end

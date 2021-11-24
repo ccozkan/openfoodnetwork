@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "system_helper"
+require 'system_helper'
 
 describe ' As an administrator I want to print a ticket for an order ', js: true do
   include CheckoutHelper
   include AuthenticationHelper
   include ActionView::Helpers::NumberHelper
 
-  context "as an enterprise manager" do
+  context 'as an enterprise manager' do
     let!(:shipping_method) { create(:shipping_method, distributors: [distributor]) }
     let!(:distributor) { create(:distributor_enterprise) }
 
@@ -18,7 +18,7 @@ distributor: distributor,
 ship_address: create(:address),
                    product_price: 110,
 tax_rate_amount: 0.1,
-                   tax_rate_name: "Tax 1"
+                   tax_rate_name: 'Tax 1'
 ).tap do |order|
                                   order.create_tax_charge!
                                   order.update_shipping_fees!
@@ -34,11 +34,11 @@ tax_rate_amount: 0.1,
       Spree::Config[:enable_receipt_printing?] = true
     end
 
-    describe "viewing the edit page" do
+    describe 'viewing the edit page' do
       it "can print an order's ticket" do
         visit spree.edit_admin_order_path(order)
 
-        find("#links-dropdown .ofn-drop-down").click
+        find('#links-dropdown .ofn-drop-down').click
 
         ticket_window =
  window_opened_by do

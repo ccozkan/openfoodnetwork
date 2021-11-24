@@ -44,7 +44,7 @@ module Spree
 -> { order(:position) },
 as: :viewable,
                                                dependent: :destroy,
-                                               class_name: "Spree::Image"
+                                               class_name: 'Spree::Image'
     accepts_nested_attributes_for :images
 
     has_one :default_price,
@@ -147,12 +147,12 @@ lambda { |enterprise|
           AS o_inventory_items
           ON o_inventory_items.variant_id = spree_variants.id"
 )
-        .where("o_inventory_items.id IS NULL OR o_inventory_items.visible = (?)", true)
+        .where('o_inventory_items.id IS NULL OR o_inventory_items.visible = (?)', true)
     }
 
     scope :stockable_by,
 lambda { |enterprise|
-      return where("1=0") if enterprise.blank?
+      return where('1=0') if enterprise.blank?
 
       joins(:product)
         .where(spree_products: { id: Spree::Product.stockable_by(enterprise).pluck(:id) })
@@ -176,13 +176,13 @@ id: ExchangeVariant.select(:variant_id)
       # "where(id:" is necessary so that the returned relation has no includes
       # The relation without includes will not be readonly and allow updates on it
       where(
-"spree_variants.id in (?)",
+'spree_variants.id in (?)',
 joins(:prices)
                                           .where(deleted_at: nil)
                                           .where('spree_prices.currency' =>
                                             currency || Spree::Config[:currency])
                                           .where('spree_prices.amount IS NOT NULL')
-                                          .select("spree_variants.id")
+                                          .select('spree_variants.id')
 )
     end
 
@@ -268,8 +268,8 @@ joins(:prices)
     end
 
     def ensure_unit_value
-      Bugsnag.notify("Trying to set unit_value to NaN") if unit_value&.nan?
-      return unless (product&.variant_unit == "items" && unit_value.nil?) || unit_value&.nan?
+      Bugsnag.notify('Trying to set unit_value to NaN') if unit_value&.nan?
+      return unless (product&.variant_unit == 'items' && unit_value.nil?) || unit_value&.nan?
 
       self.unit_value = 1.0
     end

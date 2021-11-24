@@ -12,7 +12,7 @@ module Api
  if taxonomy
                     taxonomy.root.children
                   elsif params[:ids]
-                    Spree::Taxon.where(id: raw_params[:ids].split(","))
+                    Spree::Taxon.where(id: raw_params[:ids].split(','))
                   else
                     Spree::Taxon.ransack(raw_params[:q]).result
                   end

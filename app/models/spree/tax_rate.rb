@@ -7,7 +7,7 @@ module Spree
 
       return if Zone.default_tax
 
-      record.errors.add(:included_in_price, Spree.t("errors.messages.included_price_validation"))
+      record.errors.add(:included_in_price, Spree.t('errors.messages.included_price_validation'))
     end
   end
 end
@@ -17,8 +17,8 @@ module Spree
     acts_as_paranoid
     include CalculatedAdjustments
 
-    belongs_to :zone, class_name: "Spree::Zone", inverse_of: :tax_rates
-    belongs_to :tax_category, class_name: "Spree::TaxCategory", inverse_of: :tax_rates
+    belongs_to :zone, class_name: 'Spree::Zone', inverse_of: :tax_rates
+    belongs_to :tax_category, class_name: 'Spree::TaxCategory', inverse_of: :tax_rates
     has_many :adjustments, as: :originator
 
     validates :amount, presence: true, numericality: true
@@ -122,10 +122,10 @@ module Spree
     private
 
     def create_label(adjustment_amount)
-      label = ""
+      label = ''
       label << "#{Spree.t(:refund)} " if adjustment_amount.negative?
       label << "#{name.presence || tax_category.name} "
-      label << (show_rate_in_label? ? "#{amount * 100}%" : "")
+      label << (show_rate_in_label? ? "#{amount * 100}%" : '')
       label << " (#{I18n.t('models.tax_rate.included_in_price')})" if included_in_price?
       label
     end

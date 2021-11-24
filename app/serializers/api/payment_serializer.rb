@@ -9,7 +9,7 @@ module Api
     end
 
     def updated_at
-      I18n.l(object.updated_at, format: "%b %d, %Y %H:%M")
+      I18n.l(object.updated_at, format: '%b %d, %Y %H:%M')
     end
   end
 end

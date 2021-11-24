@@ -3,11 +3,11 @@
 require 'spec_helper'
 
 describe ImageImporter do
-  let(:url) { Rails.root.join("spec/fixtures/files/logo.png").to_s }
+  let(:url) { Rails.root.join('spec/fixtures/files/logo.png').to_s }
   let(:product) { create(:product) }
 
-  describe "#import" do
-    it "downloads and attaches to the product" do
+  describe '#import' do
+    it 'downloads and attaches to the product' do
       expect do
         subject.import(url, product)
       end.to(change {

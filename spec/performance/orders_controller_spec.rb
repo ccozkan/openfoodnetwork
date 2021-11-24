@@ -24,9 +24,9 @@ variants: products.map do |p|
     Spree::Config.currency = 'AUD'
   end
 
-  describe "adding products to cart" do
-    it "adds products to cart" do
-      puts "Pre-populating first product"
+  describe 'adding products to cart' do
+    it 'adds products to cart' do
+      puts 'Pre-populating first product'
       spree_post :populate, variants: { products[0].variants.first.id => 1 }
 
       result =

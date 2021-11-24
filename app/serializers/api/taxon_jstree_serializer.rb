@@ -14,7 +14,7 @@ module Api
     end
 
     def state
-      "closed"
+      'closed'
     end
   end
 end

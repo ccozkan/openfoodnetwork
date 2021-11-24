@@ -12,15 +12,15 @@ describe Api::GroupListSerializer do
     group.enterprises << producer
   end
 
-  it "serializes group attributes" do
+  it 'serializes group attributes' do
     expect(serializer.serializable_hash[:name]).to(match(group.name))
   end
 
-  it "serializes abbreviated state" do
+  it 'serializes abbreviated state' do
     expect(serializer.serializable_hash[:state]).to(eq(group.address.state.abbr))
   end
 
-  it "serializes an array of enterprises" do
+  it 'serializes an array of enterprises' do
     expect(serializer.serializable_hash[:enterprises]).to(be_a(ActiveModel::ArraySerializer))
     expect(serializer.serializable_hash[:enterprises].to_json).to(match(producer.name))
   end

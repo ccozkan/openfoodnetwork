@@ -21,7 +21,7 @@ namespace :ofn do
       anonymize_payments_data
       anonymize_payments_accounts
 
-      Spree::TokenizedPermission.update_all("token = null")
+      Spree::TokenizedPermission.update_all('token = null')
 
       # Delete all preferences that may contain sensitive information
       Spree::Preference
@@ -31,13 +31,13 @@ namespace :ofn do
 
     def guard_and_warn
       if Rails.env.production?
-        Rails.logger.info("This task cannot be executed in production")
+        Rails.logger.info('This task cannot be executed in production')
         exit
       end
 
       message = "\n <%= color('This will permanently change DB contents', :yellow) %>,
                 are you sure you want to proceed? (y/N)"
-      exit unless HighLine.new.agree(message) { |q| q.default = "n" }
+      exit unless HighLine.new.agree(message) { |q| q.default = 'n' }
     end
 
     private
@@ -48,10 +48,10 @@ namespace :ofn do
                               login = concat(id, '_ofn_user@example.com'),
                               unconfirmed_email = concat(id, '_ofn_user@example.com')"
 )
-      Customer.where("user_id IS NULL")
+      Customer.where('user_id IS NULL')
         .update_all("email = concat(id, '_ofn_customer@example.com'),
                      name = concat('Customer Number ', id, ' (without connected User)')")
-      Customer.where("user_id IS NOT NULL")
+      Customer.where('user_id IS NOT NULL')
         .update_all("email = concat(user_id, '_ofn_user@example.com'),
                      name = concat('Customer Number ', id, ' - User ', user_id)")
 
@@ -77,9 +77,9 @@ namespace :ofn do
     end
 
     def anonymize_payments_accounts
-      Spree::PaypalExpressCheckout.update_all("token = null")
+      Spree::PaypalExpressCheckout.update_all('token = null')
       StripeAccount.delete_all
-      ActiveRecord::Base.connection.execute("delete from spree_paypal_accounts")
+      ActiveRecord::Base.connection.execute('delete from spree_paypal_accounts')
     end
   end
 end

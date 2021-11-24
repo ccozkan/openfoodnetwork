@@ -49,7 +49,7 @@ module Reporting
         Case.new
           .when(mask_rule || default_mask_rule)
           .then(field)
-          .else(quoted(message || I18n.t("hidden_field", scope: i18n_scope)))
+          .else(quoted(message || I18n.t('hidden_field', scope: i18n_scope)))
       end
 
       def distinct_results(fields = nil)
@@ -80,11 +80,11 @@ module Reporting
       end
 
       def summary_row_title
-        I18n.t("total_items", scope: i18n_scope)
+        I18n.t('total_items', scope: i18n_scope)
       end
 
       def i18n_scope
-        "admin.reports"
+        'admin.reports'
       end
     end
   end

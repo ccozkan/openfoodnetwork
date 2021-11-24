@@ -131,7 +131,7 @@ class: 'input_string fullwidth'
         object.preferences.keys.map do |key|
           preference_label = form.label(
 "preferred_#{key}",
-                                        Spree.t(key.to_s.gsub("_from_list", "")) + ": "
+                                        Spree.t(key.to_s.gsub('_from_list', '')) + ': '
 ).html_safe
           preference_field = preference_field_for(
             form,
@@ -145,7 +145,7 @@ object
 
       def link_to_add_fields(name, target, options = {})
         name = '' if options[:no_text]
-        css_classes = options[:class] ? options[:class] + " spree_add_fields" : "spree_add_fields"
+        css_classes = options[:class] ? options[:class] + ' spree_add_fields' : 'spree_add_fields'
         link_to_with_icon(
 'icon-plus',
                           name,

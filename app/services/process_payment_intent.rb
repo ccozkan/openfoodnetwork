@@ -13,7 +13,7 @@ class ProcessPaymentIntent
   class Result
     attr_reader :error
 
-    def initialize(ok:, error: "")
+    def initialize(ok:, error: '')
       @ok = ok
       @error = error
     end
@@ -43,7 +43,7 @@ class ProcessPaymentIntent
     else
       payment.fail_authorization
       payment.clear_authorization_url
-      Result.new(ok: false, error: I18n.t("payment_could_not_complete"))
+      Result.new(ok: false, error: I18n.t('payment_could_not_complete'))
     end
   rescue Stripe::StripeError => e
     payment.fail_authorization
@@ -56,7 +56,7 @@ class ProcessPaymentIntent
   attr_reader :order, :payment_intent, :payment
 
   def process_payment
-    OrderWorkflow.new(order).next if order.state == "payment"
+    OrderWorkflow.new(order).next if order.state == 'payment'
     order.process_payments!
   end
 

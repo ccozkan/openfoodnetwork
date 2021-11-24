@@ -7,38 +7,38 @@ describe PaypalItemsBuilder do
   let(:service) { described_class.new(order) }
   let(:items) { described_class.new(order).call }
 
-  it "lists line items" do
+  it 'lists line items' do
     line_item = order.line_items.first
 
     expect(items.first[:Name]).to(eq(line_item.variant.name))
     expect(items.first[:Number]).to(eq(line_item.variant.sku))
     expect(items.first[:Quantity]).to(eq(line_item.quantity))
     expect(items.first[:Amount]).to(eq(currencyID: order.currency, value: line_item.price))
-    expect(items.first[:ItemCategory]).to(eq("Physical"))
+    expect(items.first[:ItemCategory]).to(eq('Physical'))
   end
 
-  context "listing adjustments" do
+  context 'listing adjustments' do
     let!(:admin_adjustment) do
       create(
 :adjustment,
-label: "Admin Adjustment",
+label: 'Admin Adjustment',
 order: order,
 adjustable: order,
              amount: 12,
 originator: nil,
-state: "closed"
+state: 'closed'
 )
     end
     let!(:ineligible_adjustment) do
       create(
 :adjustment,
-label: "Ineligible Adjustment",
+label: 'Ineligible Adjustment',
 order: order,
 adjustable: order,
              amount: 34,
 eligible: false,
-state: "closed",
-             originator_type: "Spree::PaymentMethod"
+state: 'closed',
+             originator_type: 'Spree::PaymentMethod'
 )
     end
     let!(:zone) { create(:zone_with_member) }
@@ -63,60 +63,60 @@ zone: zone,
     let!(:included_tax_adjustment) do
       create(
 :adjustment,
-label: "Included Tax Adjustment",
+label: 'Included Tax Adjustment',
 order: order,
              adjustable: order.line_items.first,
 amount: 56,
              originator: included_tax_rate,
 included: true,
-state: "closed"
+state: 'closed'
 )
     end
     let!(:additional_tax_adjustment) do
       create(
 :adjustment,
-label: "Additional Tax Adjustment",
+label: 'Additional Tax Adjustment',
 order: order,
 adjustable: order.shipment,
              amount: 78,
 originator: additional_tax_rate,
-state: "closed"
+state: 'closed'
 )
     end
     let!(:enterprise_fee) { create(:enterprise_fee) }
     let!(:line_item_enterprise_fee) do
       create(
 :adjustment,
-label: "Line Item Fee",
+label: 'Line Item Fee',
 order: order,
 adjustable: order.line_items.first,
              amount: 91,
 originator: enterprise_fee,
-state: "closed"
+state: 'closed'
 )
     end
     let!(:order_enterprise_fee) do
       create(
 :adjustment,
-label: "Order Fee",
+label: 'Order Fee',
 order: order,
 adjustable: order,
              amount: 23,
 originator: enterprise_fee,
-state: "closed"
+state: 'closed'
 )
     end
 
     before { order.update_order! }
 
-    it "should add up to the order total, minus any additional tax and the shipping cost" do
+    it 'should add up to the order total, minus any additional tax and the shipping cost' do
       items_total = items.sum { |i| i[:Quantity] * i[:Amount][:value] }
       order_tax_total = order.all_adjustments.tax.additional.sum(:amount)
 
       expect(items_total).to(eq(order.total - order_tax_total - order.ship_total))
     end
 
-    it "lists the payment fee adjustment" do
+    it 'lists the payment fee adjustment' do
       payment_fee = items.find { |i| i[:Name] == I18n.t('payment_method_fee') }
 
       expect(payment_fee[:Quantity]).to(eq(1))
@@ -126,7 +126,7 @@ value: order.all_adjustments.payment_fee.first.amount
 ))
     end
 
-    it "lists admin adjustments" do
+    it 'lists admin adjustments' do
       admin_item = items.find { |i| i[:Name] == admin_adjustment.label }
 
       expect(order.all_adjustments.admin.count).to(eq(1))
@@ -137,7 +137,7 @@ value: order.all_adjustments.admin.first.amount
 ))
     end
 
-    it "lists enterprise fee adjustments" do
+    it 'lists enterprise fee adjustments' do
       line_item_fee = items.find { |i| i[:Name] == line_item_enterprise_fee.label }
       order_fee = items.find { |i| i[:Name] == order_enterprise_fee.label }
 
@@ -155,7 +155,7 @@ value: order_enterprise_fee.amount
 ))
     end
 
-    it "does not list tax adjustments" do
+    it 'does not list tax adjustments' do
       tax_adjustment_items =
  items.select do |i|
         i[:Name].in?([additional_tax_adjustment.label, included_tax_adjustment.label])
@@ -166,14 +166,14 @@ value: order_enterprise_fee.amount
       expect(tax_adjustment_items.count).to(be_zero)
     end
 
-    it "does not list the shipping fee" do
+    it 'does not list the shipping fee' do
       shipping_fee_item = items.find { |i| i[:Name] == I18n.t('shipping') }
 
       expect(order.all_adjustments.shipping.count).to(eq(1))
       expect(shipping_fee_item).to(be_nil)
     end
 
-    it "does not list ineligible adjustments" do
+    it 'does not list ineligible adjustments' do
       ineligible_item = items.detect { |i| i[:Name] == ineligible_adjustment.label }
 
       expect(order.adjustments.where(eligible: false).count).to(eq(1))

@@ -24,13 +24,13 @@ module AuthenticationHelper
   end
 
   def fill_in_and_submit_login_form(user)
-    fill_in("email", with: user.email)
-    fill_in("password", with: user.password)
-    click_button("Login")
+    fill_in('email', with: user.email)
+    fill_in('password', with: user.password)
+    click_button('Login')
   end
 
   def expect_logged_in
     # Ensure page has been reloaded after submitting login form
-    expect(page).to_not(have_selector(".menu #login-link"))
+    expect(page).to_not(have_selector('.menu #login-link'))
   end
 end

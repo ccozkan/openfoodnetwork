@@ -30,7 +30,7 @@ module Spree
           @object.attributes = permitted_resource_params
           if @object.save
             flash[:success] = flash_message_for(@object, :successfully_created)
-            if params[:button] == "add_another"
+            if params[:button] == 'add_another'
               redirect_to(spree.new_admin_product_path)
             else
               redirect_to(spree.admin_products_path)

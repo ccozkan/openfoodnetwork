@@ -27,8 +27,8 @@ module Spree
     alias_attribute :brand, :cc_type
 
     def expiry=(expiry)
-      self[:month], self[:year] = expiry.split(" / ")
-      self[:year] = "20" + self[:year]
+      self[:month], self[:year] = expiry.split(' / ')
+      self[:year] = '20' + self[:year]
     end
 
     def number=(num)

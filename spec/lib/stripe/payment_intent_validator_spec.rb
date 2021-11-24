@@ -5,16 +5,16 @@ require 'stripe/payment_intent_validator'
 
 module Stripe
   describe PaymentIntentValidator do
-    describe "#call" do
+    describe '#call' do
       let(:validator) { Stripe::PaymentIntentValidator.new(payment) }
       let(:payment) { build(:payment, response_code: payment_intent_id) }
-      let(:payment_intent_id) { "pi_123" }
-      let(:stripe_account_id) { "abc123" }
+      let(:payment_intent_id) { 'pi_123' }
+      let(:stripe_account_id) { 'abc123' }
       let(:stripe_account_mock) { double(stripe_user_id: stripe_account_id) }
       let(:payment_intent_response_mock) { { status: 200, body: payment_intent_response_body } }
 
       before do
-        Stripe.api_key = "sk_test_12345"
+        Stripe.api_key = 'sk_test_12345'
 
         allow(payment).to(receive_message_chain(:payment_method, :preferred_enterprise_id) { 1 })
         allow(StripeAccount).to(receive(:find_by) { stripe_account_mock })
@@ -24,12 +24,12 @@ module Stripe
           .to_return(payment_intent_response_mock)
       end
 
-      context "when payment intent is valid" do
+      context 'when payment intent is valid' do
         let(:payment_intent_response_body) do
-          JSON.generate(id: payment_intent_id, status: "requires_capture")
+          JSON.generate(id: payment_intent_id, status: 'requires_capture')
         end
 
-        it "returns payment intent id and does not raise" do
+        it 'returns payment intent id and does not raise' do
           expect do
             result = validator.call
             expect(result).to(eq(payment_intent_response_body))
@@ -37,15 +37,15 @@ module Stripe
         end
       end
 
-      context "when payment intent contains an error" do
+      context 'when payment intent contains an error' do
         let(:payment_intent_response_body) do
-          JSON.generate(id: payment_intent_id, last_payment_error: { message: "No money" })
+          JSON.generate(id: payment_intent_id, last_payment_error: { message: 'No money' })
         end
 
-        it "raises Stripe error with payment intent last_payment_error as message" do
+        it 'raises Stripe error with payment intent last_payment_error as message' do
           expect do
             validator.call
-          end.to(raise_error(Stripe::StripeError, "No money"))
+          end.to(raise_error(Stripe::StripeError, 'No money'))
         end
       end
     end

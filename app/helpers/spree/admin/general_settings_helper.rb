@@ -13,7 +13,7 @@ module Spree
       end
 
       def all_units
-        ["g", "oz", "lb", "kg", "T", "mL", "L", "kL"]
+        ['g', 'oz', 'lb', 'kg', 'T', 'mL', 'L', 'kL']
       end
     end
   end

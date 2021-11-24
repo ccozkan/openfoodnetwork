@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 describe Spree::Address do
-  describe "clone" do
-    it "creates a copy of the address with the exception of the id, updated_at and created_at attributes" do
+  describe 'clone' do
+    it 'creates a copy of the address with the exception of the id, updated_at and created_at attributes' do
       state = build_stubbed(:state)
       original = build_stubbed(
 :address,
@@ -43,21 +43,21 @@ describe Spree::Address do
     end
   end
 
-  context "aliased attributes" do
+  context 'aliased attributes' do
     let(:address) { Spree::Address.new }
 
-    it "first_name" do
-      address.firstname = "Ryan"
-      expect(address.first_name).to(eq("Ryan"))
+    it 'first_name' do
+      address.firstname = 'Ryan'
+      expect(address.first_name).to(eq('Ryan'))
     end
 
-    it "last_name" do
-      address.lastname = "Bigg"
-      expect(address.last_name).to(eq("Bigg"))
+    it 'last_name' do
+      address.lastname = 'Bigg'
+      expect(address.last_name).to(eq('Bigg'))
     end
   end
 
-  context "validation" do
+  context 'validation' do
     before do
       configure_spree_preferences do |config|
         config.address_requires_state = true
@@ -72,13 +72,13 @@ describe Spree::Address do
       country.states_required = true
     end
 
-    it "errors when state_name is nil" do
+    it 'errors when state_name is nil' do
       address.state_name = nil
       address.state = nil
       expect(address).to_not(be_valid)
     end
 
-    it "full state name is in state_name and country does contain that state" do
+    it 'full state name is in state_name and country does contain that state' do
       allow(country).to(receive_message_chain(:states, :find_all_by_name_or_abbr)) do
         [build_stubbed(:state, name: 'alabama', abbr: 'al')]
       end
@@ -89,7 +89,7 @@ describe Spree::Address do
       expect(address.state_name).to(eq('alabama'))
     end
 
-    it "state abbr is in state_name and country does contain that state" do
+    it 'state abbr is in state_name and country does contain that state' do
       allow(country).to(receive_message_chain(:states, :find_all_by_name_or_abbr) { [state] })
       address.state_name = state.abbr
       expect(address).to(be_valid)
@@ -97,7 +97,7 @@ describe Spree::Address do
       expect(address.state_name).to(eq(state.name))
     end
 
-    it "both state and state_name are entered and country does contain the state" do
+    it 'both state and state_name are entered and country does contain the state' do
       allow(country).to(receive_message_chain(:states, :find_all_by_name_or_abbr) { [state] })
       address.state = state
       address.state_name = 'maryland'
@@ -105,50 +105,50 @@ describe Spree::Address do
       expect(address.state_name).to(eq('maryland'))
     end
 
-    it "address_requires_state preference is false" do
+    it 'address_requires_state preference is false' do
       Spree::Config.set(address_requires_state: false)
       address.state = nil
       address.state_name = nil
       expect(address).to(be_valid)
     end
 
-    it "requires phone" do
-      address.phone = ""
+    it 'requires phone' do
+      address.phone = ''
       address.valid?
       expect(address.errors[:phone].first).to(eq("can't be blank"))
     end
 
-    it "requires zipcode" do
-      address.zipcode = ""
+    it 'requires zipcode' do
+      address.zipcode = ''
       address.valid?
       expect(address.errors[:zipcode].first).to(eq("can't be blank"))
     end
 
-    context "zipcode not required" do
+    context 'zipcode not required' do
       before { allow(address).to(receive(:require_zipcode?) { false }) }
 
-      it "shows no errors when phone is blank" do
-        address.zipcode = ""
+      it 'shows no errors when phone is blank' do
+        address.zipcode = ''
         address.valid?
         expect(address.errors[:zipcode]).to(be_empty)
       end
     end
   end
 
-  context ".default" do
-    it "sets up a new record the default country" do
+  context '.default' do
+    it 'sets up a new record the default country' do
       expect(Spree::Address.default.country).to(eq(DefaultCountry.country))
     end
 
     # Regression test for #1142
 
-    context "The default country code is set to an invalid value" do
+    context 'The default country code is set to an invalid value' do
       before do
         allow(ENV).to(receive(:[]).and_call_original)
-        allow(ENV).to(receive(:[]).with("DEFAULT_COUNTRY_CODE").and_return("notacountry"))
+        allow(ENV).to(receive(:[]).with('DEFAULT_COUNTRY_CODE').and_return('notacountry'))
       end
 
-      it "uses the first available country" do
+      it 'uses the first available country' do
         expect(Spree::Address.default.country).to(eq(Spree::Country.first))
       end
     end

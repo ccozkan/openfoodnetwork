@@ -10,7 +10,7 @@ module OrderManagement
       let(:order) { package.order }
       subject { Estimator.new(order) }
 
-      context "#shipping rates" do
+      context '#shipping rates' do
         before(:each) do
           shipping_method.zones.first.members.create(zoneable: order.ship_address.country)
           allow_any_instance_of(Spree::ShippingMethod)
@@ -27,22 +27,22 @@ module OrderManagement
         end
 
         context "the order's ship address is in the same zone" do
-          it "returns shipping rates from a shipping method" do
+          it 'returns shipping rates from a shipping method' do
             shipping_rates = subject.shipping_rates(package)
             expect(shipping_rates.first.cost).to(eq(4.00))
           end
         end
 
         context "the order's ship address is in a different zone" do
-          it "still returns shipping rates from a shipping method" do
+          it 'still returns shipping rates from a shipping method' do
             shipping_method.zones.each { |z| z.members.delete_all }
             shipping_rates = subject.shipping_rates(package)
             expect(shipping_rates.first.cost).to(eq(4.00))
           end
         end
 
-        context "the calculator is not available for that order" do
-          it "does not return shipping rates from a shipping method" do
+        context 'the calculator is not available for that order' do
+          it 'does not return shipping rates from a shipping method' do
             allow_any_instance_of(Spree::ShippingMethod)
               .to(receive_message_chain(:calculator, :available?).and_return(false))
             shipping_rates = subject.shipping_rates(package)
@@ -51,21 +51,21 @@ module OrderManagement
         end
 
         context "the currency matches the order's currency" do
-          it "returns shipping rates from a shipping method" do
+          it 'returns shipping rates from a shipping method' do
             shipping_rates = subject.shipping_rates(package)
             expect(shipping_rates.first.cost).to(eq(4.00))
           end
         end
 
         context "the currency is different than the order's currency" do
-          it "does not return shipping rates from a shipping method" do
-            order.currency = "USD"
+          it 'does not return shipping rates from a shipping method' do
+            order.currency = 'USD'
             shipping_rates = subject.shipping_rates(package)
             expect(shipping_rates).to(eq([]))
           end
         end
 
-        it "sorts shipping rates by cost" do
+        it 'sorts shipping rates by cost' do
           shipping_methods = 3.times.map { create(:shipping_method) }
           allow(shipping_methods[0])
             .to(receive_message_chain(:calculator, :compute).and_return(5.00))
@@ -80,10 +80,10 @@ module OrderManagement
           expect(subject.shipping_rates(package).map(&:cost)).to(eq(expected_costs))
         end
 
-        context "general shipping methods" do
+        context 'general shipping methods' do
           let(:shipping_methods) { 2.times.map { create(:shipping_method) } }
 
-          it "selects the most affordable shipping rate" do
+          it 'selects the most affordable shipping rate' do
             allow(shipping_methods[0])
               .to(receive_message_chain(:calculator, :compute).and_return(5.00))
             allow(shipping_methods[1])
@@ -107,8 +107,8 @@ module OrderManagement
           end
         end
 
-        context "involves backend only shipping methods" do
-          let(:backend_method) { create(:shipping_method, display_on: "back_end") }
+        context 'involves backend only shipping methods' do
+          let(:backend_method) { create(:shipping_method, display_on: 'back_end') }
           let(:generic_method) { create(:shipping_method) }
 
           # regression for #3287

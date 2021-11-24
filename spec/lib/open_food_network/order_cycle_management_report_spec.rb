@@ -5,17 +5,17 @@ require 'open_food_network/order_cycle_management_report'
 
 module OpenFoodNetwork
   describe OrderCycleManagementReport do
-    context "as a site admin" do
+    context 'as a site admin' do
       subject { OrderCycleManagementReport.new(user, params, true) }
       let(:params) { {} }
 
       let(:user) do
         user = create(:user)
-        user.spree_roles << Spree::Role.find_or_create_by!(name: "admin")
+        user.spree_roles << Spree::Role.find_or_create_by!(name: 'admin')
         user
       end
 
-      describe "fetching orders" do
+      describe 'fetching orders' do
         let(:customers_with_balance) { instance_double(CustomersWithBalance) }
 
         it 'calls the OutstandingBalance query object' do
@@ -25,7 +25,7 @@ module OpenFoodNetwork
           subject.orders
         end
 
-        it "fetches completed orders" do
+        it 'fetches completed orders' do
           o1 = create(:order)
           o2 = create(:order, completed_at: 1.day.ago, state: 'complete')
           expect(subject.orders).to(eq([o2]))
@@ -43,14 +43,14 @@ module OpenFoodNetwork
           expect(subject.orders.pluck(:id)).to(eq([order2.id, order1.id]))
         end
 
-        it "does not show cancelled orders" do
+        it 'does not show cancelled orders' do
           o1 = create(:order, state: 'canceled', completed_at: 1.day.ago)
           o2 = create(:order, state: 'complete', completed_at: 1.day.ago)
           expect(subject.orders).to(eq([o2]))
         end
 
-        context "default date range" do
-          it "fetches orders completed in the past month" do
+        context 'default date range' do
+          it 'fetches orders completed in the past month' do
             o1 = create(:order, state: 'complete', completed_at: 1.month.ago - 1.day)
             o2 = create(:order, state: 'complete', completed_at: 1.month.ago + 1.day)
             expect(subject.orders).to(eq([o2]))
@@ -59,17 +59,17 @@ module OpenFoodNetwork
       end
     end
 
-    context "as an enterprise user" do
+    context 'as an enterprise user' do
       let!(:user) { create(:user) }
 
       subject { OrderCycleManagementReport.new(user, {}, true) }
 
-      describe "fetching orders" do
+      describe 'fetching orders' do
         let(:supplier) { create(:supplier_enterprise) }
         let(:product) { create(:simple_product, supplier: supplier) }
         let(:order) { create(:order, completed_at: 1.day.ago) }
 
-        it "only shows orders managed by the current user" do
+        it 'only shows orders managed by the current user' do
           d1 = create(:distributor_enterprise)
           d1.enterprise_roles.create!(user: user)
           d2 = create(:distributor_enterprise)
@@ -82,7 +82,7 @@ module OpenFoodNetwork
           expect(subject.orders).to(eq([o1]))
         end
 
-        it "does not show orders through a hub that the current user does not manage" do
+        it 'does not show orders through a hub that the current user does not manage' do
           # Given a supplier enterprise with an order for one of its products
           supplier.enterprise_roles.create!(user: user)
           order.line_items << create(:line_item_with_shipment, product: product)
@@ -93,22 +93,22 @@ module OpenFoodNetwork
         end
       end
 
-      describe "filtering orders" do
+      describe 'filtering orders' do
         let!(:orders) { Spree::Order.where(nil) }
         let!(:supplier) { create(:supplier_enterprise) }
 
         let!(:oc1) { create(:simple_order_cycle) }
-        let!(:pm1) { create(:payment_method, name: "PM1") }
-        let!(:sm1) { create(:shipping_method, name: "ship1") }
+        let!(:pm1) { create(:payment_method, name: 'PM1') }
+        let!(:sm1) { create(:shipping_method, name: 'ship1') }
         let!(:s1) { create(:shipment_with, :shipping_method, shipping_method: sm1) }
         let!(:order1) { create(:order, shipments: [s1], order_cycle: oc1) }
         let!(:payment1) { create(:payment, order: order1, payment_method: pm1) }
 
-        it "returns all orders sans-params" do
+        it 'returns all orders sans-params' do
           expect(subject.filter(orders)).to(eq(orders))
         end
 
-        it "filters to a specific order cycle" do
+        it 'filters to a specific order cycle' do
           oc2 = create(:simple_order_cycle)
           order2 = create(:order, order_cycle: oc2)
 
@@ -116,9 +116,9 @@ module OpenFoodNetwork
           expect(subject.filter(orders)).to(eq([order1]))
         end
 
-        it "filters to a payment method" do
-          pm2 = create(:payment_method, name: "PM2")
-          pm3 = create(:payment_method, name: "PM3")
+        it 'filters to a payment method' do
+          pm2 = create(:payment_method, name: 'PM2')
+          pm3 = create(:payment_method, name: 'PM3')
           order2 = create(:order, payments: [create(:payment, payment_method: pm2)])
           order3 = create(:order, payments: [create(:payment, payment_method: pm3)])
 
@@ -126,9 +126,9 @@ module OpenFoodNetwork
           expect(subject.filter(orders)).to(match_array([order1, order3]))
         end
 
-        it "filters to a shipping method" do
-          sm2 = create(:shipping_method, name: "ship2")
-          sm3 = create(:shipping_method, name: "ship3")
+        it 'filters to a shipping method' do
+          sm2 = create(:shipping_method, name: 'ship2')
+          sm3 = create(:shipping_method, name: 'ship3')
           s2 = create(:shipment_with, :shipping_method, shipping_method: sm2)
           s3 = create(:shipment_with, :shipping_method, shipping_method: sm3)
           order2 = create(:order, shipments: [s2])
@@ -138,7 +138,7 @@ module OpenFoodNetwork
           expect(subject.filter(orders)).to(match_array([order1, order3]))
         end
 
-        it "should do all the filters at once" do
+        it 'should do all the filters at once' do
           allow(subject).to(receive(:params).and_return(
 order_cycle_id: oc1.id,
 shipping_method_name: sm1.name,
@@ -202,7 +202,7 @@ payment_method_name: pm1.name
                                                 order.ship_address.firstname,
                                                 order.ship_address.lastname,
                                                 order.distributor.name,
-                                                "",
+                                                '',
                                                 "#{order.ship_address.address1} #{order.ship_address.address2} #{order.ship_address.city}",
                                                 order.ship_address.zipcode,
                                                 order.ship_address.phone,

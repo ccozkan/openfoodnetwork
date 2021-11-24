@@ -5,7 +5,7 @@ require 'open_food_network/products_and_inventory_report'
 
 module OpenFoodNetwork
   describe ProductsAndInventoryReport do
-    context "As a site admin" do
+    context 'As a site admin' do
       let(:user) do
         user = create(:user)
         user.spree_roles << Spree::Role.find_or_create_by!(name: 'admin')
@@ -15,52 +15,52 @@ module OpenFoodNetwork
         ProductsAndInventoryReport.new(user, {}, true)
       end
 
-      it "Should return headers" do
+      it 'Should return headers' do
         expect(subject.header).to(eq(
 [
-                                       "Supplier",
-                                       "Producer Suburb",
-                                       "Product",
-                                       "Product Properties",
-                                       "Taxons",
-                                       "Variant Value",
-                                       "Price",
-                                       "Group Buy Unit Quantity",
-                                       "Amount",
-                                       "SKU"
+                                       'Supplier',
+                                       'Producer Suburb',
+                                       'Product',
+                                       'Product Properties',
+                                       'Taxons',
+                                       'Variant Value',
+                                       'Price',
+                                       'Group Buy Unit Quantity',
+                                       'Amount',
+                                       'SKU'
                                      ]
 ))
       end
 
-      it "should build a table from a list of variants" do
+      it 'should build a table from a list of variants' do
         variant = double(
 :variant,
-sku: "sku",
-          full_name: "Variant Name",
+sku: 'sku',
+          full_name: 'Variant Name',
           count_on_hand: 10,
           price: 100
 )
-        allow(variant).to(receive_message_chain(:product, :supplier, :name).and_return("Supplier"))
+        allow(variant).to(receive_message_chain(:product, :supplier, :name).and_return('Supplier'))
         allow(variant).to(receive_message_chain(
 :product,
 :supplier,
 :address,
                                                 :city
-).and_return("A city"))
-        allow(variant).to(receive_message_chain(:product, :name).and_return("Product Name"))
+).and_return('A city'))
+        allow(variant).to(receive_message_chain(:product, :name).and_return('Product Name'))
         allow(variant).to(receive_message_chain(
 :product,
                                                 :properties
 ).and_return([
-double(name: "property1"),
-                                                                         double(name: "property2")
+double(name: 'property1'),
+                                                                         double(name: 'property2')
 ]))
         allow(variant).to(receive_message_chain(
 :product,
                                                 :taxons
 ).and_return([
-double(name: "taxon1"),
-                                                                     double(name: "taxon2")
+double(name: 'taxon1'),
+                                                                     double(name: 'taxon2')
 ]))
         allow(variant).to(receive_message_chain(:product, :group_buy_unit_size).and_return(21))
         allow(subject).to(receive(:variants).and_return([variant]))
@@ -68,29 +68,29 @@ double(name: "taxon1"),
         expect(subject.table).to(eq(
 [
 [
-                                      "Supplier",
-                                      "A city",
-                                      "Product Name",
-                                      "property1, property2",
-                                      "taxon1, taxon2",
-                                      "Variant Name",
+                                      'Supplier',
+                                      'A city',
+                                      'Product Name',
+                                      'property1, property2',
+                                      'taxon1, taxon2',
+                                      'Variant Name',
                                       100,
                                       21,
-                                      "",
-                                      "sku"
+                                      '',
+                                      'sku'
                                     ]
 ]
 ))
       end
 
-      it "fetches variants for some params" do
-        expect(subject).to(receive(:child_variants).and_return(["children"]))
-        expect(subject).to(receive(:filter).with(['children']).and_return(["filter_children"]))
-        expect(subject.variants).to(eq(["filter_children"]))
+      it 'fetches variants for some params' do
+        expect(subject).to(receive(:child_variants).and_return(['children']))
+        expect(subject).to(receive(:filter).with(['children']).and_return(['filter_children']))
+        expect(subject.variants).to(eq(['filter_children']))
       end
     end
 
-    context "As an enterprise user" do
+    context 'As an enterprise user' do
       let(:supplier) { create(:supplier_enterprise) }
       let(:enterprise_user) do
         user = create(:user)
@@ -104,8 +104,8 @@ double(name: "taxon1"),
         ProductsAndInventoryReport.new(enterprise_user, {}, true)
       end
 
-      describe "fetching child variants" do
-        it "returns some variants" do
+      describe 'fetching child variants' do
+        it 'returns some variants' do
           product1 = create(:simple_product, supplier: supplier)
           variant1 = product1.variants.first
           variant2 = create(:variant, product: product1)
@@ -113,7 +113,7 @@ double(name: "taxon1"),
           expect(subject.child_variants).to(match_array([variant1, variant2]))
         end
 
-        it "should only return variants managed by the user" do
+        it 'should only return variants managed by the user' do
           product1 = create(:simple_product, supplier: create(:supplier_enterprise))
           product2 = create(:simple_product, supplier: supplier)
           variant1 = product1.variants.first
@@ -123,11 +123,11 @@ double(name: "taxon1"),
         end
       end
 
-      describe "Filtering variants" do
+      describe 'Filtering variants' do
         let(:variants) { Spree::Variant.where(nil).joins(:product).where(is_master: false) }
 
-        describe "based on report type" do
-          it "returns only variants on hand" do
+        describe 'based on report type' do
+          it 'returns only variants on hand' do
             product1 = create(:simple_product, supplier: supplier, on_hand: 99)
             product2 = create(:simple_product, supplier: supplier, on_hand: 0)
 
@@ -135,7 +135,7 @@ double(name: "taxon1"),
             expect(subject.filter(variants)).to(eq([product1.variants.first]))
           end
         end
-        it "filters to a specific supplier" do
+        it 'filters to a specific supplier' do
           supplier2 = create(:supplier_enterprise)
           product1 = create(:simple_product, supplier: supplier)
           product2 = create(:simple_product, supplier: supplier2)
@@ -143,7 +143,7 @@ double(name: "taxon1"),
           allow(subject).to(receive(:params).and_return(supplier_id: supplier.id))
           expect(subject.filter(variants)).to(eq([product1.variants.first]))
         end
-        it "filters to a specific distributor" do
+        it 'filters to a specific distributor' do
           distributor = create(:distributor_enterprise)
           product1 = create(:simple_product, supplier: supplier)
           product2 = create(:simple_product, supplier: supplier)
@@ -158,7 +158,7 @@ variants: [product2.variants.first]
           expect(subject.filter(variants)).to(eq([product2.variants.first]))
         end
 
-        it "ignores variant overrides without filter" do
+        it 'ignores variant overrides without filter' do
           distributor = create(:distributor_enterprise)
           product = create(:simple_product, supplier: supplier, price: 5)
           variant = product.variants.first
@@ -175,7 +175,7 @@ variants: [product.variants.first]
           expect(result.first.price).to(eq(5))
         end
 
-        it "considers variant overrides with distributor" do
+        it 'considers variant overrides with distributor' do
           distributor = create(:distributor_enterprise)
           product = create(:simple_product, supplier: supplier, price: 5)
           variant = product.variants.first
@@ -193,7 +193,7 @@ variants: [product.variants.first]
           expect(result.first.price).to(eq(2))
         end
 
-        it "filters to a specific order cycle" do
+        it 'filters to a specific order cycle' do
           distributor = create(:distributor_enterprise)
           product1 = create(:simple_product, supplier: supplier)
           product2 = create(:simple_product, supplier: supplier)
@@ -208,7 +208,7 @@ variants: [product1.variants.first]
           expect(subject.filter(variants)).to(eq([product1.variants.first]))
         end
 
-        it "should do all the filters at once" do
+        it 'should do all the filters at once' do
           # The following data ensures that this spec fails if any of the
           # filters fail. It's testing the filters are not impacting each other.
           distributor = create(:distributor_enterprise)
@@ -279,24 +279,24 @@ supplier: supplier,
         end
       end
 
-      describe "fetching SKU for a variant" do
+      describe 'fetching SKU for a variant' do
         let(:variant) { create(:variant) }
         let(:product) { variant.product }
 
-        before { product.update_attribute(:sku, "Product SKU") }
+        before { product.update_attribute(:sku, 'Product SKU') }
 
-        context "when the variant has an SKU set" do
-          before { variant.update_attribute(:sku, "Variant SKU") }
-          it "returns it" do
-            expect(subject.send(:sku_for, variant)).to(eq("Variant SKU"))
+        context 'when the variant has an SKU set' do
+          before { variant.update_attribute(:sku, 'Variant SKU') }
+          it 'returns it' do
+            expect(subject.send(:sku_for, variant)).to(eq('Variant SKU'))
           end
         end
 
-        context "when the variant has bo SKU set" do
-          before { variant.update_attribute(:sku, "") }
+        context 'when the variant has bo SKU set' do
+          before { variant.update_attribute(:sku, '') }
 
           it "returns the product's SKU" do
-            expect(subject.send(:sku_for, variant)).to(eq("Product SKU"))
+            expect(subject.send(:sku_for, variant)).to(eq('Product SKU'))
           end
         end
       end

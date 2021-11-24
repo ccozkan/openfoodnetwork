@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe "checking out an order that initially fails", type: :request do
+describe 'checking out an order that initially fails', type: :request do
   include ShopWorkflow
 
   let!(:shop) { create(:enterprise) }
@@ -14,7 +14,7 @@ order_cycle: order_cycle,
 sender: order_cycle.coordinator,
 receiver: shop,
            incoming: false,
-pickup_time: "Monday"
+pickup_time: 'Monday'
 )
   end
   let!(:address) { create(:address) }
@@ -36,26 +36,26 @@ order: {
       shipping_method_id: shipping_method.id,
       payments_attributes: [{ payment_method_id: payment_method.id }],
       bill_address_attributes: address.attributes.slice(
-"firstname",
-"lastname",
-"address1",
-                                                        "address2",
-"phone",
-"city",
-"zipcode",
-"state_id",
-"country_id"
+'firstname',
+'lastname',
+'address1',
+                                                        'address2',
+'phone',
+'city',
+'zipcode',
+'state_id',
+'country_id'
 ),
       ship_address_attributes: address.attributes.slice(
-"firstname",
-"lastname",
-"address1",
-                                                        "address2",
-"phone",
-"city",
-"zipcode",
-"state_id",
-"country_id"
+'firstname',
+'lastname',
+'address1',
+                                                        'address2',
+'phone',
+'city',
+'zipcode',
+'state_id',
+'country_id'
 )
     }
 }
@@ -70,7 +70,7 @@ order: {
     set_order order
   end
 
-  context "when shipping and payment fees apply" do
+  context 'when shipping and payment fees apply' do
     let(:calculator) { Calculator::FlatPercentItemTotal.new(preferred_flat_percent: 10) }
 
     before do
@@ -82,7 +82,7 @@ order: {
       shipping_method.save!
     end
 
-    it "clears shipments and payments before rendering the checkout" do
+    it 'clears shipments and payments before rendering the checkout' do
       put update_checkout_path, params: params, as: :json
 
       # Checking out a BogusGateway without a source fails at :payment

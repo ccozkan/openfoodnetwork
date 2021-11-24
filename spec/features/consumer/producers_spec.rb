@@ -37,17 +37,17 @@ js: true do
     producer2.set_producer_property('Fair Trade', 'FT123')
   end
 
-  it "searches by URL" do
-    visit producers_path(anchor: "/?query=xyzzy")
-    expect(page).to(have_content("Sorry, no results found for xyzzy"))
+  it 'searches by URL' do
+    visit producers_path(anchor: '/?query=xyzzy')
+    expect(page).to(have_content('Sorry, no results found for xyzzy'))
   end
 
-  context "on the producers page" do
+  context 'on the producers page' do
     before do
       visit producers_path
     end
 
-    it "filters by taxon" do
+    it 'filters by taxon' do
       toggle_filters
 
       toggle_filter 'Vegetables'
@@ -62,8 +62,8 @@ js: true do
       expect(page).not_to(have_content(producer2.name))
     end
 
-    describe "filtering by product property" do
-      it "filters" do
+    describe 'filtering by product property' do
+      it 'filters' do
         toggle_filters
 
         toggle_filter 'Organic'
@@ -79,7 +79,7 @@ js: true do
       end
     end
 
-    it "shows all producers with expandable details" do
+    it 'shows all producers with expandable details' do
       expect(page).to(have_content(producer1.name))
       expand_active_table_node producer1.name
 
@@ -95,7 +95,7 @@ js: true do
       expect(page).not_to(have_content(invisible_producer.name))
     end
 
-    it "links to places to buy produce" do
+    it 'links to places to buy produce' do
       expand_active_table_node producer1.name
       expect(page).to(have_link(shop.name))
     end

@@ -21,11 +21,11 @@ RSpec.describe(OpenFoodNetwork::OrdersAndFulfillmentsReport::DistributorTotalsBy
     OpenFoodNetwork::OrderGrouper.new(report.rules, report.columns).table(report.table_items)
   end
 
-  it "generates the report" do
+  it 'generates the report' do
     expect(report_table.length).to(eq(2))
   end
 
-  it "has a variant row under the distributor" do
+  it 'has a variant row under the distributor' do
     distributor_name_field = report_table.first[0]
     expect(distributor_name_field).to(eq(distributor.name))
 
@@ -34,6 +34,6 @@ RSpec.describe(OpenFoodNetwork::OrdersAndFulfillmentsReport::DistributorTotalsBy
     expect(supplier_name_field).to(eq(supplier.name))
 
     total_field = report_table.last[1]
-    expect(total_field).to(eq(I18n.t("admin.reports.total")))
+    expect(total_field).to(eq(I18n.t('admin.reports.total')))
   end
 end

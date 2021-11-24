@@ -12,9 +12,9 @@ class RemoveTransientData
   def call
     Rails.logger.info("#{self.class.name}: processing")
 
-    Spree::StateChange.where("created_at < ?", RETENTION_PERIOD).delete_all
-    Spree::LogEntry.where("created_at < ?", RETENTION_PERIOD).delete_all
-    Session.where("updated_at < ?", RETENTION_PERIOD).delete_all
+    Spree::StateChange.where('created_at < ?', RETENTION_PERIOD).delete_all
+    Spree::LogEntry.where('created_at < ?', RETENTION_PERIOD).delete_all
+    Session.where('updated_at < ?', RETENTION_PERIOD).delete_all
 
     clear_old_cart_data!
   end
@@ -39,7 +39,7 @@ class RemoveTransientData
   def orders_without_payments
     # Carts with failed payments are ignored, as they contain potentially useful data
     Spree::Order
-      .joins("LEFT OUTER JOIN spree_payments ON spree_orders.id = spree_payments.order_id")
-      .where("spree_payments.id IS NULL")
+      .joins('LEFT OUTER JOIN spree_payments ON spree_orders.id = spree_payments.order_id')
+      .where('spree_payments.id IS NULL')
   end
 end

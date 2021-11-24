@@ -3,7 +3,7 @@
 module OpenFoodNetwork
   class OrdersAndFulfillmentsReport
     class DistributorTotalsBySupplierReport
-      REPORT_TYPE = "order_cycle_distributor_totals_by_supplier"
+      REPORT_TYPE = 'order_cycle_distributor_totals_by_supplier'
 
       attr_reader :context
 
@@ -33,15 +33,15 @@ I18n.t(:report_header_total_shipping_cost),
             group_by: proc { |line_item| line_item.order.distributor },
             sort_by: proc { |distributor| distributor.name },
             summary_columns: [
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
               proc { |_line_items| I18n.t('admin.reports.total') },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
               proc { |line_items| line_items.sum(&:amount) },
               proc { |line_items| line_items.map(&:order).uniq.sum(&:ship_total) },
-              proc { |_line_items| "" }
+              proc { |_line_items| '' }
             ]
           },
           {
@@ -71,7 +71,7 @@ proc { |line_items| line_items.first.order.distributor.name },
          proc { |line_items| line_items.to_a.sum(&:quantity) },
          proc { |line_items| line_items.first.price },
          proc { |line_items| line_items.sum(&:amount) },
-         proc { |_line_items| "" },
+         proc { |_line_items| '' },
          proc { |_line_items| I18n.t(:report_header_shipping_method) }
 ]
       end

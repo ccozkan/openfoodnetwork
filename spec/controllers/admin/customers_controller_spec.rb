@@ -6,38 +6,38 @@ module Admin
   describe CustomersController, type: :controller do
     include AuthenticationHelper
 
-    describe "index" do
+    describe 'index' do
       let(:enterprise) { create(:distributor_enterprise) }
       let(:another_enterprise) { create(:distributor_enterprise) }
 
-      context "html" do
+      context 'html' do
         before do
           allow(controller).to(receive(:spree_current_user) { enterprise.owner })
         end
 
-        it "returns an empty @collection" do
+        it 'returns an empty @collection' do
           get :index, as: :html
           expect(assigns(:collection)).to(eq([]))
         end
       end
 
-      context "json" do
+      context 'json' do
         let!(:customer) { create(:customer, enterprise: enterprise) }
 
-        context "where I manage the enterprise" do
+        context 'where I manage the enterprise' do
           before do
             allow(controller).to(receive(:spree_current_user) { enterprise.owner })
           end
 
-          context "and enterprise_id is given in params" do
+          context 'and enterprise_id is given in params' do
             let(:params) { { format: :json, enterprise_id: enterprise.id } }
 
-            it "scopes @collection to customers of that enterprise" do
+            it 'scopes @collection to customers of that enterprise' do
               get :index, params: params
               expect(assigns(:collection)).to(eq([customer]))
             end
 
-            it "serializes the data" do
+            it 'serializes the data' do
               expect(ActiveModel::ArraySerializer).to(receive(:new))
               get :index, params: params
             end
@@ -61,7 +61,7 @@ module Admin
             context 'when the customer has no orders' do
               it 'includes the customer balance in the response' do
                 get :index, params: params
-                expect(json_response.first["balance"]).to(eq("$0.00"))
+                expect(json_response.first['balance']).to(eq('$0.00'))
               end
             end
 
@@ -72,7 +72,7 @@ module Admin
               it 'includes the customer balance in the response' do
                 order.update_order!
                 get :index, params: params
-                expect(json_response.first["balance"]).to(eq("$-10.00"))
+                expect(json_response.first['balance']).to(eq('$-10.00'))
               end
             end
 
@@ -93,7 +93,7 @@ module Admin
 
               it 'includes the customer balance in the response' do
                 get :index, params: params
-                expect(json_response.first["balance"]).to(eq("$10.00"))
+                expect(json_response.first['balance']).to(eq('$10.00'))
               end
             end
 
@@ -103,7 +103,7 @@ module Admin
 
               it 'includes the customer balance in the response' do
                 get :index, params: params
-                expect(json_response.first["balance"]).to(eq("$0.00"))
+                expect(json_response.first['balance']).to(eq('$0.00'))
               end
             end
 
@@ -121,25 +121,25 @@ module Admin
               it 'includes the customer balance in the response' do
                 expect(order.payment_total).to(eq(0))
                 get :index, params: params
-                expect(json_response.first["balance"]).to(eq('$-10.00'))
+                expect(json_response.first['balance']).to(eq('$-10.00'))
               end
             end
           end
 
-          context "and enterprise_id is not given in params" do
-            it "returns an empty collection" do
+          context 'and enterprise_id is not given in params' do
+            it 'returns an empty collection' do
               get :index, as: :json
               expect(assigns(:collection)).to(eq([]))
             end
           end
         end
 
-        context "and I do not manage the enterprise" do
+        context 'and I do not manage the enterprise' do
           before do
             allow(controller).to(receive(:spree_current_user) { another_enterprise.owner })
           end
 
-          it "returns an empty collection" do
+          it 'returns an empty collection' do
             get :index, as: :json
             expect(assigns(:collection)).to(eq([]))
           end
@@ -147,11 +147,11 @@ module Admin
       end
     end
 
-    describe "update" do
+    describe 'update' do
       let(:enterprise) { create(:distributor_enterprise) }
       let(:another_enterprise) { create(:distributor_enterprise) }
 
-      context "json" do
+      context 'json' do
         let!(:customer) { create(:customer, enterprise: enterprise) }
 
         context "where I manage the customer's enterprise" do
@@ -161,12 +161,12 @@ module Admin
             allow(controller).to(receive(:spree_current_user) { enterprise.owner })
           end
 
-          it "allows me to update the customer" do
+          it 'allows me to update the customer' do
             spree_put :update,
 format: :json,
 id: customer.id,
                                customer: { email: 'new.email@gmail.com' }
-            expect(JSON.parse(response.body)["id"]).to(eq(customer.id))
+            expect(JSON.parse(response.body)['id']).to(eq(customer.id))
             expect(assigns(:customer)).to(eq(customer))
             expect(customer.reload.email).to(eq('new.email@gmail.com'))
           end
@@ -177,7 +177,7 @@ id: customer.id,
             allow(controller).to(receive(:spree_current_user) { another_enterprise.owner })
           end
 
-          it "prevents me from updating the customer" do
+          it 'prevents me from updating the customer' do
             spree_put :update,
 format: :json,
 id: customer.id,
@@ -190,7 +190,7 @@ id: customer.id,
       end
     end
 
-    describe "create" do
+    describe 'create' do
       let(:enterprise) { create(:distributor_enterprise) }
       let(:another_enterprise) { create(:distributor_enterprise) }
 
@@ -200,13 +200,13 @@ format: :json,
                            customer: { email: 'new@example.com', enterprise_id: enterprise.id })
       end
 
-      context "json" do
+      context 'json' do
         context "where I manage the customer's enterprise" do
           before do
             allow(controller).to(receive(:spree_current_user) { enterprise.owner })
           end
 
-          it "allows me to create the customer" do
+          it 'allows me to create the customer' do
             expect { create_customer(enterprise) }
 .to(change(Customer, :count).by(1))
           end
@@ -217,18 +217,18 @@ format: :json,
             allow(controller).to(receive(:spree_current_user) { another_enterprise.owner })
           end
 
-          it "prevents me from creating the customer" do
+          it 'prevents me from creating the customer' do
             expect { create_customer(enterprise) }
 .to(change(Customer, :count).by(0))
           end
         end
 
-        context "where I am the admin user" do
+        context 'where I am the admin user' do
           before do
             allow(controller).to(receive(:spree_current_user) { create(:admin_user) })
           end
 
-          it "allows admins to create the customer" do
+          it 'allows admins to create the customer' do
             expect { create_customer(enterprise) }
 .to(change(Customer, :count).by(1))
           end
@@ -236,11 +236,11 @@ format: :json,
       end
     end
 
-    describe "show" do
+    describe 'show' do
       let(:enterprise) { create(:distributor_enterprise) }
       let(:another_enterprise) { create(:distributor_enterprise) }
 
-      context "json" do
+      context 'json' do
         let!(:customer) { create(:customer, enterprise: enterprise) }
 
         context "where I manage the customer's enterprise" do
@@ -250,9 +250,9 @@ format: :json,
             allow(controller).to(receive(:spree_current_user) { enterprise.owner })
           end
 
-          it "renders the customer as json" do
+          it 'renders the customer as json' do
             get :show, as: :json, params: { id: customer.id }
-            expect(JSON.parse(response.body)["id"]).to(eq(customer.id))
+            expect(JSON.parse(response.body)['id']).to(eq(customer.id))
           end
         end
 
@@ -261,7 +261,7 @@ format: :json,
             allow(controller).to(receive(:spree_current_user) { another_enterprise.owner })
           end
 
-          it "prevents me from updating the customer" do
+          it 'prevents me from updating the customer' do
             get :show, as: :json, params: { id: customer.id }
             expect(response).to(redirect_to(unauthorized_path))
           end

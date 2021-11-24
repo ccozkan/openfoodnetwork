@@ -21,11 +21,11 @@ RSpec.describe(OpenFoodNetwork::OrdersAndFulfillmentsReport::SupplierTotalsRepor
     OpenFoodNetwork::OrderGrouper.new(report.rules, report.columns).table(report.table_items)
   end
 
-  it "generates the report" do
+  it 'generates the report' do
     expect(report_table.length).to(eq(1))
   end
 
-  it "has a variant row" do
+  it 'has a variant row' do
     supplier = order.line_items.first.variant.product.supplier
     supplier_name_field = report_table.first[0]
     expect(supplier_name_field).to(eq(supplier.name))

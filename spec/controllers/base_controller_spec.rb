@@ -7,11 +7,11 @@ describe BaseController, type: :controller do
   let(:order) { instance_double(Spree::Order) }
   controller(BaseController) do
     def index
-      render(plain: "")
+      render(plain: '')
     end
   end
 
-  describe "#current_order" do
+  describe '#current_order' do
     let(:user) { create(:user) }
 
     it "doesn't change anything without a user" do
@@ -20,7 +20,7 @@ describe BaseController, type: :controller do
       end.to_not(change { Spree::Order.count })
     end
 
-    it "creates a new order" do
+    it 'creates a new order' do
       allow(controller).to(receive(:spree_current_user).and_return(user))
 
       expect do
@@ -31,8 +31,8 @@ describe BaseController, type: :controller do
       expect(user.orders.count).to(eq(1))
     end
 
-    it "uses the last incomplete order" do
-      last_cart = create(:order, user: user, created_by: user, state: "cart", completed_at: nil)
+    it 'uses the last incomplete order' do
+      last_cart = create(:order, user: user, created_by: user, state: 'cart', completed_at: nil)
       allow(controller).to(receive(:spree_current_user).and_return(user))
 
       expect do
@@ -42,19 +42,19 @@ describe BaseController, type: :controller do
       expect(session[:order_id]).to(eq(last_cart.id))
     end
 
-    it "ignores the last incomplete order" do
+    it 'ignores the last incomplete order' do
       # Spree used to merge the last order with the current one.
       # And we used to override that logic to delete old incomplete orders.
       # Now we are checking here that none of that is happening.
 
-      last_cart = create(:order, user: user, created_by: user, state: "cart", completed_at: nil)
+      last_cart = create(:order, user: user, created_by: user, state: 'cart', completed_at: nil)
       last_cart.line_items << create(:line_item)
 
       current_cart = create(
         :order,
         user: user,
         created_by: user,
-        state: "cart",
+        state: 'cart',
         completed_at: nil,
         created_at: 1.week.ago
       )
@@ -70,14 +70,14 @@ describe BaseController, type: :controller do
     end
 
     it "doesn't recover old orders after checkout, a new empty one is created" do
-      last_cart = create(:order, user: user, created_by: user, state: "cart", completed_at: nil)
+      last_cart = create(:order, user: user, created_by: user, state: 'cart', completed_at: nil)
       last_cart.line_items << create(:line_item)
 
       just_completed_order = create(
         :order,
         user: user,
         created_by: user,
-        state: "complete",
+        state: 'complete',
         completed_at: Time.zone.now,
         created_at: 1.week.ago
       )
@@ -102,7 +102,7 @@ describe BaseController, type: :controller do
     end
   end
 
-  it "redirects to shopfront with message if order cycle is expired" do
+  it 'redirects to shopfront with message if order cycle is expired' do
     expect(controller).to(receive(:current_order_cycle).and_return(oc))
     expect(controller).to(receive(:current_order).and_return(order).twice)
     expect(oc).to(receive(:closed?).and_return(true))

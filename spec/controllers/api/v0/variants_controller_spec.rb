@@ -27,7 +27,7 @@ describe Api::V0::VariantsController, type: :controller do
     allow(controller).to(receive(:spree_current_user) { current_api_user })
   end
 
-  context "as a normal user" do
+  context 'as a normal user' do
     let(:current_api_user) { build(:user) }
 
     let!(:product) { create(:product) }
@@ -37,7 +37,7 @@ describe Api::V0::VariantsController, type: :controller do
       variant
     end
 
-    it "retrieves a list of variants with appropriate attributes" do
+    it 'retrieves a list of variants with appropriate attributes' do
       get :index, format: :json
 
       keys = json_response.first.keys.map(&:to_sym)
@@ -53,42 +53,42 @@ describe Api::V0::VariantsController, type: :controller do
     end
 
     # Regression test for spree#2141
-    context "a deleted variant" do
+    context 'a deleted variant' do
       before do
         variant.update_column(:deleted_at, Time.zone.now)
       end
 
-      it "is not returned in the results" do
+      it 'is not returned in the results' do
         api_get :index
         expect(json_response.count).to(eq(10)) # there are 11 variants
       end
 
-      it "is not returned even when show_deleted is passed" do
+      it 'is not returned even when show_deleted is passed' do
         api_get :index, show_deleted: true
         expect(json_response.count).to(eq(10)) # there are 11 variants
       end
     end
 
-    it "can see a single variant" do
+    it 'can see a single variant' do
       api_get :show, id: variant.to_param
 
       keys = json_response.keys.map(&:to_sym)
       expect(attributes.all? { |attr| keys.include?(attr) }).to(eq(true))
     end
 
-    it "cannot create a new variant if not an admin" do
-      api_post :create, variant: { sku: "12345" }
+    it 'cannot create a new variant if not an admin' do
+      api_post :create, variant: { sku: '12345' }
 
       assert_unauthorized!
     end
 
-    it "cannot update a variant" do
-      api_put :update, id: variant.to_param, variant: { sku: "12345" }
+    it 'cannot update a variant' do
+      api_put :update, id: variant.to_param, variant: { sku: '12345' }
 
       assert_unauthorized!
     end
 
-    it "cannot delete a variant" do
+    it 'cannot delete a variant' do
       api_delete :destroy, id: variant.to_param
 
       assert_unauthorized!
@@ -98,7 +98,7 @@ describe Api::V0::VariantsController, type: :controller do
     end
   end
 
-  context "as an enterprise user" do
+  context 'as an enterprise user' do
     let(:current_api_user) { create(:user, enterprises: [supplier]) }
     let(:supplier_other) { create(:supplier_enterprise) }
     let(:product) { create(:product, supplier: supplier) }
@@ -106,7 +106,7 @@ describe Api::V0::VariantsController, type: :controller do
     let(:product_other) { create(:product, supplier: supplier_other) }
     let(:variant_other) { product_other.master }
 
-    it "deletes a variant" do
+    it 'deletes a variant' do
       api_delete :destroy, id: variant.to_param
 
       expect(response.status).to(eq(204))
@@ -125,43 +125,43 @@ describe Api::V0::VariantsController, type: :controller do
     end
   end
 
-  context "as an administrator" do
+  context 'as an administrator' do
     let(:current_api_user) { create(:admin_user) }
 
     let(:product) { create(:product) }
     let(:variant) { product.master }
 
-    context "deleted variants" do
+    context 'deleted variants' do
       before do
         variant.update_column(:deleted_at, Time.zone.now)
       end
 
-      it "are visible by admin" do
+      it 'are visible by admin' do
         api_get :index, show_deleted: 1, product_id: variant.product.to_param
 
         expect(json_response.count).to(eq(2))
       end
     end
 
-    it "can create a new variant" do
+    it 'can create a new variant' do
       original_number_of_variants = variant.product.variants.count
       api_post :create,
-variant: { sku: "12345", unit_value: "1", unit_description: "L" },
+variant: { sku: '12345', unit_value: '1', unit_description: 'L' },
                         product_id: variant.product.to_param
 
       expect(attributes.all? { |attr| json_response.include?(attr.to_s) }).to(eq(true))
       expect(response.status).to(eq(201))
-      expect(json_response["sku"]).to(eq("12345"))
+      expect(json_response['sku']).to(eq('12345'))
       expect(variant.product.variants.count).to(eq(original_number_of_variants + 1))
     end
 
-    it "can update a variant" do
-      api_put :update, id: variant.to_param, variant: { sku: "12345" }
+    it 'can update a variant' do
+      api_put :update, id: variant.to_param, variant: { sku: '12345' }
 
       expect(response.status).to(eq(200))
     end
 
-    it "can delete a variant" do
+    it 'can delete a variant' do
       api_delete :destroy, id: variant.to_param
 
       expect(response.status).to(eq(204))
@@ -176,7 +176,7 @@ variant: { sku: "12345", unit_value: "1", unit_description: "L" },
       spree_delete :destroy, id: variant.to_param
 
       expect(variant.reload).to_not(be_deleted)
-      expect(assigns(:variant).errors[:product]).to(include("must have at least one variant"))
+      expect(assigns(:variant).errors[:product]).to(include('must have at least one variant'))
     end
   end
 end

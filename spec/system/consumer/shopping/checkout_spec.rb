@@ -2,7 +2,7 @@
 
 require 'system_helper'
 
-describe "As a consumer I want to check out my cart", js: true do
+describe 'As a consumer I want to check out my cart', js: true do
   include AuthenticationHelper
   include ShopWorkflow
   include CheckoutRequestsHelper
@@ -44,8 +44,8 @@ bill_address_id: nil,
     create(
 :shipping_method,
 require_ship_address: true,
-name: "Frogs",
-description: "yellow",
+name: 'Frogs',
+description: 'yellow',
                   calculator: Calculator::FlatRate.new(preferred_amount: 0.00)
 )
   end
@@ -54,20 +54,20 @@ description: "yellow",
 :shipping_method,
 require_ship_address: false,
 tax_category: shipping_tax_category,
-                  name: "Donkeys",
-description: "blue",
+                  name: 'Donkeys',
+description: 'blue',
                   calculator: Calculator::FlatRate.new(preferred_amount: 4.56)
 )
   end
   let(:tagged_shipping) do
-    create(:shipping_method, require_ship_address: false, name: "Local", tag_list: "local")
+    create(:shipping_method, require_ship_address: false, name: 'Local', tag_list: 'local')
   end
   let!(:check_without_fee) do
     create(
 :payment_method,
 distributors: [distributor],
-name: "Roger rabbit",
-                 type: "Spree::PaymentMethod::Check"
+name: 'Roger rabbit',
+                 type: 'Spree::PaymentMethod::Check'
 )
   end
   let!(:check_with_fee) do
@@ -79,7 +79,7 @@ distributors: [distributor],
   end
   let!(:paypal) do
     Spree::Gateway::PayPalExpress.create!(
-name: "Paypal",
+name: 'Paypal',
 environment: 'test',
 distributor_ids: [distributor.id]
 ).tap do |pm|
@@ -99,19 +99,19 @@ distributor_ids: [distributor.id]
     distributor.shipping_methods << tagged_shipping
   end
 
-  describe "when I have an out of stock product in my cart" do
+  describe 'when I have an out of stock product in my cart' do
     before do
       variant.on_demand = false
       variant.on_hand = 0
       variant.save!
     end
 
-    it "returns me to the cart with an error message" do
+    it 'returns me to the cart with an error message' do
       visit checkout_path
 
-      expect(page).not_to(have_selector('closing', text: "Checkout now"))
-      expect(page).to(have_selector('closing', text: "Your shopping cart"))
-      expect(page).to(have_content("An item in your cart has become unavailable"))
+      expect(page).not_to(have_selector('closing', text: 'Checkout now'))
+      expect(page).to(have_selector('closing', text: 'Your shopping cart'))
+      expect(page).to(have_content('An item in your cart has become unavailable'))
     end
   end
 
@@ -122,13 +122,13 @@ distributor_ids: [distributor.id]
       login_as(user)
     end
 
-    context "with details filled out" do
+    context 'with details filled out' do
       before do
         visit checkout_path
         fill_out_form(free_shipping.name, check_without_fee.name)
       end
 
-      it "creates a new default billing address and shipping address" do
+      it 'creates a new default billing address and shipping address' do
         expect(user.bill_address).to(be_nil)
         expect(user.ship_address).to(be_nil)
 
@@ -136,7 +136,7 @@ distributor_ids: [distributor.id]
         expect(order.ship_address).to(be_nil)
 
         place_order
-        expect(page).to(have_content("Your order has been processed successfully"))
+        expect(page).to(have_content('Your order has been processed successfully'))
 
         expect(order.reload.bill_address.address1).to(eq('123 Your Head'))
         expect(order.reload.ship_address.address1).to(eq('123 Your Head'))
@@ -148,7 +148,7 @@ distributor_ids: [distributor.id]
         expect(user.reload.ship_address.address1).to(eq('123 Your Head'))
       end
 
-      context "when the user and customer have existing default addresses" do
+      context 'when the user and customer have existing default addresses' do
         let(:existing_address) { create(:address) }
 
         before do
@@ -156,12 +156,12 @@ distributor_ids: [distributor.id]
           user.ship_address = existing_address
         end
 
-        it "updates billing address and shipping address" do
+        it 'updates billing address and shipping address' do
           expect(order.bill_address).to(be_nil)
           expect(order.ship_address).to(be_nil)
 
           place_order
-          expect(page).to(have_content("Your order has been processed successfully"))
+          expect(page).to(have_content('Your order has been processed successfully'))
 
           expect(order.reload.bill_address.address1).to(eq('123 Your Head'))
           expect(order.reload.ship_address.address1).to(eq('123 Your Head'))
@@ -174,22 +174,22 @@ distributor_ids: [distributor.id]
         end
       end
 
-      it "shows only applicable content" do
-        expect(page).to(have_no_content("You have an order for this order cycle already."))
+      it 'shows only applicable content' do
+        expect(page).to(have_no_content('You have an order for this order cycle already.'))
 
-        expect(page).to(have_no_link("Terms and Conditions"))
+        expect(page).to(have_no_link('Terms and Conditions'))
 
         # We always have this link in the footer.
-        within "#checkout_form" do
-          expect(page).to(have_no_link("Terms of service"))
+        within '#checkout_form' do
+          expect(page).to(have_no_link('Terms of service'))
         end
       end
     end
 
-    context "when distributor has T&Cs" do
-      let(:fake_terms_and_conditions_path) { Rails.root.join("app/assets/images/logo-white.png") }
+    context 'when distributor has T&Cs' do
+      let(:fake_terms_and_conditions_path) { Rails.root.join('app/assets/images/logo-white.png') }
       let(:terms_and_conditions_file) do
-        Rack::Test::UploadedFile.new(fake_terms_and_conditions_path, "application/pdf")
+        Rack::Test::UploadedFile.new(fake_terms_and_conditions_path, 'application/pdf')
       end
 
       before do
@@ -197,100 +197,100 @@ distributor_ids: [distributor.id]
         order.distributor.save
       end
 
-      describe "when customer has not accepted T&Cs before" do
-        it "shows a link to the T&Cs and disables checkout button until terms are accepted" do
+      describe 'when customer has not accepted T&Cs before' do
+        it 'shows a link to the T&Cs and disables checkout button until terms are accepted' do
           visit checkout_path
           expect(page).to(have_link(
-"Terms and Conditions",
+'Terms and Conditions',
                                     href: order.distributor.terms_and_conditions.url
 ))
 
-          expect(page).to(have_button("Place order now", disabled: true))
+          expect(page).to(have_button('Place order now', disabled: true))
 
-          check "accept_terms"
-          expect(page).to(have_button("Place order now", disabled: false))
+          check 'accept_terms'
+          expect(page).to(have_button('Place order now', disabled: false))
         end
       end
 
-      describe "when customer has already accepted T&Cs before" do
+      describe 'when customer has already accepted T&Cs before' do
         before do
           customer = create(:customer, enterprise: order.distributor, user: user)
           customer.update(terms_and_conditions_accepted_at: Time.zone.now)
         end
 
-        it "enables checkout button (because T&Cs are accepted by default)" do
+        it 'enables checkout button (because T&Cs are accepted by default)' do
           visit checkout_path
-          expect(page).to(have_button("Place order now", disabled: false))
+          expect(page).to(have_button('Place order now', disabled: false))
         end
 
-        describe "but afterwards the enterprise has uploaded a new T&Cs file" do
+        describe 'but afterwards the enterprise has uploaded a new T&Cs file' do
           before { order.distributor.update(terms_and_conditions_updated_at: Time.zone.now) }
 
-          it "disables checkout button until terms are accepted" do
+          it 'disables checkout button until terms are accepted' do
             visit checkout_path
-            expect(page).to(have_button("Place order now", disabled: true))
+            expect(page).to(have_button('Place order now', disabled: true))
           end
         end
       end
     end
 
     context "when the platform's terms of service have to be accepted" do
-      let(:tos_url) { "https://example.org/tos" }
+      let(:tos_url) { 'https://example.org/tos' }
 
       before do
         allow(Spree::Config).to(receive(:shoppers_require_tos).and_return(true))
         allow(Spree::Config).to(receive(:footer_tos_url).and_return(tos_url))
       end
 
-      it "shows the terms which need to be accepted" do
+      it 'shows the terms which need to be accepted' do
         visit checkout_path
 
-        within "#checkout_form" do
-          expect(page).to(have_link("Terms of service", href: tos_url))
-          expect(find_link("Terms of service")[:target]).to(eq("_blank"))
-          expect(page).to(have_button("Place order now", disabled: true))
+        within '#checkout_form' do
+          expect(page).to(have_link('Terms of service', href: tos_url))
+          expect(find_link('Terms of service')[:target]).to(eq('_blank'))
+          expect(page).to(have_button('Place order now', disabled: true))
         end
 
-        check "accept_terms"
-        expect(page).to(have_button("Place order now", disabled: false))
+        check 'accept_terms'
+        expect(page).to(have_button('Place order now', disabled: false))
 
-        uncheck "accept_terms"
-        expect(page).to(have_button("Place order now", disabled: true))
+        uncheck 'accept_terms'
+        expect(page).to(have_button('Place order now', disabled: true))
       end
 
-      context "when the terms have been accepted in the past" do
+      context 'when the terms have been accepted in the past' do
         before do
           TermsOfServiceFile.create!(
-            attachment: File.open(Rails.root.join("public/Terms-of-service.pdf")),
+            attachment: File.open(Rails.root.join('public/Terms-of-service.pdf')),
             updated_at: 1.day.ago,
           )
           customer = create(:customer, enterprise: order.distributor, user: user)
           customer.update(terms_and_conditions_accepted_at: Time.zone.now)
         end
 
-        it "remembers the acceptance" do
+        it 'remembers the acceptance' do
           visit checkout_path
 
-          within "#checkout_form" do
-            expect(page).to(have_link("Terms of service"))
-            expect(page).to(have_button("Place order now", disabled: false))
+          within '#checkout_form' do
+            expect(page).to(have_link('Terms of service'))
+            expect(page).to(have_button('Place order now', disabled: false))
           end
 
-          uncheck "accept_terms"
-          expect(page).to(have_button("Place order now", disabled: true))
+          uncheck 'accept_terms'
+          expect(page).to(have_button('Place order now', disabled: true))
 
-          check "accept_terms"
-          expect(page).to(have_button("Place order now", disabled: false))
+          check 'accept_terms'
+          expect(page).to(have_button('Place order now', disabled: false))
         end
       end
     end
 
     context "when the seller's terms and the platform's terms have to be accepted" do
-      let(:fake_terms_and_conditions_path) { Rails.root.join("app/assets/images/logo-white.png") }
+      let(:fake_terms_and_conditions_path) { Rails.root.join('app/assets/images/logo-white.png') }
       let(:terms_and_conditions_file) do
-        Rack::Test::UploadedFile.new(fake_terms_and_conditions_path, "application/pdf")
+        Rack::Test::UploadedFile.new(fake_terms_and_conditions_path, 'application/pdf')
       end
-      let(:tos_url) { "https://example.org/tos" }
+      let(:tos_url) { 'https://example.org/tos' }
 
       before do
         order.distributor.terms_and_conditions = terms_and_conditions_file
@@ -300,28 +300,28 @@ distributor_ids: [distributor.id]
         allow(Spree::Config).to(receive(:footer_tos_url).and_return(tos_url))
       end
 
-      it "shows links to both terms and all need accepting" do
+      it 'shows links to both terms and all need accepting' do
         visit checkout_path
 
-        within "#checkout_form" do
+        within '#checkout_form' do
           expect(page).to(have_link(
-"Terms and Conditions",
+'Terms and Conditions',
                                     href: order.distributor.terms_and_conditions.url
 ))
-          expect(page).to(have_link("Terms of service", href: tos_url))
-          expect(page).to(have_button("Place order now", disabled: true))
+          expect(page).to(have_link('Terms of service', href: tos_url))
+          expect(page).to(have_button('Place order now', disabled: true))
         end
 
         # Both Ts&Cs and TOS appear in the one label for the one checkbox.
-        check "accept_terms"
-        expect(page).to(have_button("Place order now", disabled: false))
+        check 'accept_terms'
+        expect(page).to(have_button('Place order now', disabled: false))
 
-        uncheck "accept_terms"
-        expect(page).to(have_button("Place order now", disabled: true))
+        uncheck 'accept_terms'
+        expect(page).to(have_button('Place order now', disabled: true))
       end
     end
 
-    context "with previous orders" do
+    context 'with previous orders' do
       let!(:prev_order) do
         create(
 :completed_order_with_totals,
@@ -337,61 +337,61 @@ distributor: distributor,
         visit checkout_path
       end
 
-      it "informs about previous orders" do
-        expect(page).to(have_content("You have an order for this order cycle already."))
+      it 'informs about previous orders' do
+        expect(page).to(have_content('You have an order for this order cycle already.'))
       end
     end
 
-    context "when the user has a preset shipping and billing address" do
+    context 'when the user has a preset shipping and billing address' do
       before do
         user.bill_address = build(:address)
         user.ship_address = build(:address)
         user.save!
       end
 
-      it "checks out successfully" do
+      it 'checks out successfully' do
         visit checkout_path
 
-        expect(page).to(have_content("Shipping info"))
+        expect(page).to(have_content('Shipping info'))
         find(:xpath, '//*[@id="shipping"]/ng-form/dd').click
         find("input[value='#{shipping_with_fee.id}'").click
-        click_button "Next"
-        expect(page).to(have_content("Payment"))
+        click_button 'Next'
+        expect(page).to(have_content('Payment'))
         find("input[value='#{check_without_fee.id}'").click
 
         perform_enqueued_jobs do
           place_order
 
-          expect(page).to(have_content("Your order has been processed successfully"))
+          expect(page).to(have_content('Your order has been processed successfully'))
 
           expect(ActionMailer::Base.deliveries.first.subject).to(match(/Order Confirmation/))
           expect(ActionMailer::Base.deliveries.second.subject).to(match(/Order Confirmation/))
         end
 
         order = Spree::Order.complete.last
-        expect(order.payment_state).to(eq("balance_due"))
-        expect(order.shipment_state).to(eq("pending"))
+        expect(order.payment_state).to(eq('balance_due'))
+        expect(order.shipment_state).to(eq('pending'))
       end
     end
   end
 
-  context "guest checkout" do
+  context 'guest checkout' do
     before do
       visit checkout_path
       checkout_as_guest
     end
 
-    it "shows the current distributor" do
+    it 'shows the current distributor' do
       visit checkout_path
       expect(page).to(have_content(distributor.name))
     end
 
     it 'does not show the save as default address checkbox' do
-      expect(page).not_to(have_content("Save as default billing address"))
-      expect(page).not_to(have_content("Save as default shipping address"))
+      expect(page).not_to(have_content('Save as default billing address'))
+      expect(page).not_to(have_content('Save as default shipping address'))
     end
 
-    it "shows a breakdown of the order price" do
+    it 'shows a breakdown of the order price' do
       choose shipping_with_fee.name
 
       expect(page).to(have_selector('orderdetails .cart-total', text: with_currency(11.23)))
@@ -404,23 +404,23 @@ distributor: distributor,
       expect(page).not_to(have_content(product.tax_category.name))
     end
 
-    it "shows all shipping methods in order by name" do
+    it 'shows all shipping methods in order by name' do
       within '#shipping' do
-        expect(page).to(have_selector("label", count: 4)) # Three shipping methods + instructions label
+        expect(page).to(have_selector('label', count: 4)) # Three shipping methods + instructions label
         labels = page.all('label').map(&:text)
-        expect(labels[0]).to(start_with("Donkeys")) # shipping_with_fee
-        expect(labels[1]).to(start_with("Frogs")) # free_shipping
-        expect(labels[2]).to(start_with("Local")) # tagged_shipping
+        expect(labels[0]).to(start_with('Donkeys')) # shipping_with_fee
+        expect(labels[1]).to(start_with('Frogs')) # free_shipping
+        expect(labels[2]).to(start_with('Local')) # tagged_shipping
       end
     end
 
-    context "when shipping method requires an address" do
+    context 'when shipping method requires an address' do
       before do
         choose free_shipping.name
       end
       it "shows ship address forms when 'same as billing address' is unchecked" do
-        uncheck "Shipping address same as billing address?"
-        expect(find("#ship_address > div.visible").visible?).to(be(true))
+        uncheck 'Shipping address same as billing address?'
+        expect(find('#ship_address > div.visible').visible?).to(be(true))
       end
     end
 
@@ -433,88 +433,88 @@ distributor: distributor,
       expect(page).not_to(have_content(shipping_with_fee.name))
     end
 
-    context "using FilterShippingMethods" do
+    context 'using FilterShippingMethods' do
       let(:user) { create(:user) }
       let(:customer) { create(:customer, user: user, enterprise: distributor) }
 
-      it "shows shipping methods allowed by the rule" do
+      it 'shows shipping methods allowed by the rule' do
         # No rules in effect
-        expect(page).to(have_content("Frogs"))
-        expect(page).to(have_content("Donkeys"))
-        expect(page).to(have_content("Local"))
+        expect(page).to(have_content('Frogs'))
+        expect(page).to(have_content('Donkeys'))
+        expect(page).to(have_content('Local'))
 
         create(
 :filter_shipping_methods_tag_rule,
                enterprise: distributor,
-               preferred_customer_tags: "local",
-               preferred_shipping_method_tags: "local",
+               preferred_customer_tags: 'local',
+               preferred_shipping_method_tags: 'local',
                preferred_matched_shipping_methods_visibility: 'visible'
 )
         create(
 :filter_shipping_methods_tag_rule,
                enterprise: distributor,
                is_default: true,
-               preferred_shipping_method_tags: "local",
+               preferred_shipping_method_tags: 'local',
                preferred_matched_shipping_methods_visibility: 'hidden'
 )
         visit checkout_path
         checkout_as_guest
 
         # Default rule in effect, disallows access to 'Local'
-        expect(page).to(have_content("Frogs"))
-        expect(page).to(have_content("Donkeys"))
-        expect(page).not_to(have_content("Local"))
+        expect(page).to(have_content('Frogs'))
+        expect(page).to(have_content('Donkeys'))
+        expect(page).not_to(have_content('Local'))
 
         login_as(user)
         visit checkout_path
 
         # Default rule in still effect, disallows access to 'Local'
-        expect(page).to(have_content("Frogs"))
-        expect(page).to(have_content("Donkeys"))
-        expect(page).not_to(have_content("Local"))
+        expect(page).to(have_content('Frogs'))
+        expect(page).to(have_content('Donkeys'))
+        expect(page).not_to(have_content('Local'))
 
-        customer.update_attribute(:tag_list, "local")
+        customer.update_attribute(:tag_list, 'local')
         visit checkout_path
 
         # #local Customer can access 'Local' shipping method
-        expect(page).to(have_content("Frogs"))
-        expect(page).to(have_content("Donkeys"))
-        expect(page).to(have_content("Local"))
+        expect(page).to(have_content('Frogs'))
+        expect(page).to(have_content('Donkeys'))
+        expect(page).to(have_content('Local'))
       end
     end
 
-    it "shows all available payment methods" do
+    it 'shows all available payment methods' do
       expect(page).to(have_content(check_without_fee.name))
       expect(page).to(have_content(check_with_fee.name))
       expect(page).to(have_content(paypal.name))
     end
 
-    describe "purchasing" do
-      it "takes us to the order confirmation page when we submit a complete form" do
+    describe 'purchasing' do
+      it 'takes us to the order confirmation page when we submit a complete form' do
         fill_out_details
         fill_out_billing_address
 
-        within "#shipping" do
+        within '#shipping' do
           choose shipping_with_fee.name
-          fill_in 'Any comments or special instructions?', with: "SpEcIaL NoTeS"
+          fill_in 'Any comments or special instructions?', with: 'SpEcIaL NoTeS'
         end
 
-        within "#payment" do
+        within '#payment' do
           choose check_without_fee.name
         end
 
         expect do
           place_order
-          expect(page).to(have_content("Your order has been processed successfully"))
+          expect(page).to(have_content('Your order has been processed successfully'))
         end.to(have_enqueued_mail(Spree::OrderMailer, :confirm_email_for_customer))
 
         # And the order's special instructions should be set
         order = Spree::Order.complete.last
-        expect(order.special_instructions).to(eq("SpEcIaL NoTeS"))
+        expect(order.special_instructions).to(eq('SpEcIaL NoTeS'))
 
         # Shipment and payments states should be set
-        expect(order.payment_state).to(eq("balance_due"))
-        expect(order.shipment_state).to(eq("pending"))
+        expect(order.payment_state).to(eq('balance_due'))
+        expect(order.shipment_state).to(eq('pending'))
 
         # And the Spree tax summary should not be displayed
         expect(page).not_to(have_content(product.tax_category.name))
@@ -529,25 +529,25 @@ distributor: distributor,
         expect(page).to(have_content('Back To Store'))
       end
 
-      context "with basic details filled" do
+      context 'with basic details filled' do
         before do
           choose free_shipping.name
           choose check_without_fee.name
           fill_out_details
           fill_out_billing_address
-          check "Shipping address same as billing address?"
+          check 'Shipping address same as billing address?'
         end
 
         it "takes us to the order confirmation page when submitted with 'same as billing address' checked" do
           place_order
-          expect(page).to(have_content("Your order has been processed successfully"))
+          expect(page).to(have_content('Your order has been processed successfully'))
 
           order = Spree::Order.complete.last
-          expect(order.payment_state).to(eq("balance_due"))
-          expect(order.shipment_state).to(eq("pending"))
+          expect(order.payment_state).to(eq('balance_due'))
+          expect(order.shipment_state).to(eq('pending'))
         end
 
-        it "takes us to the cart page with an error when a product becomes out of stock just before we purchase",
+        it 'takes us to the cart page with an error when a product becomes out of stock just before we purchase',
            js: true do
           variant.on_demand = false
           variant.on_hand = 0
@@ -555,80 +555,80 @@ distributor: distributor,
 
           place_order
 
-          expect(page).not_to(have_content("Your order has been processed successfully"))
-          expect(page).to(have_selector('closing', text: "Your shopping cart"))
-          expect(page).to(have_content("An item in your cart has become unavailable."))
+          expect(page).not_to(have_content('Your order has been processed successfully'))
+          expect(page).to(have_selector('closing', text: 'Your shopping cart'))
+          expect(page).to(have_content('An item in your cart has become unavailable.'))
         end
 
-        context "when we are charged a shipping fee" do
+        context 'when we are charged a shipping fee' do
           before { choose shipping_with_fee.name }
 
-          it "creates a payment for the full amount inclusive of shipping" do
+          it 'creates a payment for the full amount inclusive of shipping' do
             place_order
-            expect(page).to(have_content("Your order has been processed successfully"))
+            expect(page).to(have_content('Your order has been processed successfully'))
 
             # There are two orders - our order and our new cart
             order = Spree::Order.complete.last
             expect(order.shipment_adjustments.first.amount).to(eq(4.56))
             expect(order.payments.first.amount).to(eq(10 + 1.23 + 4.56)) # items + fees + shipping
-            expect(order.payment_state).to(eq("balance_due"))
-            expect(order.shipment_state).to(eq("pending"))
+            expect(order.payment_state).to(eq('balance_due'))
+            expect(order.shipment_state).to(eq('pending'))
           end
         end
 
-        context "when we are charged a payment method fee (transaction fee)" do
-          it "creates a payment including the transaction fee" do
+        context 'when we are charged a payment method fee (transaction fee)' do
+          it 'creates a payment including the transaction fee' do
             # Selecting the transaction fee, it is displayed
-            expect(page).to(have_selector(".transaction-fee td", text: with_currency(0.00)))
-            expect(page).to(have_selector(".total", text: with_currency(11.23)))
+            expect(page).to(have_selector('.transaction-fee td', text: with_currency(0.00)))
+            expect(page).to(have_selector('.total', text: with_currency(11.23)))
 
             choose "#{check_with_fee.name} (#{with_currency(5.67)})"
 
-            expect(page).to(have_selector(".transaction-fee td", text: with_currency(5.67)))
-            expect(page).to(have_selector(".total", text: with_currency(16.90)))
+            expect(page).to(have_selector('.transaction-fee td', text: with_currency(5.67)))
+            expect(page).to(have_selector('.total', text: with_currency(16.90)))
 
             place_order
-            expect(page).to(have_content("Your order has been processed successfully"))
+            expect(page).to(have_content('Your order has been processed successfully'))
 
             # There are two orders - our order and our new cart
             order = Spree::Order.complete.last
             expect(order.all_adjustments.payment_fee.first.amount).to(eq(5.67))
             expect(order.payments.first.amount).to(eq(10 + 1.23 + 5.67)) # items + fees + transaction
-            expect(order.payment_state).to(eq("balance_due"))
-            expect(order.shipment_state).to(eq("pending"))
+            expect(order.payment_state).to(eq('balance_due'))
+            expect(order.shipment_state).to(eq('pending'))
           end
         end
 
-        describe "credit card payments" do
-          ["Spree::Gateway::Bogus", "Spree::Gateway::BogusSimple"].each do |gateway_type|
+        describe 'credit card payments' do
+          ['Spree::Gateway::Bogus', 'Spree::Gateway::BogusSimple'].each do |gateway_type|
             context "with a credit card payment method using #{gateway_type}" do
               let!(:check_without_fee) do
                 create(
 :payment_method,
 distributors: [distributor],
-name: "Roger rabbit",
+name: 'Roger rabbit',
                  type: gateway_type
 )
               end
 
-              it "takes us to the order confirmation page when submitted with a valid credit card" do
-                fill_in 'Card Number', with: "4111111111111111"
+              it 'takes us to the order confirmation page when submitted with a valid credit card' do
+                fill_in 'Card Number', with: '4111111111111111'
                 select 'February', from: 'secrets.card_month'
                 select (Date.current.year + 1).to_s, from: 'secrets.card_year'
                 fill_in 'Security Code', with: '123'
 
                 place_order
-                expect(page).to(have_content("Your order has been processed successfully"))
+                expect(page).to(have_content('Your order has been processed successfully'))
 
                 # Order should have a payment with the correct amount
                 order = Spree::Order.complete.last
                 expect(order.payments.first.amount).to(eq(11.23))
-                expect(order.payment_state).to(eq("paid"))
-                expect(order.shipment_state).to(eq("ready"))
+                expect(order.payment_state).to(eq('paid'))
+                expect(order.shipment_state).to(eq('ready'))
               end
 
-              it "shows the payment processing failed message when submitted with an invalid credit card" do
-                fill_in 'Card Number', with: "9999999988887777"
+              it 'shows the payment processing failed message when submitted with an invalid credit card' do
+                fill_in 'Card Number', with: '9999999988887777'
                 select 'February', from: 'secrets.card_month'
                 select (Date.current.year + 1).to_s, from: 'secrets.card_year'
                 fill_in 'Security Code', with: '123'
@@ -638,7 +638,7 @@ name: "Roger rabbit",
 
                 # Does not show duplicate shipping fee
                 visit checkout_path
-                expect(page).to(have_selector("th", text: "Shipping", count: 1))
+                expect(page).to(have_selector('th', text: 'Shipping', count: 1))
               end
             end
           end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ShopController < BaseController
-  layout "darkswarm"
+  layout 'darkswarm'
   before_action :require_distributor_chosen, :set_order_cycles, except: :changeable_orders_alert
   before_action :enable_embedded_shopfront
 
@@ -16,7 +16,7 @@ class ShopController < BaseController
         @current_order_cycle = oc
         render(json: @current_order_cycle, serializer: Api::OrderCycleSerializer)
       else
-        render(status: :not_found, json: "")
+        render(status: :not_found, json: '')
       end
     else
       render(json: current_order_cycle, serializer: Api::OrderCycleSerializer)

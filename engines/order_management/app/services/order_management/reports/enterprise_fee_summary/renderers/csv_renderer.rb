@@ -22,7 +22,7 @@ module OrderManagement
           private
 
           def filename
-            timestamp = Time.zone.now.strftime("%Y%m%d")
+            timestamp = Time.zone.now.strftime('%Y%m%d')
             "enterprise_fee_summary_#{timestamp}.csv"
           end
 
@@ -57,7 +57,7 @@ module OrderManagement
           end
 
           def i18n_scope
-            "order_management.reports.enterprise_fee_summary.formats.csv"
+            'order_management.reports.enterprise_fee_summary.formats.csv'
           end
         end
       end

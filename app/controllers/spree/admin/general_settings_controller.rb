@@ -31,8 +31,8 @@ module Spree
 
       def merge_available_units_params
         params[:available_units] =
-          params[:available_units].select { |_unit, checked| checked == "1" }
-.keys.join(",")
+          params[:available_units].select { |_unit, checked| checked == '1' }
+.keys.join(',')
       end
     end
   end

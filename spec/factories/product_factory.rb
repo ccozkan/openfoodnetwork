@@ -69,14 +69,14 @@ viewable_type: 'Spree::Variant'
   factory :taxed_product, parent: :product do
     transient do
       tax_rate_amount { 0 }
-      tax_rate_name { "" }
+      tax_rate_name { '' }
       zone { nil }
     end
 
     tax_category { create(:tax_category) }
 
     after(:create) do |product, proxy|
-      raise "taxed_product factory requires a zone" unless proxy.zone
+      raise 'taxed_product factory requires a zone' unless proxy.zone
 
       create(
 :tax_rate,

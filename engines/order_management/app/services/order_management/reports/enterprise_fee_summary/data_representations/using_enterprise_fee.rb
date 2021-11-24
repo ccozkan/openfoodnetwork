@@ -21,15 +21,15 @@ module OrderManagement
           end
 
           def fee_type
-            data["fee_type"].try(:capitalize)
+            data['fee_type'].try(:capitalize)
           end
 
           def enterprise_name
-            data["enterprise_name"]
+            data['enterprise_name']
           end
 
           def fee_name
-            data["fee_name"]
+            data['fee_name']
           end
 
           def fee_placement

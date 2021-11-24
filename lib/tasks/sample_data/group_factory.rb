@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "tasks/sample_data/addressing"
-require "tasks/sample_data/logging"
+require 'tasks/sample_data/addressing'
+require 'tasks/sample_data/logging'
 
 module SampleData
   class GroupFactory
@@ -9,17 +9,17 @@ module SampleData
     include Addressing
 
     def create_samples
-      log("Creating groups")
-      return if EnterpriseGroup.where(name: "Producer group").exists?
+      log('Creating groups')
+      return if EnterpriseGroup.where(name: 'Producer group').exists?
 
       create_group(
         {
-          name: "Producer group",
+          name: 'Producer group',
           owner: enterprises.first.owner,
           on_front_page: true,
-          description: "The seed producers"
+          description: 'The seed producers'
         },
-        "6 Rollings Road, Upper Ferntree Gully, 3156"
+        '6 Rollings Road, Upper Ferntree Gully, 3156'
       )
     end
 

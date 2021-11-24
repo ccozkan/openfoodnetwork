@@ -7,8 +7,8 @@ module Spree
     searchable_attributes :firstname, :lastname
     searchable_associations :country, :state
 
-    belongs_to :country, class_name: "Spree::Country"
-    belongs_to :state, class_name: "Spree::State"
+    belongs_to :country, class_name: 'Spree::Country'
+    belongs_to :state, class_name: 'Spree::State'
 
     has_one :enterprise, dependent: :restrict_with_exception
     has_many :shipments

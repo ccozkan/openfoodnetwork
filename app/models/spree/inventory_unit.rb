@@ -2,11 +2,11 @@
 
 module Spree
   class InventoryUnit < ApplicationRecord
-    belongs_to :variant, -> { with_deleted }, class_name: "Spree::Variant"
-    belongs_to :order, class_name: "Spree::Order"
-    belongs_to :shipment, class_name: "Spree::Shipment"
+    belongs_to :variant, -> { with_deleted }, class_name: 'Spree::Variant'
+    belongs_to :order, class_name: 'Spree::Order'
+    belongs_to :shipment, class_name: 'Spree::Shipment'
     belongs_to :return_authorization,
-class_name: "Spree::ReturnAuthorization",
+class_name: 'Spree::ReturnAuthorization',
                                       inverse_of: :inventory_units
 
     scope :backordered, -> { where(state: 'backordered') }

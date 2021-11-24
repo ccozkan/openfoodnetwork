@@ -27,9 +27,9 @@ module Reporting
               bill_address_alias[:lastname],
               order_table[:id],
               sql_grouping(grouping_fields),
-              Arel.sql("supplier"),
-              Arel.sql("product"),
-              Arel.sql("variant"),
+              Arel.sql('supplier'),
+              Arel.sql('product'),
+              Arel.sql('variant'),
             ]
           end
         end

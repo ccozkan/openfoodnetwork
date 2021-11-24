@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "web/cookies_consent"
+require 'web/cookies_consent'
 
 module Web
   module Api

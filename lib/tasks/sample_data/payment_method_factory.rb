@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "tasks/sample_data/addressing"
-require "tasks/sample_data/logging"
+require 'tasks/sample_data/addressing'
+require 'tasks/sample_data/logging'
 
 module SampleData
   class PaymentMethodFactory
@@ -9,7 +9,7 @@ module SampleData
     include Addressing
 
     def create_samples(enterprises)
-      log("Creating payment methods:")
+      log('Creating payment methods:')
       distributors = enterprises.select(&:is_distributor)
       distributors.each do |enterprise|
         create_payment_methods(enterprise)
@@ -30,8 +30,8 @@ module SampleData
       create_payment_method(
         Spree::PaymentMethod::Check,
         enterprise,
-        "Cash on collection",
-        "Pay on collection!",
+        'Cash on collection',
+        'Pay on collection!',
         ::Calculator::FlatRate.new
       )
     end
@@ -40,7 +40,7 @@ module SampleData
       create_payment_method(
         Spree::Gateway::Bogus,
         enterprise,
-        "Credit card (fake)",
+        'Credit card (fake)',
         "We charge 1%, but won't ask for your details. ;-)",
         ::Calculator::FlatPercentItemTotal.new(preferred_flat_percent: 1)
       )

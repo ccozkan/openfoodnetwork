@@ -3,7 +3,7 @@
 module OpenFoodNetwork
   class OrdersAndFulfillmentsReport
     class SupplierTotalsByDistributorReport
-      REPORT_TYPE = "order_cycle_supplier_totals_by_distributor"
+      REPORT_TYPE = 'order_cycle_supplier_totals_by_distributor'
 
       attr_reader :context
 
@@ -42,14 +42,14 @@ I18n.t(:report_header_shipping_method)
             group_by: proc { |line_item| line_item.variant.full_name },
             sort_by: proc { |full_name| full_name },
             summary_columns: [
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
               proc { |_line_items| I18n.t('admin.reports.total') },
-              proc { |_line_items| "" },
-              proc { |_line_items| "" },
+              proc { |_line_items| '' },
+              proc { |_line_items| '' },
               proc { |line_items| line_items.sum(&:amount) },
-              proc { |_line_items| "" }
+              proc { |_line_items| '' }
             ]
           },
           {

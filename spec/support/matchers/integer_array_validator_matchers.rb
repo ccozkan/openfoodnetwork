@@ -12,9 +12,9 @@ RSpec::Matchers.define(:validate_integer_array) do |attribute|
     @instance = instance
     @attribute = attribute
 
-    invalid_format_message = I18n.t("validators.integer_array_validator.invalid_element_error")
+    invalid_format_message = I18n.t('validators.integer_array_validator.invalid_element_error')
 
-    allow(instance).to(receive(attribute) { [1, "2", "Not Integer", 3] })
+    allow(instance).to(receive(attribute) { [1, '2', 'Not Integer', 3] })
     instance.valid?
     (instance.errors[attribute] || []).include?(invalid_format_message)
   end

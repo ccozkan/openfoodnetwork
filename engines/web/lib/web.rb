@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "web/engine"
+require 'web/engine'
 
 module Web
 end

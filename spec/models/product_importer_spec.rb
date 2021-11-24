@@ -9,14 +9,14 @@ describe ProductImport::ProductImporter do
   let!(:user2) { create(:user) }
   let!(:user3) { create(:user) }
   let!(:enterprise) do
-    create(:enterprise, is_primary_producer: true, owner: user, name: "User Enterprise")
+    create(:enterprise, is_primary_producer: true, owner: user, name: 'User Enterprise')
   end
   let!(:enterprise2) do
     create(
 :distributor_enterprise,
 is_primary_producer: true,
 owner: user2,
-                         name: "Another Enterprise"
+                         name: 'Another Enterprise'
 )
   end
   let!(:enterprise3) do
@@ -24,11 +24,11 @@ owner: user2,
 :distributor_enterprise,
 is_primary_producer: true,
 owner: user3,
-                         name: "And Another Enterprise"
+                         name: 'And Another Enterprise'
 )
   end
   let!(:enterprise4) do
-    create(:enterprise, is_primary_producer: false, owner: user, name: "Non-Producer")
+    create(:enterprise, is_primary_producer: false, owner: user, name: 'Non-Producer')
   end
   let!(:relationship) do
     create(
@@ -95,8 +95,8 @@ on_hand: '100',
 name: 'Cabbage',
 unit_value: '1',
                  variant_unit_scale: nil,
-variant_unit: "items",
-variant_unit_name: "Whole",
+variant_unit: 'items',
+variant_unit_name: 'Whole',
 primary_taxon_id: category.id
 )
   end
@@ -144,7 +144,7 @@ description: nil
 supplier: enterprise,
 on_hand: '100',
 name: 'Oats',
-description: "",
+description: '',
                  unit_value: '500',
 variant_unit_scale: 1,
 variant_unit: 'weight',
@@ -157,7 +157,7 @@ primary_taxon_id: category4.id
 supplier: enterprise,
 on_hand: '100',
 name: 'Oats',
-description: "",
+description: '',
                  unit_value: '500',
 variant_unit_scale: 1,
 variant_unit: 'weight',
@@ -218,90 +218,90 @@ hub: enterprise,
     File.delete('/tmp/test-m.csv')
   end
 
-  describe "importing products from a spreadsheet" do
+  describe 'importing products from a spreadsheet' do
     let(:csv_data) do
       CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"category",
-"on_hand",
-"price",
-"units",
-"unit_type",
-                "variant_unit_name",
-"on_demand",
-"shipping_category"
+'name',
+'producer',
+'category',
+'on_hand',
+'price',
+'units',
+'unit_type',
+                'variant_unit_name',
+'on_demand',
+'shipping_category'
 ]
         csv << [
-"Carrots",
+'Carrots',
 enterprise.name,
-"Vegetables",
-"5",
-"3.20",
-"500",
-"g",
-"",
-"",
+'Vegetables',
+'5',
+'3.20',
+'500',
+'g',
+'',
+'',
                 shipping_category.name
 ]
         csv << [
-"Potatoes",
+'Potatoes',
 enterprise.name,
-"Vegetables",
-"6",
-"6.50",
-"2",
-"kg",
-"",
-"",
+'Vegetables',
+'6',
+'6.50',
+'2',
+'kg',
+'',
+'',
                 shipping_category.name
 ]
         csv << [
-"Pea Soup",
+'Pea Soup',
 enterprise.name,
-"Vegetables",
-"8",
-"5.50",
-"750",
-"ml",
-"",
-"0",
+'Vegetables',
+'8',
+'5.50',
+'750',
+'ml',
+'',
+'0',
                 shipping_category.name
 ]
         csv << [
-"Salad",
+'Salad',
 enterprise.name,
-"Vegetables",
-"7",
-"4.50",
-"1",
-"",
-"bags",
-"",
+'Vegetables',
+'7',
+'4.50',
+'1',
+'',
+'bags',
+'',
                 shipping_category.name
 ]
         csv << [
-"Hot Cross Buns",
+'Hot Cross Buns',
 enterprise.name,
-"Cake",
-"7",
-"3.50",
-"1",
-"",
-"buns",
-"1",
+'Cake',
+'7',
+'3.50',
+'1',
+'',
+'buns',
+'1',
                 shipping_category.name
 ]
       end
     end
     let(:importer) { import_data csv_data }
 
-    it "returns the number of entries" do
+    it 'returns the number of entries' do
       expect(importer.item_count).to(eq(5))
     end
 
-    it "validates entries and returns the results as json" do
+    it 'validates entries and returns the results as json' do
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
@@ -311,7 +311,7 @@ enterprise.name,
       expect(filter('update_product', entries)).to(eq(0))
     end
 
-    it "saves the results and returns info on updated products" do
+    it 'saves the results and returns info on updated products' do
       importer.save_entries
 
       expect(importer.products_created_count).to(eq(5))
@@ -370,35 +370,35 @@ enterprise.name,
     end
   end
 
-  describe "when uploading a spreadsheet with some invalid entries" do
+  describe 'when uploading a spreadsheet with some invalid entries' do
     let(:csv_data) do
       CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"category",
-"on_hand",
-"price",
-"units",
-"unit_type",
-                "shipping_category"
+'name',
+'producer',
+'category',
+'on_hand',
+'price',
+'units',
+'unit_type',
+                'shipping_category'
 ]
         csv << [
-"Good Carrots",
+'Good Carrots',
 enterprise.name,
-"Vegetables",
-"5",
-"3.20",
-"500",
-"g",
+'Vegetables',
+'5',
+'3.20',
+'500',
+'g',
                 shipping_category.name
 ]
-        csv << ["Bad Potatoes", "", "Vegetables", "6", "6.50", "1", "", shipping_category.name]
+        csv << ['Bad Potatoes', '', 'Vegetables', '6', '6.50', '1', '', shipping_category.name]
       end
     end
     let(:importer) { import_data csv_data }
 
-    it "validates entries" do
+    it 'validates entries' do
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
@@ -408,7 +408,7 @@ enterprise.name,
       expect(filter('update_product', entries)).to(eq(0))
     end
 
-    it "allows saving of the valid entries" do
+    it 'allows saving of the valid entries' do
       importer.save_entries
 
       expect(importer.products_created_count).to(eq(1))
@@ -425,7 +425,7 @@ enterprise.name,
     end
   end
 
-  describe "when uploading a spreadsheet with some malformed data" do
+  describe 'when uploading a spreadsheet with some malformed data' do
     # Use a simple string as CSV.generate will do some escaping
     let(:csv_data) do
       csv = "name,producer,category,on_hand,price,units,unit_type,shipping_category\n"
@@ -440,37 +440,37 @@ enterprise.name,
         [
 I18n.t(
 'admin.product_import.model.malformed_csv',
-                error_message: "Unquoted fields do not allow new line <\"\\r\"> in line 3."
+                error_message: 'Unquoted fields do not allow new line <"\\r"> in line 3.'
 )
 ]
       ))
     end
   end
 
-  describe "when shipping category is missing" do
+  describe 'when shipping category is missing' do
     let(:csv_data) do
       CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"category",
-"on_hand",
-"price",
-"units",
-"unit_type",
-                "variant_unit_name",
-"on_demand",
-"shipping_category"
+'name',
+'producer',
+'category',
+'on_hand',
+'price',
+'units',
+'unit_type',
+                'variant_unit_name',
+'on_demand',
+'shipping_category'
 ]
         csv << [
-"Shipping Test",
+'Shipping Test',
 enterprise.name,
-"Vegetables",
-"5",
-"3.20",
-"500",
-"g",
-"",
+'Vegetables',
+'5',
+'3.20',
+'500',
+'g',
+'',
 nil,
                 nil
 ]
@@ -478,7 +478,7 @@ nil,
     end
     let(:importer) { import_data csv_data }
 
-    it "raises an error" do
+    it 'raises an error' do
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
@@ -486,66 +486,66 @@ nil,
     end
   end
 
-  describe "when enterprises are not valid" do
+  describe 'when enterprises are not valid' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type"]
-        csv << ["Product 1", "Non-existent Enterprise", "Vegetables", "5", "5.50", "500", "g"]
-        csv << ["Product 2", enterprise4.name, "Vegetables", "5", "5.50", "500", "g"]
+        csv << ['name', 'producer', 'category', 'on_hand', 'price', 'units', 'unit_type']
+        csv << ['Product 1', 'Non-existent Enterprise', 'Vegetables', '5', '5.50', '500', 'g']
+        csv << ['Product 2', enterprise4.name, 'Vegetables', '5', '5.50', '500', 'g']
       end
     end
     let(:importer) { import_data csv_data }
 
-    it "adds enterprise errors" do
+    it 'adds enterprise errors' do
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
-      expect(entries['2']['errors']['producer']).to(include("not found in database"))
-      expect(entries['3']['errors']['producer']).to(include("not enabled as a producer"))
+      expect(entries['2']['errors']['producer']).to(include('not found in database'))
+      expect(entries['3']['errors']['producer']).to(include('not enabled as a producer'))
     end
   end
 
-  describe "adding new variants to existing products and updating exiting products" do
+  describe 'adding new variants to existing products and updating exiting products' do
     let(:csv_data) do
       CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"category",
-"on_hand",
-"price",
-"units",
-"unit_type",
-                "display_name",
-"shipping_category"
+'name',
+'producer',
+'category',
+'on_hand',
+'price',
+'units',
+'unit_type',
+                'display_name',
+'shipping_category'
 ]
         csv << [
-"Hypothetical Cake",
+'Hypothetical Cake',
 enterprise2.name,
-"Cake",
-"5",
-"5.50",
-"500",
-"g",
-                "Preexisting Banana",
+'Cake',
+'5',
+'5.50',
+'500',
+'g',
+                'Preexisting Banana',
 shipping_category.name
 ]
         csv << [
-"Hypothetical Cake",
+'Hypothetical Cake',
 enterprise2.name,
-"Cake",
-"6",
-"3.50",
-"500",
-"g",
-                "Emergent Coffee",
+'Cake',
+'6',
+'3.50',
+'500',
+'g',
+                'Emergent Coffee',
 shipping_category.name
 ]
       end
     end
     let(:importer) { import_data csv_data }
 
-    it "validates entries" do
+    it 'validates entries' do
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
@@ -555,7 +555,7 @@ shipping_category.name
       expect(filter('update_product', entries)).to(eq(1))
     end
 
-    it "saves and updates" do
+    it 'saves and updates' do
       importer.save_entries
 
       expect(importer.products_created_count).to(eq(1))
@@ -577,31 +577,31 @@ shipping_category.name
     end
   end
 
-  describe "updating an exiting variant" do
+  describe 'updating an exiting variant' do
     let(:csv_data) do
       CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"description",
-"category",
-"on_hand",
-"price",
-"units",
-                "unit_type",
-"display_name",
-"shipping_category"
+'name',
+'producer',
+'description',
+'category',
+'on_hand',
+'price',
+'units',
+                'unit_type',
+'display_name',
+'shipping_category'
 ]
         csv << [
-"Hypothetical Cake",
+'Hypothetical Cake',
 enterprise2.name,
-"New Description",
-"Cake",
-"5",
-"5.50",
-                "500",
-"g",
-"Preexisting Banana",
+'New Description',
+'Cake',
+'5',
+'5.50',
+                '500',
+'g',
+'Preexisting Banana',
 shipping_category.name
 ]
       end
@@ -618,80 +618,80 @@ shipping_category.name
     end
   end
 
-  describe "adding new product and sub-variant at the same time" do
+  describe 'adding new product and sub-variant at the same time' do
     let(:csv_data) do
       CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"category",
-"on_hand",
-"price",
-"units",
-"unit_type",
-                "display_name",
-"shipping_category"
+'name',
+'producer',
+'category',
+'on_hand',
+'price',
+'units',
+'unit_type',
+                'display_name',
+'shipping_category'
 ]
         csv << [
-"Potatoes",
+'Potatoes',
 enterprise.name,
-"Vegetables",
-"5",
-"3.50",
-"500",
-"g",
-"Small Bag",
+'Vegetables',
+'5',
+'3.50',
+'500',
+'g',
+'Small Bag',
                 shipping_category.name
 ]
         csv << [
-"Chives",
+'Chives',
 enterprise.name,
-"Vegetables",
-"6",
-"4.50",
-"500",
-"g",
-"Bunch",
+'Vegetables',
+'6',
+'4.50',
+'500',
+'g',
+'Bunch',
                 shipping_category.name
 ]
         csv << [
-"Potatoes",
+'Potatoes',
 enterprise.name,
-"Vegetables",
-"6",
-"5.50",
-"2",
-"kg",
-"Big Bag",
+'Vegetables',
+'6',
+'5.50',
+'2',
+'kg',
+'Big Bag',
                 shipping_category.name
 ]
         csv << [
-"Potatoes",
+'Potatoes',
 enterprise.name,
-"Vegetables",
-"6",
-"22.00",
-"10000",
-"g",
-                "Small Sack",
+'Vegetables',
+'6',
+'22.00',
+'10000',
+'g',
+                'Small Sack',
 shipping_category.name
 ]
         csv << [
-"Potatoes",
+'Potatoes',
 enterprise.name,
-"Vegetables",
-"6",
-"60.00",
-"30000",
-"",
-"Big Sack",
+'Vegetables',
+'6',
+'60.00',
+'30000',
+'',
+'Big Sack',
                 shipping_category.name
 ]
       end
     end
     let(:importer) { import_data csv_data }
 
-    it "validates entries" do
+    it 'validates entries' do
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
@@ -700,7 +700,7 @@ enterprise.name,
       expect(filter('create_product', entries)).to(eq(3))
     end
 
-    it "saves and updates" do
+    it 'saves and updates' do
       importer.save_entries
 
       expect(importer.products_created_count).to(eq(3))
@@ -712,64 +712,64 @@ enterprise.name,
       expect(small_bag.price).to(eq(3.50))
       expect(small_bag.on_hand).to(eq(5))
 
-      big_bag = Spree::Variant.find_by(display_name: "Big Bag")
+      big_bag = Spree::Variant.find_by(display_name: 'Big Bag')
       expect(big_bag).to(be_blank)
 
-      small_sack = Spree::Variant.find_by(display_name: "Small Sack")
-      expect(small_sack.product.name).to(eq("Potatoes"))
+      small_sack = Spree::Variant.find_by(display_name: 'Small Sack')
+      expect(small_sack.product.name).to(eq('Potatoes'))
       expect(small_sack.price).to(eq(22.00))
       expect(small_sack.on_hand).to(eq(6))
       expect(small_sack.product.id).to(eq(small_bag.product.id))
 
-      big_sack = Spree::Variant.find_by(display_name: "Big Sack")
+      big_sack = Spree::Variant.find_by(display_name: 'Big Sack')
       expect(big_sack).to(be_blank)
     end
   end
 
-  describe "updating various fields" do
+  describe 'updating various fields' do
     let(:csv_data) do
       CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"category",
-"on_hand",
-"price",
-"units",
-"unit_type",
-                "on_demand",
-"sku",
-"shipping_category"
+'name',
+'producer',
+'category',
+'on_hand',
+'price',
+'units',
+'unit_type',
+                'on_demand',
+'sku',
+'shipping_category'
 ]
         csv << [
-"Beetroot",
+'Beetroot',
 enterprise3.name,
-"Vegetables",
-"5",
-"3.50",
-"500",
-"g",
-"0",
+'Vegetables',
+'5',
+'3.50',
+'500',
+'g',
+'0',
 nil,
                 shipping_category.name
 ]
         csv << [
-"Tomato",
+'Tomato',
 enterprise3.name,
-"Vegetables",
-"6",
-"5.50",
-"500",
-"g",
-"1",
-"TOMS",
+'Vegetables',
+'6',
+'5.50',
+'500',
+'g',
+'1',
+'TOMS',
                 shipping_category.name
 ]
       end
     end
     let(:importer) { import_data csv_data }
 
-    it "validates entries" do
+    it 'validates entries' do
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
@@ -779,7 +779,7 @@ enterprise3.name,
       expect(filter('update_product', entries)).to(eq(2))
     end
 
-    it "saves and updates" do
+    it 'saves and updates' do
       importer.save_entries
 
       expect(importer.products_created_count).to(eq(0))
@@ -797,17 +797,17 @@ enterprise3.name,
     end
   end
 
-  describe "updating non-updatable fields on existing products" do
+  describe 'updating non-updatable fields on existing products' do
     let(:csv_data) do
       CSV.generate do |csv|
-        csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type"]
-        csv << ["Beetroot", enterprise3.name, "Meat", "5", "3.50", "500", "g"]
-        csv << ["Tomato", enterprise3.name, "Vegetables", "6", "5.50", "500", "Kg"]
+        csv << ['name', 'producer', 'category', 'on_hand', 'price', 'units', 'unit_type']
+        csv << ['Beetroot', enterprise3.name, 'Meat', '5', '3.50', '500', 'g']
+        csv << ['Tomato', enterprise3.name, 'Vegetables', '6', '5.50', '500', 'Kg']
       end
     end
     let(:importer) { import_data csv_data }
 
-    it "does not allow updating" do
+    it 'does not allow updating' do
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
@@ -820,31 +820,31 @@ enterprise3.name,
     end
   end
 
-  describe "when more than one product of the same name already exists with multiple variants each" do
+  describe 'when more than one product of the same name already exists with multiple variants each' do
     let(:csv_data) do
       CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"category",
-"description",
-"on_hand",
-"price",
-"units",
-                "unit_type",
-"display_name",
-"shipping_category"
+'name',
+'producer',
+'category',
+'description',
+'on_hand',
+'price',
+'units',
+                'unit_type',
+'display_name',
+'shipping_category'
 ]
-        csv << ["Oats", enterprise.name, "Cereal", "", "50", "3.50", "500", "g", "Rolled Oats", shipping_category.name]   # Update
-        csv << ["Oats", enterprise.name, "Cereal", "", "80", "3.75", "500", "g", "Flaked Oats", shipping_category.name]   # Update
-        csv << ["Oats", enterprise.name, "Cereal", "", "60", "5.50", "500", "g", "Magic Oats", shipping_category.name]    # Add
-        csv << ["Oats", enterprise.name, "Cereal", "", "70", "8.50", "500", "g", "French Oats", shipping_category.name]   # Add
-        csv << ["Oats", enterprise.name, "Cereal", "", "70", "8.50", "500", "g", "Scottish Oats", shipping_category.name] # Add
+        csv << ['Oats', enterprise.name, 'Cereal', '', '50', '3.50', '500', 'g', 'Rolled Oats', shipping_category.name]   # Update
+        csv << ['Oats', enterprise.name, 'Cereal', '', '80', '3.75', '500', 'g', 'Flaked Oats', shipping_category.name]   # Update
+        csv << ['Oats', enterprise.name, 'Cereal', '', '60', '5.50', '500', 'g', 'Magic Oats', shipping_category.name]    # Add
+        csv << ['Oats', enterprise.name, 'Cereal', '', '70', '8.50', '500', 'g', 'French Oats', shipping_category.name]   # Add
+        csv << ['Oats', enterprise.name, 'Cereal', '', '70', '8.50', '500', 'g', 'Scottish Oats', shipping_category.name] # Add
       end
     end
     let(:importer) { import_data csv_data }
 
-    it "validates entries" do
+    it 'validates entries' do
       importer.validate_entries
       entries = JSON.parse(importer.entries_json)
 
@@ -856,7 +856,7 @@ enterprise3.name,
       expect(filter('update_inventory', entries)).to(eq(0))
     end
 
-    it "saves and updates" do
+    it 'saves and updates' do
       importer.save_entries
 
       expect(importer.products_created_count).to(eq(3))
@@ -867,29 +867,29 @@ enterprise3.name,
     end
   end
 
-  describe "when importer processes create and update across multiple stages" do
+  describe 'when importer processes create and update across multiple stages' do
     let(:csv_data) do
       CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"category",
-"on_hand",
-"price",
-"units",
-"unit_type",
-                "display_name",
-"shipping_category"
+'name',
+'producer',
+'category',
+'on_hand',
+'price',
+'units',
+'unit_type',
+                'display_name',
+'shipping_category'
 ]
-        csv << ["Bag of Oats", enterprise.name, "Cereal", "60", "5.50", "500", "g", "Magic Oats", shipping_category.name]     # Add
-        csv << ["Bag of Oats", enterprise.name, "Cereal", "70", "8.50", "500", "g", "French Oats", shipping_category.name]    # Add
-        csv << ["Bag of Oats", enterprise.name, "Cereal", "80", "9.50", "500", "g", "Organic Oats", shipping_category.name]   # Add
-        csv << ["Bag of Oats", enterprise.name, "Cereal", "90", "7.50", "500", "g", "Scottish Oats", shipping_category.name]  # Add
-        csv << ["Bag of Oats", enterprise.name, "Cereal", "30", "6.50", "500", "g", "Breakfast Oats", shipping_category.name] # Add
+        csv << ['Bag of Oats', enterprise.name, 'Cereal', '60', '5.50', '500', 'g', 'Magic Oats', shipping_category.name]     # Add
+        csv << ['Bag of Oats', enterprise.name, 'Cereal', '70', '8.50', '500', 'g', 'French Oats', shipping_category.name]    # Add
+        csv << ['Bag of Oats', enterprise.name, 'Cereal', '80', '9.50', '500', 'g', 'Organic Oats', shipping_category.name]   # Add
+        csv << ['Bag of Oats', enterprise.name, 'Cereal', '90', '7.50', '500', 'g', 'Scottish Oats', shipping_category.name]  # Add
+        csv << ['Bag of Oats', enterprise.name, 'Cereal', '30', '6.50', '500', 'g', 'Breakfast Oats', shipping_category.name] # Add
       end
     end
 
-    it "processes the validation in stages" do
+    it 'processes the validation in stages' do
       # Using settings of start: 1, end: 3 to simulate import over multiple stages
       importer = import_data(csv_data, start: 1, end: 3)
 
@@ -916,7 +916,7 @@ enterprise3.name,
       expect(filter('update_inventory', entries)).to(eq(0))
     end
 
-    it "processes saving in stages" do
+    it 'processes saving in stages' do
       importer = import_data(csv_data, start: 1, end: 3)
       importer.save_entries
 
@@ -942,28 +942,28 @@ enterprise3.name,
     end
   end
 
-  describe "importing items into inventory" do
-    describe "creating and updating inventory" do
+  describe 'importing items into inventory' do
+    describe 'creating and updating inventory' do
       let(:csv_data) do
         CSV.generate do |csv|
           csv << [
-"name",
-"distributor",
-"producer",
-"on_hand",
-"price",
-"units",
-"unit_type",
-                  "variant_unit_name"
+'name',
+'distributor',
+'producer',
+'on_hand',
+'price',
+'units',
+'unit_type',
+                  'variant_unit_name'
 ]
-          csv << ["Beans", enterprise2.name, enterprise.name, "5", "3.20", "500", "g", ""]
-          csv << ["Sprouts", enterprise2.name, enterprise.name, "6", "6.50", "500", "g", ""]
-          csv << ["Cabbage", enterprise2.name, enterprise.name, "2001", "1.50", "1", "", "Whole"]
+          csv << ['Beans', enterprise2.name, enterprise.name, '5', '3.20', '500', 'g', '']
+          csv << ['Sprouts', enterprise2.name, enterprise.name, '6', '6.50', '500', 'g', '']
+          csv << ['Cabbage', enterprise2.name, enterprise.name, '2001', '1.50', '1', '', 'Whole']
         end
       end
       let(:importer) { import_data csv_data, import_into: 'inventories' }
 
-      it "validates entries" do
+      it 'validates entries' do
         importer.validate_entries
         entries = JSON.parse(importer.entries_json)
 
@@ -973,7 +973,7 @@ enterprise3.name,
         expect(filter('update_inventory', entries)).to(eq(1))
       end
 
-      it "saves and updates inventory" do
+      it 'saves and updates inventory' do
         importer.save_entries
 
         expect(importer.inventory_created_count).to(eq(2))
@@ -1005,16 +1005,16 @@ hub_id: enterprise2.id
       end
     end
 
-    describe "updating existing inventory referenced by display_name" do
+    describe 'updating existing inventory referenced by display_name' do
       let(:csv_data) do
         CSV.generate do |csv|
-          csv << ["name", "display_name", "distributor", "producer", "on_hand", "price", "units"]
-          csv << ["Oats", "Porridge Oats", enterprise2.name, enterprise.name, "900", "", "500"]
+          csv << ['name', 'display_name', 'distributor', 'producer', 'on_hand', 'price', 'units']
+          csv << ['Oats', 'Porridge Oats', enterprise2.name, enterprise.name, '900', '', '500']
         end
       end
       let(:importer) { import_data csv_data, import_into: 'inventories' }
 
-      it "updates inventory item correctly" do
+      it 'updates inventory item correctly' do
         importer.save_entries
 
         expect(importer.inventory_created_count).to(eq(1))
@@ -1030,7 +1030,7 @@ enterprise_id: enterprise2.id
       end
     end
 
-    describe "updating existing item that was set to hidden in inventory" do
+    describe 'updating existing item that was set to hidden in inventory' do
       let!(:inventory) do
         InventoryItem.create(
 variant_id: product4.variants.first.id,
@@ -1041,20 +1041,20 @@ visible: false
       let(:csv_data) do
         CSV.generate do |csv|
           csv << [
-"name",
-"distributor",
-"producer",
-"on_hand",
-"price",
-"units",
-                  "variant_unit_name"
+'name',
+'distributor',
+'producer',
+'on_hand',
+'price',
+'units',
+                  'variant_unit_name'
 ]
-          csv << ["Cabbage", enterprise2.name, enterprise.name, "900", "", "1", "Whole"]
+          csv << ['Cabbage', enterprise2.name, enterprise.name, '900', '', '1', 'Whole']
         end
       end
       let(:importer) { import_data csv_data, import_into: 'inventories' }
 
-      it "sets the item to visible in inventory when the item is updated" do
+      it 'sets the item to visible in inventory when the item is updated' do
         importer.save_entries
 
         expect(importer.inventory_updated_count).to(eq(1))
@@ -1074,38 +1074,38 @@ enterprise_id: enterprise2.id
     end
   end
 
-  describe "handling enterprise permissions" do
-    it "only allows product import into enterprises the user is permitted to manage" do
+  describe 'handling enterprise permissions' do
+    it 'only allows product import into enterprises the user is permitted to manage' do
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"category",
-"on_hand",
-"price",
-"units",
-"unit_type",
-                "shipping_category"
+'name',
+'producer',
+'category',
+'on_hand',
+'price',
+'units',
+'unit_type',
+                'shipping_category'
 ]
         csv << [
-"My Carrots",
+'My Carrots',
 enterprise.name,
-"Vegetables",
-"5",
-"3.20",
-"500",
-"g",
+'Vegetables',
+'5',
+'3.20',
+'500',
+'g',
                 shipping_category.name
 ]
         csv << [
-"Your Potatoes",
+'Your Potatoes',
 enterprise2.name,
-"Vegetables",
-"6",
-"6.50",
-"1",
-"kg",
+'Vegetables',
+'6',
+'6.50',
+'1',
+'kg',
                 shipping_category.name
 ]
       end
@@ -1131,8 +1131,8 @@ enterprise2.name,
     it "allows creating inventories for producers that a user's hub has permission for" do
       csv_data =
  CSV.generate do |csv|
-        csv << ["name", "producer", "distributor", "on_hand", "price", "units", "unit_type"]
-        csv << ["Beans", enterprise.name, enterprise2.name, "777", "3.20", "500", "g"]
+        csv << ['name', 'producer', 'distributor', 'on_hand', 'price', 'units', 'unit_type']
+        csv << ['Beans', enterprise.name, enterprise2.name, '777', '3.20', '500', 'g']
       end
       importer = import_data(csv_data, import_into: 'inventories')
 
@@ -1159,9 +1159,9 @@ hub_id: enterprise2.id
     it "does not allow creating inventories for producers that a user's hubs don't have permission for" do
       csv_data =
  CSV.generate do |csv|
-        csv << ["name", "producer", "on_hand", "price", "units", "unit_type"]
-        csv << ["Beans", enterprise.name, "5", "3.20", "500", "g"]
-        csv << ["Sprouts", enterprise.name, "6", "6.50", "500", "g"]
+        csv << ['name', 'producer', 'on_hand', 'price', 'units', 'unit_type']
+        csv << ['Beans', enterprise.name, '5', '3.20', '500', 'g']
+        csv << ['Sprouts', enterprise.name, '6', '6.50', '500', 'g']
       end
       importer = import_data(csv_data, import_into: 'inventories')
 
@@ -1180,38 +1180,38 @@ hub_id: enterprise2.id
     end
   end
 
-  describe "applying settings and defaults on import" do
-    it "can reset all products for an enterprise that are not present in the uploaded file to zero stock" do
+  describe 'applying settings and defaults on import' do
+    it 'can reset all products for an enterprise that are not present in the uploaded file to zero stock' do
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name",
-"producer",
-"category",
-"on_hand",
-"price",
-"units",
-"unit_type",
-                "shipping_category"
+'name',
+'producer',
+'category',
+'on_hand',
+'price',
+'units',
+'unit_type',
+                'shipping_category'
 ]
         csv << [
-"Carrots",
+'Carrots',
 enterprise.name,
-"Vegetables",
-"5",
-"3.20",
-"500",
-"g",
+'Vegetables',
+'5',
+'3.20',
+'500',
+'g',
                 shipping_category.name
 ]
         csv << [
-"Beans",
+'Beans',
 enterprise.name,
-"Vegetables",
-"6",
-"6.50",
-"500",
-"g",
+'Vegetables',
+'6',
+'6.50',
+'500',
+'g',
                 shipping_category.name
 ]
       end
@@ -1249,12 +1249,12 @@ updated_ids: updated_ids,
       expect(Spree::Product.find_by(name: 'Lettuce').on_hand).to(eq(100))  # In different enterprise; unchanged
     end
 
-    it "can reset all inventory items for an enterprise that are not present in the uploaded file to zero stock" do
+    it 'can reset all inventory items for an enterprise that are not present in the uploaded file to zero stock' do
       csv_data =
  CSV.generate do |csv|
-        csv << ["name", "distributor", "producer", "on_hand", "price", "units", "unit_type"]
-        csv << ["Beans", enterprise2.name, enterprise.name, "6", "3.20", "500", "g"]
-        csv << ["Sprouts", enterprise2.name, enterprise.name, "7", "6.50", "500", "g"]
+        csv << ['name', 'distributor', 'producer', 'on_hand', 'price', 'units', 'unit_type']
+        csv << ['Beans', enterprise2.name, enterprise.name, '6', '3.20', '500', 'g']
+        csv << ['Sprouts', enterprise2.name, enterprise.name, '7', '6.50', '500', 'g']
       end
       importer = import_data(csv_data, import_into: 'inventories', reset_all_absent: true)
 

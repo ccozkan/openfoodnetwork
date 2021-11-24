@@ -2,13 +2,13 @@
 
 require 'spec_helper'
 
-describe "full-page cart", js: true do
+describe 'full-page cart', js: true do
   include AuthenticationHelper
   include WebHelper
   include ShopWorkflow
   include UIComponentHelper
 
-  describe "viewing the cart" do
+  describe 'viewing the cart' do
     let!(:zone) { create(:zone_with_member) }
     let(:distributor) do
       create(:distributor_enterprise, with_payment_and_shipping: true, charges_sales_tax: true)
@@ -38,35 +38,35 @@ variants: [product_with_tax.variants.first, product_with_fee.variants.first]
       set_order order
     end
 
-    describe "continue shopping" do
-      it "shows a button leading back to the shop" do
+    describe 'continue shopping' do
+      it 'shows a button leading back to the shop' do
         # Set up a shopfront message to test that we are not going to the
         # home tab.
-        distributor.preferred_shopfront_message = "Test driven farming"
+        distributor.preferred_shopfront_message = 'Test driven farming'
 
         add_product_to_cart order, product_with_fee, quantity: 2
         visit main_app.cart_path
 
-        expect(page).to(have_link("Continue shopping"))
+        expect(page).to(have_link('Continue shopping'))
 
-        click_link "Continue shopping"
+        click_link 'Continue shopping'
 
-        expect(page).to(have_no_link("Continue shopping"))
-        expect(page).to(have_link("Shop"))
+        expect(page).to(have_no_link('Continue shopping'))
+        expect(page).to(have_link('Shop'))
         expect(page).to(have_no_content(distributor.preferred_shopfront_message))
       end
     end
 
-    describe "product description" do
-      it "does not link to the product page" do
+    describe 'product description' do
+      it 'does not link to the product page' do
         add_product_to_cart order, product_with_fee, quantity: 2
         visit main_app.cart_path
         expect(page).to(have_no_selector('.item-thumb-image a'))
       end
     end
 
-    describe "when a product is soft-deleted" do
-      it "shows the cart without errors" do
+    describe 'when a product is soft-deleted' do
+      it 'shows the cart without errors' do
         add_product_to_cart order, product_with_tax, quantity: 1
         add_product_to_cart order, product_with_fee, quantity: 2
         product_with_fee.destroy
@@ -76,7 +76,7 @@ variants: [product_with_tax.variants.first, product_with_fee.variants.first]
       end
     end
 
-    describe "percentage fees" do
+    describe 'percentage fees' do
       let(:percentage_fee) do
         create(
 :enterprise_fee,
@@ -90,7 +90,7 @@ variants: [product_with_tax.variants.first, product_with_fee.variants.first]
         visit main_app.cart_path
       end
 
-      it "rounds fee calculations correctly" do
+      it 'rounds fee calculations correctly' do
         # $0.86 + 20% = $1.032
         # Fractional cents should be immediately rounded down and not carried through
         expect(page).to(have_selector('.cart-item-price',         text: with_currency(1.03)))
@@ -100,8 +100,8 @@ variants: [product_with_tax.variants.first, product_with_fee.variants.first]
       end
     end
 
-    describe "admin and handling flat fees" do
-      context "when there are fees" do
+    describe 'admin and handling flat fees' do
+      context 'when there are fees' do
         let(:handling_fee) do
           create(
 :enterprise_fee,
@@ -117,7 +117,7 @@ fee_type: 'admin'
           visit main_app.cart_path
         end
 
-        it "shows admin and handlings row" do
+        it 'shows admin and handlings row' do
           expect(page).to(have_selector('#cart-detail'))
           expect(page).to(have_content('Admin & Handling'))
           expect(page).to(have_selector('.cart-item-price', text: with_currency(0.86)))
@@ -127,13 +127,13 @@ fee_type: 'admin'
         end
       end
 
-      context "when there are no admin and handling fees" do
+      context 'when there are no admin and handling fees' do
         before do
           add_product_to_cart order, product_with_fee, quantity: 2
           visit main_app.cart_path
         end
 
-        it "hides admin and handlings row" do
+        it 'hides admin and handlings row' do
           expect(page).to(have_selector('#cart-detail'))
           expect(page).to(have_no_content('Admin & Handling'))
           expect(page).to(have_selector('.cart-item-price',         text: with_currency(0.86)))
@@ -142,12 +142,12 @@ fee_type: 'admin'
       end
     end
 
-    describe "admin weight calculated fees" do
-      context "order with 2 line items" do
+    describe 'admin weight calculated fees' do
+      context 'order with 2 line items' do
         let(:admin_fee) do
           create(
 :enterprise_fee,
-calculator: Calculator::Weight.new(preferred_per_unit: 1, preferred_unit_from_list: "kg"),
+calculator: Calculator::Weight.new(preferred_per_unit: 1, preferred_unit_from_list: 'kg'),
                  enterprise: order_cycle.coordinator,
 fee_type: 'admin'
 )
@@ -171,7 +171,7 @@ product_with_tax.variants.first.id => 3
           visit main_app.cart_path
         end
 
-        it "shows the correct weight calculations" do
+        it 'shows the correct weight calculations' do
           expect(page).to(have_selector('#cart-detail'))
           expect(page).to(have_selector('.cart-item-price',                 text: with_currency(2.86))) # price + (1eur * 2kg)
           expect(page).to(have_selector('.cart-item-price',                 text: with_currency(115.0))) # price + (1eur * 5kg)
@@ -180,19 +180,19 @@ product_with_tax.variants.first.id => 3
       end
     end
 
-    describe "tax" do
+    describe 'tax' do
       before do
         add_enterprise_fee enterprise_fee
         add_product_to_cart order, product_with_tax
         visit main_app.cart_path
       end
 
-      it "shows the total tax for the order, including product tax and tax on fees" do
+      it 'shows the total tax for the order, including product tax and tax on fees' do
         expect(page).to(have_selector('.tax-total', text: '11.00')) # 10 + 1
       end
     end
 
-    describe "updating quantities" do
+    describe 'updating quantities' do
       let(:li) { order.line_items.reload.last }
       let(:variant) { product_with_tax.variants.first }
       let(:variant2) { product_with_fee.variants.first }
@@ -201,18 +201,18 @@ product_with_tax.variants.first.id => 3
         order.contents.add(product_with_tax.variants.first)
       end
 
-      describe "when on_hand is zero but variant is on demand" do
-        it "allows updating the quantity" do
+      describe 'when on_hand is zero but variant is on demand' do
+        it 'allows updating the quantity' do
           variant.update!(on_hand: 0, on_demand: true)
           visit main_app.cart_path
 
-          fill_in "order_line_items_attributes_0_quantity", with: '5'
-          expect(page).to(have_field("order_line_items_attributes_0_quantity", with: '5'))
+          fill_in 'order_line_items_attributes_0_quantity', with: '5'
+          expect(page).to(have_field('order_line_items_attributes_0_quantity', with: '5'))
         end
       end
 
-      describe "with insufficient stock available" do
-        it "prevents user from entering invalid values" do
+      describe 'with insufficient stock available' do
+        it 'prevents user from entering invalid values' do
           order.contents.add(product_with_fee.variants.first)
 
           variant.update!(on_hand: 2, on_demand: false)
@@ -221,20 +221,20 @@ product_with_tax.variants.first.id => 3
 
           accept_alert 'Insufficient stock available, only 2 remaining' do
             within "tr.variant-#{variant.id}" do
-              fill_in "order_line_items_attributes_0_quantity", with: '4'
+              fill_in 'order_line_items_attributes_0_quantity', with: '4'
             end
           end
-          expect(page).to(have_field("order_line_items_attributes_0_quantity", with: '2'))
+          expect(page).to(have_field('order_line_items_attributes_0_quantity', with: '2'))
 
           accept_alert 'Insufficient stock available, only 3 remaining' do
             within "tr.variant-#{variant2.id}" do
-              fill_in "order_line_items_attributes_1_quantity", with: '4'
+              fill_in 'order_line_items_attributes_1_quantity', with: '4'
             end
           end
-          expect(page).to(have_field("order_line_items_attributes_1_quantity", with: '3'))
+          expect(page).to(have_field('order_line_items_attributes_1_quantity', with: '3'))
         end
 
-        it "shows the quantities saved, not those submitted" do
+        it 'shows the quantities saved, not those submitted' do
           # Given we load the page with 3 on hand, then the number available drops to 2
           variant.update!(on_demand: false)
           variant.update!(on_hand: 3)
@@ -242,52 +242,52 @@ product_with_tax.variants.first.id => 3
           variant.update!(on_hand: 2)
 
           accept_alert do
-            fill_in "order_line_items_attributes_0_quantity", with: '4'
+            fill_in 'order_line_items_attributes_0_quantity', with: '4'
           end
           click_button 'Update'
 
-          expect(page).to(have_content("Insufficient stock available, only 2 remaining"))
-          expect(page).to(have_field("order_line_items_attributes_0_quantity", with: '1'))
+          expect(page).to(have_content('Insufficient stock available, only 2 remaining'))
+          expect(page).to(have_field('order_line_items_attributes_0_quantity', with: '1'))
         end
 
-        describe "full UX for correcting selected quantities with insufficient stock" do
+        describe 'full UX for correcting selected quantities with insufficient stock' do
           before do
             add_product_to_cart order, product_with_tax, quantity: 5
             variant.update!(on_hand: 4, on_demand: false)
           end
 
-          it "gives clear user feedback during the correcting process" do
+          it 'gives clear user feedback during the correcting process' do
             visit main_app.cart_path
 
             # shows a relevant Flash message
-            expect(page).to(have_selector(".alert-box",
+            expect(page).to(have_selector('.alert-box',
                                           text: I18n.t('spree.orders.error_flash_for_unavailable_items')))
 
             # "Continue Shopping" and "Checkout" buttons are disabled
-            expect(page).to(have_selector("a.continue-shopping[disabled=disabled]"))
-            expect(page).to(have_selector("a#checkout-link[disabled=disabled]"))
+            expect(page).to(have_selector('a.continue-shopping[disabled=disabled]'))
+            expect(page).to(have_selector('a#checkout-link[disabled=disabled]'))
 
             # Quantity field clearly marked as invalid and "Update" button is not highlighted
-            expect(page).to(have_selector("#order_line_items_attributes_0_quantity.ng-invalid-stock"))
-            expect(page).to_not(have_selector("#update-button.alert"))
+            expect(page).to(have_selector('#order_line_items_attributes_0_quantity.ng-invalid-stock'))
+            expect(page).to_not(have_selector('#update-button.alert'))
 
-            fill_in "order_line_items_attributes_0_quantity", with: 4
+            fill_in 'order_line_items_attributes_0_quantity', with: 4
 
             # Quantity field not marked as invalid and "Update" button is highlighted after correction
-            expect(page).to_not(have_selector("#order_line_items_attributes_0_quantity.ng-invalid-stock"))
-            expect(page).to(have_selector("#update-button.alert"))
+            expect(page).to_not(have_selector('#order_line_items_attributes_0_quantity.ng-invalid-stock'))
+            expect(page).to(have_selector('#update-button.alert'))
 
-            click_button I18n.t("update")
+            click_button I18n.t('update')
 
             # "Continue Shopping" and "Checkout" buttons are not disabled after cart is updated
-            expect(page).to_not(have_selector("a.continue-shopping[disabled=disabled]"))
-            expect(page).to_not(have_selector("a#checkout-link[disabled=disabled]"))
+            expect(page).to_not(have_selector('a.continue-shopping[disabled=disabled]'))
+            expect(page).to_not(have_selector('a#checkout-link[disabled=disabled]'))
           end
         end
       end
     end
 
-    context "when ordered in the same order cycle" do
+    context 'when ordered in the same order cycle' do
       let(:address) { create(:address) }
       let(:user) { create(:user, bill_address: address, ship_address: address) }
       let!(:prev_order1) do
@@ -317,7 +317,7 @@ distributor: distributor,
         visit main_app.cart_path
       end
 
-      it "shows already ordered line items" do
+      it 'shows already ordered line items' do
         item1 = prev_order1.line_items.first
         item2 = prev_order2.line_items.first
 
@@ -325,7 +325,7 @@ distributor: distributor,
         expect(page).to(have_no_content(item2.variant.name))
 
         expect(page).to(have_link(I18n.t(:orders_bought_edit_button), href: spree.account_path))
-        find("td.toggle-bought").click
+        find('td.toggle-bought').click
 
         expect(page).to(have_content(item1.variant.name))
         expect(page).to(have_content(item2.variant.name))
@@ -335,12 +335,12 @@ distributor: distributor,
 
         visit main_app.cart_path
 
-        find("td.toggle-bought").click
+        find('td.toggle-bought').click
         expect(page).to(have_no_content(item1.variant.name))
         expect(page).to(have_content(item2.variant.name))
       end
 
-      context "with a single editable order" do # Regression test for #8191
+      context 'with a single editable order' do # Regression test for #8191
         before do
           prev_order2.destroy
         end

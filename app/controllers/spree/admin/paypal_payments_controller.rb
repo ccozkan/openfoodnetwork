@@ -7,7 +7,7 @@ module Spree
 
       def index
         @payments = @order.payments.includes(:payment_method)
-          .where(spree_payment_methods: { type: "Spree::Gateway::PayPalExpress" })
+          .where(spree_payment_methods: { type: 'Spree::Gateway::PayPalExpress' })
       end
 
       private

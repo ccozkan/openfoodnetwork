@@ -13,7 +13,7 @@ module Api
                :tax_category_id
 
     def tax_category_id
-      if object.originator_type == "Spree::TaxRate"
+      if object.originator_type == 'Spree::TaxRate'
         object.originator.tax_category_id
       else
         object.tax_category_id

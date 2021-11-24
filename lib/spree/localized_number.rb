@@ -63,10 +63,10 @@ module Spree
 
     def self.add_trailing_zeros(number)
       # If string ends in a single digit (e.g. ,2), make it ,20 in order for the result to be in "cents"
-      number << "0" if number =~ /^.*[.,]\d{1}$/
+      number << '0' if number =~ /^.*[.,]\d{1}$/
 
       # If does not end in ,00 / .00 then add trailing 00 to turn it into cents
-      number << "00" unless number =~ /^.*[.,]\d{2}$/
+      number << '00' unless number =~ /^.*[.,]\d{2}$/
     end
 
     private

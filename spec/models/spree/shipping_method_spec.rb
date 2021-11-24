@@ -4,7 +4,7 @@ require 'spec_helper'
 
 module Spree
   describe ShippingMethod do
-    it "is valid when built from factory" do
+    it 'is valid when built from factory' do
       expect(
         build(
           :shipping_method,
@@ -13,7 +13,7 @@ module Spree
       ).to(be_valid)
     end
 
-    it "can have distributors" do
+    it 'can have distributors' do
       d1 = create(:distributor_enterprise)
       d2 = create(:distributor_enterprise)
       sm = create(:shipping_method)
@@ -25,8 +25,8 @@ module Spree
       expect(sm.reload.distributors).to(match_array([d1, d2]))
     end
 
-    describe "scope" do
-      describe "filtering to specified distributors" do
+    describe 'scope' do
+      describe 'filtering to specified distributors' do
         let!(:distributor_a) { create(:distributor_enterprise) }
         let!(:distributor_b) { create(:distributor_enterprise) }
         let!(:distributor_c) { create(:distributor_enterprise) }
@@ -37,7 +37,7 @@ module Spree
         let!(:shipping_method_b) { create(:shipping_method, distributors: [distributor_b]) }
         let!(:shipping_method_c) { create(:shipping_method, distributors: [distributor_c]) }
 
-        it "includes only unique records under specified distributors" do
+        it 'includes only unique records under specified distributors' do
           result = described_class.for_distributors([distributor_a, distributor_b])
           expect(result.length).to(eq(2))
           expect(result).to(include(shipping_method_a))
@@ -45,7 +45,7 @@ module Spree
         end
       end
 
-      it "finds shipping methods for a particular distributor" do
+      it 'finds shipping methods for a particular distributor' do
         d1 = create(:distributor_enterprise)
         d2 = create(:distributor_enterprise)
         sm1 = create(:shipping_method, distributors: [d1])
@@ -55,7 +55,7 @@ module Spree
       end
     end
 
-    it "orders shipping methods by name" do
+    it 'orders shipping methods by name' do
       sm1 = create(:shipping_method, name: 'ZZ')
       sm2 = create(:shipping_method, name: 'AA')
       sm3 = create(:shipping_method, name: 'BB')
@@ -63,7 +63,7 @@ module Spree
       expect(ShippingMethod.by_name).to(eq([sm2, sm3, sm1]))
     end
 
-    describe "finding services offered by all distributors" do
+    describe 'finding services offered by all distributors' do
       let!(:d1) { create(:distributor_enterprise) }
       let!(:d2) { create(:distributor_enterprise) }
       let!(:d3) { create(:distributor_enterprise) }
@@ -77,19 +77,19 @@ module Spree
         create(:shipping_method, require_ship_address: true, distributors: [d3])
       end
 
-      it "reports when the services are available" do
+      it 'reports when the services are available' do
         expect(ShippingMethod.services[d1.id]).to(eq(pickup: true, delivery: true))
       end
 
-      it "reports when only pickup is available" do
+      it 'reports when only pickup is available' do
         expect(ShippingMethod.services[d2.id]).to(eq(pickup: true, delivery: false))
       end
 
-      it "reports when only delivery is available" do
+      it 'reports when only delivery is available' do
         expect(ShippingMethod.services[d3.id]).to(eq(pickup: false, delivery: true))
       end
 
-      it "returns no entry when no service is available" do
+      it 'returns no entry when no service is available' do
         expect(ShippingMethod.services[d4.id]).to(be_nil)
       end
     end
@@ -106,14 +106,14 @@ module Spree
       end
     end
 
-    describe "#include?" do
+    describe '#include?' do
       let(:shipping_method) { build_stubbed(:shipping_method) }
 
-      it "does not include a nil address" do
+      it 'does not include a nil address' do
         expect(shipping_method.include?(nil)).to(be(false))
       end
 
-      it "includes an address that is not included in the zones of the shipping method" do
+      it 'includes an address that is not included in the zones of the shipping method' do
         address = create(:address)
         zone_mock = instance_double(Spree::Zone)
         allow(zone_mock).to(receive(:include?).with(address).and_return(false))
@@ -123,32 +123,32 @@ module Spree
       end
     end
 
-    describe "touches" do
+    describe 'touches' do
       let!(:distributor) { create(:distributor_enterprise) }
       let!(:shipping_method) { create(:shipping_method) }
       let(:add_distributor) { shipping_method.distributors << distributor }
 
-      it "is touched when applied to a distributor" do
+      it 'is touched when applied to a distributor' do
         expect { add_distributor }
 .to(change { shipping_method.reload.updated_at })
       end
     end
 
-    context "validations" do
-      it "validates presence of name" do
+    context 'validations' do
+      it 'validates presence of name' do
         shipping_method = build_stubbed(:shipping_method, name: '')
         expect(shipping_method).not_to(be_valid)
         expect(shipping_method.errors[:name].first).to(eq("can't be blank"))
       end
 
-      context "shipping category" do
-        it "validates presence of at least one" do
+      context 'shipping category' do
+        it 'validates presence of at least one' do
           shipping_method = build_stubbed(:shipping_method, shipping_categories: [])
           expect(shipping_method).not_to(be_valid)
-          expect(shipping_method.errors[:base].first).to(eq("You need to select at least one shipping category"))
+          expect(shipping_method.errors[:base].first).to(eq('You need to select at least one shipping category'))
         end
 
-        context "one associated" do
+        context 'one associated' do
           let(:shipping_method) do
             build_stubbed(
               :shipping_method,
@@ -161,10 +161,10 @@ module Spree
     end
 
     # Regression test for Spree #4320
-    context "soft deletion" do
+    context 'soft deletion' do
       let(:shipping_method) { create(:shipping_method) }
 
-      it "soft-deletes when destroy is called" do
+      it 'soft-deletes when destroy is called' do
         shipping_method.destroy
         expect(shipping_method.deleted_at).to_not(be_blank)
       end
@@ -173,13 +173,13 @@ module Spree
     context 'factory' do
       let(:shipping_method) { create :shipping_method }
 
-      it "should set calculable correctly" do
+      it 'should set calculable correctly' do
         expect(shipping_method.calculator.calculable).to(eq(shipping_method))
       end
     end
 
     # Regression test for Spree #4492
-    context "#shipments" do
+    context '#shipments' do
       let!(:shipping_method) { create(:shipping_method) }
       let!(:shipment) do
         shipment = create(:shipment)
@@ -187,7 +187,7 @@ module Spree
         shipment
       end
 
-      it "can gather all the related shipments" do
+      it 'can gather all the related shipments' do
         expect(shipping_method.shipments).to(include(shipment))
       end
     end

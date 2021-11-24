@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "tasks/sample_data/logging"
+require 'tasks/sample_data/logging'
 
 module SampleData
   class PermissionFactory

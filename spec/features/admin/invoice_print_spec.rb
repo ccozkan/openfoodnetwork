@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 describe ' As an administrator I want to print a invoice as PDF ', js: false do
   include WebHelper
@@ -29,23 +29,23 @@ state: 'complete',
 )
   end
 
-  describe "that contains right Payment Description at Checkout information" do
+  describe 'that contains right Payment Description at Checkout information' do
     let!(:payment_method1) do
-      create(:stripe_sca_payment_method, distributors: [distributor], description: "description1")
+      create(:stripe_sca_payment_method, distributors: [distributor], description: 'description1')
     end
     let!(:payment_method2) do
-      create(:stripe_sca_payment_method, distributors: [distributor], description: "description2")
+      create(:stripe_sca_payment_method, distributors: [distributor], description: 'description2')
     end
 
-    context "with no payment" do
-      it "do not display the payment description information" do
+    context 'with no payment' do
+      it 'do not display the payment description information' do
         login_as_admin_and_visit spree.print_admin_order_path(order)
         convert_pdf_to_page
         expect(page).to(have_no_content('Payment Description at Checkout'))
       end
     end
 
-    context "with one payment" do
+    context 'with one payment' do
       let!(:payment1) do
         create(:payment, order: order, state: 'completed', payment_method: payment_method1)
       end
@@ -53,7 +53,7 @@ state: 'complete',
         order.save!
       end
 
-      it "display the payment description section" do
+      it 'display the payment description section' do
         login_as_admin_and_visit spree.print_admin_order_path(order)
         convert_pdf_to_page
         expect(page).to(have_content('Payment Description at Checkout'))
@@ -61,7 +61,7 @@ state: 'complete',
       end
     end
 
-    context "with two payments, and one that failed" do
+    context 'with two payments, and one that failed' do
       before do
         order.update(payments: [])
         order.payments << create(
@@ -81,7 +81,7 @@ created_at: 2.days.ago
         order.save!
       end
 
-      it "display the payment description section and use the one from the completed payment" do
+      it 'display the payment description section and use the one from the completed payment' do
         login_as_admin_and_visit spree.print_admin_order_path(order)
         convert_pdf_to_page
         expect(page).to(have_content('Payment Description at Checkout'))
@@ -89,7 +89,7 @@ created_at: 2.days.ago
       end
     end
 
-    context "with two completed payments" do
+    context 'with two completed payments' do
       before do
         order.update(payments: [])
         order.payments << create(
@@ -109,7 +109,7 @@ created_at: 1.day.ago
         order.save!
       end
 
-      it "display the payment description section and use the one from the last payment" do
+      it 'display the payment description section and use the one from the last payment' do
         login_as_admin_and_visit spree.print_admin_order_path(order)
         convert_pdf_to_page
         expect(page).to(have_content('Payment Description at Checkout'))

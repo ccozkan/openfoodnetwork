@@ -50,7 +50,7 @@ module Admin
     end
 
     def load_object_data
-      @owner_email = @enterprise_group&.owner&.email || ""
+      @owner_email = @enterprise_group&.owner&.email || ''
     end
 
     def collection

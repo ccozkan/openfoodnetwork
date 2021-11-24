@@ -37,7 +37,7 @@ error: I18n.t(:spree_gateway_error_flash_for_checkout, error: e.message)
       authorize!(:update, @credit_card)
 
       if @credit_card.update(credit_card_params)
-        remove_shop_authorizations if credit_card_params["is_default"]
+        remove_shop_authorizations if credit_card_params['is_default']
         render(json: @credit_card, serializer: ::Api::CreditCardSerializer, status: :ok)
       else
         update_failed

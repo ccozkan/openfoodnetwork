@@ -63,7 +63,7 @@ RSpec.configure do |config|
   end
 
   # Fix encoding issue in Rails 5.0; allows passing empty arrays or hashes as params.
-  config.before(:each, type: :controller) { @request.env["CONTENT_TYPE"] = 'application/json' }
+  config.before(:each, type: :controller) { @request.env['CONTENT_TYPE'] = 'application/json' }
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

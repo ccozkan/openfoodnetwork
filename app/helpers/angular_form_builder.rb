@@ -2,7 +2,7 @@
 
 class AngularFormBuilder < ActionView::Helpers::FormBuilder
   def ng_fields_for(record_name, *_args)
-    raise("Nested ng_fields_for is not yet supported") if @fields_for_record_name.present?
+    raise('Nested ng_fields_for is not yet supported') if @fields_for_record_name.present?
 
     @fields_for_record_name = record_name
     yield(self)

@@ -7,7 +7,7 @@ module Admin
     def connect
       payload = params.permit(:enterprise_id).to_h
       key = Openfoodnetwork::Application.config.secret_token
-      url_params = { state: JWT.encode(payload, key, 'HS256'), scope: "read_write" }
+      url_params = { state: JWT.encode(payload, key, 'HS256'), scope: 'read_write' }
       redirect_to(Stripe::OAuth.authorize_url(url_params))
     end
 
@@ -16,14 +16,14 @@ module Admin
       authorize!(:destroy, stripe_account)
 
       if stripe_account.deauthorize_and_destroy
-        flash[:success] = "Stripe account disconnected."
+        flash[:success] = 'Stripe account disconnected.'
       else
-        flash[:error] = "Failed to disconnect Stripe."
+        flash[:error] = 'Failed to disconnect Stripe.'
       end
 
       redirect_to(main_app.edit_admin_enterprise_path(stripe_account.enterprise))
     rescue ActiveRecord::RecordNotFound
-      flash[:error] = "Failed to disconnect Stripe."
+      flash[:error] = 'Failed to disconnect Stripe.'
       redirect_to(spree.admin_dashboard_path)
     end
 

@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 describe Spree::Asset do
-  describe "#viewable" do
-    it "touches association" do
+  describe '#viewable' do
+    it 'touches association' do
       product = create(:product)
       asset = Spree::Asset.create! { |a| a.viewable = product.master }
 

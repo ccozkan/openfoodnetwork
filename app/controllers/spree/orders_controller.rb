@@ -49,7 +49,7 @@ module Spree
         associate_user
 
         if @order.insufficient_stock_lines.present? || @unavailable_order_variants.present?
-          flash.now[:error] = t("spree.orders.error_flash_for_unavailable_items")
+          flash.now[:error] = t('spree.orders.error_flash_for_unavailable_items')
         end
       end
     end
@@ -124,9 +124,9 @@ module Spree
     # Stripe can redirect here after a payment is processed in the backoffice.
     # We verify if it was successful here and persist the changes.
     def handle_stripe_response
-      return unless params.key?("payment_intent")
+      return unless params.key?('payment_intent')
 
-      result = ProcessPaymentIntent.new(params["payment_intent"], @order).call!
+      result = ProcessPaymentIntent.new(params['payment_intent'], @order).call!
 
       unless result.ok?
         flash.now[:error] = "#{I18n.t('payment_could_not_process')}. #{result.error}"
@@ -154,7 +154,7 @@ module Spree
     def require_order_authentication
       return if session[:access_token] || params[:token] || spree_current_user
 
-      flash[:error] = I18n.t("spree.orders.edit.login_to_view_order")
+      flash[:error] = I18n.t('spree.orders.edit.login_to_view_order')
       redirect_to(main_app.root_path(anchor: "login?after_login=#{request.env['PATH_INFO']}"))
     end
 
@@ -179,7 +179,7 @@ module Spree
 
       items =
  params[:order][:line_items_attributes]
-        &.select { |_k, attrs| attrs["quantity"].to_i > 0 }
+        &.select { |_k, attrs| attrs['quantity'].to_i > 0 }
 
       if items.empty?
         flash[:error] = I18n.t(:orders_cannot_remove_the_final_item)

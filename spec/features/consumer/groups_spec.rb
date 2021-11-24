@@ -9,18 +9,18 @@ describe 'Groups', js: true do
   let(:enterprise) { create(:distributor_enterprise) }
   let!(:group) { create(:enterprise_group, enterprises: [enterprise], on_front_page: true) }
 
-  it "renders groups" do
+  it 'renders groups' do
     visit groups_path
     expect(page).to(have_content(group.name))
   end
 
-  it "searches by URL" do
-    visit groups_path(anchor: "/?query=xyzzy")
-    expect(page).to(have_content("No groups found"))
+  it 'searches by URL' do
+    visit groups_path(anchor: '/?query=xyzzy')
+    expect(page).to(have_content('No groups found'))
   end
 
-  describe "producers" do
-    describe "filtering by product property" do
+  describe 'producers' do
+    describe 'filtering by product property' do
       let!(:producer1) { create(:supplier_enterprise) }
       let!(:producer2) { create(:supplier_enterprise) }
 
@@ -37,10 +37,10 @@ describe 'Groups', js: true do
         group.enterprises << producer1
         group.enterprises << producer2
 
-        visit group_path(group, anchor: "/producers")
+        visit group_path(group, anchor: '/producers')
       end
 
-      it "filters" do
+      it 'filters' do
         toggle_filters
 
         toggle_filter 'Organic'
@@ -57,8 +57,8 @@ describe 'Groups', js: true do
     end
   end
 
-  describe "hubs" do
-    describe "filtering by product property" do
+  describe 'hubs' do
+    describe 'filtering by product property' do
       let!(:group) do
         create(:enterprise_group, enterprises: [d1, d2, d3, d4], on_front_page: true)
       end
@@ -101,10 +101,10 @@ distributors: [d4],
         ex_d3.variants << p3.variants.first
         ex_d4.variants << p4.variants.first
 
-        visit group_path(group, anchor: "/hubs")
+        visit group_path(group, anchor: '/hubs')
       end
 
-      it "adjusts visibilities of enterprises depending on their status" do
+      it 'adjusts visibilities of enterprises depending on their status' do
         expect(page).to(    have_css('hub', text: d1.name))
         expect(page).to_not(have_css('hub.inactive', text: d1.name))
         expect(page).to(    have_css('hub', text: d2.name))
@@ -113,7 +113,7 @@ distributors: [d4],
         expect(page).to(    have_css('hub.inactive', text: d4.name))
       end
 
-      it "filters" do
+      it 'filters' do
         toggle_filters
 
         toggle_filter 'Organic'

@@ -2,20 +2,20 @@
 
 # This file defines configurations that are universal to all spec types (feature, system, etc)
 
-ENV["RAILS_ENV"] ||= 'test'
+ENV['RAILS_ENV'] ||= 'test'
 
-require 'simplecov' if ENV["COVERAGE"]
+require 'simplecov' if ENV['COVERAGE']
 require 'rubygems'
 require 'pry' unless ENV['CI']
 require 'view_component/test_helpers'
 
-require_relative "../config/environment"
+require_relative '../config/environment'
 require 'rspec/rails'
 require 'capybara'
 require 'rspec/retry'
 require 'paper_trail/frameworks/rspec'
-require "paperclip/matchers"
-require "factory_bot_rails"
+require 'paperclip/matchers'
+require 'factory_bot_rails'
 
 require 'shoulda/matchers'
 Shoulda::Matchers.configure do |config|
@@ -32,7 +32,7 @@ WebMock.disable_net_connect!(allow_localhost: true, allow: 'chromedriver.storage
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
 
 Capybara.server = :puma
 Capybara.disable_animation = true

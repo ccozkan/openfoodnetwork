@@ -6,10 +6,10 @@ describe ' As an Administrator I want to manage relationships between enterprise
   include WebHelper
   include AuthenticationHelper
 
-  context "as a site administrator" do
+  context 'as a site administrator' do
     before { login_as_admin }
 
-    it "listing relationships" do
+    it 'listing relationships' do
       # Given some enterprises with relationships
       e1 = create(:enterprise)
       e2 = create(:enterprise)
@@ -42,7 +42,7 @@ child: e4,
       end
     end
 
-    it "creating a relationship" do
+    it 'creating a relationship' do
       e1 = create(:enterprise, name: 'One')
       e2 = create(:enterprise, name: 'Two')
 
@@ -71,7 +71,7 @@ e2,
 ]))
     end
 
-    it "attempting to create a relationship with invalid data" do
+    it 'attempting to create a relationship with invalid data' do
       e1 = create(:enterprise, name: 'One')
       e2 = create(:enterprise, name: 'Two')
       create(:enterprise_relationship, parent: e1, child: e2)
@@ -84,11 +84,11 @@ e2,
         click_button('Create')
 
         # Then I should see an error message
-        expect(page).to(have_content("That relationship is already established."))
+        expect(page).to(have_content('That relationship is already established.'))
       end.to(change(EnterpriseRelationship, :count).by(0))
     end
 
-    it "deleting a relationship" do
+    it 'deleting a relationship' do
       e1 = create(:enterprise, name: 'One')
       e2 = create(:enterprise, name: 'Two')
       er = create(
@@ -102,7 +102,7 @@ child: e2,
       expect(page).to(have_relationship(e1, e2, 'to add to order cycle'))
 
       accept_alert do
-        first("a.delete-enterprise-relationship").click
+        first('a.delete-enterprise-relationship').click
       end
 
       expect(page).not_to(have_relationship(e1, e2))
@@ -110,7 +110,7 @@ child: e2,
     end
   end
 
-  context "as an enterprise user" do
+  context 'as an enterprise user' do
     let!(:d1) { create(:distributor_enterprise) }
     let!(:d2) { create(:distributor_enterprise) }
     let!(:d3) { create(:distributor_enterprise) }
@@ -122,7 +122,7 @@ child: e2,
 
     before { login_as enterprise_user }
 
-    it "enterprise user can only see relationships involving their enterprises" do
+    it 'enterprise user can only see relationships involving their enterprises' do
       visit admin_enterprise_relationships_path
 
       expect(page).to(    have_relationship(d1, d2))
@@ -130,7 +130,7 @@ child: e2,
       expect(page).not_to(have_relationship(d2, d3))
     end
 
-    it "enterprise user can only add their own enterprises as parent" do
+    it 'enterprise user can only add their own enterprises as parent' do
       visit admin_enterprise_relationships_path
       expect(page).to(have_select2('enterprise_relationship_parent_id', options: ['', d1.name]))
       expect(page).to(have_select2('enterprise_relationship_child_id',
@@ -140,7 +140,7 @@ child: e2,
 
   private
 
-  def have_relationship(parent, child, permission = "")
+  def have_relationship(parent, child, permission = '')
     have_table_row([parent.name, 'permits', child.name, permission, ''])
   end
 
@@ -155,9 +155,9 @@ child: e2,
   def find_relationship(parent, child)
     page.all('tr').each do |tr|
       return tr if tr.find('td:first-child').text == parent.name &&
-                   tr.find('td:nth-child(2)').text == "permits" &&
+                   tr.find('td:nth-child(2)').text == 'permits' &&
                    tr.find('td:nth-child(3)').text == child.name
     end
-    raise("relationship not found")
+    raise('relationship not found')
   end
 end

@@ -81,12 +81,12 @@ lambda { |user|
     if user.has_spree_role?('admin')
       where(nil)
     else
-      joins("LEFT JOIN enterprises senders ON senders.id = exchanges.sender_id")
-        .joins("LEFT JOIN enterprises receivers ON receivers.id = exchanges.receiver_id")
-        .joins("LEFT JOIN enterprise_roles sender_roles ON sender_roles.enterprise_id = senders.id")
+      joins('LEFT JOIN enterprises senders ON senders.id = exchanges.sender_id')
+        .joins('LEFT JOIN enterprises receivers ON receivers.id = exchanges.receiver_id')
+        .joins('LEFT JOIN enterprise_roles sender_roles ON sender_roles.enterprise_id = senders.id')
         .joins("LEFT JOIN enterprise_roles receiver_roles
             ON receiver_roles.enterprise_id = receivers.id")
-        .where("sender_roles.user_id = ? AND receiver_roles.user_id = ?", user.id, user.id)
+        .where('sender_roles.user_id = ? AND receiver_roles.user_id = ?', user.id, user.id)
     end
   }
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "system_helper"
+require 'system_helper'
 
 describe ' As an admin I want to set a supplier and distributor(s) for a product ' do
   include WebHelper
@@ -16,17 +16,17 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
     @enterprise_fees = (0..2).map { |i| create(:enterprise_fee, enterprise: @distributors[i]) }
   end
 
-  context "as anonymous user" do
-    it "is redirected to login page when attempting to access product listing" do
+  context 'as anonymous user' do
+    it 'is redirected to login page when attempting to access product listing' do
       expect { visit(spree.admin_products_path) }
 .not_to(raise_error)
     end
   end
 
-  describe "creating a product" do
+  describe 'creating a product' do
     let!(:tax_category) { create(:tax_category, name: 'Test Tax Category') }
 
-    it "assigning important attributes", js: true do
+    it 'assigning important attributes', js: true do
       login_to_admin_section
 
       click_link 'Products'
@@ -36,9 +36,9 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
 
       select 'New supplier', from: 'product_supplier_id'
       fill_in 'product_name', with: 'A new product !!!'
-      select "Weight (kg)", from: 'product_variant_unit_with_scale'
+      select 'Weight (kg)', from: 'product_variant_unit_with_scale'
       fill_in 'product_unit_value_with_description', with: 5
-      select taxon.name, from: "product_primary_taxon_id"
+      select taxon.name, from: 'product_primary_taxon_id'
       fill_in 'product_price', with: '19.99'
       fill_in 'product_on_hand', with: 5
       select 'Test Tax Category', from: 'product_tax_category_id'
@@ -53,29 +53,29 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
       expect(product.variant_unit).to(eq('weight'))
       expect(product.variant_unit_scale).to(eq(1000))
       expect(product.unit_value).to(eq(5000))
-      expect(product.unit_description).to(eq(""))
-      expect(product.variant_unit_name).to(eq(""))
+      expect(product.unit_description).to(eq(''))
+      expect(product.variant_unit_name).to(eq(''))
       expect(product.primary_taxon_id).to(eq(taxon.id))
       expect(product.price.to_s).to(eq('19.99'))
       expect(product.on_hand).to(eq(5))
       expect(product.tax_category_id).to(eq(tax_category.id))
       expect(product.shipping_category).to(eq(shipping_category))
-      expect(product.description).to(eq("<p>A description...</p>"))
+      expect(product.description).to(eq('<p>A description...</p>'))
       expect(product.group_buy).to(be_falsey)
       expect(product.master.option_values.map(&:name)).to(eq(['5kg']))
-      expect(product.master.options_text).to(eq("5kg"))
+      expect(product.master.options_text).to(eq('5kg'))
     end
 
-    it "creating an on-demand product", js: true do
+    it 'creating an on-demand product', js: true do
       login_as_admin_and_visit spree.admin_products_path
 
       click_link 'New Product'
 
       fill_in 'product_name', with: 'Hot Cakes'
       select 'New supplier', from: 'product_supplier_id'
-      select "Weight (kg)", from: 'product_variant_unit_with_scale'
+      select 'Weight (kg)', from: 'product_variant_unit_with_scale'
       fill_in 'product_unit_value_with_description', with: 1
-      select taxon.name, from: "product_primary_taxon_id"
+      select taxon.name, from: 'product_primary_taxon_id'
       fill_in 'product_price', with: '1.99'
       fill_in 'product_on_hand', with: 0
       check 'product_on_demand'
@@ -91,15 +91,15 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
       expect(variant.on_demand).to(be(true))
     end
 
-    it "creating product with empty unit value", js: true do
+    it 'creating product with empty unit value', js: true do
       login_as_admin_and_visit spree.admin_products_path
 
       click_link 'New Product'
 
       fill_in 'product_name', with: 'Hot Cakes'
       select 'New supplier', from: 'product_supplier_id'
-      select "Weight (kg)", from: 'product_variant_unit_with_scale'
-      select taxon.name, from: "product_primary_taxon_id"
+      select 'Weight (kg)', from: 'product_variant_unit_with_scale'
+      select taxon.name, from: 'product_primary_taxon_id'
       fill_in 'product_price', with: '1.99'
       fill_in 'product_on_hand', with: 0
       check 'product_on_demand'
@@ -113,7 +113,7 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
     end
   end
 
-  describe "deleting", js: true do
+  describe 'deleting', js: true do
     let!(:product1) { create(:simple_product, name: 'a product to keep', supplier: @supplier) }
 
     context 'a simple product' do
@@ -123,7 +123,7 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
         login_as_admin_and_visit spree.admin_products_path
 
         within "#p_#{product2.id}" do
-          accept_alert { page.find("[data-powertip=Remove]").click }
+          accept_alert { page.find('[data-powertip=Remove]').click }
         end
         visit current_path
       end
@@ -142,7 +142,7 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
         login_as_admin_and_visit spree.admin_products_path
 
         within "#p_#{order.variants.first.product_id}" do
-          accept_alert { page.find("[data-powertip=Remove]").click }
+          accept_alert { page.find('[data-powertip=Remove]').click }
         end
         visit current_path
       end
@@ -153,7 +153,7 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
 
       it 'keeps the line item on the order (admin)' do
         visit spree.admin_orders_path
-        find(".icon-edit").click
+        find('.icon-edit').click
         expect(page).to(have_content(line_item.product.name.to_s))
       end
     end
@@ -161,7 +161,7 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
 
   describe 'cloning' do
     let!(:product1) do
-      create(:simple_product, name: 'a weight product', supplier: @supplier, variant_unit: "weight")
+      create(:simple_product, name: 'a weight product', supplier: @supplier, variant_unit: 'weight')
     end
 
     context 'products', js: true do
@@ -171,17 +171,17 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
 
       it 'creates a copy of the product' do
         within "#p_#{product1.id}" do
-          page.find("[data-powertip=Clone]").click
+          page.find('[data-powertip=Clone]').click
         end
         visit current_path
         within "#p_#{product1.id + 1}" do
-          expect(page).to(have_input("product_name", with: 'COPY OF a weight product'))
+          expect(page).to(have_input('product_name', with: 'COPY OF a weight product'))
         end
       end
     end
   end
 
-  context "as an enterprise user" do
+  context 'as an enterprise user' do
     let!(:tax_category) { create(:tax_category) }
     let(:filter) { { producerFilter: 2 } }
 
@@ -201,8 +201,8 @@ child: @supplier2,
       login_as @new_user
     end
 
-    context "products do not require a tax category" do
-      it "creating a new product", js: true do
+    context 'products do not require a tax category' do
+      it 'creating a new product', js: true do
         with_products_require_tax_category(false) do
           visit spree.admin_products_path
           click_link 'New Product'
@@ -214,8 +214,8 @@ child: @supplier2,
           select 'Another Supplier', from: 'product_supplier_id'
           select 'Weight (g)', from: 'product_variant_unit_with_scale'
           fill_in 'product_unit_value_with_description', with: '500'
-          select taxon.name, from: "product_primary_taxon_id"
-          select 'None', from: "product_tax_category_id"
+          select taxon.name, from: 'product_primary_taxon_id'
+          select 'None', from: 'product_tax_category_id'
 
           # Should only have suppliers listed which the user can manage
           expect(page).to(have_select('product_supplier_id',
@@ -232,7 +232,7 @@ child: @supplier2,
       end
     end
 
-    it "editing a product" do
+    it 'editing a product' do
       product = create(:simple_product, name: 'a product', supplier: @supplier2)
 
       visit spree.edit_admin_product_path(product)
@@ -246,7 +246,7 @@ child: @supplier2,
       expect(product.tax_category).to(eq(tax_category))
     end
 
-    it "editing a product comming from the bulk product update page with filter" do
+    it 'editing a product comming from the bulk product update page with filter' do
       product = create(:simple_product, name: 'a product', supplier: @supplier2)
 
       visit spree.edit_admin_product_path(product, filter)
@@ -336,7 +336,7 @@ spree.seo_admin_product_path(
       expect(page).to(have_link(I18n.t(:search), href: expected_product_seo_url))
     end
 
-    it "editing product group buy options" do
+    it 'editing product group buy options' do
       product = product = create(:simple_product, supplier: @supplier2)
 
       visit spree.edit_admin_product_path(product)
@@ -352,7 +352,7 @@ spree.seo_admin_product_path(
       expect(product.group_buy_unit_size).to(eq(10.0))
     end
 
-    it "loading editing product group buy options with url filters" do
+    it 'loading editing product group buy options with url filters' do
       product = product = create(:simple_product, supplier: @supplier2)
 
       visit spree.group_buy_options_admin_product_path(product, filter)
@@ -368,7 +368,7 @@ product,
       expect(page).to(have_link(I18n.t(:cancel), href: expected_cancel_link))
     end
 
-    it "editing product group buy options with url filter" do
+    it 'editing product group buy options with url filter' do
       product = product = create(:simple_product, supplier: @supplier2)
 
       visit spree.group_buy_options_admin_product_path(product, filter)
@@ -381,7 +381,7 @@ product,
       expect("#{uri.path}?#{uri.query}").to(eq(spree.edit_admin_product_path(product, filter)))
     end
 
-    it "editing product Search" do
+    it 'editing product Search' do
       product = create(:simple_product, supplier: @supplier2)
       visit spree.edit_admin_product_path(product)
       within('#sidebar') { click_link 'Search' }
@@ -394,7 +394,7 @@ product,
       expect(product.meta_keywords).to(eq('Product Search Keywords'))
     end
 
-    it "loading editing product Search with url filters" do
+    it 'loading editing product Search with url filters' do
       product = create(:simple_product, supplier: @supplier2)
 
       visit spree.seo_admin_product_path(product, filter)
@@ -410,7 +410,7 @@ product,
       expect(page).to(have_link(I18n.t(:cancel), href: expected_cancel_link))
     end
 
-    it "editing product Search with url filter" do
+    it 'editing product Search with url filter' do
       product = create(:simple_product, supplier: @supplier2)
 
       visit spree.seo_admin_product_path(product, filter)
@@ -424,7 +424,7 @@ product,
       expect("#{uri.path}?#{uri.query}").to(eq(spree.edit_admin_product_path(product, filter)))
     end
 
-    it "loading product properties page including url filters", js: true do
+    it 'loading product properties page including url filters', js: true do
       product = create(:simple_product, supplier: @supplier2)
       visit spree.admin_product_product_properties_path(product, filter)
 
@@ -445,7 +445,7 @@ spree.admin_product_product_properties_path(
       expect(page).to(have_link(I18n.t(:cancel), href: expected_cancel_link))
     end
 
-    it "deleting product properties", js: true do
+    it 'deleting product properties', js: true do
       # Given a product with a property
       product = create(:simple_product, supplier: @supplier2)
       product.set_property('fooprop', 'fooval')
@@ -469,7 +469,7 @@ spree.admin_product_product_properties_path(
       expect(product.reload.property('fooprop')).to(be_nil)
     end
 
-    it "deleting product properties including url filters", js: true do
+    it 'deleting product properties including url filters', js: true do
       # Given a product with a property
       product = create(:simple_product, supplier: @supplier2)
       product.set_property('fooprop', 'fooval')
@@ -489,7 +489,7 @@ product,
 )))
     end
 
-    it "adding product properties including url filters", js: true do
+    it 'adding product properties including url filters', js: true do
       # Given a product
       product = create(:simple_product, supplier: @supplier2)
       product.set_property('fooprop', 'fooval')
@@ -507,17 +507,17 @@ product,
       expect("#{uri.path}?#{uri.query}").to(eq(spree.edit_admin_product_path(product, filter)))
     end
 
-    it "loading new product image page", js: true do
+    it 'loading new product image page', js: true do
       product = create(:simple_product, supplier: @supplier2)
 
       visit spree.admin_product_images_path(product)
-      expect(page).to(have_selector(".no-objects-found"))
+      expect(page).to(have_selector('.no-objects-found'))
 
       page.find('a#new_image_link').click
-      expect(page).to(have_selector("#image_attachment"))
+      expect(page).to(have_selector('#image_attachment'))
     end
 
-    it "loading new product image page including url filters", js: true do
+    it 'loading new product image page including url filters', js: true do
       product = create(:simple_product, supplier: @supplier2)
 
       visit spree.admin_product_images_path(product, filter)
@@ -539,8 +539,8 @@ product,
       expect(page).to(have_link(I18n.t(:cancel), href: expected_cancel_link))
     end
 
-    it "upload a new product image including url filters", js: true do
-      file_path = Rails.root + "spec/support/fixtures/thinking-cat.jpg"
+    it 'upload a new product image including url filters', js: true do
+      file_path = Rails.root + 'spec/support/fixtures/thinking-cat.jpg'
       product = create(:simple_product, supplier: @supplier2)
 
       visit spree.admin_product_images_path(product, filter)
@@ -548,13 +548,13 @@ product,
       page.find('a#new_image_link').click
 
       attach_file('image_attachment', file_path)
-      click_button "Create"
+      click_button 'Create'
 
       uri = URI.parse(current_url)
       expect("#{uri.path}?#{uri.query}").to(eq(spree.admin_product_images_path(product, filter)))
     end
 
-    it "loading image page including url filter", js: true do
+    it 'loading image page including url filter', js: true do
       product = create(:simple_product, supplier: @supplier2)
 
       visit spree.admin_product_images_path(product, filter)
@@ -569,20 +569,20 @@ spree.new_admin_product_image_path(
       expect(page).to(have_link(I18n.t('spree.new_image'), href: expected_new_image_link))
     end
 
-    it "loading edit product image page including url filter", js: true do
+    it 'loading edit product image page including url filter', js: true do
       product = create(:simple_product, supplier: @supplier2)
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       image_object = Spree::Image.create(
 viewable_id: product.master.id,
 viewable_type: 'Spree::Variant',
-alt: "position 1",
+alt: 'position 1',
 attachment: image,
 position: 1
 )
 
       visit spree.admin_product_images_path(product, filter)
 
-      page.find("a.icon-edit").click
+      page.find('a.icon-edit').click
 
       uri = URI.parse(current_url)
       expect("#{uri.path}?#{uri.query}").to(eq(spree.edit_admin_product_image_path(
@@ -600,42 +600,42 @@ product,
 )
 )
       expect(page).to(have_link(I18n.t(:cancel), href: expected_cancel_link))
-      expect(page).to(have_link("Back To Images List", href: expected_cancel_link))
+      expect(page).to(have_link('Back To Images List', href: expected_cancel_link))
     end
 
-    it "updating a product image including url filter", js: true do
+    it 'updating a product image including url filter', js: true do
       product = create(:simple_product, supplier: @supplier2)
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       image_object = Spree::Image.create(
 viewable_id: product.master.id,
 viewable_type: 'Spree::Variant',
-alt: "position 1",
+alt: 'position 1',
 attachment: image,
 position: 1
 )
 
-      file_path = Rails.root + "spec/support/fixtures/thinking-cat.jpg"
+      file_path = Rails.root + 'spec/support/fixtures/thinking-cat.jpg'
 
       visit spree.admin_product_images_path(product, filter)
 
-      page.find("a.icon-edit").click
+      page.find('a.icon-edit').click
 
       attach_file('image_attachment', file_path)
-      click_button "Update"
+      click_button 'Update'
 
       uri = URI.parse(current_url)
       expect("#{uri.path}?#{uri.query}").to(eq(spree.admin_product_images_path(product, filter)))
     end
 
-    it "checks error when creating product image with unsupported format", js: true do
-      unsupported_image_file_path = Rails.root + "README.md"
+    it 'checks error when creating product image with unsupported format', js: true do
+      unsupported_image_file_path = Rails.root + 'README.md'
       product = create(:simple_product, supplier: @supplier2)
 
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       Spree::Image.create(
 viewable_id: product.master.id,
 viewable_type: 'Spree::Variant',
-alt: "position 1",
+alt: 'position 1',
 attachment: image,
 position: 1
 )
@@ -643,42 +643,42 @@ position: 1
       visit spree.admin_product_images_path(product)
       page.find('a#new_image_link').click
       attach_file('image_attachment', unsupported_image_file_path)
-      click_button "Create"
+      click_button 'Create'
 
-      expect(page).to(have_text("The product image was not recognised."))
-      expect(page).to(have_text("Please upload an image in PNG or JPG format."))
+      expect(page).to(have_text('The product image was not recognised.'))
+      expect(page).to(have_text('Please upload an image in PNG or JPG format.'))
     end
 
-    it "deleting product images", js: true do
+    it 'deleting product images', js: true do
       product = create(:simple_product, supplier: @supplier2)
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       Spree::Image.create(
 viewable_id: product.master.id,
 viewable_type: 'Spree::Variant',
-alt: "position 1",
+alt: 'position 1',
 attachment: image,
 position: 1
 )
 
       visit spree.admin_product_images_path(product)
-      expect(page).to(have_selector("table.index td img"))
+      expect(page).to(have_selector('table.index td img'))
       expect(product.reload.images.count).to(eq(1))
 
       accept_alert do
         page.find('a.delete-resource').click
       end
 
-      expect(page).to_not(have_selector("table.index td img"))
+      expect(page).to_not(have_selector('table.index td img'))
       expect(product.reload.images.count).to(eq(0))
     end
 
-    it "deleting product image including url filter", js: true do
+    it 'deleting product image including url filter', js: true do
       product = create(:simple_product, supplier: @supplier2)
       image = File.open(File.expand_path('../../../app/assets/images/logo-white.png', __dir__))
       Spree::Image.create(
 viewable_id: product.master.id,
 viewable_type: 'Spree::Variant',
-alt: "position 1",
+alt: 'position 1',
 attachment: image,
 position: 1
 )
@@ -700,7 +700,7 @@ position: 1
       # https://github.com/openfoodfoundation/openfoodnetwork/issues/7180
 
       before do
-        allow(Spree::Config).to(receive(:available_units).and_return("g,lb,oz,kg,T,mL,L,kL"))
+        allow(Spree::Config).to(receive(:available_units).and_return('g,lb,oz,kg,T,mL,L,kL'))
         visit spree.edit_admin_product_path(product)
       end
 

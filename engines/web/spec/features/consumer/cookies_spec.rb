@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-feature "Cookies", js: true do
-  describe "banner" do
+feature 'Cookies', js: true do
+  describe 'banner' do
     # keeps banner toggle config unchanged
     around do |example|
       original_banner_toggle = Spree::Config[:cookies_consent_banner_toggle]
@@ -11,13 +11,13 @@ feature "Cookies", js: true do
       Spree::Config[:cookies_consent_banner_toggle] = original_banner_toggle
     end
 
-    context "in the homepage" do
+    context 'in the homepage' do
       before do
         Spree::Config[:cookies_consent_banner_toggle] = true
         visit_root_path_and_wait
       end
 
-      scenario "does not show after cookies are accepted" do
+      scenario 'does not show after cookies are accepted' do
         accept_cookies_and_wait
         expect_not_visible_cookies_banner
 
@@ -25,7 +25,7 @@ feature "Cookies", js: true do
         expect_not_visible_cookies_banner
       end
 
-      scenario "banner contains cookies policy link that opens coookies policy page and closes banner" do
+      scenario 'banner contains cookies policy link that opens coookies policy page and closes banner' do
         click_banner_cookies_policy_link_and_wait
         expect_visible_cookies_policy_page
         expect_not_visible_cookies_banner
@@ -34,7 +34,7 @@ feature "Cookies", js: true do
         expect_visible_cookies_banner
       end
 
-      scenario "does not show after cookies are accepted, and policy page is opened through the footer, and closed again (bug #2599)" do
+      scenario 'does not show after cookies are accepted, and policy page is opened through the footer, and closed again (bug #2599)' do
         accept_cookies_and_wait
         expect_not_visible_cookies_banner
 
@@ -47,19 +47,19 @@ feature "Cookies", js: true do
       end
     end
 
-    context "in product listing page" do
+    context 'in product listing page' do
       before do
         Spree::Config[:cookies_consent_banner_toggle] = true
       end
 
-      scenario "it is showing" do
-        visit "/shops"
+      scenario 'it is showing' do
+        visit '/shops'
         expect_visible_cookies_banner
       end
     end
 
-    context "disabled in the settings" do
-      scenario "it is not showing" do
+    context 'disabled in the settings' do
+      scenario 'it is not showing' do
         Spree::Config[:cookies_consent_banner_toggle] = false
         visit root_path
         expect(page).to(have_no_content(I18n.t('legal.cookies_banner.cookies_usage')))
@@ -67,7 +67,7 @@ feature "Cookies", js: true do
     end
   end
 
-  describe "policy page" do
+  describe 'policy page' do
     # keeps config unchanged
     around do |example|
       original_matomo_config = Spree::Config[:cookies_policy_matomo_section]
@@ -77,13 +77,13 @@ feature "Cookies", js: true do
       Spree::Config[:matomo_url] = original_matomo_url_config
     end
 
-    scenario "shows session_id cookies description with correct instance domain" do
+    scenario 'shows session_id cookies description with correct instance domain' do
       visit '/#/policies/cookies'
       expect(page).to(have_content('_ofn_session_id').and(have_content('127.0.0.1')))
     end
 
-    context "without Matomo section configured" do
-      scenario "does not show Matomo cookies details and does not show Matomo optout text" do
+    context 'without Matomo section configured' do
+      scenario 'does not show Matomo cookies details and does not show Matomo optout text' do
         Spree::Config[:cookies_policy_matomo_section] = false
         visit_cookies_policy_page
         expect(page).to(have_no_content(matomo_description_text))
@@ -91,32 +91,32 @@ feature "Cookies", js: true do
       end
     end
 
-    context "with Matomo section configured" do
+    context 'with Matomo section configured' do
       before do
         Spree::Config[:cookies_policy_matomo_section] = true
       end
 
-      scenario "shows Matomo cookies details" do
+      scenario 'shows Matomo cookies details' do
         visit_cookies_policy_page
         expect(page).to(have_content(matomo_description_text))
       end
 
-      context "with Matomo integration enabled" do
-        scenario "shows Matomo optout iframe" do
-          Spree::Config[:matomo_url] = "https://0000.innocraft.cloud/"
+      context 'with Matomo integration enabled' do
+        scenario 'shows Matomo optout iframe' do
+          Spree::Config[:matomo_url] = 'https://0000.innocraft.cloud/'
           visit_cookies_policy_page
           expect(page).to(have_content(matomo_opt_out_iframe))
-          expect(page).to(have_selector("iframe"))
+          expect(page).to(have_selector('iframe'))
         end
       end
 
-      context "with Matomo integration disabled" do
-        scenario "does not show Matomo iframe" do
+      context 'with Matomo integration disabled' do
+        scenario 'does not show Matomo iframe' do
           Spree::Config[:cookies_policy_matomo_section] = true
-          Spree::Config[:matomo_url] = ""
+          Spree::Config[:matomo_url] = ''
           visit_cookies_policy_page
           expect(page).to(have_no_content(matomo_opt_out_iframe))
-          expect(page).to(have_no_selector("iframe"))
+          expect(page).to(have_no_selector('iframe'))
         end
       end
     end
@@ -127,11 +127,11 @@ feature "Cookies", js: true do
   end
 
   def expect_visible_cookies_banner
-    expect(page).to(have_css("button", text: accept_cookies_button_text, visible: true))
+    expect(page).to(have_css('button', text: accept_cookies_button_text, visible: true))
   end
 
   def expect_not_visible_cookies_banner
-    expect(page).to(have_no_css("button", text: accept_cookies_button_text, visible: true))
+    expect(page).to(have_no_css('button', text: accept_cookies_button_text, visible: true))
   end
 
   def accept_cookies_button_text
@@ -149,17 +149,17 @@ feature "Cookies", js: true do
   end
 
   def click_banner_cookies_policy_link_and_wait
-    find("p.ng-binding > a", text: "cookies policy").click
+    find('p.ng-binding > a', text: 'cookies policy').click
     sleep(2)
   end
 
   def click_footer_cookies_policy_link_and_wait
-    find(".legal a", text: "cookies policy").click
+    find('.legal a', text: 'cookies policy').click
     sleep(2)
   end
 
   def close_cookies_policy_page_and_wait
-    find("a.close-reveal-modal").click
+    find('a.close-reveal-modal').click
     sleep(2)
   end
 

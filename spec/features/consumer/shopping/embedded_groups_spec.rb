@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe "Using embedded shopfront functionality", js: true do
+describe 'Using embedded shopfront functionality', js: true do
   include OpenFoodNetwork::EmbeddedPagesHelper
 
   describe 'embedded groups' do
@@ -16,7 +16,7 @@ describe "Using embedded shopfront functionality", js: true do
       visit "/embedded-group-preview.html?#{group.permalink}"
     end
 
-    it "displays in an iframe" do
+    it 'displays in an iframe' do
       on_embedded_page do
         within 'div#group-page' do
           expect(page).to(have_content('About Us'))
@@ -24,7 +24,7 @@ describe "Using embedded shopfront functionality", js: true do
       end
     end
 
-    it "displays powered by OFN text at bottom of page" do
+    it 'displays powered by OFN text at bottom of page' do
       on_embedded_page do
         within 'div#group-page' do
           expect(page).to(have_selector('div.powered-by-embedded'))
@@ -44,7 +44,7 @@ describe "Using embedded shopfront functionality", js: true do
       end
     end
 
-    it "does not display the header when embedded" do
+    it 'does not display the header when embedded' do
       on_embedded_page do
         within 'div#group-page' do
           expect(page).to(have_no_selector('header'))
@@ -54,7 +54,7 @@ describe "Using embedded shopfront functionality", js: true do
       end
     end
 
-    it "opens links to shops in a new window" do
+    it 'opens links to shops in a new window' do
       on_embedded_page do
         within 'div#group-page' do
           shop_links_xpath = "//*[contains(@href, '#{enterprise.permalink}/shop')]"
@@ -63,7 +63,7 @@ describe "Using embedded shopfront functionality", js: true do
 
           shop_links = page.all(:xpath, shop_links_xpath, visible: false)
           shop_links.each do |link|
-            expect(link[:target]).to(eq("_blank"))
+            expect(link[:target]).to(eq('_blank'))
           end
         end
       end

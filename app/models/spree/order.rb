@@ -56,7 +56,7 @@ if: lambda { |_order|
 lambda {
                             order('created_at ASC')
                           },
-class_name: "Spree::LineItem",
+class_name: 'Spree::LineItem',
 dependent: :destroy
     has_many :payments, dependent: :destroy
     has_many :return_authorizations, dependent: :destroy, inverse_of: :order
@@ -750,7 +750,7 @@ created_by_id: created_by_id
       )
       customer.save
 
-      Bugsnag.notify(customer.errors.full_messages.join(", ")) unless customer.persisted?
+      Bugsnag.notify(customer.errors.full_messages.join(', ')) unless customer.persisted?
     end
 
     def update_adjustment!(adjustment)

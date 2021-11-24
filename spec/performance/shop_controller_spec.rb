@@ -15,7 +15,7 @@ describe ShopController, type: :controller, performance: true do
     Spree::Config.currency = 'AUD'
   end
 
-  describe "fetching products" do
+  describe 'fetching products' do
     let(:exchange) { order_cycle.exchanges.to_enterprises(d).outgoing.first }
     let(:image) { File.open(File.expand_path('../../app/assets/images/logo-white.png', __dir__)) }
     let(:cache_key_patterns) do
@@ -39,7 +39,7 @@ viewable_type: 'Spree::Variant',
       end
     end
 
-    it "returns products via json" do
+    it 'returns products via json' do
       results =
  multi_benchmark(3, cache_key_patterns: cache_key_patterns) do
         get(:products, xhr: true)

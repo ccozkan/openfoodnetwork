@@ -39,7 +39,7 @@ namespace :ofn do
       Are you sure you want to proceed? (y/N)
       MSG
 
-      exit unless HighLine.new.agree(message) { |question| question.default = "N" }
+      exit unless HighLine.new.agree(message) { |question| question.default = 'N' }
     end
   end
 end

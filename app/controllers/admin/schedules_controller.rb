@@ -71,7 +71,7 @@ ams_prefix: params[:ams_prefix],
     private
 
     def collection
-      return Schedule.where("1=0") unless json_request?
+      return Schedule.where('1=0') unless json_request?
 
       if params[:enterprise_id]
         filter_schedules_by_enterprise_id(permissions.visible_schedules, params[:enterprise_id])

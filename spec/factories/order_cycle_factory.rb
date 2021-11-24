@@ -35,7 +35,7 @@ FactoryBot.define do
         Spree::Image.create(
           viewable_id: product.master.id,
           viewable_type: 'Spree::Variant',
-          alt: "position 1",
+          alt: 'position 1',
           attachment: image,
           position: 1
         )

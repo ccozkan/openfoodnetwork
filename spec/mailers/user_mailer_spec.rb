@@ -20,12 +20,12 @@ describe Spree::UserMailer do
   end
 
   describe '#signup_confirmation' do
-    it "sends email when given a user" do
+    it 'sends email when given a user' do
       Spree::UserMailer.signup_confirmation(user).deliver_now
       expect(ActionMailer::Base.deliveries.count).to(eq(1))
     end
 
-    describe "user locale" do
+    describe 'user locale' do
       around do |example|
         original_default_locale = I18n.default_locale
         I18n.default_locale = 'pt'
@@ -33,23 +33,23 @@ describe Spree::UserMailer do
         I18n.default_locale = original_default_locale
       end
 
-      it "sends email in user locale when user locale is defined" do
+      it 'sends email in user locale when user locale is defined' do
         user.locale = 'es'
         Spree::UserMailer.signup_confirmation(user).deliver_now
-        expect(ActionMailer::Base.deliveries.first.body).to(include("Gracias por unirte"))
+        expect(ActionMailer::Base.deliveries.first.body).to(include('Gracias por unirte'))
       end
 
-      it "sends email in default locale when user locale is not available" do
+      it 'sends email in default locale when user locale is not available' do
         user.locale = 'cn'
         Spree::UserMailer.signup_confirmation(user).deliver_now
-        expect(ActionMailer::Base.deliveries.first.body).to(include("Obrigada por juntar-se"))
+        expect(ActionMailer::Base.deliveries.first.body).to(include('Obrigada por juntar-se'))
       end
     end
   end
 
-  describe "#confirmation_instructions" do
-    it "sends an email" do
-      token = "random"
+  describe '#confirmation_instructions' do
+    it 'sends an email' do
+      token = 'random'
       email = Spree::UserMailer.confirmation_instructions(user, token)
 
       expect do
@@ -67,7 +67,7 @@ describe Spree::UserMailer do
 
       context 'subject includes' do
         it 'translated devise instructions' do
-          expect(message.subject).to(include("Reset password instructions"))
+          expect(message.subject).to(include('Reset password instructions'))
         end
 
         it 'Spree site name' do

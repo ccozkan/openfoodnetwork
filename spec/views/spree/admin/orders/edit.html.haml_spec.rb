@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
-describe "spree/admin/orders/edit.html.haml" do
+describe 'spree/admin/orders/edit.html.haml' do
   helper Spree::BaseHelper # required to make pretty_time work
   helper Spree::Admin::NavigationHelper
   helper Admin::InjectionHelper
@@ -30,8 +30,8 @@ describe "spree/admin/orders/edit.html.haml" do
     assign(:order_cycles, [])
   end
 
-  describe "order values" do
-    it "displays order shipping costs, transaction fee and order total" do
+  describe 'order values' do
+    it 'displays order shipping costs, transaction fee and order total' do
       render
 
       expect(rendered).to(have_content("Shipping Method\nUPS Ground $6.00"))

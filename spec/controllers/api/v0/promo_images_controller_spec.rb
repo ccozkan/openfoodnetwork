@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 module Api
   describe V0::PromoImagesController, type: :controller do
@@ -16,9 +16,9 @@ module Api
       create(:user, enterprise_limit: 10, enterprises: [other_enterprise])
     end
 
-    describe "removing promo image" do
-      image_path = File.open(Rails.root.join("app", "assets", "images", "logo-black.png"))
-      let(:image) { Rack::Test::UploadedFile.new(image_path, "image/png") }
+    describe 'removing promo image' do
+      image_path = File.open(Rails.root.join('app', 'assets', 'images', 'logo-black.png'))
+      let(:image) { Rack::Test::UploadedFile.new(image_path, 'image/png') }
 
       let(:enterprise) { create(:enterprise, owner: enterprise_owner, promo_image: image) }
 
@@ -26,52 +26,52 @@ module Api
         allow(controller).to(receive(:spree_current_user) { current_user })
       end
 
-      context "as manager" do
+      context 'as manager' do
         let(:current_user) { enterprise_manager }
 
-        it "removes promo image" do
+        it 'removes promo image' do
           spree_delete :destroy, enterprise_id: enterprise
 
           expect(response.status).to(eq(200))
-          expect(json_response["id"]).to(eq(enterprise.id))
+          expect(json_response['id']).to(eq(enterprise.id))
           enterprise.reload
           expect(enterprise.promo_image?).to(be(false))
         end
 
-        context "when promo image does not exist" do
+        context 'when promo image does not exist' do
           let(:enterprise) { create(:enterprise, owner: enterprise_owner, promo_image: nil) }
 
-          it "responds with error" do
+          it 'responds with error' do
             spree_delete :destroy, enterprise_id: enterprise
 
             expect(response.status).to(eq(409))
-            expect(json_response["error"]).to(eq(I18n.t("api.enterprise_promo_image.destroy_attachment_does_not_exist")))
+            expect(json_response['error']).to(eq(I18n.t('api.enterprise_promo_image.destroy_attachment_does_not_exist')))
           end
         end
       end
 
-      context "as owner" do
+      context 'as owner' do
         let(:current_user) { enterprise_owner }
 
-        it "allows removal of promo image" do
+        it 'allows removal of promo image' do
           spree_delete :destroy, enterprise_id: enterprise
           expect(response.status).to(eq(200))
         end
       end
 
-      context "as super admin" do
+      context 'as super admin' do
         let(:current_user) { admin_user }
 
-        it "allows removal of promo image" do
+        it 'allows removal of promo image' do
           spree_delete :destroy, enterprise_id: enterprise
           expect(response.status).to(eq(200))
         end
       end
 
-      context "as manager of other enterprise" do
+      context 'as manager of other enterprise' do
         let(:current_user) { other_enterprise_manager }
 
-        it "does not allow removal of promo image" do
+        it 'does not allow removal of promo image' do
           spree_delete :destroy, enterprise_id: enterprise
           expect(response.status).to(eq(401))
           enterprise.reload
@@ -79,10 +79,10 @@ module Api
         end
       end
 
-      context "as owner of other enterprise" do
+      context 'as owner of other enterprise' do
         let(:current_user) { other_enterprise_owner }
 
-        it "does not allow removal of promo image" do
+        it 'does not allow removal of promo image' do
           spree_delete :destroy, enterprise_id: enterprise
           expect(response.status).to(eq(401))
           enterprise.reload

@@ -13,8 +13,8 @@ describe EnterpriseMailer do
     setup_email
   end
 
-  describe "#welcome" do
-    it "sends a welcome email when given an enterprise" do
+  describe '#welcome' do
+    it 'sends a welcome email when given an enterprise' do
       EnterpriseMailer.welcome(enterprise).deliver_now
 
       mail = ActionMailer::Base.deliveries.first
@@ -22,8 +22,8 @@ describe EnterpriseMailer do
     end
   end
 
-  describe "#manager_invitation" do
-    it "should send a manager invitation email when given an enterprise and user" do
+  describe '#manager_invitation' do
+    it 'should send a manager invitation email when given an enterprise and user' do
       EnterpriseMailer.manager_invitation(enterprise, user).deliver_now
       expect(ActionMailer::Base.deliveries.count).to(eq(1))
       mail = ActionMailer::Base.deliveries.first

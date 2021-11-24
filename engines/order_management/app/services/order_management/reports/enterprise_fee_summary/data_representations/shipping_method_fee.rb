@@ -17,15 +17,15 @@ module OrderManagement
           end
 
           def fee_type
-            i18n_translate("fee_type.shipping_method")
+            i18n_translate('fee_type.shipping_method')
           end
 
           def enterprise_name
-            data["hub_name"]
+            data['hub_name']
           end
 
           def fee_name
-            data["shipping_method_name"]
+            data['shipping_method_name']
           end
 
           def fee_placement; end
@@ -33,7 +33,7 @@ module OrderManagement
           def fee_calculated_on_transfer_through_name; end
 
           def tax_category_name
-            i18n_translate("tax_category_name.shipping_instance_rate")
+            i18n_translate('tax_category_name.shipping_instance_rate')
           end
         end
       end

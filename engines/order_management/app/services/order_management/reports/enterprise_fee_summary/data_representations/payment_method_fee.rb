@@ -17,15 +17,15 @@ module OrderManagement
           end
 
           def fee_type
-            i18n_translate("fee_type.payment_method")
+            i18n_translate('fee_type.payment_method')
           end
 
           def enterprise_name
-            data["hub_name"]
+            data['hub_name']
           end
 
           def fee_name
-            data["payment_method_name"]
+            data['payment_method_name']
           end
 
           def fee_placement; end

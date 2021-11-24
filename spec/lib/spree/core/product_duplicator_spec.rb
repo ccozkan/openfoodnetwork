@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Spree::Core::ProductDuplicator do
   let(:product) do
     double 'Product',
-           name: "foo",
+           name: 'foo',
            taxons: [],
            product_properties: [property],
            master: variant,
@@ -27,15 +27,15 @@ describe Spree::Core::ProductDuplicator do
 
   let(:variant) do
     double 'Variant',
-           sku: "12345",
+           sku: '12345',
            price: 19.99,
-           currency: "AUD",
+           currency: 'AUD',
            images: [image]
   end
 
   let(:new_variant) do
     double 'New Variant',
-           sku: "12345"
+           sku: '12345'
   end
 
   let(:image) do
@@ -54,9 +54,9 @@ describe Spree::Core::ProductDuplicator do
     expect(property).to(receive(:dup).and_return(new_property))
   end
 
-  it "can duplicate a product" do
+  it 'can duplicate a product' do
     duplicator = Spree::Core::ProductDuplicator.new(product)
-    expect(new_product).to(receive(:name=).with("COPY OF foo"))
+    expect(new_product).to(receive(:name=).with('COPY OF foo'))
     expect(new_product).to(receive(:taxons=).with([]))
     expect(new_product).to(receive(:product_properties=).with([new_property]))
     expect(new_product).to(receive(:created_at=).with(nil))
@@ -64,7 +64,7 @@ describe Spree::Core::ProductDuplicator do
     expect(new_product).to(receive(:deleted_at=).with(nil))
     expect(new_product).to(receive(:master=).with(new_variant))
 
-    expect(new_variant).to(receive(:sku=).with(""))
+    expect(new_variant).to(receive(:sku=).with(''))
     expect(new_variant).to(receive(:deleted_at=).with(nil))
     expect(new_variant).to(receive(:images=).with([new_image]))
     expect(new_variant).to(receive(:price=).with(variant.price))

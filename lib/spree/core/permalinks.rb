@@ -28,7 +28,7 @@ module Spree
         end
 
         def permalink_prefix
-          permalink_options[:prefix] || ""
+          permalink_options[:prefix] || ''
         end
 
         def permalink_order

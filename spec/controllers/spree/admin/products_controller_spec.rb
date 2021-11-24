@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe Spree::Admin::ProductsController, type: :controller do
   describe 'bulk_update' do
-    context "updating a product we do not have access to" do
+    context 'updating a product we do not have access to' do
       let(:s_managed) { create(:enterprise) }
       let(:s_unmanaged) { create(:enterprise) }
       let(:product) do
@@ -13,15 +13,15 @@ describe Spree::Admin::ProductsController, type: :controller do
 
       before do
         controller_login_as_enterprise_user [s_managed]
-        spree_post :bulk_update, "products" => [{ "id" => product.id, "name" => "Pine nuts" }]
+        spree_post :bulk_update, 'products' => [{ 'id' => product.id, 'name' => 'Pine nuts' }]
       end
 
-      it "denies access" do
+      it 'denies access' do
         expect(response).to(redirect_to(unauthorized_path))
       end
 
-      it "does not update any product" do
-        expect(product.reload.name).not_to(eq("Pine nuts"))
+      it 'does not update any product' do
+        expect(product.reload.name).not_to(eq('Pine nuts'))
       end
     end
 
@@ -43,11 +43,11 @@ describe Spree::Admin::ProductsController, type: :controller do
 
       it 'succeeds' do
         spree_post :bulk_update,
-                   "products" => [
+                   'products' => [
                      {
-                       "id" => product.id,
-                       "variant_unit" => "weight",
-                       "variant_unit_scale" => 1
+                       'id' => product.id,
+                       'variant_unit' => 'weight',
+                       'variant_unit_scale' => 1
                      }
                    ]
 
@@ -56,11 +56,11 @@ describe Spree::Admin::ProductsController, type: :controller do
 
       it 'does not redirect to bulk_products' do
         spree_post :bulk_update,
-                   "products" => [
+                   'products' => [
                      {
-                       "id" => product.id,
-                       "variant_unit" => "weight",
-                       "variant_unit_scale" => 1
+                       'id' => product.id,
+                       'variant_unit' => 'weight',
+                       'variant_unit_scale' => 1
                      }
                    ]
 
@@ -95,20 +95,20 @@ describe Spree::Admin::ProductsController, type: :controller do
 
       it 'does not fail' do
         spree_post :bulk_update,
-                   "products" => [
+                   'products' => [
                      {
-                       "id" => another_product.id,
-                       "variants_attributes" => [{}]
+                       'id' => another_product.id,
+                       'variants_attributes' => [{}]
                      },
                      {
-                       "id" => product.id,
-                       "variants_attributes" => [
+                       'id' => product.id,
+                       'variants_attributes' => [
                          {
-                           "on_hand" => 2,
-                           "price" => "5.0",
-                           "unit_value" => 4,
-                           "unit_description" => "",
-                           "display_name" => "name"
+                           'on_hand' => 2,
+                           'price' => '5.0',
+                           'unit_value' => 4,
+                           'unit_description' => '',
+                           'display_name' => 'name'
                          }
                        ]
                      }
@@ -119,7 +119,7 @@ describe Spree::Admin::ProductsController, type: :controller do
     end
   end
 
-  context "creating a new product" do
+  context 'creating a new product' do
     let(:supplier) { create(:supplier_enterprise) }
     let(:taxon) { create(:taxon) }
     let(:shipping_category) { create(:shipping_category) }
@@ -147,8 +147,8 @@ describe Spree::Admin::ProductsController, type: :controller do
       expect(response).to(redirect_to(spree.new_admin_product_path))
     end
 
-    describe "when user uploads an image in an unsupported format" do
-      it "does not throw an exception" do
+    describe 'when user uploads an image in an unsupported format' do
+      it 'does not throw an exception' do
         product_image = ActionDispatch::Http::UploadedFile.new(
           filename: 'unsupported_image_format.exr',
           content_type: 'application/octet-stream',
@@ -168,7 +168,7 @@ describe Spree::Admin::ProductsController, type: :controller do
     end
   end
 
-  describe "updating a product" do
+  describe 'updating a product' do
     let(:producer) { create(:enterprise) }
     let!(:product) { create(:simple_product, supplier: producer) }
 
@@ -176,7 +176,7 @@ describe Spree::Admin::ProductsController, type: :controller do
       controller_login_as_enterprise_user [producer]
     end
 
-    describe "change product supplier" do
+    describe 'change product supplier' do
       let(:distributor) { create(:distributor_enterprise) }
       let!(:order_cycle) do
         create(
@@ -187,7 +187,7 @@ coordinator: distributor,
 )
       end
 
-      it "should remove product from existing Order Cycles" do
+      it 'should remove product from existing Order Cycles' do
         new_producer = create(:enterprise)
         spree_put :update, id: product, product: { supplier_id: new_producer.id }
 
@@ -196,8 +196,8 @@ coordinator: distributor,
       end
     end
 
-    describe "product stock setting with errors" do
-      it "notifies bugsnag and still raise error" do
+    describe 'product stock setting with errors' do
+      it 'notifies bugsnag and still raise error' do
         # forces an error in the variant
         product.variants.first.stock_items = []
 
@@ -213,12 +213,12 @@ coordinator: distributor,
       end
     end
 
-    describe "product properties" do
-      context "as an enterprise user" do
-        let!(:property) { create(:property, name: "A nice name") }
+    describe 'product properties' do
+      context 'as an enterprise user' do
+        let!(:property) { create(:property, name: 'A nice name') }
 
-        context "when a submitted property does not already exist" do
-          it "does not create a new property, or product property" do
+        context 'when a submitted property does not already exist' do
+          it 'does not create a new property, or product property' do
             spree_put :update,
                       id: product,
                       product: {
@@ -233,8 +233,8 @@ coordinator: distributor,
           end
         end
 
-        context "when a submitted property exists" do
-          it "adds a product property" do
+        context 'when a submitted property exists' do
+          it 'adds a product property' do
             spree_put :update,
                       id: product,
                       product: {

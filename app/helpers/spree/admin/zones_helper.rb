@@ -30,7 +30,7 @@ module Spree
       def remove_nested(fields)
         out = ''
         out << fields.hidden_field(:_destroy) unless fields.object.new_record?
-        out << (link_to(icon('icon-remove'), "#", class: 'remove'))
+        out << (link_to(icon('icon-remove'), '#', class: 'remove'))
         out.html_safe
       end
     end

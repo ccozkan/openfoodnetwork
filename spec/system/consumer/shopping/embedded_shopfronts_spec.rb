@@ -2,7 +2,7 @@
 
 require 'system_helper'
 
-describe "Using embedded shopfront functionality", js: true do
+describe 'Using embedded shopfront functionality', js: true do
   include OpenFoodNetwork::EmbeddedPagesHelper
   include AuthenticationHelper
   include WebHelper
@@ -10,7 +10,7 @@ describe "Using embedded shopfront functionality", js: true do
   include CheckoutRequestsHelper
   include UIComponentHelper
 
-  describe "using iframes" do
+  describe 'using iframes' do
     let(:distributor) do
       create(
 :distributor_enterprise,
@@ -47,19 +47,19 @@ orders_close_at: 2.days.from_now
       Spree::Config[:enable_embedded_shopfronts] = false
     end
 
-    it "displays modified shopfront layout" do
+    it 'displays modified shopfront layout' do
       on_embedded_page do
         within '.top-bar' do
           expect(page).to(have_selector('.nav-logo', visible: false))
           expect(page).to(have_selector('.nav-main-menu', visible: false))
         end
 
-        expect(page).to(have_content("My Embedded Hub"))
-        expect(page).to(have_content("Framed Apples"))
+        expect(page).to(have_content('My Embedded Hub'))
+        expect(page).to(have_content('Framed Apples'))
       end
     end
 
-    it "allows shopping and checkout" do
+    it 'allows shopping and checkout' do
       on_embedded_page do
         click_add_to_cart
 
@@ -75,36 +75,36 @@ orders_close_at: 2.days.from_now
 
         expect(page).to(have_text('Payment'))
 
-        within "#details" do
-          fill_in "First Name", with: "Some"
-          fill_in "Last Name", with: "One"
-          fill_in "Email", with: "test@example.com"
-          fill_in "Phone", with: "0456789012"
+        within '#details' do
+          fill_in 'First Name', with: 'Some'
+          fill_in 'Last Name', with: 'One'
+          fill_in 'Email', with: 'test@example.com'
+          fill_in 'Phone', with: '0456789012'
         end
 
-        within "#billing" do
-          fill_in "Address", with: "123 Street"
-          select "Australia", from: "Country"
-          select "Victoria", from: "State"
-          fill_in "City", with: "Melbourne"
-          fill_in "Postcode", with: "3066"
+        within '#billing' do
+          fill_in 'Address', with: '123 Street'
+          select 'Australia', from: 'Country'
+          select 'Victoria', from: 'State'
+          fill_in 'City', with: 'Melbourne'
+          fill_in 'Postcode', with: '3066'
         end
 
-        within "#shipping" do
+        within '#shipping' do
           find('input[type="radio"]').click
         end
 
-        within "#payment" do
+        within '#payment' do
           find('input[type="radio"]').click
         end
 
         place_order
 
-        expect(page).to(have_content("Your order has been processed successfully"))
+        expect(page).to(have_content('Your order has been processed successfully'))
       end
     end
 
-    xit "redirects to embedded hub on logout when embedded" do
+    xit 'redirects to embedded hub on logout when embedded' do
       on_embedded_page do
         wait_for_cart
         find('#login-link a').click
@@ -125,8 +125,8 @@ orders_close_at: 2.days.from_now
     page.has_selector?('div.login-modal', visible: true)
 
     within('div.login-modal') do
-      fill_in("Email", with: user.email)
-      fill_in("Password", with: user.password)
+      fill_in('Email', with: user.email)
+      fill_in('Password', with: user.password)
       find('input[type="submit"]').click
     end
 

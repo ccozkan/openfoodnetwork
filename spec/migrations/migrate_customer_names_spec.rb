@@ -13,18 +13,18 @@ describe MigrateCustomerNames do
 
   before do
     Spree::Preference.create(value: true,
-value_type: "boolean",
+value_type: 'boolean',
 key: "/enterprise/show_customer_names_to_suppliers/#{enterprise1.id}")
     Spree::Preference.create(value: false,
-value_type: "boolean",
+value_type: 'boolean',
 key: "/enterprise/show_customer_names_to_suppliers/#{enterprise2.id}")
     Spree::Preference.create(value: true,
-value_type: "boolean",
+value_type: 'boolean',
 key: "/enterprise/show_customer_names_to_suppliers/#{enterprise4.id}")
   end
 
   describe '#migrate_customer_names_preferences!' do
-    it "migrates the preference to the enterprise" do
+    it 'migrates the preference to the enterprise' do
       subject.migrate_customer_names_preferences!
 
       expect(enterprise1.reload.show_customer_names_to_suppliers?).to(be(true))

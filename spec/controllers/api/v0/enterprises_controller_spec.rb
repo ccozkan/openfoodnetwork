@@ -7,7 +7,7 @@ describe Api::V0::EnterprisesController, type: :controller do
 
   let(:enterprise) { create(:distributor_enterprise) }
 
-  context "as an enterprise owner" do
+  context 'as an enterprise owner' do
     let(:enterprise_owner) { create(:user) }
     let!(:enterprise) { create(:distributor_enterprise, owner: enterprise_owner) }
 
@@ -15,7 +15,7 @@ describe Api::V0::EnterprisesController, type: :controller do
       allow(controller).to(receive(:spree_current_user) { enterprise_owner })
     end
 
-    describe "creating an enterprise" do
+    describe 'creating an enterprise' do
       let(:australia) { Spree::Country.find_by(name: 'Australia') }
       let(:new_enterprise_params) do
         {
@@ -31,7 +31,7 @@ address_attributes: {
         }
       end
 
-      it "creates as sells=any when it is not a producer" do
+      it 'creates as sells=any when it is not a producer' do
         api_post :create, { enterprise: new_enterprise_params }
         expect(response.status).to(eq(201))
 
@@ -39,7 +39,7 @@ address_attributes: {
         expect(enterprise.sells).to(eq('any'))
       end
 
-      it "saves all user ids submitted" do
+      it 'saves all user ids submitted' do
         manager1 = create(:user)
         manager2 = create(:user)
         api_post :create,
@@ -53,23 +53,23 @@ address_attributes: {
         expect(enterprise.user_ids).to(match_array([enterprise_owner.id, manager1.id, manager2.id]))
       end
 
-      context "geocoding" do
-        it "geocodes the address when the :use_geocoder parameter is set" do
+      context 'geocoding' do
+        it 'geocodes the address when the :use_geocoder parameter is set' do
           expect_any_instance_of(AddressGeocoder).to(receive(:geocode))
 
-          api_post :create, { enterprise: new_enterprise_params, use_geocoder: "1" }
+          api_post :create, { enterprise: new_enterprise_params, use_geocoder: '1' }
         end
 
         it "doesn't geocode the address when the :use_geocoder parameter is not set" do
           expect_any_instance_of(AddressGeocoder).not_to(receive(:geocode))
 
-          api_post :create, { enterprise: new_enterprise_params, use_geocoder: "0" }
+          api_post :create, { enterprise: new_enterprise_params, use_geocoder: '0' }
         end
       end
     end
   end
 
-  context "as an enterprise manager" do
+  context 'as an enterprise manager' do
     let(:enterprise_manager) { create(:user) }
 
     before do
@@ -77,30 +77,30 @@ address_attributes: {
       allow(controller).to(receive(:spree_current_user) { enterprise_manager })
     end
 
-    describe "submitting a valid image" do
-      let!(:logo) { fixture_file_upload("files/logo.png", "image/png") }
+    describe 'submitting a valid image' do
+      let!(:logo) { fixture_file_upload('files/logo.png', 'image/png') }
       before do
         allow(Enterprise)
           .to(receive(:find_by).with({ permalink: enterprise.id.to_s }) { enterprise })
       end
 
-      it "I can update enterprise logo image" do
+      it 'I can update enterprise logo image' do
         api_post :update_image, logo: logo, id: enterprise.id
         expect(response.status).to(eq(200))
-        expect(response.content_type).to(eq("text/html"))
+        expect(response.content_type).to(eq('text/html'))
         expect(response.body).to(match(%r{/images/enterprises/logos/\d*/medium/logo\.png\?\d*}))
       end
 
-      it "I can update enterprise promo image" do
+      it 'I can update enterprise promo image' do
         api_post :update_image, promo: logo, id: enterprise.id
         expect(response.status).to(eq(200))
-        expect(response.content_type).to(eq("text/html"))
+        expect(response.content_type).to(eq('text/html'))
         expect(response.body).to(match(%r{/images/enterprises/promo_images/\d*/medium/logo\.jpg\?\d*}))
       end
     end
   end
 
-  context "as an non-managing user" do
+  context 'as an non-managing user' do
     let(:non_managing_user) { create(:user) }
 
     before do
@@ -108,7 +108,7 @@ address_attributes: {
       allow(controller).to(receive(:spree_current_user) { non_managing_user })
     end
 
-    describe "submitting a valid image" do
+    describe 'submitting a valid image' do
       it "I can't update enterprise image" do
         api_post :update_image, logo: 'a logo', id: enterprise.id
         assert_unauthorized!

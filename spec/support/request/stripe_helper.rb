@@ -10,7 +10,7 @@ module StripeHelper
       save_default_addresses: false
     )
     fill_out_card_details
-    check("Remember this card?") if remember_card
+    check('Remember this card?') if remember_card
     place_order
   end
 
@@ -22,16 +22,16 @@ module StripeHelper
   end
 
   def fill_in_card_details_in_backoffice
-    choose("StripeSCA")
-    fill_in("cardholder_name", with: "David Gilmour")
-    fill_in("stripe-cardnumber", with: "4242424242424242")
-    fill_in("exp-date", with: "01-01-2050")
-    fill_in("cvc", with: "678")
+    choose('StripeSCA')
+    fill_in('cardholder_name', with: 'David Gilmour')
+    fill_in('stripe-cardnumber', with: '4242424242424242')
+    fill_in('exp-date', with: '01-01-2050')
+    fill_in('cvc', with: '678')
   end
 
   def setup_stripe
-    Stripe.api_key = "sk_test_12345"
-    Stripe.publishable_key = "pk_test_12345"
+    Stripe.api_key = 'sk_test_12345'
+    Stripe.publishable_key = 'pk_test_12345'
     Spree::Config.set(stripe_connect_enabled: true)
   end
 end

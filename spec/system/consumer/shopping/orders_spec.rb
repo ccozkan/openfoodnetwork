@@ -2,11 +2,11 @@
 
 require 'system_helper'
 
-describe "Order Management", js: true do
+describe 'Order Management', js: true do
   include AuthenticationHelper
   include OpenFoodNetwork::EmailHelper
 
-  describe "viewing a completed order" do
+  describe 'viewing a completed order' do
     let!(:distributor) { create(:distributor_enterprise) }
     let!(:customer) { create(:customer, user: user, enterprise: distributor) }
     let!(:order_cycle) { create(:simple_order_cycle, distributors: [distributor]) }
@@ -34,19 +34,19 @@ describe "Order Management", js: true do
       )
     end
 
-    context "when checking out as an anonymous guest" do
+    context 'when checking out as an anonymous guest' do
       let!(:customer) { nil }
       let!(:order) do
         create(
 :order_with_credit_payment,
                user: nil,
-               email: "guest@user.com",
+               email: 'guest@user.com',
                distributor: distributor,
                order_cycle: order_cycle
 )
       end
 
-      it "allows the user to see the details" do
+      it 'allows the user to see the details' do
         # Cannot load the page without token
         visit order_path(order)
         expect(page).to_not(be_confirmed_order_page)
@@ -62,23 +62,23 @@ describe "Order Management", js: true do
       end
     end
 
-    context "when logged in as the customer" do
+    context 'when logged in as the customer' do
       let(:user) { create(:user) }
 
       before do
         login_as user
       end
 
-      it "allows the user to see order details" do
+      it 'allows the user to see order details' do
         visit order_path(order)
         expect(page).to(be_confirmed_order_page)
       end
     end
 
-    context "when not logged in" do
+    context 'when not logged in' do
       let(:user) { create(:user) }
 
-      it "allows the user to see order details after login" do
+      it 'allows the user to see order details after login' do
         # Cannot load the page without signing in
         visit order_path(order)
         expect(page).to_not(be_confirmed_order_page)
@@ -90,7 +90,7 @@ describe "Order Management", js: true do
     end
   end
 
-  describe "editing a completed order" do
+  describe 'editing a completed order' do
     let(:address) { create(:address) }
     let(:user) { create(:user, bill_address: address, ship_address: address) }
     let(:distributor) do
@@ -140,7 +140,7 @@ describe "Order Management", js: true do
       end
     end
 
-    context "when the distributor allows changes to be made to orders" do
+    context 'when the distributor allows changes to be made to orders' do
       before do
         setup_email
       end
@@ -148,7 +148,7 @@ describe "Order Management", js: true do
         order.distributor.update(allow_order_changes: true)
       end
 
-      it "allows quantity to be changed, items to be removed and the order to be cancelled" do
+      it 'allows quantity to be changed, items to be removed and the order to be cancelled' do
         visit order_path(order)
 
         expect(page).to(have_button(I18n.t(:order_saved), disabled: true))
@@ -168,12 +168,12 @@ describe "Order Management", js: true do
 
         expect(find("tr.variant-#{item2.variant.id}")).to(have_content(item2.product.name))
         expect(find("tr.variant-#{item3.variant.id}")).to(have_content(item3.product.name))
-        expect(find("tr.order-adjustment")).to(have_content("Shipping"))
-        expect(find("tr.order-adjustment")).to(have_content("5.00"))
+        expect(find('tr.order-adjustment')).to(have_content('Shipping'))
+        expect(find('tr.order-adjustment')).to(have_content('5.00'))
 
         click_button I18n.t(:save_changes)
 
-        expect(find(".order-total.grand-total")).to(have_content("115.00"))
+        expect(find('.order-total.grand-total')).to(have_content('115.00'))
         expect(item1.reload.quantity).to(eq(5))
 
         # Deleting an item
@@ -181,7 +181,7 @@ describe "Order Management", js: true do
           click_link "delete_line_item_#{item2.id}"
         end
 
-        expect(find(".order-total.grand-total")).to(have_content("105.00"))
+        expect(find('.order-total.grand-total')).to(have_content('105.00'))
         expect(Spree::LineItem.find_by(id: item2.id)).to(be(nil))
 
         # Cancelling the order

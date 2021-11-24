@@ -2,7 +2,7 @@
 
 namespace :ofn do
   namespace :data do
-    desc "Adding relationships based on recent order cycles"
+    desc 'Adding relationships based on recent order cycles'
     task create_order_cycle_relationships: :environment do
       input = request_months
 
@@ -58,7 +58,7 @@ child_id: exchange.sender_id
             'spree_variants.id IN (?)', exchange.variants
           ).pluck(:id).uniq
           producers = Enterprise.joins(:supplied_products).where(
-"spree_products.id IN (?)",
+'spree_products.id IN (?)',
                                                                  products
 ).distinct
           producers.each do |producer|
@@ -101,7 +101,7 @@ child_id: exchange.receiver_id
 
     def check_default(input)
       if input.blank?
-        puts("Using default value of three (3) months.")
+        puts('Using default value of three (3) months.')
         3
       else
         input

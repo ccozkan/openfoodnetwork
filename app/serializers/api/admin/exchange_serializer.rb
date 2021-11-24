@@ -50,7 +50,7 @@ module Api
       end
 
       def tag_list
-        object.tag_list.join(",")
+        object.tag_list.join(',')
       end
 
       def tags

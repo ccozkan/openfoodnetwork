@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Subscription, type: :model do
-  describe "associations" do
+  describe 'associations' do
     it { expect(subject).to(belong_to(:shop)) }
     it { expect(subject).to(belong_to(:customer)) }
     it { expect(subject).to(belong_to(:schedule)) }
@@ -17,7 +17,7 @@ describe Subscription, type: :model do
     it { expect(subject).to(have_many(:orders)) }
   end
 
-  describe "cancel" do
+  describe 'cancel' do
     let!(:subscription) { create(:subscription) }
     let!(:proxy_order1) { create(:proxy_order, order_cycle: create(:simple_order_cycle)) }
     let!(:proxy_order2) { create(:proxy_order, order_cycle: create(:simple_order_cycle)) }
@@ -26,11 +26,11 @@ describe Subscription, type: :model do
       allow(subscription).to(receive(:proxy_orders) { [proxy_order1, proxy_order2] })
     end
 
-    context "when all subscription orders can be cancelled" do
+    context 'when all subscription orders can be cancelled' do
       before { allow(proxy_order1).to(receive(:cancel) { true }) }
       before { allow(proxy_order2).to(receive(:cancel) { true }) }
 
-      it "marks the subscription as cancelled and calls #cancel on all proxy_orders" do
+      it 'marks the subscription as cancelled and calls #cancel on all proxy_orders' do
         subscription.cancel
         expect(subscription.reload.canceled_at).to(be_within(5.seconds).of(Time.zone.now))
         expect(proxy_order1).to(have_received(:cancel))
@@ -38,14 +38,14 @@ describe Subscription, type: :model do
       end
     end
 
-    context "when a subscription order cannot be cancelled" do
-      before { allow(proxy_order1).to(receive(:cancel).and_raise("Some error")) }
+    context 'when a subscription order cannot be cancelled' do
+      before { allow(proxy_order1).to(receive(:cancel).and_raise('Some error')) }
       before { allow(proxy_order2).to(receive(:cancel) { true }) }
 
-      it "aborts the transaction" do
+      it 'aborts the transaction' do
         # ie. canceled_at remains as nil, #cancel not called on second subscription order
         expect { subscription.cancel }
-.to(raise_error("Some error"))
+.to(raise_error('Some error'))
         expect(subscription.reload.canceled_at).to(be(nil))
         expect(proxy_order1).to(have_received(:cancel))
         expect(proxy_order2).to_not(have_received(:cancel))
@@ -53,10 +53,10 @@ describe Subscription, type: :model do
     end
   end
 
-  describe "state" do
+  describe 'state' do
     let(:subscription) { Subscription.new }
 
-    context "when the subscription has been cancelled" do
+    context 'when the subscription has been cancelled' do
       before { allow(subscription).to(receive(:canceled_at) { Time.zone.now }) }
 
       it "returns 'canceled'" do
@@ -64,10 +64,10 @@ describe Subscription, type: :model do
       end
     end
 
-    context "when the subscription has not been cancelled" do
+    context 'when the subscription has not been cancelled' do
       before { allow(subscription).to(receive(:canceled_at) { nil }) }
 
-      context "and the subscription has been paused" do
+      context 'and the subscription has been paused' do
         before { allow(subscription).to(receive(:paused_at) { Time.zone.now }) }
 
         it "returns 'paused'" do
@@ -75,10 +75,10 @@ describe Subscription, type: :model do
         end
       end
 
-      context "and the subscription has not been paused" do
+      context 'and the subscription has not been paused' do
         before { allow(subscription).to(receive(:paused_at) { nil }) }
 
-        context "and the subscription has no begins_at date" do
+        context 'and the subscription has no begins_at date' do
           before { allow(subscription).to(receive(:begins_at) { nil }) }
 
           it "returns 'pending'" do
@@ -86,7 +86,7 @@ describe Subscription, type: :model do
           end
         end
 
-        context "and the subscription has a begins_at date in the future" do
+        context 'and the subscription has a begins_at date in the future' do
           before { allow(subscription).to(receive(:begins_at) { 1.minute.from_now }) }
 
           it "returns 'pending'" do
@@ -94,10 +94,10 @@ describe Subscription, type: :model do
           end
         end
 
-        context "and the subscription has a begins_at date in the past" do
+        context 'and the subscription has a begins_at date in the past' do
           before { allow(subscription).to(receive(:begins_at) { 1.minute.ago }) }
 
-          context "and the subscription has no ends_at date set" do
+          context 'and the subscription has no ends_at date set' do
             before { allow(subscription).to(receive(:ends_at) { nil }) }
 
             it "returns 'active'" do
@@ -105,7 +105,7 @@ describe Subscription, type: :model do
             end
           end
 
-          context "and the subscription has an ends_at date in the future" do
+          context 'and the subscription has an ends_at date in the future' do
             before { allow(subscription).to(receive(:ends_at) { 1.minute.from_now }) }
 
             it "returns 'active'" do
@@ -113,7 +113,7 @@ describe Subscription, type: :model do
             end
           end
 
-          context "and the subscription has an ends_at date in the past" do
+          context 'and the subscription has an ends_at date in the past' do
             before { allow(subscription).to(receive(:ends_at) { 1.minute.ago }) }
 
             it "returns 'ended'" do

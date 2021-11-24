@@ -49,7 +49,7 @@ ams_prefix: params[:ams_prefix],
     end
 
     def welcome
-      render(layout: "spree/layouts/bare_admin")
+      render(layout: 'spree/layouts/bare_admin')
     end
 
     def update
@@ -80,7 +80,7 @@ ams_prefix: params[:ams_prefix],
 
       if register_params[:sells] == 'unspecified'
         flash[:error] = I18n.t(:enterprise_register_package_error)
-        return render(:welcome, layout: "spree/layouts/bare_admin")
+        return render(:welcome, layout: 'spree/layouts/bare_admin')
       end
 
       attributes = { sells: register_params[:sells], visible: true }
@@ -90,7 +90,7 @@ ams_prefix: params[:ams_prefix],
         redirect_to(spree.admin_dashboard_path)
       else
         flash[:error] = I18n.t(:enterprise_register_error, enterprise: @enterprise.name)
-        render(:welcome, layout: "spree/layouts/bare_admin")
+        render(:welcome, layout: 'spree/layouts/bare_admin')
       end
     end
 
@@ -180,7 +180,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
         elsif json_request?
           OpenFoodNetwork::Permissions.new(spree_current_user).editable_enterprises.ransack(params[:q]).result
         else
-          Enterprise.where("1=0")
+          Enterprise.where('1=0')
         end
       when :visible
         OpenFoodNetwork::Permissions.new(spree_current_user).visible_enterprises

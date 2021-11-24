@@ -15,18 +15,18 @@ describe CheckoutController, type: :controller do
     allow(controller).to(receive(:check_authorization).and_return(true))
   end
 
-  it "redirects home when no distributor is selected" do
+  it 'redirects home when no distributor is selected' do
     get :edit
     expect(response).to(redirect_to(root_path))
   end
 
-  it "redirects to the shop when no order cycle is selected" do
+  it 'redirects to the shop when no order cycle is selected' do
     allow(controller).to(receive(:current_distributor).and_return(distributor))
     get :edit
     expect(response).to(redirect_to(shop_path))
   end
 
-  it "redirects home with message if hub is not ready for checkout" do
+  it 'redirects home with message if hub is not ready for checkout' do
     allow(distributor).to(receive(:ready_for_checkout?) { false })
     allow(order).to(receive_messages(distributor: distributor, order_cycle: order_cycle))
     allow(controller).to(receive(:current_order).and_return(order))
@@ -40,7 +40,7 @@ describe CheckoutController, type: :controller do
     expect(flash[:info]).to(eq(I18n.t('order_cycles_closed_for_hub')))
   end
 
-  describe "#update" do
+  describe '#update' do
     let(:user) { order.user }
     let(:distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
     let(:order_cycle) { create(:order_cycle, distributors: [distributor]) }
@@ -61,16 +61,16 @@ describe CheckoutController, type: :controller do
       user.save!
     end
 
-    it "completes the order and redirects to the order confirmation page" do
+    it 'completes the order and redirects to the order confirmation page' do
       params = {
-        "order" => {
-          "bill_address_attributes" => order.bill_address.attributes,
-          "default_bill_address" => false,
-          "default_ship_address" => false,
-          "email" => user.email,
-          "payments_attributes" => [{ "payment_method_id" => payment_method.id }],
-          "ship_address_attributes" => order.bill_address.attributes,
-          "shipping_method_id" => shipping_method.id
+        'order' => {
+          'bill_address_attributes' => order.bill_address.attributes,
+          'default_bill_address' => false,
+          'default_ship_address' => false,
+          'email' => user.email,
+          'payments_attributes' => [{ 'payment_method_id' => payment_method.id }],
+          'ship_address_attributes' => order.bill_address.attributes,
+          'shipping_method_id' => shipping_method.id
         }
       }
       expect { post(:update, params: params) }
@@ -81,7 +81,7 @@ describe CheckoutController, type: :controller do
     end
   end
 
-  describe "redirection to cart and stripe" do
+  describe 'redirection to cart and stripe' do
     let(:order_cycle_distributed_variants) { double(:order_cycle_distributed_variants) }
 
     before do
@@ -92,15 +92,15 @@ describe CheckoutController, type: :controller do
       allow(OrderCycleDistributedVariants).to(receive(:new).and_return(order_cycle_distributed_variants))
     end
 
-    context "running out of stock" do
-      it "redirects when some items are out of stock" do
+    context 'running out of stock' do
+      it 'redirects when some items are out of stock' do
         allow(order).to(receive_message_chain(:insufficient_stock_lines, :empty?).and_return(false))
 
         get :edit
         expect(response).to(redirect_to(cart_path))
       end
 
-      it "redirects when some items are not available" do
+      it 'redirects when some items are not available' do
         allow(order).to(receive_message_chain(:insufficient_stock_lines, :empty?).and_return(true))
         expect(order_cycle_distributed_variants).to(receive(:distributes_order_variants?).with(order).and_return(false))
 
@@ -108,11 +108,11 @@ describe CheckoutController, type: :controller do
         expect(response).to(redirect_to(cart_path))
       end
 
-      context "after redirecting back from Stripe" do
+      context 'after redirecting back from Stripe' do
         let(:order) { create(:order_with_totals_and_distribution) }
-        let!(:payment) { create(:payment, state: "pending", amount: order.total, order: order) }
+        let!(:payment) { create(:payment, state: 'pending', amount: order.total, order: order) }
         let!(:transaction_fee) do
-          create(:adjustment, state: "open", amount: 10, order: order, adjustable: payment)
+          create(:adjustment, state: 'open', amount: 10, order: order, adjustable: payment)
         end
 
         before do
@@ -126,7 +126,7 @@ describe CheckoutController, type: :controller do
           allow(payment).to(receive(:adjustment) { transaction_fee })
         end
 
-        it "cancels the payment and resets the order to cart" do
+        it 'cancels the payment and resets the order to cart' do
           expect(payment).to(receive(:void_transaction!).and_call_original)
 
           spree_post :edit
@@ -134,47 +134,47 @@ describe CheckoutController, type: :controller do
           expect(response).to(redirect_to(cart_path))
           expect(flash[:notice]).to(eq(I18n.t('checkout.payment_cancelled_due_to_stock')))
 
-          expect(order.state).to(eq("cart"))
-          expect(payment.state).to(eq("void"))
+          expect(order.state).to(eq('cart'))
+          expect(payment.state).to(eq('void'))
           expect(transaction_fee.reload.eligible).to(eq(false))
-          expect(transaction_fee.state).to(eq("finalized"))
+          expect(transaction_fee.state).to(eq('finalized'))
         end
       end
     end
 
-    describe "when items are available and in stock" do
+    describe 'when items are available and in stock' do
       before do
         allow(order).to(receive_message_chain(:insufficient_stock_lines, :empty?).and_return(true))
       end
 
-      describe "order variants are distributed in the OC" do
+      describe 'order variants are distributed in the OC' do
         before do
           expect(order_cycle_distributed_variants).to(receive(:distributes_order_variants?).with(order).and_return(true))
         end
 
-        it "does not redirect" do
+        it 'does not redirect' do
           get :edit
           expect(response.status).to(eq(200))
         end
 
-        it "returns a specific flash message when Spree::Core::GatewayError occurs" do
+        it 'returns a specific flash message when Spree::Core::GatewayError occurs' do
           order_checkout_restart = double(:order_checkout_restart)
           allow(OrderCheckoutRestart).to(receive(:new) { order_checkout_restart })
           call_count = 0
           allow(order_checkout_restart).to(receive(:call)) do
             call_count += 1
-            raise Spree::Core::GatewayError, "Gateway blow up" if call_count == 1
+            raise Spree::Core::GatewayError, 'Gateway blow up' if call_count == 1
           end
 
           spree_post :edit
 
           expect(response.status).to(eq(200))
-          flash_message = I18n.t(:spree_gateway_error_flash_for_checkout, error: "Gateway blow up")
+          flash_message = I18n.t(:spree_gateway_error_flash_for_checkout, error: 'Gateway blow up')
           expect(flash[:error]).to(eq(flash_message))
         end
       end
 
-      describe "when the order is in payment state and a stripe payment intent is provided" do
+      describe 'when the order is in payment state and a stripe payment intent is provided' do
         let(:user) { order.user }
         let(:order) { create(:order_with_totals) }
         let(:payment_method) { create(:stripe_sca_payment_method) }
@@ -182,14 +182,14 @@ describe CheckoutController, type: :controller do
           create(
             :payment,
             amount: order.total,
-            state: "requires_authorization",
+            state: 'requires_authorization',
             payment_method: payment_method,
-            response_code: "pi_123"
+            response_code: 'pi_123'
           )
         end
 
         before do
-          Stripe.api_key = "sk_test_12345"
+          Stripe.api_key = 'sk_test_12345'
           stub_payment_intent_get_request
           stub_successful_capture_request(order: order)
 
@@ -198,31 +198,31 @@ describe CheckoutController, type: :controller do
           user.ship_address = create(:address)
           user.save!
 
-          order.update_attribute(:state, "payment")
+          order.update_attribute(:state, 'payment')
           order.payments << payment
 
           # this is called a 2nd time after order completion from the reset_order_service
           expect(order_cycle_distributed_variants).to(receive(:distributes_order_variants?).twice.and_return(true))
         end
 
-        it "completes the order and redirects to the order confirmation page" do
-          get :edit, params: { payment_intent: "pi_123" }
+        it 'completes the order and redirects to the order confirmation page' do
+          get :edit, params: { payment_intent: 'pi_123' }
           expect(order.completed?).to(be(true))
           expect(response).to(redirect_to(order_path(order)))
         end
 
-        it "does not attempt to load different addresses" do
+        it 'does not attempt to load different addresses' do
           expect(OpenFoodNetwork::AddressFinder).to_not(receive(:new))
 
-          get :edit, params: { payment_intent: "pi_123" }
+          get :edit, params: { payment_intent: 'pi_123' }
         end
 
-        it "creates a customer record" do
+        it 'creates a customer record' do
           order.update_columns(customer_id: nil)
           Customer.delete_all
 
           expect do
-            get(:edit, params: { payment_intent: "pi_123" })
+            get(:edit, params: { payment_intent: 'pi_123' })
           end.to(change { Customer.count }
 .by(1))
         end
@@ -230,28 +230,28 @@ describe CheckoutController, type: :controller do
     end
   end
 
-  describe "building the order" do
+  describe 'building the order' do
     before do
       allow(controller).to(receive(:current_distributor).and_return(distributor))
       allow(controller).to(receive(:current_order_cycle).and_return(order_cycle))
       allow(controller).to(receive(:current_order).and_return(order))
     end
 
-    it "set shipping_address_from_distributor when re-rendering edit" do
+    it 'set shipping_address_from_distributor when re-rendering edit' do
       expect(order.updater).to(receive(:shipping_address_from_distributor))
       allow(order).to(receive(:update).and_return(false))
       spree_post :update, format: :json, order: {}
     end
 
-    it "set shipping_address_from_distributor when the order state cannot be advanced" do
+    it 'set shipping_address_from_distributor when the order state cannot be advanced' do
       expect(order.updater).to(receive(:shipping_address_from_distributor))
       allow(order).to(receive(:update).and_return(true))
       allow(order).to(receive(:next).and_return(false))
       spree_post :update, format: :json, order: {}
     end
 
-    context "#update with shipping_method_id" do
-      let(:test_shipping_method_id) { "111" }
+    context '#update with shipping_method_id' do
+      let(:test_shipping_method_id) { '111' }
 
       before do
         # stub order and OrderCompletionReset
@@ -270,17 +270,17 @@ describe CheckoutController, type: :controller do
         end
       end
 
-      it "does not fail to update" do
+      it 'does not fail to update' do
         expect(controller).to_not(receive(:clear_ship_address))
         spree_post :update, order: { shipping_method_id: test_shipping_method_id }
       end
 
-      it "does not send shipping_method_id to the order model as an attribute" do
+      it 'does not send shipping_method_id to the order model as an attribute' do
         expect(order).to(receive(:update).with({}))
         spree_post :update, order: { shipping_method_id: test_shipping_method_id }
       end
 
-      it "selects the shipping_method in the order" do
+      it 'selects the shipping_method in the order' do
         expect(order).to(receive(:select_shipping_method).with(test_shipping_method_id))
         spree_post :update, order: { shipping_method_id: test_shipping_method_id }
       end
@@ -326,7 +326,7 @@ describe CheckoutController, type: :controller do
     end
   end
 
-  context "via xhr" do
+  context 'via xhr' do
     before do
       allow(controller).to(receive(:current_distributor).and_return(distributor))
 
@@ -334,7 +334,7 @@ describe CheckoutController, type: :controller do
       allow(controller).to(receive(:current_order).and_return(order))
     end
 
-    it "returns errors and flash if order.update fails" do
+    it 'returns errors and flash if order.update fails' do
       spree_post :update, format: :json, order: {}
       expect(response.status).to(eq(400))
       expect(response.body).to(eq(
@@ -345,31 +345,31 @@ flash: { error: order.errors.full_messages.to_sentence }
 ))
     end
 
-    it "returns errors and flash if order.next fails" do
+    it 'returns errors and flash if order.next fails' do
       allow(order).to(receive(:update).and_return(true))
       allow(order).to(receive(:next).and_return(false))
       spree_post :update, format: :json, order: {}
       expect(response.body).to(eq(
 {
 errors: assigns[:order].errors,
-flash: { error: "Payment could not be processed, please check the details you entered" }
+flash: { error: 'Payment could not be processed, please check the details you entered' }
 }.to_json
 ))
     end
 
-    it "returns order confirmation url on success" do
+    it 'returns order confirmation url on success' do
       allow(OrderCompletionReset).to(receive(:new).with(controller, order) { reset_order_service })
       expect(reset_order_service).to(receive(:call))
 
       allow(order).to(receive(:update).and_return(true))
-      allow(order).to(receive(:state).and_return("complete"))
+      allow(order).to(receive(:state).and_return('complete'))
 
       spree_post :update, format: :json, order: {}
       expect(response.status).to(eq(200))
       expect(response.body).to(eq({ path: order_path(order) }.to_json))
     end
 
-    it "returns an error on unexpected failure" do
+    it 'returns an error on unexpected failure' do
       allow(order).to(receive(:update).and_raise)
 
       spree_post :update, format: :json, order: {}
@@ -377,22 +377,22 @@ flash: { error: "Payment could not be processed, please check the details you en
       expect(response.body).to(eq(
 {
 errors: {},
-flash: { error: I18n.t("checkout.failed") }
+flash: { error: I18n.t('checkout.failed') }
 }.to_json
 ))
     end
 
-    it "returns a specific error on Spree::Core::GatewayError" do
-      allow(order).to(receive(:update).and_raise(Spree::Core::GatewayError.new("Gateway blow up")))
+    it 'returns a specific error on Spree::Core::GatewayError' do
+      allow(order).to(receive(:update).and_raise(Spree::Core::GatewayError.new('Gateway blow up')))
       spree_post :update, format: :json, order: {}
 
       expect(response.status).to(eq(400))
-      flash_message = I18n.t(:spree_gateway_error_flash_for_checkout, error: "Gateway blow up")
-      expect(json_response["flash"]["error"]).to(eq(flash_message))
+      flash_message = I18n.t(:spree_gateway_error_flash_for_checkout, error: 'Gateway blow up')
+      expect(json_response['flash']['error']).to(eq(flash_message))
     end
 
-    describe "stale object handling" do
-      it "retries when a stale object error is encountered" do
+    describe 'stale object handling' do
+      it 'retries when a stale object error is encountered' do
         allow(OrderCompletionReset).to(receive(:new).with(controller, order) { reset_order_service })
         expect(reset_order_service).to(receive(:call))
 
@@ -411,7 +411,7 @@ flash: { error: I18n.t("checkout.failed") }
         expect(response.status).to(eq(200))
       end
 
-      it "tries a maximum of 3 times before giving up and returning an error" do
+      it 'tries a maximum of 3 times before giving up and returning an error' do
         allow(order).to(receive(:update).and_return(true))
         allow(order).to(receive(:next) {
                           raise(ActiveRecord::StaleObjectError.new(Spree::Variant.new, 'update'))
@@ -423,47 +423,47 @@ flash: { error: I18n.t("checkout.failed") }
     end
   end
 
-  describe "Payment redirects" do
+  describe 'Payment redirects' do
     before do
       allow(controller).to(receive(:current_distributor) { distributor })
       allow(controller).to(receive(:current_order_cycle) { order_cycle })
       allow(controller).to(receive(:current_order) { order })
       allow(order).to(receive(:update) { true })
-      allow(order).to(receive(:state) { "payment" })
+      allow(order).to(receive(:state) { 'payment' })
     end
 
-    describe "paypal redirect" do
-      let(:payment_method) { create(:payment_method, type: "Spree::Gateway::PayPalExpress") }
+    describe 'paypal redirect' do
+      let(:payment_method) { create(:payment_method, type: 'Spree::Gateway::PayPalExpress') }
       let(:paypal_redirect) { instance_double(Checkout::PaypalRedirect) }
 
-      it "should call Paypal redirect and redirect if a path is provided" do
+      it 'should call Paypal redirect and redirect if a path is provided' do
         expect(Checkout::PaypalRedirect).to(receive(:new).and_return(paypal_redirect))
-        expect(paypal_redirect).to(receive(:path).and_return("test_path"))
+        expect(paypal_redirect).to(receive(:path).and_return('test_path'))
 
         spree_post :update,
                    order: { payments_attributes: [{ payment_method_id: payment_method.id }] }
 
-        expect(response.body).to(eq({ path: "test_path" }.to_json))
+        expect(response.body).to(eq({ path: 'test_path' }.to_json))
       end
     end
 
-    describe "stripe redirect" do
-      let(:payment_method) { create(:payment_method, type: "Spree::Gateway::StripeSCA") }
+    describe 'stripe redirect' do
+      let(:payment_method) { create(:payment_method, type: 'Spree::Gateway::StripeSCA') }
       let(:stripe_redirect) { instance_double(Checkout::StripeRedirect) }
 
-      it "should call Stripe redirect and redirect if a path is provided" do
+      it 'should call Stripe redirect and redirect if a path is provided' do
         expect(Checkout::StripeRedirect).to(receive(:new).and_return(stripe_redirect))
-        expect(stripe_redirect).to(receive(:path).and_return("test_path"))
+        expect(stripe_redirect).to(receive(:path).and_return('test_path'))
 
         spree_post :update,
                    order: { payments_attributes: [{ payment_method_id: payment_method.id }] }
 
-        expect(response.body).to(eq({ path: "test_path" }.to_json))
+        expect(response.body).to(eq({ path: 'test_path' }.to_json))
       end
     end
   end
 
-  describe "#action_failed" do
+  describe '#action_failed' do
     let(:restart_checkout) { instance_double(OrderCheckoutRestart, call: true) }
 
     before do
@@ -472,7 +472,7 @@ flash: { error: I18n.t("checkout.failed") }
       allow(controller).to(receive(:current_order) { order })
     end
 
-    it "set shipping_address_from_distributor and restarts the checkout" do
+    it 'set shipping_address_from_distributor and restarts the checkout' do
       expect(order.updater).to(receive(:shipping_address_from_distributor))
       expect(restart_checkout).to(receive(:call))
       expect(controller).to(receive(:respond_to))

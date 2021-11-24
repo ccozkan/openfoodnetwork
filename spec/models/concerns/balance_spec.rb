@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Balance do
-  context "#new_outstanding_balance" do
+  context '#new_outstanding_balance' do
     context 'when orders are in cart state' do
       let(:order) { build(:order, total: 100, payment_total: 10, state: 'cart') }
 
@@ -95,7 +95,7 @@ describe Balance do
     context 'when payment_total is less than total' do
       let(:order) { build(:order, total: 100, payment_total: 10, state: 'complete') }
 
-      it "returns positive" do
+      it 'returns positive' do
         expect(order.new_outstanding_balance).to(eq(100 - 10))
       end
     end
@@ -103,7 +103,7 @@ describe Balance do
     context 'when payment_total is greater than total' do
       let(:order) { create(:order, total: 8.20, payment_total: 10.20, state: 'complete') }
 
-      it "returns negative amount" do
+      it 'returns negative amount' do
         expect(order.new_outstanding_balance).to(eq(-2.00))
       end
     end
@@ -126,7 +126,7 @@ describe Balance do
       end
     end
 
-    context "when total equals payment_total" do
+    context 'when total equals payment_total' do
       let(:order) { build(:order, total: 10.10, payment_total: 10.10) }
 
       it 'returns false' do

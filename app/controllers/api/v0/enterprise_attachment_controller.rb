@@ -27,11 +27,11 @@ module Api
       protected
 
       def attachment_name
-        raise(MissingImplementationError, "Method attachment_name should be defined")
+        raise(MissingImplementationError, 'Method attachment_name should be defined')
       end
 
       def enterprise_authorize_action
-        raise(MissingImplementationError, "Method enterprise_authorize_action should be defined")
+        raise(MissingImplementationError, 'Method enterprise_authorize_action should be defined')
       end
 
       def load_enterprise

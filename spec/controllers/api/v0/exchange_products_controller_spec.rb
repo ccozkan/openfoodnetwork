@@ -21,42 +21,42 @@ module Api
         .and_return(products_relation))
     end
 
-    describe "#index" do
-      describe "when the product list is empty" do
-        let(:products_relation) { Spree::Product.where("1=0") }
+    describe '#index' do
+      describe 'when the product list is empty' do
+        let(:products_relation) { Spree::Product.where('1=0') }
 
-        it "handles it gracefully" do
+        it 'handles it gracefully' do
           api_get :index, exchange_id: exchange.id
-          expect(json_response["products"].length).to(eq(0))
+          expect(json_response['products'].length).to(eq(0))
         end
       end
 
-      describe "when a product is returned" do
+      describe 'when a product is returned' do
         let(:products_relation) { Spree::Product.where(id: exchange.variants.first.product.id) }
 
-        describe "when an exchange id param is provided" do
-          it "uses exchange order_cycle, incoming and enterprise to fetch products" do
+        describe 'when an exchange id param is provided' do
+          it 'uses exchange order_cycle, incoming and enterprise to fetch products' do
             api_get :index,
 exchange_id: exchange.id,
 order_cycle_id: 666,
 enterprise_id: 666,
                             incoming: false
-            expect(json_response["products"].first["supplier_name"]).to(eq(exchange.variants.first.product.supplier.name))
+            expect(json_response['products'].first['supplier_name']).to(eq(exchange.variants.first.product.supplier.name))
           end
         end
 
-        describe "when an exchange id param is not provided" do
-          it "uses params order_cycle, incoming and enterprise to fetch products" do
+        describe 'when an exchange id param is not provided' do
+          it 'uses params order_cycle, incoming and enterprise to fetch products' do
             api_get :index,
 order_cycle_id: order_cycle.id,
 enterprise_id: exchange.sender_id,
                             incoming: true
-            expect(json_response["products"].first["supplier_name"]).to(eq(exchange.variants.first.product.supplier.name))
+            expect(json_response['products'].first['supplier_name']).to(eq(exchange.variants.first.product.supplier.name))
           end
         end
       end
 
-      describe "pagination" do
+      describe 'pagination' do
         let(:exchange) { order_cycle.exchanges.outgoing.first }
         let(:products_relation) do
           Spree::Product.includes(:variants).where('spree_variants.id': exchange.variants.map(&:id))
@@ -66,22 +66,22 @@ enterprise_id: exchange.sender_id,
           stub_const("#{Api::V0::ExchangeProductsController}::DEFAULT_PER_PAGE", 1)
         end
 
-        describe "when a specific page is requested" do
-          it "returns the requested page with paginated data" do
+        describe 'when a specific page is requested' do
+          it 'returns the requested page with paginated data' do
             api_get :index, exchange_id: exchange.id, page: 1
 
-            expect(json_response["products"].size).to(eq(1))
-            expect(json_response["pagination"]["results"]).to(eq(2))
-            expect(json_response["pagination"]["pages"]).to(eq(2))
+            expect(json_response['products'].size).to(eq(1))
+            expect(json_response['pagination']['results']).to(eq(2))
+            expect(json_response['pagination']['pages']).to(eq(2))
           end
         end
 
-        describe "when no specific page is requested" do
-          it "returns all results without paginating" do
+        describe 'when no specific page is requested' do
+          it 'returns all results without paginating' do
             api_get :index, exchange_id: exchange.id
 
-            expect(json_response["products"].size).to(eq(2))
-            expect(json_response["pagination"]).to(be(nil))
+            expect(json_response['products'].size).to(eq(2))
+            expect(json_response['pagination']).to(be(nil))
           end
         end
       end

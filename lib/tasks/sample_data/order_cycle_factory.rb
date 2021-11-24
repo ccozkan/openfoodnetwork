@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require "tasks/sample_data/logging"
+require 'tasks/sample_data/logging'
 
 module SampleData
   class OrderCycleFactory
     include Logging
     
     def create_samples
-      log("Creating order cycles")
+      log('Creating order cycles')
       create_order_cycle(
         "Freddy's Farm Shop OC",
         "Freddy's Farm Shop",
         ["Freddy's Farm Shop"],
         ["Freddy's Farm Shop"],
         receival_instructions: "Dear self, don't forget the keys.",
-        pickup_time: "the weekend",
-        pickup_instructions: "Bring your own shopping bags or boxes."
+        pickup_time: 'the weekend',
+        pickup_instructions: 'Bring your own shopping bags or boxes.'
       )
 
       create_order_cycle(
@@ -23,9 +23,9 @@ module SampleData
         "Fredo's Farm Hub",
         ["Fred's Farm", "Fredo's Farm Hub"],
         ["Fredo's Farm Hub"],
-        receival_instructions: "Under the shed, please.",
-        pickup_time: "Wednesday 2pm",
-        pickup_instructions: "Boxes for packaging under the roof."
+        receival_instructions: 'Under the shed, please.',
+        pickup_time: 'Wednesday 2pm',
+        pickup_instructions: 'Boxes for packaging under the roof.'
       )
 
       create_order_cycle(
@@ -33,17 +33,17 @@ module SampleData
         "Mary's Online Shop",
         ["Fred's Farm", "Freddy's Farm Shop", "Fredo's Farm Hub"],
         ["Mary's Online Shop"],
-        receival_instructions: "Please shut the gate.",
-        pickup_time: "midday"
+        receival_instructions: 'Please shut the gate.',
+        pickup_time: 'midday'
       )
 
       create_order_cycle(
-        "Multi Shop OC",
+        'Multi Shop OC',
         "Mary's Online Shop",
         ["Fred's Farm", "Freddy's Farm Shop", "Fredo's Farm Hub"],
         ["Mary's Online Shop", "Maryse's Private Shop"],
-        receival_instructions: "Please shut the gate.",
-        pickup_time: "dusk"
+        receival_instructions: 'Please shut the gate.',
+        pickup_time: 'dusk'
       )
     end
     

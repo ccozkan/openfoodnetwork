@@ -8,7 +8,7 @@ class OrderWorkflow
   end
 
   def complete
-    advance_to_state("complete", advance_order_options)
+    advance_to_state('complete', advance_order_options)
   end
 
   def complete!
@@ -24,11 +24,11 @@ class OrderWorkflow
   end
 
   def advance_to_payment
-    advance_to_state("payment", advance_order_options)
+    advance_to_state('payment', advance_order_options)
   end
 
   def advance_checkout(options = {})
-    advance_to = order.state.in?(["cart", "address", "delivery"]) ? "payment" : "confirmation"
+    advance_to = order.state.in?(['cart', 'address', 'delivery']) ? 'payment' : 'confirmation'
 
     advance_to_state(advance_to, advance_order_options.merge(options))
   end
@@ -37,7 +37,7 @@ class OrderWorkflow
 
   def advance_order_options
     shipping_method_id = order.shipping_method.id if order.shipping_method.present?
-    { "shipping_method_id" => shipping_method_id }
+    { 'shipping_method_id' => shipping_method_id }
   end
 
   def advance_to_state(target_state, options = {})
@@ -66,9 +66,9 @@ class OrderWorkflow
   end
 
   def after_transition_hook(options)
-    order.select_shipping_method(options["shipping_method_id"]) if order.state == "delivery"
+    order.select_shipping_method(options['shipping_method_id']) if order.state == 'delivery'
 
-    persist_all_payments if order.state == "payment"
+    persist_all_payments if order.state == 'payment'
   end
 
   # When a payment fails, the order state machine stays in 'payment' and rollbacks all transactions

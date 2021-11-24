@@ -12,15 +12,15 @@ module OpenFoodNetwork
     def variant_overrides_index_columns
       node = 'admin.variant_overrides.index'
       {
-        producer: { name: I18n.t("admin.producer"), visible: true },
-        product: { name: I18n.t("admin.product"), visible: true },
-        sku: { name: I18n.t("admin.sku"), visible: false },
-        price: { name: I18n.t("admin.price"), visible: true },
-        on_hand: { name: I18n.t("admin.on_hand"), visible: true },
-        on_demand: { name: I18n.t("admin.on_demand?"), visible: true },
+        producer: { name: I18n.t('admin.producer'), visible: true },
+        product: { name: I18n.t('admin.product'), visible: true },
+        sku: { name: I18n.t('admin.sku'), visible: false },
+        price: { name: I18n.t('admin.price'), visible: true },
+        on_hand: { name: I18n.t('admin.on_hand'), visible: true },
+        on_demand: { name: I18n.t('admin.on_demand?'), visible: true },
         reset: { name: I18n.t("#{node}.enable_reset?"), visible: false },
         inheritance: { name: I18n.t("#{node}.inherit?"), visible: false },
-        tags: { name: I18n.t("admin.tags"), visible: false },
+        tags: { name: I18n.t('admin.tags'), visible: false },
         visibility: { name: I18n.t("#{node}.hide"),           visible: false },
         import_date: { name: I18n.t("#{node}.import_date"),   visible: false }
       }
@@ -29,10 +29,10 @@ module OpenFoodNetwork
     def customers_index_columns
       node = 'admin.customers.index'
       {
-        email: { name: I18n.t("admin.email"), visible: true },
-        name: { name: I18n.t("admin.name"),           visible: true },
+        email: { name: I18n.t('admin.email'), visible: true },
+        name: { name: I18n.t('admin.name'),           visible: true },
         code: { name: I18n.t("#{node}.code"),         visible: true },
-        tags: { name: I18n.t("admin.tags"),           visible: true },
+        tags: { name: I18n.t('admin.tags'),           visible: true },
         bill_address: { name: I18n.t("#{node}.bill_address"), visible: true },
         ship_address: { name: I18n.t("#{node}.ship_address"), visible: true },
         balance: { name: I18n.t("#{node}.balance"), visible: true }
@@ -40,35 +40,35 @@ module OpenFoodNetwork
     end
 
     def orders_bulk_management_columns
-      node = "admin.orders.bulk_management"
+      node = 'admin.orders.bulk_management'
       {
         order_no: { name: I18n.t("#{node}.order_no"), visible: false },
-        full_name: { name: I18n.t("admin.name"), visible: true },
-        email: { name: I18n.t("admin.email"),            visible: false },
-        phone: { name: I18n.t("admin.phone"),            visible: false },
+        full_name: { name: I18n.t('admin.name'), visible: true },
+        email: { name: I18n.t('admin.email'),            visible: false },
+        phone: { name: I18n.t('admin.phone'),            visible: false },
         order_date: { name: I18n.t("#{node}.order_date"), visible: true },
-        producer: { name: I18n.t("admin.producer"), visible: true },
-        order_cycle: { name: I18n.t("admin.order_cycle"), visible: false },
-        hub: { name: I18n.t("admin.shop"), visible: false },
+        producer: { name: I18n.t('admin.producer'), visible: true },
+        order_cycle: { name: I18n.t('admin.order_cycle'), visible: false },
+        hub: { name: I18n.t('admin.shop'), visible: false },
         variant: { name: I18n.t("#{node}.product_unit"), visible: true },
-        quantity: { name: I18n.t("admin.quantity"), visible: true },
+        quantity: { name: I18n.t('admin.quantity'), visible: true },
         max: { name: I18n.t("#{node}.max"), visible: true },
         final_weight_volume: { name: I18n.t("#{node}.weight_volume"), visible: false },
-        price: { name: I18n.t("admin.price"), visible: false }
+        price: { name: I18n.t('admin.price'), visible: false }
       }
     end
 
     def products_index_columns
-      node = "spree.admin.products.index.products_head"
+      node = 'spree.admin.products.index.products_head'
       {
-        image: { name: I18n.t("admin.image"), visible: true },
-        producer: { name: I18n.t("admin.producer"), visible: true },
-        sku: { name: I18n.t("admin.sku"), visible: false },
-        name: { name: I18n.t("admin.name"),                    visible: true },
+        image: { name: I18n.t('admin.image'), visible: true },
+        producer: { name: I18n.t('admin.producer'), visible: true },
+        sku: { name: I18n.t('admin.sku'), visible: false },
+        name: { name: I18n.t('admin.name'),                    visible: true },
         unit: { name: I18n.t("#{node}.unit"),                  visible: true },
-        price: { name: I18n.t("admin.price"), visible: true },
-        on_hand: { name: I18n.t("admin.on_hand"), visible: true },
-        on_demand: { name: I18n.t("admin.on_demand"), visible: true },
+        price: { name: I18n.t('admin.price'), visible: true },
+        on_hand: { name: I18n.t('admin.on_hand'), visible: true },
+        on_demand: { name: I18n.t('admin.on_demand'), visible: true },
         category: { name: I18n.t("#{node}.category"), visible: false },
         tax_category: { name: I18n.t("#{node}.tax_category"), visible: false },
         inherits_properties: { name: I18n.t("#{node}.inherits_properties?"), visible: false },
@@ -78,9 +78,9 @@ module OpenFoodNetwork
     end
 
     def enterprises_index_columns
-      node = "admin.enterprises.index"
+      node = 'admin.enterprises.index'
       {
-        name: { name: I18n.t("admin.name"), visible: true },
+        name: { name: I18n.t('admin.name'), visible: true },
         producer: { name: I18n.t("#{node}.producer?"), visible: true },
         package: { name: I18n.t("#{node}.package"), visible: true },
         status: { name: I18n.t("#{node}.status"),     visible: true },
@@ -89,31 +89,31 @@ module OpenFoodNetwork
     end
 
     def order_cycles_index_columns
-      node = "admin.order_cycles.index"
+      node = 'admin.order_cycles.index'
       {
-        name: { name: I18n.t("admin.name"), visible: true },
+        name: { name: I18n.t('admin.name'), visible: true },
         schedules: { name: I18n.t("#{node}.schedules"), visible: true },
-        open: { name: I18n.t("open"), visible: true },
-        close: { name: I18n.t("close"), visible: true },
-        producers: { name: I18n.t("label_producers"), visible: false },
-        coordinator: { name: I18n.t("coordinator"), visible: true },
-        shops: { name: I18n.t("label_shops"), visible: false },
-        products: { name: I18n.t("products"), visible: true }
+        open: { name: I18n.t('open'), visible: true },
+        close: { name: I18n.t('close'), visible: true },
+        producers: { name: I18n.t('label_producers'), visible: false },
+        coordinator: { name: I18n.t('coordinator'), visible: true },
+        shops: { name: I18n.t('label_shops'), visible: false },
+        products: { name: I18n.t('products'), visible: true }
       }
     end
 
     def subscriptions_index_columns
-      _node = "admin.subscriptions.index"
+      _node = 'admin.subscriptions.index'
       {
-        customer: { name: I18n.t("admin.customer"),         visible: true },
-        schedule: { name: I18n.t("admin.schedule"),         visible: true },
-        items: { name: I18n.t("items"), visible: true },
-        orders: { name: I18n.t("orders"), visible: true },
-        state: { name: I18n.t("admin.status_state"), visible: true },
-        begins_on: { name: I18n.t("admin.begins_on"), visible: false },
-        ends_on: { name: I18n.t("admin.ends_on"), visible: false },
-        payment_method: { name: I18n.t("admin.payment_method"), visible: false },
-        shipping_method: { name: I18n.t("admin.shipping_method"), visible: false }
+        customer: { name: I18n.t('admin.customer'),         visible: true },
+        schedule: { name: I18n.t('admin.schedule'),         visible: true },
+        items: { name: I18n.t('items'), visible: true },
+        orders: { name: I18n.t('orders'), visible: true },
+        state: { name: I18n.t('admin.status_state'), visible: true },
+        begins_on: { name: I18n.t('admin.begins_on'), visible: false },
+        ends_on: { name: I18n.t('admin.ends_on'), visible: false },
+        payment_method: { name: I18n.t('admin.payment_method'), visible: false },
+        shipping_method: { name: I18n.t('admin.shipping_method'), visible: false }
       }
     end
   end

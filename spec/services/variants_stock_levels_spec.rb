@@ -19,13 +19,13 @@ describe VariantsStockLevels do
     order.reload
   end
 
-  it "returns a hash with variant id, quantity, max_quantity, on hand and on demand" do
+  it 'returns a hash with variant id, quantity, max_quantity, on hand and on demand' do
     expect(variant_stock_levels.call(order, [variant_in_the_order.id])).to(eq(
       variant_in_the_order.id => { quantity: 2, max_quantity: 3, on_hand: 4, on_demand: false }
     ))
   end
 
-  it "includes all line items, even when the variant_id is not specified" do
+  it 'includes all line items, even when the variant_id is not specified' do
     expect(variant_stock_levels.call(order, [])).to(eq(
       variant_in_the_order.id => { quantity: 2, max_quantity: 3, on_hand: 4, on_demand: false }
     ))
@@ -39,19 +39,19 @@ describe VariantsStockLevels do
     ))
   end
 
-  describe "when variant is on_demand" do
+  describe 'when variant is on_demand' do
     let!(:variant_in_the_order) { create(:variant, on_demand: true) }
 
     before { variant_in_the_order.on_hand = 0 }
 
-    it "includes the actual on_hand value and on_demand: true" do
+    it 'includes the actual on_hand value and on_demand: true' do
       expect(variant_stock_levels.call(order, [variant_in_the_order.id])).to(eq(
         variant_in_the_order.id => { quantity: 2, max_quantity: 3, on_hand: 0, on_demand: true }
       ))
     end
   end
 
-  describe "when the variant has an override" do
+  describe 'when the variant has an override' do
     let!(:distributor) { create(:distributor_enterprise) }
     let(:supplier) { variant_in_the_order.product.supplier }
     let!(:order_cycle) do
@@ -85,8 +85,8 @@ hub: distributor,
       order.save
     end
 
-    context "when the variant is in the order" do
-      it "returns the on_hand value of the override" do
+    context 'when the variant is in the order' do
+      it 'returns the on_hand value of the override' do
         expect(variant_stock_levels.call(order, [variant_in_the_order.id])).to(eq(
           variant_in_the_order.id => {
             quantity: 2, max_quantity: 3, on_hand: 200, on_demand: false
@@ -95,8 +95,8 @@ hub: distributor,
       end
     end
 
-    context "with variants that are not in the order" do
-      it "returns the on_hand value of the override" do
+    context 'with variants that are not in the order' do
+      it 'returns the on_hand value of the override' do
         variant_ids = [variant_in_the_order.id, variant_not_in_the_order.id]
         expect(variant_stock_levels.call(order, variant_ids)).to(eq(
           variant_in_the_order.id => {

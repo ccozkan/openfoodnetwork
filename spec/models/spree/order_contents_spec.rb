@@ -7,7 +7,7 @@ describe Spree::OrderContents do
   let!(:variant) { create(:variant) }
   subject { described_class.new(order) }
 
-  context "#add" do
+  context '#add' do
     context 'given quantity is not explicitly provided' do
       it 'should add one line item' do
         line_item = subject.add(variant)
@@ -29,7 +29,7 @@ describe Spree::OrderContents do
       expect(order.line_items.size).to(eq(1))
     end
 
-    it "should update order totals" do
+    it 'should update order totals' do
       expect(order.item_total.to_f).to(eq(0.00))
       expect(order.total.to_f).to(eq(0.00))
 
@@ -40,9 +40,9 @@ describe Spree::OrderContents do
     end
   end
 
-  context "#remove" do
-    context "given an invalid variant" do
-      it "raises an exception" do
+  context '#remove' do
+    context 'given an invalid variant' do
+      it 'raises an exception' do
         expect do
           subject.remove(variant, 1)
         end.to(raise_error(ActiveRecord::RecordNotFound))
@@ -73,7 +73,7 @@ describe Spree::OrderContents do
       expect(order.reload.find_line_item_by_variant(variant)).to(be_nil)
     end
 
-    it "should update order totals" do
+    it 'should update order totals' do
       expect(order.item_total.to_f).to(eq(0.00))
       expect(order.total.to_f).to(eq(0.00))
 
@@ -88,54 +88,54 @@ describe Spree::OrderContents do
     end
   end
 
-  context "#update_cart" do
+  context '#update_cart' do
     let!(:line_item) { subject.add(variant, 1) }
 
     let(:params) do
       {
 line_items_attributes: {
-        "0" => { id: line_item.id, quantity: 3 }
+        '0' => { id: line_item.id, quantity: 3 }
       }
 }
     end
 
-    it "changes item quantity" do
+    it 'changes item quantity' do
       subject.update_cart(params)
       expect(line_item.reload.quantity).to(eq(3))
     end
 
-    it "updates order totals" do
+    it 'updates order totals' do
       expect do
         subject.update_cart(params)
       end.to(change { subject.order.total })
     end
 
-    context "submits item quantity 0" do
+    context 'submits item quantity 0' do
       let(:params) do
         {
 line_items_attributes: {
-          "0" => { id: line_item.id, quantity: 0 }
+          '0' => { id: line_item.id, quantity: 0 }
         }
 }
       end
 
-      it "removes item from order" do
+      it 'removes item from order' do
         expect do
           subject.update_cart(params)
         end.to(change { order.line_items.count })
       end
     end
 
-    it "ensures updated shipments" do
+    it 'ensures updated shipments' do
       expect(subject.order).to(receive(:ensure_updated_shipments))
       subject.update_cart(params)
     end
   end
 
-  describe "#update_item" do
+  describe '#update_item' do
     let!(:line_item) { subject.add(variant, 1) }
 
-    context "updating enterprise fees" do
+    context 'updating enterprise fees' do
       it "updates the line item's enterprise fees" do
         expect(order).to(receive(:update_line_item_fees!).with(line_item))
 
@@ -156,22 +156,22 @@ line_items_attributes: {
       end
     end
 
-    it "ensures updated shipments" do
+    it 'ensures updated shipments' do
       expect(order).to(receive(:ensure_updated_shipments))
 
       subject.update_item(line_item, { quantity: 3 })
     end
 
-    it "updates the order" do
+    it 'updates the order' do
       expect(order).to(receive(:update_order!))
 
       subject.update_item(line_item, { quantity: 3 })
     end
   end
 
-  describe "#update_or_create" do
-    describe "creating" do
-      it "creates a new line item with given attributes" do
+  describe '#update_or_create' do
+    describe 'creating' do
+      it 'creates a new line item with given attributes' do
         subject.update_or_create(variant, { quantity: 2, max_quantity: 3 })
 
         line_item = order.line_items.reload.first
@@ -181,10 +181,10 @@ line_items_attributes: {
       end
     end
 
-    describe "updating" do
+    describe 'updating' do
       let!(:line_item) { subject.add(variant, 2) }
 
-      it "updates existing line item with given attributes" do
+      it 'updates existing line item with given attributes' do
         subject.update_or_create(variant, { quantity: 3, max_quantity: 4 })
 
         expect(line_item.reload.quantity).to(eq(3))

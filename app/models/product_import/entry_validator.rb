@@ -218,7 +218,7 @@ attribute: 'variant_unit_name',
       reference_entry = all_entries_for_product(entry).first
       return if entry.unit_type.to_s == reference_entry.unit_type.to_s
 
-      mark_as_not_updatable(entry, "unit_type")
+      mark_as_not_updatable(entry, 'unit_type')
     end
 
     def validate_variant_unit_name_unchanged(entry)
@@ -227,7 +227,7 @@ attribute: 'variant_unit_name',
       reference_entry = all_entries_for_product(entry).first
       return if entry.variant_unit_name.to_s == reference_entry.variant_unit_name.to_s
 
-      mark_as_not_updatable(entry, "variant_unit_name")
+      mark_as_not_updatable(entry, 'variant_unit_name')
     end
 
     def producer_validation(entry)
@@ -236,7 +236,7 @@ attribute: 'variant_unit_name',
       if producer_name.blank?
         mark_as_invalid(
 entry,
-attribute: "producer",
+attribute: 'producer',
        error: I18n.t('admin.product_import.model.blank')
 )
         return
@@ -246,7 +246,7 @@ attribute: "producer",
         model_not_found = I18n.t('admin.product_import.model.not_found')
         mark_as_invalid(
 entry,
-attribute: "producer",
+attribute: 'producer',
        error: "\"#{producer_name}\" #{model_not_found}"
 )
         return
@@ -260,7 +260,7 @@ attribute: "producer",
         inventory_no_permission = I18n.t('admin.product_import.model.inventory_no_permission')
         mark_as_invalid(
 entry,
-attribute: "producer",
+attribute: 'producer',
        error: "\"#{producer_name}\": #{inventory_no_permission}"
 )
         return
@@ -312,7 +312,7 @@ attribute: 'product',
       category_name = entry.category
 
       if category_name.blank?
-        mark_as_invalid(entry, attribute: "category", error: I18n.t(:error_required))
+        mark_as_invalid(entry, attribute: 'category', error: I18n.t(:error_required))
         return
       end
 
@@ -321,7 +321,7 @@ attribute: 'product',
       else
         mark_as_invalid(
 entry,
-attribute: "category",
+attribute: 'category',
        error: I18n.t(:error_not_found_in_database, name: category_name)
 )
       end
@@ -344,7 +344,7 @@ attribute: "#{type}_category",
     def shipping_presence_validation(entry)
       return if entry.shipping_category_id
 
-      mark_as_invalid(entry, attribute: "shipping_category", error: I18n.t(:error_required))
+      mark_as_invalid(entry, attribute: 'shipping_category', error: I18n.t(:error_required))
     end
 
     def product_validation(entry)
@@ -473,7 +473,7 @@ attribute: display_name,
       mark_as_invalid(
 entry,
 attribute: attribute,
-       error: I18n.t("admin.product_import.model.not_updatable")
+       error: I18n.t('admin.product_import.model.not_updatable')
 )
     end
 

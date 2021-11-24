@@ -97,7 +97,7 @@ module Admin
 { proxy_orders: { order: :order_cycle } }
 ])
       else
-        Subscription.where("1=0")
+        Subscription.where('1=0')
       end
     end
 
@@ -118,7 +118,7 @@ module Admin
       if raw_params[:subscription_line_items].is_a?(Array)
         attributes =
  raw_params[:subscription_line_items].map do |sli|
-          sli.slice(*SubscriptionLineItem.attribute_names + ["_destroy"])
+          sli.slice(*SubscriptionLineItem.attribute_names + ['_destroy'])
         end
         subscription_params[:subscription_line_items_attributes] = attributes
       end

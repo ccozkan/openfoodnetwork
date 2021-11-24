@@ -6,10 +6,10 @@ describe ' As an admin I want to manage product variants ' do
   include AuthenticationHelper
   include WebHelper
 
-  describe "new variant", js: true do
-    it "creating a new variant" do
+  describe 'new variant', js: true do
+    it 'creating a new variant' do
       # Given a product with a unit-related option type
-      product = create(:simple_product, variant_unit: "weight", variant_unit_scale: "1")
+      product = create(:simple_product, variant_unit: 'weight', variant_unit_scale: '1')
 
       # When I create a variant on the product
       login_as_admin_and_visit spree.admin_product_variants_path(product)
@@ -23,9 +23,9 @@ describe ' As an admin I want to manage product variants ' do
       expect(page).to(have_content("Variant \"#{product.name}\" has been successfully created!"))
     end
 
-    it "creating a new variant from product variant page with filter" do
+    it 'creating a new variant from product variant page with filter' do
       # Given a product with a unit-related option type
-      product = create(:simple_product, variant_unit: "weight", variant_unit_scale: "1")
+      product = create(:simple_product, variant_unit: 'weight', variant_unit_scale: '1')
       filter = { producerFilter: 2 }
 
       # When I create a variant on the product
@@ -44,10 +44,10 @@ describe ' As an admin I want to manage product variants ' do
     end
   end
 
-  describe "viewing product variant" do
-    it "when the product page has a product filter" do
+  describe 'viewing product variant' do
+    it 'when the product page has a product filter' do
       # Given a product with a unit-related option type
-      product = create(:simple_product, variant_unit: "weight", variant_unit_scale: "1")
+      product = create(:simple_product, variant_unit: 'weight', variant_unit_scale: '1')
       filter = { producerFilter: 2 }
 
       # When I create a variant on the product
@@ -58,12 +58,12 @@ describe ' As an admin I want to manage product variants ' do
       expected_new_url = Regexp.new(
         Regexp.escape(spree.new_admin_product_variant_path(product, filter))
       )
-      expect(page).to(have_link("New Variant", href: expected_new_url))
+      expect(page).to(have_link('New Variant', href: expected_new_url))
 
       expected_show_delete_url = Regexp.new(
         Regexp.escape(spree.admin_product_variants_path(product, { deleted: 'on' }.merge(filter)))
       )
-      expect(page).to(have_link("Show Deleted", href: expected_show_delete_url))
+      expect(page).to(have_link('Show Deleted', href: expected_show_delete_url))
 
       # Variant link should include product filter
       variant = product.variants.first
@@ -80,9 +80,9 @@ describe ' As an admin I want to manage product variants ' do
     end
   end
 
-  describe "editing unit value and description for a variant", js: true do
-    it "when the product variant page has product filter" do
-      product = create(:simple_product, variant_unit: "weight", variant_unit_scale: "1")
+  describe 'editing unit value and description for a variant', js: true do
+    it 'when the product variant page has product filter' do
+      product = create(:simple_product, variant_unit: 'weight', variant_unit_scale: '1')
       filter = { producerFilter: 2 }
 
       # When I create a variant on the product
@@ -96,9 +96,9 @@ describe ' As an admin I want to manage product variants ' do
       expect(page).to(have_link(I18n.t('actions.cancel'), href: expected_cancel_url))
     end
 
-    it "when variant_unit is weight" do
+    it 'when variant_unit is weight' do
       # Given a product with unit-related option types, with a variant
-      product = create(:simple_product, variant_unit: "weight", variant_unit_scale: "1")
+      product = create(:simple_product, variant_unit: 'weight', variant_unit_scale: '1')
       variant = product.variants.first
       variant.update(unit_value: 1, unit_description: 'foo')
 
@@ -113,12 +113,12 @@ describe ' As an admin I want to manage product variants ' do
       expect(page).to(have_no_selector("div[data-hook='presentation'] input"))
 
       # And I should see unit value and description fields for the unit-related option value
-      expect(page).to(have_field("unit_value_human", with: "1"))
-      expect(page).to(have_field("variant_unit_description", with: "foo"))
+      expect(page).to(have_field('unit_value_human', with: '1'))
+      expect(page).to(have_field('variant_unit_description', with: 'foo'))
 
       # When I update the fields and save the variant
-      fill_in "unit_value_human", with: "123"
-      fill_in "variant_unit_description", with: "bar"
+      fill_in 'unit_value_human', with: '123'
+      fill_in 'variant_unit_description', with: 'bar'
       click_button 'Update'
       expect(page).to(have_content(%(Variant "#{product.name}" has been successfully updated!)))
 
@@ -127,24 +127,24 @@ describe ' As an admin I want to manage product variants ' do
       expect(variant.unit_description).to(eq('bar'))
     end
 
-    it "can update unit_description when variant_unit is items" do
-      product = create(:simple_product, variant_unit: "items", variant_unit_name: "bunches")
+    it 'can update unit_description when variant_unit is items' do
+      product = create(:simple_product, variant_unit: 'items', variant_unit_name: 'bunches')
       variant = product.variants.first
       variant.update(unit_description: 'foo')
 
       login_as_admin_and_visit spree.edit_admin_product_variant_path(product, variant)
 
-      expect(page).to_not(have_field("unit_value_human"))
-      expect(page).to(have_field("variant_unit_description", with: "foo"))
+      expect(page).to_not(have_field('unit_value_human'))
+      expect(page).to(have_field('variant_unit_description', with: 'foo'))
 
-      fill_in "variant_unit_description", with: "bar"
+      fill_in 'variant_unit_description', with: 'bar'
       click_button 'Update'
       expect(page).to(have_content(%(Variant "#{product.name}" has been successfully updated!)))
       expect(variant.reload.unit_description).to(eq('bar'))
     end
   end
 
-  describe "editing on hand and on demand values", js: true do
+  describe 'editing on hand and on demand values', js: true do
     let(:product) { create(:simple_product) }
     let(:variant) { product.variants.first }
 
@@ -152,40 +152,40 @@ describe ' As an admin I want to manage product variants ' do
       login_to_admin_section
     end
 
-    it "allows changing the on_hand value" do
+    it 'allows changing the on_hand value' do
       visit spree.edit_admin_product_variant_path(product, variant)
 
-      expect(page).to(have_field("variant_on_hand", with: variant.on_hand))
-      expect(page).to(have_unchecked_field("variant_on_demand"))
+      expect(page).to(have_field('variant_on_hand', with: variant.on_hand))
+      expect(page).to(have_unchecked_field('variant_on_demand'))
 
-      fill_in "variant_on_hand", with: "123"
+      fill_in 'variant_on_hand', with: '123'
       click_button 'Update'
       expect(page).to(have_content(%(Variant "#{product.name}" has been successfully updated!)))
     end
 
-    it "allows changing the on_demand value" do
+    it 'allows changing the on_demand value' do
       visit spree.edit_admin_product_variant_path(product, variant)
-      check "variant_on_demand"
+      check 'variant_on_demand'
 
       # on_hand reflects the change in on_demand
-      expect(page).to(have_field("variant_on_hand", with: "Infinity", disabled: true))
+      expect(page).to(have_field('variant_on_hand', with: 'Infinity', disabled: true))
 
       click_button 'Update'
       expect(page).to(have_content(%(Variant "#{product.name}" has been successfully updated!)))
     end
 
-    it "memorizes on_hand value previously entered if enabling and disabling on_demand" do
+    it 'memorizes on_hand value previously entered if enabling and disabling on_demand' do
       visit spree.edit_admin_product_variant_path(product, variant)
-      fill_in "variant_on_hand", with: "123"
-      check "variant_on_demand"
-      uncheck "variant_on_demand"
+      fill_in 'variant_on_hand', with: '123'
+      check 'variant_on_demand'
+      uncheck 'variant_on_demand'
 
       # on_hand shows the memorized value, not the original DB value
-      expect(page).to(have_field("variant_on_hand", with: "123"))
+      expect(page).to(have_field('variant_on_hand', with: '123'))
     end
   end
 
-  it "soft-deletes variants", js: true do
+  it 'soft-deletes variants', js: true do
     product = create(:simple_product)
     variant = create(:variant, product: product)
 
@@ -201,7 +201,7 @@ describe ' As an admin I want to manage product variants ' do
     expect(variant.reload.deleted_at).not_to(be_nil)
   end
 
-  it "editing display name for a variant", js: true do
+  it 'editing display name for a variant', js: true do
     product = create(:simple_product)
     variant = product.variants.first
 
@@ -210,17 +210,17 @@ describe ' As an admin I want to manage product variants ' do
     page.find('table.index .icon-edit').click
 
     # It should allow the display name to be changed
-    expect(page).to(have_field("variant_display_name"))
-    expect(page).to(have_field("variant_display_as"))
+    expect(page).to(have_field('variant_display_name'))
+    expect(page).to(have_field('variant_display_as'))
 
     # When I update the fields and save the variant
-    fill_in "variant_display_name", with: "Display Name"
-    fill_in "variant_display_as", with: "Display As This"
+    fill_in 'variant_display_name', with: 'Display Name'
+    fill_in 'variant_display_as', with: 'Display As This'
     click_button 'Update'
     expect(page).to(have_content(%(Variant "#{product.name}" has been successfully updated!)))
 
     # Then the displayed values should have been saved
-    expect(variant.reload.display_name).to(eq("Display Name"))
-    expect(variant.display_as).to(eq("Display As This"))
+    expect(variant.reload.display_name).to(eq('Display Name'))
+    expect(variant.display_as).to(eq('Display As This'))
   end
 end

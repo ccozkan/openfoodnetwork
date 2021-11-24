@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Admin::InvoiceSettingsController, type: :controller do
-  describe "#update" do
+  describe '#update' do
     let(:params) do
       {
         preferences: {
@@ -18,7 +18,7 @@ describe Admin::InvoiceSettingsController, type: :controller do
       allow(controller).to(receive(:spree_current_user) { create(:admin_user) })
     end
 
-    it "disables invoices" do
+    it 'disables invoices' do
       expect do
         post(:update, params: params)
       end.to(change {
@@ -26,7 +26,7 @@ describe Admin::InvoiceSettingsController, type: :controller do
       }.to(false))
     end
 
-    it "changes the invoice style" do
+    it 'changes the invoice style' do
       expect do
         post(:update, params: params)
       end.to(change {
@@ -34,7 +34,7 @@ describe Admin::InvoiceSettingsController, type: :controller do
       }.to(true))
     end
 
-    it "disables receipt printing" do
+    it 'disables receipt printing' do
       expect do
         post(:update, params: params)
       end.to(change {

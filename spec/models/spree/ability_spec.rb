@@ -205,7 +205,7 @@ describe Spree::Ability do
     end
   end
 
-  describe "broad permissions" do
+  describe 'broad permissions' do
     let(:user) { create(:user) }
     let(:enterprise_any) { create(:enterprise, sells: 'any') }
     let(:enterprise_own) { create(:enterprise, sells: 'own') }
@@ -274,7 +274,7 @@ describe Spree::Ability do
         user.enterprise_roles.create!(enterprise: enterprise_none_producer)
       end
 
-      context "as a non profile" do
+      context 'as a non profile' do
         before do
           enterprise_none_producer.is_primary_producer = true
           enterprise_none_producer.producer_profile_only = false
@@ -287,7 +287,7 @@ describe Spree::Ability do
         it { expect(subject.can_manage_order_cycles?(user)).to(be(false)) }
       end
 
-      context "as a profile" do
+      context 'as a profile' do
         before do
           enterprise_none_producer.is_primary_producer = true
           enterprise_none_producer.producer_profile_only = true
@@ -301,13 +301,13 @@ describe Spree::Ability do
       end
     end
 
-    context "as a new user with no enterprises" do
+    context 'as a new user with no enterprises' do
       it { expect(subject.can_manage_products?(user)).to(be(false)) }
       it { expect(subject.can_manage_enterprises?(user)).to(be(false)) }
       it { expect(subject.can_manage_orders?(user)).to(be(false)) }
       it { expect(subject.can_manage_order_cycles?(user)).to(be(false)) }
 
-      it "can create enterprises straight off the bat" do
+      it 'can create enterprises straight off the bat' do
         expect(subject.is_new_user?(user)).to(be(true))
         expect(user).to(have_ability(:create, for: Enterprise))
       end
@@ -342,7 +342,7 @@ child: s1,
     subject { user }
     let(:user) { nil }
 
-    context "when is a supplier enterprise user" do
+    context 'when is a supplier enterprise user' do
       # create supplier_enterprise1 user without full admin access
       let(:user) do
         user = create(:user)
@@ -385,11 +385,11 @@ child: s1,
 ))
       end
 
-      it "should not be able to access admin actions on orders" do
+      it 'should not be able to access admin actions on orders' do
         is_expected.not_to(have_ability([:admin], for: Spree::Order))
       end
 
-      it "should be able to create a new product" do
+      it 'should be able to create a new product' do
         is_expected.to(have_ability(:create, for: Spree::Product))
       end
 
@@ -439,11 +439,11 @@ for: Spree::ProductProperty
 ))
       end
 
-      it "should be able to read Taxons (in order to create classifications)" do
+      it 'should be able to read Taxons (in order to create classifications)' do
         is_expected.to(have_ability([:admin, :index, :read, :search], for: Spree::Taxon))
       end
 
-      it "should be able to read/write Classifications on a product" do
+      it 'should be able to read/write Classifications on a product' do
         is_expected.to(have_ability(
 [:admin, :index, :read, :create, :edit],
                                     for: Spree::Classification
@@ -465,23 +465,23 @@ for: ProducerProperty
         ))
       end
 
-      it "should be able to read and create enterprise relationships" do
+      it 'should be able to read and create enterprise relationships' do
         is_expected.to(have_ability([:admin, :index, :create], for: EnterpriseRelationship))
       end
 
-      it "should be able to destroy enterprise relationships for its enterprises" do
+      it 'should be able to destroy enterprise relationships for its enterprises' do
         is_expected.to(have_ability(:destroy, for: er1))
       end
 
-      it "should be able to destroy enterprise relationships for other enterprises that are linked as child" do
+      it 'should be able to destroy enterprise relationships for other enterprises that are linked as child' do
         is_expected.to(have_ability(:destroy, for: er2))
       end
 
-      it "should not be able to destroy enterprise relationships for other enterprises" do
+      it 'should not be able to destroy enterprise relationships for other enterprises' do
         is_expected.not_to(have_ability(:destroy, for: er3))
       end
 
-      it "should be able to read some reports" do
+      it 'should be able to read some reports' do
         is_expected.to(have_ability(
           [
 :admin,
@@ -496,9 +496,9 @@ for: Spree::Admin::ReportsController
         ))
       end
 
-      include_examples "allows access to Enterprise Fee Summary"
+      include_examples 'allows access to Enterprise Fee Summary'
 
-      it "should not be able to read other reports" do
+      it 'should not be able to read other reports' do
         is_expected.not_to(have_ability(
           [
 :group_buys,
@@ -511,35 +511,35 @@ for: Spree::Admin::ReportsController
         ))
       end
 
-      it "should not be able to access customer actions" do
+      it 'should not be able to access customer actions' do
         is_expected.not_to(have_ability([:admin, :index, :update], for: Customer))
       end
 
-      describe "order_cycles abilities" do
-        context "where the enterprise is not in an order_cycle" do
+      describe 'order_cycles abilities' do
+        context 'where the enterprise is not in an order_cycle' do
           let!(:order_cycle) { create(:simple_order_cycle) }
 
-          it "should not be able to access read/update order_cycle actions" do
+          it 'should not be able to access read/update order_cycle actions' do
             is_expected.not_to(have_ability(
 [:admin, :index, :read, :edit, :update],
                                             for: order_cycle
 ))
           end
 
-          it "should not be able to access bulk_update, clone order cycle actions" do
+          it 'should not be able to access bulk_update, clone order cycle actions' do
             is_expected.not_to(have_ability([:bulk_update, :clone], for: order_cycle))
           end
 
-          it "cannot request permitted enterprises for an order cycle" do
+          it 'cannot request permitted enterprises for an order cycle' do
             is_expected.not_to(have_ability([:for_order_cycle], for: Enterprise))
           end
 
-          it "cannot request permitted enterprise fees for an order cycle" do
+          it 'cannot request permitted enterprise fees for an order cycle' do
             is_expected.not_to(have_ability([:for_order_cycle], for: EnterpriseFee))
           end
         end
 
-        context "where the enterprise is in an order_cycle" do
+        context 'where the enterprise is in an order_cycle' do
           let!(:order_cycle) { create(:simple_order_cycle) }
           let!(:exchange) do
             create(
@@ -551,26 +551,26 @@ receiver: order_cycle.coordinator,
 )
           end
 
-          it "should be able to access read/update order cycle actions" do
+          it 'should be able to access read/update order cycle actions' do
             is_expected.to(have_ability([:admin, :index, :read, :edit, :update], for: order_cycle))
           end
 
-          it "should not be able to access bulk/update, clone order cycle actions" do
+          it 'should not be able to access bulk/update, clone order cycle actions' do
             is_expected.not_to(have_ability([:bulk_update, :clone], for: order_cycle))
           end
 
-          it "can request permitted enterprises for an order cycle" do
+          it 'can request permitted enterprises for an order cycle' do
             is_expected.to(have_ability([:for_order_cycle], for: Enterprise))
           end
 
-          it "can request permitted enterprise fees for an order cycle" do
+          it 'can request permitted enterprise fees for an order cycle' do
             is_expected.to(have_ability([:for_order_cycle], for: EnterpriseFee))
           end
         end
       end
     end
 
-    context "when is a distributor enterprise user" do
+    context 'when is a distributor enterprise user' do
       let(:user) do
         user = create(:user)
         user.spree_roles = []
@@ -594,7 +594,7 @@ receiver: order_cycle.coordinator,
         o
       end
 
-      describe "editing enterprises" do
+      describe 'editing enterprises' do
         let!(:d_related) { create(:distributor_enterprise) }
         let!(:er_pd) do
           create(
@@ -605,7 +605,7 @@ child: d1,
 )
         end
 
-        it "should be able to edit enterprises it manages" do
+        it 'should be able to edit enterprises it manages' do
           is_expected.to(have_ability(
             [
 :read,
@@ -621,7 +621,7 @@ for: d1
           ))
         end
 
-        it "should be able to edit enterprises it has permission to" do
+        it 'should be able to edit enterprises it has permission to' do
           is_expected.to(have_ability(
             [
 :read,
@@ -637,13 +637,13 @@ for: d_related
           ))
         end
 
-        it "should be able to manage shipping methods, payment methods and enterprise fees for enterprises it manages" do
+        it 'should be able to manage shipping methods, payment methods and enterprise fees for enterprises it manages' do
           is_expected.to(have_ability(
             [:manage_shipping_methods, :manage_payment_methods, :manage_enterprise_fees], for: d1
           ))
         end
 
-        it "should not be able to manage shipping methods, payment methods and enterprise fees for enterprises it has edit profile permission to" do
+        it 'should not be able to manage shipping methods, payment methods and enterprise fees for enterprises it has edit profile permission to' do
           is_expected.not_to(have_ability(
             [
 :manage_shipping_methods,
@@ -655,7 +655,7 @@ for: d_related
         end
       end
 
-      describe "variant overrides" do
+      describe 'variant overrides' do
         let(:vo1) { create(:variant_override, hub: d1, variant: p1.master) }
         let(:vo2) { create(:variant_override, hub: d1, variant: p2.master) }
         let(:vo3) { create(:variant_override, hub: d2, variant: p1.master) }
@@ -670,14 +670,14 @@ child: d1,
 )
         end
 
-        it "should be able to access variant overrides page" do
+        it 'should be able to access variant overrides page' do
           is_expected.to(have_ability(
 [:admin, :index, :bulk_update, :bulk_reset],
                                       for: VariantOverride
 ))
         end
 
-        it "should be able to read/write their own variant overrides" do
+        it 'should be able to read/write their own variant overrides' do
           is_expected.to(have_ability([:admin, :index, :read, :update], for: vo1))
         end
 
@@ -702,81 +702,81 @@ child: d1,
         is_expected.not_to(have_ability([:admin, :index, :read, :edit], for: o2))
       end
 
-      it "should be able to read/write orders that are in the process of being created" do
+      it 'should be able to read/write orders that are in the process of being created' do
         is_expected.to(have_ability([:admin, :index, :read, :edit], for: o3))
       end
 
-      it "should be able to create and search on nil (required for creating an order)" do
+      it 'should be able to create and search on nil (required for creating an order)' do
         is_expected.to(have_ability([:create, :search], for: nil))
       end
 
-      it "should be able to create a new order" do
+      it 'should be able to create a new order' do
         is_expected.to(have_ability([:admin, :index, :read, :create, :update], for: Spree::Order))
       end
 
-      it "should be able to create a new line item" do
+      it 'should be able to create a new line item' do
         is_expected.to(have_ability([:admin, :create], for: Spree::LineItem))
       end
 
-      it "should be able to read/write Payments on a product" do
+      it 'should be able to read/write Payments on a product' do
         is_expected.to(have_ability(
 [:admin, :index, :read, :create, :edit, :update, :fire],
                                     for: Spree::Payment
 ))
       end
 
-      it "should be able to read/write Shipments on a product" do
+      it 'should be able to read/write Shipments on a product' do
         is_expected.to(have_ability(
 [:admin, :index, :read, :create, :edit, :update, :fire],
                                     for: Spree::Shipment
 ))
       end
 
-      it "should be able to read/write Adjustments on a product" do
+      it 'should be able to read/write Adjustments on a product' do
         is_expected.to(have_ability(
 [:admin, :index, :read, :create, :edit, :update, :fire],
                                     for: Spree::Adjustment
 ))
       end
 
-      it "should be able to read/write ReturnAuthorizations on a product" do
+      it 'should be able to read/write ReturnAuthorizations on a product' do
         is_expected.to(have_ability(
 [:admin, :index, :read, :create, :edit, :update, :fire],
                                     for: Spree::ReturnAuthorization
 ))
       end
 
-      it "should be able to read/write PaymentMethods" do
+      it 'should be able to read/write PaymentMethods' do
         is_expected.to(have_ability(
 [:admin, :index, :create, :update, :destroy],
                                     for: Spree::PaymentMethod
 ))
       end
 
-      it "should be able to read/write ShippingMethods" do
+      it 'should be able to read/write ShippingMethods' do
         is_expected.to(have_ability(
 [:admin, :index, :create, :update, :destroy],
                                     for: Spree::ShippingMethod
 ))
       end
 
-      it "should be able to read and create enterprise relationships" do
+      it 'should be able to read and create enterprise relationships' do
         is_expected.to(have_ability([:admin, :index, :create], for: EnterpriseRelationship))
       end
 
-      it "should be able to destroy enterprise relationships for its enterprises" do
+      it 'should be able to destroy enterprise relationships for its enterprises' do
         is_expected.to(have_ability(:destroy, for: er2))
       end
 
-      it "should be able to destroy enterprise relationships for other enterprises that are linked as child" do
+      it 'should be able to destroy enterprise relationships for other enterprises that are linked as child' do
         is_expected.to(have_ability(:destroy, for: er1))
       end
 
-      it "should not be able to destroy enterprise relationships for other enterprises" do
+      it 'should not be able to destroy enterprise relationships for other enterprises' do
         is_expected.not_to(have_ability(:destroy, for: er3))
       end
 
-      it "should be able to read some reports" do
+      it 'should be able to read some reports' do
         is_expected.to(have_ability(
           [
 :admin,
@@ -796,20 +796,20 @@ for: Spree::Admin::ReportsController
         ))
       end
 
-      include_examples "allows access to Enterprise Fee Summary"
+      include_examples 'allows access to Enterprise Fee Summary'
 
-      it "should not be able to read other reports" do
+      it 'should not be able to read other reports' do
         is_expected.not_to(have_ability(
 [:users_and_enterprises],
                                         for: Spree::Admin::ReportsController
 ))
       end
 
-      it "should be able to access customer actions" do
+      it 'should be able to access customer actions' do
         is_expected.to(have_ability([:admin, :index, :update], for: Customer))
       end
 
-      context "for a given order_cycle" do
+      context 'for a given order_cycle' do
         let!(:order_cycle) { create(:simple_order_cycle, coordinator: d2) }
         let!(:exchange) do
           create(
@@ -821,20 +821,20 @@ receiver: d1,
 )
         end
 
-        it "should be able to access read and update order cycle actions" do
+        it 'should be able to access read and update order cycle actions' do
           is_expected.to(have_ability([:admin, :index, :read, :edit, :update], for: order_cycle))
         end
 
-        it "should not be able to access bulk_update, clone order cycle actions" do
+        it 'should not be able to access bulk_update, clone order cycle actions' do
           is_expected.not_to(have_ability([:bulk_update, :clone], for: order_cycle))
         end
       end
 
-      it "can request permitted enterprises for an order cycle" do
+      it 'can request permitted enterprises for an order cycle' do
         is_expected.to(have_ability([:for_order_cycle], for: Enterprise))
       end
 
-      it "can request permitted enterprise fees for an order cycle" do
+      it 'can request permitted enterprise fees for an order cycle' do
         is_expected.to(have_ability([:for_order_cycle], for: EnterpriseFee))
       end
     end
@@ -850,23 +850,23 @@ receiver: d1,
       let(:oc1) { create(:simple_order_cycle, coordinator: d1) }
       let(:oc2) { create(:simple_order_cycle, coordinator: d2) }
 
-      it "should be able to read/write OrderCycles they are the co-ordinator of" do
+      it 'should be able to read/write OrderCycles they are the co-ordinator of' do
         is_expected.to(have_ability(
           [:admin, :index, :read, :edit, :update, :bulk_update, :clone, :destroy], for: oc1
         ))
       end
 
-      it "should not be able to read/write OrderCycles they are not the co-ordinator of" do
+      it 'should not be able to read/write OrderCycles they are not the co-ordinator of' do
         should_not have_ability(
           [:admin, :index, :read, :create, :edit, :update, :bulk_update, :clone, :destroy], for: oc2
         )
       end
 
-      it "should be able to create OrderCycles" do
+      it 'should be able to create OrderCycles' do
         is_expected.to(have_ability([:create], for: OrderCycle))
       end
 
-      it "should be able to read/write EnterpriseFees" do
+      it 'should be able to read/write EnterpriseFees' do
         is_expected.to(have_ability(
           [
 :admin,
@@ -882,7 +882,7 @@ for: EnterpriseFee
         ))
       end
 
-      it "should be able to add enterprises to order cycles" do
+      it 'should be able to add enterprises to order cycles' do
         is_expected.to(have_ability([:admin, :index, :for_order_cycle, :create], for: Enterprise))
       end
     end
@@ -915,7 +915,7 @@ for: EnterpriseFee
         is_expected.to(have_ability([:admin, :index, :create], for: Enterprise))
       end
 
-      it "should have the ability to search for users which share management of its enterprises" do
+      it 'should have the ability to search for users which share management of its enterprises' do
         is_expected.to(have_ability([:admin, :known_users, :customers], for: :search))
         is_expected.not_to(have_ability([:users], for: :search))
       end
@@ -934,7 +934,7 @@ for: EnterpriseFee
     end
   end
 
-  describe "permissions for variant overrides" do
+  describe 'permissions for variant overrides' do
     let!(:distributor) { create(:distributor_enterprise) }
     let!(:producer) { create(:supplier_enterprise) }
     let!(:product) { create(:product, supplier: producer) }
@@ -945,45 +945,45 @@ for: EnterpriseFee
 
     let(:manage_actions) { [:admin, :index, :read, :update, :bulk_update, :bulk_reset] }
 
-    describe "when admin" do
+    describe 'when admin' do
       before { user.spree_roles << Spree::Role.find_or_create_by!(name: 'admin') }
 
-      it "should have permission" do
+      it 'should have permission' do
         is_expected.to(have_ability(manage_actions, for: variant_override))
       end
     end
 
-    describe "when user of the producer" do
+    describe 'when user of the producer' do
       let(:user) { producer.owner }
 
-      it "should not have permission" do
+      it 'should not have permission' do
         is_expected.not_to(have_ability(manage_actions, for: variant_override))
       end
     end
 
-    describe "when user of the distributor" do
+    describe 'when user of the distributor' do
       let(:user) { distributor.owner }
 
-      it "should not have permission" do
+      it 'should not have permission' do
         is_expected.not_to(have_ability(manage_actions, for: variant_override))
       end
     end
 
-    describe "when user of the distributor which is also the producer" do
+    describe 'when user of the distributor which is also the producer' do
       let(:user) { distributor.owner }
       let!(:distributor) do
-        create(:distributor_enterprise, is_primary_producer: true, sells: "any")
+        create(:distributor_enterprise, is_primary_producer: true, sells: 'any')
       end
       let!(:producer) { distributor }
 
-      it "should have permission" do
+      it 'should have permission' do
         is_expected.to(have_ability(manage_actions, for: variant_override))
       end
     end
 
-    describe "when owner of the distributor with add_to_order_cycle permission to the producer" do
+    describe 'when owner of the distributor with add_to_order_cycle permission to the producer' do
       let!(:unauthorized_enterprise) do
-        create(:enterprise, sells: "any").tap do |record|
+        create(:enterprise, sells: 'any').tap do |record|
           create(
 :enterprise_relationship,
 parent: producer,
@@ -994,14 +994,14 @@ child: record,
       end
       let(:user) { unauthorized_enterprise.owner }
 
-      it "should not have permission" do
+      it 'should not have permission' do
         is_expected.not_to(have_ability(manage_actions, for: variant_override))
       end
     end
 
-    describe "when owner of the enterprise with create_variant_overrides permission to the producer" do
+    describe 'when owner of the enterprise with create_variant_overrides permission to the producer' do
       let!(:authorized_enterprise) do
-        create(:enterprise, sells: "any").tap do |record|
+        create(:enterprise, sells: 'any').tap do |record|
           create(
 :enterprise_relationship,
 parent: producer,
@@ -1012,13 +1012,13 @@ child: record,
       end
       let(:user) { authorized_enterprise.owner }
 
-      it "should not have permission" do
+      it 'should not have permission' do
         is_expected.not_to(have_ability(manage_actions, for: variant_override))
       end
 
-      describe "when the enterprise is not a distributor" do
+      describe 'when the enterprise is not a distributor' do
         let!(:authorized_enterprise) do
-          create(:enterprise, sells: "none").tap do |record|
+          create(:enterprise, sells: 'none').tap do |record|
             create(
 :enterprise_relationship,
 parent: producer,
@@ -1028,7 +1028,7 @@ child: record,
           end
         end
 
-        it "should not have permission" do
+        it 'should not have permission' do
           is_expected.not_to(have_ability(manage_actions, for: variant_override))
         end
       end

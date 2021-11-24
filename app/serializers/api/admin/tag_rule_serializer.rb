@@ -25,7 +25,7 @@ module Api
                    :shipping_method_tags
 
         def shipping_method_tags
-          object.preferred_shipping_method_tags.split(",")
+          object.preferred_shipping_method_tags.split(',')
         end
       end
 
@@ -35,7 +35,7 @@ module Api
                    :payment_method_tags
 
         def payment_method_tags
-          object.preferred_payment_method_tags.split(",")
+          object.preferred_payment_method_tags.split(',')
         end
       end
 
@@ -43,7 +43,7 @@ module Api
         attributes :preferred_matched_variants_visibility, :preferred_variant_tags, :variant_tags
 
         def variant_tags
-          object.preferred_variant_tags.split(",")
+          object.preferred_variant_tags.split(',')
         end
       end
 
@@ -53,7 +53,7 @@ module Api
                    :exchange_tags
 
         def exchange_tags
-          object.preferred_exchange_tags.split(",")
+          object.preferred_exchange_tags.split(',')
         end
       end
     end

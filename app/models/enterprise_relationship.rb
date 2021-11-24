@@ -110,6 +110,6 @@ lambda { |permission|
 
   def child_variant_overrides
     VariantOverride.unscoped.for_hubs(child)
-      .joins(variant: :product).where("spree_products.supplier_id IN (?)", parent)
+      .joins(variant: :product).where('spree_products.supplier_id IN (?)', parent)
   end
 end

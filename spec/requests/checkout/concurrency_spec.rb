@@ -9,7 +9,7 @@ require 'spec_helper'
 #
 # The concurrency flag enables multiple threads to see the same database
 # without isolated transactions.
-describe "Concurrent checkouts", concurrency: true, type: :request do
+describe 'Concurrent checkouts', concurrency: true, type: :request do
   include AuthenticationHelper
   include ShopWorkflow
 
@@ -20,17 +20,17 @@ describe "Concurrent checkouts", concurrency: true, type: :request do
   let(:payment_method) { create(:payment_method, distributors: [distributor]) }
   let(:breakpoint) { Mutex.new }
 
-  let(:address_params) { address.attributes.except("id") }
+  let(:address_params) { address.attributes.except('id') }
   let(:order_params) do
     {
-      "payments_attributes" => [
+      'payments_attributes' => [
         {
-          "payment_method_id" => payment_method.id,
-          "amount" => order.total
+          'payment_method_id' => payment_method.id,
+          'amount' => order.total
         }
       ],
-      "bill_address_attributes" => address_params,
-      "ship_address_attributes" => address_params,
+      'bill_address_attributes' => address_params,
+      'ship_address_attributes' => address_params,
     }
   end
   let(:params) { { format: :json, order: order_params } }
@@ -45,7 +45,7 @@ describe "Concurrent checkouts", concurrency: true, type: :request do
     login_as(order.user)
   end
 
-  it "handles two concurrent orders successfully" do
+  it 'handles two concurrent orders successfully' do
     breakpoint.lock
     breakpoint_reached_counter = 0
 

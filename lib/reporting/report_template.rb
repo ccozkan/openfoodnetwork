@@ -57,7 +57,7 @@ to: :renderer
     end
 
     def i18n_scope
-      "admin.reports"
+      'admin.reports'
     end
   end
 end

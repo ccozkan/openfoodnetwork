@@ -16,7 +16,7 @@ module Stripe
 
     def event_mappings
       {
-        "account.application.deauthorized" => :deauthorize
+        'account.application.deauthorized' => :deauthorize
       }
     end
 

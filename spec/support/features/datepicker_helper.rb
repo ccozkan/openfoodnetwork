@@ -3,8 +3,8 @@
 module Features
   module DatepickerHelper
     def choose_today_from_datepicker
-      within(".flatpickr-calendar.open") do
-        find("button", text: "TODAY").click
+      within('.flatpickr-calendar.open') do
+        find('button', text: 'TODAY').click
       end
     end
 
@@ -12,7 +12,7 @@ module Features
       navigate_datepicker_to_month(date)
       find(
 '.flatpickr-calendar.open .flatpickr-days .flatpickr-day:not(.prevMonthDay)',
-           text: date.strftime("%e").to_s.strip,
+           text: date.strftime('%e').to_s.strip,
 exact_text: true,
 match: :first
 ).click
@@ -22,12 +22,12 @@ match: :first
       ## First of all select date
       select_date_from_datepicker(datetime)
       # Then select time
-      find(".flatpickr-calendar.open .flatpickr-hour").set(datetime.strftime("%H").to_s.strip)
-      find(".flatpickr-calendar.open .flatpickr-minute").set(datetime.strftime("%M").to_s.strip)
+      find('.flatpickr-calendar.open .flatpickr-hour').set(datetime.strftime('%H').to_s.strip)
+      find('.flatpickr-calendar.open .flatpickr-minute').set(datetime.strftime('%M').to_s.strip)
     end
 
     def navigate_datepicker_to_month(date, reference_date = Time.zone.today)
-      month_and_year = date.strftime("%-m %Y")
+      month_and_year = date.strftime('%-m %Y')
 
       until datepicker_month_and_year == month_and_year.upcase
         if date < reference_date
@@ -47,9 +47,9 @@ match: :first
     end
 
     def datepicker_month_and_year
-      month = find(".flatpickr-calendar.open .flatpickr-current-month select.flatpickr-monthDropdown-months").value.to_i + 1
-      year = find(".flatpickr-calendar.open .flatpickr-current-month .numInputWrapper .cur-year").value
-      month.to_s + " " + year.to_s
+      month = find('.flatpickr-calendar.open .flatpickr-current-month select.flatpickr-monthDropdown-months').value.to_i + 1
+      year = find('.flatpickr-calendar.open .flatpickr-current-month .numInputWrapper .cur-year').value
+      month.to_s + ' ' + year.to_s
     end
   end
 end

@@ -49,7 +49,7 @@ module Spree
           # This allows specificity for each non-resource controller
           #   (to be consistent with "authorize_resource :class => false", see https://github.com/ryanb/cancan/blob/60cf6a67ef59c0c9b63bc27ea0101125c4193ea6/lib/cancan/controller_resource.rb#L146)
           record = self.class.to_s
-            .sub("Controller", "")
+            .sub('Controller', '')
             .underscore.split('/').last.singularize.to_sym
         end
         authorize!(:admin, record)
@@ -106,7 +106,7 @@ module Spree
           raise("Suffix '#{ams_prefix}' not found in ams_prefix_whitelist for #{self.class.name}.")
         end
 
-        prefix = ams_prefix&.classify || ""
+        prefix = ams_prefix&.classify || ''
         name = controller_name.classify
         "::Api::Admin::#{prefix}#{name}Serializer".constantize
       end

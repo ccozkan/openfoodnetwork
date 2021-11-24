@@ -2,7 +2,7 @@
 
 class InventoryItem < ApplicationRecord
   belongs_to :enterprise
-  belongs_to :variant, class_name: "Spree::Variant"
+  belongs_to :variant, class_name: 'Spree::Variant'
 
   validates :variant_id, uniqueness: { scope: :enterprise_id }
   validates :enterprise, presence: true

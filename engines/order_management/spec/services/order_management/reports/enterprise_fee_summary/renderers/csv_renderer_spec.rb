@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 describe OrderManagement::Reports::EnterpriseFeeSummary::Renderers::CsvRenderer do
   let(:report_klass) { OrderManagement::Reports::EnterpriseFeeSummary }
@@ -24,24 +24,24 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Renderers::CsvRenderer 
   let!(:enterprise_fee_type_totals) do
     [
       report_klass::ReportData::EnterpriseFeeTypeTotal.new(
-        fee_type: "Fee Type A",
-        enterprise_name: "Enterprise A",
-        fee_name: "Fee A",
-        customer_name: "Custoemr A",
-        fee_placement: "Fee Placement A",
-        fee_calculated_on_transfer_through_name: "Transfer Enterprise A",
-        tax_category_name: "Tax Category A",
-        total_amount: "1.00"
+        fee_type: 'Fee Type A',
+        enterprise_name: 'Enterprise A',
+        fee_name: 'Fee A',
+        customer_name: 'Custoemr A',
+        fee_placement: 'Fee Placement A',
+        fee_calculated_on_transfer_through_name: 'Transfer Enterprise A',
+        tax_category_name: 'Tax Category A',
+        total_amount: '1.00'
       ),
       report_klass::ReportData::EnterpriseFeeTypeTotal.new(
-        fee_type: "Fee Type B",
-        enterprise_name: "Enterprise B",
-        fee_name: "Fee C",
-        customer_name: "Custoemr D",
-        fee_placement: "Fee Placement E",
-        fee_calculated_on_transfer_through_name: "Transfer Enterprise F",
-        tax_category_name: "Tax Category G",
-        total_amount: "2.00"
+        fee_type: 'Fee Type B',
+        enterprise_name: 'Enterprise B',
+        fee_name: 'Fee C',
+        customer_name: 'Custoemr D',
+        fee_placement: 'Fee Placement E',
+        fee_calculated_on_transfer_through_name: 'Transfer Enterprise F',
+        tax_category_name: 'Tax Category G',
+        total_amount: '2.00'
       )
     ]
   end
@@ -56,7 +56,7 @@ should_apply_vary_header?: true
 ))
   end
 
-  it "generates CSV header" do
+  it 'generates CSV header' do
     renderer.render(controller)
     result = response.body
     csv = CSV.parse(result)
@@ -67,7 +67,7 @@ should_apply_vary_header?: true
     expect(header_row.all?(&:present?)).to(be_truthy)
   end
 
-  it "generates CSV data rows" do
+  it 'generates CSV data rows' do
     renderer.render(controller)
     result = response.body
     csv = CSV.parse(result, headers: true)
@@ -75,15 +75,15 @@ should_apply_vary_header?: true
     expect(csv.length).to(eq(2))
 
     # Test random cells
-    expect(csv[0][i18n_translate("header.fee_type")]).to(eq("Fee Type A"))
-    expect(csv[0][i18n_translate("header.total_amount")]).to(eq("1.00"))
-    expect(csv[1][i18n_translate("header.total_amount")]).to(eq("2.00"))
+    expect(csv[0][i18n_translate('header.fee_type')]).to(eq('Fee Type A'))
+    expect(csv[0][i18n_translate('header.total_amount')]).to(eq('1.00'))
+    expect(csv[1][i18n_translate('header.total_amount')]).to(eq('2.00'))
   end
 
-  it "generates filename correctly" do
+  it 'generates filename correctly' do
     Timecop.freeze(Time.zone.local(2018, 10, 9, 7, 30, 0)) do
       filename = renderer.__send__(:filename)
-      expect(filename).to(eq("enterprise_fee_summary_20181009.csv"))
+      expect(filename).to(eq('enterprise_fee_summary_20181009.csv'))
     end
   end
 
@@ -92,6 +92,6 @@ should_apply_vary_header?: true
   end
 
   def i18n_scope
-    "order_management.reports.enterprise_fee_summary.formats.csv"
+    'order_management.reports.enterprise_fee_summary.formats.csv'
   end
 end

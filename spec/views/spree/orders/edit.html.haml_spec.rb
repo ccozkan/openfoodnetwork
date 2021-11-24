@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
-describe "spree/orders/edit.html.haml" do
+describe 'spree/orders/edit.html.haml' do
   helper InjectionHelper
   helper ShopHelper
   helper ApplicationHelper
@@ -25,10 +25,10 @@ describe "spree/orders/edit.html.haml" do
     ))
   end
 
-  describe "unit prices" do
-    it "displays unit prices informations" do
+  describe 'unit prices' do
+    it 'displays unit prices informations' do
       render
-      expect(rendered).to(have_selector(".unit-price"))
+      expect(rendered).to(have_selector('.unit-price'))
     end
   end
 end

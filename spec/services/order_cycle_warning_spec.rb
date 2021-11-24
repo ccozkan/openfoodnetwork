@@ -9,8 +9,8 @@ describe OrderCycleWarning do
   let!(:order_cycle) { create(:simple_order_cycle, distributors: [distributor]) }
 
   describe "checking if user's managed order cycles have distributors not ready for checkout" do
-    context "with an invalid distributor" do
-      it "returns a warning message" do
+    context 'with an invalid distributor' do
+      it 'returns a warning message' do
         expect(subject.new(user).call).to(eq(
           I18n.t(
 :active_distributors_not_ready_for_checkout_message_singular,
@@ -20,7 +20,7 @@ describe OrderCycleWarning do
       end
     end
 
-    context "with a valid distributor" do
+    context 'with a valid distributor' do
       let!(:distributor) do
         create(
 :distributor_enterprise,
@@ -29,7 +29,7 @@ describe OrderCycleWarning do
 )
       end
 
-      it "returns nil" do
+      it 'returns nil' do
         expect(subject.new(user).call).to(eq(nil))
       end
     end

@@ -10,8 +10,8 @@ module Admin
       allow(controller).to(receive_messages(spree_current_user: distributor_owner))
     end
 
-    describe "#index" do
-      describe "when the user manages a coordinator" do
+    describe '#index' do
+      describe 'when the user manages a coordinator' do
         let!(:coordinator) { create(:distributor_enterprise, owner: distributor_owner) }
         let!(:oc1) do
           create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 60.days.ago)
@@ -26,35 +26,35 @@ module Admin
           create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: nil)
         end
 
-        context "html" do
+        context 'html' do
           it "doesn't load any data" do
             get :index, as: :html
             expect(assigns(:collection)).to(be_empty)
           end
         end
 
-        context "json" do
-          context "where ransack conditions are specified" do
-            it "loads order cycles that closed within the past month, and orders without a close_at date" do
+        context 'json' do
+          context 'where ransack conditions are specified' do
+            it 'loads order cycles that closed within the past month, and orders without a close_at date' do
               get :index, as: :json
               expect(assigns(:collection)).to_not(include(oc1, oc2))
               expect(assigns(:collection)).to(include(oc3, oc4))
             end
           end
 
-          context "where q[orders_close_at_gt] is set" do
+          context 'where q[orders_close_at_gt] is set' do
             let(:q) { { orders_close_at_gt: 45.days.ago } }
 
-            it "loads order cycles that closed after the specified date, and orders without a close_at date" do
+            it 'loads order cycles that closed after the specified date, and orders without a close_at date' do
               get :index, as: :json, params: { q: q }
               expect(assigns(:collection)).to_not(include(oc1))
               expect(assigns(:collection)).to(include(oc2, oc3, oc4))
             end
 
-            context "and other conditions are specified" do
+            context 'and other conditions are specified' do
               before { q.merge!(id_not_in: [oc2.id, oc4.id]) }
 
-              it "loads order cycles that meet all conditions" do
+              it 'loads order cycles that meet all conditions' do
                 get :index, format: :json, params: { q: q }
                 expect(assigns(:collection)).to_not(include(oc1, oc2, oc4))
                 expect(assigns(:collection)).to(include(oc3))
@@ -65,36 +65,36 @@ module Admin
       end
     end
 
-    describe "new" do
-      describe "when the user manages a single distributor enterprise suitable for coordinator" do
+    describe 'new' do
+      describe 'when the user manages a single distributor enterprise suitable for coordinator' do
         let!(:distributor) { create(:distributor_enterprise, owner: distributor_owner) }
 
-        it "renders the new template" do
+        it 'renders the new template' do
           get :new
           expect(response).to(render_template(:new))
         end
       end
 
-      describe "when a user manages multiple enterprises suitable for coordinator" do
+      describe 'when a user manages multiple enterprises suitable for coordinator' do
         let!(:distributor1) { create(:distributor_enterprise, owner: distributor_owner) }
         let!(:distributor2) { create(:distributor_enterprise, owner: distributor_owner) }
         let!(:distributor3) { create(:distributor_enterprise) }
 
-        it "renders the set_coordinator template" do
+        it 'renders the set_coordinator template' do
           get :new
           expect(response).to(render_template(:set_coordinator))
         end
 
-        describe "and a coordinator_id is submitted as part of the request" do
-          describe "when the user manages the enterprise" do
-            it "renders the new template" do
+        describe 'and a coordinator_id is submitted as part of the request' do
+          describe 'when the user manages the enterprise' do
+            it 'renders the new template' do
               get :new, params: { coordinator_id: distributor1.id }
               expect(response).to(render_template(:new))
             end
           end
 
-          describe "when the user does not manage the enterprise" do
-            it "renders the set_coordinator template and sets a flash error" do
+          describe 'when the user does not manage the enterprise' do
+            it 'renders the set_coordinator template and sets a flash error' do
               get :new, params: { coordinator_id: distributor3.id }
               expect(response).to(render_template(:set_coordinator))
               expect(flash[:error]).to(eq("You don't have permission to create an order cycle coordinated by that enterprise"))
@@ -104,12 +104,12 @@ module Admin
       end
     end
 
-    describe "show" do
+    describe 'show' do
       context 'a distributor manages an order cycle' do
         let(:distributor) { create(:distributor_enterprise, owner: distributor_owner) }
         let(:oc) { create(:simple_order_cycle, coordinator: distributor) }
 
-        context "distributor navigates to order cycle show page" do
+        context 'distributor navigates to order cycle show page' do
           it 'redirects to edit page' do
             get :show, params: { id: oc.id }
             expect(response).to(redirect_to(edit_admin_order_cycle_path(oc.id)))
@@ -118,10 +118,10 @@ module Admin
       end
     end
 
-    describe "create" do
+    describe 'create' do
       let(:shop) { create(:distributor_enterprise) }
 
-      context "as a manager of a shop" do
+      context 'as a manager of a shop' do
         let(:form_mock) { instance_double(OrderCycleForm) }
         let(:params) { { as: :json, order_cycle: {} } }
 
@@ -130,7 +130,7 @@ module Admin
           allow(OrderCycleForm).to(receive(:new) { form_mock })
         end
 
-        context "when creation is successful" do
+        context 'when creation is successful' do
           before { allow(form_mock).to(receive(:save) { true }) }
 
           # mock build_resource so that we can control the edit_path
@@ -142,18 +142,18 @@ module Admin
             end
           end
 
-          it "returns success: true and a valid edit path" do
+          it 'returns success: true and a valid edit path' do
             spree_post :create, params
             json_response = JSON.parse(response.body)
             expect(json_response['success']).to(be(true))
-            expect(json_response['edit_path']).to(eq("/admin/order_cycles/1/incoming"))
+            expect(json_response['edit_path']).to(eq('/admin/order_cycles/1/incoming'))
           end
         end
 
-        context "when an error occurs" do
+        context 'when an error occurs' do
           before { allow(form_mock).to(receive(:save) { false }) }
 
-          it "returns an errors hash" do
+          it 'returns an errors hash' do
             spree_post :create, params
             json_response = JSON.parse(response.body)
             expect(json_response['errors']).to(be)
@@ -162,7 +162,7 @@ module Admin
       end
     end
 
-    describe "update" do
+    describe 'update' do
       let(:order_cycle) { create(:simple_order_cycle) }
       let(:coordinator) { order_cycle.coordinator }
       let(:form_mock) { instance_double(OrderCycleForm) }
@@ -171,34 +171,34 @@ module Admin
         allow(OrderCycleForm).to(receive(:new) { form_mock })
       end
 
-      context "as a manager of the coordinator" do
+      context 'as a manager of the coordinator' do
         before { controller_login_as_enterprise_user([coordinator]) }
         let(:params) { { format: :json, id: order_cycle.id, order_cycle: {} } }
 
-        context "when updating succeeds" do
+        context 'when updating succeeds' do
           before { allow(form_mock).to(receive(:save) { true }) }
 
-          context "when the page is reloading" do
+          context 'when the page is reloading' do
             before { params[:reloading] = '1' }
 
-            it "sets flash message" do
+            it 'sets flash message' do
               spree_put :update, params
               expect(flash[:notice]).to(eq('Your order cycle has been updated.'))
             end
           end
 
-          context "when the page is not reloading" do
-            it "does not set flash message" do
+          context 'when the page is not reloading' do
+            it 'does not set flash message' do
               spree_put :update, params
               expect(flash[:notice]).to(be(nil))
             end
           end
         end
 
-        context "when a validation error occurs" do
+        context 'when a validation error occurs' do
           before { allow(form_mock).to(receive(:save) { false }) }
 
-          it "returns an error message" do
+          it 'returns an error message' do
             spree_put :update, params
 
             json_response = JSON.parse(response.body)
@@ -206,10 +206,10 @@ module Admin
           end
         end
 
-        it "can update preference product_selection_from_coordinator_inventory_only" do
+        it 'can update preference product_selection_from_coordinator_inventory_only' do
           expect(OrderCycleForm).to(receive(:new)
             .with(order_cycle,
-                 { "preferred_product_selection_from_coordinator_inventory_only" => true },
+                 { 'preferred_product_selection_from_coordinator_inventory_only' => true },
                  anything) { form_mock })
           allow(form_mock).to(receive(:save) { true })
 
@@ -220,7 +220,7 @@ params
       end
     end
 
-    describe "limiting update scope" do
+    describe 'limiting update scope' do
       let(:order_cycle) { create(:simple_order_cycle) }
       let(:producer) { create(:supplier_enterprise) }
       let(:coordinator) { order_cycle.coordinator }
@@ -256,32 +256,32 @@ incoming: false,
 
       before { allow(controller).to(receive(:spree_current_user) { user }) }
 
-      context "as a manager of the coordinator" do
+      context 'as a manager of the coordinator' do
         let(:user) { coordinator.owner }
         let(:expected) { [order_cycle, allowed.merge(restricted), user] }
 
-        it "allows me to update exchange information for exchanges, name and dates" do
+        it 'allows me to update exchange information for exchanges, name and dates' do
           expect(OrderCycleForm).to(receive(:new).with(*expected) { form_mock })
           spree_put :update, params
         end
       end
 
-      context "as a producer supplying to an order cycle" do
+      context 'as a producer supplying to an order cycle' do
         let(:user) { producer.owner }
         let(:expected) { [order_cycle, allowed, user] }
 
-        it "allows me to update exchange information for exchanges, but not name or dates" do
+        it 'allows me to update exchange information for exchanges, but not name or dates' do
           expect(OrderCycleForm).to(receive(:new).with(*expected) { form_mock })
           spree_put :update, params
         end
       end
     end
 
-    describe "bulk_update" do
+    describe 'bulk_update' do
       let(:oc) { create(:simple_order_cycle) }
       let!(:coordinator) { oc.coordinator }
 
-      context "when I manage the coordinator of an order cycle" do
+      context 'when I manage the coordinator of an order cycle' do
         let(:params) do
           {
 format: :json,
@@ -289,7 +289,7 @@ order_cycle_set: {
 collection_attributes: {
 '0' => {
             id: oc.id,
-            name: "Updated Order Cycle",
+            name: 'Updated Order Cycle',
             orders_open_at: Date.current - 21.days,
             orders_close_at: Date.current + 21.days,
           }
@@ -300,15 +300,15 @@ collection_attributes: {
 
         before { create(:enterprise_role, user: distributor_owner, enterprise: coordinator) }
 
-        it "updates order cycle properties" do
+        it 'updates order cycle properties' do
           spree_put :bulk_update, params
           oc.reload
-          expect(oc.name).to(eq("Updated Order Cycle"))
+          expect(oc.name).to(eq('Updated Order Cycle'))
           expect(oc.orders_open_at.to_date).to(eq(Date.current - 21.days))
           expect(oc.orders_close_at.to_date).to(eq(Date.current + 21.days))
         end
 
-        it "does nothing when no data is supplied" do
+        it 'does nothing when no data is supplied' do
           expect do
             spree_put(:bulk_update, format: :json)
           end.to(change(oc, :orders_open_at).by(0))
@@ -316,7 +316,7 @@ collection_attributes: {
           expect(json_response['errors']).to(eq(I18n.t('admin.order_cycles.bulk_update.no_data')))
         end
 
-        context "when a validation error occurs" do
+        context 'when a validation error occurs' do
           let(:params) do
             {
 format: :json,
@@ -324,7 +324,7 @@ order_cycle_set: {
 collection_attributes: {
 '0' => {
               id: oc.id,
-              name: "Updated Order Cycle",
+              name: 'Updated Order Cycle',
               orders_open_at: Date.current + 25.days,
               orders_close_at: Date.current + 21.days,
             }
@@ -333,7 +333,7 @@ collection_attributes: {
 }
           end
 
-          it "returns an error message" do
+          it 'returns an error message' do
             spree_put :bulk_update, params
             json_response = JSON.parse(response.body)
             expect(json_response['errors']).to(be_present)
@@ -341,7 +341,7 @@ collection_attributes: {
         end
       end
 
-      context "when I do not manage the coordinator of an order cycle" do
+      context 'when I do not manage the coordinator of an order cycle' do
         # I need to manage a hub in order to access the bulk_update action
         let!(:another_distributor) { create(:distributor_enterprise, users: [distributor_owner]) }
 
@@ -352,7 +352,7 @@ order_cycle_set: {
 collection_attributes: {
 '0' => {
             id: oc.id,
-            name: "Updated Order Cycle",
+            name: 'Updated Order Cycle',
             orders_open_at: Date.current - 21.days,
             orders_close_at: Date.current + 21.days,
           }
@@ -360,14 +360,14 @@ collection_attributes: {
 }
 
           oc.reload
-          expect(oc.name).to_not(eq("Updated Order Cycle"))
+          expect(oc.name).to_not(eq('Updated Order Cycle'))
           expect(oc.orders_open_at.to_date).to_not(eq(Date.current - 21.days))
           expect(oc.orders_close_at.to_date).to_not(eq(Date.current + 21.days))
         end
       end
     end
 
-    describe "notifying producers" do
+    describe 'notifying producers' do
       let(:user) { create(:user) }
       let(:admin_user) do
         user = create(:user)
@@ -380,44 +380,44 @@ collection_attributes: {
         allow(controller).to(receive_messages(spree_current_user: admin_user))
       end
 
-      it "enqueues a job" do
+      it 'enqueues a job' do
         expect do
           spree_post(:notify_producers, id: order_cycle.id)
         end.to(enqueue_job(OrderCycleNotificationJob))
       end
 
-      it "redirects back to the order cycles path with a success message" do
+      it 'redirects back to the order cycles path with a success message' do
         spree_post :notify_producers, id: order_cycle.id
         expect(response).to(redirect_to(admin_order_cycles_path))
         expect(flash[:notice]).to(eq('Emails to be sent to producers have been queued for sending.'))
       end
     end
 
-    describe "destroy" do
+    describe 'destroy' do
       let(:distributor) { create(:distributor_enterprise, owner: distributor_owner) }
       let(:oc) { create(:simple_order_cycle, coordinator: distributor) }
 
-      describe "when an order cycle is deleteable" do
-        it "allows the order_cycle to be destroyed" do
+      describe 'when an order cycle is deleteable' do
+        it 'allows the order_cycle to be destroyed' do
           get :destroy, params: { id: oc.id }
           expect(OrderCycle.find_by(id: oc.id)).to(be(nil))
         end
       end
 
-      describe "when an order cycle becomes non-deletable due to the presence of an order" do
+      describe 'when an order cycle becomes non-deletable due to the presence of an order' do
         let!(:order) { create(:order, order_cycle: oc) }
 
-        it "displays an error message when we attempt to delete it" do
+        it 'displays an error message when we attempt to delete it' do
           get :destroy, params: { id: oc.id }
           expect(response).to(redirect_to(admin_order_cycles_path))
           expect(flash[:error]).to(eq(I18n.t('admin.order_cycles.destroy_errors.orders_present')))
         end
       end
 
-      describe "when an order cycle becomes non-deletable because it is linked to a schedule" do
+      describe 'when an order cycle becomes non-deletable because it is linked to a schedule' do
         let!(:schedule) { create(:schedule, order_cycles: [oc]) }
 
-        it "displays an error message when we attempt to delete it" do
+        it 'displays an error message when we attempt to delete it' do
           get :destroy, params: { id: oc.id }
           expect(response).to(redirect_to(admin_order_cycles_path))
           expect(flash[:error]).to(eq(I18n.t('admin.order_cycles.destroy_errors.schedule_present')))

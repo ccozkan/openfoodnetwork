@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 describe Api::V0::ReportsController, type: :controller do
   let(:params) do
@@ -15,21 +15,21 @@ describe Api::V0::ReportsController, type: :controller do
     order.finalize!
   end
 
-  describe "packing report" do
-    context "as an enterprise user with full order permissions (distributor)" do
+  describe 'packing report' do
+    context 'as an enterprise user with full order permissions (distributor)' do
       let!(:distributor) { create(:distributor_enterprise) }
       let!(:order) { create(:completed_order_with_totals, distributor: distributor) }
       let(:current_user) { distributor.owner }
 
-      it "renders results" do
+      it 'renders results' do
         api_get :show, params
 
         expect(response.status).to(eq(200))
-        expect(json_response[:data]).to(match_array(report_output(order, "distributor")))
+        expect(json_response[:data]).to(match_array(report_output(order, 'distributor')))
       end
     end
 
-    context "as an enterprise user with partial order permissions (supplier with P-OC)" do
+    context 'as an enterprise user with partial order permissions (supplier with P-OC)' do
       let!(:order) { create(:completed_order_with_totals) }
       let(:supplier) { order.line_items.first.product.supplier }
       let(:current_user) { supplier.owner }
@@ -42,11 +42,11 @@ child: order.distributor,
 )
       end
 
-      it "renders results" do
+      it 'renders results' do
         api_get :show, params
 
         expect(response.status).to(eq(200))
-        expect(json_response[:data]).to(match_array(report_output(order, "supplier")))
+        expect(json_response[:data]).to(match_array(report_output(order, 'supplier')))
       end
     end
   end
@@ -65,49 +65,49 @@ child: order.distributor,
 
   def distributor_report_row(line_item)
     {
-      "hub" => line_item.order.distributor.name,
-      "customer_code" => line_item.order.customer&.code,
-      "first_name" => line_item.order.bill_address.firstname,
-      "last_name" => line_item.order.bill_address.lastname,
-      "supplier" => line_item.product.supplier.name,
-      "product" => line_item.product.name,
-      "variant" => line_item.full_name,
-      "quantity" => line_item.quantity,
-      "temp_controlled" =>
+      'hub' => line_item.order.distributor.name,
+      'customer_code' => line_item.order.customer&.code,
+      'first_name' => line_item.order.bill_address.firstname,
+      'last_name' => line_item.order.bill_address.lastname,
+      'supplier' => line_item.product.supplier.name,
+      'product' => line_item.product.name,
+      'variant' => line_item.full_name,
+      'quantity' => line_item.quantity,
+      'temp_controlled' =>
         line_item.product.shipping_category&.temperature_controlled ? I18n.t(:yes) : I18n.t(:no)
     }
   end
 
   def supplier_report_row(line_item)
     {
-      "hub" => line_item.order.distributor.name,
-      "customer_code" => I18n.t("hidden_field", scope: i18n_scope),
-      "first_name" => I18n.t("hidden_field", scope: i18n_scope),
-      "last_name" => I18n.t("hidden_field", scope: i18n_scope),
-      "supplier" => line_item.product.supplier.name,
-      "product" => line_item.product.name,
-      "variant" => line_item.full_name,
-      "quantity" => line_item.quantity,
-      "temp_controlled" =>
+      'hub' => line_item.order.distributor.name,
+      'customer_code' => I18n.t('hidden_field', scope: i18n_scope),
+      'first_name' => I18n.t('hidden_field', scope: i18n_scope),
+      'last_name' => I18n.t('hidden_field', scope: i18n_scope),
+      'supplier' => line_item.product.supplier.name,
+      'product' => line_item.product.name,
+      'variant' => line_item.full_name,
+      'quantity' => line_item.quantity,
+      'temp_controlled' =>
         line_item.product.shipping_category&.temperature_controlled ? I18n.t(:yes) : I18n.t(:no)
     }
   end
 
   def summary_row(order)
     {
-      "hub" => "",
-      "customer_code" => "",
-      "first_name" => "",
-      "last_name" => "",
-      "supplier" => "",
-      "product" => I18n.t("total_items", scope: i18n_scope),
-      "variant" => "",
-      "quantity" => order.line_items.sum(&:quantity),
-      "temp_controlled" => "",
+      'hub' => '',
+      'customer_code' => '',
+      'first_name' => '',
+      'last_name' => '',
+      'supplier' => '',
+      'product' => I18n.t('total_items', scope: i18n_scope),
+      'variant' => '',
+      'quantity' => order.line_items.sum(&:quantity),
+      'temp_controlled' => '',
     }
   end
 
   def i18n_scope
-    "admin.reports"
+    'admin.reports'
   end
 end

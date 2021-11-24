@@ -2,7 +2,7 @@
 
 # From: https://github.com/ryanb/cancan/wiki/Testing-Abilities#rspec
 
-require "cancan/matchers"
+require 'cancan/matchers'
 
 module Spree
   RSpec::Matchers.define(:have_ability) do |ability_hash, options = {}|

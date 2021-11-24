@@ -58,7 +58,7 @@ RSpec::Matchers.define(:have_select2) do |id, options = {}|
       # results << no_options_present(from, options[:without_options]) if options.key? :without_options
     end
 
-    raise "Not yet implemented" if (options.keys & %i[selected options without_options]).any?
+    raise 'Not yet implemented' if (options.keys & %i[selected options without_options]).any?
 
     results.any?
   end
@@ -72,7 +72,7 @@ RSpec::Matchers.define(:have_select2) do |id, options = {}|
   def all_options_present(from, options)
     with_select2_open(from) do
       options.all? do |option|
-        @node.has_selector?("div.select2-drop-active ul.select2-results li", text: option)
+        @node.has_selector?('div.select2-drop-active ul.select2-results li', text: option)
       end
     end
   end
@@ -80,20 +80,20 @@ RSpec::Matchers.define(:have_select2) do |id, options = {}|
   def all_options_absent(from, options)
     with_select2_open(from) do
       options.all? do |option|
-        @node.has_no_selector?("div.select2-drop-active ul.select2-results li", text: option)
+        @node.has_no_selector?('div.select2-drop-active ul.select2-results li', text: option)
       end
     end
   end
 
   def exact_options_present(from, options)
     with_select2_open(from) do
-      @node.all("div.select2-drop-active ul.select2-results li").map(&:text) == options
+      @node.all('div.select2-drop-active ul.select2-results li').map(&:text) == options
     end
   end
 
   def selected_option_is(from, text)
     within(find(from)) do
-      find("a.select2-choice").text == text
+      find('a.select2-choice').text == text
     end
   end
 

@@ -10,14 +10,14 @@ module Spree
             includes(:shipping_method)
               .where(ShippingMethod.on_frontend_query)
               .references(:shipping_method)
-              .order("cost ASC")
+              .order('cost ASC')
           }
     scope :backend,
           lambda {
             includes(:shipping_method)
               .where(ShippingMethod.on_backend_query)
               .references(:shipping_method)
-              .order("cost ASC")
+              .order('cost ASC')
           }
 
     delegate :order, :currency, to: :shipment

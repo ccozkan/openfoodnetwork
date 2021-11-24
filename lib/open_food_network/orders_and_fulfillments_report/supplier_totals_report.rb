@@ -3,7 +3,7 @@
 module OpenFoodNetwork
   class OrdersAndFulfillmentsReport
     class SupplierTotalsReport
-      REPORT_TYPE = "order_cycle_supplier_totals"
+      REPORT_TYPE = 'order_cycle_supplier_totals'
 
       attr_reader :context
 
@@ -56,7 +56,7 @@ I18n.t(:report_header_status),
           proc { |line_items| total_units(line_items) },
           proc { |line_items| line_items.first.price },
           proc { |line_items| line_items.sum(&:amount) },
-          proc { |_line_items| "" },
+          proc { |_line_items| '' },
           proc { |_line_items| I18n.t(:report_header_incoming_transport) }
         ]
       end

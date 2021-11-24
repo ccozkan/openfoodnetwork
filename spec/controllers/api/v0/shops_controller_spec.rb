@@ -6,7 +6,7 @@ describe Api::V0::ShopsController, type: :controller do
   include AuthenticationHelper
   render_views
 
-  context "as a non-authenticated user" do
+  context 'as a non-authenticated user' do
     let!(:hub) do
       create(:distributor_enterprise, with_payment_and_shipping: true, name: 'Shopfront Test Hub')
     end
@@ -21,8 +21,8 @@ describe Api::V0::ShopsController, type: :controller do
       allow(controller).to(receive(:spree_current_user) { nil })
     end
 
-    describe "#show" do
-      it "returns shopfront data for an enterprise" do
+    describe '#show' do
+      it 'returns shopfront data for an enterprise' do
         get :show, params: { id: producer.id }
 
         expect(json_response['name']).to(eq('Shopfront Test Producer'))
@@ -31,8 +31,8 @@ describe Api::V0::ShopsController, type: :controller do
       end
     end
 
-    describe "#closed_shops" do
-      it "returns data for all closed shops" do
+    describe '#closed_shops' do
+      it 'returns data for all closed shops' do
         get :closed_shops, params: {}
 
         expect(json_response).not_to(match(hub.name))

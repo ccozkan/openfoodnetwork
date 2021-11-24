@@ -16,8 +16,8 @@ module OpenFoodNetwork
     let(:target_variant) { product.variants.first }
     let(:applicator) { EnterpriseFeeApplicator.new(enterprise_fee, target_variant, 'role') }
 
-    describe "#create_line_item_adjustment" do
-      it "creates an adjustment for a line item" do
+    describe '#create_line_item_adjustment' do
+      it 'creates an adjustment for a line item' do
         allow(applicator).to(receive(:line_item_adjustment_label) { 'label' })
         applicator.create_line_item_adjustment(line_item)
 
@@ -36,13 +36,13 @@ module OpenFoodNetwork
       end
     end
 
-    describe "#create_order_adjustment" do
+    describe '#create_order_adjustment' do
       let(:target_variant) { nil }
       let(:inherits_tax) { false }
       let(:fee_tax_category) { tax_category }
       let(:order) { line_item.order }
 
-      it "creates an adjustment for an order" do
+      it 'creates an adjustment for an order' do
         allow(applicator).to(receive(:order_adjustment_label) { 'label' })
         applicator.create_order_adjustment(order)
 
@@ -61,7 +61,7 @@ module OpenFoodNetwork
       end
     end
 
-    describe "making labels" do
+    describe 'making labels' do
       let(:variant) { double(:variant, product: double(:product, name: 'Bananas')) }
       let(:enterprise_fee) do
         double(
@@ -72,19 +72,19 @@ fee_type: 'packing',
       end
       let(:applicator) { EnterpriseFeeApplicator.new(enterprise_fee, variant, 'distributor') }
 
-      describe "#line_item_adjustment_label" do
-        it "makes an adjustment label for a line item" do
+      describe '#line_item_adjustment_label' do
+        it 'makes an adjustment label for a line item' do
           expect(applicator.send(:line_item_adjustment_label))
-            .to(eq("Bananas - packing fee by distributor Ballantyne"))
+            .to(eq('Bananas - packing fee by distributor Ballantyne'))
         end
       end
 
-      describe "#order_adjustment_label" do
+      describe '#order_adjustment_label' do
         let(:applicator) { EnterpriseFeeApplicator.new(enterprise_fee, nil, 'distributor') }
 
-        it "makes an adjustment label for an order" do
+        it 'makes an adjustment label for an order' do
           expect(applicator.send(:order_adjustment_label))
-            .to(eq("Whole order - packing fee by distributor Ballantyne"))
+            .to(eq('Whole order - packing fee by distributor Ballantyne'))
         end
       end
     end

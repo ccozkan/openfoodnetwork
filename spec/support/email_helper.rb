@@ -5,7 +5,7 @@ module OpenFoodNetwork
     # Some specs trigger actions that send emails, for example creating an order.
     # But sending emails doesn't work out-of-the-box. This code sets it up.
     def setup_email
-      Spree::Config[:mails_from] = "test@ofn.example.org"
+      Spree::Config[:mails_from] = 'test@ofn.example.org'
     end
 
     # Ensures the value `perform_deliveries` had is restored. This saves us

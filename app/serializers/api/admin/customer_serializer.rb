@@ -22,7 +22,7 @@ module Api
       end
 
       def tag_list
-        customer_tag_list.join(",")
+        customer_tag_list.join(',')
       end
 
       def tags

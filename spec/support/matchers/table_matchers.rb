@@ -27,7 +27,7 @@ end
 # find("#my-table").should match_table [[...]]
 RSpec::Matchers.define(:match_table) do |expected_table|
   match do |node|
-    rows = node.all("tr").map { |r| r.all("th,td").map { |c| c.text.strip } }
+    rows = node.all('tr').map { |r| r.all('th,td').map { |c| c.text.strip } }
 
     if rows.count == expected_table.count
       rows.each_with_index do |row, i|

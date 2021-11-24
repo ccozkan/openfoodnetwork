@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 module OrderManagement
   module Subscriptions
     describe VariantsList do
-      describe "variant eligibility for subscription" do
+      describe 'variant eligibility for subscription' do
         let!(:shop) { create(:distributor_enterprise) }
         let!(:producer) { create(:supplier_enterprise) }
         let!(:product) { create(:product, supplier: producer) }
@@ -46,15 +46,15 @@ orders_open_at: 2.weeks.ago,
 
         let!(:order_cycle) { current_order_cycle }
 
-        context "if the shop is the supplier for the product" do
+        context 'if the shop is the supplier for the product' do
           let!(:producer) { shop }
 
-          it "is eligible" do
+          it 'is eligible' do
             expect(described_class.eligible_variants(shop)).to(include(variant))
           end
         end
 
-        context "if the supplier is permitted for the shop" do
+        context 'if the supplier is permitted for the shop' do
           let!(:enterprise_relationship) do
             create(
 :enterprise_relationship,
@@ -64,16 +64,16 @@ child: shop,
 )
           end
 
-          it "is eligible" do
+          it 'is eligible' do
             expect(described_class.eligible_variants(shop)).to(include(variant))
           end
         end
 
-        context "if the variant is involved in an exchange" do
+        context 'if the variant is involved in an exchange' do
           let!(:order_cycle) { create(:simple_order_cycle, coordinator: shop) }
           let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
 
-          context "if it is an incoming exchange where the shop is the receiver" do
+          context 'if it is an incoming exchange where the shop is the receiver' do
             let!(:incoming_exchange) do
               order_cycle.exchanges.create(
 sender: product.supplier,
@@ -83,12 +83,12 @@ variants: [variant]
 )
             end
 
-            it "is not eligible" do
+            it 'is not eligible' do
               expect(described_class.eligible_variants(shop)).to_not(include(variant))
             end
           end
 
-          context "if it is an outgoing exchange where the shop is the receiver" do
+          context 'if it is an outgoing exchange where the shop is the receiver' do
             let!(:outgoing_exchange) do
               order_cycle.exchanges.create(
 sender: product.supplier,
@@ -98,50 +98,50 @@ variants: [variant]
 )
             end
 
-            context "if the order cycle is currently open" do
+            context 'if the order cycle is currently open' do
               let!(:order_cycle) { current_order_cycle }
 
-              it "is eligible" do
+              it 'is eligible' do
                 expect(described_class.eligible_variants(shop)).to(include(variant))
               end
             end
 
-            context "if the order cycle opens in the future" do
+            context 'if the order cycle opens in the future' do
               let!(:order_cycle) { future_order_cycle }
 
-              it "is eligible" do
+              it 'is eligible' do
                 expect(described_class.eligible_variants(shop)).to(include(variant))
               end
             end
 
-            context "if the order cycle closed in the past" do
+            context 'if the order cycle closed in the past' do
               let!(:order_cycle) { past_order_cycle }
 
-              it "is eligible" do
+              it 'is eligible' do
                 expect(described_class.eligible_variants(shop)).to(include(variant))
               end
             end
           end
         end
 
-        context "if the variant is unrelated" do
-          it "is not eligible" do
+        context 'if the variant is unrelated' do
+          it 'is not eligible' do
             expect(described_class.eligible_variants(shop)).to_not(include(variant))
           end
         end
       end
 
-      describe "checking if variant in open and upcoming order cycles" do
+      describe 'checking if variant in open and upcoming order cycles' do
         let!(:shop) { create(:enterprise) }
         let!(:product) { create(:product) }
         let!(:variant) { product.variants.first }
         let!(:schedule) { create(:schedule) }
 
-        context "if the variant is involved in an exchange" do
+        context 'if the variant is involved in an exchange' do
           let!(:order_cycle) { create(:simple_order_cycle, coordinator: shop) }
           let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
 
-          context "if it is an incoming exchange where the shop is the receiver" do
+          context 'if it is an incoming exchange where the shop is the receiver' do
             let!(:incoming_exchange) do
               order_cycle.exchanges.create(
 sender: product.supplier,
@@ -151,7 +151,7 @@ variants: [variant]
 )
             end
 
-            it "is is false" do
+            it 'is is false' do
               expect(described_class).not_to(be_in_open_and_upcoming_order_cycles(
 shop,
                                                                                   schedule,
@@ -160,7 +160,7 @@ shop,
             end
           end
 
-          context "if it is an outgoing exchange where the shop is the receiver" do
+          context 'if it is an outgoing exchange where the shop is the receiver' do
             let!(:outgoing_exchange) do
               order_cycle.exchanges.create(
 sender: product.supplier,
@@ -170,7 +170,7 @@ variants: [variant]
 )
             end
 
-            it "is true" do
+            it 'is true' do
               expect(described_class).to(be_in_open_and_upcoming_order_cycles(
 shop,
                                                                               schedule,
@@ -180,8 +180,8 @@ shop,
           end
         end
 
-        context "if the variant is unrelated" do
-          it "is false" do
+        context 'if the variant is unrelated' do
+          it 'is false' do
             expect(described_class).to_not(be_in_open_and_upcoming_order_cycles(
 shop,
                                                                                 schedule,

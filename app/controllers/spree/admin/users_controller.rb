@@ -27,7 +27,7 @@ only: [
       end
 
       def create
-        roles = params[:user].delete("spree_role_ids") if params[:user]
+        roles = params[:user].delete('spree_role_ids') if params[:user]
 
         @user = Spree::User.new(user_params)
         if @user.save
@@ -42,7 +42,7 @@ only: [
       end
 
       def update
-        roles = params[:user].delete("spree_role_ids") if params[:user]
+        roles = params[:user].delete('spree_role_ids') if params[:user]
 
         if @user.update(user_params)
           @user.spree_roles = roles.reject(&:blank?).collect { |r| Spree::Role.find(r) } if roles

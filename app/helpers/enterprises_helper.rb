@@ -20,7 +20,7 @@ module EnterprisesHelper
 
     applicator = OpenFoodNetwork::TagRuleApplicator.new(
 current_distributor,
-                                                        "FilterShippingMethods",
+                                                        'FilterShippingMethods',
 current_customer&.tag_list
 )
     applicator.filter!(shipping_methods)
@@ -38,7 +38,7 @@ current_customer&.tag_list
 
     applicator = OpenFoodNetwork::TagRuleApplicator.new(
 current_distributor,
-                                                        "FilterPaymentMethods",
+                                                        'FilterPaymentMethods',
 current_customer&.tag_list
 )
     applicator.filter!(payment_methods)
@@ -59,7 +59,7 @@ current_customer&.tag_list
   def enterprises_options(enterprises)
     enterprises.map do |enterprise|
       [
-enterprise.name + ": " + enterprise.address.address1 + ", " + enterprise.address.city,
+enterprise.name + ': ' + enterprise.address.address1 + ', ' + enterprise.address.city,
        enterprise.id.to_i
 ]
     end
@@ -94,7 +94,7 @@ enterprise.name + ": " + enterprise.address.address1 + ", " + enterprise.address
     url = object_url(enterprise)
     name = t(:delete)
     options = {}
-    options[:class] = "delete-resource"
+    options[:class] = 'delete-resource'
     options[:data] = { action: 'remove', confirm: enterprise_confirm_delete_message(enterprise) }
     link_to_with_icon('icon-trash', name, url, options)
   end

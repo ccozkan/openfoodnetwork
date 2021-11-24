@@ -8,26 +8,26 @@ describe PaymentsRequiringAction do
   subject(:payments_requiring_action) { described_class.new(user) }
 
   describe '#query' do
-    context "payment has a cvv_response_message" do
+    context 'payment has a cvv_response_message' do
       let(:payment) do
         create(
 :payment,
                order: order,
-               cvv_response_message: "https://stripe.com/redirect",
-               state: "requires_authorization")
+               cvv_response_message: 'https://stripe.com/redirect',
+               state: 'requires_authorization')
       end
 
-      it "finds the payment" do
+      it 'finds the payment' do
         expect(payments_requiring_action.query.all).to(include(payment))
       end
     end
 
-    context "payment has no cvv_response_message" do
+    context 'payment has no cvv_response_message' do
       let(:payment) do
         create(:payment, order: order, cvv_response_message: nil)
       end
 
-      it "does not find the payment" do
+      it 'does not find the payment' do
         expect(payments_requiring_action.query.all).to_not(include(payment))
       end
     end

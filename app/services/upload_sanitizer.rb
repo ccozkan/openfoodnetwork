@@ -15,6 +15,6 @@ class UploadSanitizer
   private
 
   def strip_bom_character
-    @data.scrub.gsub("\xEF\xBB\xBF".force_encoding("UTF-8"), '')
+    @data.scrub.gsub("\xEF\xBB\xBF".force_encoding('UTF-8'), '')
   end
 end

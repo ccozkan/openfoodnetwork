@@ -29,7 +29,7 @@ module Spree
       def edit
         @taxonomy = Taxonomy.find(params[:taxonomy_id])
         @taxon = @taxonomy.taxons.find(params[:id])
-        @permalink_part = @taxon.permalink.split("/").last
+        @permalink_part = @taxon.permalink.split('/').last
       end
 
       def update
@@ -78,9 +78,9 @@ module Spree
           end
         end
 
-        if params.key?("permalink_part")
-          parent_permalink = @taxon.permalink.split("/")[0...-1].join("/")
-          parent_permalink += "/" if parent_permalink.present?
+        if params.key?('permalink_part')
+          parent_permalink = @taxon.permalink.split('/')[0...-1].join('/')
+          parent_permalink += '/' if parent_permalink.present?
           params[:taxon][:permalink] = parent_permalink + params[:permalink_part]
         end
         # check if we need to rename child taxons if parent name or permalink changes

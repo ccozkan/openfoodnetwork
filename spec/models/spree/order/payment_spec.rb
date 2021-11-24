@@ -41,7 +41,7 @@ module Spree
       expect(payment3).to(be_checkout)
     end
 
-    it "does not use failed payments" do
+    it 'does not use failed payments' do
       payment1 = create(:payment, amount: 50, payment_method: bogus)
       payment2 = create(:payment, amount: 50, state: 'failed', payment_method: bogus)
       allow(order).to(receive(:pending_payments).and_return([payment1]))

@@ -8,39 +8,39 @@ module Spree
 
     before { controller_login_as_admin }
 
-    describe "index" do
+    describe 'index' do
       let!(:order) { create(:completed_order_with_totals) }
       let!(:adjustment1) do
         create(
 :adjustment,
-originator_type: "Spree::ShippingMethod",
+originator_type: 'Spree::ShippingMethod',
 order: order,
              adjustable: order.shipment
 )
       end
       let!(:adjustment2) do
-        create(:adjustment, originator_type: "Spree::PaymentMethod", eligible: true, order: order)
+        create(:adjustment, originator_type: 'Spree::PaymentMethod', eligible: true, order: order)
       end
       let!(:adjustment3) do
-        create(:adjustment, originator_type: "Spree::PaymentMethod", eligible: false, order: order)
+        create(:adjustment, originator_type: 'Spree::PaymentMethod', eligible: false, order: order)
       end
-      let!(:adjustment4) { create(:adjustment, originator_type: "EnterpriseFee", order: order) }
+      let!(:adjustment4) { create(:adjustment, originator_type: 'EnterpriseFee', order: order) }
       let!(:adjustment5) { create(:adjustment, originator: nil, adjustable: order, order: order) }
 
-      it "displays eligible adjustments" do
+      it 'displays eligible adjustments' do
         spree_get :index, order_id: order.number
 
         expect(assigns(:collection)).to(include(adjustment1, adjustment2))
         expect(assigns(:collection)).to_not(include(adjustment3))
       end
 
-      it "displays admin adjustments" do
+      it 'displays admin adjustments' do
         spree_get :index, order_id: order.number
 
         expect(assigns(:collection)).to(include(adjustment5))
       end
 
-      it "does not display enterprise fee adjustments" do
+      it 'does not display enterprise fee adjustments' do
         spree_get :index, order_id: order.number
 
         expect(assigns(:collection)).to_not(include(adjustment4))
@@ -52,7 +52,7 @@ order: order,
       let(:zone) { create(:zone_with_member) }
       let(:tax_rate) { create(:tax_rate, amount: 0.1, zone: zone, included_in_price: true) }
 
-      describe "creating an adjustment" do
+      describe 'creating an adjustment' do
         let(:tax_category_param) { '' }
         let(:params) do
           {
@@ -63,7 +63,7 @@ order: order,
           }
         end
 
-        context "when no tax category is specified" do
+        context 'when no tax category is specified' do
           it "doesn't apply tax" do
             spree_post :create, params
             expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
@@ -80,10 +80,10 @@ order: order,
           end
         end
 
-        context "when a tax category is provided" do
+        context 'when a tax category is provided' do
           let(:tax_category_param) { tax_rate.tax_category.id.to_s }
 
-          it "applies tax" do
+          it 'applies tax' do
             spree_post :create, params
             expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
 
@@ -99,7 +99,7 @@ order: order,
           end
         end
 
-        context "when the tax category has multiple rates for the same tax zone" do
+        context 'when the tax category has multiple rates for the same tax zone' do
           let(:tax_category) { create(:tax_category) }
           let!(:tax_rate1) do
             create(
@@ -129,7 +129,7 @@ included_in_price: false,
             }
           end
 
-          it "applies both rates" do
+          it 'applies both rates' do
             spree_post :create, params
             expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
 
@@ -146,7 +146,7 @@ included_in_price: false,
         end
       end
 
-      describe "updating an adjustment" do
+      describe 'updating an adjustment' do
         let(:old_tax_category) { create(:tax_category) }
         let(:tax_category_param) { '' }
         let(:params) do
@@ -168,7 +168,7 @@ tax_category: old_tax_category
 )
         end
 
-        context "when no tax category is specified" do
+        context 'when no tax category is specified' do
           it "doesn't apply tax" do
             spree_put :update, params
             expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
@@ -185,10 +185,10 @@ tax_category: old_tax_category
           end
         end
 
-        context "when a tax category is provided" do
+        context 'when a tax category is provided' do
           let(:tax_category_param) { tax_rate.tax_category.id.to_s }
 
-          it "applies tax" do
+          it 'applies tax' do
             spree_put :update, params
             expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
 
@@ -206,19 +206,19 @@ tax_category: old_tax_category
       end
     end
 
-    describe "#delete" do
+    describe '#delete' do
       let!(:order) { create(:completed_order_with_totals) }
       let(:payment_fee) do
         create(:adjustment, amount: 0.50, order: order, adjustable: order.payments.first)
       end
 
-      context "as an enterprise user with edit permissions on the order" do
+      context 'as an enterprise user with edit permissions on the order' do
         before do
           order.adjustments << payment_fee
           controller_login_as_enterprise_user([order.distributor])
         end
 
-        it "deletes the adjustment" do
+        it 'deletes the adjustment' do
           spree_delete :destroy, order_id: order.number, id: payment_fee.id
 
           expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
@@ -226,13 +226,13 @@ tax_category: old_tax_category
         end
       end
 
-      context "as an enterprise user with no permissions on the order" do
+      context 'as an enterprise user with no permissions on the order' do
         before do
           order.adjustments << payment_fee
           controller_login_as_enterprise_user([create(:enterprise)])
         end
 
-        it "is unauthorized, does not delete the adjustment" do
+        it 'is unauthorized, does not delete the adjustment' do
           spree_delete :destroy, order_id: order.number, id: payment_fee.id
 
           expect(response).to(redirect_to(unauthorized_path))
@@ -241,7 +241,7 @@ tax_category: old_tax_category
       end
     end
 
-    describe "with a cancelled order" do
+    describe 'with a cancelled order' do
       let(:order) { create(:completed_order_with_totals) }
       let(:tax_rate) { create(:tax_rate, amount: 0.1, calculator: ::Calculator::DefaultTax.new) }
       let(:adjustment) do
@@ -256,7 +256,7 @@ tax_category: old_tax_category
         expect do
           spree_post(:create,
 order_id: order.number,
-                              adjustment: { label: "Testing", amount: "110" })
+                              adjustment: { label: 'Testing', amount: '110' })
         end.to_not(change { [Adjustment.count, order.reload.total] })
 
         expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))
@@ -267,7 +267,7 @@ order_id: order.number,
           spree_put(:update,
 order_id: order.number,
 id: adjustment.id,
-                             adjustment: { label: "Testing", amount: "110" })
+                             adjustment: { label: 'Testing', amount: '110' })
         end.to_not(change { [adjustment.reload.amount, order.reload.total] })
 
         expect(response).to(redirect_to(spree.admin_order_adjustments_path(order)))

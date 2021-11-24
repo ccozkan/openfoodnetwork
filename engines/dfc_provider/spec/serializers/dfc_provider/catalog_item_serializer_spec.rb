@@ -36,7 +36,7 @@ describe DfcProvider::CatalogItemSerializer do
     end
 
     it 'returns the expected value' do
-      expect(subject.references).to(eq("@id" => supplied_product_id, "@type" => "@id"))
+      expect(subject.references).to(eq('@id' => supplied_product_id, '@type' => '@id'))
     end
   end
 end

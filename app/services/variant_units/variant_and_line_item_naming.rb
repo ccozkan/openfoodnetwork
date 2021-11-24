@@ -23,11 +23,11 @@ module VariantUnits
 
       values.map do |option_value|
         presentation(option_value)
-      end.to_sentence(words_connector: ", ", two_words_connector: ", ")
+      end.to_sentence(words_connector: ', ', two_words_connector: ', ')
     end
 
     def presentation(option_value)
-      return option_value.presentation unless option_value.option_type.name == "unit_weight"
+      return option_value.presentation unless option_value.option_type.name == 'unit_weight'
 
       return display_as if has_attribute?(:display_as) && display_as.present?
 

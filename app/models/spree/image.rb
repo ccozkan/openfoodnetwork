@@ -15,10 +15,10 @@ module Spree
     # - large: used in the FrontOffice: product modal
     has_attached_file :attachment,
                       styles: {
-mini: "48x48#",
-small: "227x227#",
-product: "240x240>",
-large: "600x600>"
+mini: '48x48#',
+small: '227x227#',
+product: '240x240>',
+large: '600x600>'
 },
                       default_style: :product,
                       url: '/spree/products/:id/:style/:basename.:extension',
@@ -60,7 +60,7 @@ large: "600x600>"
     def no_attachment_errors
       return if attachment.errors.empty?
 
-      if errors.all? { |e| e.type == "Paperclip::Errors::NotIdentifiedByImageMagickError" }
+      if errors.all? { |e| e.type == 'Paperclip::Errors::NotIdentifiedByImageMagickError' }
         attachment.errors.clear
         errors.add(:base, I18n.t('spree.admin.products.image_upload_error'))
       else
@@ -93,7 +93,7 @@ large: "600x600>"
 
       # We use :s3_alias_url (virtual host url style) and set the URL on property s3_host_alias
       set_attachment_attribute(:s3_host_alias, attachment_definitions[:attachment][:url])
-      set_attachment_attribute(:url, ":s3_alias_url")
+      set_attachment_attribute(:url, ':s3_alias_url')
     end
     private_class_method :set_s3_attachment_attributes
 

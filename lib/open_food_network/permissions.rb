@@ -44,7 +44,7 @@ module OpenFoodNetwork
 
       # Permissions granted by create_variant_overrides relationship from producer to hub
       permissions = EnterpriseRelationship
-             .permitting(hubs.select("enterprises.id"))
+             .permitting(hubs.select('enterprises.id'))
              .with_permission(:create_variant_overrides)
              .group_by(&:child_id)
              .map { |child_id, ers| [child_id, ers.map(&:parent_id)] }.to_h
@@ -92,15 +92,15 @@ module OpenFoodNetwork
     def editable_schedules
       Schedule
         .joins(:order_cycles)
-        .where(order_cycles: { id: OrderCycle.managed_by(@user).select("order_cycles.id") })
-        .select("DISTINCT schedules.*")
+        .where(order_cycles: { id: OrderCycle.managed_by(@user).select('order_cycles.id') })
+        .select('DISTINCT schedules.*')
     end
 
     def visible_schedules
       Schedule
         .joins(:order_cycles)
-        .where(order_cycles: { id: OrderCycle.managed_by(@user).select("order_cycles.id") })
-        .select("DISTINCT schedules.*")
+        .where(order_cycles: { id: OrderCycle.managed_by(@user).select('order_cycles.id') })
+        .select('DISTINCT schedules.*')
     end
 
     def editable_subscriptions
@@ -123,20 +123,20 @@ module OpenFoodNetwork
 
     def related_enterprises_granting(permission, options = {})
       parent_ids = EnterpriseRelationship
-        .permitting(options[:to] || managed_enterprises.select("enterprises.id"))
+        .permitting(options[:to] || managed_enterprises.select('enterprises.id'))
         .with_permission(permission)
         .select(:parent_id)
 
-      (options[:scope] || Enterprise).where(id: parent_ids).select("enterprises.id")
+      (options[:scope] || Enterprise).where(id: parent_ids).select('enterprises.id')
     end
 
     def related_enterprises_granted(permission, options = {})
       child_ids = EnterpriseRelationship
-        .permitted_by(options[:by] || managed_enterprises.select("enterprises.id"))
+        .permitted_by(options[:by] || managed_enterprises.select('enterprises.id'))
         .with_permission(permission)
         .select(:child_id)
 
-      (options[:scope] || Enterprise).where(id: child_ids).select("enterprises.id")
+      (options[:scope] || Enterprise).where(id: child_ids).select('enterprises.id')
     end
 
     private
@@ -150,7 +150,7 @@ module OpenFoodNetwork
         Enterprise.where(nil)
       else
         Enterprise.where(
-          id: managed_enterprises.select("enterprises.id") |
+          id: managed_enterprises.select('enterprises.id') |
                 related_enterprises_granting(permission)
         )
       end
@@ -160,7 +160,7 @@ module OpenFoodNetwork
       if admin?
         Enterprise.where(nil)
       else
-        managed_enterprise_ids = managed_enterprises.select("enterprises.id")
+        managed_enterprise_ids = managed_enterprises.select('enterprises.id')
         granting_enterprise_ids = related_enterprises_granting(permission)
         granted_enterprise_ids = related_enterprises_granted(permission)
 

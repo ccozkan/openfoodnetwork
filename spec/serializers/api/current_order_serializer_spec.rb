@@ -15,15 +15,15 @@ describe Api::CurrentOrderSerializer do
     ).to_json
   end
 
-  it "serializers the current order" do
+  it 'serializers the current order' do
     expect(serializer).to(match(order.id.to_s))
   end
 
-  it "includes line items" do
+  it 'includes line items' do
     expect(serializer).to(match(line_item.id.to_s))
   end
 
-  it "includes variants of line items" do
+  it 'includes variants of line items' do
     expect(serializer).to(match(line_item.variant.name))
   end
 

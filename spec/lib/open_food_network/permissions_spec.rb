@@ -11,11 +11,11 @@ module OpenFoodNetwork
     let(:e1) { create(:enterprise) }
     let(:e2) { create(:enterprise) }
 
-    describe "finding managed and related enterprises granting a particular permission" do
-      describe "as super admin" do
+    describe 'finding managed and related enterprises granting a particular permission' do
+      describe 'as super admin' do
         before { allow(user).to(receive(:admin?) { true }) }
 
-        it "returns all enterprises" do
+        it 'returns all enterprises' do
           expect(
 permissions.send(
 :managed_and_related_enterprises_granting,
@@ -25,11 +25,11 @@ permissions.send(
         end
       end
 
-      describe "as an enterprise user" do
+      describe 'as an enterprise user' do
         let(:e3) { create(:enterprise) }
         before { allow(user).to(receive(:admin?) { false }) }
 
-        it "returns only my managed enterprises any that have granting them P-OC" do
+        it 'returns only my managed enterprises any that have granting them P-OC' do
           expect(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: e1) })
           expect(permissions).to(receive(:related_enterprises_granting).with(:some_permission) {
                                    Enterprise.where(id: e3).select(:id)
@@ -44,11 +44,11 @@ permissions.send(
       end
     end
 
-    describe "finding managed and related enterprises granting or granted a particular permission" do
-      describe "as super admin" do
+    describe 'finding managed and related enterprises granting or granted a particular permission' do
+      describe 'as super admin' do
         before { allow(user).to(receive(:admin?) { true }) }
 
-        it "returns all enterprises" do
+        it 'returns all enterprises' do
           expect(
 permissions.send(
 :managed_and_related_enterprises_granting,
@@ -58,12 +58,12 @@ permissions.send(
         end
       end
 
-      describe "as an enterprise user" do
+      describe 'as an enterprise user' do
         let(:e3) { create(:enterprise) }
         let(:e4) { create(:enterprise) }
         before { allow(user).to(receive(:admin?) { false }) }
 
-        it "returns only my managed enterprises any that have granting them P-OC" do
+        it 'returns only my managed enterprises any that have granting them P-OC' do
           expect(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: e1) })
           expect(permissions).to(receive(:related_enterprises_granting).with(:some_permission) {
                                    Enterprise.where(id: e3).select(:id)
@@ -81,10 +81,10 @@ permissions.send(
       end
     end
 
-    describe "finding enterprises that can be selected in order report filters" do
+    describe 'finding enterprises that can be selected in order report filters' do
       let(:e) { double(:enterprise) }
 
-      it "returns managed and related enterprises with add_to_order_cycle permission" do
+      it 'returns managed and related enterprises with add_to_order_cycle permission' do
         expect(permissions).to(receive(:managed_and_related_enterprises_with)
           .with(:add_to_order_cycle)
           .and_return([e]))
@@ -93,10 +93,10 @@ permissions.send(
       end
     end
 
-    describe "finding visible enterprises" do
+    describe 'finding visible enterprises' do
       let(:e) { double(:enterprise) }
 
-      it "returns managed and related enterprises with add_to_order_cycle permission" do
+      it 'returns managed and related enterprises with add_to_order_cycle permission' do
         expect(permissions).to(receive(:managed_and_related_enterprises_granting)
           .with(:add_to_order_cycle)
           .and_return([e]))
@@ -105,10 +105,10 @@ permissions.send(
       end
     end
 
-    describe "finding enterprises whose profiles can be edited" do
+    describe 'finding enterprises whose profiles can be edited' do
       let(:e) { double(:enterprise) }
 
-      it "returns managed and related enterprises with edit_profile permission" do
+      it 'returns managed and related enterprises with edit_profile permission' do
         expect(permissions)
           .to(receive(:managed_and_related_enterprises_granting)
           .with(:edit_profile)
@@ -118,11 +118,11 @@ permissions.send(
       end
     end
 
-    describe "finding all producers for which we can create variant overrides" do
+    describe 'finding all producers for which we can create variant overrides' do
       let(:e1) { create(:supplier_enterprise) }
       let(:e2) { create(:supplier_enterprise) }
 
-      it "compiles the list from variant_override_enterprises_per_hub" do
+      it 'compiles the list from variant_override_enterprises_per_hub' do
         allow(permissions).to(receive(:variant_override_enterprises_per_hub)) do
           { 1 => [e1.id], 2 => [e1.id, e2.id] }
         end
@@ -131,7 +131,7 @@ permissions.send(
       end
     end
 
-    describe "finding enterprises for which variant overrides can be created, for each hub" do
+    describe 'finding enterprises for which variant overrides can be created, for each hub' do
       let!(:hub) { create(:distributor_enterprise) }
       let!(:producer) { create(:supplier_enterprise) }
       let!(:er) do
@@ -148,11 +148,11 @@ child: hub,
         allow(permissions).to(receive(:admin?) { false })
       end
 
-      it "returns enterprises as hub_id => [producer, ...]" do
+      it 'returns enterprises as hub_id => [producer, ...]' do
         expect(permissions.variant_override_enterprises_per_hub).to(eq(hub.id => [producer.id]))
       end
 
-      it "returns only permissions relating to managed hubs" do
+      it 'returns only permissions relating to managed hubs' do
         create(
 :enterprise_relationship,
 parent: e1,
@@ -163,7 +163,7 @@ child: e2,
         expect(permissions.variant_override_enterprises_per_hub).to(eq(hub.id => [producer.id]))
       end
 
-      it "returns only create_variant_overrides permissions" do
+      it 'returns only create_variant_overrides permissions' do
         allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: [hub, e2]) })
         create(
 :enterprise_relationship,
@@ -175,7 +175,7 @@ child: e2,
         expect(permissions.variant_override_enterprises_per_hub).to(eq(hub.id => [producer.id]))
       end
 
-      describe "hubs connected to the user by relationships only" do
+      describe 'hubs connected to the user by relationships only' do
         let!(:producer_managed) { create(:supplier_enterprise) }
         let!(:er_oc) do
           create(
@@ -192,12 +192,12 @@ child: producer_managed,
                                 })
         end
 
-        it "does not allow the user to create variant overrides for the hub" do
+        it 'does not allow the user to create variant overrides for the hub' do
           expect(permissions.variant_override_enterprises_per_hub).to(eq({}))
         end
       end
 
-      it "does not return managed producers (ie. only uses explicitly granted VO permissions)" do
+      it 'does not return managed producers (ie. only uses explicitly granted VO permissions)' do
         producer2 = create(:supplier_enterprise)
         allow(permissions).to(receive(:managed_enterprises) {
                                 Enterprise.where(id: [hub, producer2])
@@ -206,73 +206,73 @@ child: producer_managed,
         expect(permissions.variant_override_enterprises_per_hub[hub.id]).to_not(include(producer2.id))
       end
 
-      it "returns itself if self is also a primary producer (even when no explicit permission exists)" do
+      it 'returns itself if self is also a primary producer (even when no explicit permission exists)' do
         hub.update_attribute(:is_primary_producer, true)
 
         expect(permissions.variant_override_enterprises_per_hub[hub.id]).to(include(hub.id))
       end
     end
 
-    describe "finding editable products" do
+    describe 'finding editable products' do
       let!(:p1) { create(:simple_product, supplier: create(:supplier_enterprise)) }
       let!(:p2) { create(:simple_product, supplier: create(:supplier_enterprise)) }
 
       before do
         allow(permissions).to(receive(:managed_enterprise_products) { Spree::Product.where('1=0') })
         allow(permissions).to(receive(:related_enterprises_granting).with(:manage_products) {
-                                Enterprise.where("1=0").select(:id)
+                                Enterprise.where('1=0').select(:id)
                               })
       end
 
-      it "returns products produced by managed enterprises" do
+      it 'returns products produced by managed enterprises' do
         allow(permissions).to(receive(:managed_enterprise_products) { Spree::Product.where(id: p1) })
         expect(permissions.editable_products).to(eq([p1]))
       end
 
-      it "returns products produced by permitted enterprises" do
+      it 'returns products produced by permitted enterprises' do
         allow(permissions).to(receive(:related_enterprises_granting)
           .with(:manage_products) { Enterprise.where(id: p2.supplier).select(:id) })
         expect(permissions.editable_products).to(eq([p2]))
       end
     end
 
-    describe "finding visible products" do
+    describe 'finding visible products' do
       let!(:p1) { create(:simple_product, supplier: create(:supplier_enterprise)) }
       let!(:p2) { create(:simple_product, supplier: create(:supplier_enterprise)) }
       let!(:p3) { create(:simple_product, supplier: create(:supplier_enterprise)) }
 
       before do
-        allow(permissions).to(receive(:managed_enterprise_products) { Spree::Product.where("1=0") })
+        allow(permissions).to(receive(:managed_enterprise_products) { Spree::Product.where('1=0') })
         allow(permissions).to(receive(:related_enterprises_granting).with(:manage_products) {
-                                Enterprise.where("1=0").select(:id)
+                                Enterprise.where('1=0').select(:id)
                               })
         allow(permissions).to(receive(:related_enterprises_granting).with(:add_to_order_cycle) {
-                                Enterprise.where("1=0").select(:id)
+                                Enterprise.where('1=0').select(:id)
                               })
       end
 
-      it "returns products produced by managed enterprises" do
+      it 'returns products produced by managed enterprises' do
         allow(permissions).to(receive(:managed_enterprise_products) { Spree::Product.where(id: p1) })
         expect(permissions.visible_products).to(eq([p1]))
       end
 
-      it "returns products produced by enterprises that have granted manage products" do
+      it 'returns products produced by enterprises that have granted manage products' do
         allow(permissions).to(receive(:related_enterprises_granting)
           .with(:manage_products) { Enterprise.where(id: p2.supplier).select(:id) })
         expect(permissions.visible_products).to(eq([p2]))
       end
 
-      it "returns products produced by enterprises that have granted P-OC" do
+      it 'returns products produced by enterprises that have granted P-OC' do
         allow(permissions).to(receive(:related_enterprises_granting)
           .with(:add_to_order_cycle) { Enterprise.where(id: p3.supplier).select(:id) })
         expect(permissions.visible_products).to(eq([p3]))
       end
     end
 
-    describe "finding enterprises that we manage products for" do
+    describe 'finding enterprises that we manage products for' do
       let(:e) { double(:enterprise) }
 
-      it "returns managed and related enterprises with manage_products permission" do
+      it 'returns managed and related enterprises with manage_products permission' do
         expect(permissions)
           .to(receive(:managed_and_related_enterprises_granting)
           .with(:manage_products)
@@ -284,23 +284,23 @@ child: producer_managed,
 
     ########################################
 
-    describe "finding related enterprises with a particular permission" do
+    describe 'finding related enterprises with a particular permission' do
       let!(:er) do
         create(:enterprise_relationship, parent: e1, child: e2, permissions_list: [permission])
       end
 
-      it "returns the enterprises" do
+      it 'returns the enterprises' do
         allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: e2) })
         expect(permissions.send(:related_enterprises_granting, permission)).to(eq([e1]))
       end
 
-      it "returns an empty array when there are none" do
+      it 'returns an empty array when there are none' do
         allow(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: e1) })
         expect(permissions.send(:related_enterprises_granting, permission)).to(eq([]))
       end
     end
 
-    describe "finding enterprises that are managed or with a particular permission" do
+    describe 'finding enterprises that are managed or with a particular permission' do
       before do
         allow(permissions).to(receive(:managed_enterprises) { Enterprise.where('1=0') })
         allow(permissions).to(receive(:related_enterprises_granting) {
@@ -309,23 +309,23 @@ child: producer_managed,
         allow(permissions).to(receive(:admin?) { false })
       end
 
-      it "returns managed enterprises" do
+      it 'returns managed enterprises' do
         expect(permissions).to(receive(:managed_enterprises) { Enterprise.where(id: e1) })
         expect(permissions.send(:managed_and_related_enterprises_granting, permission)).to(eq([e1]))
       end
 
-      it "returns permitted enterprises" do
+      it 'returns permitted enterprises' do
         expect(permissions).to(receive(:related_enterprises_granting).with(permission)
           .and_return(Enterprise.where(id: e2).select(:id)))
         expect(permissions.send(:managed_and_related_enterprises_granting, permission)).to(eq([e2]))
       end
     end
 
-    describe "finding visible subscriptions" do
+    describe 'finding visible subscriptions' do
       let!(:so1) { create(:subscription) }
       let!(:so2) { create(:subscription) }
 
-      it "returns subscriptions placed with managed shops" do
+      it 'returns subscriptions placed with managed shops' do
         expect(permissions).to(receive(:managed_enterprises) { [so1.shop] })
 
         expect(permissions.visible_subscriptions).to(eq([so1]))

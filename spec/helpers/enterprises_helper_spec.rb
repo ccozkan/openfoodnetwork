@@ -9,7 +9,7 @@ describe EnterprisesHelper, type: :helper do
 
   before { allow(helper).to(receive(:spree_current_user) { user }) }
 
-  describe "loading available shipping methods" do
+  describe 'loading available shipping methods' do
     let!(:distributor_shipping_method) do
       create(:shipping_method, require_ship_address: false, distributors: [distributor])
     end
@@ -17,20 +17,20 @@ describe EnterprisesHelper, type: :helper do
       create(:shipping_method, require_ship_address: false, distributors: [some_other_distributor])
     end
 
-    context "when the order has no current_distributor" do
+    context 'when the order has no current_distributor' do
       before do
         allow(helper).to(receive(:current_distributor) { nil })
       end
 
-      it "returns an empty array" do
+      it 'returns an empty array' do
         expect(helper.available_shipping_methods).to(eq([]))
       end
     end
 
-    context "when no tag rules are in effect" do
+    context 'when no tag rules are in effect' do
       before { allow(helper).to(receive(:current_distributor) { distributor }) }
 
-      it "finds the shipping methods for the current distributor" do
+      it 'finds the shipping methods for the current distributor' do
         expect(helper.available_shipping_methods).to_not(include(other_distributor_shipping_method))
         expect(helper.available_shipping_methods).to(include(distributor_shipping_method))
       end
@@ -49,14 +49,14 @@ display_on: 'back_end'
       end
     end
 
-    context "when FilterShippingMethods tag rules are in effect" do
+    context 'when FilterShippingMethods tag rules are in effect' do
       let(:customer) { create(:customer, user: user, enterprise: distributor) }
       let!(:tag_rule) do
         create(
 :filter_shipping_methods_tag_rule,
                enterprise: distributor,
-               preferred_customer_tags: "local",
-               preferred_shipping_method_tags: "local-delivery"
+               preferred_customer_tags: 'local',
+               preferred_shipping_method_tags: 'local-delivery'
 )
       end
       let!(:default_tag_rule) do
@@ -64,7 +64,7 @@ display_on: 'back_end'
 :filter_shipping_methods_tag_rule,
                enterprise: distributor,
                is_default: true,
-               preferred_shipping_method_tags: "local-delivery"
+               preferred_shipping_method_tags: 'local-delivery'
 )
       end
       let!(:tagged_sm) { distributor_shipping_method }
@@ -87,8 +87,8 @@ display_on: 'back_end'
 )
         end
 
-        context "when the customer is nil" do
-          it "applies default action (hide)" do
+        context 'when the customer is nil' do
+          it 'applies default action (hide)' do
             expect(helper.current_customer).to(be(nil))
             expect(helper.available_shipping_methods).to(include(untagged_sm))
             expect(helper.available_shipping_methods).to_not(include(tagged_sm))
@@ -98,7 +98,7 @@ display_on: 'back_end'
         context "when the customer's tags match" do
           before { customer.update_attribute(:tag_list, 'local') }
 
-          it "applies the action (show)" do
+          it 'applies the action (show)' do
             expect(helper.current_customer).to(eq(customer))
             expect(helper.available_shipping_methods).to(include(tagged_sm, untagged_sm))
           end
@@ -107,7 +107,7 @@ display_on: 'back_end'
         context "when the customer's tags don't match" do
           before { customer.update_attribute(:tag_list, 'something') }
 
-          it "applies the default action (hide)" do
+          it 'applies the default action (hide)' do
             expect(helper.current_customer).to(eq(customer))
             expect(helper.available_shipping_methods).to(include(untagged_sm))
             expect(helper.available_shipping_methods).to_not(include(tagged_sm))
@@ -126,8 +126,8 @@ display_on: 'back_end'
 )
         end
 
-        context "when the customer is nil" do
-          it "applies default action (show)" do
+        context 'when the customer is nil' do
+          it 'applies default action (show)' do
             expect(helper.current_customer).to(be(nil))
             expect(helper.available_shipping_methods).to(include(tagged_sm, untagged_sm))
           end
@@ -136,7 +136,7 @@ display_on: 'back_end'
         context "when the customer's tags match" do
           before { customer.update_attribute(:tag_list, 'local') }
 
-          it "applies the action (hide)" do
+          it 'applies the action (hide)' do
             expect(helper.current_customer).to(eq(customer))
             expect(helper.available_shipping_methods).to(include(untagged_sm))
             expect(helper.available_shipping_methods).to_not(include(tagged_sm))
@@ -146,7 +146,7 @@ display_on: 'back_end'
         context "when the customer's tags don't match" do
           before { customer.update_attribute(:tag_list, 'something') }
 
-          it "applies the default action (show)" do
+          it 'applies the default action (show)' do
             expect(helper.current_customer).to(eq(customer))
             expect(helper.available_shipping_methods).to(include(tagged_sm, untagged_sm))
           end
@@ -155,37 +155,37 @@ display_on: 'back_end'
     end
   end
 
-  describe "loading available payment methods" do
+  describe 'loading available payment methods' do
     let!(:pm1) { create(:payment_method, distributors: [distributor]) }
     let!(:pm2) { create(:payment_method, distributors: [some_other_distributor]) }
 
-    context "when the order has no current_distributor" do
+    context 'when the order has no current_distributor' do
       before do
         allow(helper).to(receive(:current_distributor) { nil })
       end
 
-      it "returns an empty array" do
+      it 'returns an empty array' do
         expect(helper.available_payment_methods).to(eq([]))
       end
     end
 
-    context "when no tag rules are in effect" do
+    context 'when no tag rules are in effect' do
       before { allow(helper).to(receive(:current_distributor) { distributor }) }
 
-      it "finds the payment methods for the current distributor" do
+      it 'finds the payment methods for the current distributor' do
         expect(helper.available_payment_methods).to_not(include(pm2))
         expect(helper.available_payment_methods).to(include(pm1))
       end
     end
 
-    context "when FilterPaymentMethods tag rules are in effect" do
+    context 'when FilterPaymentMethods tag rules are in effect' do
       let(:customer) { create(:customer, user: user, enterprise: distributor) }
       let!(:tag_rule) do
         create(
 :filter_payment_methods_tag_rule,
                enterprise: distributor,
-               preferred_customer_tags: "trusted",
-               preferred_payment_method_tags: "trusted"
+               preferred_customer_tags: 'trusted',
+               preferred_payment_method_tags: 'trusted'
 )
       end
       let!(:default_tag_rule) do
@@ -193,7 +193,7 @@ display_on: 'back_end'
 :filter_payment_methods_tag_rule,
                enterprise: distributor,
                is_default: true,
-               preferred_payment_method_tags: "trusted"
+               preferred_payment_method_tags: 'trusted'
 )
       end
       let(:tagged_pm) { pm1 }
@@ -213,8 +213,8 @@ display_on: 'back_end'
           default_tag_rule.update_attribute(:preferred_matched_payment_methods_visibility, 'hidden')
         end
 
-        context "when the customer is nil" do
-          it "applies default action (hide)" do
+        context 'when the customer is nil' do
+          it 'applies default action (hide)' do
             expect(helper.current_customer).to(be(nil))
             expect(helper.available_payment_methods).to(include(untagged_pm))
             expect(helper.available_payment_methods).to_not(include(tagged_pm))
@@ -224,7 +224,7 @@ display_on: 'back_end'
         context "when the customer's tags match" do
           before { customer.update_attribute(:tag_list, 'trusted') }
 
-          it "applies the action (show)" do
+          it 'applies the action (show)' do
             expect(helper.current_customer).to(eq(customer))
             expect(helper.available_payment_methods).to(include(tagged_pm, untagged_pm))
           end
@@ -233,7 +233,7 @@ display_on: 'back_end'
         context "when the customer's tags don't match" do
           before { customer.update_attribute(:tag_list, 'something') }
 
-          it "applies the default action (hide)" do
+          it 'applies the default action (hide)' do
             expect(helper.current_customer).to(eq(customer))
             expect(helper.available_payment_methods).to(include(untagged_pm))
             expect(helper.available_payment_methods).to_not(include(tagged_pm))
@@ -252,8 +252,8 @@ display_on: 'back_end'
 )
         end
 
-        context "when the customer is nil" do
-          it "applies default action (show)" do
+        context 'when the customer is nil' do
+          it 'applies default action (show)' do
             expect(helper.current_customer).to(be(nil))
             expect(helper.available_payment_methods).to(include(tagged_pm, untagged_pm))
           end
@@ -262,7 +262,7 @@ display_on: 'back_end'
         context "when the customer's tags match" do
           before { customer.update_attribute(:tag_list, 'trusted') }
 
-          it "applies the action (hide)" do
+          it 'applies the action (hide)' do
             expect(helper.current_customer).to(eq(customer))
             expect(helper.available_payment_methods).to(include(untagged_pm))
             expect(helper.available_payment_methods).to_not(include(tagged_pm))
@@ -272,7 +272,7 @@ display_on: 'back_end'
         context "when the customer's tags don't match" do
           before { customer.update_attribute(:tag_list, 'something') }
 
-          it "applies the default action (show)" do
+          it 'applies the default action (show)' do
             expect(helper.current_customer).to(eq(customer))
             expect(helper.available_payment_methods).to(include(tagged_pm, untagged_pm))
           end
@@ -280,7 +280,7 @@ display_on: 'back_end'
       end
     end
 
-    context "when StripeConnect payment methods are present" do
+    context 'when StripeConnect payment methods are present' do
       let!(:pm3) do
         create(
 :stripe_connect_payment_method,
@@ -307,23 +307,23 @@ distributors: [distributor],
         allow(helper).to(receive(:current_distributor) { distributor })
       end
 
-      context "and Stripe Connect is disabled" do
+      context 'and Stripe Connect is disabled' do
         before { Spree::Config.set(stripe_connect_enabled: false) }
 
-        it "ignores Stripe payment methods" do
+        it 'ignores Stripe payment methods' do
           expect(available_payment_methods).to_not(include(pm3, pm4))
         end
       end
 
-      context "and Stripe Connect is enabled" do
+      context 'and Stripe Connect is enabled' do
         let!(:stripe_account) { create(:stripe_account, enterprise_id: distributor.id) }
 
         before do
           Spree::Config.set(stripe_connect_enabled: true)
-          Stripe.publishable_key = "some_key"
+          Stripe.publishable_key = 'some_key'
         end
 
-        it "includes Stripe payment methods with a valid stripe accounts" do
+        it 'includes Stripe payment methods with a valid stripe accounts' do
           expect(available_payment_methods).to(include(pm3))
           expect(available_payment_methods).to_not(include(pm4))
         end

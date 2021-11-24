@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Spree::Admin::OrdersController, type: :controller do
   include OpenFoodNetwork::EmailHelper
 
-  describe "#invoice" do
+  describe '#invoice' do
     let!(:user) { create(:user) }
     let!(:enterprise_user) { create(:user) }
     let!(:order) do
@@ -18,31 +18,31 @@ bill_address: create(:address),
     let!(:distributor) { order.distributor }
     let(:params) { { id: order.number } }
 
-    context "as a normal user" do
+    context 'as a normal user' do
       before { allow(controller).to(receive(:spree_current_user) { user }) }
 
-      it "should prevent me from sending order invoices" do
+      it 'should prevent me from sending order invoices' do
         spree_get :invoice, params
         expect(response).to(redirect_to(unauthorized_path))
       end
     end
 
-    context "as an enterprise user" do
-      context "which is not a manager of the distributor for an order" do
+    context 'as an enterprise user' do
+      context 'which is not a manager of the distributor for an order' do
         before { allow(controller).to(receive(:spree_current_user) { user }) }
 
-        it "should prevent me from sending order invoices" do
+        it 'should prevent me from sending order invoices' do
           spree_get :invoice, params
           expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
-      context "which is a manager of the distributor for an order" do
+      context 'which is a manager of the distributor for an order' do
         before { allow(controller).to(receive(:spree_current_user) { distributor.owner }) }
 
         context "when the distributor's ABN has not been set" do
-          before { distributor.update_attribute(:abn, "") }
-          it "should allow me to send order invoices" do
+          before { distributor.update_attribute(:abn, '') }
+          it 'should allow me to send order invoices' do
             expect do
               spree_get(:invoice, params)
             end.to_not(change { Spree::OrderMailer.deliveries.count })
@@ -56,11 +56,11 @@ bill_address: create(:address),
 
           before do
             allow(Spree::OrderMailer).to(receive(:invoice_email) { mail_mock })
-            distributor.update_attribute(:abn, "123")
+            distributor.update_attribute(:abn, '123')
             setup_email
           end
 
-          it "should allow me to send order invoices" do
+          it 'should allow me to send order invoices' do
             spree_get :invoice, params
 
             expect(response).to(redirect_to(spree.edit_admin_order_path(order)))
@@ -72,7 +72,7 @@ bill_address: create(:address),
     end
   end
 
-  describe "#print" do
+  describe '#print' do
     let!(:user) { create(:user) }
     let!(:enterprise_user) { create(:user) }
     let!(:order) do
@@ -85,27 +85,27 @@ bill_address: create(:address),
     let!(:distributor) { order.distributor }
     let(:params) { { id: order.number } }
 
-    context "as a normal user" do
+    context 'as a normal user' do
       before { allow(controller).to(receive(:spree_current_user) { user }) }
 
-      it "should prevent me from sending order invoices" do
+      it 'should prevent me from sending order invoices' do
         spree_get :print, params
         expect(response).to(redirect_to(unauthorized_path))
       end
     end
 
-    context "as an enterprise user" do
-      context "which is not a manager of the distributor for an order" do
+    context 'as an enterprise user' do
+      context 'which is not a manager of the distributor for an order' do
         before { allow(controller).to(receive(:spree_current_user) { user }) }
-        it "should prevent me from sending order invoices" do
+        it 'should prevent me from sending order invoices' do
           spree_get :print, params
           expect(response).to(redirect_to(unauthorized_path))
         end
       end
 
-      context "which is a manager of the distributor for an order" do
+      context 'which is a manager of the distributor for an order' do
         before { allow(controller).to(receive(:spree_current_user) { distributor.owner }) }
-        it "should allow me to send order invoices" do
+        it 'should allow me to send order invoices' do
           spree_get :print, params
           expect(response).to(render_template(:invoice))
         end

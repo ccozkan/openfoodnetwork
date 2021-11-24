@@ -2,11 +2,11 @@
 
 require 'system_helper'
 
-describe "Account Settings", js: true do
+describe 'Account Settings', js: true do
   include AuthenticationHelper
   include OpenFoodNetwork::EmailHelper
 
-  describe "as a logged in user" do
+  describe 'as a logged in user' do
     let(:user) do
       create(
 :user,
@@ -19,12 +19,12 @@ describe "Account Settings", js: true do
     before do
       setup_email
       login_as user
-      visit "/account"
-      find("a", text: /#{I18n.t('spree.users.show.tabs.settings')}/i).click
+      visit '/account'
+      find('a', text: /#{I18n.t('spree.users.show.tabs.settings')}/i).click
       expect(page).to(have_content(I18n.t('spree.users.form.account_settings')))
     end
 
-    it "allows the user to update their email address" do
+    it 'allows the user to update their email address' do
       fill_in 'user_email', with: 'new@email.com'
 
       performing_deliveries do
@@ -33,27 +33,27 @@ describe "Account Settings", js: true do
         end.to(enqueue_job(ActionMailer::DeliveryJob))
       end
 
-      expect(enqueued_jobs.last.to_s).to(match("new@email.com"))
+      expect(enqueued_jobs.last.to_s).to(match('new@email.com'))
 
-      expect(find(".alert-box.success").text.strip).to(eq("#{I18n.t('spree.account_updated')}\n×"))
+      expect(find('.alert-box.success').text.strip).to(eq("#{I18n.t('spree.account_updated')}\n×"))
       user.reload
       expect(user.email).to(eq('old@email.com'))
       expect(user.unconfirmed_email).to(eq('new@email.com'))
-      find("a", text: /#{I18n.t('spree.users.show.tabs.settings')}/i).click
+      find('a', text: /#{I18n.t('spree.users.show.tabs.settings')}/i).click
       expect(page).to(have_content(I18n.t(
 'spree.users.show.unconfirmed_email',
                                           unconfirmed_email: 'new@email.com'
 )))
     end
 
-    it "allows the user to change their password" do
+    it 'allows the user to change their password' do
       initial_password = user.encrypted_password
 
       fill_in 'user_password', with: 'NewPassword'
       fill_in 'user_password_confirmation', with: 'NewPassword'
 
       click_button I18n.t(:update)
-      expect(find(".alert-box.success").text.strip).to(eq("#{I18n.t('spree.account_updated')}\n×"))
+      expect(find('.alert-box.success').text.strip).to(eq("#{I18n.t('spree.account_updated')}\n×"))
 
       expect(user.reload.encrypted_password).to_not(eq(initial_password))
     end

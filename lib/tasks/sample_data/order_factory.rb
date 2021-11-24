@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "tasks/sample_data/logging"
-require "tasks/sample_data/addressing"
+require 'tasks/sample_data/logging'
+require 'tasks/sample_data/addressing'
 
 module SampleData
   class OrderFactory
@@ -9,27 +9,27 @@ module SampleData
     include Addressing
 
     def create_samples
-      log("Creating orders")
+      log('Creating orders')
       @order_cycle = OrderCycle.find_by(name: "Fredo's Farm Hub OC")
       @distributor = Enterprise.find_by(name: "Fredo's Farm Hub")
-      @email = "new.customer@example.org"
+      @email = 'new.customer@example.org'
 
-      log("- cart order")
+      log('- cart order')
       create_cart_order
 
-      log("- complete order - not paid")
+      log('- complete order - not paid')
       create_complete_order
 
-      log("- complete order - paid")
+      log('- complete order - paid')
       order = create_complete_order
       order.payments.first.capture!
 
-      log("- complete order - delivery")
+      log('- complete order - delivery')
       order = create_complete_order
       order.select_shipping_method(delivery_shipping_method_id)
       order.save
 
-      log("- complete order - shipped")
+      log('- complete order - shipped')
       order = create_complete_order
       order.payments.first.capture!
       order.save
@@ -78,10 +78,10 @@ module SampleData
     end
 
     def order_address
-      address = address("25 Myrtle Street, Bayswater, 3153")
-      address.firstname = "John"
-      address.lastname = "Mistery"
-      address.phone = "0987654321"
+      address = address('25 Myrtle Street, Bayswater, 3153')
+      address.firstname = 'John'
+      address.lastname = 'Mistery'
+      address.phone = '0987654321'
       address
     end
   end

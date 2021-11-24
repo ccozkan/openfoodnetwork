@@ -3,13 +3,13 @@
 require 'spec_helper'
 
 describe Enterprise do
-  context "key-based caching invalidation" do
-    describe "is touched when a(n)" do
+  context 'key-based caching invalidation' do
+    describe 'is touched when a(n)' do
       let(:enterprise) { create(:distributor_enterprise, updated_at: Time.zone.now - 1.week) }
       let(:taxon) { create(:taxon) }
       let(:supplier2) { create(:supplier_enterprise) }
 
-      describe "with a supplied product" do
+      describe 'with a supplied product' do
         let(:product) { create(:simple_product, supplier: enterprise) }
         let!(:classification) { create(:classification, taxon: taxon, product: product) }
         let(:property) { product.product_properties.last }
@@ -20,28 +20,28 @@ describe Enterprise do
           enterprise.set_producer_property('Biodynamic', 'ASDF 4321')
         end
 
-        it "touches enterprise when a classification on that product changes" do
+        it 'touches enterprise when a classification on that product changes' do
           expect do
             classification.save!
             enterprise.reload
           end.to(change { enterprise.updated_at })
         end
 
-        it "touches enterprise when a property on that product changes" do
+        it 'touches enterprise when a property on that product changes' do
           expect do
             property.save!
             enterprise.reload
           end.to(change { enterprise.updated_at })
         end
 
-        it "touches enterprise when a producer property on that product changes" do
+        it 'touches enterprise when a producer property on that product changes' do
           expect do
             producer_property.save!
             enterprise.reload
           end.to(change { enterprise.updated_at })
         end
 
-        it "touches enterprise when the supplier of a product changes" do
+        it 'touches enterprise when the supplier of a product changes' do
           expect do
             product.update!(supplier: supplier2)
             enterprise.reload
@@ -49,7 +49,7 @@ describe Enterprise do
         end
       end
 
-      describe "with a distributed product" do
+      describe 'with a distributed product' do
         let(:product) { create(:simple_product) }
         let(:oc) do
           create(
@@ -68,38 +68,38 @@ distributors: [enterprise],
           supplier.set_producer_property('Biodynamic', 'ASDF 4321')
         end
 
-        context "with an order cycle" do
+        context 'with an order cycle' do
           before { oc }
 
-          it "touches enterprise when a classification on that product changes" do
+          it 'touches enterprise when a classification on that product changes' do
             expect do
               classification.save!
               enterprise.reload
             end.to(change { enterprise.updated_at })
           end
 
-          it "touches enterprise when a property on that product changes" do
+          it 'touches enterprise when a property on that product changes' do
             expect do
               property.save!
               enterprise.reload
             end.to(change { enterprise.updated_at })
           end
 
-          it "touches enterprise when a producer property on that product changes" do
+          it 'touches enterprise when a producer property on that product changes' do
             expect do
               producer_property.save!
               enterprise.reload
             end.to(change { enterprise.updated_at })
           end
 
-          it "touches enterprise when the supplier of a product changes" do
+          it 'touches enterprise when the supplier of a product changes' do
             expect do
               product.update!(supplier: supplier2)
               enterprise.reload
             end.to(change { enterprise.updated_at })
           end
 
-          it "touches enterprise when a relevant exchange is updated" do
+          it 'touches enterprise when a relevant exchange is updated' do
             expect do
               oc.exchanges.first.update!(updated_at: Time.zone.now)
               enterprise.reload
@@ -115,11 +115,11 @@ distributors: [enterprise],
         end
       end
 
-      describe "with relatives" do
+      describe 'with relatives' do
         let(:child_enterprise) { create(:supplier_enterprise) }
         let!(:er) { create(:enterprise_relationship, parent: enterprise, child: child_enterprise) }
 
-        it "touches enterprise when enterprise relationship is updated" do
+        it 'touches enterprise when enterprise relationship is updated' do
           expect do
             er.save!
             enterprise.reload
@@ -127,21 +127,21 @@ distributors: [enterprise],
         end
       end
 
-      describe "with shipping methods" do
+      describe 'with shipping methods' do
         let(:sm) { create(:shipping_method) }
 
         before do
           enterprise.shipping_methods << sm
         end
 
-        it "touches enterprise when distributor_shipping_method is updated" do
+        it 'touches enterprise when distributor_shipping_method is updated' do
           expect do
             enterprise.distributor_shipping_methods.first.save!
             enterprise.reload
           end.to(change { enterprise.updated_at })
         end
 
-        it "touches enterprise when shipping method is updated" do
+        it 'touches enterprise when shipping method is updated' do
           expect do
             sm.save!
             enterprise.reload
@@ -149,7 +149,7 @@ distributors: [enterprise],
         end
       end
 
-      it "touches enterprise when address is updated" do
+      it 'touches enterprise when address is updated' do
         expect do
           enterprise.address.save!
           enterprise.reload

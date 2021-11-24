@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "spec_helper"
+require 'spec_helper'
 
 module Api
   describe V0::OrderCyclesController, type: :controller do
@@ -27,14 +27,14 @@ module Api
       allow(controller).to(receive(:spree_current_user) { user })
     end
 
-    describe "#products" do
-      it "loads products for distributed products in the order cycle" do
+    describe '#products' do
+      it 'loads products for distributed products in the order cycle' do
         api_get :products, id: order_cycle.id, distributor: distributor.id
 
         expect(product_ids).to(include(product1.id, product2.id, product3.id))
       end
 
-      context "with variant overrides" do
+      context 'with variant overrides' do
         let!(:vo1) do
           create(
 :variant_override,
@@ -52,22 +52,22 @@ module Api
 )
         end
 
-        it "returns results scoped with variant overrides" do
+        it 'returns results scoped with variant overrides' do
           api_get :products, id: order_cycle.id, distributor: distributor.id
 
           overidden_product = json_response.select { |product| product['id'] == product1.id }
           expect(overidden_product[0]['variants'][0]['price']).to(eq(vo1.price.to_s))
         end
 
-        it "does not return products where the variant overrides are out of stock" do
+        it 'does not return products where the variant overrides are out of stock' do
           api_get :products, id: order_cycle.id, distributor: distributor.id
 
           expect(product_ids).to_not(include(product2.id))
         end
       end
 
-      context "with property filters" do
-        it "filters by product property" do
+      context 'with property filters' do
+        it 'filters by product property' do
           api_get :products,
 id: order_cycle.id,
 distributor: distributor.id,
@@ -78,8 +78,8 @@ distributor: distributor.id,
         end
       end
 
-      context "with taxon filters" do
-        it "filters by taxon" do
+      context 'with taxon filters' do
+        it 'filters by taxon' do
           api_get :products,
 id: order_cycle.id,
 distributor: distributor.id,
@@ -90,7 +90,7 @@ distributor: distributor.id,
         end
       end
 
-      context "when tag rules apply" do
+      context 'when tag rules apply' do
         let!(:vo1) do
           create(
 :variant_override,
@@ -117,30 +117,30 @@ distributor: distributor.id,
 :filter_products_tag_rule,
                  enterprise: distributor,
                  is_default: true,
-                 preferred_variant_tags: "hide_these_variants_from_everyone",
-                 preferred_matched_variants_visibility: "hidden"
+                 preferred_variant_tags: 'hide_these_variants_from_everyone',
+                 preferred_matched_variants_visibility: 'hidden'
 )
         end
         let!(:hide_rule) do
           create(
 :filter_products_tag_rule,
                  enterprise: distributor,
-                 preferred_variant_tags: "hide_these_variants",
-                 preferred_customer_tags: "hide_from_these_customers",
-                 preferred_matched_variants_visibility: "hidden"
+                 preferred_variant_tags: 'hide_these_variants',
+                 preferred_customer_tags: 'hide_from_these_customers',
+                 preferred_matched_variants_visibility: 'hidden'
 )
         end
         let!(:show_rule) do
           create(
 :filter_products_tag_rule,
                  enterprise: distributor,
-                 preferred_variant_tags: "show_these_variants",
-                 preferred_customer_tags: "show_for_these_customers",
-                 preferred_matched_variants_visibility: "visible"
+                 preferred_variant_tags: 'show_these_variants',
+                 preferred_customer_tags: 'show_for_these_customers',
+                 preferred_matched_variants_visibility: 'visible'
 )
         end
 
-        it "does not return variants hidden by general rules" do
+        it 'does not return variants hidden by general rules' do
           vo1.update_attribute(:tag_list, default_hide_rule.preferred_variant_tags)
 
           api_get :products, id: order_cycle.id, distributor: distributor.id
@@ -148,7 +148,7 @@ distributor: distributor.id,
           expect(product_ids).to_not(include(product1.id))
         end
 
-        it "does not return variants hidden for this specific customer" do
+        it 'does not return variants hidden for this specific customer' do
           vo2.update_attribute(:tag_list, hide_rule.preferred_variant_tags)
           customer.update_attribute(:tag_list, hide_rule.preferred_customer_tags)
 
@@ -157,7 +157,7 @@ distributor: distributor.id,
           expect(product_ids).to_not(include(product2.id))
         end
 
-        it "returns hidden variants made visible for this specific customer" do
+        it 'returns hidden variants made visible for this specific customer' do
           vo1.update_attribute(:tag_list, default_hide_rule.preferred_variant_tags)
           vo3.update_attribute(
 :tag_list,
@@ -172,14 +172,14 @@ distributor: distributor.id,
         end
       end
 
-      context "when the order cycle is closed" do
+      context 'when the order cycle is closed' do
         before do
           allow(controller).to(receive(:order_cycle) { order_cycle })
           allow(order_cycle).to(receive(:open?) { false })
         end
 
         # Regression test for https://github.com/openfoodfoundation/openfoodnetwork/issues/6491
-        it "renders no products without error" do
+        it 'renders no products without error' do
           api_get :products, id: order_cycle.id, distributor: distributor.id
 
           expect(json_response).to(eq({}))
@@ -188,8 +188,8 @@ distributor: distributor.id,
       end
     end
 
-    describe "#taxons" do
-      it "loads taxons for distributed products in the order cycle" do
+    describe '#taxons' do
+      it 'loads taxons for distributed products in the order cycle' do
         api_get :taxons, id: order_cycle.id, distributor: distributor.id
 
         taxons = json_response.map { |taxon| taxon['name'] }
@@ -199,8 +199,8 @@ distributor: distributor.id,
       end
     end
 
-    describe "#properties" do
-      it "loads properties for distributed products in the order cycle" do
+    describe '#properties' do
+      it 'loads properties for distributed products in the order cycle' do
         api_get :properties, id: order_cycle.id, distributor: distributor.id
 
         properties = json_response.map { |property| property['name'] }
@@ -209,13 +209,13 @@ distributor: distributor.id,
         expect(properties).to(include(property1.presentation, property2.presentation))
       end
 
-      context "with producer properties" do
+      context 'with producer properties' do
         let!(:property4) { create(:property) }
         let!(:producer_property) do
           create(:producer_property, producer_id: product1.supplier.id, property: property4)
         end
 
-        it "loads producer properties for distributed products in the order cycle" do
+        it 'loads producer properties for distributed products in the order cycle' do
           api_get :properties, id: order_cycle.id, distributor: distributor.id
 
           properties = json_response.map { |property| property['name'] }
@@ -228,19 +228,19 @@ property2.presentation,
       end
     end
 
-    context "with custom taxon ordering applied and duplicate product names in the order cycle" do
+    context 'with custom taxon ordering applied and duplicate product names in the order cycle' do
       let!(:supplier) { create(:supplier_enterprise) }
       let!(:product5) do
-        create(:product, name: "Duplicate name", primary_taxon: taxon3, supplier: supplier)
+        create(:product, name: 'Duplicate name', primary_taxon: taxon3, supplier: supplier)
       end
       let!(:product6) do
-        create(:product, name: "Duplicate name", primary_taxon: taxon3, supplier: supplier)
+        create(:product, name: 'Duplicate name', primary_taxon: taxon3, supplier: supplier)
       end
       let!(:product7) do
-        create(:product, name: "Duplicate name", primary_taxon: taxon2, supplier: supplier)
+        create(:product, name: 'Duplicate name', primary_taxon: taxon2, supplier: supplier)
       end
       let!(:product8) do
-        create(:product, name: "Duplicate name", primary_taxon: taxon2, supplier: supplier)
+        create(:product, name: 'Duplicate name', primary_taxon: taxon2, supplier: supplier)
       end
 
       before do
@@ -251,7 +251,7 @@ property2.presentation,
         exchange.variants << product8.variants.first
       end
 
-      it "displays products in new order" do
+      it 'displays products in new order' do
         api_get :products, id: order_cycle.id, distributor: distributor.id
         expect(product_ids).to(eq([
 product7.id,
@@ -264,7 +264,7 @@ product1.id
 ]))
       end
 
-      it "displays products in correct order across multiple pages" do
+      it 'displays products in correct order across multiple pages' do
         api_get :products, id: order_cycle.id, distributor: distributor.id, per_page: 3
         expect(product_ids).to(eq([product7.id, product8.id, product2.id]))
 

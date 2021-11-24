@@ -12,13 +12,13 @@ js: true do
   include WebHelper
 
   let(:order_cycle_opening_time) do
-    Time.zone.local(2040, 11, 0o6, 0o6, 0o0, 0o0).strftime("%F %T %z")
+    Time.zone.local(2040, 11, 0o6, 0o6, 0o0, 0o0).strftime('%F %T %z')
   end
   let(:order_cycle_closing_time) do
-    Time.zone.local(2040, 11, 13, 17, 0o0, 0o0).strftime("%F %T %z")
+    Time.zone.local(2040, 11, 13, 17, 0o0, 0o0).strftime('%F %T %z')
   end
 
-  it "updating an order cycle", js: true do
+  it 'updating an order cycle', js: true do
     # Given an order cycle with all the settings
     oc = create(:order_cycle)
     initial_variants = oc.variants.sort_by(&:id)
@@ -66,7 +66,7 @@ child: distributor,
     # When I go to its edit page
     login_as_admin_and_visit admin_order_cycles_path
     within "tr.order-cycle-#{oc.id}" do
-      find("a.edit-order-cycle").click
+      find('a.edit-order-cycle').click
     end
 
     wait_for_edit_form_to_load_order_cycle(oc)
@@ -88,10 +88,10 @@ child: distributor,
     expect(page).to(have_content('Your order cycle has been updated.'))
 
     # And I add a supplier and some products
-    expect(page).to(have_selector("table.exchanges tr.supplier"))
+    expect(page).to(have_selector('table.exchanges tr.supplier'))
     select 'My supplier', from: 'new_supplier_id'
     click_button 'Add supplier'
-    expect(page).to(have_selector("table.exchanges tr.supplier", text: "My supplier"))
+    expect(page).to(have_selector('table.exchanges tr.supplier', text: 'My supplier'))
 
     open_all_exchange_product_tabs
 
@@ -119,7 +119,7 @@ child: distributor,
     # And I add a distributor and some products
     select 'My distributor', from: 'new_distributor_id'
     click_button 'Add distributor'
-    expect(page).to(have_field("order_cycle_outgoing_exchange_2_pickup_time"))
+    expect(page).to(have_field('order_cycle_outgoing_exchange_2_pickup_time'))
 
     fill_in 'order_cycle_outgoing_exchange_0_pickup_time', with: 'New time 0'
     fill_in 'order_cycle_outgoing_exchange_0_pickup_instructions', with: 'New instructions 0'
@@ -129,8 +129,8 @@ child: distributor,
     fill_in 'order_cycle_outgoing_exchange_2_pickup_instructions', with: 'New instructions 2'
 
     page.find("table.exchanges tr.distributor-#{distributor.id} td.tags").click
-    within ".exchange-tags" do
-      find(:css, "tags-input .tags input").set("wholesale\n")
+    within '.exchange-tags' do
+      find(:css, 'tags-input .tags input').set("wholesale\n")
     end
 
     open_all_exchange_product_tabs
@@ -150,13 +150,13 @@ child: distributor,
     select 'Distributor fee 2',
            from: 'order_cycle_outgoing_exchange_2_enterprise_fees_0_enterprise_fee_id'
 
-    expect(page).to(have_selector("#save-bar"))
+    expect(page).to(have_selector('#save-bar'))
     click_button 'Save and Back to List'
 
     oc = OrderCycle.last
-    toggle_columns "Producers", "Shops"
+    toggle_columns 'Producers', 'Shops'
 
-    expect(page).to(have_input("oc#{oc.id}[name]", value: "Plums & Avos"))
+    expect(page).to(have_input("oc#{oc.id}[name]", value: 'Plums & Avos'))
     expect(page).to(have_input("oc#{oc.id}[orders_open_at]", value: order_cycle_opening_time))
     expect(page).to(have_input("oc#{oc.id}[orders_close_at]", value: order_cycle_closing_time))
     expect(page).to(have_content(coordinator.name))
@@ -200,16 +200,16 @@ pickup_instructions: 'New instructions 1'
   private
 
   def wait_for_edit_form_to_load_order_cycle(order_cycle)
-    expect(page).to(have_field("order_cycle_name", with: order_cycle.name))
+    expect(page).to(have_field('order_cycle_name', with: order_cycle.name))
   end
 
   def open_all_exchange_product_tabs
-    exchange_rows = page.all("table.exchanges tbody")
+    exchange_rows = page.all('table.exchanges tbody')
     exchange_rows.each do |exchange_row|
-      exchange_row.find("td.products").click
+      exchange_row.find('td.products').click
       within(exchange_row) do
         # Wait for the products panel to be visible.
-        expect(page).to(have_selector(".exchange-products"))
+        expect(page).to(have_selector('.exchange-products'))
       end
     end
   end

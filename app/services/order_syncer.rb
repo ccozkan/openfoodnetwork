@@ -96,7 +96,7 @@ to: :subscription
   end
 
   def relevant_address_attrs
-    ["firstname", "lastname", "address1", "zipcode", "city", "state_id", "country_id", "phone"]
+    ['firstname', 'lastname', 'address1', 'zipcode', 'city', 'state_id', 'country_id', 'phone']
   end
 
   def addresses_match?(order_address, subscription_address)
@@ -134,7 +134,7 @@ to: :subscription
   end
 
   def pending_shipment_with?(order, shipping_method_id)
-    return false unless order.shipment.present? && order.shipment.state == "pending"
+    return false unless order.shipment.present? && order.shipment.state == 'pending'
 
     order.shipping_method.id == shipping_method_id
   end

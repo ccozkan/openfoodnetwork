@@ -4,9 +4,9 @@ class Subscription < ApplicationRecord
   include SetUnusedAddressFields
 
   ALLOWED_PAYMENT_METHOD_TYPES = [
-"Spree::PaymentMethod::Check",
-                                  "Spree::Gateway::StripeConnect",
-                                  "Spree::Gateway::StripeSCA"
+'Spree::PaymentMethod::Check',
+                                  'Spree::Gateway::StripeConnect',
+                                  'Spree::Gateway::StripeSCA'
 ].freeze
 
   searchable_attributes :shop_id, :canceled_at, :paused_at
@@ -18,8 +18,8 @@ class Subscription < ApplicationRecord
   belongs_to :schedule
   belongs_to :shipping_method, class_name: 'Spree::ShippingMethod'
   belongs_to :payment_method, class_name: 'Spree::PaymentMethod'
-  belongs_to :bill_address, class_name: "Spree::Address"
-  belongs_to :ship_address, class_name: "Spree::Address"
+  belongs_to :bill_address, class_name: 'Spree::Address'
+  belongs_to :ship_address, class_name: 'Spree::Address'
   has_many :subscription_line_items, inverse_of: :subscription
   has_many :order_cycles, through: :schedule
   has_many :proxy_orders
@@ -72,7 +72,7 @@ lambda {
     %w[canceled paused pending ended].each do |state|
       return state if __send__("#{state}?")
     end
-    "active"
+    'active'
   end
 
   # Used to calculators to estimate fees

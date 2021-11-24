@@ -17,11 +17,11 @@ FactoryBot.define do
   factory :weight_calculator, class: Calculator::Weight do
     after(:build) do |c|
       c.set_preference(:per_unit, 0.5)
-      c.set_preference(:unit_from_list, "kg")
+      c.set_preference(:unit_from_list, 'kg')
     end
     after(:create) do |c|
       c.set_preference(:per_unit, 0.5)
-      c.set_preference(:unit_from_list, "kg")
+      c.set_preference(:unit_from_list, 'kg')
       c.save!
     end
   end

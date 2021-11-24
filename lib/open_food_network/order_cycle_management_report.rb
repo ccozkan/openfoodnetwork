@@ -149,12 +149,12 @@ sa.firstname,
     end
 
     def is_payment_methods?
-      params[:report_type] == "payment_methods"
+      params[:report_type] == 'payment_methods'
     end
 
     def customer_code(email)
       customer = Customer.where(email: email).first
-      customer.nil? ? "" : customer.code
+      customer.nil? ? '' : customer.code
     end
 
     def sanitize_params(params)

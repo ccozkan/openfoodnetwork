@@ -5,7 +5,7 @@ require 'spec_helper'
 module OrderManagement
   module Subscriptions
     describe Estimator do
-      describe "estimating prices for subscription line items" do
+      describe 'estimating prices for subscription line items' do
         let!(:subscription) { create(:subscription, with_items: true) }
         let!(:sli1) { subscription.subscription_line_items.first }
         let!(:sli2) { subscription.subscription_line_items.second }
@@ -26,14 +26,14 @@ module OrderManagement
           sli3.assign_attributes(price_estimate: 9.0)
         end
 
-        context "when a insufficient information exists to calculate price estimates" do
+        context 'when a insufficient information exists to calculate price estimates' do
           before do
             # This might be because a shop has not been assigned yet, or no
             # current or future order cycles exist for the schedule
             allow(estimator).to(receive(:fee_calculator) { nil })
           end
 
-          it "resets the price estimates for all items" do
+          it 'resets the price estimates for all items' do
             estimator.estimate!
             expect(sli1.price_estimate).to(eq(4.0))
             expect(sli2.price_estimate).to(eq(5.0))
@@ -41,7 +41,7 @@ module OrderManagement
           end
         end
 
-        context "when sufficient information to calculate price estimates exists" do
+        context 'when sufficient information to calculate price estimates exists' do
           let(:fee_calculator) { instance_double(OpenFoodNetwork::EnterpriseFeeCalculator) }
 
           before do
@@ -51,8 +51,8 @@ module OrderManagement
             allow(fee_calculator).to(receive(:indexed_fees_for).with(sli3.variant) { 3.0 })
           end
 
-          context "when no variant overrides apply" do
-            it "recalculates price_estimates based on variant prices and associated fees" do
+          context 'when no variant overrides apply' do
+            it 'recalculates price_estimates based on variant prices and associated fees' do
               estimator.estimate!
               expect(sli1.price_estimate).to(eq(2.0))
               expect(sli2.price_estimate).to(eq(2.0))
@@ -60,7 +60,7 @@ module OrderManagement
             end
           end
 
-          context "when variant overrides apply" do
+          context 'when variant overrides apply' do
             let!(:override1) do
               create(:variant_override, hub: subscription.shop, variant: sli1.variant, price: 1.2)
             end
@@ -68,7 +68,7 @@ module OrderManagement
               create(:variant_override, hub: subscription.shop, variant: sli2.variant, price: 2.3)
             end
 
-            it "recalculates price_estimates based on override prices and associated fees" do
+            it 'recalculates price_estimates based on override prices and associated fees' do
               estimator.estimate!
               expect(sli1.price_estimate).to(eq(2.2))
               expect(sli2.price_estimate).to(eq(2.3))
@@ -78,7 +78,7 @@ module OrderManagement
         end
       end
 
-      describe "updating estimates for shipping and payment fees" do
+      describe 'updating estimates for shipping and payment fees' do
         let(:subscription) do
           create(
 :subscription,
@@ -99,7 +99,7 @@ with_items: true,
           sli3.update(price_estimate: 6.0)
         end
 
-        context "using flat rate calculators" do
+        context 'using flat rate calculators' do
           let(:shipping_method) do
             create(
 :shipping_method,
@@ -113,14 +113,14 @@ with_items: true,
 )
           end
 
-          it "calculates fees based on the rates provided" do
+          it 'calculates fees based on the rates provided' do
             estimator.estimate!
             expect(subscription.shipping_fee_estimate.to_f).to(eq(12.34))
             expect(subscription.payment_fee_estimate.to_f).to(eq(9.12))
           end
         end
 
-        context "using flat percent item total calculators" do
+        context 'using flat percent item total calculators' do
           let(:shipping_method) do
             create(
 :shipping_method,
@@ -134,14 +134,14 @@ with_items: true,
 )
           end
 
-          it "calculates fees based on the estimated item total and percentage provided" do
+          it 'calculates fees based on the estimated item total and percentage provided' do
             estimator.estimate!
             expect(subscription.shipping_fee_estimate.to_f).to(eq(1.5))
             expect(subscription.payment_fee_estimate.to_f).to(eq(3.0))
           end
         end
 
-        context "using flat percent per item calculators" do
+        context 'using flat percent per item calculators' do
           let(:shipping_method) do
             create(
 :shipping_method,
@@ -155,14 +155,14 @@ with_items: true,
 )
           end
 
-          it "calculates fees based on the estimated item prices and percentage provided" do
+          it 'calculates fees based on the estimated item prices and percentage provided' do
             estimator.estimate!
             expect(subscription.shipping_fee_estimate.to_f).to(eq(0.75))
             expect(subscription.payment_fee_estimate.to_f).to(eq(1.5))
           end
         end
 
-        context "using per item calculators" do
+        context 'using per item calculators' do
           let(:shipping_method) do
             create(
 :shipping_method,
@@ -176,7 +176,7 @@ with_items: true,
 )
           end
 
-          it "calculates fees based on the number of items and rate provided" do
+          it 'calculates fees based on the number of items and rate provided' do
             estimator.estimate!
             expect(subscription.shipping_fee_estimate.to_f).to(eq(3.6))
             expect(subscription.payment_fee_estimate.to_f).to(eq(0.9))
