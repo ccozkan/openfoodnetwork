@@ -51,7 +51,7 @@ required: false,
         # Which would also validate the response in the test, this is an open
         # issue with rswag: https://github.com/rswag/rswag/issues/268
         metadata[:response][:content] = {
-          "application/json": {
+          'application/json': {
             schema: { '$ref' => '#/components/schemas/Order_Concise' }
           }
         }

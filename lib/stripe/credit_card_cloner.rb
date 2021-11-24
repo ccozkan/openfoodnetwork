@@ -72,7 +72,7 @@ payment_method_id,
     def add_metadata_to_payment_method(payment_method_id)
       Stripe::PaymentMethod.update(
 payment_method_id,
-                                   { metadata: { "ofn-clone": true } },
+                                   { metadata: { 'ofn-clone': true } },
                                    stripe_account: @stripe_account
 )
     end

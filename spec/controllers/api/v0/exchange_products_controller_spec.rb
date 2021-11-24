@@ -59,7 +59,7 @@ enterprise_id: exchange.sender_id,
       describe "pagination" do
         let(:exchange) { order_cycle.exchanges.outgoing.first }
         let(:products_relation) do
-          Spree::Product.includes(:variants).where("spree_variants.id": exchange.variants.map(&:id))
+          Spree::Product.includes(:variants).where('spree_variants.id': exchange.variants.map(&:id))
         end
 
         before do
