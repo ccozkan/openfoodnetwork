@@ -21,7 +21,8 @@ user: user,
 distributor: distributor,
                                      order_cycle: order_cycle, 
 state: 'complete', 
-payment_state: 'balance_due')
+payment_state: 'balance_due'
+)
   }
   let!(:tax_category) { create(:tax_category, name: 'GST') }
   let!(:tax_rate) {
@@ -30,7 +31,8 @@ payment_state: 'balance_due')
 name: 'GST', 
 calculator: build(:calculator, preferred_amount: 10),
            zone: create(:zone_with_member), 
-tax_category: tax_category)
+tax_category: tax_category
+)
   }
 
   before do
@@ -65,7 +67,8 @@ label: "Extra Adjustment",
 adjustable: order,
              amount: 110, 
 tax_category: tax_category, 
-order: order)
+order: order
+)
 
     # When I go to the adjustments page for the order
     login_as_admin_and_visit spree.admin_orders_path
@@ -92,7 +95,8 @@ label: "Extra Adjustment",
 adjustable: order,
              amount: 110, 
 tax_category: nil, 
-order: order)
+order: order
+)
 
     # When I go to the adjustments page for the order
     login_as_admin_and_visit spree.admin_orders_path
@@ -119,7 +123,8 @@ label: "Extra Adjustment",
 adjustable: order,
              amount: 110, 
 tax_category: tax_category, 
-order: order)
+order: order
+)
     order.cancel!
 
     login_as_admin_and_visit spree.edit_admin_order_path(order)

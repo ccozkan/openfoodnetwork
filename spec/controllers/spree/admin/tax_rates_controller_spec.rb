@@ -15,7 +15,8 @@ name: "Original Rate",
 amount: 0.1, 
 included_in_price: false,
            calculator: build(:calculator), 
-zone: default_tax_zone)
+zone: default_tax_zone
+)
       }
 
       describe "#update" do

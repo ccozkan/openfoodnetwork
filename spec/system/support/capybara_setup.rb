@@ -24,4 +24,5 @@ Module.new do
   ensure
     self.last_used_session = nil
   end
-end)
+end
+)

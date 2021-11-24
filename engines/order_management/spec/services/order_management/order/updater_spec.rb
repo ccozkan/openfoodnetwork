@@ -32,17 +32,20 @@ module OrderManagement
 :all_adjustments, 
 :additional, 
 :eligible,
-                                                :sum).and_return(-5)
+                                                :sum
+).and_return(-5)
           allow(order).to receive_message_chain(
 :all_adjustments, 
 :tax, 
 :additional,
-                                                :sum).and_return(20)
+                                                :sum
+).and_return(20)
           allow(order).to receive_message_chain(
 :all_adjustments, 
 :tax, 
 :inclusive,
-                                                :sum).and_return(15)
+                                                :sum
+).and_return(15)
 
           updater.update_adjustment_total
           expect(order.adjustment_total).to eq(-5)
@@ -353,7 +356,8 @@ module OrderManagement
 order: order, 
 adjustable: order, 
 included: false,
-             originator_type: "Spree::TaxRate")
+             originator_type: "Spree::TaxRate"
+)
               }
 
               it "re-applies order taxes" do

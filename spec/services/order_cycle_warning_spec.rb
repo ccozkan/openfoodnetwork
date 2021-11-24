@@ -14,7 +14,8 @@ describe OrderCycleWarning do
         expect(subject.new(user).call).to eq(
           I18n.t(
 :active_distributors_not_ready_for_checkout_message_singular,
-                 distributor_names: distributor.name)
+                 distributor_names: distributor.name
+)
         )
       end
     end
@@ -24,7 +25,8 @@ describe OrderCycleWarning do
         create(
 :distributor_enterprise,
                shipping_methods: [create(:shipping_method)],
-               payment_methods: [create(:payment_method)])
+               payment_methods: [create(:payment_method)]
+)
       }
 
       it "returns nil" do

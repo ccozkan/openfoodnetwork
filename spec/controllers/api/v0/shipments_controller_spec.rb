@@ -185,7 +185,8 @@ format: :json
 :shipping_method_with, 
 :shipping_fee, 
 distributors: [distributor],
-                                      shipping_fee: fee_amount)
+                                      shipping_fee: fee_amount
+)
         }
         let!(:order_cycle) { create(:order_cycle, distributors: [distributor]) }
         let!(:order) {

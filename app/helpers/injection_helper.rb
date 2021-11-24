@@ -142,7 +142,8 @@ current_order: current_order
     customers = spree_current_user.customers
     shops = Enterprise.where(
 id: @orders.pluck(:distributor_id).uniq |
-                                 customers.pluck(:enterprise_id))
+                                 customers.pluck(:enterprise_id)
+)
     inject_json_array "shops", shops.all, Api::ShopForOrdersSerializer
   end
 

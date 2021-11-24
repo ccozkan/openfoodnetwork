@@ -63,7 +63,8 @@ sum_max_quantities
             variants_and_quantities << GroupBuyVariantRow.new(
 variant, 
 sum_quantities,
-                                                              sum_max_quantities)
+                                                              sum_max_quantities
+)
           end
 
           # Sum quantities for each product (Total line)
@@ -75,7 +76,8 @@ sum_quantities,
           variants_and_quantities << GroupBuyProductRow.new(
 product, 
 sum_quantities,
-                                                            sum_max_quantities)
+                                                            sum_max_quantities
+)
         end
       end
       variants_and_quantities

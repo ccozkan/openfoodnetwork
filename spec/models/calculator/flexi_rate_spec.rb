@@ -32,7 +32,8 @@ describe Calculator::FlexiRate do
     Calculator::FlexiRate.new(
 preferred_first_item: 1, 
 preferred_additional_item: 1,
-preferred_max_items: 1)
+preferred_max_items: 1
+)
   end
 
   context "extends LocalizedNumber" do

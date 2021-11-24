@@ -331,7 +331,8 @@ amount: 0
 included_in_price: true, 
 calculator: ::Calculator::DefaultTax.new, 
 zone: zone,
-           amount: 0.1)
+           amount: 0.1
+)
         }
         let(:fee_tax_category) { create(:tax_category, tax_rates: [fee_tax_rate]) }
 
@@ -343,7 +344,8 @@ zone: zone,
 coordinator: coordinator, 
 coordinator_fees: [enterprise_fee],
                      distributors: [coordinator], 
-variants: [variant])
+variants: [variant]
+)
         }
         let(:line_item)   { create(:line_item, variant: variant) }
         let(:order)       {
@@ -351,7 +353,8 @@ variants: [variant])
 :order, 
 line_items: [line_item], 
 order_cycle: order_cycle,
-        distributor: coordinator)
+        distributor: coordinator
+)
         }
         let(:fee)         { order.all_adjustments.reload.enterprise_fee.first }
         let(:fee_tax)     { fee.adjustments.tax.first }
@@ -367,7 +370,8 @@ order_cycle: order_cycle,
 :enterprise_fee, 
 enterprise: coordinator, 
 tax_category: fee_tax_category,
-                 calculator: ::Calculator::FlatRate.new(preferred_amount: 50.0))
+                 calculator: ::Calculator::FlatRate.new(preferred_amount: 50.0)
+)
             }
 
             describe "when the tax rate includes the tax in the price" do
@@ -409,7 +413,8 @@ tax_category: fee_tax_category,
 :enterprise_fee, 
 enterprise: coordinator, 
 tax_category: fee_tax_category,
-                 calculator: ::Calculator::PerItem.new(preferred_amount: 50.0))
+                 calculator: ::Calculator::PerItem.new(preferred_amount: 50.0)
+)
             }
 
             describe "when the tax rate includes the tax in the price" do
@@ -438,7 +443,8 @@ tax_category: fee_tax_category,
 included_in_price: true, 
 calculator: ::Calculator::DefaultTax.new,
            zone: zone, 
-amount: 0.2)
+amount: 0.2
+)
           }
           let(:product_tax_category) { create(:tax_category, tax_rates: [product_tax_rate]) }
 
@@ -453,7 +459,8 @@ amount: 0.2)
 :enterprise_fee, 
 enterprise: coordinator, 
 inherits_tax_category: true,
-                 calculator: ::Calculator::FlatRate.new(preferred_amount: 50.0))
+                 calculator: ::Calculator::FlatRate.new(preferred_amount: 50.0)
+)
             }
 
             describe "when the tax rate includes the tax in the price" do
@@ -487,7 +494,8 @@ inherits_tax_category: true,
 :enterprise_fee, 
 enterprise: coordinator, 
 inherits_tax_category: true,
-                 calculator: ::Calculator::PerItem.new(preferred_amount: 50.0))
+                 calculator: ::Calculator::PerItem.new(preferred_amount: 50.0)
+)
             }
 
             describe "when the tax rate includes the tax in the price" do
@@ -534,7 +542,8 @@ inherits_tax_category: true,
 :tax_rate, 
 included_in_price: included_in_price, 
 zone: zone,
-           calculator: ::Calculator::FlatRate.new(preferred_amount: 0.1))
+           calculator: ::Calculator::FlatRate.new(preferred_amount: 0.1)
+)
       }
       let(:product) { create(:product, tax_category: tax_category) }
       let(:variant) { product.variants.first }
@@ -594,7 +603,8 @@ zone: zone,
 originator: return_authorization, 
 order: order,
              adjustable: order, 
-amount: 456)
+amount: 456
+)
       }
 
       describe "#update_adjustment!" do

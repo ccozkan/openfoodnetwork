@@ -21,7 +21,8 @@ describe "Check out with Stripe", js: true do
 order_cycle: order_cycle, 
 distributor: distributor, 
 bill_address_id: nil,
-        ship_address_id: nil)
+        ship_address_id: nil
+)
   }
 
   let(:shipping_with_fee) {
@@ -29,14 +30,16 @@ bill_address_id: nil,
 :shipping_method, 
 require_ship_address: false, 
 name: "Donkeys",
-                  calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
+                  calculator: Calculator::FlatRate.new(preferred_amount: 4.56)
+)
   }
   let(:free_shipping) { create(:shipping_method) }
   let!(:check_with_fee) {
     create(
 :payment_method, 
 distributors: [distributor],
-                 calculator: Calculator::FlatRate.new(preferred_amount: 5.67))
+                 calculator: Calculator::FlatRate.new(preferred_amount: 5.67)
+)
   }
 
   before do
@@ -67,7 +70,8 @@ distributors: [distributor],
                cc_type: "visa",
                number: "1111111111111111",
                payment_method_id: stripe_pm.id,
-               gateway_customer_profile_id: "i_am_saved")
+               gateway_customer_profile_id: "i_am_saved"
+)
       end
 
       let!(:stripe_account) {
@@ -267,7 +271,8 @@ user: user,
 order_cycle: order_cycle,
         distributor: distributor, 
 bill_address_id: nil, 
-ship_address_id: nil)
+ship_address_id: nil
+)
           set_order(new_order)
           add_product_to_cart(new_order, product, quantity: 10)
           stub_payment_intents_post_request order: new_order

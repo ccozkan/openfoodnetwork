@@ -179,7 +179,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Permissions do
       it "does not include shipping methods of distributors in order cycle that is not allowed" do
         shipping_method = create(
 :shipping_method,
-                                 distributors: [another_outgoing_exchange.receiver])
+                                 distributors: [another_outgoing_exchange.receiver]
+)
         expect(authorizer.allowed_shipping_methods).not_to include(shipping_method)
       end
     end

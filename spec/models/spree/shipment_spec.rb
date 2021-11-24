@@ -293,7 +293,8 @@ describe Spree::Shipment do
       allow(shipment).to receive_message_chain(
 :inventory_units,
                                                :group_by,
-                                               map: [unit])
+                                               map: [unit]
+)
       shipment.stock_location = build(:stock_location)
       expect(shipment.stock_location).to receive(:restock).with(variant, 1, shipment)
       shipment.after_cancel
@@ -318,7 +319,8 @@ describe Spree::Shipment do
       allow(shipment).to receive_message_chain(
 :inventory_units,
                                                :group_by,
-                                               map: [unit])
+                                               map: [unit]
+)
       shipment.stock_location = create(:stock_location)
       expect(shipment.stock_location).to receive(:unstock).with(variant, 1, shipment)
       shipment.after_resume
@@ -396,7 +398,8 @@ describe Spree::Shipment do
 shipment.adjustment_label,
                                                                   shipment, 
 true, 
-"open")
+"open"
+)
       shipment.__send__(:ensure_correct_adjustment)
     end
 

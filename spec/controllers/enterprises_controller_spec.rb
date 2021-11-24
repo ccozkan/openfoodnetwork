@@ -15,14 +15,16 @@ describe EnterprisesController, type: :controller do
 distributors: [distributor], 
 orders_open_at: 2.days.ago,
                      orders_close_at: 3.days.from_now, 
-variants: [line_item.variant] )
+variants: [line_item.variant] 
+)
     }
     let!(:order_cycle2) {
       create(
 :simple_order_cycle, 
 distributors: [distributor], 
 orders_open_at: 3.days.ago,
-                     orders_close_at: 4.days.from_now )
+                     orders_close_at: 4.days.from_now 
+)
     }
 
     before do
@@ -66,7 +68,8 @@ orders_open_at: 3.days.ago,
 :simple_order_cycle, 
 distributors: [distributor], 
 orders_open_at: 3.days.ago,
-                     orders_close_at: 4.days.from_now)
+                     orders_close_at: 4.days.from_now
+)
       }
       let!(:oc3_exchange) { order_cycle3.exchanges.outgoing.to_enterprise(distributor).first }
       let(:customer) { create(:customer, user: user, enterprise: distributor) }
@@ -77,13 +80,15 @@ orders_open_at: 3.days.ago,
                enterprise: distributor,
                preferred_customer_tags: "wholesale",
                preferred_exchange_tags: "wholesale",
-               preferred_matched_order_cycles_visibility: 'visible')
+               preferred_matched_order_cycles_visibility: 'visible'
+)
         create(
 :filter_order_cycles_tag_rule,
                enterprise: distributor,
                is_default: true,
                preferred_exchange_tags: "wholesale",
-               preferred_matched_order_cycles_visibility: 'hidden')
+               preferred_matched_order_cycles_visibility: 'hidden'
+)
 
         get :shop, params: { id: distributor }
         expect(assigns(:order_cycles)).to include order_cycle1, order_cycle2, order_cycle3

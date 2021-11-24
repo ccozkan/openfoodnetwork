@@ -12,7 +12,8 @@ module OpenFoodNetwork
 :address, 
 address1: "distributor address", 
 city: 'The Shire',
-          zipcode: "1234")
+          zipcode: "1234"
+)
       distributor = create(:distributor_enterprise, address: distributor_address)
 
       @supplier1 = create(:supplier_enterprise)
@@ -27,7 +28,8 @@ city: 'The Shire',
 :order, 
 distributor: distributor, 
 bill_address: bill_address,
-        special_instructions: shipping_instructions)
+        special_instructions: shipping_instructions
+)
       line_item11 = create(:line_item, variant: @variant1, order: order1)
       @orders << order1.reload
 
@@ -35,7 +37,8 @@ bill_address: bill_address,
 :order, 
 distributor: distributor, 
 bill_address: bill_address,
-        special_instructions: shipping_instructions)
+        special_instructions: shipping_instructions
+)
       line_item21 = create(:line_item, variant: @variant1, order: order2)
 
       @variant2 = create(:variant)
@@ -54,7 +57,8 @@ bill_address: bill_address,
 :order, 
 distributor: distributor, 
 bill_address: bill_address,
-        special_instructions: shipping_instructions)
+        special_instructions: shipping_instructions
+)
       line_item31 = create(:line_item, variant: @variant3, order: order3)
       @orders << order3.reload
     end
@@ -71,7 +75,8 @@ bill_address: bill_address,
 "Weight",
                             "Total Ordered", 
 "Total Max"
-])
+]
+)
     end
 
     it "should provide the required variant and quantity information in a table" do
@@ -96,7 +101,8 @@ bill_address: bill_address,
 @variant1.weight, 
 sum_quantities, 
 sum_max_quantities
-])
+]
+)
     end
 
     it "should return a table wherein each rows contains the same number of columns as the heading" do

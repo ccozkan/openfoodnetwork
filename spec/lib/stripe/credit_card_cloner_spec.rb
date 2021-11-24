@@ -37,7 +37,8 @@ module Stripe
 
         stub_request(
 :post,
-                     "https://api.stripe.com/v1/payment_methods/#{new_payment_method_id}/attach")
+                     "https://api.stripe.com/v1/payment_methods/#{new_payment_method_id}/attach"
+)
           .with(body: { customer: new_customer_id },
                 headers: { 'Stripe-Account' => stripe_account_id })
           .to_return(payment_method_response_mock)

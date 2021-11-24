@@ -32,7 +32,8 @@ module Calculator
 
       calculator = OpenFoodNetwork::EnterpriseFeeCalculator.new(
 order.distributor,
-                                                                order.order_cycle)
+                                                                order.order_cycle
+)
 
       [
         line_items_total(order),

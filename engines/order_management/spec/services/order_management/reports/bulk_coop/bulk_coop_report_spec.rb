@@ -32,7 +32,8 @@ describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
 state: 'canceled', 
 completed_at: 1.day.ago, 
 order_cycle: oc1,
-        distributor: d1)
+        distributor: d1
+)
           line_item = build(:line_item_with_shipment)
           o2.line_items << line_item
           expect(subject.table_items).to include(line_item)
@@ -54,7 +55,8 @@ order_cycle: oc1,
 state: 'canceled', 
 completed_at: 1.day.ago, 
 order_cycle: oc1,
-        distributor: d1)
+        distributor: d1
+)
           line_item = build(:line_item_with_shipment)
           o2.line_items << line_item
           expect(subject.table_items).to include(line_item)
@@ -92,7 +94,8 @@ order_cycle: oc1,
 :order, 
 distributor: d2, 
 order_cycle: oc1,
-        completed_at: Time.zone.now)
+        completed_at: Time.zone.now
+)
         li2 = build(:line_item_with_shipment)
         o2.line_items << li2
 
@@ -128,7 +131,8 @@ order_cycle: oc1,
 distributor: d1, 
 completed_at: 1.day.ago, 
 bill_address: create(:address),
-        ship_address: create(:address))
+        ship_address: create(:address)
+)
         end
         let(:li2) do
           build(:line_item_with_shipment, product: create(:simple_product, supplier: s1))
@@ -140,7 +144,8 @@ bill_address: create(:address),
 :enterprise_relationship, 
 parent: s1, 
 child: d1,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
         end
 
         it "shows line items supplied by my producers, with names hidden" do
@@ -156,7 +161,8 @@ child: d1,
 distributor: d1, 
 completed_at: 1.day.ago, 
 bill_address: create(:address),
-        ship_address: create(:address))
+        ship_address: create(:address)
+)
         end
         let(:li2) do
           build(:line_item_with_shipment, product: create(:simple_product, supplier: s1))

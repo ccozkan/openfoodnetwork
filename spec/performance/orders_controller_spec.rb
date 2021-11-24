@@ -10,7 +10,8 @@ describe Spree::OrdersController, type: :controller, performance: true do
 distributors: [distributor], 
 variants: products.map { |p|
                                                                          p.variants.first
-                                                                       } )
+                                                                       } 
+)
   }
   let(:products) { (0...num_products).map { create(:product) } }
   let(:order) { subject.current_order(true) }

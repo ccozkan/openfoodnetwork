@@ -16,13 +16,15 @@ true,
 {},
                                                 test: true, 
 authorization: '12345',
-                                                avs_result: { code: 'A' })
+                                                avs_result: { code: 'A' }
+)
         else
           ActiveMerchant::Billing::Response.new(
 false, 
 'Bogus Gateway: Forced failure',
                                                 { message: 'Bogus Gateway: Forced failure' },
-                                                test: true)
+                                                test: true
+)
         end
       end
 
@@ -34,13 +36,15 @@ true,
 {},
                                                 test: true, 
 authorization: '12345',
-                                                avs_result: { code: 'A' })
+                                                avs_result: { code: 'A' }
+)
         else
           ActiveMerchant::Billing::Response.new(
 false, 
 'Bogus Gateway: Forced failure',
                                                 message: 'Bogus Gateway: Forced failure',
-                                                test: true)
+                                                test: true
+)
         end
       end
     end

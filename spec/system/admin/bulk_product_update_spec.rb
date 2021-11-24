@@ -93,7 +93,8 @@ with_options: [s1.name, s2.name, s3.name],
 :product, 
 variant_unit: 'weight', 
 variant_unit_scale: 1,
-          variant_unit_name: '')
+          variant_unit_name: ''
+)
 
       visit spree.admin_products_path
 
@@ -105,7 +106,8 @@ variant_unit_scale: 1,
 :product, 
 variant_unit: 'items', 
 variant_unit_scale: nil,
-          variant_unit_name: 'packet')
+          variant_unit_name: 'packet'
+)
 
       visit spree.admin_products_path
 
@@ -173,7 +175,8 @@ variant_unit_scale: nil,
 :product, 
 price: 2.0, 
 variant_unit: "weight",
-          variant_unit_scale: "1000")
+          variant_unit_scale: "1000"
+)
       v1 = FactoryBot.create(
 :variant, 
 product: p1, 
@@ -181,7 +184,8 @@ is_master: false,
 price: 12.75,
           unit_value: 1200, 
 unit_description: "(small bag)", 
-display_as: "bag")
+display_as: "bag"
+)
       v2 = FactoryBot.create(
 :variant, 
 product: p1, 
@@ -189,7 +193,8 @@ is_master: false,
 price: 2.50,
           unit_value: 4800, 
 unit_description: "(large bag)", 
-display_as: "bin")
+display_as: "bin"
+)
 
       visit spree.admin_products_path
       expect(page).to have_selector "a.view-variants", count: 1
@@ -310,7 +315,8 @@ available_on: Date.current,
           variant_unit: 'volume', 
 variant_unit_scale: 1, 
 primary_taxon: t2, 
-sku: "OLD SKU")
+sku: "OLD SKU"
+)
 
     login_as_admin
     visit spree.admin_products_path
@@ -380,7 +386,8 @@ variant_unit: 'volume',
 variant_unit_scale: 0.001,
           price: 3.0, 
 unit_value: 0.25, 
-unit_description: '(bottle)' )
+unit_description: '(bottle)' 
+)
     v = p.variants.first
     v.update_attribute(:sku, "VARIANTSKU")
     v.update_attribute(:on_demand, false)
@@ -755,7 +762,8 @@ unit_description: '(bottle)' )
 :enterprise_relationship, 
 parent: supplier_permitted, 
 child: supplier_managed1,
-                          permissions_list: [:manage_products])
+                          permissions_list: [:manage_products]
+)
     end
 
     before do

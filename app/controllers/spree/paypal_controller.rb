@@ -28,7 +28,8 @@ module Spree
             Spree.t(
 'flash.generic_error', 
 scope: 'paypal',
-                       reasons: pp_response.errors.map(&:long_message).join(" "))
+                       reasons: pp_response.errors.map(&:long_message).join(" ")
+)
           redirect_to main_app.checkout_state_path(:payment)
         end
       rescue SocketError

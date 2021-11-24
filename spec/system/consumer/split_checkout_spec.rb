@@ -18,7 +18,8 @@ describe "As a consumer, I want to checkout my order", js: true do
 suppliers: [supplier], 
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise), 
-variants: [variant])
+variants: [variant]
+)
   }
   let(:order) {
     create(
@@ -26,7 +27,8 @@ variants: [variant])
 order_cycle: order_cycle, 
 distributor: distributor, 
 bill_address_id: nil,
-        ship_address_id: nil)
+        ship_address_id: nil
+)
   }
 
   let(:fee_tax_rate) { create(:tax_rate, amount: 0.10, zone: zone, included_in_price: true) }
@@ -39,7 +41,8 @@ bill_address_id: nil,
 require_ship_address: true, 
 name: "Free Shipping", 
 description: "yellow",
-                  calculator: Calculator::FlatRate.new(preferred_amount: 0.00))
+                  calculator: Calculator::FlatRate.new(preferred_amount: 0.00)
+)
   }
   let(:shipping_tax_rate) { create(:tax_rate, amount: 0.25, zone: zone, included_in_price: true) }
   let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
@@ -50,7 +53,8 @@ require_ship_address: false,
 tax_category: shipping_tax_category,
                   name: "Shipping with Fee", 
 description: "blue",
-                  calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
+                  calculator: Calculator::FlatRate.new(preferred_amount: 4.56)
+)
   }
   let!(:payment_method) { create(:payment_method, distributors: [distributor]) }
 

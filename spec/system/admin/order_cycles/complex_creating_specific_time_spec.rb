@@ -24,24 +24,28 @@ js: true do
     distributor = create(
 :distributor_enterprise, 
 name: 'My distributor',
-                         with_payment_and_shipping: true)
+                         with_payment_and_shipping: true
+)
 
     # Relationships required for interface to work
     create(
 :enterprise_relationship, 
 parent: supplier, 
 child: coordinator,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
     create(
 :enterprise_relationship, 
 parent: distributor, 
 child: coordinator,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
     create(
 :enterprise_relationship, 
 parent: supplier, 
 child: distributor,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
 
     # And some enterprise fees
     supplier_fee = create(:enterprise_fee, enterprise: supplier, name: 'Supplier fee')

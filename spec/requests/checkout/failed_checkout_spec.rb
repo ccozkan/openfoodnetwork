@@ -14,7 +14,8 @@ order_cycle: order_cycle,
 sender: order_cycle.coordinator, 
 receiver: shop,
            incoming: false, 
-pickup_time: "Monday")
+pickup_time: "Monday"
+)
   }
   let!(:address) { create(:address) }
   let!(:line_item) { create(:line_item, order: order, quantity: 3, price: 5.00) }
@@ -43,7 +44,8 @@ order: {
 "city", 
 "zipcode", 
 "state_id", 
-"country_id"),
+"country_id"
+),
       ship_address_attributes: address.attributes.slice(
 "firstname", 
 "lastname", 
@@ -53,7 +55,8 @@ order: {
 "city", 
 "zipcode", 
 "state_id", 
-"country_id")
+"country_id"
+)
     } 
 }
   end

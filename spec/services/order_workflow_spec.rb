@@ -10,7 +10,8 @@ describe OrderWorkflow do
 distributor: distributor,
                                      bill_address: create(:address),
                                      ship_address: create(:address),
-                                     payments: [create(:payment)])
+                                     payments: [create(:payment)]
+)
   end
 
   let(:service) { described_class.new(order) }

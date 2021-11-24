@@ -586,7 +586,8 @@ owner_id: new_owner.id
       it "initializes permissions with the existing OrderCycle" do
         expect(OpenFoodNetwork::OrderCyclePermissions).to have_received(:new).with(
 user,
-                                                                                   "existing OrderCycle")
+                                                                                   "existing OrderCycle"
+)
       end
     end
 
@@ -595,7 +596,8 @@ user,
       it "initializes permissions with a new OrderCycle" do
         expect(OpenFoodNetwork::OrderCyclePermissions).to have_received(:new).with(
 user,
-                                                                                   "new OrderCycle")
+                                                                                   "new OrderCycle"
+)
       end
     end
 
@@ -604,7 +606,8 @@ user,
       it "initializes permissions with the existing OrderCycle" do
         expect(OpenFoodNetwork::OrderCyclePermissions).to have_received(:new).with(
 user,
-                                                                                   "existing OrderCycle")
+                                                                                   "existing OrderCycle"
+)
       end
     end
   end
@@ -623,14 +626,16 @@ user,
 :enterprise_relationship, 
 parent: not_visible_enterprise, 
 child: visible_enterprise,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
     end
 
     it "uses permissions to determine which enterprises are visible and should be rendered" do
       expect(controller).to receive(:render_as_json).with(
 [visible_enterprise],
                                                           ams_prefix: 'basic', 
-spree_current_user: user).and_call_original
+spree_current_user: user
+).and_call_original
       get :visible, format: :json
     end
   end

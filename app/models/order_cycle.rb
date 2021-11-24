@@ -47,7 +47,8 @@ lambda {
     where(
 'order_cycles.orders_open_at <= ? AND order_cycles.orders_close_at >= ?',
           Time.zone.now,
-          Time.zone.now)
+          Time.zone.now
+)
   }
   scope :active_or_complete, lambda { where('order_cycles.orders_open_at <= ?', Time.zone.now) }
   scope :inactive, 
@@ -55,7 +56,8 @@ lambda {
     where(
 'order_cycles.orders_open_at > ? OR order_cycles.orders_close_at < ?',
           Time.zone.now,
-          Time.zone.now)
+          Time.zone.now
+)
   }
   scope :upcoming, lambda { where('order_cycles.orders_open_at > ?', Time.zone.now) }
   scope :not_closed, 
@@ -66,7 +68,8 @@ lambda {
 lambda {
     where(
 'order_cycles.orders_close_at < ?',
-          Time.zone.now).order("order_cycles.orders_close_at DESC")
+          Time.zone.now
+).order("order_cycles.orders_close_at DESC")
   }
   scope :undated, -> { where('order_cycles.orders_open_at IS NULL OR orders_close_at IS NULL') }
   scope :dated, -> { where('orders_open_at IS NOT NULL AND orders_close_at IS NOT NULL') }
@@ -284,7 +287,8 @@ lambda { |user|
 state: "complete",
 user_id: user,
 distributor_id: distributor,
-order_cycle_id: self)
+order_cycle_id: self
+)
     scoper = OpenFoodNetwork::ScopeVariantToHub.new(distributor)
     items = Spree::LineItem.includes(:variant).joins(:order).merge(orders).to_a
     items.each { |li| scoper.scope(li.variant) }

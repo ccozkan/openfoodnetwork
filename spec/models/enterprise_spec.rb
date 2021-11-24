@@ -354,7 +354,8 @@ orders_open_at: 10.days.from_now,
                      orders_close_at: 17.days.from_now, 
 suppliers: [s], 
 distributors: [d], 
-variants: [p.master])
+variants: [p.master]
+)
         expect(Enterprise.distributors_with_active_order_cycles).not_to include d
       end
     end
@@ -401,7 +402,8 @@ variants: [p.master])
         order_cycle = create(
 :simple_order_cycle, 
 distributors: [distributor],
-                     variants: [product.master])
+                     variants: [product.master]
+)
         expect(Enterprise.distributing_products(product.id)).to eq([distributor])
       end
 
@@ -410,13 +412,16 @@ distributors: [distributor],
         order_cycle = create(
 :simple_order_cycle, 
 distributors: [distributor],
-                     variants: [product.master, another_product.master])
+                     variants: [product.master, another_product.master]
+)
         expect(
 Enterprise.distributing_products(
 [
 product.id,
                                                  another_product.id
-])).to eq([distributor])
+]
+)
+).to eq([distributor])
       end
     end
 
@@ -583,7 +588,8 @@ to: hub1,
 :distributor_enterprise,
                     website: "http://www.google.com",
                     facebook: "www.facebook.com/roger",
-                    linkedin: "https://linkedin.com")
+                    linkedin: "https://linkedin.com"
+)
     }
 
     it "strips http from url fields" do

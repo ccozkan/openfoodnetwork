@@ -19,7 +19,8 @@ describe Spree::User do
           user.update(
 bill_address_attributes: new_bill_address.dup.attributes.merge('id' => old_bill_address.id).except!(
             'created_at', 'updated_at'
-          ))
+          )
+)
 
           expect(user.bill_address.id).to eq old_bill_address.id
           expect(user.bill_address.firstname).to eq new_bill_address.firstname
@@ -31,7 +32,8 @@ bill_address_attributes: new_bill_address.dup.attributes.merge('id' => old_bill_
           user.update(
 ship_address_attributes: new_ship_address.dup.attributes.except!(
             'created_at', 'updated_at'
-          ))
+          )
+)
 
           expect(user.ship_address.id).not_to eq new_ship_address.id
           expect(user.ship_address.firstname).to eq new_ship_address.firstname

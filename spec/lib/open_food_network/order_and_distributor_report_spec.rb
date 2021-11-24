@@ -49,7 +49,8 @@ module OpenFoodNetwork
 completed_at: Time.zone.now,
                  distributor: distributor, 
 bill_address: bill_address,
-                 special_instructions: shipping_instructions)
+                 special_instructions: shipping_instructions
+)
         }
         let(:payment_method) { create(:payment_method, distributors: [distributor]) }
         let(:payment) { create(:payment, payment_method: payment_method, order: order) }
@@ -89,7 +90,8 @@ bill_address: bill_address,
                                    distributor.address.zipcode,
                                    shipping_method.name,
                                    shipping_instructions
-                                 ])
+                                 ]
+)
         end
 
         it "prints one row per line item" do

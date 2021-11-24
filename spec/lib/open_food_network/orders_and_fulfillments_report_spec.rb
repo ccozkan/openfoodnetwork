@@ -216,7 +216,8 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
 completed_at: 1.day.ago, 
 order_cycle: order_cycle, 
 distributor: distributor,
-        bill_address: second_address)
+        bill_address: second_address
+)
       end
 
       before do
@@ -227,7 +228,8 @@ distributor: distributor,
 :line_item_with_shipment, 
 variant: fuji, 
 price: nil,
-                          quantity: 8)
+                          quantity: 8
+)
       end
 
       it "groups line items by variant and order" do

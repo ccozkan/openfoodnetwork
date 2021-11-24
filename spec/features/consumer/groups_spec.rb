@@ -66,13 +66,15 @@ describe 'Groups', js: true do
         create(
 :simple_order_cycle, 
 distributors: [d1, d2, d3],
-                     coordinator: create(:distributor_enterprise))
+                     coordinator: create(:distributor_enterprise)
+)
       }
       let!(:closed_order_cycle) {
         create(
 :closed_order_cycle, 
 distributors: [d4],
-                     coordinator: create(:distributor_enterprise))
+                     coordinator: create(:distributor_enterprise)
+)
       }
       let(:producer) { create(:supplier_enterprise) }
       let(:d1) { create(:distributor_enterprise, with_payment_and_shipping: true, visible: true) }

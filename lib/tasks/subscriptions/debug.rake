@@ -24,7 +24,8 @@ namespace :ofn do
 
             ProxyOrder.where(
 order_cycle_id: order_cycle_id,
-subscription_id: subscription.id).each do |proxy_order|
+subscription_id: subscription.id
+).each do |proxy_order|
               puts
               puts "Proxy Order #{proxy_order.id}"
               puts "Canceled at #{proxy_order.canceled_at}"
@@ -44,7 +45,8 @@ subscription_id: subscription.id).each do |proxy_order|
                 end
                 Spree::LogEntry.where(
 source_type: "Spree::Payment",
-source_id: payment.id).each do |log_entry|
+source_id: payment.id
+).each do |log_entry|
                   puts "Log Entries found"
                   puts log_entry.details
                 end

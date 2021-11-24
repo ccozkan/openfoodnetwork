@@ -23,14 +23,16 @@ describe "Packing Reports", js: true do
 :completed_order_with_totals, 
 line_items_count: 0, 
 distributor: distributor,
-                              bill_address: bill_address1)
+                              bill_address: bill_address1
+)
     }
     let(:order2) {
       create(
 :completed_order_with_totals, 
 line_items_count: 0, 
 distributor: distributor,
-                              bill_address: bill_address2)
+                              bill_address: bill_address2
+)
     }
     let(:supplier) { create(:supplier_enterprise, name: "Supplier") }
     let(:product1) { create(:simple_product, name: "Product 1", supplier: supplier ) }
@@ -69,7 +71,8 @@ distributor: distributor,
 "Quantity", 
 "TempControlled?"
 ].map(&:upcase)
-                            ])
+                            ]
+)
         expect(page).to have_selector 'table#listing_orders tbody tr', count: 5 # Totals row per order
       end
 
@@ -87,7 +90,8 @@ distributor: distributor,
                               order1.bill_address.lastname,
                               order1.bill_address.lastname,
                               ""
-                            ])
+                            ]
+)
       end
     end
 
@@ -113,7 +117,8 @@ distributor: distributor,
 "Quantity", 
 "TempControlled?"
 ].map(&:upcase)
-                            ])
+                            ]
+)
         expect(all('table#listing_orders tbody tr').count).to eq(4) # Totals row per supplier
       end
     end
@@ -128,7 +133,8 @@ distributor: distributor,
 line_items_count: 0, 
 completed_at: 1.day.ago,
                               order_cycle: oc, 
-distributor: distributor)
+distributor: distributor
+)
     }
     let(:li1) { build(:line_item_with_shipment) }
     let(:li2) { build(:line_item_with_shipment) }

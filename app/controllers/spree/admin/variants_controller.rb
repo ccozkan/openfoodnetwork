@@ -28,7 +28,8 @@ module Spree
           redirect_to spree.edit_admin_product_variant_url(
 params[:product_id],
                                                            @object,
-                                                           @url_filters)
+                                                           @url_filters
+)
         end
       end
 

@@ -198,7 +198,8 @@ display_as: "pc"
 :product, 
 variant_unit: 'items', 
 variant_unit_scale: nil,
-          variant_unit_name: "bunch")
+          variant_unit_name: "bunch"
+)
     }
     let(:line_item) { build_stubbed(:line_item, variant: variant, quantity: 1) }
 
@@ -230,7 +231,8 @@ variant_unit_scale: nil,
 product: product, 
 unit_description: "bunches", 
 unit_value: nil,
-          weight: 10.0)
+          weight: 10.0
+)
       }
 
       it "uses the variant weight" do
@@ -247,7 +249,8 @@ unit_value: nil,
 product: product, 
 unit_description: "bunches", 
 unit_value: nil,
-          weight: nil)
+          weight: nil
+)
       }
 
       it "uses zero weight" do

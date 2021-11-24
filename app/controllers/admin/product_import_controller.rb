@@ -17,7 +17,8 @@ module Admin
       @importer = ProductImport::ProductImporter.new(
 File.new(@filepath), 
 spree_current_user,
-                                                     params[:settings])
+                                                     params[:settings]
+)
       @original_filename = params[:file].try(:original_filename)
       @non_updatable_fields = ProductImport::EntryValidator.non_updatable_fields
 
@@ -45,7 +46,8 @@ File.new(params[:filepath]),
 import_into: params[:import_into], 
 enterprises_to_reset: params[:enterprises_to_reset], 
 updated_ids: params[:updated_ids], 
-settings: params[:settings])
+settings: params[:settings]
+)
 
       if params.key?(:enterprises_to_reset) && params.key?(:updated_ids)
         @importer.reset_absent(params[:updated_ids])
@@ -68,7 +70,8 @@ File.new(params[:filepath]),
                                                      spree_current_user, 
 start: params[:start], 
 end: params[:end], 
-settings: params[:settings])
+settings: params[:settings]
+)
 
       begin
         @importer.public_send("#{method}_entries")

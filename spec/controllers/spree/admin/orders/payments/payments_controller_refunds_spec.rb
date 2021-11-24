@@ -32,7 +32,8 @@ order: order,
 state: 'completed', 
 payment_method: payment_method,
           response_code: 'ch_1a2b3c', 
-amount: order.total)
+amount: order.total
+)
         end
 
         before do
@@ -96,7 +97,8 @@ order: order,
 state: 'completed', 
 payment_method: payment_method,
           response_code: 'ch_1a2b3c', 
-amount: order.total + 5)
+amount: order.total + 5
+)
         end
 
         before do
@@ -162,7 +164,8 @@ order: order,
 state: 'completed', 
 payment_method: payment_method,
           response_code: 'pi_123', 
-amount: order.total)
+amount: order.total
+)
         end
         let(:stripe_account) { create(:stripe_account, enterprise: shop) }
 
@@ -223,7 +226,8 @@ status: 'succeeded') )
 response: { 
 intent_status: "succeeded",
 amount_refunded: 200 
-})
+}
+)
               stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
                 .with(basic_auth: ["sk_test_12345", ""])
                 .to_return(status: 200,
@@ -254,7 +258,8 @@ status: 'succeeded') )
                          body: JSON.generate(
 id: 'pi_123', 
 object: 'payment_intent',
-status: 'canceled') )
+status: 'canceled'
+) )
           end
 
           it "voids the payment" do
@@ -286,7 +291,8 @@ order: order,
 state: 'completed', 
 payment_method: payment_method,
           response_code: 'pi_123', 
-amount: order.total + 5)
+amount: order.total + 5
+)
         end
 
         before do

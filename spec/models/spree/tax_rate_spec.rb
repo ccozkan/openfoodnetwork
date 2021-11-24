@@ -12,7 +12,8 @@ module Spree
 :tax_rate, 
 included_in_price: true,
            calculator: ::Calculator::FlatRate.new(preferred_amount: 0.1), 
-zone: zone)
+zone: zone
+)
       }
 
       describe "when the order's hub charges sales tax" do
@@ -131,7 +132,8 @@ amount: 1,
 zone: @zone,
 tax_category: tax_category,
 calculator: calculator,
-included_in_price: included_in_price)
+included_in_price: included_in_price
+)
             end
 
             subject { Spree::TaxRate.match(order) }

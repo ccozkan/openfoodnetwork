@@ -19,7 +19,8 @@ describe Spree::Address do
                                phone: 'phone',
                                state_id: state.id,
                                state_name: state.name,
-                               zipcode: 'zip_code')
+                               zipcode: 'zip_code'
+)
 
       cloned = original.clone
 

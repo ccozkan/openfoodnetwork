@@ -52,7 +52,8 @@ country_id: 1
     it "associates no user using non-existing email" do
       c = Customer.create(
 enterprise: enterprise,
-email: 'some-email-not-associated-with-a-user@email.com')
+email: 'some-email-not-associated-with-a-user@email.com'
+)
       expect(c.user).to be_nil
     end
 

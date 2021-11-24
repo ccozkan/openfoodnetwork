@@ -63,7 +63,8 @@ on_demand: false
 :enterprise_relationship, 
 parent: variant.product.supplier, 
 child: hub,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
           end
 
           it "loads data" do
@@ -142,7 +143,8 @@ hub: hub,
 variant: variant1, 
 count_on_hand: 5, 
 default_stock: 7,
-                   resettable: true)
+                   resettable: true
+)
       }
       let!(:variant_override2) {
         create(
@@ -151,7 +153,8 @@ hub: hub,
 variant: variant2, 
 count_on_hand: 2, 
 default_stock: 1,
-                   resettable: false)
+                   resettable: false
+)
       }
 
       let(:params) { { format: format, hub_id: hub.id } }
@@ -187,7 +190,8 @@ default_stock: 1,
 :enterprise_relationship, 
 parent: producer, 
 child: hub,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
           }
 
           it "loads data" do
@@ -218,14 +222,16 @@ hub: hub2,
 variant: variant3, 
 count_on_hand: 1, 
 default_stock: 13,
-                   resettable: true)
+                   resettable: true
+)
             }
             let!(:er2) {
               create(
 :enterprise_relationship, 
 parent: producer, 
 child: hub2,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
             }
 
             it "does not reset count_on_hand for variant_overrides not in params" do

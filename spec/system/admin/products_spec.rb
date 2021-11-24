@@ -197,7 +197,8 @@ describe '
 :enterprise_relationship, 
 parent: @supplier_permitted, 
 child: @supplier2,
-                          permissions_list: [:manage_products])
+                          permissions_list: [:manage_products]
+)
 
       login_as @new_user
     end
@@ -263,59 +264,77 @@ child: @supplier2,
       expected_admin_product_url = Regexp.new(Regexp.escape("#{spree.admin_products_path}#?#{filter.to_query}"))
       expect(page).to have_link(
 I18n.t('admin.products.back_to_products_list'),
-                                href: expected_admin_product_url)
+                                href: expected_admin_product_url
+)
       expect(page).to have_link(I18n.t(:cancel), href: expected_admin_product_url)
 
       expected_product_url = Regexp.new(
 Regexp.escape(
 spree.edit_admin_product_path(
                                                         product.permalink, filter
-                                                      )))
+                                                      )
+)
+)
       expect(page).to have_link(
 I18n.t('admin.products.tabs.product_details'),
-                                href: expected_product_url)
+                                href: expected_product_url
+)
 
       expected_product_image_url = Regexp.new(
 Regexp.escape(
 spree.admin_product_images_path(
                                                               product.permalink, filter
-                                                            )))
+                                                            )
+)
+)
       expect(page).to have_link(
 I18n.t('admin.products.tabs.images'),
-                                href: expected_product_image_url)
+                                href: expected_product_image_url
+)
 
       expected_product_variant_url = Regexp.new(
 Regexp.escape(
 spree.admin_product_variants_path(
                                                                 product.permalink, filter
-                                                              )))
+                                                              )
+)
+)
       expect(page).to have_link(
 I18n.t('admin.products.tabs.variants'),
-                                href: expected_product_variant_url)
+                                href: expected_product_variant_url
+)
 
       expected_product_properties_url = Regexp.new(
 Regexp.escape(
 spree.admin_product_product_properties_path(
                                                                    product.permalink, filter
-                                                                 )))
+                                                                 )
+)
+)
       expect(page).to have_link(
 I18n.t('admin.products.tabs.product_properties'),
-                                href: expected_product_properties_url)
+                                href: expected_product_properties_url
+)
 
       expected_product_group_buy_option_url = Regexp.new(
 Regexp.escape(
 spree.group_buy_options_admin_product_path(
                                                                          product.permalink, filter
-                                                                       )))
+                                                                       )
+)
+)
       expect(page).to have_link(
 I18n.t('admin.products.tabs.group_buy_options'),
-                                href: expected_product_group_buy_option_url)
+                                href: expected_product_group_buy_option_url
+)
 
       expected_product_seo_url = Regexp.new(
 Regexp.escape(
 spree.seo_admin_product_path(
                                                             product.permalink, filter
-                                                          )))
+                                                          )
+)
+)
       expect(page).to have_link(I18n.t(:search), href: expected_product_seo_url)
     end
 
@@ -344,7 +363,10 @@ spree.seo_admin_product_path(
 Regexp.escape(
 spree.edit_admin_product_path(
 product,
-                                                                                    filter)))
+                                                                                    filter
+)
+)
+)
       expect(page).to have_link(I18n.t(:cancel), href: expected_cancel_link)
     end
 
@@ -383,7 +405,10 @@ product,
 Regexp.escape(
 spree.edit_admin_product_path(
 product,
-                                                                                    filter)))
+                                                                                    filter
+)
+)
+)
       expect(page).to have_link(I18n.t(:cancel), href: expected_cancel_link)
     end
 
@@ -409,13 +434,16 @@ product,
       # we stay on the same url as the new image content is loaded via an ajax call
       expect("#{uri.path}?#{uri.query}").to eq spree.admin_product_product_properties_path(
 product,
-                                                                                           filter)
+                                                                                           filter
+)
 
       expected_cancel_link = Regexp.new(
 Regexp.escape(
 spree.admin_product_product_properties_path(
                                                         product, filter
-                                                      )))
+                                                      )
+)
+)
       expect(page).to have_link(I18n.t(:cancel), href: expected_cancel_link)
     end
 
@@ -459,7 +487,8 @@ spree.admin_product_product_properties_path(
       uri = URI.parse(current_url)
       expect("#{uri.path}?#{uri.query}").to eq spree.admin_product_product_properties_path(
 product,
-                                                                                           filter)
+                                                                                           filter
+)
     end
 
     it "adding product properties including url filters", js: true do
@@ -505,7 +534,10 @@ product,
 Regexp.escape(
 spree.admin_product_images_path(
 product,
-                                                                                      filter)))
+                                                                                      filter
+)
+)
+)
       expect(page).to have_link(I18n.t(:cancel), href: expected_cancel_link)
     end
 
@@ -533,7 +565,9 @@ product,
 Regexp.escape(
 spree.new_admin_product_image_path(
                                                            product, filter
-                                                         )))
+                                                         )
+)
+)
       expect(page).to have_link(I18n.t('spree.new_image'), href: expected_new_image_link)
     end
 
@@ -545,7 +579,8 @@ viewable_id: product.master.id,
 viewable_type: 'Spree::Variant', 
 alt: "position 1", 
 attachment: image, 
-position: 1)
+position: 1
+)
 
       visit spree.admin_product_images_path(product, filter)
 
@@ -555,13 +590,17 @@ position: 1)
       expect("#{uri.path}?#{uri.query}").to eq spree.edit_admin_product_image_path(
 product,
                                                                                    image_object, 
-filter)
+filter
+)
 
       expected_cancel_link = Regexp.new(
 Regexp.escape(
 spree.admin_product_images_path(
 product,
-                                                                                      filter)))
+                                                                                      filter
+)
+)
+)
       expect(page).to have_link(I18n.t(:cancel), href: expected_cancel_link)
       expect(page).to have_link("Back To Images List", href: expected_cancel_link)
     end
@@ -574,7 +613,8 @@ viewable_id: product.master.id,
 viewable_type: 'Spree::Variant', 
 alt: "position 1", 
 attachment: image, 
-position: 1)
+position: 1
+)
 
       file_path = Rails.root + "spec/support/fixtures/thinking-cat.jpg"
 
@@ -599,7 +639,8 @@ viewable_id: product.master.id,
 viewable_type: 'Spree::Variant',
 alt: "position 1", 
 attachment: image, 
-position: 1)
+position: 1
+)
 
       visit spree.admin_product_images_path(product)
       page.find('a#new_image_link').click
@@ -618,7 +659,8 @@ viewable_id: product.master.id,
 viewable_type: 'Spree::Variant',
 alt: "position 1", 
 attachment: image, 
-position: 1)
+position: 1
+)
 
       visit spree.admin_product_images_path(product)
       expect(page).to have_selector "table.index td img"
@@ -640,7 +682,8 @@ viewable_id: product.master.id,
 viewable_type: 'Spree::Variant',
 alt: "position 1", 
 attachment: image, 
-position: 1)
+position: 1
+)
 
       visit spree.admin_product_images_path(product, filter)
 

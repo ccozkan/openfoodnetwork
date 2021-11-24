@@ -17,7 +17,8 @@ js: true do
 :enterprise_fee, 
 name: '$0.50 / kg', 
 fee_type: 'packing',
-                 tax_category: tax_category_gst)
+                 tax_category: tax_category_gst
+)
     amount = fee.calculator.preferred_amount
 
     login_as_admin_and_visit spree.edit_admin_general_settings_path
@@ -186,7 +187,8 @@ fee_type: 'packing',
       expect(page).to have_select(
 'sets_enterprise_fee_set_collection_attributes_0_enterprise_id',
                                   selected: 'Second Distributor',
-                                  options: ['First Distributor', 'Second Distributor'])
+                                  options: ['First Distributor', 'Second Distributor']
+)
     end
   end
 end

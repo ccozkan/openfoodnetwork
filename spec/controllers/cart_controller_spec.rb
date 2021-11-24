@@ -57,7 +57,8 @@ variant: variant_in_the_order,
 price: 55.55,
                    count_on_hand: 20, 
 default_stock: nil, 
-resettable: false)
+resettable: false
+)
     }
     let!(:variant_override_not_in_the_order) {
       create(
@@ -66,7 +67,8 @@ hub: hub,
 variant: variant_not_in_the_order, 
 count_on_hand: 7,
                    default_stock: nil, 
-resettable: false)
+resettable: false
+)
     }
 
     let(:order_cycle) {

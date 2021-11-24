@@ -21,7 +21,8 @@ describe CartService do
       create(
 :simple_order_cycle, 
 distributors: [distributor],
-                     variants: [variant])
+                     variants: [variant]
+)
     }
     let(:cart_service) { CartService.new(order) }
     let(:variant) { create(:variant) }
@@ -288,7 +289,8 @@ distributors: [distributor],
       before do
         expect(OrderCycleDistributedVariants).to receive(:new).with(
 234,
-                                                                    123).and_return(order_cycle_distributed_variants)
+                                                                    123
+).and_return(order_cycle_distributed_variants)
         cart_service.instance_eval { @distributor = 123; @order_cycle = 234 }
       end
 

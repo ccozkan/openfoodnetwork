@@ -15,7 +15,8 @@ describe "As a consumer, I want to check unit price information for a product", 
 :simple_order_cycle, 
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise), 
-orders_close_at: 2.days.from_now)
+orders_close_at: 2.days.from_now
+)
   }
   let(:product) { create(:simple_product, supplier: supplier) }
   let(:variant) { product.variants.first }

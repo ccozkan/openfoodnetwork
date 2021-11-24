@@ -16,7 +16,8 @@ describe "Using embedded shopfront functionality", js: true do
 :distributor_enterprise, 
 name: 'My Embedded Hub', 
 permalink: 'test_enterprise',
-                         with_payment_and_shipping: true)
+                         with_payment_and_shipping: true
+)
     }
     let(:supplier) { create(:supplier_enterprise) }
     let(:oc1) {
@@ -24,7 +25,8 @@ permalink: 'test_enterprise',
 :simple_order_cycle, 
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise), 
-orders_close_at: 2.days.from_now)
+orders_close_at: 2.days.from_now
+)
     }
     let(:product) { create(:simple_product, name: 'Framed Apples', supplier: supplier) }
     let(:variant) { create(:variant, product: product, price: 19.99) }

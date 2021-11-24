@@ -27,7 +27,8 @@ state: 'complete',
 completed_at: Time.zone.now,
         distributor: distributor, 
 billing_address: create(:address), 
-total: 5.0)
+total: 5.0
+)
       end
       let!(:order2) do
         create(
@@ -37,7 +38,8 @@ state: 'complete',
 completed_at: Time.zone.now,
         distributor: distributor2, 
 billing_address: create(:address), 
-total: 10.0)
+total: 10.0
+)
       end
       let!(:order3) do
         create(
@@ -47,7 +49,8 @@ state: 'complete',
 completed_at: Time.zone.now,
         distributor: distributor, 
 billing_address: create(:address), 
-total: 1.0 )
+total: 1.0 
+)
       end
       let!(:order4) do
         create(:completed_order_with_fees, order_cycle: order_cycle2, distributor: distributor2, total: 15.0)
@@ -57,25 +60,29 @@ total: 1.0 )
         create(
 :line_item_with_shipment, 
 order: order1,
-                          product: create(:product, supplier: supplier))
+                          product: create(:product, supplier: supplier)
+)
       end
       let!(:line_item2) do
         create(
 :line_item_with_shipment, 
 order: order2,
-                          product: create(:product, supplier: supplier))
+                          product: create(:product, supplier: supplier)
+)
       end
       let!(:line_item3) do
         create(
 :line_item_with_shipment, 
 order: order2,
-                          product: create(:product, supplier: supplier))
+                          product: create(:product, supplier: supplier)
+)
       end
       let!(:line_item4) do
         create(
 :line_item_with_shipment, 
 order: order3,
-                          product: create(:product, supplier: supplier))
+                          product: create(:product, supplier: supplier)
+)
       end
 
       context 'as a regular user' do
@@ -253,7 +260,8 @@ params: { q: { completed_at_not_null: true, s: 'total desc' } },
         it "can view an order with weight calculator (this validates case where options[current_order] is nil on the shipping method serializer)" do
           order.shipping_method.update_attribute(
 :calculator,
-                                                 create(:weight_calculator, calculable: order))
+                                                 create(:weight_calculator, calculable: order)
+)
           allow(controller).to receive(:current_order).and_return order
           get :show, params: { id: order.number }
           expect_order
@@ -300,7 +308,8 @@ params: { q: { completed_at_not_null: true, s: 'total desc' } },
         create(
 :simple_order_cycle,
                distributors: [distributor], 
-variants: [product.variants.first])
+variants: [product.variants.first]
+)
       }
       let!(:order) {
         create(
@@ -309,7 +318,8 @@ variants: [product.variants.first])
 distributor: distributor, 
 order_cycle: order_cycle,
                state: 'complete', 
-payment_state: 'balance_due')
+payment_state: 'balance_due'
+)
       }
 
       before do

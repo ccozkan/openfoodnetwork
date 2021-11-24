@@ -34,7 +34,8 @@ module Permissions
       Spree::LineItem.where(
 id:
         editable_line_items.select(:id) |
-        produced_line_items.select("spree_line_items.id"))
+        produced_line_items.select("spree_line_items.id")
+)
     end
 
     # Any line items that I can edit

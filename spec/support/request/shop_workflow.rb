@@ -130,7 +130,8 @@ module ShopWorkflow
 order_cycle: oc, 
 incoming: true,
            sender: supplier, 
-receiver: oc.coordinator)
+receiver: oc.coordinator
+)
     end
   end
 end

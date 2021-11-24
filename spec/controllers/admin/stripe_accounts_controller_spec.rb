@@ -136,7 +136,8 @@ describe Admin::StripeAccountsController, type: :controller do
             before do
               stub_request(
 :get,
-                           "https://api.stripe.com/v1/accounts/acc_123").to_return(status: 404)
+                           "https://api.stripe.com/v1/accounts/acc_123"
+).to_return(status: 404)
             end
 
             it "returns with a status of 'access_revoked'" do
@@ -159,7 +160,8 @@ describe Admin::StripeAccountsController, type: :controller do
             before do
               stub_request(
 :get,
-                           "https://api.stripe.com/v1/accounts/acc_123").to_return(body: JSON.generate(stripe_account_mock))
+                           "https://api.stripe.com/v1/accounts/acc_123"
+).to_return(body: JSON.generate(stripe_account_mock))
             end
 
             it "returns with a status of 'connected'" do

@@ -22,7 +22,8 @@ module Api
         OrderManagement::Subscriptions::VariantsList.in_open_and_upcoming_order_cycles?(
 option_or_assigned_shop,
                                                                                         option_or_assigned_schedule,
-                                                                                        object.variant)
+                                                                                        object.variant
+)
       end
 
       private

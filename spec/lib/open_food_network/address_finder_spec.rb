@@ -94,7 +94,8 @@ module OpenFoodNetwork
 user: nil, 
 email: email, 
 distributor: distributor,
-                              bill_address: nil)
+                              bill_address: nil
+)
       }
       let(:finder) { AddressFinder.new(email) }
 
@@ -161,7 +162,8 @@ user: nil,
 email: email, 
 distributor: distributor, 
 shipments: [],
-                ship_address: address)
+                ship_address: address
+)
           }
 
           before do
@@ -187,7 +189,8 @@ user: nil,
 email: email, 
 distributor: distributor, 
 shipments: [],
-                ship_address: address)
+                ship_address: address
+)
           }
 
           context "and the shipping method requires an address" do
@@ -215,7 +218,8 @@ user: nil,
 email: email, 
 distributor: distributor, 
 shipments: [],
-                ship_address: nil)
+                ship_address: nil
+)
           }
 
           it "return nil" do

@@ -33,13 +33,15 @@ module Admin
       collection_hash.select!{ |_i, cp| cp[:action_name] == permitted_params[:action_name] }
       @cp_set = Sets::ColumnPreferenceSet.new(
 @column_preferences,
-                                              collection_attributes: collection_hash)
+                                              collection_attributes: collection_hash
+)
     end
 
     def collection
       ColumnPreference.where(
 user_id: spree_current_user,
-action_name: permitted_params[:action_name])
+action_name: permitted_params[:action_name]
+)
     end
 
     def collection_actions

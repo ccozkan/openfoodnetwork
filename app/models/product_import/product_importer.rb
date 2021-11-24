@@ -191,7 +191,8 @@ module ProductImport
 @inventory_permissions, 
 @reset_counts,
                                       @import_settings, 
-build_all_entries)
+build_all_entries
+)
       @processor = EntryProcessor.new(
 self, 
 @validator, 
@@ -199,7 +200,8 @@ self,
 @spreadsheet_data,
                                       @editable_enterprises, 
 @import_time, 
-@updated_ids)
+@updated_ids
+)
 
       @processor.count_existing_items unless staged_import?
     end
@@ -252,7 +254,9 @@ self,
 :importer, 
 I18n.t(
 'admin.product_import.model.unexpected_error',
-                                     error_message: e.message))
+                                     error_message: e.message
+)
+)
       end
       []
     rescue CSV::MalformedCSVError => e
@@ -267,13 +271,17 @@ I18n.t(
 :importer, 
 I18n.t(
 'admin.product_import.model.malformed_csv',
-                                             error_message: error_message))
+                                             error_message: error_message
+)
+)
 
         errors.add(
 :importer, 
 I18n.t(
 'admin.product_import.model.malformed_csv',
-                                     error_message: error_message))
+                                     error_message: error_message
+)
+)
       end
     end
 

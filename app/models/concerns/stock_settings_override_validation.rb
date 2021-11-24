@@ -36,7 +36,8 @@ module StockSettingsOverrideValidation
 
     error_message = I18n.t(
 "count_on_hand.using_producer_stock_settings_but_count_on_hand_set",
-                           scope: i18n_scope_for_stock_settings_override_validation_error)
+                           scope: i18n_scope_for_stock_settings_override_validation_error
+)
     errors.add(:count_on_hand, error_message)
   end
 
@@ -45,7 +46,8 @@ module StockSettingsOverrideValidation
 
     error_message = I18n.t(
 "count_on_hand.on_demand_but_count_on_hand_set",
-                           scope: i18n_scope_for_stock_settings_override_validation_error)
+                           scope: i18n_scope_for_stock_settings_override_validation_error
+)
     errors.add(:count_on_hand, error_message)
   end
 
@@ -54,7 +56,8 @@ module StockSettingsOverrideValidation
 
     error_message = I18n.t(
 "count_on_hand.limited_stock_but_no_count_on_hand",
-                           scope: i18n_scope_for_stock_settings_override_validation_error)
+                           scope: i18n_scope_for_stock_settings_override_validation_error
+)
     errors.add(:count_on_hand, error_message)
   end
 

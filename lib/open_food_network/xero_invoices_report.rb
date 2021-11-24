@@ -110,7 +110,8 @@ line_item.order,
           line_item.price.to_s,
           invoice_number,
           tax_type(line_item),
-          opts)
+          opts
+)
     end
 
     def adjustment_detail_rows(order, invoice_number, opts)
@@ -128,7 +129,8 @@ adjustment_order(adjustment),
           adjustment.amount,
           invoice_number,
           tax_type(adjustment),
-          opts)
+          opts
+)
     end
 
     def summary_rows_for_order(order, invoice_number, opts)
@@ -152,7 +154,8 @@ I18n.t(:report_header_total_taxable_produce),
                    total_taxable_products(order), 
 invoice_number, 
 I18n.t(:report_header_gst_on_income), 
-opts)
+opts
+)
 ]
     end
 
@@ -165,7 +168,8 @@ I18n.t(:report_header_total_taxable_fees),
 total_taxable_fees(order),
                    invoice_number, 
 I18n.t(:report_header_gst_on_income), 
-opts)
+opts
+)
 ]
     end
 
@@ -177,7 +181,8 @@ I18n.t(:report_header_delivery_shipping_cost),
 total_shipping(order),
                    invoice_number, 
 tax_on_shipping_s(order), 
-opts)
+opts
+)
 ]
     end
 
@@ -189,7 +194,8 @@ I18n.t(:report_header_transaction_fee),
 total_transaction(order),
                    invoice_number, 
 I18n.t(:report_header_gst_free_income), 
-opts)
+opts
+)
 ]
     end
 
@@ -202,7 +208,8 @@ I18n.t(:report_header_total_taxable_admin),
                    total_taxable_admin_adjustments(order), 
 invoice_number, 
 I18n.t(:report_header_gst_on_income), 
-opts)
+opts
+)
 ]
     end
 

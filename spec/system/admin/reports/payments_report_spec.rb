@@ -48,7 +48,8 @@ describe "Payments Reports" do
         I18n.t(:report_header_shipping_total_price, currency: currency_symbol),
         I18n.t(:report_header_outstanding_balance_price, currency: currency_symbol),
         I18n.t(:report_header_total_price, currency: currency_symbol)
-      ].join(" ").upcase)
+      ].join(" ").upcase
+)
 
       expect(page.find("#listing_orders tbody tr").text).to have_content(
 [
@@ -58,7 +59,8 @@ describe "Payments Reports" do
         order.ship_total.to_f + other_order.ship_total.to_f,
         order.outstanding_balance.to_f + other_order.outstanding_balance.to_f,
         order.total.to_f + other_order.total.to_f
-      ].compact.join(" "))
+      ].compact.join(" ")
+)
     end
   end
 
@@ -89,7 +91,8 @@ describe "Payments Reports" do
         I18n.t(:report_header_eft_price, currency: currency_symbol),
         I18n.t(:report_header_paypal_price, currency: currency_symbol),
         I18n.t(:report_header_outstanding_balance_price, currency: currency_symbol),
-      ].join(" ").upcase)
+      ].join(" ").upcase
+)
 
       expect(page.find("#listing_orders tbody tr").text).to have_content(
 [
@@ -101,7 +104,8 @@ describe "Payments Reports" do
         eft_payment.amount.to_f,
         paypal_payment.amount.to_f,
         order.outstanding_balance.to_f + other_order.outstanding_balance.to_f,
-      ].join(" "))
+      ].join(" ")
+)
     end
   end
 end

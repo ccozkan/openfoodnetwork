@@ -79,7 +79,8 @@ lambda { |orders|
 "
           lower(spree_products.name) asc,
             lower(spree_variants.display_name) asc,
-            spree_variants.unit_value asc"))
+            spree_variants.unit_value asc"
+))
     }
 
     scope :from_order_cycle, 
@@ -113,7 +114,8 @@ lambda { |enterprises|
         LEFT OUTER JOIN spree_adjustments
           ON (spree_adjustments.adjustable_id=spree_line_items.id
             AND spree_adjustments.adjustable_type = 'Spree::LineItem'
-            AND spree_adjustments.originator_type='Spree::TaxRate')")
+            AND spree_adjustments.originator_type='Spree::TaxRate')"
+)
         .where('spree_adjustments.id IS NULL')
     }
 

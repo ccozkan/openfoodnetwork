@@ -71,7 +71,8 @@ raw_params,
 @report.header, 
 @table, 
 params[:csv],
-                      "order_cycle_management_#{timestamp}.csv")
+                      "order_cycle_management_#{timestamp}.csv"
+)
       end
 
       def orders_and_distributors
@@ -150,7 +151,8 @@ raw_params,
 @report.header, 
 @report.table, 
 params[:csv],
-                      "users_and_enterprises_#{timestamp}.csv")
+                      "users_and_enterprises_#{timestamp}.csv"
+)
       end
 
       def xero_invoices
@@ -162,7 +164,8 @@ params[:csv],
         @report = OpenFoodNetwork::XeroInvoicesReport.new(
 spree_current_user,
                                                           raw_params,
-                                                          render_content?)
+                                                          render_content?
+)
         render_report(@report.header, @report.table, params[:csv], "xero_invoices_#{timestamp}.csv")
       end
 

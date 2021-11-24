@@ -63,7 +63,8 @@ describe Spree::Admin::ShippingMethodsController, type: :controller do
       shipping_method.calculator = Calculator::FlatPercentPerItem.new(
 preferred_flat_percent: 20,
 
-calculable: shipping_method)
+calculable: shipping_method
+)
       params[:shipping_method][:calculator_attributes][:preferred_flat_percent] = 30
 
       spree_post :update, params

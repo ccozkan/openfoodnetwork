@@ -45,13 +45,15 @@ describe '
         create(
 :stripe_account, 
 enterprise: connected_enterprise,
-                 stripe_user_id: "acc_connected123")
+                 stripe_user_id: "acc_connected123"
+)
       }
       let!(:disconnected_stripe_account) {
         create(
 :stripe_account, 
 enterprise: revoked_account_enterprise,
-                 stripe_user_id: "acc_revoked123")
+                 stripe_user_id: "acc_revoked123"
+)
       }
       let!(:stripe_account_mock) {
         { id: "acc_connected123", business_name: "My Org", charges_enabled: true }
@@ -68,10 +70,12 @@ enterprise: revoked_account_enterprise,
         Stripe.api_key = "sk_test_12345"
         stub_request(
 :get,
-                     "https://api.stripe.com/v1/accounts/acc_connected123").to_return(body: JSON.generate(stripe_account_mock))
+                     "https://api.stripe.com/v1/accounts/acc_connected123"
+).to_return(body: JSON.generate(stripe_account_mock))
         stub_request(
 :get,
-                     "https://api.stripe.com/v1/accounts/acc_revoked123").to_return(status: 404)
+                     "https://api.stripe.com/v1/accounts/acc_revoked123"
+).to_return(status: 404)
       end
 
       it "communicates the status of the stripe connection to the user" do
@@ -87,7 +91,8 @@ enterprise: revoked_account_enterprise,
         expect(page).to have_link connect_one,
                                   href: edit_admin_enterprise_path(
 missing_account_enterprise,
-                                                                   anchor: "/payment_methods")
+                                                                   anchor: "/payment_methods"
+)
 
         select2_select "Revoked", from: "payment_method_preferred_enterprise_id"
         expect(page).to have_selector "#stripe-account-status .alert-box.error",
@@ -126,7 +131,8 @@ missing_account_enterprise,
     payment_method = create(
 :payment_method, 
 distributors: [@distributors[0]],
-                 calculator: build(:calculator_flat_rate))
+                 calculator: build(:calculator_flat_rate)
+)
     login_as_admin_and_visit spree.edit_admin_payment_method_path payment_method
 
     fill_in 'payment_method_name', with: 'New PM Name'

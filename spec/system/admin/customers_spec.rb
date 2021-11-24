@@ -60,10 +60,12 @@ without_options: [unmanaged_distributor.name]
         end
         expect(page).to have_selector(
 "#customers .customer:nth-child(1) .email",
-                                      text: customer_emails[0])
+                                      text: customer_emails[0]
+)
         expect(page).to have_selector(
 "#customers .customer:nth-child(2) .email",
-                                      text: customer_emails[1])
+                                      text: customer_emails[1]
+)
 
         # Then sorting in reverse when the header is clicked again
         within "#customers thead" do
@@ -71,10 +73,12 @@ without_options: [unmanaged_distributor.name]
         end
         expect(page).to have_selector(
 "#customers .customer:nth-child(1) .email",
-                                      text: customer_emails[1])
+                                      text: customer_emails[1]
+)
         expect(page).to have_selector(
 "#customers .customer:nth-child(2) .email",
-                                      text: customer_emails[0])
+                                      text: customer_emails[0]
+)
 
         # Toggling columns
         expect(page).to have_selector "th.email"
@@ -115,7 +119,8 @@ payment_total: 88,
 distributor: managed_distributor1, 
 user: nil,
         state: 'complete', 
-customer: customer1)
+customer: customer1
+)
         }
         let!(:order2) {
           create(
@@ -125,7 +130,8 @@ payment_total: 0,
 distributor: managed_distributor1, 
 user: nil,
         state: 'complete', 
-customer: customer2)
+customer: customer2
+)
         }
         let!(:order3) {
           create(
@@ -135,7 +141,8 @@ payment_total: 0,
 distributor: managed_distributor1, 
 user: nil,
         state: 'complete', 
-customer: customer4)
+customer: customer4
+)
         }
 
         let!(:payment_method) {
@@ -148,7 +155,8 @@ order: order1,
 state: 'completed', 
 payment_method: payment_method,
           response_code: 'pi_123', 
-amount: 88.00)
+amount: 88.00
+)
         }
 
         before do
@@ -183,7 +191,8 @@ order: order1,
 state: 'completed', 
 payment_method: payment_method,
           response_code: 'pi_123', 
-amount: -25.00)
+amount: -25.00
+)
           }
 
           before do

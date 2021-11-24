@@ -41,7 +41,8 @@ variant: product1_variant1,
                                                  price: 55.55, 
 count_on_hand: nil, 
 default_stock: nil, 
-resettable: false)
+resettable: false
+)
   }
   let!(:product1_variant2_override) {
     create(
@@ -50,7 +51,8 @@ hub: hub,
 variant: product1_variant2, 
 count_on_hand: 0,
                    default_stock: nil, 
-resettable: false)
+resettable: false
+)
   }
   let!(:product2_variant1_override) {
     create(
@@ -59,7 +61,8 @@ hub: hub,
 variant: product2_variant1, 
 count_on_hand: 0,
                    default_stock: nil, 
-resettable: false)
+resettable: false
+)
   }
   let!(:product1_variant3_override) {
     create(
@@ -68,7 +71,8 @@ hub: hub,
 variant: product1_variant3, 
 count_on_hand: 3,
                    default_stock: nil, 
-resettable: false)
+resettable: false
+)
   }
   let!(:product3_variant1_override) {
     create(
@@ -77,7 +81,8 @@ hub: hub,
 variant: product3_variant1, 
 count_on_hand: 0,
                    default_stock: nil, 
-resettable: false)
+resettable: false
+)
   }
   let!(:product3_variant2_override) {
     create(
@@ -86,14 +91,16 @@ hub: hub,
 variant: product3_variant2, 
 count_on_hand: 6,
                    default_stock: nil, 
-resettable: false)
+resettable: false
+)
   }
   let(:enterprise_fee) {
     create(
 :enterprise_fee, 
 enterprise: hub, 
 fee_type: 'packing',
-                 calculator: Calculator::FlatPercentPerItem.new(preferred_flat_percent: 10))
+                 calculator: Calculator::FlatPercentPerItem.new(preferred_flat_percent: 10)
+)
   }
   let!(:product4_variant1_override) {
     create(
@@ -103,7 +110,8 @@ variant: product4_variant1,
 count_on_hand: nil,
                    on_demand: true, 
 default_stock: nil, 
-resettable: false)
+resettable: false
+)
   }
 
   before do

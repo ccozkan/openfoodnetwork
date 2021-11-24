@@ -19,7 +19,8 @@ describe Api::ProductSerializer do
 product,
                         variants: [variant1],
                         current_distributor: distributor,
-                        current_order_cycle: order_cycle)
+                        current_order_cycle: order_cycle
+)
   }
 
   before do

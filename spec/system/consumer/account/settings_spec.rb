@@ -12,7 +12,8 @@ describe "Account Settings", js: true do
 :user,
              email: 'old@email.com',
              password: 'OriginalPassword',
-             password_confirmation: 'OriginalPassword')
+             password_confirmation: 'OriginalPassword'
+)
     end
 
     before do
@@ -41,7 +42,8 @@ describe "Account Settings", js: true do
       find("a", text: /#{I18n.t('spree.users.show.tabs.settings')}/i).click
       expect(page).to have_content I18n.t(
 'spree.users.show.unconfirmed_email',
-                                          unconfirmed_email: 'new@email.com')
+                                          unconfirmed_email: 'new@email.com'
+)
     end
 
     it "allows the user to change their password" do

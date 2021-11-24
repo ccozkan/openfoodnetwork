@@ -70,7 +70,8 @@ module OpenFoodNetwork
 :exchange, 
 incoming: false, 
 receiver_id: hub.id,
-           variants: [variant, variant2, variant3])
+           variants: [variant, variant2, variant3]
+)
           # create the overrides
           variant2_override
           variant3_override

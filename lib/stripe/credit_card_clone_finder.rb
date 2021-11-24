@@ -13,7 +13,8 @@ module Stripe
 
       customers = Stripe::Customer.list(
 { email: email, limit: 100 },
-                                        stripe_account: @stripe_account)
+                                        stripe_account: @stripe_account
+)
 
       customers.auto_paging_each do |customer|
         options = { customer: customer.id, type: 'card', limit: 100 }

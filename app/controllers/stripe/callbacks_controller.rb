@@ -17,7 +17,8 @@ module Stripe
       end
       redirect_to main_app.edit_admin_enterprise_path(
 connector.enterprise,
-                                                      anchor: 'payment_methods')
+                                                      anchor: 'payment_methods'
+)
     rescue Stripe::StripeError => e
       render plain: e.message, status: :internal_server_error
     end

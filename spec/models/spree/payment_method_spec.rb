@@ -74,12 +74,14 @@ module Spree
 
       flat_rate_payment_method = create(
 :payment_method,
-                                        calculator: ::Calculator::FlatRate.new(preferred_amount: 10))
+                                        calculator: ::Calculator::FlatRate.new(preferred_amount: 10)
+)
       expect(flat_rate_payment_method.compute_amount(order)).to eq 10
 
       flat_percent_payment_method = create(
 :payment_method,
-                                           calculator: ::Calculator::FlatPercentItemTotal.new(preferred_flat_percent: 10))
+                                           calculator: ::Calculator::FlatPercentItemTotal.new(preferred_flat_percent: 10)
+)
       expect(flat_percent_payment_method.compute_amount(order)).to eq 0
 
       product = create(:product)

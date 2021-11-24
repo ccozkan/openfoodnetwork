@@ -59,7 +59,8 @@ class_name: "Spree::ReturnAuthorization",
     def find_stock_item
       Spree::StockItem.find_by(
 stock_location_id: shipment.stock_location_id,
-variant_id: variant_id)
+variant_id: variant_id
+)
     end
 
     private

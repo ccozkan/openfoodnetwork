@@ -15,7 +15,8 @@ describe AddressGeocoder do
            state: victoria,
            zipcode: 3018,
            latitude: nil,
-           longitude: nil)
+           longitude: nil
+)
   end
 
   it "formats the address into a single comma separated string when passing it to the geocoder" do

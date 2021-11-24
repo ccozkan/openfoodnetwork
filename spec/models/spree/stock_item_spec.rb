@@ -96,7 +96,8 @@ RSpec.describe Spree::StockItem do
 backordered_inventory_units: [
 inventory_unit,
                                                                            inventory_unit_2
-])
+]
+)
         }
 
         it "fills existing backorders" do

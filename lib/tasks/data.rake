@@ -15,12 +15,14 @@ namespace :ofn do
           # Ensure that an enterprise relationship from the producer to the coordinator exists
           relationship = EnterpriseRelationship.where(
 parent_id: exchange.sender_id,
-child_id: exchange.receiver_id).first
+child_id: exchange.receiver_id
+).first
           if relationship.blank?
             puts "CREATING: #{exchange.sender.name} TO #{exchange.receiver.name}"
             relationship = EnterpriseRelationship.create!(
 parent_id: exchange.sender_id,
-child_id: exchange.receiver_id)
+child_id: exchange.receiver_id
+)
           end
           # And that P-OC is granted
           unless relationship.has_permission?(:add_to_order_cycle)
@@ -35,12 +37,14 @@ child_id: exchange.receiver_id)
             # Enure that an enterprise relationship from the hub to the coordinator exists
             relationship = EnterpriseRelationship.where(
 parent_id: exchange.receiver_id,
-child_id: exchange.sender_id).first
+child_id: exchange.sender_id
+).first
             if relationship.blank?
               puts "CREATING: #{exchange.receiver.name} TO #{exchange.sender.name}"
               relationship = EnterpriseRelationship.create!(
 parent_id: exchange.receiver_id,
-child_id: exchange.sender_id)
+child_id: exchange.sender_id
+)
             end
             # And that P-OC is granted
             unless relationship.has_permission?(:add_to_order_cycle)
@@ -55,19 +59,22 @@ child_id: exchange.sender_id)
           ).pluck(:id).uniq
           producers = Enterprise.joins(:supplied_products).where(
 "spree_products.id IN (?)",
-                                                                 products).distinct
+                                                                 products
+).distinct
           producers.each do |producer|
             next if producer == exchange.receiver
 
             # Ensure that an enterprise relationship from the producer to the hub exists
             relationship = EnterpriseRelationship.where(
 parent_id: producer.id,
-child_id: exchange.receiver_id).first
+child_id: exchange.receiver_id
+).first
             if relationship.blank?
               puts "CREATING: #{producer.name} TO #{exchange.receiver.name}"
               relationship = EnterpriseRelationship.create!(
 parent_id: producer.id,
-child_id: exchange.receiver_id)
+child_id: exchange.receiver_id
+)
             end
             # And that P-OC is granted
             unless relationship.has_permission?(:add_to_order_cycle)

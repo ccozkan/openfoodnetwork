@@ -48,7 +48,8 @@ module Spree
           sign_in(
 @user, 
 event: :authentication,
-       bypass: true)
+       bypass: true
+)
         end
         redirect_to spree.account_url, notice: Spree.t(:account_updated)
       else

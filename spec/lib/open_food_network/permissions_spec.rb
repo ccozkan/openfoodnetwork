@@ -19,7 +19,9 @@ module OpenFoodNetwork
           expect(
 permissions.send(
 :managed_and_related_enterprises_granting,
-                                  :some_permission)).to match_array [e1, e2]
+                                  :some_permission
+)
+).to match_array [e1, e2]
         end
       end
 
@@ -35,7 +37,9 @@ permissions.send(
           expect(
 permissions.send(
 :managed_and_related_enterprises_granting,
-                                  :some_permission)).to match_array [e1, e3]
+                                  :some_permission
+)
+).to match_array [e1, e3]
         end
       end
     end
@@ -48,7 +52,9 @@ permissions.send(
           expect(
 permissions.send(
 :managed_and_related_enterprises_granting,
-                                  :some_permission)).to match_array [e1, e2]
+                                  :some_permission
+)
+).to match_array [e1, e2]
         end
       end
 
@@ -68,7 +74,9 @@ permissions.send(
           expect(
 permissions.send(
 :managed_and_related_enterprises_with,
-                                  :some_permission)).to match_array [e1, e3, e4]
+                                  :some_permission
+)
+).to match_array [e1, e3, e4]
         end
       end
     end
@@ -131,7 +139,8 @@ permissions.send(
 :enterprise_relationship, 
 parent: producer, 
 child: hub,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
       }
 
       before do
@@ -150,7 +159,8 @@ child: hub,
 :enterprise_relationship, 
 parent: e1, 
 child: e2,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
 
         expect(permissions.variant_override_enterprises_per_hub).to eq(
           hub.id => [producer.id]
@@ -163,7 +173,8 @@ child: e2,
 :enterprise_relationship, 
 parent: e1, 
 child: e2,
-                          permissions_list: [:manage_products])
+                          permissions_list: [:manage_products]
+)
 
         expect(permissions.variant_override_enterprises_per_hub).to eq(
           hub.id => [producer.id]
@@ -177,7 +188,8 @@ child: e2,
 :enterprise_relationship, 
 parent: hub, 
 child: producer_managed,
-                          permissions_list: [:add_to_order_cycle, :create_variant_overrides])
+                          permissions_list: [:add_to_order_cycle, :create_variant_overrides]
+)
         }
 
         before do

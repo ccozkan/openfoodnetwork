@@ -50,7 +50,8 @@ inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible:
 :enterprise_relationship, 
 parent: variant.product.supplier, 
 child: enterprise,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
           end
 
           context "with acceptable data" do
@@ -128,7 +129,8 @@ visible: nil
 :enterprise_relationship, 
 parent: variant.product.supplier, 
 child: enterprise,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
           end
 
           context "with acceptable data" do

@@ -18,7 +18,8 @@ describe Api::Admin::ExchangeSerializer do
 :inventory_item, 
 enterprise: exchange.order_cycle.coordinator, 
 variant: v1,
-                 visible: true)
+                 visible: true
+)
     }
 
     before do

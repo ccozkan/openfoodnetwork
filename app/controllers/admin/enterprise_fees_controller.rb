@@ -71,13 +71,15 @@ module Admin
         order_cycle = OrderCycle.new(coordinator: coordinator) if order_cycle.nil? && coordinator.present?
         enterprises = OpenFoodNetwork::OrderCyclePermissions.new(
 spree_current_user,
-                                                                 order_cycle).visible_enterprises
+                                                                 order_cycle
+).visible_enterprises
         EnterpriseFee.for_enterprises(enterprises).order('enterprise_id', 'fee_type', 'name')
       else
         collection = EnterpriseFee.managed_by(spree_current_user).order(
 'enterprise_id',
                                                                         'fee_type', 
-'name')
+'name'
+)
         collection = collection.for_enterprise(current_enterprise) if current_enterprise
         collection
       end

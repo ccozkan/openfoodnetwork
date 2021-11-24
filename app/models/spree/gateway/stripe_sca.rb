@@ -81,7 +81,8 @@ module Spree
         payment_intent_id = response_code
         payment_intent_response = Stripe::PaymentIntent.retrieve(
 payment_intent_id,
-                                                                 stripe_account: stripe_account_id)
+                                                                 stripe_account: stripe_account_id
+)
         gateway_options[:stripe_account] = stripe_account_id
 
         # If a payment has been confirmed it cannot be voided by Stripe, and must be refunded instead
@@ -91,7 +92,8 @@ payment_intent_id,
           provider.refund(
 refundable_amount(payment_intent_response), 
 response_code,
-                          gateway_options)
+                          gateway_options
+)
         end
       end
 

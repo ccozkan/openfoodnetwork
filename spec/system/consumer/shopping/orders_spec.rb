@@ -21,7 +21,8 @@ describe "Order Management", js: true do
              customer: customer,
              user: user,
              distributor: distributor,
-             order_cycle: order_cycle)
+             order_cycle: order_cycle
+)
     end
 
     before do
@@ -41,7 +42,8 @@ describe "Order Management", js: true do
                user: nil,
                email: "guest@user.com",
                distributor: distributor,
-               order_cycle: order_cycle)
+               order_cycle: order_cycle
+)
       end
 
       it "allows the user to see the details" do

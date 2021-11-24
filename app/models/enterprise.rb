@@ -168,7 +168,8 @@ lambda { |variants|
     joins(
 "
       LEFT OUTER JOIN exchanges
-        ON (exchanges.sender_id = enterprises.id AND exchanges.incoming = 't')")
+        ON (exchanges.sender_id = enterprises.id AND exchanges.incoming = 't')"
+)
       .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
@@ -177,7 +178,8 @@ lambda { |variants|
     joins(
 "
       LEFT OUTER JOIN exchanges
-        ON (exchanges.receiver_id = enterprises.id AND exchanges.incoming = 'f')")
+        ON (exchanges.receiver_id = enterprises.id AND exchanges.incoming = 'f')"
+)
       .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
@@ -186,7 +188,8 @@ lambda { |variants|
     joins(
 "
       LEFT OUTER JOIN exchanges
-        ON (exchanges.receiver_id = enterprises.id OR exchanges.sender_id = enterprises.id)")
+        ON (exchanges.receiver_id = enterprises.id OR exchanges.sender_id = enterprises.id)"
+)
       .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
@@ -210,7 +213,8 @@ lambda { |product_ids|
 "
         INNER JOIN exchanges
           ON (exchanges.receiver_id = enterprises.id AND exchanges.incoming = 'f')
-      ")
+      "
+)
       .joins('INNER JOIN exchange_variants ON (exchange_variants.exchange_id = exchanges.id)')
       .joins('INNER JOIN spree_variants ON (spree_variants.id = exchange_variants.variant_id)')
       .where('spree_variants.product_id IN (?)', product_ids).select('DISTINCT enterprises.id')
@@ -239,7 +243,8 @@ lambda { |one, others|
     ", 
 one, 
 one, 
-others)
+others
+)
   }
 
   def business_address_empty?(attributes)
@@ -249,7 +254,8 @@ others)
 :address1, 
 :city, 
 :phone,
-                                        :zipcode).values.all?(&:blank?)
+                                        :zipcode
+).values.all?(&:blank?)
     attributes.merge!(_destroy: 1) if attributes_exists && attributes_empty
     !attributes_exists && attributes_empty
   end
@@ -298,7 +304,8 @@ others)
         (SELECT parent_id FROM enterprise_relationships WHERE enterprise_relationships.child_id=?)
     ", 
 id, 
-id)
+id
+)
   end
 
   def plus_relatives_and_oc_producers(order_cycles)
@@ -477,7 +484,9 @@ id)
 I18n.t(
 :enterprise_owner_error, 
 email: owner.email,
-                         enterprise_limit: owner.enterprise_limit ))
+                         enterprise_limit: owner.enterprise_limit 
+)
+)
     end
   end
 
@@ -500,7 +509,8 @@ email: owner.email,
       EnterpriseRelationship.create!(
 parent: self,
 child: enterprise,
-permissions_list: hub_permissions)
+permissions_list: hub_permissions
+)
     end
 
     # All pre-existing producers grant permission to new hubs
@@ -512,7 +522,8 @@ child: self,
 permissions_list: [
 :add_to_order_cycle,
                                                           :create_variant_overrides
-])
+]
+)
       end
     end
   end

@@ -48,7 +48,8 @@ FactoryBot.define do
       Spree::Image.create(
 attachment: image,
 viewable_id: product.master.id,
-viewable_type: 'Spree::Variant')
+viewable_type: 'Spree::Variant'
+)
     end
   end
 
@@ -84,7 +85,8 @@ amount: proxy.tax_rate_amount,
            included_in_price: true,
            calculator: Calculator::DefaultTax.new,
            zone: proxy.zone,
-           name: proxy.tax_rate_name)
+           name: proxy.tax_rate_name
+)
     end
   end
 end

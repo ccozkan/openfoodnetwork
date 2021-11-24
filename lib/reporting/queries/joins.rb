@@ -44,8 +44,7 @@ module Reporting
       def join_line_item_option_values
         reflect query
           .join(association(Spree::LineItem, :option_values))
-          .join(association(Spree::OptionValuesLineItem, :option_value)
-              )
+          .join(association(Spree::OptionValuesLineItem, :option_value))
       end
     end
   end

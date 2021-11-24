@@ -15,7 +15,8 @@ describe "Credit Cards", js: true do
 :stored_credit_card, 
 user_id: user.id, 
 gateway_customer_profile_id: 'cus_AZNMJ',
-                     is_default: true)
+                     is_default: true
+)
     }
     let!(:non_default_card) {
       create(:stored_credit_card, user_id: user.id, gateway_customer_profile_id: 'cus_FDTG')
@@ -98,7 +99,8 @@ gateway_customer_profile_id: 'cus_AZNMJ',
 
       expect(page).to have_content I18n.t(
 :card_has_been_removed,
-                                          number: "x-#{default_card.last_digits}")
+                                          number: "x-#{default_card.last_digits}"
+)
       expect(page).to have_no_selector ".card#card#{default_card.id}"
 
       # Allows authorisation of card use by shops

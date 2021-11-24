@@ -11,7 +11,8 @@ describe Api::Admin::VariantOverrideSerializer do
 variant: variant, 
 hub: hub, 
 price: price,
-                   count_on_hand: count_on_hand)
+                   count_on_hand: count_on_hand
+)
   }
 
   it "serializes a variant override" do

@@ -87,7 +87,8 @@ large: "600x600>"
       set_attachment_attribute(:s3_credentials, s3_credentials)
       set_attachment_attribute(
 :s3_headers,
-                               ActiveSupport::JSON.decode(Spree::Config[:s3_headers]))
+                               ActiveSupport::JSON.decode(Spree::Config[:s3_headers])
+)
       set_attachment_attribute(:bucket, Spree::Config[:s3_bucket])
 
       # We use :s3_alias_url (virtual host url style) and set the URL on property s3_host_alias

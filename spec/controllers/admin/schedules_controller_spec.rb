@@ -84,7 +84,8 @@ describe Admin::SchedulesController, type: :controller do
 coordinated_order_cycle, 
 uncoordinated_order_cycle,
                             uncoordinated_order_cycle3
-] )
+] 
+)
     }
     let!(:uncoordinated_schedule) { create(:schedule, order_cycles: [uncoordinated_order_cycle] ) }
 
@@ -199,7 +200,8 @@ id: coordinated_schedule.id,
 order_cycle_ids: [
 coordinated_order_cycle.id,
                                              uncoordinated_order_cycle.id
-] )
+] 
+)
           end
 
           it "allows me to create the schedule, adding only order cycles that I manage" do
@@ -236,7 +238,8 @@ coordinated_order_cycle.id,
 order_cycle_ids: [
 coordinated_order_cycle.id,
                                            uncoordinated_order_cycle.id
-] )
+] 
+)
         end
 
         it "allows me to create a schedule" do

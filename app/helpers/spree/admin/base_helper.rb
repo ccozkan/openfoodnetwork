@@ -13,7 +13,8 @@ module Spree
 :div,
                     capture(&block),
                     class: css_classes.join(' '),
-                    id: "#{model}_#{method}_field")
+                    id: "#{model}_#{method}_field"
+)
       end
 
       def error_message_on(object, method, _options = {})
@@ -76,7 +77,8 @@ module Spree
           form.select(
 field, 
 options_for_select(list_values, selected_value),
-                      preference_field_options(options))
+                      preference_field_options(options)
+)
         else
           form.text_field(field, preference_field_options(options))
         end
@@ -130,7 +132,8 @@ class: 'input_string fullwidth'
         object.preferences.keys.map { |key|
           preference_label = form.label(
 "preferred_#{key}",
-                                        Spree.t(key.to_s.gsub("_from_list", "")) + ": ").html_safe
+                                        Spree.t(key.to_s.gsub("_from_list", "")) + ": "
+).html_safe
           preference_field = preference_field_for(
             form,
             "preferred_#{key}",
@@ -149,7 +152,8 @@ object
                           name,
                           'javascript:',
                           data: { target: target },
-                          class: css_classes)
+                          class: css_classes
+)
       end
 
       # renders hidden field and link to remove record using nested_attributes

@@ -139,7 +139,8 @@ module Spree
 :shipping_method, 
 order: order, 
 cost: 50,
-                                  shipping_method: shipping_method)
+                                  shipping_method: shipping_method
+)
         }
 
         before do
@@ -158,7 +159,8 @@ order: order,
 adjustable: order, 
 included: false,
              label: "legacy", 
-originator_type: "Spree::TaxRate")
+originator_type: "Spree::TaxRate"
+)
           }
 
           it "removes any legacy tax adjustments on order" do

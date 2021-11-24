@@ -51,7 +51,9 @@ module Spree
 Spree.t(
 :out_of_stock,
                                                 scope: :order_populator,
-                                                item: display_name.inspect))
+                                                item: display_name.inspect
+)
+)
       end
     end
   end

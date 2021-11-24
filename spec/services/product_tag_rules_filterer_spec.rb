@@ -26,7 +26,8 @@ describe ProductTagRulesFilterer do
              enterprise: distributor,
              is_default: true,
              preferred_variant_tags: "hide_these_variants_from_everyone",
-             preferred_matched_variants_visibility: "hidden")
+             preferred_matched_variants_visibility: "hidden"
+)
     }
     let!(:hide_rule) {
       create(
@@ -34,7 +35,8 @@ describe ProductTagRulesFilterer do
              enterprise: distributor,
              preferred_variant_tags: "hide_these_variants",
              preferred_customer_tags: "hide_from_these_customers",
-             preferred_matched_variants_visibility: "hidden" )
+             preferred_matched_variants_visibility: "hidden" 
+)
     }
     let!(:show_rule) {
       create(
@@ -42,7 +44,8 @@ describe ProductTagRulesFilterer do
              enterprise: distributor,
              preferred_variant_tags: "show_these_variants",
              preferred_customer_tags: "show_for_these_customers",
-             preferred_matched_variants_visibility: "visible" )
+             preferred_matched_variants_visibility: "visible" 
+)
     }
     let!(:non_applicable_rule) {
       create(
@@ -50,7 +53,8 @@ describe ProductTagRulesFilterer do
              enterprise: distributor,
              preferred_variant_tags: "hide_these_other_variants",
              preferred_customer_tags: "hide_from_other_customers",
-             preferred_matched_variants_visibility: "hidden" )
+             preferred_matched_variants_visibility: "hidden" 
+)
     }
     let(:filterer) { described_class.new(distributor, customer, variants_relation) }
 
@@ -74,7 +78,8 @@ describe ProductTagRulesFilterer do
         it "lists overrides tagged as hidden for this customer" do
           variant_hidden_by_default.update_attribute(
 :tag_list,
-                                                     default_hide_rule.preferred_variant_tags)
+                                                     default_hide_rule.preferred_variant_tags
+)
 
           overrides_to_hide = filterer.__send__(:overrides_to_hide)
           expect(overrides_to_hide).to eq [variant_hidden_by_default.id]
@@ -86,11 +91,13 @@ describe ProductTagRulesFilterer do
           customer.update_attribute(:tag_list, hide_rule.preferred_customer_tags)
           variant_hidden_by_default.update_attribute(
 :tag_list,
-                                                     default_hide_rule.preferred_variant_tags)
+                                                     default_hide_rule.preferred_variant_tags
+)
           variant_hidden_by_rule.update_attribute(:tag_list, hide_rule.preferred_variant_tags)
           variant_hidden_for_another_customer.update_attribute(
 :tag_list,
-                                                               non_applicable_rule.preferred_variant_tags)
+                                                               non_applicable_rule.preferred_variant_tags
+)
 
           overrides_to_hide = filterer.__send__(:overrides_to_hide)
           expect(overrides_to_hide).to include variant_hidden_by_default.id,

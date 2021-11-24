@@ -142,7 +142,8 @@ module OpenFoodNetwork
           allow(subject).to receive(:params).and_return(
 order_cycle_id: oc1.id,
 shipping_method_name: sm1.name,
-payment_method_name: pm1.name)
+payment_method_name: pm1.name
+)
           expect(subject.filter(orders)).to eq([order1])
         end
       end
@@ -179,7 +180,8 @@ payment_method_name: pm1.name)
                                                 order.total,
                                                 -order.total
                                               ]
-])
+]
+)
           end
         end
 
@@ -211,7 +213,8 @@ payment_method_name: pm1.name)
                                                 false,
                                                 order.special_instructions
                                               ]
-])
+]
+)
           end
         end
       end

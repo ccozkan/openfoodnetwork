@@ -40,14 +40,16 @@ module Api
 :variant_override,
                  hub: distributor,
                  variant: product1.variants.first,
-                 price: 1234.56)
+                 price: 1234.56
+)
         }
         let!(:vo2) {
           create(
 :variant_override,
                  hub: distributor,
                  variant: product2.variants.first,
-                 count_on_hand: 0)
+                 count_on_hand: 0
+)
         }
 
         it "returns results scoped with variant overrides" do
@@ -93,19 +95,22 @@ distributor: distributor.id,
           create(
 :variant_override,
                  hub: distributor,
-                 variant: product1.variants.first)
+                 variant: product1.variants.first
+)
         }
         let!(:vo2) {
           create(
 :variant_override,
                  hub: distributor,
-                 variant: product2.variants.first)
+                 variant: product2.variants.first
+)
         }
         let!(:vo3) {
           create(
 :variant_override,
                  hub: distributor,
-                 variant: product3.variants.first)
+                 variant: product3.variants.first
+)
         }
         let(:default_hide_rule) {
           create(
@@ -113,7 +118,8 @@ distributor: distributor.id,
                  enterprise: distributor,
                  is_default: true,
                  preferred_variant_tags: "hide_these_variants_from_everyone",
-                 preferred_matched_variants_visibility: "hidden")
+                 preferred_matched_variants_visibility: "hidden"
+)
         }
         let!(:hide_rule) {
           create(
@@ -121,7 +127,8 @@ distributor: distributor.id,
                  enterprise: distributor,
                  preferred_variant_tags: "hide_these_variants",
                  preferred_customer_tags: "hide_from_these_customers",
-                 preferred_matched_variants_visibility: "hidden" )
+                 preferred_matched_variants_visibility: "hidden" 
+)
         }
         let!(:show_rule) {
           create(
@@ -129,7 +136,8 @@ distributor: distributor.id,
                  enterprise: distributor,
                  preferred_variant_tags: "show_these_variants",
                  preferred_customer_tags: "show_for_these_customers",
-                 preferred_matched_variants_visibility: "visible" )
+                 preferred_matched_variants_visibility: "visible" 
+)
         }
 
         it "does not return variants hidden by general rules" do
@@ -153,7 +161,8 @@ distributor: distributor.id,
           vo1.update_attribute(:tag_list, default_hide_rule.preferred_variant_tags)
           vo3.update_attribute(
 :tag_list,
-                               "#{show_rule.preferred_variant_tags},#{default_hide_rule.preferred_variant_tags}")
+                               "#{show_rule.preferred_variant_tags},#{default_hide_rule.preferred_variant_tags}"
+)
           customer.update_attribute(:tag_list, show_rule.preferred_customer_tags)
 
           api_get :products, id: order_cycle.id, distributor: distributor.id

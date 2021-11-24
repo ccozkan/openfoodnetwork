@@ -93,7 +93,8 @@ describe Sets::ProductSet do
 :simple_order_cycle, 
 variants: [product.variants.first],
                      coordinator: distributor,
-                     distributors: [distributor])
+                     distributors: [distributor]
+)
           }
 
           it 'updates the product and removes the product from order cycles' do

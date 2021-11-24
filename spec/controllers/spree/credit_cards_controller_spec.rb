@@ -57,7 +57,8 @@ describe Spree::CreditCardsController, type: :controller do
           json_response = JSON.parse(response.body)
           flash_message = I18n.t(
 :spree_gateway_error_flash_for_checkout,
-                                 error: I18n.t(:card_could_not_be_saved))
+                                 error: I18n.t(:card_could_not_be_saved)
+)
           expect(json_response["flash"]["error"]).to eq flash_message
         end
       end
@@ -193,7 +194,8 @@ describe Spree::CreditCardsController, type: :controller do
             expect{ spree_delete :destroy, params }.to change(Spree::CreditCard, :count).by(-1)
             expect(flash[:success]).to eq I18n.t(
 :card_has_been_removed,
-                                                 number: "x-#{card.last_digits}")
+                                                 number: "x-#{card.last_digits}"
+)
             expect(response).to redirect_to spree.account_path(anchor: 'cards')
           end
 

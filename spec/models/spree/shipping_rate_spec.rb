@@ -9,7 +9,8 @@ describe Spree::ShippingRate do
     Spree::ShippingRate.new(
 shipment: shipment,
 shipping_method: shipping_method,
-cost: 10.55)
+cost: 10.55
+)
   }
 
   context "#display_price" do

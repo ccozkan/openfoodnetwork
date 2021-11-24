@@ -74,7 +74,9 @@ describe Spree::Gateway::StripeConnect, type: :model do
 subject.send(
 :tokenize_instance_customer_card, 
 customer_id,
-                          card_id)).to eq token_mock[:id]
+                          card_id
+)
+).to eq token_mock[:id]
     end
   end
 
@@ -95,7 +97,8 @@ customer_id,
       expect(provider).to have_received(:refund).with(
 money, 
 response_code,
-                                                      hash_including(stripe_account: stripe_account_id))
+                                                      hash_including(stripe_account: stripe_account_id)
+)
     end
   end
 

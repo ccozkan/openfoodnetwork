@@ -72,7 +72,8 @@ originator_type: [
 "EnterpriseFee", 
 "Spree::PaymentMethod",
                                     "Spree::ShippingMethod"
-])
+]
+)
           end
         end
 

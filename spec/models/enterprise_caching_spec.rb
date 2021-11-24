@@ -55,7 +55,8 @@ describe Enterprise do
           create(
 :simple_order_cycle, 
 distributors: [enterprise],
-                     variants: [product.variants.first])
+                     variants: [product.variants.first]
+)
         }
         let(:supplier) { product.supplier }
         let!(:classification) { create(:classification, taxon: taxon, product: product) }

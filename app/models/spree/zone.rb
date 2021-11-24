@@ -137,7 +137,8 @@ allow_destroy: true,
 
       zone_members.where(
 'zoneable_id IS NULL OR zoneable_type != ?',
-                         "Spree::#{kind.capitalize}").destroy_all
+                         "Spree::#{kind.capitalize}"
+).destroy_all
     end
 
     def remove_previous_default

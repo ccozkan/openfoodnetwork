@@ -131,7 +131,8 @@ module VariantUnits
 :product, 
 variant_unit: 'items', 
 variant_unit_scale: nil,
-          variant_unit_name: unit)
+          variant_unit_name: unit
+)
           allow(v).to receive(:product) { p }
           allow(v).to receive(:unit_value) { 100 }
           expect(subject.send(:option_value_value_unit)).to eq [100, unit.pluralize]
@@ -143,7 +144,8 @@ variant_unit_scale: nil,
 :product, 
 variant_unit: 'items', 
 variant_unit_scale: nil,
-          variant_unit_name: 'packet')
+          variant_unit_name: 'packet'
+)
         allow(v).to receive(:product) { p }
         allow(v).to receive(:unit_value) { 1 }
         expect(subject.send(:option_value_value_unit)).to eq [1, 'packet']
@@ -154,7 +156,8 @@ variant_unit_scale: nil,
 :product, 
 variant_unit: 'items', 
 variant_unit_scale: nil,
-          variant_unit_name: 'foo')
+          variant_unit_name: 'foo'
+)
         allow(v).to receive(:product) { p }
         allow(v).to receive(:unit_value) { nil }
         expect(subject.send(:option_value_value_unit)).to eq [nil, nil]

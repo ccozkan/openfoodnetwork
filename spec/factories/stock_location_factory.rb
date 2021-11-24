@@ -18,7 +18,8 @@ FactoryBot.define do
     state do |stock_location|
       stock_location.country.states.first || stock_location.association(
 :state,
-                                                                        country: stock_location.country)
+                                                                        country: stock_location.country
+)
     end
 
     factory :stock_location_with_items do

@@ -23,7 +23,8 @@ describe Exchange do
                order_cycle: e1.order_cycle, 
 sender: e1.sender, 
 receiver: e1.receiver, 
-incoming: e1.incoming)
+incoming: e1.incoming
+)
     expect(e2).not_to be_valid
 
     e2.incoming = !e2.incoming
@@ -189,7 +190,9 @@ Exchange.from_enterprises(
 [
 supplier,
                                           coordinator
-])).to match_array [
+]
+)
+).to match_array [
 incoming_exchange,
                                                                          outgoing_exchange
 ]
@@ -202,7 +205,9 @@ Exchange.to_enterprises(
 [
 coordinator,
                                         distributor
-])).to match_array [
+]
+)
+).to match_array [
 incoming_exchange,
                                                                        outgoing_exchange
 ]

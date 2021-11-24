@@ -62,7 +62,8 @@ exchange.variants[0].product.supplier.name,
           exchange.variants.first.inventory_items = [
 create(
 :inventory_item,
-                                                            enterprise: order_cycle.coordinator)
+                                                            enterprise: order_cycle.coordinator
+)
 ]
 
           products = renderer.exchange_products(false, exchange.receiver)
@@ -90,14 +91,16 @@ create(
 :inventory_item, 
 enterprise: order_cycle.coordinator,
                  variant: exchange_with_visible_variant.variants.first, 
-visible: true)
+visible: true
+)
         }
         let!(:hidden_inventory_item) {
           create(
 :inventory_item, 
 enterprise: order_cycle.coordinator,
                  variant: exchange_with_hidden_variant.variants.first, 
-visible: false)
+visible: false
+)
         }
 
         before do

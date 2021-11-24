@@ -48,7 +48,8 @@ describe Stripe::CallbacksController, type: :controller do
           expect(flash[:notice]).to eq I18n.t('admin.controllers.enterprises.stripe_connect_cancelled')
           expect(response).to redirect_to edit_admin_enterprise_path(
 enterprise,
-                                                                     anchor: 'payment_methods')
+                                                                     anchor: 'payment_methods'
+)
         end
       end
 
@@ -61,7 +62,8 @@ enterprise,
           expect(flash[:error]).to eq I18n.t('admin.controllers.enterprises.stripe_connect_fail')
           expect(response).to redirect_to edit_admin_enterprise_path(
 enterprise,
-                                                                     anchor: 'payment_methods')
+                                                                     anchor: 'payment_methods'
+)
         end
       end
     end
@@ -75,7 +77,8 @@ enterprise,
         expect(flash[:success]).to eq I18n.t('admin.controllers.enterprises.stripe_connect_success')
         expect(response).to redirect_to edit_admin_enterprise_path(
 enterprise,
-                                                                   anchor: 'payment_methods')
+                                                                   anchor: 'payment_methods'
+)
       end
     end
   end

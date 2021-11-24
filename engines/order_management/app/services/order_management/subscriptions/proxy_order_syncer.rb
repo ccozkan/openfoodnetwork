@@ -93,7 +93,8 @@ module OrderManagement
         order_cycles.where(
 "orders_close_at >= ? AND orders_close_at <= ?",
                            begins_at,
-                           ends_at || 100.years.from_now)
+                           ends_at || 100.years.from_now
+)
       end
     end
   end

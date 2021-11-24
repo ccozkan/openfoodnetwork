@@ -9,7 +9,8 @@ t( '.footer_data_cookies_policy' ),
              '',
              'cookies-policy-modal' => true,
              'cookies-banner' => !Web::CookiesConsent.new(cookies, request.host).exists? &&
-                                   Spree::Config.cookies_consent_banner_toggle)
+                                   Spree::Config.cookies_consent_banner_toggle
+)
   end
 
   def privacy_policy_link
@@ -17,7 +18,8 @@ t( '.footer_data_cookies_policy' ),
 t( '.footer_data_privacy_policy' ),
              Spree::Config.privacy_policy_url,
              target: '_blank',
-             rel: 'noopener' )
+             rel: 'noopener' 
+)
   end
 
   def show_social_icons?

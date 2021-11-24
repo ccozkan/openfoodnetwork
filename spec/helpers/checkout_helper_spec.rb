@@ -28,7 +28,9 @@ describe CheckoutHelper, type: :helper do
       expect(helper.display_checkout_tax_total(order)).to eq(
 Spree::Money.new(
 123.45,
-                                                                              currency: 'AUD'))
+                                                                              currency: 'AUD'
+)
+)
     end
   end
 
@@ -50,7 +52,8 @@ Spree::Money.new(
 :adjustment, 
 originator: enterprise_fee, 
 adjustable: order,
-             order: order)
+             order: order
+)
     }
 
     before do
@@ -78,21 +81,24 @@ adjustable: order,
 :adjustment, 
 originator: enterprise_fee, 
 adjustable: order.line_items.first,
-             order: order)
+             order: order
+)
       }
       let!(:order_tax_adjustment) {
         create(
 :adjustment,
                originator: tax_rate,
                adjustable: fee_adjustment,
-               order: order)
+               order: order
+)
       }
       let!(:line_item_fee_adjustment_tax_adjustment) {
         create(
 :adjustment,
                originator: tax_rate,
                adjustable: line_item_fee_adjustment,
-               order: order)
+               order: order
+)
       }
 
       it "removes tax rate adjustments" do
@@ -110,7 +116,8 @@ adjustable: order.line_items.first,
 :adjustment, 
 originator_type: 'Spree::ReturnAuthorization', 
 adjustable: order,
-             order: order)
+             order: order
+)
       }
 
       it "includes return adjustments" do

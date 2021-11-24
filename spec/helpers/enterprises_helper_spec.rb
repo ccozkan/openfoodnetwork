@@ -40,7 +40,8 @@ describe EnterprisesHelper, type: :helper do
 :shipping_method, 
 require_ship_address: false,
                   distributors: [distributor], 
-display_on: 'back_end')
+display_on: 'back_end'
+)
 
         expect(helper.available_shipping_methods).to_not include backoffice_only_shipping_method
         expect(helper.available_shipping_methods).to_not include other_distributor_shipping_method
@@ -55,14 +56,16 @@ display_on: 'back_end')
 :filter_shipping_methods_tag_rule,
                enterprise: distributor,
                preferred_customer_tags: "local",
-               preferred_shipping_method_tags: "local-delivery")
+               preferred_shipping_method_tags: "local-delivery"
+)
       }
       let!(:default_tag_rule) {
         create(
 :filter_shipping_methods_tag_rule,
                enterprise: distributor,
                is_default: true,
-               preferred_shipping_method_tags: "local-delivery")
+               preferred_shipping_method_tags: "local-delivery"
+)
       }
       let!(:tagged_sm) { distributor_shipping_method }
       let!(:untagged_sm) { other_distributor_shipping_method }
@@ -80,7 +83,8 @@ display_on: 'back_end')
         before {
           default_tag_rule.update_attribute(
 :preferred_matched_shipping_methods_visibility,
-                                            'hidden')
+                                            'hidden'
+)
         }
 
         context "when the customer is nil" do
@@ -118,7 +122,8 @@ display_on: 'back_end')
         before {
           default_tag_rule.update_attribute(
 :preferred_matched_shipping_methods_visibility,
-                                            'visible')
+                                            'visible'
+)
         }
 
         context "when the customer is nil" do
@@ -180,14 +185,16 @@ display_on: 'back_end')
 :filter_payment_methods_tag_rule,
                enterprise: distributor,
                preferred_customer_tags: "trusted",
-               preferred_payment_method_tags: "trusted")
+               preferred_payment_method_tags: "trusted"
+)
       }
       let!(:default_tag_rule) {
         create(
 :filter_payment_methods_tag_rule,
                enterprise: distributor,
                is_default: true,
-               preferred_payment_method_tags: "trusted")
+               preferred_payment_method_tags: "trusted"
+)
       }
       let(:tagged_pm) { pm1 }
       let(:untagged_pm) { pm2 }
@@ -241,7 +248,8 @@ display_on: 'back_end')
         before {
           default_tag_rule.update_attribute(
 :preferred_matched_payment_methods_visibility,
-                                            'visible')
+                                            'visible'
+)
         }
 
         context "when the customer is nil" do
@@ -277,13 +285,15 @@ display_on: 'back_end')
         create(
 :stripe_connect_payment_method, 
 distributors: [distributor],
-                                preferred_enterprise_id: distributor.id)
+                                preferred_enterprise_id: distributor.id
+)
       }
       let!(:pm4) {
         create(
 :stripe_connect_payment_method, 
 distributors: [distributor],
-                                preferred_enterprise_id: some_other_distributor.id)
+                                preferred_enterprise_id: some_other_distributor.id
+)
       }
       let(:available_payment_methods) { helper.available_payment_methods }
 

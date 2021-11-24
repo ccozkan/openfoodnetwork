@@ -156,7 +156,8 @@ module Spree
 
         flash[:error] = I18n.t(
 "spree.orders.line_item.insufficient_stock",
-                               on_hand: "0 #{out_of_stock_item_names}")
+                               on_hand: "0 #{out_of_stock_item_names}"
+)
         redirect_to spree.edit_admin_order_url(@order)
       end
 

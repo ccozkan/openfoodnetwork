@@ -6,7 +6,8 @@ module TermsAndConditionsHelper
 t("terms_of_service"), 
 TermsOfServiceFile.current_url, 
 target: "_blank",
-                                                       rel: "noopener")
+                                                       rel: "noopener"
+)
   end
 
   def render_terms_and_conditions

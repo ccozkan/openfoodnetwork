@@ -233,7 +233,8 @@ order_cycle: order_cycle,
 sender: producer, 
 receiver: coordinator,
            incoming: true, 
-variants: [v])
+variants: [v]
+)
       }
       let!(:outgoing_exchange) {
         create(
@@ -242,7 +243,8 @@ order_cycle: order_cycle,
 sender: coordinator, 
 receiver: hub, 
 incoming: false,
-           variants: [v])
+           variants: [v]
+)
       }
 
       let(:allowed) { { incoming_exchanges: [], outgoing_exchanges: [] } }

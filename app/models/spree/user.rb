@@ -186,7 +186,9 @@ inverse_of: :owner
 I18n.t(
 :spree_user_enterprise_limit_error,
                                             email: email,
-                                            enterprise_limit: enterprise_limit))
+                                            enterprise_limit: enterprise_limit
+)
+)
     end
 
     def remove_payments_in_checkout(enterprises)

@@ -277,7 +277,8 @@ if: lambda { |shipment|
 adjustment_label,
                                           self,
                                           true,
-                                          "open")
+                                          "open"
+)
         reload # ensure adjustment is present on later saves
       end
 

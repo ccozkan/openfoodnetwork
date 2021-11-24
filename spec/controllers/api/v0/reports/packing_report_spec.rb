@@ -38,7 +38,8 @@ describe Api::V0::ReportsController, type: :controller do
 :enterprise_relationship, 
 parent: supplier, 
 child: order.distributor,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
       }
 
       it "renders results" do

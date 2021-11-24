@@ -27,7 +27,8 @@ module Spree
         mail(
 to: user.email, 
 from: from_address,
-subject: t(:welcome_to) + ' ' + Spree::Config[:site_name])
+subject: t(:welcome_to) + ' ' + Spree::Config[:site_name]
+)
       end
     end
 
@@ -43,7 +44,8 @@ subject: t(:welcome_to) + ' ' + Spree::Config[:site_name])
         mail(
 to: confirmation_email_address,
 from: from_address,
-subject: subject)
+subject: subject
+)
       end
     end
 

@@ -194,7 +194,8 @@ describe SubscriptionMailer, type: :mailer do
       expect(body).to include I18n.t("email_so_failed_payment_intro_html")
       explainer = I18n.t(
 "email_so_failed_payment_explainer_html",
-                         distributor: subscription.shop.name)
+                         distributor: subscription.shop.name
+)
       expect(body).to include strip_tags(explainer)
       details = I18n.t("email_so_failed_payment_details_html", distributor: subscription.shop.name)
       expect(body).to include strip_tags(details)
@@ -386,7 +387,8 @@ describe SubscriptionMailer, type: :mailer do
           SubscriptionMailer.confirmation_summary_email(summary).deliver_now
           expect(body).to include I18n.t(
 "#{scope}.confirmation_summary_email.intro",
-                                         shop: shop.name)
+                                         shop: shop.name
+)
           expect(body).to include I18n.t("#{scope}.summary_overview.total", count: 37)
           expect(body).to include I18n.t("#{scope}.summary_overview.success_some", count: 35)
           expect(body).to include I18n.t("#{scope}.summary_overview.issues")

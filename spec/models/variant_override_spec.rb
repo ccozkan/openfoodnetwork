@@ -78,7 +78,8 @@ describe VariantOverride do
             expect(variant_override).not_to be_valid
             error_message = I18n.t(
 "using_producer_stock_settings_but_count_on_hand_set",
-                                   scope: [i18n_scope_for_error, "count_on_hand"])
+                                   scope: [i18n_scope_for_error, "count_on_hand"]
+)
             expect(variant_override.errors[:count_on_hand]).to eq([error_message])
           end
         end
@@ -102,7 +103,8 @@ describe VariantOverride do
             expect(variant_override).not_to be_valid
             error_message = I18n.t(
 "on_demand_but_count_on_hand_set",
-                                   scope: [i18n_scope_for_error, "count_on_hand"])
+                                   scope: [i18n_scope_for_error, "count_on_hand"]
+)
             expect(variant_override.errors[:count_on_hand]).to eq([error_message])
           end
         end
@@ -118,7 +120,8 @@ describe VariantOverride do
             expect(variant_override).not_to be_valid
             error_message = I18n.t(
 "limited_stock_but_no_count_on_hand",
-                                   scope: [i18n_scope_for_error, "count_on_hand"])
+                                   scope: [i18n_scope_for_error, "count_on_hand"]
+)
             expect(variant_override.errors[:count_on_hand]).to eq([error_message])
           end
         end
@@ -274,7 +277,8 @@ variant: variant,
 hub: hub, 
 count_on_hand: 12,
                    default_stock: 20, 
-resettable: true)
+resettable: true
+)
         vo.reset_stock!
 
         vo.reload
@@ -289,7 +293,8 @@ resettable: true)
 variant: variant, 
 hub: hub, 
 default_stock: 20,
-                               resettable: true)
+                               resettable: true
+)
         vo.reset_stock!
 
         vo.reload
@@ -304,7 +309,8 @@ default_stock: 20,
 variant: variant, 
 hub: hub,
                                                  default_stock: 20, 
-resettable: true)
+resettable: true
+)
         vo.reset_stock!
 
         vo.reload
@@ -320,7 +326,8 @@ variant: variant,
 hub: hub, 
 count_on_hand: 12,
                    default_stock: nil, 
-resettable: true)
+resettable: true
+)
       expect(Bugsnag).to receive(:notify)
       vo.reset_stock!
       expect(vo.reload.count_on_hand).to eq(12)
@@ -333,7 +340,8 @@ variant: variant,
 hub: hub, 
 count_on_hand: 12,
                    default_stock: 10, 
-resettable: false)
+resettable: false
+)
       vo.reset_stock!
       expect(vo.reload.count_on_hand).to eq(12)
     end

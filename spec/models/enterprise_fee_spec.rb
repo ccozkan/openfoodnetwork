@@ -122,7 +122,8 @@ describe EnterpriseFee do
       enterprise_fee_aplicator = OpenFoodNetwork::EnterpriseFeeApplicator.new(
 enterprise_fee, 
 nil,
-                                                                              'coordinator')
+                                                                              'coordinator'
+)
       enterprise_fee_aplicator.create_order_adjustment(order)
 
       expect do
@@ -139,7 +140,8 @@ amount: 12.34,
 originator: tax_rate,
 state: 'closed',
 label: 'hello' 
-})
+}
+)
 
       expect do
         EnterpriseFee.clear_all_adjustments order

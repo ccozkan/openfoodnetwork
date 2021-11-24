@@ -18,7 +18,8 @@ js: false do
 :simple_order_cycle, 
 name: 'One', 
 distributors: [distributor],
-                     variants: [product.variants.first])
+                     variants: [product.variants.first]
+)
   end
 
   let(:order) do
@@ -28,7 +29,8 @@ user: user,
 distributor: distributor,
                                      order_cycle: order_cycle, 
 state: 'complete',
-                                     payment_state: 'balance_due')
+                                     payment_state: 'balance_due'
+)
   end
 
   describe "that contains right Payment Description at Checkout information" do
@@ -71,13 +73,15 @@ state: 'complete',
 order: order, 
 state: 'completed',
           payment_method: payment_method1, 
-created_at: 1.day.ago)
+created_at: 1.day.ago
+)
         order.payments << create(
 :payment, 
 order: order, 
 state: 'failed',
           payment_method: payment_method2, 
-created_at: 2.days.ago)
+created_at: 2.days.ago
+)
         order.save!
       end
 
@@ -97,13 +101,15 @@ created_at: 2.days.ago)
 order: order, 
 state: 'completed',
           payment_method: payment_method1, 
-created_at: 2.days.ago)
+created_at: 2.days.ago
+)
         order.payments << create(
 :payment, 
 order: order, 
 state: 'completed',
           payment_method: payment_method2, 
-created_at: 1.day.ago)
+created_at: 1.day.ago
+)
         order.save!
       end
 

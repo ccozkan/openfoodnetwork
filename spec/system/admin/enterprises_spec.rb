@@ -305,7 +305,8 @@ describe '
 :enterprise_relationship, 
 parent: distributor3, 
 child: distributor1,
-                          permissions_list: [:edit_profile])
+                          permissions_list: [:edit_profile]
+)
     }
 
     before(:each) do
@@ -332,7 +333,8 @@ child: distributor1,
 
         expect(page).to have_content I18n.t(
 'js.admin.enterprise_limit_reached',
-                                            contact_email: ContentConfig.footer_email)
+                                            contact_email: ContentConfig.footer_email
+)
       end
     end
 

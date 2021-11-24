@@ -15,7 +15,8 @@ describe ProducerMailer, type: :mailer do
 included_in_price: true, 
 calculator: Calculator::DefaultTax.new, 
 zone: zone,
-           amount: 0.1)
+           amount: 0.1
+)
   }
   let!(:tax_category) { create(:tax_category, tax_rates: [tax_rate]) }
   let(:s1) { create(:supplier_enterprise) }
@@ -168,7 +169,9 @@ incoming: false,
       expect(
 body_as_html(mail).find(
 "table.order-summary.customer-order tr",
-                                     text: product_name)).to have_selector("td", text: last_name)
+                                     text: product_name
+)
+).to have_selector("td", text: last_name)
     end
 
     it "displays first name for each order" do
@@ -177,7 +180,9 @@ body_as_html(mail).find(
       expect(
 body_as_html(mail).find(
 "table.order-summary.customer-order tr",
-                                     text: product_name)).to have_selector("td", text: first_name)
+                                     text: product_name
+)
+).to have_selector("td", text: first_name)
     end
 
     it "it orders list via last name" do
@@ -187,14 +192,16 @@ body_as_html(mail).find(
 distributor: d1, 
 order_cycle: order_cycle, 
 state: 'complete',
-                         bill_address: FactoryBot.create(:address, last_name: "Abby"))
+                         bill_address: FactoryBot.create(:address, last_name: "Abby")
+)
       create(
 :order, 
 :with_line_item, 
 distributor: d1, 
 order_cycle: order_cycle, 
 state: 'complete',
-                         bill_address: FactoryBot.create(:address, last_name: "maggie"))
+                         bill_address: FactoryBot.create(:address, last_name: "maggie")
+)
       expect(mail.body.encoded).to match(/.*Abby.*Doe.*maggie/m)
     end
   end

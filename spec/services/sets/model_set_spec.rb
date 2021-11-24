@@ -15,7 +15,8 @@ collection_attributes: {
       ms = Sets::ModelSet.new(
 EnterpriseRelationshipPermission,
                               EnterpriseRelationshipPermission.all,
-                              attrs)
+                              attrs
+)
 
       expect { ms.save }.to change(EnterpriseRelationshipPermission, :count).by(2)
 
@@ -56,7 +57,8 @@ Enterprise,
 Enterprise.all, 
 attributes, 
 nil,
-                              proc { |attrs| attrs['name'] == 'deleteme' })
+                              proc { |attrs| attrs['name'] == 'deleteme' }
+)
 
       expect { ms.save }.to change(Enterprise, :count).by(-1)
 
@@ -72,7 +74,8 @@ Enterprise,
 Enterprise.all, 
 attributes, 
 nil,
-                              proc { |attrs| attrs[:name] == 'deleteme' })
+                              proc { |attrs| attrs[:name] == 'deleteme' }
+)
 
       expect { ms.save }.to change(Enterprise, :count).by(0)
     end

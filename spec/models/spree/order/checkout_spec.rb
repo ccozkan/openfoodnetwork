@@ -19,7 +19,8 @@ describe Spree::Order::Checkout do
       transitions.each do |transition|
         transition = Spree::Order.find_transition(
 from: transition.keys.first,
-to: transition.values.first)
+to: transition.values.first
+)
         expect(transition).to_not be_nil
       end
     end
@@ -64,7 +65,8 @@ to: transition.values.first)
       expect(order.line_items).to be_blank
       expect(lambda { order.next! }).to raise_error(
 StateMachines::InvalidTransition,
-                                                    /#{Spree.t(:there_are_no_items_for_this_order)}/)
+                                                    /#{Spree.t(:there_are_no_items_for_this_order)}/
+)
     end
 
     context "from address" do
@@ -88,7 +90,8 @@ StateMachines::InvalidTransition,
             transition = lambda { order.next! }
             expect(transition).to raise_error(
 StateMachines::InvalidTransition,
-                                              /#{Spree.t(:items_cannot_be_shipped)}/)
+                                              /#{Spree.t(:items_cannot_be_shipped)}/
+)
           end
         end
       end
@@ -158,7 +161,8 @@ StateMachines::InvalidTransition,
       order.order_cycle = create(
 :simple_order_cycle,
                                  distributors: [order.distributor],
-                                 variants: [order.line_items.first.variant, other_variant])
+                                 variants: [order.line_items.first.variant, other_variant]
+)
       order.line_items << create(:line_item, order: order, variant: other_variant)
     end
 

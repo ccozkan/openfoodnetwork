@@ -18,7 +18,9 @@ describe OrderCycleDistributedProducts do
 described_class.new(
 distributor, 
 order_cycle,
-                                   customer).products_relation).to eq([product])
+                                   customer
+).products_relation
+).to eq([product])
       end
     end
 
@@ -36,7 +38,9 @@ order_cycle,
 described_class.new(
 distributor, 
 order_cycle,
-                                   customer).products_relation).to_not include product
+                                   customer
+).products_relation
+).to_not include product
       end
     end
 
@@ -51,7 +55,9 @@ order_cycle,
 described_class.new(
 distributor, 
 order_cycle,
-                                   customer).products_relation).to_not include product
+                                   customer
+).products_relation
+).to_not include product
       end
     end
 
@@ -62,7 +68,9 @@ order_cycle,
 described_class.new(
 distributor, 
 order_cycle,
-                                     customer).products_relation).to include product
+                                     customer
+).products_relation
+).to include product
         end
 
         it "does not return product when variant is out of stock" do
@@ -71,7 +79,9 @@ order_cycle,
 described_class.new(
 distributor, 
 order_cycle,
-                                     customer).products_relation).to_not include product
+                                     customer
+).products_relation
+).to_not include product
         end
       end
 
@@ -85,7 +95,9 @@ order_cycle,
 described_class.new(
 distributor, 
 order_cycle,
-                                     customer).products_relation).to_not include product
+                                     customer
+).products_relation
+).to_not include product
         end
 
         it "returns product when an override is in stock" do
@@ -95,7 +107,9 @@ order_cycle,
 described_class.new(
 distributor, 
 order_cycle,
-                                     customer).products_relation).to include product
+                                     customer
+).products_relation
+).to include product
         end
       end
     end

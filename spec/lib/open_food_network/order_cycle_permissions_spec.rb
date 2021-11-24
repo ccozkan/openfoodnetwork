@@ -44,7 +44,8 @@ module OpenFoodNetwork
 :enterprise_relationship, 
 parent: hub, 
 child: coordinator,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           context "where the coordinator sells any" do
@@ -72,7 +73,8 @@ child: coordinator,
 order_cycle: oc, 
 sender: producer, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
             }
             let!(:ex_outgoing) {
               create(
@@ -80,7 +82,8 @@ receiver: coordinator,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
             }
 
             context "where the coordinator sells any" do
@@ -119,7 +122,8 @@ receiver: hub,
 :enterprise_relationship, 
 parent: hub, 
 child: coordinator,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           context "where my hub is in the order cycle" do
@@ -129,7 +133,8 @@ child: coordinator,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
             }
 
             it "returns my hub" do
@@ -144,7 +149,8 @@ receiver: hub,
 :enterprise_relationship, 
 parent: producer, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
               end
 
               context "where the producer is in the order cycle" do
@@ -154,7 +160,8 @@ child: hub,
 order_cycle: oc, 
 sender: producer, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
                 }
 
                 it "returns the producer" do
@@ -179,7 +186,8 @@ receiver: coordinator,
 :enterprise_relationship, 
 parent: hub, 
 child: producer,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
               end
 
               context "where the producer is in the order cycle" do
@@ -189,7 +197,8 @@ child: producer,
 order_cycle: oc, 
 sender: producer, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
                 }
 
                 it "returns the producer" do
@@ -232,7 +241,8 @@ receiver: coordinator,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
             }
 
             it "returns my hub" do
@@ -268,7 +278,8 @@ receiver: hub,
 :enterprise_relationship, 
 parent: producer, 
 child: coordinator,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           context "where my producer is in the order cycle" do
@@ -278,7 +289,8 @@ child: coordinator,
 order_cycle: oc, 
 sender: producer, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
             }
 
             it "returns my producer" do
@@ -293,7 +305,8 @@ receiver: coordinator,
 :enterprise_relationship, 
 parent: hub, 
 child: producer,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
               end
 
               context "where the hub is also in the order cycle" do
@@ -303,7 +316,8 @@ child: producer,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
                 }
 
                 it "returns the hub as well" do
@@ -329,7 +343,8 @@ receiver: hub,
 :enterprise_relationship, 
 parent: producer, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
               end
 
               context "where the hub is also in the order cycle" do
@@ -339,7 +354,8 @@ child: hub,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
                 }
 
                 it "returns the hub as well" do
@@ -383,7 +399,8 @@ receiver: hub,
 order_cycle: oc, 
 sender: producer, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
             }
 
             # TODO: update this when we are confident about P-OCs
@@ -400,12 +417,14 @@ receiver: coordinator,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
               }
               before {
                 ex_outgoing.variants << create(
 :variant,
-                                               product: create(:product, supplier: producer))
+                                               product: create(:product, supplier: producer)
+)
               }
 
               # TODO: update this when we are confident about P-OCs
@@ -428,7 +447,8 @@ receiver: hub,
 order_cycle: oc, 
 sender: producer, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
         }
         let!(:ex_out) {
           create(:exchange, order_cycle: oc, sender: coordinator, receiver: hub, incoming: false)
@@ -452,7 +472,8 @@ receiver: coordinator,
 order_cycle: oc, 
 sender: producer, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
         }
 
         before do
@@ -474,7 +495,8 @@ receiver: coordinator,
 :enterprise_relationship, 
 parent: producer, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
             end
 
             it "returns the producer's incoming exchange" do
@@ -528,7 +550,8 @@ child: hub,
 order_cycle: oc, 
 sender: producer, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
           }
 
           it "returns my producer's incoming exchange" do
@@ -541,7 +564,8 @@ receiver: coordinator,
 :enterprise_relationship, 
 parent: producer, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
             end
 
             it "returns the hub's outgoing exchange" do
@@ -576,7 +600,8 @@ child: hub,
 order_cycle: oc, 
 sender: producer, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
               }
 
               it "returns the outgoing exchange" do
@@ -636,7 +661,8 @@ receiver: coordinator,
 :enterprise_relationship, 
 parent: producer1, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           context "where the hub is in the order cycle" do
@@ -646,7 +672,8 @@ child: hub,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
             }
 
             it "returns variants produced by that producer only" do
@@ -677,7 +704,8 @@ receiver: hub,
 :enterprise_relationship, 
 parent: producer1, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           it "returns all variants of any producer which has granted the outgoing hub P-OC" do
@@ -710,7 +738,8 @@ child: hub,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
             }
 
             # producer2 produces v2 and has not granted P-OC to hub (or coordinator for that matter)
@@ -730,7 +759,8 @@ receiver: hub,
 :enterprise_relationship, 
 parent: producer1, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           it "returns all variants of any producer which has granted the outgoing hub P-OC" do
@@ -757,7 +787,8 @@ child: hub,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
             }
 
             # producer2 produces v2 and has not granted P-OC to hub
@@ -779,7 +810,8 @@ receiver: hub,
 :enterprise_relationship, 
 parent: producer1, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           context "where my producer is in the order cycle" do
@@ -789,7 +821,8 @@ child: hub,
 order_cycle: oc, 
 sender: producer1, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
             }
 
             it "returns all of my produced variants" do
@@ -818,7 +851,8 @@ receiver: coordinator,
 :enterprise_relationship, 
 parent: producer1, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           it "returns an empty array" do
@@ -833,7 +867,8 @@ child: hub,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
             }
             # This one won't be in the exchange, and so shouldn't be visible
             let!(:v3) { create(:variant, product: create(:simple_product, supplier: producer2)) }
@@ -892,7 +927,8 @@ receiver: hub,
 :enterprise_relationship, 
 parent: producer1, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           it "does not return variants produced by that producer" do
@@ -912,7 +948,8 @@ child: hub,
 :enterprise_relationship, 
 parent: producer1, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           it "returns all variants of any producer which has granted the outgoing hub P-OC" do
@@ -945,7 +982,8 @@ child: hub,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
             }
 
             # producer2 produces v2 and has not granted P-OC to hub (or coordinator for that matter)
@@ -965,7 +1003,8 @@ receiver: hub,
 :enterprise_relationship, 
 parent: producer1, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           it "returns all variants of any producer which has granted the outgoing hub P-OC" do
@@ -992,7 +1031,8 @@ child: hub,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
             }
 
             # producer2 produces v2 and has not granted P-OC to hub
@@ -1014,7 +1054,8 @@ receiver: hub,
 :enterprise_relationship, 
 parent: producer1, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           context "where my producer is in the order cycle" do
@@ -1024,7 +1065,8 @@ child: hub,
 order_cycle: oc, 
 sender: producer1, 
 receiver: coordinator,
-           incoming: true)
+           incoming: true
+)
             }
 
             context "where the outgoing hub has granted P-OC to my producer" do
@@ -1033,7 +1075,8 @@ receiver: coordinator,
 :enterprise_relationship, 
 parent: hub, 
 child: producer1,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
               end
 
               it "returns all of my produced variants" do
@@ -1072,7 +1115,8 @@ child: producer1,
 :enterprise_relationship, 
 parent: producer1, 
 child: hub,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           end
 
           it "returns an empty array" do
@@ -1087,7 +1131,8 @@ child: hub,
 order_cycle: oc, 
 sender: coordinator, 
 receiver: hub,
-           incoming: false)
+           incoming: false
+)
             }
             # This one won't be in the exchange, and so shouldn't be visible
             let!(:v3) { create(:variant, product: create(:simple_product, supplier: producer2)) }

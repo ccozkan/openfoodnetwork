@@ -74,10 +74,12 @@ Package::ContentItem.new(variant, 1, :on_hand),
           shipping_method2 = create(:shipping_method, distributors: [distributor])
           variant1 = create(
 :variant,
-                            shipping_category: shipping_method1.shipping_categories.first)
+                            shipping_category: shipping_method1.shipping_categories.first
+)
           variant2 = create(
 :variant,
-                            shipping_category: shipping_method2.shipping_categories.first)
+                            shipping_category: shipping_method2.shipping_categories.first
+)
           variant3 = create(:variant, shipping_category: nil)
           contents = [
 Package::ContentItem.new(variant1, 1),

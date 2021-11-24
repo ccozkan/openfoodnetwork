@@ -90,7 +90,8 @@ describe Spree::OrdersController, type: :controller do
 :order_with_totals, 
 customer: customer, 
 distributor: customer.enterprise,
-                    state: "payment")
+                    state: "payment"
+)
     }
     let(:payment_method) { create(:stripe_sca_payment_method) }
     let!(:payment) {
@@ -252,7 +253,8 @@ distributor: customer.enterprise,
         create(
 :distributor_enterprise, 
 shipping_methods: [create(:shipping_method)],
-                         payment_methods: [create(:payment_method)])
+                         payment_methods: [create(:payment_method)]
+)
       }
       let(:variant) { create(:variant, on_demand: false, on_hand: 5) }
       let(:line_item) { order.line_items.last }
@@ -367,7 +369,8 @@ line_items_attributes: {
 distributor: distributor, 
 shipping_fee: shipping_fee,
                             payment_fee: payment_fee, 
-shipping_tax_category: shipping_tax_category)
+shipping_tax_category: shipping_tax_category
+)
       }
       let(:line_item1) { order.line_items.first }
       let(:line_item2) { order.line_items.second }
@@ -422,7 +425,8 @@ incoming: true,
 sender: variant1.product.supplier,
            receiver: order_cycle.coordinator, 
 variants: [variant1, variant2], 
-enterprise_fees: [enterprise_fee])
+enterprise_fees: [enterprise_fee]
+)
       }
       let!(:order) do
         order = create(
@@ -430,7 +434,8 @@ enterprise_fees: [enterprise_fee])
 line_items_count: 2, 
 user: user,
                               distributor: distributor, 
-order_cycle: order_cycle)
+order_cycle: order_cycle
+)
         order.reload.line_items.first.update(variant_id: variant1.id)
         order.reload.line_items.last.update(variant_id: variant2.id)
         break unless order.next! while !order.completed?
@@ -626,7 +631,8 @@ line_items_attributes: {
           create(
 :completed_order_with_totals, 
 user: user,
-                              distributor: create(:distributor_enterprise))
+                              distributor: create(:distributor_enterprise)
+)
         }
 
         before do

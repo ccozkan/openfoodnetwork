@@ -303,7 +303,8 @@ ams_prefix: params[:ams_prefix] || 'basic',
     def strip_new_properties
       unless spree_current_user.admin? || params.dig(
 :enterprise,
-                                                     :producer_properties_attributes).nil?
+                                                     :producer_properties_attributes
+).nil?
 
         names = Spree::Property.pluck(:name)
         enterprise_params[:producer_properties_attributes].each do |key, property|

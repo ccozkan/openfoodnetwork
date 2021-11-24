@@ -151,7 +151,8 @@ presence: true,
       joins(
 "
         LEFT OUTER JOIN spree_variants AS o_spree_variants
-          ON (o_spree_variants.product_id = spree_products.id)")
+          ON (o_spree_variants.product_id = spree_products.id)"
+)
         .joins("
           LEFT OUTER JOIN exchange_variants AS o_exchange_variants
             ON (o_exchange_variants.variant_id = o_spree_variants.id)")
@@ -169,7 +170,8 @@ lambda { |import_date|
       import_date = import_date.to_date
       joins(:variants).merge(
 Spree::Variant
-        .where(import_date: import_date.beginning_of_day..import_date.end_of_day))
+        .where(import_date: import_date.beginning_of_day..import_date.end_of_day)
+)
     }
 
     scope :with_order_cycles_inner, 
@@ -182,7 +184,8 @@ lambda { |enterprise|
       joins(
 '
         LEFT OUTER JOIN spree_variants AS o_spree_variants
-          ON (o_spree_variants.product_id = spree_products.id)')
+          ON (o_spree_variants.product_id = spree_products.id)'
+)
         .joins('
           LEFT OUTER JOIN inventory_items AS o_inventory_items
             ON (o_spree_variants.id = o_inventory_items.variant_id)')
@@ -336,7 +339,8 @@ lambda {
         property = Property.where(name: property_name).first_or_create!(presentation: property_name)
         product_property = ProductProperty.where(
 product: self,
-property: property).first_or_initialize
+property: property
+).first_or_initialize
         product_property.value = property_value
         product_property.save!
       end
@@ -392,7 +396,8 @@ property: property).first_or_initialize
       Spree::OptionType.find_by(name: option_type_name) ||
         Spree::OptionType.create!(
 name: option_type_name,
-presentation: option_type_presentation)
+presentation: option_type_presentation
+)
     end
 
     def self.all_variant_unit_option_types

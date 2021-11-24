@@ -20,7 +20,8 @@ namespace :ofn do
         product = Spree::Product.where(
 supplier: enterprise,
 name: entry[:name],
-deleted_at: nil).first
+deleted_at: nil
+).first
         if product.nil?
           puts " product not found."
           next

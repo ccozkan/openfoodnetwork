@@ -68,14 +68,16 @@ required: false,
 distributor: order_dist_1.distributor, 
 state: 'complete',
                                completed_at: Time.zone.today - 7.days, 
-line_items_count: 1)
+line_items_count: 1
+)
           }
           let!(:order_dist_1_credit_owed) {
             create(
 :order, 
 distributor: order_dist_1.distributor, 
 payment_state: 'credit_owed',
-        completed_at: Time.zone.today)
+        completed_at: Time.zone.today
+)
           }
           let!(:li4) { create(:line_item_with_shipment, order: order_dist_1_credit_owed) }
 

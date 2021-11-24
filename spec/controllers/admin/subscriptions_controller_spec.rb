@@ -151,7 +151,8 @@ describe Admin::SubscriptionsController, type: :controller do
         let(:unmanaged_schedule) {
           create(
 :schedule,
-                 order_cycles: [create(:simple_order_cycle, coordinator: unmanaged_enterprise)])
+                 order_cycles: [create(:simple_order_cycle, coordinator: unmanaged_enterprise)]
+)
         }
         let(:unmanaged_customer) { create(:customer, enterprise: unmanaged_enterprise) }
         let(:unmanaged_payment_method) {
@@ -218,7 +219,8 @@ describe Admin::SubscriptionsController, type: :controller do
 order_cycle: order_cycle, 
 incoming: false, 
 receiver: shop,
-           variants: [variant])
+           variants: [variant]
+)
           }
 
           it 'creates subscription line items for the subscription' do
@@ -255,7 +257,8 @@ receiver: shop,
              customer: customer1,
              schedule: schedule,
              payment_method: payment_method,
-             shipping_method: shipping_method)
+             shipping_method: shipping_method
+)
     }
 
     before do
@@ -283,14 +286,16 @@ receiver: shop,
 :simple_order_cycle, 
 coordinator: shop, 
 orders_open_at: 2.days.from_now,
-                     orders_close_at: 7.days.from_now)
+                     orders_close_at: 7.days.from_now
+)
     }
     let!(:outgoing_exchange) {
       order_cycle.exchanges.create(
 sender: shop, 
 receiver: shop, 
 variants: [variant1],
-enterprise_fees: [enterprise_fee])
+enterprise_fees: [enterprise_fee]
+)
     }
     let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
     let!(:payment_method) { create(:payment_method, distributors: [shop]) }
@@ -307,8 +312,10 @@ enterprise_fees: [enterprise_fee])
 create(
 :subscription_line_item, 
 variant: variant1,
-                         quantity: 2)
-])
+                         quantity: 2
+)
+]
+)
     }
     let(:subscription_line_item1) { subscription.subscription_line_items.first }
     let(:params) { { format: :json, id: subscription.id, subscription: {} } }

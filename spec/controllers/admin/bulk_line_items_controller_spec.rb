@@ -26,7 +26,8 @@ units_variant
 state: 'complete', 
 completed_at: 1.day.ago, 
 distributor: dist1,
-        billing_address: FactoryBot.create(:address) )
+        billing_address: FactoryBot.create(:address) 
+)
     }
     let!(:order2) {
       FactoryBot.create(
@@ -34,7 +35,8 @@ distributor: dist1,
 state: 'complete', 
 completed_at: Time.zone.now, 
 distributor: dist1,
-        billing_address: FactoryBot.create(:address) )
+        billing_address: FactoryBot.create(:address) 
+)
     }
     let!(:order3) {
       FactoryBot.create(
@@ -42,7 +44,8 @@ distributor: dist1,
 state: 'complete', 
 completed_at: Time.zone.now, 
 distributor: dist1,
-        billing_address: FactoryBot.create(:address) )
+        billing_address: FactoryBot.create(:address) 
+)
     }
     let!(:line_item1) { FactoryBot.create(:line_item_with_shipment, order: order1) }
     let!(:line_item2) { FactoryBot.create(:line_item_with_shipment, order: order2) }
@@ -82,14 +85,16 @@ distributor: dist1,
           expect(
 json_response['line_items'].map{ |line_item|
                    line_item['final_weight_volume']
-                 }.all?{ |fwv| fwv.is_a?(Float) }).to eq(true)
+                 }.all?{ |fwv| fwv.is_a?(Float) }
+).to eq(true)
         end
 
         it "returns distributor object with id key" do
           expect(
 json_response['line_items'].map{ |line_item|
                    line_item['supplier']
-                 }.all?{ |d| d.key?('id') }).to eq(true)
+                 }.all?{ |d| d.key?('id') }
+).to eq(true)
         end
       end
 
@@ -127,19 +132,22 @@ order_cycle: order_cycle,
 state: 'complete',
         completed_at: Time.zone.now, 
 distributor: distributor1, 
-billing_address: FactoryBot.create(:address) )
+billing_address: FactoryBot.create(:address) 
+)
       }
       let!(:line_item1) {
         FactoryBot.create(
 :line_item_with_shipment, 
 order: order1,
-                          product: FactoryBot.create(:product, supplier: supplier))
+                          product: FactoryBot.create(:product, supplier: supplier)
+)
       }
       let!(:line_item2) {
         FactoryBot.create(
 :line_item_with_shipment, 
 order: order1,
-                          product: FactoryBot.create(:product, supplier: supplier))
+                          product: FactoryBot.create(:product, supplier: supplier)
+)
       }
       let!(:order2) {
         FactoryBot.create(
@@ -148,13 +156,15 @@ order_cycle: order_cycle,
 state: 'complete',
         completed_at: Time.zone.now, 
 distributor: distributor2, 
-billing_address: FactoryBot.create(:address) )
+billing_address: FactoryBot.create(:address) 
+)
       }
       let!(:line_item3) {
         FactoryBot.create(
 :line_item_with_shipment, 
 order: order2,
-                          product: FactoryBot.create(:product, supplier: supplier))
+                          product: FactoryBot.create(:product, supplier: supplier)
+)
       }
 
       context "producer enterprise" do
@@ -232,13 +242,15 @@ order_cycle: order_cycle,
 state: 'complete',
         completed_at: Time.zone.now, 
 distributor: distributor1, 
-billing_address: FactoryBot.create(:address) )
+billing_address: FactoryBot.create(:address) 
+)
     }
     let!(:line_item1) {
       line_item1 = FactoryBot.create(
 :line_item_with_shipment, 
 order: order1,
-                          product: FactoryBot.create(:product, supplier: supplier))
+                          product: FactoryBot.create(:product, supplier: supplier)
+)
       # make sure shipment is available through db reloads of this line_item
       line_item1.tap(&:save!)
     }
@@ -345,13 +357,15 @@ order_cycle: order_cycle,
 state: 'complete',
         completed_at: Time.zone.now, 
 distributor: distributor1, 
-billing_address: FactoryBot.create(:address) )
+billing_address: FactoryBot.create(:address) 
+)
     }
     let!(:line_item1) {
       FactoryBot.create(
 :line_item_with_shipment, 
 order: order1,
-                          product: FactoryBot.create(:product, supplier: supplier))
+                          product: FactoryBot.create(:product, supplier: supplier)
+)
     }
     let(:params) { { id: line_item1.id, order_id: order1.number } }
 
@@ -387,7 +401,8 @@ order: order1,
       create(
 :order_cycle, 
 distributors: [distributor],
-              coordinator_fees: [line_item_fee1, line_item_fee2, order_fee])
+              coordinator_fees: [line_item_fee1, line_item_fee2, order_fee]
+)
     }
     let(:outgoing_exchange) { order_cycle.exchanges.outgoing.first }
 
@@ -396,7 +411,8 @@ distributors: [distributor],
 :order_with_line_items, 
 line_items_count: 2, 
 distributor: distributor,
-                        order_cycle: order_cycle)
+                        order_cycle: order_cycle
+)
     }
     let(:line_item1) { order.line_items.first }
     let(:line_item2) { order.line_items.last }
@@ -420,7 +436,8 @@ distributor: distributor,
 :shipping_fee, 
 tax_category: tax_cat5, 
 name: "Shiperoo",
-                                      distributors: [distributor])
+                                      distributors: [distributor]
+)
     }
     let!(:payment_method) { create(:payment_method, :per_item, distributors: [distributor]) }
 
@@ -430,7 +447,8 @@ name: "Shiperoo",
 :per_item, 
 amount: 1, 
 inherits_tax_category: false,
-                            tax_category: tax_cat15)
+                            tax_category: tax_cat15
+)
     }
     let(:line_item_fee2) {
       create(:enterprise_fee, :per_item, amount: 2, inherits_tax_category: true)
@@ -453,7 +471,8 @@ inherits_tax_category: false,
 :payment, 
 payment_method: payment_method, 
 amount: order.total,
-          state: "completed")
+          state: "completed"
+)
 
       allow(controller).to receive(:spree_current_user) { distributor.owner }
       allow(Spree::LineItem).to receive(:find) { line_item1 }

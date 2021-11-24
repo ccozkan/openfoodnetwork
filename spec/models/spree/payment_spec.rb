@@ -29,7 +29,8 @@ describe Spree::Payment do
 success?: true,
                     authorization: '123',
                     avs_result: { 'code' => 'avs-code' },
-                    cvv_result: { code: nil, message: nil })
+                    cvv_result: { code: nil, message: nil }
+)
     end
 
     let(:failed_response) { double('gateway_response', success?: false) }
@@ -207,7 +208,8 @@ success?: true,
           expect(gateway).to receive(:purchase).with(
 amount_in_cents, 
 card,
-                                                     anything).and_return(success_response)
+                                                     anything
+).and_return(success_response)
           payment.purchase!
         end
 
@@ -313,7 +315,8 @@ card,
             expect(gateway).to receive(:void).with(
 '123', 
 card,
-                                                   anything).and_return(success_response)
+                                                   anything
+).and_return(success_response)
             payment.void_transaction!
           end
         end
@@ -383,7 +386,8 @@ card,
 1000, 
 card, 
 '123',
-                                                     anything).and_return(success_response)
+                                                     anything
+).and_return(success_response)
             payment.credit!
           end
         end
@@ -903,7 +907,8 @@ source_attributes: { expiry: "1 / 12" }
 :payment, 
 order: order, 
 payment_method: payment_method,
-          amount: order.total)
+          amount: order.total
+)
             expect(payment.adjustment).to be_present
             expect(payment.adjustment.amount).not_to eq(0)
           end
@@ -927,7 +932,8 @@ payment_method: payment_method,
           create(
 :stripe_connect_payment_method, 
 distributor_ids: [create(:distributor_enterprise).id],
-                                preferred_enterprise_id: shop.id)
+                                preferred_enterprise_id: shop.id
+)
         }
         let(:payment) {
           create(:payment, order: order, payment_method: payment_method, amount: order.total)

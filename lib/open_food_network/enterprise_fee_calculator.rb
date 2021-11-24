@@ -64,7 +64,8 @@ module OpenFoodNetwork
           fees << OpenFoodNetwork::EnterpriseFeeApplicator.new(
 enterprise_fee, 
 variant,
-                                                               exchange.role)
+                                                               exchange.role
+)
         end
       end
 

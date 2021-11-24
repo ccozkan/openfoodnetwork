@@ -27,7 +27,8 @@ module Spree
         titleized_label = Spree.t(
 options[:label],
                                   default: options[:label],
-                                  scope: [:admin, :tab]).titleize
+                                  scope: [:admin, :tab]
+).titleize
 
         css_classes = []
 

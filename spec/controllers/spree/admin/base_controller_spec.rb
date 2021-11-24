@@ -50,7 +50,8 @@ describe Spree::Admin::BaseController, type: :controller do
           expect(controller).to receive(:serializer).with(prefix) { "SerializerClass" }
           expect(controller).to receive(:render).with(
 json: data,
-each_serializer: "SerializerClass")
+each_serializer: "SerializerClass"
+)
           controller.send(:render_as_json, data, ams_prefix: prefix)
         end
       end
@@ -62,7 +63,8 @@ each_serializer: "SerializerClass")
           expect(controller).to receive(:serializer).with(prefix) { "SerializerClass" }
           expect(controller).to receive(:render).with(
 json: data,
-each_serializer: "SerializerClass")
+each_serializer: "SerializerClass"
+)
           controller.send(:render_as_json, data, ams_prefix: prefix)
         end
       end
@@ -83,7 +85,9 @@ each_serializer: "SerializerClass")
           expect(
 controller.send(
 :serializer,
-                                 'allowed_prefix')).to eq Api::Admin::AllowedPrefixBaseSerializer
+                                 'allowed_prefix'
+)
+).to eq Api::Admin::AllowedPrefixBaseSerializer
         end
       end
 

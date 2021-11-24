@@ -143,7 +143,8 @@ country: { only: :name }
           collection.to_json(
 only: [:id, :email], 
 include:
-                             { bill_address: includes, ship_address: includes })
+                             { bill_address: includes, ship_address: includes }
+)
         end
       end
 

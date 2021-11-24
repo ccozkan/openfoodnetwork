@@ -35,7 +35,8 @@ class EnterprisesController < BaseController
         render(
 json: enterprises,
 each_serializer: Api::EnterpriseSerializer,
-data: OpenFoodNetwork::EnterpriseInjectionData.new)
+data: OpenFoodNetwork::EnterpriseInjectionData.new
+)
       end
     end
   end

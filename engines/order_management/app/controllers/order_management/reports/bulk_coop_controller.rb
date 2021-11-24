@@ -16,7 +16,8 @@ module OrderManagement
         @report = report_klass::ReportService.new(
 @permissions, 
 legacy_format_report_params,
-                                                  spree_current_user)
+                                                  spree_current_user
+)
         renderer.render(self)
       rescue ::Reports::Authorizer::ParameterNotAllowedError => e
         flash[:error] = e.message

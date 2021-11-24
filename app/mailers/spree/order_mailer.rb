@@ -15,7 +15,8 @@ module Spree
         mail(
 to: @order.email,
 from: from_address,
-subject: mail_subject(t('spree.order_mailer.cancel_email.subject'), resend))
+subject: mail_subject(t('spree.order_mailer.cancel_email.subject'), resend)
+)
       end
     end
 
@@ -26,7 +27,8 @@ subject: mail_subject(t('spree.order_mailer.cancel_email.subject'), resend))
         mail(
 to: @order.distributor.contact.email,
 from: from_address,
-subject: subject)
+subject: subject
+)
       end
     end
 
@@ -38,7 +40,8 @@ subject: subject)
 to: @order.email,
 from: from_address,
 subject: subject,
-reply_to: @order.distributor.contact.email)
+reply_to: @order.distributor.contact.email
+)
       end
     end
 
@@ -49,7 +52,8 @@ reply_to: @order.distributor.contact.email)
         mail(
 to: @order.distributor.contact.email,
 from: from_address,
-subject: subject)
+subject: subject
+)
       end
     end
 
@@ -63,7 +67,8 @@ subject: subject)
 to: @order.email,
 from: from_address,
 subject: mail_subject(t(:invoice), false),
-reply_to: @order.distributor.contact.email)
+reply_to: @order.distributor.contact.email
+)
       end
     end
 

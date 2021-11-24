@@ -17,7 +17,8 @@ module Spree
 I18n.t(
 :spree_classification_primary_taxon_error, 
 taxon: taxon.name,
-                                           product: product.name)
+                                           product: product.name
+)
       throw :abort
     end
   end

@@ -30,7 +30,8 @@ name: "Exchange Name",
 variants: [] 
 }
 ] 
-} )
+} 
+)
       }
 
       it "keeps permitted and removes not permitted" do
@@ -54,7 +55,8 @@ variants: {
 } 
 }
 ] 
-} )
+} 
+)
       }
 
       it "keeps all variant_ids provided" do

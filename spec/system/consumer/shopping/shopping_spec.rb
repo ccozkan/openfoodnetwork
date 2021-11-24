@@ -16,14 +16,16 @@ describe "As a consumer I want to shop with a distributor", js: true do
 :simple_order_cycle, 
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise), 
-orders_close_at: 2.days.from_now)
+orders_close_at: 2.days.from_now
+)
     }
     let(:oc2) {
       create(
 :simple_order_cycle, 
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise), 
-orders_close_at: 3.days.from_now)
+orders_close_at: 3.days.from_now
+)
     }
     let(:product) { create(:simple_product, supplier: supplier, meta_keywords: "Domestic") }
     let(:variant) { product.variants.first }
@@ -521,7 +523,8 @@ orders_close_at: 3.days.from_now)
 :simple_order_cycle, 
 distributors: [distributor], 
 orders_open_at: 17.days.ago,
-                     orders_close_at: 10.days.ago)
+                     orders_close_at: 10.days.ago
+)
         visit shop_path
         expect(page).to have_content "The last cycle closed 10 days ago"
       end
@@ -531,7 +534,8 @@ orders_open_at: 17.days.ago,
 :simple_order_cycle, 
 distributors: [distributor],
                      orders_open_at: 10.days.from_now, 
-orders_close_at: 17.days.from_now)
+orders_close_at: 17.days.from_now
+)
         visit shop_path
         expect(page).to have_content "The next cycle opens in 10 days"
       end

@@ -26,7 +26,8 @@ describe Spree::Admin::ReportsController, type: :controller do
 coordinator: coordinator1, 
 distributors: [distributor1, distributor2],
                      suppliers: [supplier1, supplier2, supplier3], 
-variants: [product1.master, product3.master])
+variants: [product1.master, product3.master]
+)
   }
   let(:ocB) {
     create(
@@ -34,7 +35,8 @@ variants: [product1.master, product3.master])
 coordinator: coordinator2, 
 distributors: [distributor1, distributor2],
                      suppliers: [supplier1, supplier2, supplier3], 
-variants: [product2.master])
+variants: [product2.master]
+)
   }
 
   # orderA1 can only be accessed by supplier1, supplier3 and distributor1
@@ -45,7 +47,8 @@ distributor: distributor1,
 bill_address: bill_address,
         ship_address: ship_address, 
 special_instructions: instructions, 
-order_cycle: ocA)
+order_cycle: ocA
+)
     order.line_items << create(:line_item, variant: product1.master)
     order.line_items << create(:line_item, variant: product3.master)
     order.finalize!
@@ -60,7 +63,8 @@ distributor: distributor2,
 bill_address: bill_address,
         ship_address: ship_address, 
 special_instructions: instructions, 
-order_cycle: ocA)
+order_cycle: ocA
+)
     order.line_items << create(:line_item, variant: product2.master)
     order.finalize!
     order.save
@@ -74,7 +78,8 @@ distributor: distributor1,
 bill_address: bill_address,
         ship_address: ship_address, 
 special_instructions: instructions, 
-order_cycle: ocB)
+order_cycle: ocB
+)
     order.line_items << create(:line_item, variant: product1.master)
     order.line_items << create(:line_item, variant: product3.master)
     order.finalize!
@@ -89,7 +94,8 @@ distributor: distributor2,
 bill_address: bill_address,
         ship_address: ship_address, 
 special_instructions: instructions, 
-order_cycle: ocB)
+order_cycle: ocB
+)
     order.line_items << create(:line_item, variant: product2.master)
     order.finalize!
     order.save
@@ -193,7 +199,8 @@ order_cycle: ocB)
 :enterprise_relationship, 
 parent: supplier1, 
 child: distributor1,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
         end
 
         it "only shows product line items that I am supplying" do
@@ -294,7 +301,8 @@ false)
 [
                                                        ["Mailing List", :mailing_list],
                                                        ["Addresses", :addresses]
-                                                     ])
+                                                     ]
+)
     end
 
     context "with distributors and suppliers" do

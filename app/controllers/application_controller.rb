@@ -58,7 +58,8 @@ class ApplicationController < ActionController::Base
       caller(1).first
     rescue StandardError
       'unknown'
-    end}")
+    end}"
+)
     super(options, response_status)
   end
 

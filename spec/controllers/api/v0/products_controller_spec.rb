@@ -58,7 +58,8 @@ describe Api::V0::ProductsController, type: :controller do
       expect(
 variants_attributes.all?{ |attr|
                json_response['variants'].first.keys.include? attr
-             } ).to eq(true)
+             } 
+).to eq(true)
     end
 
     context "finds a product by permalink first then by id" do
@@ -157,7 +158,8 @@ unit_description: "things"
 "shipping_category",
                                           "supplier", 
 "variant_unit"
-])
+]
+)
     end
 
     it "can update a product" do

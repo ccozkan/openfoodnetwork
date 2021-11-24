@@ -34,7 +34,8 @@ describe Spree::Admin::PaymentsController, type: :controller do
 :order_with_totals_and_distribution, 
 distributor: shop,
                                      state: "complete",
-                                     completed_at: Time.zone.now)
+                                     completed_at: Time.zone.now
+)
       end
 
       context "with Check payment (payment.process! does nothing)" do

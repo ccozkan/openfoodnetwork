@@ -15,7 +15,8 @@ module Spree
 :adjustment, 
 originator_type: "Spree::ShippingMethod", 
 order: order,
-             adjustable: order.shipment)
+             adjustable: order.shipment
+)
       }
       let!(:adjustment2) {
         create(:adjustment, originator_type: "Spree::PaymentMethod", eligible: true, order: order)
@@ -106,7 +107,8 @@ order: order,
 amount: 0.1, 
 zone: zone, 
 included_in_price: false,
-           tax_category: tax_category )
+           tax_category: tax_category 
+)
           }
           let!(:tax_rate2) {
             create(
@@ -114,7 +116,8 @@ included_in_price: false,
 amount: 0.2, 
 zone: zone, 
 included_in_price: false,
-           tax_category: tax_category )
+           tax_category: tax_category 
+)
           }
           let(:tax_category_param) { tax_category.id.to_s }
           let(:params) {
@@ -161,7 +164,8 @@ included_in_price: false,
 adjustable: order, 
 order: order,
              amount: 1100, 
-tax_category: old_tax_category)
+tax_category: old_tax_category
+)
         }
 
         context "when no tax category is specified" do

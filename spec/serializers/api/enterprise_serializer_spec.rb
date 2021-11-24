@@ -13,7 +13,8 @@ active_distributors: [],
 all_distributed_taxons: { enterprise.id => [123] },
 current_distributed_taxons: { enterprise.id => [123] },
 supplied_taxons: { enterprise.id => [456] },
-shipping_method_services: {})
+shipping_method_services: {}
+)
   }
 
   it "serializes an enterprise" do

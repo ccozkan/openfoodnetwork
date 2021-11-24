@@ -12,7 +12,8 @@ class DefaultStockLocation
 name: NAME, 
 country_id: country.id, 
 state_id: state.id,
-backorderable_default: false)
+backorderable_default: false
+)
   end
 
   def self.destroy_all

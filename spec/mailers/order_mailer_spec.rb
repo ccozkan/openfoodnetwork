@@ -156,7 +156,8 @@ describe Spree::OrderMailer do
 distributor: distributor, 
 bill_address: bill_address, 
 ship_address: ship_address,
-                        special_instructions: shipping_instructions)
+                        special_instructions: shipping_instructions
+)
     }
 
     after do

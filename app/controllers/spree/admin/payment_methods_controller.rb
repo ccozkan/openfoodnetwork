@@ -189,7 +189,8 @@ module Spree
           preferred_value_from_params = gateway_params.dig(:calculator_attributes, value)
           preferred_value_from_params.nil? || Float(
 preferred_value_from_params,
-                                                    exception: false)
+                                                    exception: false
+)
         end
 
         flash[:error] = I18n.t(:calculator_preferred_value_error)

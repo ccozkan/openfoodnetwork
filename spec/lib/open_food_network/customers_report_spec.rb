@@ -28,7 +28,8 @@ module OpenFoodNetwork
 :billing_address, 
 firstname: "Firsty",
                   lastname: "Lasty", 
-city: "Suburbia")
+city: "Suburbia"
+)
           allow(order).to receive(:billing_address).and_return address
           allow(subject).to receive(:orders).and_return [order]
 
@@ -37,7 +38,8 @@ city: "Suburbia")
 [
                                         "test@test.com", "Firsty", "Lasty", "Suburbia"
                                       ]
-])
+]
+)
         end
       end
 
@@ -57,7 +59,8 @@ city: "Suburbia")
 "Hub", 
 "Hub Address", 
 "Shipping Method"
-])
+]
+)
         end
 
         it "builds a table from a list of variants" do
@@ -79,7 +82,8 @@ d.name,
                                         [d.address.address1, d.address.address2, d.address.city].join(" "),
                                         o.shipping_method.name
                                       ]
-])
+]
+)
         end
       end
 

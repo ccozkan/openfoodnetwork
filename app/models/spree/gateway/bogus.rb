@@ -40,13 +40,15 @@ true,
 {},
                                                 test: true, 
 authorization: '12345',
-                                                avs_result: { code: 'A' })
+                                                avs_result: { code: 'A' }
+)
         else
           ActiveMerchant::Billing::Response.new(
 false, 
 'Bogus Gateway: Forced failure',
                                                 { message: 'Bogus Gateway: Forced failure' },
-                                                test: true)
+                                                test: true
+)
         end
       end
 
@@ -59,13 +61,15 @@ true,
 {},
                                                 test: true, 
 authorization: '12345',
-                                                avs_result: { code: 'A' })
+                                                avs_result: { code: 'A' }
+)
         else
           ActiveMerchant::Billing::Response.new(
 false, 
 'Bogus Gateway: Forced failure',
                                                 message: 'Bogus Gateway: Forced failure',
-                                                test: true)
+                                                test: true
+)
         end
       end
 
@@ -75,7 +79,8 @@ true,
 'Bogus Gateway: Forced success', 
 {},
                                               test: true, 
-authorization: '12345')
+authorization: '12345'
+)
       end
 
       def capture(authorization, _credit_card, _gateway_options)
@@ -85,13 +90,15 @@ true,
 'Bogus Gateway: Forced success', 
 {},
                                                 test: true, 
-authorization: '67890')
+authorization: '67890'
+)
         else
           ActiveMerchant::Billing::Response.new(
 false, 
 'Bogus Gateway: Forced failure',
                                                 error: 'Bogus Gateway: Forced failure', 
-test: true)
+test: true
+)
         end
       end
 
@@ -101,7 +108,8 @@ true,
 'Bogus Gateway: Forced success', 
 {},
                                               test: true, 
-authorization: '12345')
+authorization: '12345'
+)
       end
 
       def test?

@@ -29,7 +29,8 @@ exchange[:enterprise_id],
 true,
                           variant_ids: variant_ids, 
 enterprise_fee_ids: enterprise_fee_ids,
-                          receival_instructions: exchange[:receival_instructions] )
+                          receival_instructions: exchange[:receival_instructions] 
+)
         else
           add_exchange(
 exchange[:enterprise_id], 
@@ -37,7 +38,8 @@ exchange[:enterprise_id],
 true,
                        variant_ids: variant_ids, 
 enterprise_fee_ids: enterprise_fee_ids,
-                       receival_instructions: exchange[:receival_instructions], )
+                       receival_instructions: exchange[:receival_instructions], 
+)
         end
       end
 
@@ -55,7 +57,8 @@ false,
                           enterprise_fee_ids: enterprise_fee_ids,
                           pickup_time: exchange[:pickup_time],
                           pickup_instructions: exchange[:pickup_instructions],
-                          tag_list: exchange[:tag_list] )
+                          tag_list: exchange[:tag_list] 
+)
         else
           add_exchange(
 @order_cycle.coordinator_id, 
@@ -65,7 +68,8 @@ false,
                        enterprise_fee_ids: enterprise_fee_ids,
                        pickup_time: exchange[:pickup_time],
                        pickup_instructions: exchange[:pickup_instructions],
-                       tag_list: exchange[:tag_list] )
+                       tag_list: exchange[:tag_list] 
+)
         end
       end
 
@@ -80,14 +84,16 @@ false,
       @order_cycle.exchanges.where(
 sender_id: sender_id, 
 receiver_id: receiver_id,
-incoming: incoming).present?
+incoming: incoming
+).present?
     end
 
     def add_exchange(sender_id, receiver_id, incoming, attrs = {})
       attrs = attrs.reverse_merge(
 sender_id: sender_id, 
 receiver_id: receiver_id,
-incoming: incoming)
+incoming: incoming
+)
       variant_ids = attrs.delete :variant_ids
       exchange = @order_cycle.exchanges.build attrs
 
@@ -103,7 +109,8 @@ incoming: incoming)
       exchange = @order_cycle.exchanges.where(
 sender_id: sender_id, 
 receiver_id: receiver_id,
-incoming: incoming).first
+incoming: incoming
+).first
       return unless permission_for(exchange)
 
       remove_unauthorized_exchange_attributes(exchange, attrs)

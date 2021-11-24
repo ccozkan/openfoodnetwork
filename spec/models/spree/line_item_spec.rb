@@ -279,7 +279,8 @@ module Spree
                  distributor: hub,
                  order_cycle: create(:simple_order_cycle),
                  bill_address: bill_address,
-                 ship_address: bill_address)
+                 ship_address: bill_address
+)
         }
         let!(:shipping_method) { create(:shipping_method, distributors: [hub]) }
         let!(:line_item) {
@@ -455,7 +456,8 @@ adjustable: li_tax,
 originator: tax_rate, 
 label: "TR",
              amount: 10.00, 
-included: true)
+included: true
+)
       }
 
       context "checking if a line item has tax included" do
@@ -486,7 +488,8 @@ included: true)
 :product, 
 variant_unit: "weight", 
 variant_unit_scale: 1,
-          master: create(:variant, unit_value: 1000 ))
+          master: create(:variant, unit_value: 1000 )
+)
         }
         let!(:v) { p.variants.first }
         let!(:o) { create(:order) }

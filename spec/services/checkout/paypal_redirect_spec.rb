@@ -35,7 +35,8 @@ describe Checkout::PaypalRedirect do
           let(:payment_method) do
             Spree::Gateway::PayPalExpress.create!(
 name: "PayPalExpress",
-distributor_ids: [distributor.id])
+distributor_ids: [distributor.id]
+)
           end
 
           it "returns the redirect path" do

@@ -15,7 +15,8 @@ namespace :ofn do
         firstname = concat('Ms. Number', id), lastname = 'Jones',  phone = '01234567890',
         alternative_phone = '01234567890', address1 = 'Dummy address',
         address2 = 'Dummy address continuation',
-        company = null, latitude = null, longitude = null")
+        company = null, latitude = null, longitude = null"
+)
 
       anonymize_payments_data
       anonymize_payments_accounts
@@ -45,7 +46,8 @@ namespace :ofn do
       Spree::User.update_all(
 "email = concat(id, '_ofn_user@example.com'),
                               login = concat(id, '_ofn_user@example.com'),
-                              unconfirmed_email = concat(id, '_ofn_user@example.com')")
+                              unconfirmed_email = concat(id, '_ofn_user@example.com')"
+)
       Customer.where("user_id IS NULL")
         .update_all("email = concat(id, '_ofn_customer@example.com'),
                      name = concat('Customer Number ', id, ' (without connected User)')")
@@ -60,15 +62,18 @@ namespace :ofn do
       Spree::PaymentMethod.update_all(
 "name = concat('Dummy Payment Method', id),
                                        description = name,
-                                       environment = '#{Rails.env}'")
+                                       environment = '#{Rails.env}'"
+)
       Spree::Payment.update_all(
 "response_code = null, avs_response = null,
                                  cvv_response_code = null, identifier = null,
-                                 cvv_response_message = null")
+                                 cvv_response_message = null"
+)
       Spree::CreditCard.update_all(
 "
         month = 12, year = 2020, start_month = 12, start_year = 2000,
-        cc_type = 'VISA', first_name = 'Dummy', last_name = 'Dummy', last_digits = '2543'")
+        cc_type = 'VISA', first_name = 'Dummy', last_name = 'Dummy', last_digits = '2543'"
+)
     end
 
     def anonymize_payments_accounts

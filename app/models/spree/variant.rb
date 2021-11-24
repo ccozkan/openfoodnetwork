@@ -127,7 +127,8 @@ lambda { |order_cycle, distributor|
       where(
 'spree_variants.id IN (?)', 
 order_cycle.variants_distributed_by(distributor)
-        .select(&:id))
+        .select(&:id)
+)
     }
 
     scope :visible_for, 
@@ -151,7 +152,8 @@ lambda { |enterprise|
                            FROM inventory_items
                            WHERE enterprise_id = #{enterprise_id})
           AS o_inventory_items
-          ON o_inventory_items.variant_id = spree_variants.id")
+          ON o_inventory_items.variant_id = spree_variants.id"
+)
         .where("o_inventory_items.id IS NULL OR o_inventory_items.visible = (?)", true)
     }
 
@@ -169,7 +171,8 @@ lambda { |enterprise|
       where(
 id: ExchangeVariant.select(:variant_id)
                 .joins(:exchange)
-                .where('exchanges.incoming = ? AND exchanges.receiver_id = ?', false, distributor))
+                .where('exchanges.incoming = ? AND exchanges.receiver_id = ?', false, distributor)
+)
     end
 
     def self.indexed
@@ -186,7 +189,8 @@ joins(:prices)
                                           .where('spree_prices.currency' =>
                                             currency || Spree::Config[:currency])
                                           .where('spree_prices.amount IS NOT NULL')
-                                          .select("spree_variants.id"))
+                                          .select("spree_variants.id")
+)
     end
 
     def price_with_fees(distributor, order_cycle)

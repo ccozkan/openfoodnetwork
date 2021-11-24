@@ -335,7 +335,8 @@ describe Spree::Ability do
 :enterprise_relationship, 
 parent: s_related, 
 child: s1,
-                          permissions_list: [:manage_products])
+                          permissions_list: [:manage_products]
+)
     }
 
     subject { user }
@@ -355,7 +356,8 @@ child: s1,
       it "should be able to read/write their enterprises' products and variants" do
         is_expected.to have_ability(
 [:admin, :read, :update, :bulk_update, :clone, :destroy],
-                                    for: p1)
+                                    for: p1
+)
         is_expected.to have_ability(
           [:admin, :index, :read, :edit, :update, :search, :destroy, :delete], for: p1.master
         )
@@ -365,7 +367,8 @@ child: s1,
         er_ps
         is_expected.to have_ability(
 [:admin, :read, :update, :bulk_update, :clone, :destroy],
-                                    for: p_related)
+                                    for: p_related
+)
         is_expected.to have_ability(
           [:admin, :index, :read, :edit, :update, :search, :destroy, :delete], for: p_related.master
         )
@@ -374,10 +377,12 @@ child: s1,
       it "should not be able to read/write other enterprises' products and variants" do
         is_expected.not_to have_ability(
 [:admin, :read, :update, :bulk_update, :clone, :destroy],
-                                        for: p2)
+                                        for: p2
+)
         is_expected.not_to have_ability(
 [:admin, :index, :read, :edit, :update, :search, :destroy],
-                                        for: p2.master)
+                                        for: p2.master
+)
       end
 
       it "should not be able to access admin actions on orders" do
@@ -430,7 +435,8 @@ for: Spree::ProductProperty
       it "should be able to read/write their enterprises' product images" do
         is_expected.to have_ability(
 [:admin, :index, :read, :create, :edit, :update, :destroy],
-                                    for: Spree::Image)
+                                    for: Spree::Image
+)
       end
 
       it "should be able to read Taxons (in order to create classifications)" do
@@ -440,7 +446,8 @@ for: Spree::ProductProperty
       it "should be able to read/write Classifications on a product" do
         is_expected.to have_ability(
 [:admin, :index, :read, :create, :edit],
-                                    for: Spree::Classification)
+                                    for: Spree::Classification
+)
       end
 
       it "should be able to read/write their enterprises' producer properties" do
@@ -515,7 +522,8 @@ for: Spree::Admin::ReportsController
           it "should not be able to access read/update order_cycle actions" do
             is_expected.not_to have_ability(
 [:admin, :index, :read, :edit, :update],
-                                            for: order_cycle)
+                                            for: order_cycle
+)
           end
 
           it "should not be able to access bulk_update, clone order cycle actions" do
@@ -539,7 +547,8 @@ for: Spree::Admin::ReportsController
 incoming: true, 
 order_cycle: order_cycle, 
 receiver: order_cycle.coordinator,
-           sender: s1)
+           sender: s1
+)
           }
 
           it "should be able to access read/update order cycle actions" do
@@ -592,7 +601,8 @@ receiver: order_cycle.coordinator,
 :enterprise_relationship, 
 parent: d_related, 
 child: d1,
-                          permissions_list: [:edit_profile])
+                          permissions_list: [:edit_profile]
+)
         }
 
         it "should be able to edit enterprises it manages" do
@@ -656,13 +666,15 @@ for: d_related
 :enterprise_relationship, 
 parent: s1, 
 child: d1,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
         }
 
         it "should be able to access variant overrides page" do
           is_expected.to have_ability(
 [:admin, :index, :bulk_update, :bulk_reset],
-                                      for: VariantOverride)
+                                      for: VariantOverride
+)
         end
 
         it "should be able to read/write their own variant overrides" do
@@ -709,37 +721,43 @@ child: d1,
       it "should be able to read/write Payments on a product" do
         is_expected.to have_ability(
 [:admin, :index, :read, :create, :edit, :update, :fire],
-                                    for: Spree::Payment)
+                                    for: Spree::Payment
+)
       end
 
       it "should be able to read/write Shipments on a product" do
         is_expected.to have_ability(
 [:admin, :index, :read, :create, :edit, :update, :fire],
-                                    for: Spree::Shipment)
+                                    for: Spree::Shipment
+)
       end
 
       it "should be able to read/write Adjustments on a product" do
         is_expected.to have_ability(
 [:admin, :index, :read, :create, :edit, :update, :fire],
-                                    for: Spree::Adjustment)
+                                    for: Spree::Adjustment
+)
       end
 
       it "should be able to read/write ReturnAuthorizations on a product" do
         is_expected.to have_ability(
 [:admin, :index, :read, :create, :edit, :update, :fire],
-                                    for: Spree::ReturnAuthorization)
+                                    for: Spree::ReturnAuthorization
+)
       end
 
       it "should be able to read/write PaymentMethods" do
         is_expected.to have_ability(
 [:admin, :index, :create, :update, :destroy],
-                                    for: Spree::PaymentMethod)
+                                    for: Spree::PaymentMethod
+)
       end
 
       it "should be able to read/write ShippingMethods" do
         is_expected.to have_ability(
 [:admin, :index, :create, :update, :destroy],
-                                    for: Spree::ShippingMethod)
+                                    for: Spree::ShippingMethod
+)
       end
 
       it "should be able to read and create enterprise relationships" do
@@ -783,7 +801,8 @@ for: Spree::Admin::ReportsController
       it "should not be able to read other reports" do
         is_expected.not_to have_ability(
 [:users_and_enterprises],
-                                        for: Spree::Admin::ReportsController)
+                                        for: Spree::Admin::ReportsController
+)
       end
 
       it "should be able to access customer actions" do
@@ -798,7 +817,8 @@ for: Spree::Admin::ReportsController
 incoming: false, 
 order_cycle: order_cycle, 
 receiver: d1,
-           sender: order_cycle.coordinator)
+           sender: order_cycle.coordinator
+)
         }
 
         it "should be able to access read and update order cycle actions" do
@@ -968,7 +988,8 @@ for: EnterpriseFee
 :enterprise_relationship, 
 parent: producer, 
 child: record,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
         end
       end
       let(:user) { unauthorized_enterprise.owner }
@@ -985,7 +1006,8 @@ child: record,
 :enterprise_relationship, 
 parent: producer, 
 child: record,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
         end
       end
       let(:user) { authorized_enterprise.owner }
@@ -1001,7 +1023,8 @@ child: record,
 :enterprise_relationship, 
 parent: producer, 
 child: record,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
           end
         end
 

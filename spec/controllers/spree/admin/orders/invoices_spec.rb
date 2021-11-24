@@ -12,7 +12,8 @@ describe Spree::Admin::OrdersController, type: :controller do
       create(
 :order_with_distributor, 
 bill_address: create(:address),
-                         ship_address: create(:address))
+                         ship_address: create(:address)
+)
     }
     let!(:distributor) { order.distributor }
     let(:params) { { id: order.number } }
@@ -78,7 +79,8 @@ bill_address: create(:address),
       create(
 :order_with_distributor, 
 bill_address: create(:address),
-                         ship_address: create(:address))
+                         ship_address: create(:address)
+)
     }
     let!(:distributor) { order.distributor }
     let(:params) { { id: order.number } }

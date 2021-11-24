@@ -100,7 +100,8 @@ build(:inventory_unit, variant: variant),
 build(
 :line_item, 
 variant: variant,
-            quantity: 2)
+            quantity: 2
+)
 ]
       allow(order.line_items).to receive_messages find_by_variant_id: order.line_items.first
 

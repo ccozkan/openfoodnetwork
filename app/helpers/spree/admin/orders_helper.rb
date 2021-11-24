@@ -140,7 +140,8 @@ event_label,
                        fire_admin_order_url(@order, e: event),
                        method: :put, 
 icon: "icon-#{event}",
-                       data: { confirm: confirm_message })
+                       data: { confirm: confirm_message }
+)
       end
 
       def quantity_field_tag(manifest_item)

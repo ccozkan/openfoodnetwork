@@ -14,7 +14,8 @@ module Spree
         GatewayWithPassword.create!(
 name: "Bogus", 
 preferred_password: "haxme",
-distributor_ids: [enterprise.id])
+distributor_ids: [enterprise.id]
+)
       }
       let!(:user) { create(:user) }
 
@@ -125,7 +126,8 @@ distributor_ids: [enterprise.id]
           create(
 :stripe_connect_payment_method, 
 distributor_ids: [enterprise1.id, enterprise2.id],
-                                preferred_enterprise_id: enterprise2.id)
+                                preferred_enterprise_id: enterprise2.id
+)
         }
 
         before { allow(controller).to receive(:spree_current_user) { user } }
@@ -191,7 +193,8 @@ distributor_ids: [enterprise1.id, enterprise2.id],
 :user, 
 email: 'enterprise@hub.com', 
 password: 'blahblah',
-       password_confirmation: 'blahblah', )
+       password_confirmation: 'blahblah', 
+)
         new_user.spree_roles = [] # for some reason unbeknown to me, this new user gets admin permissions by default.
         new_user.enterprise_roles.build(enterprise: enterprise).save
         new_user.save

@@ -20,7 +20,8 @@ uniqueness: {
     joins(
 "
       LEFT JOIN enterprises AS parent_enterprises
-        ON parent_enterprises.id = enterprise_relationships.parent_id")
+        ON parent_enterprises.id = enterprise_relationships.parent_id"
+)
       .joins("
         LEFT JOIN enterprises AS child_enterprises
           ON child_enterprises.id = enterprise_relationships.child_id")

@@ -19,7 +19,8 @@ iso3: "ALB",
 iso: "AL",
 iso_name: "ALBANIA", 
 numcode: "8" 
-})
+}
+)
       Spree::State.create!({ name: "Berat", abbr: "BRA", country: albania })
       Spree::Country.create!(
 { 
@@ -28,7 +29,8 @@ iso3: "TCD",
 iso: "TD", 
 iso_name: "CHAD",
 numcode: "148" 
-})
+}
+)
       AddressGeocoder.any_instance.stub(:geocode)
     end
 
@@ -71,7 +73,8 @@ numcode: "148"
       expect(page).to have_select(
 'enterprise_country', 
 options: ["Albania", "Australia"],
-                      selected: 'Australia')
+                      selected: 'Australia'
+)
       select 'Vic', from: 'enterprise_state'
       click_button "Continue"
       expect(page).to have_content 'Who is responsible for managing My Awesome Enterprise?'

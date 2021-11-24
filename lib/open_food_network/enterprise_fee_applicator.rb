@@ -38,7 +38,8 @@ enterprise_role: role
 :enterprise_fee_by, 
 type: enterprise_fee.fee_type, 
 role: role,
-                    enterprise_name: enterprise_fee.enterprise.name)
+                    enterprise_name: enterprise_fee.enterprise.name
+)
     end
 
     def tax_category(target)

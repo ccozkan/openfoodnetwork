@@ -23,7 +23,8 @@ describe 'Schedules', js: true do
 :simple_order_cycle, 
 coordinator: unmanaged_enterprise, 
 distributors: [managed_enterprise],
-                     name: 'oc4')
+                     name: 'oc4'
+)
     }
     let!(:oc5) { create(:simple_order_cycle, coordinator: managed_enterprise2, name: 'oc5') }
     let!(:weekly_schedule) { create(:schedule, name: 'Weekly', order_cycles: [oc1, oc2, oc3, oc4]) }

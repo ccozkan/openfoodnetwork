@@ -13,7 +13,8 @@ module PermittedAttributes
 user: { 
 name: "John",
 email: "email@example.com" 
-} )
+} 
+)
         }
 
         it "keeps permitted and removes not permitted" do
@@ -39,7 +40,8 @@ email: "email@example.com"
 spree_user: { 
 name: "John",
 email: "email@example.com" 
-} )
+} 
+)
       }
 
       it "keeps permitted and removes not permitted" do

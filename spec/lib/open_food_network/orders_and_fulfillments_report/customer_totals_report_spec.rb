@@ -26,7 +26,8 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
 line_items_count: 1, 
 user: customer.user,
                               customer: customer, 
-distributor: distributor)
+distributor: distributor
+)
     end
 
     it "generates the report" do
@@ -50,7 +51,8 @@ distributor: distributor)
 [
                                                    order.number,
                                                    order.completed_at.strftime("%F %T"),
-                                                 ])
+                                                 ]
+)
     end
 
     it 'includes the order number and date in total rows' do
@@ -59,7 +61,8 @@ distributor: distributor)
 [
                                                    order.number,
                                                    order.completed_at.strftime("%F %T"),
-                                                 ])
+                                                 ]
+)
     end
   end
 
@@ -79,7 +82,8 @@ distributor: distributor)
 line_items_count: 1, 
 user: customer.user,
                               customer: customer, 
-distributor: distributor)
+distributor: distributor
+)
     end
 
     before do
@@ -100,7 +104,8 @@ distributor: distributor)
 :order_ready_to_ship, 
 user: customer.user,
                       customer: customer, 
-distributor: distributor)
+distributor: distributor
+)
       }
       let(:completed_payment) { order.payments.completed.first }
       let!(:failed_payment) { create(:payment, order: order, state: "failed") }
@@ -124,7 +129,8 @@ distributor: distributor)
 line_items_count: 1, 
 user: customer.user,
                               customer: customer, 
-distributor: distributor)
+distributor: distributor
+)
     end
     let(:overidden_sku) { 'magical_sku' }
 

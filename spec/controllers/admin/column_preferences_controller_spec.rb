@@ -16,7 +16,8 @@ describe Admin::ColumnPreferencesController, type: :controller do
 user_id: user1.id, 
 action_name: 'enterprises_index', 
 column_name: "name",
-visible: true)
+visible: true
+)
       }
 
       let(:column_preference_params) {
@@ -72,7 +73,9 @@ action_name: "enterprises_index",
           expect(
 ColumnPreference.where(
 user_id: user1.id,
-action_name: 'enterprises_index').count).to be 3
+action_name: 'enterprises_index'
+).count
+).to be 3
         end
       end
     end

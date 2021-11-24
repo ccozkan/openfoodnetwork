@@ -12,7 +12,8 @@ module Spree
 :order, 
 :with_line_item, 
 :completed,
-               distributor: create(:distributor_enterprise) )
+               distributor: create(:distributor_enterprise) 
+)
       end
 
       before do

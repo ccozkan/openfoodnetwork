@@ -72,7 +72,8 @@ describe Spree::ReturnAuthorization do
     before do
       allow(return_authorization).to receive_messages(
 inventory_units: [inventory_unit],
-amount: -20)
+amount: -20
+)
       allow(Spree::Adjustment).to receive(:create)
       allow(order).to receive(:update_order!)
     end

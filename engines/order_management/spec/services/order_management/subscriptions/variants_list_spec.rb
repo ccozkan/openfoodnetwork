@@ -22,7 +22,8 @@ module OrderManagement
 :simple_order_cycle, 
 coordinator: shop, 
 orders_open_at: 1.week.ago,
-                     orders_close_at: 1.week.from_now)
+                     orders_close_at: 1.week.from_now
+)
         end
 
         let(:future_order_cycle) do
@@ -30,7 +31,8 @@ orders_open_at: 1.week.ago,
 :simple_order_cycle, 
 coordinator: shop, 
 orders_open_at: 1.week.from_now,
-                     orders_close_at: 2.weeks.from_now)
+                     orders_close_at: 2.weeks.from_now
+)
         end
 
         let(:past_order_cycle) do
@@ -38,7 +40,8 @@ orders_open_at: 1.week.from_now,
 :simple_order_cycle, 
 coordinator: shop, 
 orders_open_at: 2.weeks.ago,
-                     orders_close_at: 1.week.ago)
+                     orders_close_at: 1.week.ago
+)
         end
 
         let!(:order_cycle) { current_order_cycle }
@@ -57,7 +60,8 @@ orders_open_at: 2.weeks.ago,
 :enterprise_relationship, 
 child: shop,
                           parent: product.supplier,
-                          permissions_list: [:add_to_order_cycle])
+                          permissions_list: [:add_to_order_cycle]
+)
           }
 
           it "is eligible" do
@@ -75,7 +79,8 @@ child: shop,
 sender: product.supplier,
 receiver: shop,
 incoming: true, 
-variants: [variant])
+variants: [variant]
+)
             }
 
             it "is not eligible" do
@@ -89,7 +94,8 @@ variants: [variant])
 sender: product.supplier,
 receiver: shop,
 incoming: false,
-variants: [variant])
+variants: [variant]
+)
             }
 
             context "if the order cycle is currently open" do
@@ -141,14 +147,16 @@ variants: [variant])
 sender: product.supplier,
 receiver: shop,
 incoming: true,
-variants: [variant])
+variants: [variant]
+)
             }
 
             it "is is false" do
               expect(described_class).not_to be_in_open_and_upcoming_order_cycles(
 shop,
                                                                                   schedule,
-                                                                                  variant)
+                                                                                  variant
+)
             end
           end
 
@@ -158,14 +166,16 @@ shop,
 sender: product.supplier,
 receiver: shop,
 incoming: false,
-variants: [variant])
+variants: [variant]
+)
             }
 
             it "is true" do
               expect(described_class).to be_in_open_and_upcoming_order_cycles(
 shop,
                                                                               schedule,
-                                                                              variant)
+                                                                              variant
+)
             end
           end
         end
@@ -175,7 +185,8 @@ shop,
             expect(described_class).to_not be_in_open_and_upcoming_order_cycles(
 shop,
                                                                                 schedule,
-                                                                                variant)
+                                                                                variant
+)
           end
         end
       end

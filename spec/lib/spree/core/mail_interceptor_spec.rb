@@ -7,7 +7,8 @@ describe Spree::OrderMailer do
   let(:order) do
     Spree::Order.new(
 distributor: create(:enterprise),
-bill_address: create(:address))
+bill_address: create(:address)
+)
   end
   let(:message) { Spree::OrderMailer.confirm_email_for_shop(order) }
 

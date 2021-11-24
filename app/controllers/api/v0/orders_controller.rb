@@ -18,7 +18,8 @@ module Api
         if pagination_required?
           @pagy, orders = pagy(
 orders,
-                               items: params[:per_page] || default_per_page)
+                               items: params[:per_page] || default_per_page
+)
         end
 
         render json: {

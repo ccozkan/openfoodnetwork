@@ -31,7 +31,8 @@ sender: supplier1,
 receiver: coordinator, 
 incoming: true,
            enterprise_fees: [enterprise_fee1], 
-variants: [product1.master])
+variants: [product1.master]
+)
             }
             let!(:exchange2) {
               create(
@@ -41,29 +42,38 @@ sender: supplier2,
 receiver: coordinator, 
 incoming: true,
            enterprise_fees: [enterprise_fee2], 
-variants: [product2.master])
+variants: [product2.master]
+)
             }
 
             it "calculates via regular computation" do
               expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                                 order_cycle).fees_for(product1.master)).to eq(20)
+                                                 order_cycle
+).fees_for(product1.master)
+).to eq(20)
               expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                                 order_cycle).fees_for(product2.master)).to eq(3)
+                                                 order_cycle
+).fees_for(product2.master)
+).to eq(3)
             end
 
             it "calculates via indexed computation" do
               expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                                 order_cycle).indexed_fees_for(product1.master)).to eq(20)
+                                                 order_cycle
+).indexed_fees_for(product1.master)
+).to eq(20)
               expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                                 order_cycle).indexed_fees_for(product2.master)).to eq(3)
+                                                 order_cycle
+).indexed_fees_for(product2.master)
+).to eq(3)
             end
           end
 
@@ -76,7 +86,8 @@ sender: coordinator,
 receiver: distributor, 
 incoming: false,
            enterprise_fees: [], 
-variants: [product1.master])
+variants: [product1.master]
+)
             }
 
             before do
@@ -87,14 +98,18 @@ variants: [product1.master])
               expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                                 order_cycle).fees_for(product1.master)).to eq(23)
+                                                 order_cycle
+).fees_for(product1.master)
+).to eq(23)
             end
 
             it "sums via indexed computation" do
               expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                                 order_cycle).indexed_fees_for(product1.master)).to eq(23)
+                                                 order_cycle
+).indexed_fees_for(product1.master)
+).to eq(23)
             end
           end
 
@@ -107,21 +122,26 @@ sender: coordinator,
 receiver: distributor, 
 incoming: false,
            enterprise_fees: [enterprise_fee1, enterprise_fee2, enterprise_fee3], 
-variants: [product1.master])
+variants: [product1.master]
+)
             }
 
             it "sums via regular computation" do
               expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                                 order_cycle).fees_for(product1.master)).to eq(23)
+                                                 order_cycle
+).fees_for(product1.master)
+).to eq(23)
             end
 
             it "sums via indexed computation" do
               expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                                 order_cycle).indexed_fees_for(product1.master)).to eq(23)
+                                                 order_cycle
+).indexed_fees_for(product1.master)
+).to eq(23)
             end
           end
         end
@@ -132,7 +152,8 @@ distributor,
 :enterprise_fee, 
 amount: 20, 
 fee_type: "admin",
-                 calculator: ::Calculator::FlatPercentPerItem.new(preferred_flat_percent: 20))
+                 calculator: ::Calculator::FlatPercentPerItem.new(preferred_flat_percent: 20)
+)
           }
           let!(:exchange) {
             create(
@@ -142,21 +163,26 @@ sender: coordinator,
 receiver: distributor, 
 incoming: false,
            enterprise_fees: [enterprise_fee1], 
-variants: [product1.master])
+variants: [product1.master]
+)
           }
 
           it "sums via regular computation" do
             expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                               order_cycle).fees_for(product1.master)).to eq(2.00)
+                                               order_cycle
+).fees_for(product1.master)
+).to eq(2.00)
           end
 
           it "sums via indexed computation" do
             expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                               order_cycle).indexed_fees_for(product1.master)).to eq(2.00)
+                                               order_cycle
+).indexed_fees_for(product1.master)
+).to eq(2.00)
           end
         end
       end
@@ -175,7 +201,8 @@ order_cycle: order_cycle,
 receiver: distributor, 
 incoming: false,
            enterprise_fees: [ef_admin, ef_sales, ef_packing, ef_transport, ef_fundraising],
-           variants: [product1.master])
+           variants: [product1.master]
+)
         }
 
         describe "regular computation" do
@@ -183,12 +210,15 @@ incoming: false,
             expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                               order_cycle).fees_by_type_for(product1.master)).to eq(
+                                               order_cycle
+).fees_by_type_for(product1.master)
+).to eq(
 admin: 1.23, 
 sales: 4.56, 
 packing: 7.89,
 transport: 0.12, 
-fundraising: 3.45)
+fundraising: 3.45
+)
           end
 
           it "filters out zero fees" do
@@ -196,11 +226,14 @@ fundraising: 3.45)
             expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                               order_cycle).fees_by_type_for(product1.master)).to eq(
+                                               order_cycle
+).fees_by_type_for(product1.master)
+).to eq(
 sales: 4.56, 
 packing: 7.89, 
 transport: 0.12,
-fundraising: 3.45)
+fundraising: 3.45
+)
           end
         end
 
@@ -209,12 +242,15 @@ fundraising: 3.45)
             expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                               order_cycle).indexed_fees_by_type_for(product1.master)).to eq(
+                                               order_cycle
+).indexed_fees_by_type_for(product1.master)
+).to eq(
 admin: 1.23, 
 sales: 4.56,
 packing: 7.89, 
 transport: 0.12, 
-fundraising: 3.45)
+fundraising: 3.45
+)
           end
 
           it "filters out zero fees" do
@@ -222,11 +258,14 @@ fundraising: 3.45)
             expect(
 EnterpriseFeeCalculator.new(
 distributor,
-                                               order_cycle).indexed_fees_by_type_for(product1.master)).to eq(
+                                               order_cycle
+).indexed_fees_by_type_for(product1.master)
+).to eq(
 sales: 4.56, 
 packing: 7.89,
 transport: 0.12, 
-fundraising: 3.45)
+fundraising: 3.45
+)
           end
         end
       end
@@ -245,7 +284,8 @@ order_cycle: order_cycle,
 sender: coordinator, 
 receiver: distributor,
            incoming: false, 
-variants: [product1.master])
+variants: [product1.master]
+)
         }
 
         before { order.reload }
@@ -255,7 +295,8 @@ variants: [product1.master])
 
           EnterpriseFeeCalculator.new(
 distributor,
-                                      order_cycle).create_line_item_adjustments_for line_item
+                                      order_cycle
+).create_line_item_adjustments_for line_item
 
           a = Spree::Adjustment.last
           expect(a.metadata.fee_name).to eq(enterprise_fee_line_item.name)
@@ -288,7 +329,8 @@ sender: order_cycle.coordinator,
 receiver: distributor,
            order_cycle: order_cycle, 
 enterprise_fees: [ef_exchange], 
-variants: [v])
+variants: [v]
+)
       }
       let(:v) { create(:variant) }
       let(:indexed_variants) { { v.id => v } }
@@ -314,7 +356,8 @@ order_cycle: order_cycle,
 sender: order_cycle.coordinator,
            receiver: distributor_other, 
 enterprise_fees: [ef_other_distributor], 
-variants: [v])
+variants: [v]
+)
 
           expect(subject.send(:per_item_enterprise_fees_with_exchange_details)).to eq([ef_exchange])
         end
@@ -381,11 +424,13 @@ OpenFoodNetwork::EnterpriseFeeApplicator.new(ef1, line_item.variant, 'supplier')
                       OpenFoodNetwork::EnterpriseFeeApplicator.new(
 ef2, 
 line_item.variant,
-                                                                   'distributor'),
+                                                                   'distributor'
+),
                       OpenFoodNetwork::EnterpriseFeeApplicator.new(
 ef3, 
 line_item.variant,
-                                                                   'coordinator')
+                                                                   'coordinator'
+)
 ]
           end
         end

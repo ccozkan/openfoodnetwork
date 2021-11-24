@@ -18,7 +18,8 @@ describe Admin::OrdersHelper, type: :helper do
 order: order, 
 adjustable: build(:shipment), 
 amount: 1,
-             originator_type: "Spree::ShippingMethod")
+             originator_type: "Spree::ShippingMethod"
+)
 
       expect(helper.order_adjustments_for_display(order)).to eq []
     end
@@ -30,7 +31,8 @@ adjustable: build(:payment),
 amount: 0, 
 eligible: false,
              originator_type: "Spree::PaymentMethod", 
-order: order)
+order: order
+)
 
       expect(helper.order_adjustments_for_display(order)).to eq []
     end
@@ -42,7 +44,8 @@ adjustable: build(:line_item),
 amount: 0, 
 eligible: false,
              originator_type: "EnterpriseFee", 
-order: order)
+order: order
+)
 
       expect(helper.order_adjustments_for_display(order)).to eq []
     end

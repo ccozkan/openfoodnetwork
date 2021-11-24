@@ -79,7 +79,8 @@ FactoryBot.define do
 :line_item_with_shipment, 
 order: order,
                           variant: evaluator.variant,
-                          shipping_method: evaluator.shipping_method)
+                          shipping_method: evaluator.shipping_method
+)
         order.shipments << line_item.target_shipment
       end
     end
@@ -96,7 +97,8 @@ order: order,
 state: "checkout", 
 order: order, 
 amount: order.total,
-          payment_method: evaluator.payment_method)
+          payment_method: evaluator.payment_method
+)
         order.recreate_all_fees!
         order.ship_address = evaluator.ship_address
         break unless a = order.next! while !order.delivery?
@@ -120,7 +122,8 @@ amount: order.total,
 :line_item_with_shipment, 
 shipping_fee: proxy.shipping_fee,
                           order: order,
-                          product: product)
+                          product: product
+)
       order.reload
     end
 
@@ -139,7 +142,8 @@ shipping_fee: proxy.shipping_fee,
 state: "checkout", 
 order: order, 
 amount: order.total,
-          payment_method: evaluator.payment_method)
+          payment_method: evaluator.payment_method
+)
         order.ship_address = evaluator.ship_address
         break unless order.next! while !order.completed?
 
@@ -173,7 +177,8 @@ amount: order.total,
 zone: proxy.zone,
                 price: proxy.product_price,
                 tax_rate_amount: proxy.tax_rate_amount,
-                tax_rate_name: proxy.tax_rate_name)
+                tax_rate_name: proxy.tax_rate_name
+)
       FactoryBot.create(:line_item, order: order, product: product, price: product.price)
       order.reload
     end
@@ -192,7 +197,8 @@ zone: proxy.zone,
 :payment, 
 amount: order.total + evaluator.credit_amount, 
 order: order,
-          state: "completed")
+          state: "completed"
+)
       order.reload
     end
   end
@@ -210,7 +216,8 @@ order: order,
 :payment, 
 amount: order.total - evaluator.unpaid_amount, 
 order: order,
-          state: "completed")
+          state: "completed"
+)
       order.reload
     end
   end
@@ -237,14 +244,16 @@ order: order,
 order: order,
           amount: order.total,
           payment_method: payment_method,
-          state: 'checkout')
+          state: 'checkout'
+)
 
       create(
 :shipping_method_with, 
 :shipping_fee, 
 shipping_fee: evaluator.shipping_fee,
                                       distributors: [order.distributor],
-                                      tax_category: evaluator.shipping_tax_category)
+                                      tax_category: evaluator.shipping_tax_category
+)
 
       order.reload
       break unless order.next! while !order.completed?

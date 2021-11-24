@@ -31,7 +31,8 @@ module StripeStubs
   def stub_payment_method_attach_request
     stub_request(
 :post,
-                 "https://api.stripe.com/v1/payment_methods/pm_123/attach")
+                 "https://api.stripe.com/v1/payment_methods/pm_123/attach"
+)
       .with(body: { customer: "cus_A123" })
       .to_return(hub_payment_method_response_mock({ pm_id: "pm_123" }))
   end
@@ -111,7 +112,8 @@ amount: 2000,
 amount_received: 2000,
 status: options[:intent_status] || "requires_capture",
 last_payment_error: nil,
-charges: { data: chargedata }) 
+charges: { data: chargedata }
+) 
 }
   end
 
@@ -125,7 +127,8 @@ next_source_action: {
                                          type: "authorize_with_url",
                                          authorize_with_url: { url: redirect_url }
                                        },
-status: "requires_source_action") 
+status: "requires_source_action"
+) 
 }
   end
 
@@ -135,7 +138,8 @@ status: options[:code] || 200,
 body: JSON.generate(
 object: "payment_intent",
 amount: 2000,
-charges: { data: [{ id: "ch_1234", amount: 2000 }] }) 
+charges: { data: [{ id: "ch_1234", amount: 2000 }] }
+) 
 }
   end
 
@@ -146,7 +150,8 @@ body: JSON.generate(
 error: { 
 message:
                                      options[:message] || "payment-method-failure" 
-}) 
+}
+) 
 }
   end
 
@@ -163,7 +168,8 @@ body: JSON.generate(id: options[:pm_id] || "pm_456", customer: "cus_A123")
 status: 200,
 body: JSON.generate(
 id: customer_id,
-sources: { data: [id: customer_id] }) 
+sources: { data: [id: customer_id] }
+) 
 }
   end
 
@@ -173,7 +179,8 @@ status: 200,
 body: JSON.generate(
 object: "refund",
 amount: 2000,
-charge: "ch_1234") 
+charge: "ch_1234"
+) 
 }
   end
 

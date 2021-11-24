@@ -25,7 +25,8 @@ due_date: '',
 invoice_date: Date.civil(2015, 5, 5),
 due_date: Date.civil(2015, 6, 5),
 account_code: 'food sales',
-report_type: 'summary' )
+report_type: 'summary' 
+)
       end
     end
 

@@ -53,7 +53,8 @@ module ProductImport
 entry,
                                       'shipping',
                                       entry.shipping_category,
-                                      @spreadsheet_data.shipping_index)
+                                      @spreadsheet_data.shipping_index
+)
           shipping_presence_validation(entry)
           product_validation(entry)
         end
@@ -78,7 +79,8 @@ entry,
                                            'variant_unit', 
 'variant_unit_name',
                                            'variant_unit_scale', 
-'primary_taxon_id')
+'primary_taxon_id'
+)
       )
       new_variant.save
       if entry.attributes['on_demand'].present?
@@ -134,7 +136,8 @@ entry,
       mark_as_invalid(
 entry,
                       attribute: enterprise_field,
-                      error: I18n.t(:error_required))
+                      error: I18n.t(:error_required)
+)
       true
     end
 
@@ -146,7 +149,9 @@ entry,
                       attribute: enterprise_field,
                       error: I18n.t(
 :error_not_found_in_database,
-                                    name: entry.enterprise))
+                                    name: entry.enterprise
+)
+)
       true
     end
 
@@ -158,7 +163,9 @@ entry,
                       attribute: enterprise_field,
                       error: I18n.t(
 :error_no_permission_for_enterprise,
-                                    name: entry.enterprise))
+                                    name: entry.enterprise
+)
+)
       true
     end
 
@@ -171,7 +178,9 @@ entry,
                       attribute: enterprise_field,
                       error: I18n.t(
 :error_not_primary_producer,
-                                    name: entry.enterprise))
+                                    name: entry.enterprise
+)
+)
       true
     end
 
@@ -182,7 +191,8 @@ entry,
         mark_as_invalid(
 entry, 
 attribute: 'units',
-       error: I18n.t('admin.product_import.model.blank'))
+       error: I18n.t('admin.product_import.model.blank')
+)
       end
 
       return if import_into_inventory?
@@ -194,7 +204,8 @@ attribute: 'units',
           mark_as_invalid(
 entry, 
 attribute: 'unit_type',
-       error: I18n.t('admin.product_import.model.incorrect_value'))
+       error: I18n.t('admin.product_import.model.incorrect_value')
+)
         end
         return
       end
@@ -205,7 +216,8 @@ attribute: 'unit_type',
       mark_as_invalid(
 entry, 
 attribute: 'variant_unit_name',
-       error: I18n.t('admin.product_import.model.conditional_blank'))
+       error: I18n.t('admin.product_import.model.conditional_blank')
+)
     end
 
     def variant_of_product_validation(entry)
@@ -240,7 +252,8 @@ attribute: 'variant_unit_name',
         mark_as_invalid(
 entry, 
 attribute: "producer",
-       error: I18n.t('admin.product_import.model.blank'))
+       error: I18n.t('admin.product_import.model.blank')
+)
         return
       end
 
@@ -249,7 +262,8 @@ attribute: "producer",
         mark_as_invalid(
 entry, 
 attribute: "producer",
-       error: "\"#{producer_name}\" #{model_not_found}")
+       error: "\"#{producer_name}\" #{model_not_found}"
+)
         return
       end
 
@@ -262,7 +276,8 @@ attribute: "producer",
         mark_as_invalid(
 entry, 
 attribute: "producer",
-       error: "\"#{producer_name}\": #{inventory_no_permission}")
+       error: "\"#{producer_name}\": #{inventory_no_permission}"
+)
         return
       end
 
@@ -273,13 +288,15 @@ attribute: "producer",
       products = Spree::Product.where(
 supplier_id: entry.producer_id,
 name: entry.name,
-deleted_at: nil)
+deleted_at: nil
+)
 
       if products.empty?
         mark_as_invalid(
 entry, 
 attribute: 'name',
-       error: I18n.t('admin.product_import.model.no_product'))
+       error: I18n.t('admin.product_import.model.no_product')
+)
         return
       end
 
@@ -297,7 +314,8 @@ attribute: 'name',
       mark_as_invalid(
 entry, 
 attribute: 'product',
-       error: I18n.t('admin.product_import.model.not_found'))
+       error: I18n.t('admin.product_import.model.not_found')
+)
     end
 
     def entry_matches_existing_variant?(entry, existing_variant)
@@ -321,7 +339,9 @@ entry,
 attribute: "category",
        error: I18n.t(
 :error_not_found_in_database,
-                                             name: category_name))
+                                             name: category_name
+)
+)
       end
     end
 
@@ -334,7 +354,8 @@ attribute: "category",
         mark_as_invalid(
 entry, 
 attribute: "#{type}_category",
-       error: I18n.t('admin.product_import.model.not_found'))
+       error: I18n.t('admin.product_import.model.not_found')
+)
       end
     end
 
@@ -344,14 +365,16 @@ attribute: "#{type}_category",
       mark_as_invalid(
 entry, 
 attribute: "shipping_category",
-       error: I18n.t(:error_required))
+       error: I18n.t(:error_required)
+)
     end
 
     def product_validation(entry)
       products = Spree::Product.where(
 supplier_id: entry.enterprise_id,
 name: entry.name,
-deleted_at: nil)
+deleted_at: nil
+)
 
       if products.empty?
         mark_as_new_product(entry)
@@ -394,7 +417,8 @@ deleted_at: nil)
 'variant_unit', 
 'variant_unit_name',
                                            'variant_unit_scale', 
-'primary_taxon_id')
+'primary_taxon_id'
+)
       )
       check_on_hand_nil(entry, existing_variant)
 
@@ -417,7 +441,8 @@ deleted_at: nil)
         mark_as_invalid(
 entry, 
 attribute: display_name,
-       error: I18n.t('admin.product_import.model.not_updatable'))
+       error: I18n.t('admin.product_import.model.not_updatable')
+)
       end
     end
 
@@ -471,7 +496,8 @@ attribute: display_name,
       mark_as_invalid(
 entry, 
 attribute: attribute,
-       error: I18n.t("admin.product_import.model.not_updatable"))
+       error: I18n.t("admin.product_import.model.not_updatable")
+)
     end
 
     def import_into_inventory?

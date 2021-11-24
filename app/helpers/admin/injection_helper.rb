@@ -14,12 +14,14 @@ module Admin
 "ofn.admin",
                                   "my_enterprises",
                                   @my_enterprises,
-                                  Api::Admin::BasicEnterpriseSerializer) +
+                                  Api::Admin::BasicEnterpriseSerializer
+) +
         admin_inject_json_ams_array(
 "ofn.admin",
                                     "all_enterprises",
                                     @all_enterprises,
-                                    Api::Admin::BasicEnterpriseSerializer)
+                                    Api::Admin::BasicEnterpriseSerializer
+)
     end
 
     def admin_inject_enterprise_relationships

@@ -26,7 +26,8 @@ module OpenFoodNetwork
           # If the coordinator sells any, relationships come into play
           related_enterprises_granting(
 :add_to_order_cycle,
-                                       to: [@coordinator.id]).each do |enterprise_id|
+                                       to: [@coordinator.id]
+).each do |enterprise_id|
             coordinator_permitted_ids << enterprise_id
           end
 
@@ -184,7 +185,8 @@ module OpenFoodNetwork
         producer_ids = related_enterprises_granting(
 :add_to_order_cycle,
                                                     to: [hub.id],
-                                                    scope: managed_participating_producers)
+                                                    scope: managed_participating_producers
+)
         permitted_variants = variants_from_suppliers(producer_ids)
 
         # PLUS my incoming producers' variants that are already in an outgoing exchange of this hub,
@@ -211,14 +213,16 @@ module OpenFoodNetwork
         granted_producers = related_enterprises_granted(
 :add_to_order_cycle,
                                                         by: [hub.id],
-                                                        scope: managed_participating_producers)
+                                                        scope: managed_participating_producers
+)
 
         # Variants produced by MY PRODUCERS that are in this OC,
         #   where my producer has granted P-OC to the hub
         granting_producer_ids = related_enterprises_granting(
 :add_to_order_cycle,
                                                              to: [hub.id],
-                                                             scope: granted_producers)
+                                                             scope: granted_producers
+)
         permitted_variants = variants_from_suppliers(granting_producer_ids)
 
         Spree::Variant.where(id: permitted_variants)
@@ -232,7 +236,8 @@ module OpenFoodNetwork
       producer_ids = related_enterprises_granting(
 :add_to_order_cycle,
                                                   to: [hub.id],
-                                                  scope: Enterprise.is_primary_producer)
+                                                  scope: Enterprise.is_primary_producer
+)
 
       # Variants from Producers via permissions, and from the hub itself
       available_variants = variants_from_suppliers(producer_ids.to_a + [hub.id])
@@ -295,7 +300,8 @@ module OpenFoodNetwork
       producer_ids = related_enterprises_granting(
 :add_to_order_cycle,
                                                   to: hubs.select("enterprises.id"),
-                                                  scope: Enterprise.is_primary_producer)
+                                                  scope: Enterprise.is_primary_producer
+)
       permitted_exchange_ids = @order_cycle
         .exchanges.incoming.where(sender_id: producer_ids).pluck :id
 
@@ -329,7 +335,8 @@ module OpenFoodNetwork
       hub_ids = related_enterprises_granted(
 :add_to_order_cycle,
                                             by: producer_ids,
-                                            scope: Enterprise.is_hub)
+                                            scope: Enterprise.is_hub
+)
       permitted_exchange_ids = @order_cycle.exchanges.outgoing.where(receiver_id: hub_ids).pluck :id
 
       # TODO: remove active_exchanges when we think it is safe to do so

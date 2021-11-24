@@ -16,14 +16,16 @@ describe ProductImport::ProductImporter do
 :distributor_enterprise, 
 is_primary_producer: true, 
 owner: user2,
-                         name: "Another Enterprise")
+                         name: "Another Enterprise"
+)
   }
   let!(:enterprise3) {
     create(
 :distributor_enterprise, 
 is_primary_producer: true, 
 owner: user3,
-                         name: "And Another Enterprise")
+                         name: "And Another Enterprise"
+)
   }
   let!(:enterprise4) {
     create(:enterprise, is_primary_producer: false, owner: user, name: "Non-Producer")
@@ -33,7 +35,8 @@ owner: user3,
 :enterprise_relationship, 
 parent: enterprise, 
 child: enterprise2,
-                          permissions_list: [:create_variant_overrides])
+                          permissions_list: [:create_variant_overrides]
+)
   }
 
   let!(:category) { create(:taxon, name: 'Vegetables') }
@@ -50,7 +53,8 @@ child: enterprise2,
 supplier: enterprise2, 
 name: 'Hypothetical Cake', 
 description: nil,
-                 primary_taxon_id: category2.id)
+                 primary_taxon_id: category2.id
+)
   }
   let!(:variant) {
     create(
@@ -59,7 +63,8 @@ product_id: product.id,
 price: '8.50', 
 on_hand: '100', 
 unit_value: '500',
-          display_name: 'Preexisting Banana')
+          display_name: 'Preexisting Banana'
+)
   }
   let!(:product2) {
     create(
@@ -69,7 +74,8 @@ on_hand: '100',
 name: 'Beans', 
 unit_value: '500',
                  primary_taxon_id: category.id, 
-description: nil)
+description: nil
+)
   }
   let!(:product3) {
     create(
@@ -78,7 +84,8 @@ supplier: enterprise,
 on_hand: '100', 
 name: 'Sprouts', 
 unit_value: '500',
-                 primary_taxon_id: category.id)
+                 primary_taxon_id: category.id
+)
   }
   let!(:product4) {
     create(
@@ -90,7 +97,8 @@ unit_value: '1',
                  variant_unit_scale: nil, 
 variant_unit: "items", 
 variant_unit_name: "Whole", 
-primary_taxon_id: category.id)
+primary_taxon_id: category.id
+)
   }
   let!(:product5) {
     create(
@@ -99,7 +107,8 @@ supplier: enterprise2,
 on_hand: '100', 
 name: 'Lettuce', 
 unit_value: '500',
-                 primary_taxon_id: category.id)
+                 primary_taxon_id: category.id
+)
   }
   let!(:product6) {
     create(
@@ -112,7 +121,8 @@ on_demand: true,
 variant_unit_scale: 1, 
 variant_unit: 'weight', 
 primary_taxon_id: category.id, 
-description: nil)
+description: nil
+)
   }
   let!(:product7) {
     create(
@@ -124,7 +134,8 @@ unit_value: '500',
                  variant_unit_scale: 1, 
 variant_unit: 'weight', 
 primary_taxon_id: category.id, 
-description: nil)
+description: nil
+)
   }
 
   let!(:product8) {
@@ -137,7 +148,8 @@ description: "",
                  unit_value: '500', 
 variant_unit_scale: 1, 
 variant_unit: 'weight', 
-primary_taxon_id: category4.id)
+primary_taxon_id: category4.id
+)
   }
   let!(:product9) {
     create(
@@ -149,7 +161,8 @@ description: "",
                  unit_value: '500', 
 variant_unit_scale: 1, 
 variant_unit: 'weight', 
-primary_taxon_id: category4.id)
+primary_taxon_id: category4.id
+)
   }
   let!(:variant2) {
     create(
@@ -158,7 +171,8 @@ product_id: product8.id,
 price: '4.50', 
 on_hand: '100', 
 unit_value: '500',
-          display_name: 'Porridge Oats')
+          display_name: 'Porridge Oats'
+)
   }
   let!(:variant3) {
     create(
@@ -167,7 +181,8 @@ product_id: product8.id,
 price: '5.50', 
 on_hand: '100', 
 unit_value: '500',
-          display_name: 'Rolled Oats')
+          display_name: 'Rolled Oats'
+)
   }
   let!(:variant4) {
     create(
@@ -176,7 +191,8 @@ product_id: product9.id,
 price: '6.50', 
 on_hand: '100', 
 unit_value: '500',
-          display_name: 'Flaked Oats')
+          display_name: 'Flaked Oats'
+)
   }
 
   let!(:variant_override) {
@@ -184,14 +200,16 @@ unit_value: '500',
 :variant_override, 
 variant_id: product4.variants.first.id, 
 hub: enterprise2,
-                   count_on_hand: 42)
+                   count_on_hand: 42
+)
   }
   let!(:variant_override2) {
     create(
 :variant_override, 
 variant_id: product5.variants.first.id, 
 hub: enterprise,
-                   count_on_hand: 96)
+                   count_on_hand: 96
+)
   }
 
   let(:permissions) { OpenFoodNetwork::Permissions.new(user) }
@@ -422,7 +440,8 @@ enterprise.name,
         [
 I18n.t(
 'admin.product_import.model.malformed_csv',
-                error_message: "Unquoted fields do not allow new line <\"\\r\"> in line 3.")
+                error_message: "Unquoted fields do not allow new line <\"\\r\"> in line 3."
+)
 ]
       )
     end
@@ -964,13 +983,16 @@ enterprise3.name,
 
         beans_override = VariantOverride.where(
 variant_id: product2.variants.first.id,
-hub_id: enterprise2.id).first
+hub_id: enterprise2.id
+).first
         sprouts_override = VariantOverride.where(
 variant_id: product3.variants.first.id,
-hub_id: enterprise2.id).first
+hub_id: enterprise2.id
+).first
         cabbage_override = VariantOverride.where(
 variant_id: product4.variants.first.id,
-hub_id: enterprise2.id).first
+hub_id: enterprise2.id
+).first
 
         expect(Float(beans_override.price)).to eq 3.20
         expect(beans_override.count_on_hand).to eq 5
@@ -1000,7 +1022,8 @@ hub_id: enterprise2.id).first
         override = VariantOverride.where(variant_id: variant2.id, hub_id: enterprise2.id).first
         visible = InventoryItem.where(
 variant_id: variant2.id,
-enterprise_id: enterprise2.id).first.visible
+enterprise_id: enterprise2.id
+).first.visible
 
         expect(override.count_on_hand).to eq 900
         expect(visible).to be_truthy
@@ -1012,7 +1035,8 @@ enterprise_id: enterprise2.id).first.visible
         InventoryItem.create(
 variant_id: product4.variants.first.id, 
 enterprise_id: enterprise2.id,
-visible: false)
+visible: false
+)
       }
       let(:csv_data) {
         CSV.generate do |csv|
@@ -1037,10 +1061,12 @@ visible: false)
 
         override = VariantOverride.where(
 variant_id: product4.variants.first.id,
-hub_id: enterprise2.id).first
+hub_id: enterprise2.id
+).first
         visible = InventoryItem.where(
 variant_id: product4.variants.first.id,
-enterprise_id: enterprise2.id).first.visible
+enterprise_id: enterprise2.id
+).first.visible
 
         expect(override.count_on_hand).to eq 900
         expect(visible).to be_truthy
@@ -1125,7 +1151,8 @@ enterprise2.name,
 
       beans = VariantOverride.where(
 variant_id: product2.variants.first.id,
-hub_id: enterprise2.id).first
+hub_id: enterprise2.id
+).first
       expect(beans.count_on_hand).to eq 777
     end
 
@@ -1255,16 +1282,20 @@ enterprises_to_reset: [enterprise2.id]
 
       beans = VariantOverride.where(
 variant_id: product2.variants.first.id,
-hub_id: enterprise2.id).first
+hub_id: enterprise2.id
+).first
       sprouts = VariantOverride.where(
 variant_id: product3.variants.first.id,
-hub_id: enterprise2.id).first
+hub_id: enterprise2.id
+).first
       cabbage = VariantOverride.where(
 variant_id: product4.variants.first.id,
-hub_id: enterprise2.id).first
+hub_id: enterprise2.id
+).first
       lettuce = VariantOverride.where(
 variant_id: product5.variants.first.id,
-hub_id: enterprise.id).first
+hub_id: enterprise.id
+).first
 
       expect(beans.count_on_hand).to eq 6      # Present in file, created
       expect(sprouts.count_on_hand).to eq 7    # Present in file, created
@@ -1298,7 +1329,8 @@ def import_data(csv_data, args = {})
                                      end: end_row,
                                      updated_ids: updated_ids,
                                      enterprises_to_reset: enterprises_to_reset,
-                                     settings: settings)
+                                     settings: settings
+)
 end
 
 def filter(type, entries)

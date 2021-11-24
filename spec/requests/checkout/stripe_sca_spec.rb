@@ -72,7 +72,8 @@ order: {
 body: JSON.generate(
 object: "payment_intent",
 amount: 2000,
-charges: { data: [{ id: "ch_1234", amount: 2000 }] })
+charges: { data: [{ id: "ch_1234", amount: 2000 }] }
+)
     }
   end
   let(:payment_intent_authorize_response_mock) do
@@ -84,7 +85,8 @@ object: "payment_intent",
 amount: 2000,
 status: "requires_capture", 
 last_payment_error: nil,
-charges: { data: [{ id: "ch_1234", amount: 2000 }] })
+charges: { data: [{ id: "ch_1234", amount: 2000 }] }
+)
     }
   end
 
@@ -196,7 +198,8 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] })
       # Attaches the payment method to the customer in the hub's stripe account
       stub_request(
 :post,
-                   "https://api.stripe.com/v1/payment_methods/#{hubs_stripe_payment_method}/attach")
+                   "https://api.stripe.com/v1/payment_methods/#{hubs_stripe_payment_method}/attach"
+)
         .with(body: { customer: customer_id },
               headers: { 'Stripe-Account' => 'abc123' })
         .to_return(hubs_payment_method_response_mock)
@@ -217,7 +220,8 @@ charges: { data: [{ id: "ch_1234", amount: 2000 }] })
         # Attaches the payment method to the customer
         stub_request(
 :post,
-                     "https://api.stripe.com/v1/payment_methods/#{stripe_payment_method}/attach")
+                     "https://api.stripe.com/v1/payment_methods/#{stripe_payment_method}/attach"
+)
           .with(body: { customer: customer_id })
           .to_return(payment_method_attach_response_mock)
       end
@@ -352,7 +356,8 @@ next_source_action: {
                                                type: "authorize_with_url",
                                                authorize_with_url: { url: stripe_redirect_url }
                                              },
-status: "requires_source_action") 
+status: "requires_source_action"
+) 
 }
         end
 

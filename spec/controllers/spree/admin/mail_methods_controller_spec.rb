@@ -21,11 +21,13 @@ describe Spree::Admin::MailMethodsController do
 email: 'user@example.com',
         spree_api_key: 'fake',
         id: nil,
-        owned_groups: nil)
+        owned_groups: nil
+)
     allow(user).to receive_messages(
 enterprises: [create(:enterprise)],
 has_spree_role?: true,
-locale: nil)
+locale: nil
+)
     allow(controller).to receive_messages(spree_current_user: user)
     ActionMailer::Base.perform_deliveries = true
 

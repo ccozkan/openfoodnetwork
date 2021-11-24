@@ -43,7 +43,8 @@ action,
                               params.reverse_merge!(format: :json),
                               session,
                               flash,
-                              method)
+                              method
+)
   end
 
   def process_action_with_route(action, params = {}, session = nil, flash = nil, method = "GET")
@@ -52,6 +53,7 @@ action,
             method: method,
             params: params.reverse_merge!(use_route: :main_app),
             session: session,
-            flash: flash)
+            flash: flash
+)
   end
 end

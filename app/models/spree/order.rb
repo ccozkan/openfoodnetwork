@@ -302,7 +302,8 @@ lambda {
       self.class.unscoped.where(id: id).update_all(
 email: user.email,
 user_id: user.id,
-created_by_id: created_by_id)
+created_by_id: created_by_id
+)
     end
 
     # FIXME refactor this method and implement validation using validates_* utilities

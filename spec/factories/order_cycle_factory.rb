@@ -57,7 +57,8 @@ FactoryBot.define do
 :variant_override, 
 variant: variant,
                    hub: oc.distributors.first,
-                   price: variant.price + 100)
+                   price: variant.price + 100
+)
       end
     end
   end
@@ -85,7 +86,8 @@ order_cycle: oc,
            sender: supplier,
            receiver: oc.coordinator,
            incoming: true,
-           receival_instructions: "instructions #{i}")
+           receival_instructions: "instructions #{i}"
+)
         proxy.variants.each { |v| ex.variants << v }
       end
 
@@ -98,7 +100,8 @@ order_cycle: oc,
            receiver: distributor,
            incoming: false,
            pickup_time: "time #{i}",
-           pickup_instructions: "instructions #{i}")
+           pickup_instructions: "instructions #{i}"
+)
         proxy.variants.each { |v| ex.variants << v }
       end
     end

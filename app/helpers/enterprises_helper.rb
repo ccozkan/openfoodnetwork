@@ -21,7 +21,8 @@ module EnterprisesHelper
     applicator = OpenFoodNetwork::TagRuleApplicator.new(
 current_distributor,
                                                         "FilterShippingMethods", 
-current_customer&.tag_list)
+current_customer&.tag_list
+)
     applicator.filter!(shipping_methods)
 
     shipping_methods.uniq
@@ -38,7 +39,8 @@ current_customer&.tag_list)
     applicator = OpenFoodNetwork::TagRuleApplicator.new(
 current_distributor,
                                                         "FilterPaymentMethods", 
-current_customer&.tag_list)
+current_customer&.tag_list
+)
     applicator.filter!(payment_methods)
 
     payment_methods
@@ -79,7 +81,8 @@ enterprise.name + ": " + enterprise.address.address1 + ", " + enterprise.address
     if enterprise.supplied_products.present?
       I18n.t(
 :enterprise_confirm_delete_message,
-             product: pluralize(enterprise.supplied_products.count, 'product'))
+             product: pluralize(enterprise.supplied_products.count, 'product')
+)
     else
       t(:are_you_sure)
     end

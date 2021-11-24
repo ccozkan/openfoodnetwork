@@ -648,7 +648,8 @@ adjustable: order,
 originator: enterprise_fee,
              amount: 100, 
 order: order, 
-state: "closed")
+state: "closed"
+)
     }
     let!(:fee_tax1) {
       create(
@@ -657,7 +658,8 @@ adjustable: fee_adjustment,
 originator_type: "Spree::TaxRate",
              amount: 12.3, 
 order: order, 
-state: "closed")
+state: "closed"
+)
     }
     let!(:fee_tax2) {
       create(
@@ -666,7 +668,8 @@ adjustable: fee_adjustment,
 originator_type: "Spree::TaxRate",
              amount: 4.5, 
 order: order, 
-state: "closed")
+state: "closed"
+)
     }
     let!(:admin_adjustment) {
       create(
@@ -675,7 +678,8 @@ adjustable: order,
 originator: nil,
              amount: 6.7, 
 order: order, 
-state: "closed")
+state: "closed"
+)
     }
 
     it "returns a sum of all taxes on enterprise fees" do
@@ -699,7 +703,8 @@ adjustable: order,
 originator: enterprise_fee, 
 label: "EF", 
 amount: 20,
-             order: order)
+             order: order
+)
     }
     let!(:fee_tax) {
       create(
@@ -708,7 +713,8 @@ adjustable: fee,
 originator: fee_tax_rate,
              amount: 2, 
 order: order, 
-state: "closed")
+state: "closed"
+)
     }
     let!(:shipping_tax) {
       create(
@@ -717,7 +723,8 @@ adjustable: shipment,
 originator: shipping_tax_rate,
              amount: 10, 
 order: order, 
-state: "closed")
+state: "closed"
+)
     }
 
     before do
@@ -845,7 +852,8 @@ state: "closed")
       subject.order_cycle = create(
 :simple_order_cycle, 
 distributors: [distributor],
-                     variants: [variant1, variant2])
+                     variants: [variant1, variant2]
+)
       subject.distributor = distributor
 
       line_item1 = create(:line_item, order: subject, variant: variant1)
@@ -859,7 +867,8 @@ distributors: [distributor],
       new_order_cycle = create(
 :simple_order_cycle, 
 distributors: [new_distributor],
-                     variants: [variant1, variant2])
+                     variants: [variant1, variant2]
+)
 
       subject.distributor = new_distributor
       expect(subject).not_to be_valid
@@ -886,7 +895,8 @@ distributors: [new_distributor],
       it "finds only orders not in specified state" do
         o = FactoryBot.create(
 :completed_order_with_totals,
-                              distributor: create(:distributor_enterprise))
+                              distributor: create(:distributor_enterprise)
+)
         o.cancel!
         expect(Spree::Order.not_state(:canceled)).not_to include o
       end
@@ -1127,7 +1137,8 @@ distributors: [new_distributor],
 distributor: distributor, 
 shipping_fee: shipping_fee,
                             payment_fee: payment_fee,
-                            shipping_tax_category: shipping_tax_category)
+                            shipping_tax_category: shipping_tax_category
+)
     }
     let(:shipping_fee) { 3 }
     let(:payment_fee) { 5 }
@@ -1186,7 +1197,8 @@ shipping_fee: shipping_fee,
 create(
 :shipment_with, 
 :shipping_method,
-                                  shipping_method: shipping_method)
+                                  shipping_method: shipping_method
+)
 ]
         order.save
 
@@ -1240,21 +1252,24 @@ create(
 :completed_order_with_totals, 
 distributor: distributor, 
 order_cycle: order_cycle,
-                              user: order.user)
+                              user: order.user
+)
       }
       let!(:prev_order2) {
         create(
 :completed_order_with_totals, 
 distributor: distributor, 
 order_cycle: order_cycle,
-                              user: order.user)
+                              user: order.user
+)
       }
       let(:product) { create(:product) }
 
       before do
         prev_order.contents.update_or_create(
 product.variants.first,
-                                             { quantity: 1, max_quantity: 3 })
+                                             { quantity: 1, max_quantity: 3 }
+)
         prev_order2.reload # to get the right response from line_items
       end
 

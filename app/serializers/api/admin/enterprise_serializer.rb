@@ -65,7 +65,8 @@ module Api
 tag_groups, 
 tag_rule.preferred_customer_tags
                                                .split(",")
-                                               .map{ |t| { text: t } })
+                                               .map{ |t| { text: t } }
+)
           if tag_group[:rules].blank?
             tag_groups << tag_group
             tag_group[:position] = tag_groups.count
@@ -79,7 +80,8 @@ tag_rule.preferred_customer_tags
         serialized_rules =
           ActiveModel::ArraySerializer.new(
 default_rules,
-                                           each_serializer: Api::Admin::TagRuleSerializer)
+                                           each_serializer: Api::Admin::TagRuleSerializer
+)
         { tags: [], rules: serialized_rules }
       end
 

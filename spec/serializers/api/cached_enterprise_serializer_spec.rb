@@ -21,7 +21,8 @@ describe Api::CachedEnterpriseSerializer do
         create(
 :enterprise,
                is_primary_producer: true,
-               properties: [duplicate_property, different_property])
+               properties: [duplicate_property, different_property]
+)
       end
 
       it "serializes combined product and producer properties without duplicates" do
@@ -35,7 +36,8 @@ describe Api::CachedEnterpriseSerializer do
         create(
 :enterprise,
                is_primary_producer: false,
-               properties: [duplicate_property, different_property])
+               properties: [duplicate_property, different_property]
+)
       end
 
       it "does not serialize supplied properties" do

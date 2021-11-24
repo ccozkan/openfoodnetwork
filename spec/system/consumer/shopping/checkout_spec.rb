@@ -18,7 +18,8 @@ describe "As a consumer I want to check out my cart", js: true do
 suppliers: [supplier], 
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise), 
-variants: [variant])
+variants: [variant]
+)
   }
   let(:enterprise_fee) { create(:enterprise_fee, amount: 1.23, tax_category: fee_tax_category) }
   let(:fee_tax_rate) { create(:tax_rate, amount: 0.10, zone: zone, included_in_price: true) }
@@ -33,7 +34,8 @@ variants: [variant])
 order_cycle: order_cycle, 
 distributor: distributor, 
 bill_address_id: nil,
-        ship_address_id: nil)
+        ship_address_id: nil
+)
   }
   let(:shipping_tax_rate) { create(:tax_rate, amount: 0.25, zone: zone, included_in_price: true) }
   let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
@@ -44,7 +46,8 @@ bill_address_id: nil,
 require_ship_address: true, 
 name: "Frogs", 
 description: "yellow",
-                  calculator: Calculator::FlatRate.new(preferred_amount: 0.00))
+                  calculator: Calculator::FlatRate.new(preferred_amount: 0.00)
+)
   }
   let(:shipping_with_fee) {
     create(
@@ -53,7 +56,8 @@ require_ship_address: false,
 tax_category: shipping_tax_category,
                   name: "Donkeys", 
 description: "blue",
-                  calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
+                  calculator: Calculator::FlatRate.new(preferred_amount: 4.56)
+)
   }
   let(:tagged_shipping) {
     create(:shipping_method, require_ship_address: false, name: "Local", tag_list: "local")
@@ -63,19 +67,22 @@ description: "blue",
 :payment_method, 
 distributors: [distributor], 
 name: "Roger rabbit",
-                 type: "Spree::PaymentMethod::Check")
+                 type: "Spree::PaymentMethod::Check"
+)
   }
   let!(:check_with_fee) {
     create(
 :payment_method, 
 distributors: [distributor],
-                 calculator: Calculator::FlatRate.new(preferred_amount: 5.67))
+                 calculator: Calculator::FlatRate.new(preferred_amount: 5.67)
+)
   }
   let!(:paypal) do
     Spree::Gateway::PayPalExpress.create!(
 name: "Paypal", 
 environment: 'test',
-distributor_ids: [distributor.id]).tap do |pm|
+distributor_ids: [distributor.id]
+).tap do |pm|
       pm.preferred_login = 'devnull-facilitator_api1.rohanmitchell.com'
       pm.preferred_password = '1406163716'
       pm.preferred_signature = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AaTntNJ-AjvUJkWf4dgJIvcLsf1V'
@@ -195,7 +202,8 @@ distributor_ids: [distributor.id]).tap do |pm|
           visit checkout_path
           expect(page).to have_link(
 "Terms and Conditions",
-                                    href: order.distributor.terms_and_conditions.url)
+                                    href: order.distributor.terms_and_conditions.url
+)
 
           expect(page).to have_button("Place order now", disabled: true)
 
@@ -298,7 +306,8 @@ distributor_ids: [distributor.id]).tap do |pm|
         within "#checkout_form" do
           expect(page).to have_link(
 "Terms and Conditions",
-                                    href: order.distributor.terms_and_conditions.url)
+                                    href: order.distributor.terms_and_conditions.url
+)
           expect(page).to have_link("Terms of service", href: tos_url)
           expect(page).to have_button("Place order now", disabled: true)
         end
@@ -318,7 +327,8 @@ distributor_ids: [distributor.id]).tap do |pm|
 :completed_order_with_totals, 
 order_cycle: order_cycle, 
 distributor: distributor,
-                              user: order.user)
+                              user: order.user
+)
       }
 
       before do
@@ -438,13 +448,15 @@ distributor: distributor,
                enterprise: distributor,
                preferred_customer_tags: "local",
                preferred_shipping_method_tags: "local",
-               preferred_matched_shipping_methods_visibility: 'visible')
+               preferred_matched_shipping_methods_visibility: 'visible'
+)
         create(
 :filter_shipping_methods_tag_rule,
                enterprise: distributor,
                is_default: true,
                preferred_shipping_method_tags: "local",
-               preferred_matched_shipping_methods_visibility: 'hidden')
+               preferred_matched_shipping_methods_visibility: 'hidden'
+)
         visit checkout_path
         checkout_as_guest
 
@@ -595,7 +607,8 @@ distributor: distributor,
 :payment_method, 
 distributors: [distributor], 
 name: "Roger rabbit",
-                 type: gateway_type)
+                 type: gateway_type
+)
               }
 
               it "takes us to the order confirmation page when submitted with a valid credit card" do
