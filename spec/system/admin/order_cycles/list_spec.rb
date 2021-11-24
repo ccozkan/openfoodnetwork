@@ -171,7 +171,6 @@ describe '
         within("tr.order-cycle-#{oc_pt.id}") do
           expect(find('input.datetimepicker', match: :first).value).to eq test_value.to_datetime.strftime("%Y-%m-%d %H:%M")
         end
-
       end
     end
   end

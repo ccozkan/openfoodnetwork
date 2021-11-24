@@ -56,7 +56,6 @@ describe "Concurrent checkouts", concurrency: true, type: :request do
     allow_any_instance_of(CheckoutController)
       .to receive(:checkout_workflow)
       .and_wrap_original do |method, *args|
-
       breakpoint_reached_counter += 1
       breakpoint.synchronize {}
       method.call(*args)
