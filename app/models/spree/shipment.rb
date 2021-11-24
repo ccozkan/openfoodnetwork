@@ -266,7 +266,8 @@ module Spree
         fee_adjustment.save!
         fee_adjustment.reload
       elsif shipping_method
-        shipping_method.create_adjustment(adjustment_label,
+        shipping_method.create_adjustment(
+adjustment_label,
                                           self,
                                           true,
                                           "open")

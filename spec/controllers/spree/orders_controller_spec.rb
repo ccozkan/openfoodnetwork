@@ -86,7 +86,8 @@ describe Spree::OrdersController, type: :controller do
   describe "confirming a payment intent" do
     let(:customer) { create(:customer) }
     let(:order) {
-      create(:order_with_totals, customer: customer, distributor: customer.enterprise,
+      create(
+:order_with_totals, customer: customer, distributor: customer.enterprise,
                                  state: "payment")
     }
     let(:payment_method) { create(:stripe_sca_payment_method) }
@@ -246,7 +247,8 @@ describe Spree::OrdersController, type: :controller do
       let(:order) { subject.current_order(true) }
       let(:oc) { create(:simple_order_cycle, distributors: [d], variants: [variant]) }
       let(:d) {
-        create(:distributor_enterprise, shipping_methods: [create(:shipping_method)],
+        create(
+:distributor_enterprise, shipping_methods: [create(:shipping_method)],
                                         payment_methods: [create(:payment_method)])
       }
       let(:variant) { create(:variant, on_demand: false, on_hand: 5) }
@@ -351,7 +353,8 @@ line_items_attributes: {
       }
       let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
       let(:order) {
-        create(:completed_order_with_fees, distributor: distributor, shipping_fee: shipping_fee,
+        create(
+:completed_order_with_fees, distributor: distributor, shipping_fee: shipping_fee,
                                            payment_fee: payment_fee, shipping_tax_category: shipping_tax_category)
       }
       let(:line_item1) { order.line_items.first }
@@ -400,11 +403,13 @@ line_items_attributes: {
       let(:order_cycle) { create(:simple_order_cycle, distributors: [distributor]) }
       let(:enterprise_fee) { create(:enterprise_fee, calculator: build(:calculator_per_item) ) }
       let!(:exchange) {
-        create(:exchange, incoming: true, sender: variant1.product.supplier,
+        create(
+:exchange, incoming: true, sender: variant1.product.supplier,
                           receiver: order_cycle.coordinator, variants: [variant1, variant2], enterprise_fees: [enterprise_fee])
       }
       let!(:order) do
-        order = create(:completed_order_with_totals, line_items_count: 2, user: user,
+        order = create(
+:completed_order_with_totals, line_items_count: 2, user: user,
                                                      distributor: distributor, order_cycle: order_cycle)
         order.reload.line_items.first.update(variant_id: variant1.id)
         order.reload.line_items.last.update(variant_id: variant2.id)
@@ -592,7 +597,8 @@ line_items_attributes: {
 
       context "when the order is complete" do
         let(:order) {
-          create(:completed_order_with_totals, user: user,
+          create(
+:completed_order_with_totals, user: user,
                                                distributor: create(:distributor_enterprise))
         }
 

@@ -10,17 +10,20 @@ describe SubscriptionConfirmJob do
   describe "finding proxy_orders that are ready to be confirmed" do
     let(:shop) { create(:distributor_enterprise) }
     let(:order_cycle1) {
-      create(:simple_order_cycle, coordinator: shop, orders_close_at: 59.minutes.ago,
+      create(
+:simple_order_cycle, coordinator: shop, orders_close_at: 59.minutes.ago,
                                   updated_at: 1.day.ago)
     }
     let(:order_cycle2) {
-      create(:simple_order_cycle, coordinator: shop, orders_close_at: 61.minutes.ago,
+      create(
+:simple_order_cycle, coordinator: shop, orders_close_at: 61.minutes.ago,
                                   updated_at: 1.day.ago)
     }
     let(:schedule) { create(:schedule, order_cycles: [order_cycle1, order_cycle2]) }
     let(:subscription) { create(:subscription, with_items: true, shop: shop, schedule: schedule) }
     let!(:proxy_order) do
-      create(:proxy_order, subscription: subscription, order_cycle: order_cycle1,
+      create(
+:proxy_order, subscription: subscription, order_cycle: order_cycle1,
                            placed_at: 5.minutes.ago)
     end
     let!(:order) { proxy_order.initialise_order! }

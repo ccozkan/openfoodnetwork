@@ -6,7 +6,8 @@ describe Api::Admin::CustomerSerializer do
   let(:tag_list) { ["one", "two", "three"] }
   let(:customer) { create(:customer, tag_list: tag_list) }
   let!(:tag_rule) {
-    create(:filter_order_cycles_tag_rule, enterprise: customer.enterprise,
+    create(
+:filter_order_cycles_tag_rule, enterprise: customer.enterprise,
                                           preferred_customer_tags: "two")
   }
 

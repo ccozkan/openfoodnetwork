@@ -19,11 +19,13 @@ describe "Packing Reports", js: true do
     }
     let(:distributor) { create(:distributor_enterprise, address: distributor_address) }
     let(:order1) {
-      create(:completed_order_with_totals, line_items_count: 0, distributor: distributor,
+      create(
+:completed_order_with_totals, line_items_count: 0, distributor: distributor,
                                            bill_address: bill_address1)
     }
     let(:order2) {
-      create(:completed_order_with_totals, line_items_count: 0, distributor: distributor,
+      create(
+:completed_order_with_totals, line_items_count: 0, distributor: distributor,
                                            bill_address: bill_address2)
     }
     let(:supplier) { create(:supplier_enterprise, name: "Supplier") }
@@ -50,7 +52,8 @@ describe "Packing Reports", js: true do
 
         rows = find("table#listing_orders").all("thead tr")
         table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-        expect(table).to eq([
+        expect(table).to eq(
+[
                               [
 "Hub", "Code", "First Name", "Last Name", "Supplier",
                                "Product", "Variant", "Quantity", "TempControlled?"].map(&:upcase)
@@ -64,7 +67,8 @@ describe "Packing Reports", js: true do
 
         rows = find("table#listing_orders").all("tr")
         table = rows.map { |r| r.all("th,td").map { |c| c.text.strip }[3] }
-        expect(table).to eq([
+        expect(table).to eq(
+[
                               "LAST NAME",
                               order2.bill_address.lastname,
                               "",
@@ -84,7 +88,8 @@ describe "Packing Reports", js: true do
 
         rows = find("table#listing_orders").all("thead tr")
         table = rows.map { |r| r.all("th").map { |c| c.text.strip } }
-        expect(table).to eq([
+        expect(table).to eq(
+[
                               [
 "Hub", "Supplier", "Code", "First Name", "Last Name",
                                "Product", "Variant", "Quantity", "TempControlled?"].map(&:upcase)
@@ -98,7 +103,8 @@ describe "Packing Reports", js: true do
     let(:distributor) { create(:distributor_enterprise) }
     let(:oc) { create(:simple_order_cycle) }
     let(:order) {
-      create(:completed_order_with_totals, line_items_count: 0, completed_at: 1.day.ago,
+      create(
+:completed_order_with_totals, line_items_count: 0, completed_at: 1.day.ago,
                                            order_cycle: oc, distributor: distributor)
     }
     let(:li1) { build(:line_item_with_shipment) }

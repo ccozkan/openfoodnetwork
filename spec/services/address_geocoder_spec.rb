@@ -6,7 +6,8 @@ describe AddressGeocoder do
   let(:australia) { Spree::Country.find_or_create_by!(name: "Australia") }
   let(:victoria) { Spree::State.find_or_create_by(name: "Victoria", country: australia) }
   let(:address) do
-    create(:address,
+    create(
+:address,
            address1: "12 Galvin Street",
            address2: "Unit 1",
            city: "Altona",

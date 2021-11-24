@@ -17,7 +17,8 @@ describe Spree::Order::Checkout do
 
     it "has the following transitions" do
       transitions.each do |transition|
-        transition = Spree::Order.find_transition(from: transition.keys.first,
+        transition = Spree::Order.find_transition(
+from: transition.keys.first,
                                                   to: transition.values.first)
         expect(transition).to_not be_nil
       end
@@ -61,7 +62,8 @@ describe Spree::Order::Checkout do
 
     it "cannot transition to address without any line items" do
       expect(order.line_items).to be_blank
-      expect(lambda { order.next! }).to raise_error(StateMachines::InvalidTransition,
+      expect(lambda { order.next! }).to raise_error(
+StateMachines::InvalidTransition,
                                                     /#{Spree.t(:there_are_no_items_for_this_order)}/)
     end
 
@@ -84,7 +86,8 @@ describe Spree::Order::Checkout do
         context "if there are no shipping rates for any shipment" do
           specify do
             transition = lambda { order.next! }
-            expect(transition).to raise_error(StateMachines::InvalidTransition,
+            expect(transition).to raise_error(
+StateMachines::InvalidTransition,
                                               /#{Spree.t(:items_cannot_be_shipped)}/)
           end
         end
@@ -152,7 +155,8 @@ describe Spree::Order::Checkout do
     let(:other_variant) { other_product.variants.first }
 
     before do
-      order.order_cycle = create(:simple_order_cycle,
+      order.order_cycle = create(
+:simple_order_cycle,
                                  distributors: [order.distributor],
                                  variants: [order.line_items.first.variant, other_variant])
       order.line_items << create(:line_item, order: order, variant: other_variant)

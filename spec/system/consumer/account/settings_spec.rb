@@ -8,7 +8,8 @@ describe "Account Settings", js: true do
 
   describe "as a logged in user" do
     let(:user) do
-      create(:user,
+      create(
+:user,
              email: 'old@email.com',
              password: 'OriginalPassword',
              password_confirmation: 'OriginalPassword')
@@ -38,7 +39,8 @@ describe "Account Settings", js: true do
       expect(user.email).to eq 'old@email.com'
       expect(user.unconfirmed_email).to eq 'new@email.com'
       find("a", text: /#{I18n.t('spree.users.show.tabs.settings')}/i).click
-      expect(page).to have_content I18n.t('spree.users.show.unconfirmed_email',
+      expect(page).to have_content I18n.t(
+'spree.users.show.unconfirmed_email',
                                           unconfirmed_email: 'new@email.com')
     end
 

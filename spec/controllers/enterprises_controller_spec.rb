@@ -10,11 +10,13 @@ describe EnterprisesController, type: :controller do
     let!(:current_distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
     let!(:distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
     let!(:order_cycle1) {
-      create(:simple_order_cycle, distributors: [distributor], orders_open_at: 2.days.ago,
+      create(
+:simple_order_cycle, distributors: [distributor], orders_open_at: 2.days.ago,
                                   orders_close_at: 3.days.from_now, variants: [line_item.variant] )
     }
     let!(:order_cycle2) {
-      create(:simple_order_cycle, distributors: [distributor], orders_open_at: 3.days.ago,
+      create(
+:simple_order_cycle, distributors: [distributor], orders_open_at: 3.days.ago,
                                   orders_close_at: 4.days.from_now )
     }
 
@@ -55,19 +57,22 @@ describe EnterprisesController, type: :controller do
 
     context "using FilterOrderCycles tag rules" do
       let!(:order_cycle3) {
-        create(:simple_order_cycle, distributors: [distributor], orders_open_at: 3.days.ago,
+        create(
+:simple_order_cycle, distributors: [distributor], orders_open_at: 3.days.ago,
                                     orders_close_at: 4.days.from_now)
       }
       let!(:oc3_exchange) { order_cycle3.exchanges.outgoing.to_enterprise(distributor).first }
       let(:customer) { create(:customer, user: user, enterprise: distributor) }
 
       it "shows order cycles allowed by the rules" do
-        create(:filter_order_cycles_tag_rule,
+        create(
+:filter_order_cycles_tag_rule,
                enterprise: distributor,
                preferred_customer_tags: "wholesale",
                preferred_exchange_tags: "wholesale",
                preferred_matched_order_cycles_visibility: 'visible')
-        create(:filter_order_cycles_tag_rule,
+        create(
+:filter_order_cycles_tag_rule,
                enterprise: distributor,
                is_default: true,
                preferred_exchange_tags: "wholesale",

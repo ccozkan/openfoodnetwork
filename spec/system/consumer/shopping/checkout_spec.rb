@@ -13,7 +13,8 @@ describe "As a consumer I want to check out my cart", js: true do
   let(:distributor) { create(:distributor_enterprise, charges_sales_tax: true) }
   let(:supplier) { create(:supplier_enterprise) }
   let!(:order_cycle) {
-    create(:simple_order_cycle, suppliers: [supplier], distributors: [distributor],
+    create(
+:simple_order_cycle, suppliers: [supplier], distributors: [distributor],
                                 coordinator: create(:distributor_enterprise), variants: [variant])
   }
   let(:enterprise_fee) { create(:enterprise_fee, amount: 1.23, tax_category: fee_tax_category) }
@@ -24,18 +25,21 @@ describe "As a consumer I want to check out my cart", js: true do
   }
   let(:variant) { product.variants.first }
   let(:order) {
-    create(:order, order_cycle: order_cycle, distributor: distributor, bill_address_id: nil,
+    create(
+:order, order_cycle: order_cycle, distributor: distributor, bill_address_id: nil,
                    ship_address_id: nil)
   }
   let(:shipping_tax_rate) { create(:tax_rate, amount: 0.25, zone: zone, included_in_price: true) }
   let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
 
   let(:free_shipping) {
-    create(:shipping_method, require_ship_address: true, name: "Frogs", description: "yellow",
+    create(
+:shipping_method, require_ship_address: true, name: "Frogs", description: "yellow",
                              calculator: Calculator::FlatRate.new(preferred_amount: 0.00))
   }
   let(:shipping_with_fee) {
-    create(:shipping_method, require_ship_address: false, tax_category: shipping_tax_category,
+    create(
+:shipping_method, require_ship_address: false, tax_category: shipping_tax_category,
                              name: "Donkeys", description: "blue",
                              calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
   }
@@ -43,15 +47,18 @@ describe "As a consumer I want to check out my cart", js: true do
     create(:shipping_method, require_ship_address: false, name: "Local", tag_list: "local")
   }
   let!(:check_without_fee) {
-    create(:payment_method, distributors: [distributor], name: "Roger rabbit",
+    create(
+:payment_method, distributors: [distributor], name: "Roger rabbit",
                             type: "Spree::PaymentMethod::Check")
   }
   let!(:check_with_fee) {
-    create(:payment_method, distributors: [distributor],
+    create(
+:payment_method, distributors: [distributor],
                             calculator: Calculator::FlatRate.new(preferred_amount: 5.67))
   }
   let!(:paypal) do
-    Spree::Gateway::PayPalExpress.create!(name: "Paypal", environment: 'test',
+    Spree::Gateway::PayPalExpress.create!(
+name: "Paypal", environment: 'test',
                                           distributor_ids: [distributor.id]).tap do |pm|
       pm.preferred_login = 'devnull-facilitator_api1.rohanmitchell.com'
       pm.preferred_password = '1406163716'
@@ -170,7 +177,8 @@ describe "As a consumer I want to check out my cart", js: true do
       describe "when customer has not accepted T&Cs before" do
         it "shows a link to the T&Cs and disables checkout button until terms are accepted" do
           visit checkout_path
-          expect(page).to have_link("Terms and Conditions",
+          expect(page).to have_link(
+"Terms and Conditions",
                                     href: order.distributor.terms_and_conditions.url)
 
           expect(page).to have_button("Place order now", disabled: true)
@@ -272,7 +280,8 @@ describe "As a consumer I want to check out my cart", js: true do
         visit checkout_path
 
         within "#checkout_form" do
-          expect(page).to have_link("Terms and Conditions",
+          expect(page).to have_link(
+"Terms and Conditions",
                                     href: order.distributor.terms_and_conditions.url)
           expect(page).to have_link("Terms of service", href: tos_url)
           expect(page).to have_button("Place order now", disabled: true)
@@ -289,7 +298,8 @@ describe "As a consumer I want to check out my cart", js: true do
 
     context "with previous orders" do
       let!(:prev_order) {
-        create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
+        create(
+:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
                                              user: order.user)
       }
 
@@ -405,12 +415,14 @@ describe "As a consumer I want to check out my cart", js: true do
         expect(page).to have_content "Donkeys"
         expect(page).to have_content "Local"
 
-        create(:filter_shipping_methods_tag_rule,
+        create(
+:filter_shipping_methods_tag_rule,
                enterprise: distributor,
                preferred_customer_tags: "local",
                preferred_shipping_method_tags: "local",
                preferred_matched_shipping_methods_visibility: 'visible')
-        create(:filter_shipping_methods_tag_rule,
+        create(
+:filter_shipping_methods_tag_rule,
                enterprise: distributor,
                is_default: true,
                preferred_shipping_method_tags: "local",
@@ -561,7 +573,8 @@ describe "As a consumer I want to check out my cart", js: true do
           ["Spree::Gateway::Bogus", "Spree::Gateway::BogusSimple"].each do |gateway_type|
             context "with a credit card payment method using #{gateway_type}" do
               let!(:check_without_fee) {
-                create(:payment_method, distributors: [distributor], name: "Roger rabbit",
+                create(
+:payment_method, distributors: [distributor], name: "Roger rabbit",
                                         type: gateway_type)
               }
 

@@ -53,7 +53,8 @@ class ApplicationController < ActionController::Base
   respond_to :html
 
   def redirect_to(options = {}, response_status = {})
-    ::Rails.logger.error("Redirected by #{begin
+    ::Rails.logger.error(
+"Redirected by #{begin
       caller(1).first
     rescue StandardError
       'unknown'

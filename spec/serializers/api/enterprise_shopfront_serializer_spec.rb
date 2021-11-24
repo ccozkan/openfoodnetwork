@@ -17,7 +17,8 @@ describe Api::EnterpriseShopfrontSerializer do
   let!(:oc) { create(:simple_order_cycle, orders_close_at: close_time, distributors: [hub]) }
 
   let!(:ex) {
-    create(:exchange, order_cycle: oc, incoming: false,
+    create(
+:exchange, order_cycle: oc, incoming: false,
                       sender: producer, receiver: hub)
   }
 

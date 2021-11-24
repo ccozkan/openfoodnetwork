@@ -16,7 +16,8 @@ describe "Order Management", js: true do
     let!(:shipping_method) { create(:free_shipping_method, distributors: [distributor]) }
 
     let!(:order) do
-      create(:order_with_credit_payment,
+      create(
+:order_with_credit_payment,
              customer: customer,
              user: user,
              distributor: distributor,
@@ -35,7 +36,8 @@ describe "Order Management", js: true do
     context "when checking out as an anonymous guest" do
       let!(:customer) { nil }
       let!(:order) do
-        create(:order_with_credit_payment,
+        create(
+:order_with_credit_payment,
                user: nil,
                email: "guest@user.com",
                distributor: distributor,

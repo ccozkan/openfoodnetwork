@@ -76,7 +76,8 @@ describe VariantOverride do
 
           it "is invalid" do
             expect(variant_override).not_to be_valid
-            error_message = I18n.t("using_producer_stock_settings_but_count_on_hand_set",
+            error_message = I18n.t(
+"using_producer_stock_settings_but_count_on_hand_set",
                                    scope: [i18n_scope_for_error, "count_on_hand"])
             expect(variant_override.errors[:count_on_hand]).to eq([error_message])
           end
@@ -99,7 +100,8 @@ describe VariantOverride do
 
           it "is invalid" do
             expect(variant_override).not_to be_valid
-            error_message = I18n.t("on_demand_but_count_on_hand_set",
+            error_message = I18n.t(
+"on_demand_but_count_on_hand_set",
                                    scope: [i18n_scope_for_error, "count_on_hand"])
             expect(variant_override.errors[:count_on_hand]).to eq([error_message])
           end
@@ -114,7 +116,8 @@ describe VariantOverride do
 
           it "is invalid" do
             expect(variant_override).not_to be_valid
-            error_message = I18n.t("limited_stock_but_no_count_on_hand",
+            error_message = I18n.t(
+"limited_stock_but_no_count_on_hand",
                                    scope: [i18n_scope_for_error, "count_on_hand"])
             expect(variant_override.errors[:count_on_hand]).to eq([error_message])
           end
@@ -265,7 +268,8 @@ describe VariantOverride do
   describe "resetting stock levels" do
     describe "forcing the on hand level to the value in the default_stock field" do
       it "succeeds for variant override that forces limited stock" do
-        vo = create(:variant_override, variant: variant, hub: hub, count_on_hand: 12,
+        vo = create(
+:variant_override, variant: variant, hub: hub, count_on_hand: 12,
                                        default_stock: 20, resettable: true)
         vo.reset_stock!
 
@@ -275,7 +279,8 @@ describe VariantOverride do
       end
 
       it "succeeds for variant override that forces unlimited stock" do
-        vo = create(:variant_override, :on_demand, variant: variant, hub: hub, default_stock: 20,
+        vo = create(
+:variant_override, :on_demand, variant: variant, hub: hub, default_stock: 20,
                                                    resettable: true)
         vo.reset_stock!
 
@@ -285,7 +290,8 @@ describe VariantOverride do
       end
 
       it "succeeds for variant override that uses producer stock settings" do
-        vo = create(:variant_override, :use_producer_stock_settings, variant: variant, hub: hub,
+        vo = create(
+:variant_override, :use_producer_stock_settings, variant: variant, hub: hub,
                                                                      default_stock: 20, resettable: true)
         vo.reset_stock!
 
@@ -296,7 +302,8 @@ describe VariantOverride do
     end
 
     it "silently logs an error if the variant override doesn't have a default stock level" do
-      vo = create(:variant_override, variant: variant, hub: hub, count_on_hand: 12,
+      vo = create(
+:variant_override, variant: variant, hub: hub, count_on_hand: 12,
                                      default_stock: nil, resettable: true)
       expect(Bugsnag).to receive(:notify)
       vo.reset_stock!
@@ -304,7 +311,8 @@ describe VariantOverride do
     end
 
     it "doesn't reset the level if the behaviour is disabled" do
-      vo = create(:variant_override, variant: variant, hub: hub, count_on_hand: 12,
+      vo = create(
+:variant_override, variant: variant, hub: hub, count_on_hand: 12,
                                      default_stock: 10, resettable: false)
       vo.reset_stock!
       expect(vo.reload.count_on_hand).to eq(12)

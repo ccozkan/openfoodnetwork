@@ -23,7 +23,8 @@ describe Checkout::FormDataAdapter do
         before { params["payment_source"] = { "123" => source_attributes } }
 
         it "moves payment source attributes to the order payment attributes" do
-          expect(adapter.params[:order][:payments_attributes]
+          expect(
+adapter.params[:order][:payments_attributes]
                    .first[:source_attributes]).to eq source_attributes
         end
       end
@@ -67,7 +68,8 @@ describe Checkout::FormDataAdapter do
 
           it "adds card details to payment attributes" do
             expect(adapter.params[:order][:payments_attributes].first[:source][:id]).to eq credit_card.id
-            expect(adapter.params[:order][:payments_attributes]
+            expect(
+adapter.params[:order][:payments_attributes]
                      .first[:source][:last_digits]).to eq credit_card.last_digits
           end
         end

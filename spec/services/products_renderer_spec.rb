@@ -100,11 +100,13 @@ describe ProductsRenderer do
     } # In exchange, not in inventory (ie. not_hidden)
     let!(:v2) { create(:variant, product: p, unit_value: 5) } # Not in exchange
     let!(:v3) {
-      create(:variant, product: p, unit_value: 7,
+      create(
+:variant, product: p, unit_value: 7,
                        inventory_items: [create(:inventory_item, enterprise: hub, visible: true)])
     }
     let!(:v4) {
-      create(:variant, product: p, unit_value: 9,
+      create(
+:variant, product: p, unit_value: 9,
                        inventory_items: [create(:inventory_item, enterprise: hub, visible: false)])
     }
     let(:products_renderer) { ProductsRenderer.new(hub, oc, customer) }

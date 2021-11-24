@@ -22,7 +22,8 @@ module Permissions
       create(:order, order_cycle: order_cycle, distributor: distributor, state: 'cart' )
     }
     let(:order_from_last_year) {
-      create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
+      create(
+:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
                                            completed_at: Time.zone.now - 1.year)
     }
 
@@ -82,7 +83,8 @@ module Permissions
           allow(basic_permissions).to receive(:managed_enterprises) {
                                         Enterprise.where(id: producer)
                                       }
-          create(:enterprise_relationship, parent: producer, child: distributor,
+          create(
+:enterprise_relationship, parent: producer, child: distributor,
                                            permissions_list: [:add_to_order_cycle])
         end
 
@@ -160,7 +162,8 @@ module Permissions
           allow(basic_permissions).to receive(:managed_enterprises) {
                                         Enterprise.where(id: producer)
                                       }
-          create(:enterprise_relationship, parent: producer, child: distributor,
+          create(
+:enterprise_relationship, parent: producer, child: distributor,
                                            permissions_list: [:add_to_order_cycle])
 
           line_item1.product.supplier = producer

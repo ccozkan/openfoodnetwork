@@ -22,7 +22,8 @@ namespace :ofn do
             puts "Last edited on #{subscription.updated_at}"
             puts "Canceled at #{subscription.canceled_at} and paused at #{subscription.paused_at}"
 
-            ProxyOrder.where(order_cycle_id: order_cycle_id,
+            ProxyOrder.where(
+order_cycle_id: order_cycle_id,
                              subscription_id: subscription.id).each do |proxy_order|
               puts
               puts "Proxy Order #{proxy_order.id}"
@@ -41,7 +42,8 @@ namespace :ofn do
                 if payment.source_type == "Spree::CreditCard"
                   puts "Source #{payment.source.to_json}"
                 end
-                Spree::LogEntry.where(source_type: "Spree::Payment",
+                Spree::LogEntry.where(
+source_type: "Spree::Payment",
                                       source_id: payment.id).each do |log_entry|
                   puts "Log Entries found"
                   puts log_entry.details

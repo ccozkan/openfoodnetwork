@@ -11,7 +11,8 @@ describe "Darkswarm data caching", js: true, caching: true do
     create(:distributor_enterprise, with_payment_and_shipping: true, is_primary_producer: true)
   }
   let!(:product) {
-    create(:simple_product, supplier: producer, primary_taxon: taxon, taxons: [taxon],
+    create(
+:simple_product, supplier: producer, primary_taxon: taxon, taxons: [taxon],
                             properties: [property])
   }
   let!(:order_cycle) {

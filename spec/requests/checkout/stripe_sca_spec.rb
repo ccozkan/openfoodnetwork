@@ -67,14 +67,16 @@ describe "checking out an order with a Stripe SCA payment method", type: :reques
   end
   let(:payment_intent_response_mock) do
     {
-      status: 200, body: JSON.generate(object: "payment_intent",
+      status: 200, body: JSON.generate(
+object: "payment_intent",
                                        amount: 2000,
                                        charges: { data: [{ id: "ch_1234", amount: 2000 }] })
     }
   end
   let(:payment_intent_authorize_response_mock) do
     {
-      status: 200, body: JSON.generate(id: payment_intent_id,
+      status: 200, body: JSON.generate(
+id: payment_intent_id,
                                        object: "payment_intent",
                                        amount: 2000,
                                        status: "requires_capture", last_payment_error: nil,
@@ -188,7 +190,8 @@ describe "checking out an order with a Stripe SCA payment method", type: :reques
         .to_return(customer_response_mock)
 
       # Attaches the payment method to the customer in the hub's stripe account
-      stub_request(:post,
+      stub_request(
+:post,
                    "https://api.stripe.com/v1/payment_methods/#{hubs_stripe_payment_method}/attach")
         .with(body: { customer: customer_id },
               headers: { 'Stripe-Account' => 'abc123' })
@@ -208,7 +211,8 @@ describe "checking out an order with a Stripe SCA payment method", type: :reques
         source_attributes[:save_requested_by_customer] = '1'
 
         # Attaches the payment method to the customer
-        stub_request(:post,
+        stub_request(
+:post,
                      "https://api.stripe.com/v1/payment_methods/#{stripe_payment_method}/attach")
           .with(body: { customer: customer_id })
           .to_return(payment_method_attach_response_mock)
@@ -335,7 +339,8 @@ describe "checking out an order with a Stripe SCA payment method", type: :reques
       context "when the stripe API sends a url for the authorization of the transaction" do
         let(:payment_intent_authorize_response_mock) do
           { 
-status: 200, body: JSON.generate(id: payment_intent_id,
+status: 200, body: JSON.generate(
+id: payment_intent_id,
                                              object: "payment_intent",
                                              next_source_action: {
                                                type: "authorize_with_url",

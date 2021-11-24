@@ -17,7 +17,8 @@ describe "spree/admin/payment_methods/index.html.haml" do
       def object_url(_object = nil, _options = {}) "" end
     end
 
-    assign(:payment_methods, [
+    assign(
+:payment_methods, [
              create(:payment_method),
              create(:payment_method)
            ])

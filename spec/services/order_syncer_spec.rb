@@ -143,7 +143,8 @@ describe OrderSyncer do
     let!(:distributor_address) { create(:address, :randomized) }
     let!(:distributor) { create(:distributor_enterprise, address: distributor_address) }
     let(:subscription) do
-      create(:subscription, shop: distributor, shipping_method: shipping_method, with_items: true,
+      create(
+:subscription, shop: distributor, shipping_method: shipping_method, with_items: true,
                             with_proxy_orders: true)
     end
     let!(:order) { subscription.proxy_orders.first.initialise_order! }
@@ -253,7 +254,8 @@ id: bill_address_attrs["id"], firstname: "Bill",
     let!(:distributor_address) { create(:address, :randomized) }
     let!(:distributor) { create(:distributor_enterprise, address: distributor_address) }
     let!(:subscription) do
-      create(:subscription, shop: distributor, shipping_method: shipping_method, with_items: true,
+      create(
+:subscription, shop: distributor, shipping_method: shipping_method, with_items: true,
                             with_proxy_orders: true)
     end
     let!(:order) { subscription.proxy_orders.first.initialise_order! }
@@ -294,13 +296,15 @@ id: ship_address_attrs["id"], firstname: "Ship",
         context "when the original ship address is the bill contact using distributor address" do
           let!(:original_bill_address) { create(:address, :randomized) }
           let!(:original_ship_address) do
-            create(:address, firstname: original_bill_address.firstname,
+            create(
+:address, firstname: original_bill_address.firstname,
                              lastname: original_bill_address.lastname,
                              address1: distributor_address.address1,
                              phone: original_bill_address.phone)
           end
           let(:subscription) do
-            create(:subscription, shop: distributor, bill_address: original_bill_address,
+            create(
+:subscription, shop: distributor, bill_address: original_bill_address,
                                   ship_address: original_ship_address,
                                   shipping_method: shipping_method, with_items: true,
                                   with_proxy_orders: true)
@@ -396,7 +400,8 @@ id: ship_address_attrs["id"], firstname: "Ship",
         expect(order.reload.total.to_f).to eq 59.97
         subscription.assign_attributes(params)
         expect(syncer.sync!).to be true
-        line_items = Spree::LineItem.where(order_id: subscription.orders,
+        line_items = Spree::LineItem.where(
+order_id: subscription.orders,
                                            variant_id: sli.variant_id)
         expect(line_items.map(&:quantity)).to eq [2]
         expect(order.reload.total.to_f).to eq 79.96
@@ -416,7 +421,8 @@ id: ship_address_attrs["id"], firstname: "Ship",
         it "updates the line_item quantities and totals on all orders" do
           expect(syncer.sync!).to be true
 
-          line_items = Spree::LineItem.where(order_id: subscription.orders,
+          line_items = Spree::LineItem.where(
+order_id: subscription.orders,
                                              variant_id: sli.variant_id)
           expect(line_items.map(&:quantity)).to eq [3]
           expect(order.reload.total.to_f).to eq 99.95
@@ -429,7 +435,8 @@ id: ship_address_attrs["id"], firstname: "Ship",
 
           expect(syncer.sync!).to be true
 
-          line_items = Spree::LineItem.where(order_id: subscription.orders,
+          line_items = Spree::LineItem.where(
+order_id: subscription.orders,
                                              variant_id: sli.variant_id)
           expect(line_items.map(&:quantity)).to eq [1]
           expect(order.reload.total.to_f).to eq 59.97
@@ -549,7 +556,8 @@ id: ship_address_attrs["id"], firstname: "Ship",
           it "does nothing to the order and adds the order to order_update_issues" do
             expect(syncer.sync!).to be true
 
-            line_items = Spree::LineItem.where(order_id: subscription.orders,
+            line_items = Spree::LineItem.where(
+order_id: subscription.orders,
                                                variant_id: variant.id)
             expect(line_items.map(&:quantity)).to eq []
 
@@ -562,7 +570,8 @@ subscription_line_items_attributes: [
             subscription.assign_attributes(params)
             expect(syncer.sync!).to be true
 
-            line_items = Spree::LineItem.where(order_id: subscription.orders,
+            line_items = Spree::LineItem.where(
+order_id: subscription.orders,
                                                variant_id: variant.id)
             expect(line_items.map(&:quantity)).to eq []
             expect(syncer.order_update_issues[order.id]).to include "#{variant.product.name} - #{variant.full_name}"

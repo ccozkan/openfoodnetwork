@@ -274,7 +274,8 @@ module Spree
         let(:bill_address) { create(:address) }
         let!(:variant_on_demand) { create(:variant, on_demand: true, on_hand: 1) }
         let!(:order) {
-          create(:order,
+          create(
+:order,
                  distributor: hub,
                  order_cycle: create(:simple_order_cycle),
                  bill_address: bill_address,
@@ -448,7 +449,8 @@ module Spree
       let(:li_tax)      { create(:line_item) }
       let(:tax_rate)    { create(:tax_rate, calculator: ::Calculator::DefaultTax.new) }
       let!(:adjustment) {
-        create(:adjustment, adjustable: li_tax, originator: tax_rate, label: "TR",
+        create(
+:adjustment, adjustable: li_tax, originator: tax_rate, label: "TR",
                             amount: 10.00, included: true)
       }
 
@@ -476,7 +478,8 @@ module Spree
     describe "unit value/description" do
       describe "inheriting units" do
         let!(:p) {
-          create(:product, variant_unit: "weight", variant_unit_scale: 1,
+          create(
+:product, variant_unit: "weight", variant_unit_scale: 1,
                            master: create(:variant, unit_value: 1000 ))
         }
         let!(:v) { p.variants.first }

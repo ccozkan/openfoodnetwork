@@ -23,7 +23,8 @@ class CacheService
   end
 
   def self.home_stats(statistic, &block)
-    Rails.cache.fetch("home_stats_count_#{statistic}",
+    Rails.cache.fetch(
+"home_stats_count_#{statistic}",
                       expires_in: HOME_STATS_EXPIRY,
                       race_condition_ttl: 10, &block)
   end

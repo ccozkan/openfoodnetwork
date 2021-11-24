@@ -27,10 +27,12 @@ class OrderCycleWarning
     distributor_names = distributors.map(&:name).join ', '
 
     if distributors.count > 1
-      I18n.t(:active_distributors_not_ready_for_checkout_message_plural,
+      I18n.t(
+:active_distributors_not_ready_for_checkout_message_plural,
              distributor_names: distributor_names)
     else
-      I18n.t(:active_distributors_not_ready_for_checkout_message_singular,
+      I18n.t(
+:active_distributors_not_ready_for_checkout_message_singular,
              distributor_names: distributor_names)
     end
   end

@@ -50,7 +50,8 @@ describe EnterpriseRelationship do
 
       context "updating an existing list of permissions" do
         let(:er) {
-          create(:enterprise_relationship, parent: e1, child: e2,
+          create(
+:enterprise_relationship, parent: e1, child: e2,
                                            permissions_list: ["one", "two", "three"])
         }
         it "creates a new permission for each item in the list that has no existing permission" do
@@ -100,11 +101,14 @@ describe EnterpriseRelationship do
     end
 
     it "finds relationships that grant a particular permission" do
-      er1 = create(:enterprise_relationship, parent: e1, child: e2,
+      er1 = create(
+:enterprise_relationship, parent: e1, child: e2,
                                              permissions_list: ['one', 'two'])
-      er2 = create(:enterprise_relationship, parent: e2, child: e3,
+      er2 = create(
+:enterprise_relationship, parent: e2, child: e3,
                                              permissions_list: ['two', 'three'])
-      er3 = create(:enterprise_relationship, parent: e3, child: e1,
+      er3 = create(
+:enterprise_relationship, parent: e3, child: e1,
                                              permissions_list: ['three', 'four'])
 
       expect(EnterpriseRelationship.with_permission('two')).to match_array [er1, er2]
@@ -154,23 +158,28 @@ describe EnterpriseRelationship do
 
       context "when variant_override permission is present" do
         let!(:er) {
-          create(:enterprise_relationship, child: hub, parent: producer,
+          create(
+:enterprise_relationship, child: hub, parent: producer,
                                            permissions_list: [:add_to_order_cycles, :create_variant_overrides] )
         }
         let!(:some_other_er) {
-          create(:enterprise_relationship, child: hub, parent: some_other_producer,
+          create(
+:enterprise_relationship, child: hub, parent: some_other_producer,
                                            permissions_list: [:add_to_order_cycles, :create_variant_overrides] )
         }
         let!(:vo1) {
-          create(:variant_override, hub: hub,
+          create(
+:variant_override, hub: hub,
                                     variant: create(:variant, product: create(:product, supplier: producer)))
         }
         let!(:vo2) {
-          create(:variant_override, hub: hub,
+          create(
+:variant_override, hub: hub,
                                     variant: create(:variant, product: create(:product, supplier: producer)))
         }
         let!(:vo3) {
-          create(:variant_override, hub: hub,
+          create(
+:variant_override, hub: hub,
                                     variant: create(:variant, product: create(:product, supplier: some_other_producer)))
         }
 
@@ -210,23 +219,28 @@ describe EnterpriseRelationship do
 
       context "when variant_override permission is not present" do
         let!(:er) {
-          create(:enterprise_relationship, child: hub, parent: producer,
+          create(
+:enterprise_relationship, child: hub, parent: producer,
                                            permissions_list: [:add_to_order_cycles] )
         }
         let!(:some_other_er) {
-          create(:enterprise_relationship, child: hub, parent: some_other_producer,
+          create(
+:enterprise_relationship, child: hub, parent: some_other_producer,
                                            permissions_list: [:add_to_order_cycles] )
         }
         let!(:vo1) {
-          create(:variant_override, hub: hub,
+          create(
+:variant_override, hub: hub,
                                     variant: create(:variant, product: create(:product, supplier: producer)), permission_revoked_at: Time.now.in_time_zone)
         }
         let!(:vo2) {
-          create(:variant_override, hub: hub,
+          create(
+:variant_override, hub: hub,
                                     variant: create(:variant, product: create(:product, supplier: producer)), permission_revoked_at: Time.now.in_time_zone)
         }
         let!(:vo3) {
-          create(:variant_override, hub: hub,
+          create(
+:variant_override, hub: hub,
                                     variant: create(:variant, product: create(:product, supplier: some_other_producer)), permission_revoked_at: Time.now.in_time_zone)
         }
 

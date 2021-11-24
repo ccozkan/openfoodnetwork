@@ -30,7 +30,8 @@ describe Spree::Admin::PaymentsController, type: :controller do
 
     context "order is complete" do
       let!(:order) do
-        create(:order_with_totals_and_distribution, distributor: shop,
+        create(
+:order_with_totals_and_distribution, distributor: shop,
                                                     state: "complete",
                                                     completed_at: Time.zone.now)
       end

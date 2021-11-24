@@ -277,7 +277,8 @@ module Spree
 
       # Persist the changes we just made,
       #   but don't use save since we might have an invalid address associated
-      self.class.unscoped.where(id: id).update_all(email: user.email,
+      self.class.unscoped.where(id: id).update_all(
+email: user.email,
                                                    user_id: user.id,
                                                    created_by_id: created_by_id)
     end

@@ -134,7 +134,8 @@ describe Admin::StripeAccountsController, type: :controller do
 
           context "but access has been revoked or does not exist on stripe's servers" do
             before do
-              stub_request(:get,
+              stub_request(
+:get,
                            "https://api.stripe.com/v1/accounts/acc_123").to_return(status: 404)
             end
 
@@ -156,7 +157,8 @@ describe Admin::StripeAccountsController, type: :controller do
             end
 
             before do
-              stub_request(:get,
+              stub_request(
+:get,
                            "https://api.stripe.com/v1/accounts/acc_123").to_return(body: JSON.generate(stripe_account_mock))
             end
 

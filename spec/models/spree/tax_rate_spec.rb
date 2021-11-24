@@ -8,7 +8,8 @@ module Spree
       let!(:zone) { create(:zone_with_member) }
       let!(:order) { create(:order, distributor: hub, bill_address: create(:address)) }
       let!(:tax_rate) {
-        create(:tax_rate, included_in_price: true,
+        create(
+:tax_rate, included_in_price: true,
                           calculator: ::Calculator::FlatRate.new(preferred_amount: 0.1), zone: zone)
       }
 
@@ -123,7 +124,8 @@ module Spree
 
             let(:included_in_price) { false }
             let!(:rate) do
-              Spree::TaxRate.create(amount: 1,
+              Spree::TaxRate.create(
+amount: 1,
                                     zone: @zone,
                                     tax_category: tax_category,
                                     calculator: calculator,

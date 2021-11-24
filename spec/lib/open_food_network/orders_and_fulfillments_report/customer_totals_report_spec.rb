@@ -21,7 +21,8 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
 
   context "viewing the report" do
     let!(:order) do
-      create(:completed_order_with_totals, line_items_count: 1, user: customer.user,
+      create(
+:completed_order_with_totals, line_items_count: 1, user: customer.user,
                                            customer: customer, distributor: distributor)
     end
 
@@ -42,7 +43,8 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
 
     it 'includes the order number and date in item rows' do
       order_number_and_date_fields = report_table.first[33..34]
-      expect(order_number_and_date_fields).to eq([
+      expect(order_number_and_date_fields).to eq(
+[
                                                    order.number,
                                                    order.completed_at.strftime("%F %T"),
                                                  ])
@@ -50,7 +52,8 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
 
     it 'includes the order number and date in total rows' do
       order_number_and_date_fields = report_table.last[33..34]
-      expect(order_number_and_date_fields).to eq([
+      expect(order_number_and_date_fields).to eq(
+[
                                                    order.number,
                                                    order.completed_at.strftime("%F %T"),
                                                  ])
@@ -68,7 +71,8 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
       create(:shipping_method, distributors: [distributor], name: "Third")
     }
     let!(:order) do
-      create(:completed_order_with_totals, line_items_count: 1, user: customer.user,
+      create(
+:completed_order_with_totals, line_items_count: 1, user: customer.user,
                                            customer: customer, distributor: distributor)
     end
 
@@ -86,7 +90,8 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
   context "displaying payment fees" do
     context "with both failed and completed payments present" do
       let!(:order) {
-        create(:order_ready_to_ship, user: customer.user,
+        create(
+:order_ready_to_ship, user: customer.user,
                                      customer: customer, distributor: distributor)
       }
       let(:completed_payment) { order.payments.completed.first }
@@ -106,7 +111,8 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
 
   context 'when a variant override applies' do
     let!(:order) do
-      create(:completed_order_with_totals, line_items_count: 1, user: customer.user,
+      create(
+:completed_order_with_totals, line_items_count: 1, user: customer.user,
                                            customer: customer, distributor: distributor)
     end
     let(:overidden_sku) { 'magical_sku' }

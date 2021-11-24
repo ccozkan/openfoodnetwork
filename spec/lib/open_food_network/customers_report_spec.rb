@@ -24,12 +24,14 @@ module OpenFoodNetwork
 
         it "builds a table from a list of variants" do
           order = double(:order, email: "test@test.com")
-          address = double(:billing_address, firstname: "Firsty",
+          address = double(
+:billing_address, firstname: "Firsty",
                                              lastname: "Lasty", city: "Suburbia")
           allow(order).to receive(:billing_address).and_return address
           allow(subject).to receive(:orders).and_return [order]
 
-          expect(subject.table).to eq([
+          expect(subject.table).to eq(
+[
 [
                                         "test@test.com", "Firsty", "Lasty", "Suburbia"
                                       ]])
@@ -42,7 +44,8 @@ module OpenFoodNetwork
         end
 
         it "returns headers for addresses" do
-          expect(subject.header).to eq([
+          expect(subject.header).to eq(
+[
 "First Name", "Last Name", "Billing Address", "Email",
                                         "Phone", "Hub", "Hub Address", "Shipping Method"])
         end
@@ -54,7 +57,8 @@ module OpenFoodNetwork
           o.shipments << create(:shipment)
 
           allow(subject).to receive(:orders).and_return [o]
-          expect(subject.table).to eq([
+          expect(subject.table).to eq(
+[
 [
                                         a.firstname, a.lastname,
                                         [a.address1, a.address2, a.city].join(" "),

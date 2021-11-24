@@ -79,7 +79,8 @@ module Spree
       # NOTE: the name of this method is determined by Spree::Payment::Processing
       def void(response_code, _creditcard, gateway_options)
         payment_intent_id = response_code
-        payment_intent_response = Stripe::PaymentIntent.retrieve(payment_intent_id,
+        payment_intent_response = Stripe::PaymentIntent.retrieve(
+payment_intent_id,
                                                                  stripe_account: stripe_account_id)
         gateway_options[:stripe_account] = stripe_account_id
 
@@ -87,7 +88,8 @@ module Spree
         if voidable?(payment_intent_response)
           provider.void(response_code, gateway_options)
         else
-          provider.refund(refundable_amount(payment_intent_response), response_code,
+          provider.refund(
+refundable_amount(payment_intent_response), response_code,
                           gateway_options)
         end
       end

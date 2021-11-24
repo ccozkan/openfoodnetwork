@@ -11,7 +11,8 @@ module Spree
     describe "#create and #update" do
       let!(:enterprise) { create(:distributor_enterprise, owner: user) }
       let(:payment_method) {
-        GatewayWithPassword.create!(name: "Bogus", preferred_password: "haxme",
+        GatewayWithPassword.create!(
+name: "Bogus", preferred_password: "haxme",
                                     distributor_ids: [enterprise.id])
       }
       let!(:user) { create(:user) }
@@ -115,7 +116,8 @@ name: "Invalid Payment Method", type: "Spree::InvalidType",
         let!(:enterprise1) { create(:distributor_enterprise, owner: user) }
         let!(:enterprise2) { create(:distributor_enterprise, owner: create(:user)) }
         let!(:payment_method) {
-          create(:stripe_connect_payment_method, distributor_ids: [enterprise1.id, enterprise2.id],
+          create(
+:stripe_connect_payment_method, distributor_ids: [enterprise1.id, enterprise2.id],
                                                  preferred_enterprise_id: enterprise2.id)
         }
 
@@ -178,7 +180,8 @@ name: "Invalid Payment Method", type: "Spree::InvalidType",
     context "Requesting provider preference fields" do
       let(:enterprise) { create(:distributor_enterprise) }
       let(:user) do
-        new_user = create(:user, email: 'enterprise@hub.com', password: 'blahblah',
+        new_user = create(
+:user, email: 'enterprise@hub.com', password: 'blahblah',
                                  password_confirmation: 'blahblah', )
         new_user.spree_roles = [] # for some reason unbeknown to me, this new user gets admin permissions by default.
         new_user.enterprise_roles.build(enterprise: enterprise).save

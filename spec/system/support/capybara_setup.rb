@@ -14,7 +14,8 @@ Capybara.default_normalize_ws = true
 # It could be useful to be able to configure this path from the outside (e.g., on CI).
 Capybara.save_path = ENV.fetch("CAPYBARA_ARTIFACTS", "./tmp/capybara")
 
-Capybara.singleton_class.prepend(Module.new do
+Capybara.singleton_class.prepend(
+Module.new do
   attr_accessor :last_used_session
 
   def using_session(name, &block)

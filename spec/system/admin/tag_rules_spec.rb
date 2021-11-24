@@ -101,23 +101,28 @@ describe 'Tag Rules', js: true do
 
   context "updating" do
     let!(:default_fsm_tag_rule) {
-      create(:filter_shipping_methods_tag_rule, enterprise: enterprise,
+      create(
+:filter_shipping_methods_tag_rule, enterprise: enterprise,
                                                 preferred_matched_shipping_methods_visibility: "visible", is_default: true, preferred_shipping_method_tags: "local" )
     }
     let!(:fp_tag_rule) {
-      create(:filter_products_tag_rule, enterprise: enterprise,
+      create(
+:filter_products_tag_rule, enterprise: enterprise,
                                         preferred_matched_variants_visibility: "visible", preferred_customer_tags: "member", preferred_variant_tags: "member" )
     }
     let!(:fpm_tag_rule) {
-      create(:filter_payment_methods_tag_rule, enterprise: enterprise,
+      create(
+:filter_payment_methods_tag_rule, enterprise: enterprise,
                                                preferred_matched_payment_methods_visibility: "hidden", preferred_customer_tags: "trusted", preferred_payment_method_tags: "trusted" )
     }
     let!(:foc_tag_rule) {
-      create(:filter_order_cycles_tag_rule, enterprise: enterprise,
+      create(
+:filter_order_cycles_tag_rule, enterprise: enterprise,
                                             preferred_matched_order_cycles_visibility: "visible", preferred_customer_tags: "wholesale", preferred_exchange_tags: "wholesale" )
     }
     let!(:fsm_tag_rule) {
-      create(:filter_shipping_methods_tag_rule, enterprise: enterprise,
+      create(
+:filter_shipping_methods_tag_rule, enterprise: enterprise,
                                                 preferred_matched_shipping_methods_visibility: "hidden", preferred_customer_tags: "local", preferred_shipping_method_tags: "local" )
     }
 

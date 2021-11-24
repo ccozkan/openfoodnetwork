@@ -28,7 +28,8 @@ module Spree
     context "price parsing" do
       before(:each) do
         I18n.locale = I18n.default_locale
-        I18n.backend.store_translations(:de,
+        I18n.backend.store_translations(
+:de,
                                         { 
 number: { 
 currency: { 
@@ -281,15 +282,18 @@ delimiter: '.',
         let(:v_external) { create(:variant, product: p_external) }
 
         let!(:ex_in) {
-          create(:exchange, order_cycle: oc, sender: s, receiver: oc.coordinator,
+          create(
+:exchange, order_cycle: oc, sender: s, receiver: oc.coordinator,
                             incoming: true, variants: [v1, v2])
         }
         let!(:ex_out1) {
-          create(:exchange, order_cycle: oc, sender: oc.coordinator, receiver: d1,
+          create(
+:exchange, order_cycle: oc, sender: oc.coordinator, receiver: d1,
                             incoming: false, variants: [v1])
         }
         let!(:ex_out2) {
-          create(:exchange, order_cycle: oc, sender: oc.coordinator, receiver: d2,
+          create(
+:exchange, order_cycle: oc, sender: oc.coordinator, receiver: d2,
                             incoming: false, variants: [v2])
         }
 
@@ -342,15 +346,18 @@ delimiter: '.',
               let(:other_enterprise) { create(:distributor_enterprise) }
 
               let!(:new_inventory_item) {
-                create(:inventory_item, enterprise: other_enterprise, variant: new_variant,
+                create(
+:inventory_item, enterprise: other_enterprise, variant: new_variant,
                                         visible: true )
               }
               let!(:hidden_inventory_item2) {
-                create(:inventory_item, enterprise: other_enterprise, variant: visible_variant,
+                create(
+:inventory_item, enterprise: other_enterprise, variant: visible_variant,
                                         visible: false )
               }
               let!(:visible_inventory_item2) {
-                create(:inventory_item, enterprise: other_enterprise, variant: hidden_variant,
+                create(
+:inventory_item, enterprise: other_enterprise, variant: hidden_variant,
                                         visible: true )
               }
 
@@ -383,9 +390,11 @@ delimiter: '.',
         let!(:v3) { create(:variant, product: create(:simple_product, supplier: other_producer ) ) }
 
         before do
-          create(:enterprise_relationship, parent: add_to_oc_producer, child: shop,
+          create(
+:enterprise_relationship, parent: add_to_oc_producer, child: shop,
                                            permissions_list: [:add_to_order_cycle])
-          create(:enterprise_relationship, parent: other_producer, child: shop,
+          create(
+:enterprise_relationship, parent: other_producer, child: shop,
                                            permissions_list: [:manage_products])
         end
 

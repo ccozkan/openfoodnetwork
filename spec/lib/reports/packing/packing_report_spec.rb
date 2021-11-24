@@ -9,7 +9,8 @@ describe "Packing Reports" do
     let(:distributor) { create(:distributor_enterprise) }
     let(:order_cycle) { create(:simple_order_cycle) }
     let(:order) {
-      create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
+      create(
+:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
                                            line_items_count: 0)
     }
     let(:line_item) { build(:line_item_with_shipment) }
@@ -51,7 +52,8 @@ describe "Packing Reports" do
       let(:supplier1) { create(:supplier_enterprise) }
       let(:supplier2) { create(:supplier_enterprise) }
       let(:order2) {
-        create(:completed_order_with_totals, distributor: distributor,
+        create(
+:completed_order_with_totals, distributor: distributor,
                                              bill_address: create(:address),
                                              ship_address: create(:address))
       }
@@ -77,7 +79,8 @@ describe "Packing Reports" do
 
       context "which has granted P-OC to the distributor" do
         before do
-          create(:enterprise_relationship, parent: supplier1, child: distributor,
+          create(
+:enterprise_relationship, parent: supplier1, child: distributor,
                                            permissions_list: [:add_to_order_cycle])
         end
 
@@ -111,7 +114,8 @@ describe "Packing Reports" do
       let!(:user) { create(:user) }
       let(:distributor2) { create(:distributor_enterprise) }
       let(:order3) {
-        create(:completed_order_with_totals, distributor: distributor2,
+        create(
+:completed_order_with_totals, distributor: distributor2,
                                              line_items_count: 0)
       }
       let(:line_item3) { build(:line_item_with_shipment) }
@@ -130,7 +134,8 @@ describe "Packing Reports" do
       context "filtering by order cycle" do
         let(:order_cycle2) { create(:simple_order_cycle) }
         let(:order4) {
-          create(:completed_order_with_totals, distributor: distributor, order_cycle: order_cycle2,
+          create(
+:completed_order_with_totals, distributor: distributor, order_cycle: order_cycle2,
                                                line_items_count: 0)
         }
         let(:line_item4) { build(:line_item_with_shipment) }
@@ -151,7 +156,8 @@ describe "Packing Reports" do
     describe "ordering and grouping" do
       let(:distributor2) { create(:distributor_enterprise) }
       let(:order2) {
-        create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor2,
+        create(
+:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor2,
                                              line_items_count: 2)
       }
 

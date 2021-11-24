@@ -5,7 +5,8 @@ require 'spec_helper'
 # Here we use the OrderMailer as a way to test the mail interceptor.
 describe Spree::OrderMailer do
   let(:order) do
-    Spree::Order.new(distributor: create(:enterprise),
+    Spree::Order.new(
+distributor: create(:enterprise),
                      bill_address: create(:address))
   end
   let(:message) { Spree::OrderMailer.confirm_email_for_shop(order) }

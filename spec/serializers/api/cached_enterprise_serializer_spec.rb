@@ -18,7 +18,8 @@ describe Api::CachedEnterpriseSerializer do
 
     context "when the enterprise is a producer" do
       let(:enterprise) do
-        create(:enterprise,
+        create(
+:enterprise,
                is_primary_producer: true,
                properties: [duplicate_property, different_property])
       end
@@ -31,7 +32,8 @@ describe Api::CachedEnterpriseSerializer do
 
     context "when the enterprise is not a producer" do
       let(:enterprise) do
-        create(:enterprise,
+        create(
+:enterprise,
                is_primary_producer: false,
                properties: [duplicate_property, different_property])
       end

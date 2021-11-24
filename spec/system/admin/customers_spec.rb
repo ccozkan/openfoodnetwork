@@ -57,18 +57,22 @@ describe 'Customers' do
         within "#customers thead" do
           click_on "Email"
         end
-        expect(page).to have_selector("#customers .customer:nth-child(1) .email",
+        expect(page).to have_selector(
+"#customers .customer:nth-child(1) .email",
                                       text: customer_emails[0])
-        expect(page).to have_selector("#customers .customer:nth-child(2) .email",
+        expect(page).to have_selector(
+"#customers .customer:nth-child(2) .email",
                                       text: customer_emails[1])
 
         # Then sorting in reverse when the header is clicked again
         within "#customers thead" do
           click_on "Email"
         end
-        expect(page).to have_selector("#customers .customer:nth-child(1) .email",
+        expect(page).to have_selector(
+"#customers .customer:nth-child(1) .email",
                                       text: customer_emails[1])
-        expect(page).to have_selector("#customers .customer:nth-child(2) .email",
+        expect(page).to have_selector(
+"#customers .customer:nth-child(2) .email",
                                       text: customer_emails[0])
 
         # Toggling columns
@@ -103,15 +107,18 @@ describe 'Customers' do
 
       describe "for a shop with multiple customers" do
         let!(:order1) {
-          create(:order, total: 0, payment_total: 88, distributor: managed_distributor1, user: nil,
+          create(
+:order, total: 0, payment_total: 88, distributor: managed_distributor1, user: nil,
                          state: 'complete', customer: customer1)
         }
         let!(:order2) {
-          create(:order, total: 99, payment_total: 0, distributor: managed_distributor1, user: nil,
+          create(
+:order, total: 99, payment_total: 0, distributor: managed_distributor1, user: nil,
                          state: 'complete', customer: customer2)
         }
         let!(:order3) {
-          create(:order, total: 0,  payment_total: 0, distributor: managed_distributor1, user: nil,
+          create(
+:order, total: 0,  payment_total: 0, distributor: managed_distributor1, user: nil,
                          state: 'complete', customer: customer4)
         }
 
@@ -119,7 +126,8 @@ describe 'Customers' do
           create(:stripe_sca_payment_method, distributors: [managed_distributor1])
         }
         let!(:payment1) {
-          create(:payment, order: order1, state: 'completed', payment_method: payment_method,
+          create(
+:payment, order: order1, state: 'completed', payment_method: payment_method,
                            response_code: 'pi_123', amount: 88.00)
         }
 
@@ -149,7 +157,8 @@ describe 'Customers' do
 
         context "with an additional negative payment (or refund)" do
           let!(:payment2) {
-            create(:payment, order: order1, state: 'completed', payment_method: payment_method,
+            create(
+:payment, order: order1, state: 'completed', payment_method: payment_method,
                              response_code: 'pi_123', amount: -25.00)
           }
 

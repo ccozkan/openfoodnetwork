@@ -63,7 +63,8 @@ ActiveMerchant::Billing::StripePaymentIntentsGateway.class_eval do
       # return the stripe response if expected customer id is not present
       return customer if customer_id.nil?
     end
-    commit(:post,
+    commit(
+:post,
            "payment_methods/#{params[:payment_method]}/attach",
            { customer: customer_id }, options)
     # else

@@ -24,32 +24,43 @@ module OpenFoodNetwork
 
           describe "supplier fees" do
             let!(:exchange1) {
-              create(:exchange, order_cycle: order_cycle, sender: supplier1, receiver: coordinator, incoming: true,
+              create(
+:exchange, order_cycle: order_cycle, sender: supplier1, receiver: coordinator, incoming: true,
                                 enterprise_fees: [enterprise_fee1], variants: [product1.master])
             }
             let!(:exchange2) {
-              create(:exchange, order_cycle: order_cycle, sender: supplier2, receiver: coordinator, incoming: true,
+              create(
+:exchange, order_cycle: order_cycle, sender: supplier2, receiver: coordinator, incoming: true,
                                 enterprise_fees: [enterprise_fee2], variants: [product2.master])
             }
 
             it "calculates via regular computation" do
-              expect(EnterpriseFeeCalculator.new(distributor,
+              expect(
+EnterpriseFeeCalculator.new(
+distributor,
                                                  order_cycle).fees_for(product1.master)).to eq(20)
-              expect(EnterpriseFeeCalculator.new(distributor,
+              expect(
+EnterpriseFeeCalculator.new(
+distributor,
                                                  order_cycle).fees_for(product2.master)).to eq(3)
             end
 
             it "calculates via indexed computation" do
-              expect(EnterpriseFeeCalculator.new(distributor,
+              expect(
+EnterpriseFeeCalculator.new(
+distributor,
                                                  order_cycle).indexed_fees_for(product1.master)).to eq(20)
-              expect(EnterpriseFeeCalculator.new(distributor,
+              expect(
+EnterpriseFeeCalculator.new(
+distributor,
                                                  order_cycle).indexed_fees_for(product2.master)).to eq(3)
             end
           end
 
           describe "coordinator fees" do
             let!(:exchange) {
-              create(:exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor, incoming: false,
+              create(
+:exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor, incoming: false,
                                 enterprise_fees: [], variants: [product1.master])
             }
 
@@ -58,29 +69,38 @@ module OpenFoodNetwork
             end
 
             it "sums via regular computation" do
-              expect(EnterpriseFeeCalculator.new(distributor,
+              expect(
+EnterpriseFeeCalculator.new(
+distributor,
                                                  order_cycle).fees_for(product1.master)).to eq(23)
             end
 
             it "sums via indexed computation" do
-              expect(EnterpriseFeeCalculator.new(distributor,
+              expect(
+EnterpriseFeeCalculator.new(
+distributor,
                                                  order_cycle).indexed_fees_for(product1.master)).to eq(23)
             end
           end
 
           describe "distributor fees" do
             let!(:exchange) {
-              create(:exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor, incoming: false,
+              create(
+:exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor, incoming: false,
                                 enterprise_fees: [enterprise_fee1, enterprise_fee2, enterprise_fee3], variants: [product1.master])
             }
 
             it "sums via regular computation" do
-              expect(EnterpriseFeeCalculator.new(distributor,
+              expect(
+EnterpriseFeeCalculator.new(
+distributor,
                                                  order_cycle).fees_for(product1.master)).to eq(23)
             end
 
             it "sums via indexed computation" do
-              expect(EnterpriseFeeCalculator.new(distributor,
+              expect(
+EnterpriseFeeCalculator.new(
+distributor,
                                                  order_cycle).indexed_fees_for(product1.master)).to eq(23)
             end
           end
@@ -88,21 +108,27 @@ module OpenFoodNetwork
 
         describe "summing percentage fees for the variant" do
           let!(:enterprise_fee1) {
-            create(:enterprise_fee, amount: 20, fee_type: "admin",
+            create(
+:enterprise_fee, amount: 20, fee_type: "admin",
                                     calculator: ::Calculator::FlatPercentPerItem.new(preferred_flat_percent: 20))
           }
           let!(:exchange) {
-            create(:exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor, incoming: false,
+            create(
+:exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor, incoming: false,
                               enterprise_fees: [enterprise_fee1], variants: [product1.master])
           }
 
           it "sums via regular computation" do
-            expect(EnterpriseFeeCalculator.new(distributor,
+            expect(
+EnterpriseFeeCalculator.new(
+distributor,
                                                order_cycle).fees_for(product1.master)).to eq(2.00)
           end
 
           it "sums via indexed computation" do
-            expect(EnterpriseFeeCalculator.new(distributor,
+            expect(
+EnterpriseFeeCalculator.new(
+distributor,
                                                order_cycle).indexed_fees_for(product1.master)).to eq(2.00)
           end
         end
@@ -115,7 +141,8 @@ module OpenFoodNetwork
         let!(:ef_transport) { create(:enterprise_fee, fee_type: 'transport', amount: 0.12) }
         let!(:ef_fundraising) { create(:enterprise_fee, fee_type: 'fundraising', amount: 3.45) }
         let!(:exchange) {
-          create(:exchange, order_cycle: order_cycle,
+          create(
+:exchange, order_cycle: order_cycle,
                             sender: coordinator, receiver: distributor, incoming: false,
                             enterprise_fees: [ef_admin, ef_sales, ef_packing, ef_transport, ef_fundraising],
                             variants: [product1.master])
@@ -123,30 +150,42 @@ module OpenFoodNetwork
 
         describe "regular computation" do
           it "returns a breakdown of fees" do
-            expect(EnterpriseFeeCalculator.new(distributor,
-                                               order_cycle).fees_by_type_for(product1.master)).to eq(admin: 1.23, sales: 4.56, packing: 7.89,
+            expect(
+EnterpriseFeeCalculator.new(
+distributor,
+                                               order_cycle).fees_by_type_for(product1.master)).to eq(
+admin: 1.23, sales: 4.56, packing: 7.89,
                                                                                                      transport: 0.12, fundraising: 3.45)
           end
 
           it "filters out zero fees" do
             ef_admin.calculator.update_attribute :preferred_amount, 0
-            expect(EnterpriseFeeCalculator.new(distributor,
-                                               order_cycle).fees_by_type_for(product1.master)).to eq(sales: 4.56, packing: 7.89, transport: 0.12,
+            expect(
+EnterpriseFeeCalculator.new(
+distributor,
+                                               order_cycle).fees_by_type_for(product1.master)).to eq(
+sales: 4.56, packing: 7.89, transport: 0.12,
                                                                                                      fundraising: 3.45)
           end
         end
 
         describe "indexed computation" do
           it "returns a breakdown of fees" do
-            expect(EnterpriseFeeCalculator.new(distributor,
-                                               order_cycle).indexed_fees_by_type_for(product1.master)).to eq(admin: 1.23, sales: 4.56,
+            expect(
+EnterpriseFeeCalculator.new(
+distributor,
+                                               order_cycle).indexed_fees_by_type_for(product1.master)).to eq(
+admin: 1.23, sales: 4.56,
                                                                                                              packing: 7.89, transport: 0.12, fundraising: 3.45)
           end
 
           it "filters out zero fees" do
             ef_admin.calculator.update_attribute :preferred_amount, 0
-            expect(EnterpriseFeeCalculator.new(distributor,
-                                               order_cycle).indexed_fees_by_type_for(product1.master)).to eq(sales: 4.56, packing: 7.89,
+            expect(
+EnterpriseFeeCalculator.new(
+distributor,
+                                               order_cycle).indexed_fees_by_type_for(product1.master)).to eq(
+sales: 4.56, packing: 7.89,
                                                                                                              transport: 0.12, fundraising: 3.45)
           end
         end
@@ -160,7 +199,8 @@ module OpenFoodNetwork
           create(:enterprise_fee, calculator: Calculator::FlatRate.new(preferred_amount: 2))
         }
         let!(:exchange) {
-          create(:exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor,
+          create(
+:exchange, order_cycle: order_cycle, sender: coordinator, receiver: distributor,
                             incoming: false, variants: [product1.master])
         }
 
@@ -169,7 +209,8 @@ module OpenFoodNetwork
         it "creates adjustments for a line item" do
           exchange.enterprise_fees << enterprise_fee_line_item
 
-          EnterpriseFeeCalculator.new(distributor,
+          EnterpriseFeeCalculator.new(
+distributor,
                                       order_cycle).create_line_item_adjustments_for line_item
 
           a = Spree::Adjustment.last
@@ -197,7 +238,8 @@ module OpenFoodNetwork
       let!(:ef_coordinator) { create(:enterprise_fee) }
       let!(:ef_other_distributor) { create(:enterprise_fee) }
       let!(:exchange) {
-        create(:exchange, sender: order_cycle.coordinator, receiver: distributor,
+        create(
+:exchange, sender: order_cycle.coordinator, receiver: distributor,
                           order_cycle: order_cycle, enterprise_fees: [ef_exchange], variants: [v])
       }
       let(:v) { create(:variant) }
@@ -218,7 +260,8 @@ module OpenFoodNetwork
         end
 
         it "does not include outgoing exchanges to other distributors" do
-          create(:exchange, order_cycle: order_cycle, sender: order_cycle.coordinator,
+          create(
+:exchange, order_cycle: order_cycle, sender: order_cycle.coordinator,
                             receiver: distributor_other, enterprise_fees: [ef_other_distributor], variants: [v])
 
           expect(subject.send(:per_item_enterprise_fees_with_exchange_details)).to eq([ef_exchange])
@@ -283,9 +326,11 @@ module OpenFoodNetwork
             expect(efc.send(:per_item_enterprise_fee_applicators_for, line_item.variant))
               .to eq [
 OpenFoodNetwork::EnterpriseFeeApplicator.new(ef1, line_item.variant, 'supplier'),
-                      OpenFoodNetwork::EnterpriseFeeApplicator.new(ef2, line_item.variant,
+                      OpenFoodNetwork::EnterpriseFeeApplicator.new(
+ef2, line_item.variant,
                                                                    'distributor'),
-                      OpenFoodNetwork::EnterpriseFeeApplicator.new(ef3, line_item.variant,
+                      OpenFoodNetwork::EnterpriseFeeApplicator.new(
+ef3, line_item.variant,
                                                                    'coordinator')]
           end
         end

@@ -5,10 +5,12 @@ class PaymentMailer < Spree::BaseMailer
 
   def authorize_payment(payment)
     @payment = payment
-    subject = I18n.t('spree.payment_mailer.authorize_payment.subject',
+    subject = I18n.t(
+'spree.payment_mailer.authorize_payment.subject',
                      distributor: @payment.order.distributor.name)
     I18n.with_locale valid_locale(@payment.order.user) do
-      mail(to: payment.order.user.email,
+      mail(
+to: payment.order.user.email,
            from: from_address,
            subject: subject)
     end
@@ -17,10 +19,12 @@ class PaymentMailer < Spree::BaseMailer
   def authorization_required(payment)
     @payment = payment
     shop_owner = @payment.order.distributor.owner
-    subject = I18n.t('spree.payment_mailer.authorization_required.subject',
+    subject = I18n.t(
+'spree.payment_mailer.authorization_required.subject',
                      order: @payment.order)
     I18n.with_locale valid_locale(shop_owner) do
-      mail(to: shop_owner.email,
+      mail(
+to: shop_owner.email,
            from: from_address,
            subject: subject)
     end

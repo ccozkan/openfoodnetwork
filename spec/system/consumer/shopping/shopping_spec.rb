@@ -12,11 +12,13 @@ describe "As a consumer I want to shop with a distributor", js: true do
     let(:distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
     let(:supplier) { create(:supplier_enterprise) }
     let(:oc1) {
-      create(:simple_order_cycle, distributors: [distributor],
+      create(
+:simple_order_cycle, distributors: [distributor],
                                   coordinator: create(:distributor_enterprise), orders_close_at: 2.days.from_now)
     }
     let(:oc2) {
-      create(:simple_order_cycle, distributors: [distributor],
+      create(
+:simple_order_cycle, distributors: [distributor],
                                   coordinator: create(:distributor_enterprise), orders_close_at: 3.days.from_now)
     }
     let(:product) { create(:simple_product, supplier: supplier, meta_keywords: "Domestic") }
@@ -511,14 +513,16 @@ describe "As a consumer I want to shop with a distributor", js: true do
       end
 
       it "shows the last order cycle" do
-        oc1 = create(:simple_order_cycle, distributors: [distributor], orders_open_at: 17.days.ago,
+        oc1 = create(
+:simple_order_cycle, distributors: [distributor], orders_open_at: 17.days.ago,
                                           orders_close_at: 10.days.ago)
         visit shop_path
         expect(page).to have_content "The last cycle closed 10 days ago"
       end
 
       it "shows the next order cycle" do
-        oc1 = create(:simple_order_cycle, distributors: [distributor],
+        oc1 = create(
+:simple_order_cycle, distributors: [distributor],
                                           orders_open_at: 10.days.from_now, orders_close_at: 17.days.from_now)
         visit shop_path
         expect(page).to have_content "The next cycle opens in 10 days"

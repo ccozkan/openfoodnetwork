@@ -18,7 +18,8 @@ module OpenFoodNetwork
       around { |example| Timecop.travel(Time.zone.local(2015, 5, 5, 14, 0, 0)) { example.run } }
 
       it "uses defaults when blank params are passed" do
-        expect(report.instance_variable_get(:@opts)).to eq( invoice_date: Date.civil(2015, 5, 5),
+        expect(report.instance_variable_get(:@opts)).to eq( 
+invoice_date: Date.civil(2015, 5, 5),
                                                             due_date: Date.civil(2015, 6, 5),
                                                             account_code: 'food sales',
                                                             report_type: 'summary' )

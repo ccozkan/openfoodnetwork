@@ -45,7 +45,8 @@ FactoryBot.define do
   factory :product_with_image, parent: :product do
     after(:create) do |product|
       image = File.open(Rails.root.join('app', 'assets', 'images', 'logo-white.png'))
-      Spree::Image.create(attachment: image,
+      Spree::Image.create(
+attachment: image,
                           viewable_id: product.master.id,
                           viewable_type: 'Spree::Variant')
     end
@@ -76,7 +77,8 @@ FactoryBot.define do
     after(:create) do |product, proxy|
       raise "taxed_product factory requires a zone" unless proxy.zone
 
-      create(:tax_rate, amount: proxy.tax_rate_amount,
+      create(
+:tax_rate, amount: proxy.tax_rate_amount,
                         tax_category: product.tax_category,
                         included_in_price: true,
                         calculator: Calculator::DefaultTax.new,

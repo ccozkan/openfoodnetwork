@@ -39,7 +39,8 @@ module Api
 
       def tag_groups
         prioritized_tag_rules.each_with_object([]) do |tag_rule, tag_groups|
-          tag_group = find_match(tag_groups, tag_rule.preferred_customer_tags
+          tag_group = find_match(
+tag_groups, tag_rule.preferred_customer_tags
                                                .split(",")
                                                .map{ |t| { text: t } })
           if tag_group[:rules].blank?
@@ -53,7 +54,8 @@ module Api
       def default_tag_group
         default_rules = object.tag_rules.select(&:is_default)
         serialized_rules =
-          ActiveModel::ArraySerializer.new(default_rules,
+          ActiveModel::ArraySerializer.new(
+default_rules,
                                            each_serializer: Api::Admin::TagRuleSerializer)
         { tags: [], rules: serialized_rules }
       end

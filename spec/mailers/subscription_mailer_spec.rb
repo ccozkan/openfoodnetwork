@@ -192,7 +192,8 @@ describe SubscriptionMailer, type: :mailer do
     it "sends the email" do
       body = strip_tags(SubscriptionMailer.deliveries.last.body.encoded)
       expect(body).to include I18n.t("email_so_failed_payment_intro_html")
-      explainer = I18n.t("email_so_failed_payment_explainer_html",
+      explainer = I18n.t(
+"email_so_failed_payment_explainer_html",
                          distributor: subscription.shop.name)
       expect(body).to include strip_tags(explainer)
       details = I18n.t("email_so_failed_payment_details_html", distributor: subscription.shop.name)
@@ -383,7 +384,8 @@ describe SubscriptionMailer, type: :mailer do
       context "when no unrecorded issues are present" do
         it "sends the email, which notifies the enterprise that some issues were encountered" do
           SubscriptionMailer.confirmation_summary_email(summary).deliver_now
-          expect(body).to include I18n.t("#{scope}.confirmation_summary_email.intro",
+          expect(body).to include I18n.t(
+"#{scope}.confirmation_summary_email.intro",
                                          shop: shop.name)
           expect(body).to include I18n.t("#{scope}.summary_overview.total", count: 37)
           expect(body).to include I18n.t("#{scope}.summary_overview.success_some", count: 35)

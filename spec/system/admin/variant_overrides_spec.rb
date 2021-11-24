@@ -19,11 +19,13 @@ describe "
     let!(:producer_related) { create(:supplier_enterprise) }
     let!(:producer_unrelated) { create(:supplier_enterprise) }
     let!(:er1) {
-      create(:enterprise_relationship, parent: producer, child: hub,
+      create(
+:enterprise_relationship, parent: producer, child: hub,
                                        permissions_list: [:create_variant_overrides])
     }
     let!(:er2) {
-      create(:enterprise_relationship, parent: producer_related, child: hub,
+      create(
+:enterprise_relationship, parent: producer_related, child: hub,
                                        permissions_list: [:create_variant_overrides])
     }
     let(:user) { create(:user, enterprises: [hub, producer_managed]) }
@@ -32,7 +34,8 @@ describe "
 
     describe "selecting a hub" do
       let!(:er1) {
-        create(:enterprise_relationship, parent: hub2, child: producer_managed,
+        create(
+:enterprise_relationship, parent: hub2, child: producer_managed,
                                          permissions_list: [:add_to_order_cycle])
       } # This er should not confer ability to create VOs for hub2
 
@@ -53,7 +56,8 @@ describe "
       let!(:inventory_item) { create(:inventory_item, enterprise: hub, variant: variant ) }
 
       let!(:product_managed) {
-        create(:simple_product, supplier: producer_managed, variant_unit: 'weight',
+        create(
+:simple_product, supplier: producer_managed, variant_unit: 'weight',
                                 variant_unit_scale: 1)
       }
       let!(:variant_managed) {
@@ -241,14 +245,16 @@ describe "
 
         context "with overrides" do
           let!(:vo) {
-            create(:variant_override, :on_demand, variant: variant, hub: hub, price: 77.77,
+            create(
+:variant_override, :on_demand, variant: variant, hub: hub, price: 77.77,
                                                   default_stock: 1000, resettable: true, tag_list: ["tag1", "tag2", "tag3"])
           }
           let!(:vo_no_auth) {
             create(:variant_override, variant: variant, hub: hub2, price: 1, count_on_hand: 2)
           }
           let!(:product2) {
-            create(:simple_product, supplier: producer, variant_unit: 'weight',
+            create(
+:simple_product, supplier: producer, variant_unit: 'weight',
                                     variant_unit_scale: 1)
           }
           let!(:variant2) {
@@ -256,14 +262,16 @@ describe "
           }
           let!(:inventory_item2) { create(:inventory_item, enterprise: hub, variant: variant2) }
           let!(:vo_no_reset) {
-            create(:variant_override, variant: variant2, hub: hub, price: 3.99, count_on_hand: 40,
+            create(
+:variant_override, variant: variant2, hub: hub, price: 3.99, count_on_hand: 40,
                                       default_stock: 100, resettable: false)
           }
           let!(:variant3) {
             create(:variant, product: product, unit_value: 2, price: 5.00, on_hand: 6)
           }
           let!(:vo3) {
-            create(:variant_override, variant: variant3, hub: hub, price: 6, count_on_hand: 7, sku: "SOMESKU",
+            create(
+:variant_override, variant: variant3, hub: hub, price: 6, count_on_hand: 7, sku: "SOMESKU",
                                       default_stock: 100, resettable: false)
           }
           let!(:inventory_item3) { create(:inventory_item, enterprise: hub, variant: variant3) }
@@ -365,7 +373,8 @@ describe "
 
           it "resets stock to defaults" do
             first("div#bulk-actions-dropdown").click
-            first("div#bulk-actions-dropdown div.menu div.menu_item",
+            first(
+"div#bulk-actions-dropdown div.menu div.menu_item",
                   text: "Reset Stock Levels To Defaults").click
             expect(page).to have_content 'Stocks reset to defaults.'
             vo.reload
@@ -376,7 +385,8 @@ describe "
 
           it "doesn't reset stock levels if the behaviour is disabled" do
             first("div#bulk-actions-dropdown").click
-            first("div#bulk-actions-dropdown div.menu div.menu_item",
+            first(
+"div#bulk-actions-dropdown div.menu div.menu_item",
                   text: "Reset Stock Levels To Defaults").click
             vo_no_reset.reload
             expect(page).to have_input "variant-overrides-#{variant2.id}-count_on_hand",
@@ -387,7 +397,8 @@ describe "
           it "prompts to save changes before reset if any are pending" do
             fill_in "variant-overrides-#{variant.id}-price", with: '200'
             first("div#bulk-actions-dropdown").click
-            first("div#bulk-actions-dropdown div.menu div.menu_item",
+            first(
+"div#bulk-actions-dropdown div.menu div.menu_item",
                   text: "Reset Stock Levels To Defaults").click
             expect(page).to have_content "Save changes first"
           end

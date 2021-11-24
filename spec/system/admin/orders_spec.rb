@@ -16,13 +16,15 @@ describe '
   let(:distributor3) { create(:distributor_enterprise, owner: user, charges_sales_tax: true) }
   let(:distributor4) { create(:distributor_enterprise, owner: user, charges_sales_tax: true) }
   let(:order_cycle) do
-    create(:simple_order_cycle, name: 'One', distributors: [distributor, distributor2, distributor3, distributor4],
+    create(
+:simple_order_cycle, name: 'One', distributors: [distributor, distributor2, distributor3, distributor4],
                                 variants: [product.variants.first])
   end
 
   context "with a complete order" do
     let(:order) do
-      create(:order_with_totals_and_distribution, user: user, distributor: distributor,
+      create(
+:order_with_totals_and_distribution, user: user, distributor: distributor,
                                                   order_cycle: order_cycle,
                                                   state: 'complete', payment_state: 'balance_due')
     end
@@ -38,15 +40,18 @@ describe '
     }
 
     let!(:order2) {
-      create(:order_with_credit_payment, user: user, distributor: distributor2,
+      create(
+:order_with_credit_payment, user: user, distributor: distributor2,
                                          order_cycle: order_cycle2, completed_at: 2.days.ago)
     }
     let!(:order3) {
-      create(:order_with_credit_payment, user: user, distributor: distributor3,
+      create(
+:order_with_credit_payment, user: user, distributor: distributor3,
                                          order_cycle: order_cycle3)
     }
     let!(:order4) {
-      create(:order_with_credit_payment, user: user, distributor: distributor4,
+      create(
+:order_with_credit_payment, user: user, distributor: distributor4,
                                          order_cycle: order_cycle4)
     }
 
@@ -55,7 +60,9 @@ describe '
 
       open_select2('#s2id_q_order_cycle_id_in')
 
-      expect(find('#q_order_cycle_id_in',
+      expect(
+find(
+'#q_order_cycle_id_in',
                   visible: :all)[:innerHTML]).to have_content(/.*Four.*Three.*Two/m)
     end
 
@@ -160,7 +167,8 @@ describe '
 
   context "with incomplete order" do
     it "can edit order" do
-      incomplete_order = create(:order_with_line_items, distributor: distributor,
+      incomplete_order = create(
+:order_with_line_items, distributor: distributor,
                                                         order_cycle: order_cycle, line_items_count: 1)
 
       login_as_admin_and_visit spree.admin_orders_path
@@ -175,7 +183,8 @@ describe '
 
   context "test the 'Only show the complete orders' checkbox" do
     it "display or not incomplete order" do
-      incomplete_order = create(:order_with_line_items, distributor: distributor,
+      incomplete_order = create(
+:order_with_line_items, distributor: distributor,
                                                         order_cycle: order_cycle, line_items_count: 1)
       complete_order = create(
         :order_with_line_items,

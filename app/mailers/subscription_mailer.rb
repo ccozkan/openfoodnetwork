@@ -36,7 +36,8 @@ class SubscriptionMailer < Spree::BaseMailer
   def placement_summary_email(summary)
     @shop = Enterprise.find(summary.shop_id)
     @summary = summary
-    mail(to: @shop.contact.email,
+    mail(
+to: @shop.contact.email,
          from: from_address,
          subject: "#{Spree::Config[:site_name]} #{t('subscription_mailer.placement_summary_email.subject')}")
   end
@@ -44,7 +45,8 @@ class SubscriptionMailer < Spree::BaseMailer
   def confirmation_summary_email(summary)
     @shop = Enterprise.find(summary.shop_id)
     @summary = summary
-    mail(to: @shop.contact.email,
+    mail(
+to: @shop.contact.email,
          from: from_address,
          subject: "#{Spree::Config[:site_name]} #{t('subscription_mailer.confirmation_summary_email.subject')}")
   end
@@ -55,7 +57,8 @@ class SubscriptionMailer < Spree::BaseMailer
     I18n.with_locale valid_locale(order.user) do
       confirm_email_subject = t('spree.order_mailer.confirm_email.subject')
       subject = "#{Spree::Config[:site_name]} #{confirm_email_subject} ##{order.number}"
-      mail(to: order.email,
+      mail(
+to: order.email,
            from: from_address,
            subject: subject,
            reply_to: order.distributor.contact.email)

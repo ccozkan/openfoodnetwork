@@ -12,7 +12,8 @@ describe OrderCycleWarning do
     context "with an invalid distributor" do
       it "returns a warning message" do
         expect(subject.new(user).call).to eq(
-          I18n.t(:active_distributors_not_ready_for_checkout_message_singular,
+          I18n.t(
+:active_distributors_not_ready_for_checkout_message_singular,
                  distributor_names: distributor.name)
         )
       end
@@ -20,7 +21,8 @@ describe OrderCycleWarning do
 
     context "with a valid distributor" do
       let!(:distributor) {
-        create(:distributor_enterprise,
+        create(
+:distributor_enterprise,
                shipping_methods: [create(:shipping_method)],
                payment_methods: [create(:payment_method)])
       }

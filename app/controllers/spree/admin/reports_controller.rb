@@ -65,7 +65,8 @@ module Spree
                                                                   render_content?
         @table = @report.table_items
 
-        render_report(@report.header, @table, params[:csv],
+        render_report(
+@report.header, @table, params[:csv],
                       "order_cycle_management_#{timestamp}.csv")
       end
 
@@ -138,7 +139,8 @@ module Spree
 
       def users_and_enterprises
         @report = OpenFoodNetwork::UsersAndEnterprisesReport.new raw_params, render_content?
-        render_report(@report.header, @report.table, params[:csv],
+        render_report(
+@report.header, @report.table, params[:csv],
                       "users_and_enterprises_#{timestamp}.csv")
       end
 
@@ -148,7 +150,8 @@ module Spree
         @distributors = my_distributors
         @order_cycles = my_order_cycles
 
-        @report = OpenFoodNetwork::XeroInvoicesReport.new(spree_current_user,
+        @report = OpenFoodNetwork::XeroInvoicesReport.new(
+spree_current_user,
                                                           raw_params,
                                                           render_content?)
         render_report(@report.header, @report.table, params[:csv], "xero_invoices_#{timestamp}.csv")

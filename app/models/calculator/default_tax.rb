@@ -30,7 +30,8 @@ module Calculator
       # the related methods below it.
       Bugsnag.notify("Calculator::DefaultTax was called with legacy tax calculations")
 
-      calculator = OpenFoodNetwork::EnterpriseFeeCalculator.new(order.distributor,
+      calculator = OpenFoodNetwork::EnterpriseFeeCalculator.new(
+order.distributor,
                                                                 order.order_cycle)
 
       [

@@ -12,7 +12,8 @@ describe '
   let!(:tax_category_gst) { create(:tax_category, name: 'GST') }
 
   it "listing enterprise fees" do
-    fee = create(:enterprise_fee, name: '$0.50 / kg', fee_type: 'packing',
+    fee = create(
+:enterprise_fee, name: '$0.50 / kg', fee_type: 'packing',
                                   tax_category: tax_category_gst)
     amount = fee.calculator.preferred_amount
 
@@ -179,7 +180,8 @@ describe '
       visit edit_admin_enterprise_path(distributor2)
       within(".side_menu") { click_link 'Enterprise Fees' }
       click_link "Manage Enterprise Fees"
-      expect(page).to have_select('sets_enterprise_fee_set_collection_attributes_0_enterprise_id',
+      expect(page).to have_select(
+'sets_enterprise_fee_set_collection_attributes_0_enterprise_id',
                                   selected: 'Second Distributor',
                                   options: ['First Distributor', 'Second Distributor'])
     end

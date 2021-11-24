@@ -52,7 +52,8 @@ describe Enterprise do
       describe "with a distributed product" do
         let(:product) { create(:simple_product) }
         let(:oc) {
-          create(:simple_order_cycle, distributors: [enterprise],
+          create(
+:simple_order_cycle, distributors: [enterprise],
                                       variants: [product.variants.first])
         }
         let(:supplier) { product.supplier }

@@ -335,7 +335,8 @@ describe CheckoutController, type: :controller do
     it "returns errors and flash if order.update fails" do
       spree_post :update, format: :json, order: {}
       expect(response.status).to eq(400)
-      expect(response.body).to eq({ 
+      expect(response.body).to eq(
+{ 
 errors: assigns[:order].errors,
                                     flash: { error: order.errors.full_messages.to_sentence } }.to_json)
     end
@@ -344,7 +345,8 @@ errors: assigns[:order].errors,
       allow(order).to receive(:update).and_return true
       allow(order).to receive(:next).and_return false
       spree_post :update, format: :json, order: {}
-      expect(response.body).to eq({ 
+      expect(response.body).to eq(
+{ 
 errors: assigns[:order].errors,
                                     flash: { error: "Payment could not be processed, please check the details you entered" } }.to_json)
     end
@@ -366,7 +368,8 @@ errors: assigns[:order].errors,
 
       spree_post :update, format: :json, order: {}
       expect(response.status).to eq(400)
-      expect(response.body).to eq({ 
+      expect(response.body).to eq(
+{ 
 errors: {},
                                     flash: { error: I18n.t("checkout.failed") } }.to_json)
     end

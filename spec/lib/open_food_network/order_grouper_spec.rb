@@ -89,7 +89,8 @@ proc { |is| is.first.paragraph.chapter.name }, proc { |is|
         subject = OrderGrouper.new @rules, @columns
 
         grouped_tree = double(:grouped_tree)
-        expect(subject).to receive(:group_and_sort).with(@rule1, @rules[1..-1],
+        expect(subject).to receive(:group_and_sort).with(
+@rule1, @rules[1..-1],
                                                          @items).and_return(grouped_tree)
 
         expect(subject.build_tree(@items, @rules)).to eq(grouped_tree)

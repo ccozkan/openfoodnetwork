@@ -15,7 +15,8 @@ describe "full-page cart", js: true do
     }
     let(:supplier) { create(:supplier_enterprise) }
     let!(:order_cycle) {
-      create(:simple_order_cycle, suppliers: [supplier], distributors: [distributor],
+      create(
+:simple_order_cycle, suppliers: [supplier], distributors: [distributor],
                                   coordinator: create(:distributor_enterprise), variants: [product_with_tax.variants.first, product_with_fee.variants.first])
     }
     let(:enterprise_fee) {
@@ -73,7 +74,8 @@ describe "full-page cart", js: true do
 
     describe "percentage fees" do
       let(:percentage_fee) {
-        create(:enterprise_fee,
+        create(
+:enterprise_fee,
                calculator: Calculator::FlatPercentPerItem.new(preferred_flat_percent: 20))
       }
 
@@ -96,7 +98,8 @@ describe "full-page cart", js: true do
     describe "admin and handling flat fees" do
       context "when there are fees" do
         let(:handling_fee) {
-          create(:enterprise_fee, calculator: Calculator::FlatRate.new(preferred_amount: 1),
+          create(
+:enterprise_fee, calculator: Calculator::FlatRate.new(preferred_amount: 1),
                                   enterprise: order_cycle.coordinator, fee_type: 'admin')
         }
 
@@ -137,7 +140,8 @@ describe "full-page cart", js: true do
     describe "admin weight calculated fees" do
       context "order with 2 line items" do
         let(:admin_fee) {
-          create(:enterprise_fee, calculator: Calculator::Weight.new(preferred_per_unit: 1, preferred_unit_from_list: "kg"),
+          create(
+:enterprise_fee, calculator: Calculator::Weight.new(preferred_per_unit: 1, preferred_unit_from_list: "kg"),
                                   enterprise: order_cycle.coordinator, fee_type: 'admin')
         }
 
@@ -148,7 +152,8 @@ describe "full-page cart", js: true do
           add_enterprise_fee admin_fee
 
           cart_service = CartService.new(order)
-          cart_service.populate(variants: { 
+          cart_service.populate(
+variants: { 
 product_with_fee.variants.first.id => 3,
                                             product_with_tax.variants.first.id => 3 })
           order.recreate_all_fees!
@@ -276,11 +281,13 @@ product_with_fee.variants.first.id => 3,
       let(:address) { create(:address) }
       let(:user) { create(:user, bill_address: address, ship_address: address) }
       let!(:prev_order1) {
-        create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
+        create(
+:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
                                              user: user)
       }
       let!(:prev_order2) {
-        create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
+        create(
+:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor,
                                              user: user)
       }
 

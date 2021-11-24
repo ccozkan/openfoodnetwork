@@ -16,7 +16,8 @@ describe Spree::User do
           old_bill_address = user.bill_address
           new_bill_address = create(:address, firstname: 'abc')
 
-          user.update(bill_address_attributes: new_bill_address.dup.attributes.merge('id' => old_bill_address.id).except!(
+          user.update(
+bill_address_attributes: new_bill_address.dup.attributes.merge('id' => old_bill_address.id).except!(
             'created_at', 'updated_at'
           ))
 
@@ -27,7 +28,8 @@ describe Spree::User do
         it 'creates new shipping address' do
           new_ship_address = create(:address, firstname: 'abc')
 
-          user.update(ship_address_attributes: new_ship_address.dup.attributes.except!(
+          user.update(
+ship_address_attributes: new_ship_address.dup.attributes.except!(
             'created_at', 'updated_at'
           ))
 

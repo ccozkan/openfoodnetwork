@@ -124,7 +124,8 @@ module Spree
       def require_distributor_abn
         return if @order.distributor.abn.present?
 
-        flash[:error] = t(:must_have_valid_business_number,
+        flash[:error] = t(
+:must_have_valid_business_number,
                           enterprise_name: @order.distributor.name)
         respond_with(@order) { |format|
           format.html { redirect_to spree.edit_admin_order_path(@order) }

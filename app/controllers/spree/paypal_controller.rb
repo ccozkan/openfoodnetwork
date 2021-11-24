@@ -25,7 +25,8 @@ module Spree
           redirect_to provider.express_checkout_url(pp_response, useraction: 'commit')
         else
           flash[:error] =
-            Spree.t('flash.generic_error', scope: 'paypal',
+            Spree.t(
+'flash.generic_error', scope: 'paypal',
                                            reasons: pp_response.errors.map(&:long_message).join(" "))
           redirect_to main_app.checkout_state_path(:payment)
         end

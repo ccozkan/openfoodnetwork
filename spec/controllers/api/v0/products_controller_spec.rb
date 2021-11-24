@@ -44,7 +44,8 @@ describe Api::V0::ProductsController, type: :controller do
       api_get :show, id: product.to_param
 
       expect(all_attributes.all?{ |attr| json_response.keys.include? attr }).to eq(true)
-      expect(variants_attributes.all?{ |attr|
+      expect(
+variants_attributes.all?{ |attr|
                json_response['variants'].first.keys.include? attr
              } ).to eq(true)
     end
@@ -135,7 +136,8 @@ name: "The Other Product",
       expect(response.status).to eq(422)
       expect(json_response["error"]).to eq("Invalid resource. Please fix errors and try again.")
       errors = json_response["errors"]
-      expect(errors.keys).to match_array([
+      expect(errors.keys).to match_array(
+[
 "name", "price", "primary_taxon", "shipping_category",
                                           "supplier", "variant_unit"])
     end

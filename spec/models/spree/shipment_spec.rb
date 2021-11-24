@@ -290,7 +290,8 @@ describe Spree::Shipment do
     it 'restocks the items' do
       unit = double(:inventory_unit, variant: variant)
       allow(unit).to receive(:quantity) { 1 }
-      allow(shipment).to receive_message_chain(:inventory_units,
+      allow(shipment).to receive_message_chain(
+:inventory_units,
                                                :group_by,
                                                map: [unit])
       shipment.stock_location = build(:stock_location)
@@ -314,7 +315,8 @@ describe Spree::Shipment do
     it 'unstocks the items' do
       unit = create(:inventory_unit, variant: variant)
       allow(unit).to receive(:quantity) { 1 }
-      allow(shipment).to receive_message_chain(:inventory_units,
+      allow(shipment).to receive_message_chain(
+:inventory_units,
                                                :group_by,
                                                map: [unit])
       shipment.stock_location = create(:stock_location)
@@ -390,7 +392,8 @@ describe Spree::Shipment do
     it "should create adjustment when not present" do
       allow(shipment).to receive_messages(fee_adjustment: nil)
       allow(shipment).to receive_messages(selected_shipping_rate_id: 1)
-      expect(shipping_method).to receive(:create_adjustment).with(shipment.adjustment_label,
+      expect(shipping_method).to receive(:create_adjustment).with(
+shipment.adjustment_label,
                                                                   shipment, true, "open")
       shipment.__send__(:ensure_correct_adjustment)
     end

@@ -7,7 +7,8 @@ describe Api::EnterpriseSerializer do
   let(:enterprise) { create(:distributor_enterprise, is_primary_producer: true) }
   let(:taxon) { create(:taxon) }
   let(:data) {
-    OpenStruct.new(earliest_closing_times: {},
+    OpenStruct.new(
+earliest_closing_times: {},
                    active_distributors: [],
                    all_distributed_taxons: { enterprise.id => [123] },
                    current_distributed_taxons: { enterprise.id => [123] },

@@ -295,7 +295,8 @@ module Admin
     end
 
     def strip_new_properties
-      unless spree_current_user.admin? || params.dig(:enterprise,
+      unless spree_current_user.admin? || params.dig(
+:enterprise,
                                                      :producer_properties_attributes).nil?
 
         names = Spree::Property.pluck(:name)

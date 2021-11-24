@@ -11,7 +11,8 @@ describe "Credit Cards", js: true do
     let(:user) { create(:user) }
     let!(:customer) { create(:customer, user: user) }
     let!(:default_card) {
-      create(:stored_credit_card, user_id: user.id, gateway_customer_profile_id: 'cus_AZNMJ',
+      create(
+:stored_credit_card, user_id: user.id, gateway_customer_profile_id: 'cus_AZNMJ',
                                   is_default: true)
     }
     let!(:non_default_card) {
@@ -93,7 +94,8 @@ describe "Credit Cards", js: true do
         click_link I18n.t(:delete)
       end
 
-      expect(page).to have_content I18n.t(:card_has_been_removed,
+      expect(page).to have_content I18n.t(
+:card_has_been_removed,
                                           number: "x-#{default_card.last_digits}")
       expect(page).to have_no_selector ".card#card#{default_card.id}"
 

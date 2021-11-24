@@ -51,7 +51,8 @@ module Api
           if @shipment.can_ready?
             @shipment.ready!
           else
-            render(json: { error: I18n.t(:cannot_ready, scope: "spree.api.shipment") },
+            render(
+json: { error: I18n.t(:cannot_ready, scope: "spree.api.shipment") },
                    status: :unprocessable_entity) && return
           end
         end

@@ -15,7 +15,8 @@ class EnterpriseRelationship < ApplicationRecord
   before_destroy :revoke_all_child_variant_overrides
 
   scope :with_enterprises, -> {
-    joins("
+    joins(
+"
       LEFT JOIN enterprises AS parent_enterprises
         ON parent_enterprises.id = enterprise_relationships.parent_id")
       .joins("

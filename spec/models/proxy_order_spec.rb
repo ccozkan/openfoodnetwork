@@ -86,7 +86,8 @@ describe ProxyOrder, type: :model do
   describe "resume" do
     let!(:shipment) { create(:shipment) }
     let(:order) {
-      create(:order_with_totals, ship_address: create(:address),
+      create(
+:order_with_totals, ship_address: create(:address),
                                  shipments: [shipment],
                                  payments: [create(:payment)],
                                  distributor: shipment.shipping_method.distributors.first)

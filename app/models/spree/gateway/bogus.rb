@@ -31,11 +31,13 @@ module Spree
       def authorize(_money, credit_card, _options = {})
         profile_id = credit_card.gateway_customer_profile_id
         if VALID_CCS.include?(credit_card.number) || profile_id&.starts_with?('BGS-')
-          ActiveMerchant::Billing::Response.new(true, 'Bogus Gateway: Forced success', {},
+          ActiveMerchant::Billing::Response.new(
+true, 'Bogus Gateway: Forced success', {},
                                                 test: true, authorization: '12345',
                                                 avs_result: { code: 'A' })
         else
-          ActiveMerchant::Billing::Response.new(false, 'Bogus Gateway: Forced failure',
+          ActiveMerchant::Billing::Response.new(
+false, 'Bogus Gateway: Forced failure',
                                                 { message: 'Bogus Gateway: Forced failure' },
                                                 test: true)
         end
@@ -44,33 +46,39 @@ module Spree
       def purchase(_money, credit_card, _options = {})
         profile_id = credit_card.gateway_customer_profile_id
         if VALID_CCS.include?(credit_card.number) || profile_id&.starts_with?('BGS-')
-          ActiveMerchant::Billing::Response.new(true, 'Bogus Gateway: Forced success', {},
+          ActiveMerchant::Billing::Response.new(
+true, 'Bogus Gateway: Forced success', {},
                                                 test: true, authorization: '12345',
                                                 avs_result: { code: 'A' })
         else
-          ActiveMerchant::Billing::Response.new(false, 'Bogus Gateway: Forced failure',
+          ActiveMerchant::Billing::Response.new(
+false, 'Bogus Gateway: Forced failure',
                                                 message: 'Bogus Gateway: Forced failure',
                                                 test: true)
         end
       end
 
       def credit(_money, _credit_card, _response_code, _options = {})
-        ActiveMerchant::Billing::Response.new(true, 'Bogus Gateway: Forced success', {},
+        ActiveMerchant::Billing::Response.new(
+true, 'Bogus Gateway: Forced success', {},
                                               test: true, authorization: '12345')
       end
 
       def capture(authorization, _credit_card, _gateway_options)
         if authorization.response_code == '12345'
-          ActiveMerchant::Billing::Response.new(true, 'Bogus Gateway: Forced success', {},
+          ActiveMerchant::Billing::Response.new(
+true, 'Bogus Gateway: Forced success', {},
                                                 test: true, authorization: '67890')
         else
-          ActiveMerchant::Billing::Response.new(false, 'Bogus Gateway: Forced failure',
+          ActiveMerchant::Billing::Response.new(
+false, 'Bogus Gateway: Forced failure',
                                                 error: 'Bogus Gateway: Forced failure', test: true)
         end
       end
 
       def void(_response_code, _credit_card, _options = {})
-        ActiveMerchant::Billing::Response.new(true, 'Bogus Gateway: Forced success', {},
+        ActiveMerchant::Billing::Response.new(
+true, 'Bogus Gateway: Forced success', {},
                                               test: true, authorization: '12345')
       end
 

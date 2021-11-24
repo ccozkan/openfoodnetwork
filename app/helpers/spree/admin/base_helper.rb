@@ -9,7 +9,8 @@ module Spree
         if error_message_on(model, method).present?
           css_classes << 'withError'
         end
-        content_tag(:div,
+        content_tag(
+:div,
                     capture(&block),
                     class: css_classes.join(' '),
                     id: "#{model}_#{method}_field")
@@ -72,7 +73,8 @@ module Spree
         if field.end_with?('_from_list') && object.respond_to?("#{field}_values")
           list_values = object.__send__("#{field}_values")
           selected_value = object.__send__(field)
-          form.select(field, options_for_select(list_values, selected_value),
+          form.select(
+field, options_for_select(list_values, selected_value),
                       preference_field_options(options))
         else
           form.text_field(field, preference_field_options(options))
@@ -119,7 +121,8 @@ size: 10,
         return unless object.respond_to?(:preferences)
 
         object.preferences.keys.map { |key|
-          preference_label = form.label("preferred_#{key}",
+          preference_label = form.label(
+"preferred_#{key}",
                                         Spree.t(key.to_s.gsub("_from_list", "")) + ": ").html_safe
           preference_field = preference_field_for(
             form,
@@ -133,7 +136,8 @@ size: 10,
       def link_to_add_fields(name, target, options = {})
         name = '' if options[:no_text]
         css_classes = options[:class] ? options[:class] + " spree_add_fields" : "spree_add_fields"
-        link_to_with_icon('icon-plus',
+        link_to_with_icon(
+'icon-plus',
                           name,
                           'javascript:',
                           data: { target: target },

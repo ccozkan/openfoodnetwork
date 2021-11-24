@@ -38,7 +38,8 @@ module Spree
     def parse_price(price)
       return price unless price.is_a?(String)
 
-      separator, _delimiter = I18n.t([
+      separator, _delimiter = I18n.t(
+[
 :'number.currency.format.separator',
                                       :'number.currency.format.delimiter'])
       non_price_characters = /[^0-9\-#{separator}]/

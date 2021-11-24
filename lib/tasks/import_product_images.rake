@@ -17,7 +17,8 @@ namespace :ofn do
         puts "#{index} #{entry[:producer]}, #{entry[:name]}"
         enterprise = Enterprise.find_by! name: entry[:producer]
 
-        product = Spree::Product.where(supplier: enterprise,
+        product = Spree::Product.where(
+supplier: enterprise,
                                        name: entry[:name],
                                        deleted_at: nil).first
         if product.nil?

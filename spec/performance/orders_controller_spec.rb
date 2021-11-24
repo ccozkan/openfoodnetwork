@@ -5,7 +5,8 @@ require 'spec_helper'
 describe Spree::OrdersController, type: :controller, performance: true do
   let(:distributor) { create(:distributor_enterprise) }
   let(:order_cycle) {
-    create(:simple_order_cycle, distributors: [distributor], variants: products.map { |p|
+    create(
+:simple_order_cycle, distributors: [distributor], variants: products.map { |p|
                                                                          p.variants.first
                                                                        } )
   }

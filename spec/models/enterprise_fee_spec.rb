@@ -119,7 +119,8 @@ describe EnterpriseFee do
     it "clears adjustments from per-order fees" do
       order = create(:order)
       enterprise_fee = create(:enterprise_fee)
-      enterprise_fee_aplicator = OpenFoodNetwork::EnterpriseFeeApplicator.new(enterprise_fee, nil,
+      enterprise_fee_aplicator = OpenFoodNetwork::EnterpriseFeeApplicator.new(
+enterprise_fee, nil,
                                                                               'coordinator')
       enterprise_fee_aplicator.create_order_adjustment(order)
 
@@ -131,7 +132,8 @@ describe EnterpriseFee do
     it "does not clear adjustments from another originator" do
       order = create(:order)
       tax_rate = create(:tax_rate, calculator: build(:calculator))
-      order.adjustments.create({ 
+      order.adjustments.create(
+{ 
 amount: 12.34,
                                  originator: tax_rate,
                                  state: 'closed',

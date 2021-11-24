@@ -17,10 +17,12 @@ describe '
       e1, e2, e3, e4 = 
 create(:enterprise), create(:enterprise), create(:enterprise),
 create(:enterprise)
-      create(:enterprise_relationship, parent: e1, child: e2,
+      create(
+:enterprise_relationship, parent: e1, child: e2,
                                        permissions_list: [:add_to_order_cycle])
       create(:enterprise_relationship, parent: e2, child: e3, permissions_list: [:manage_products])
-      create(:enterprise_relationship, parent: e3, child: e4,
+      create(
+:enterprise_relationship, parent: e3, child: e4,
                                        permissions_list: [:add_to_order_cycle, :manage_products])
 
       # When I go to the relationships page
@@ -82,7 +84,8 @@ create(:enterprise)
     it "deleting a relationship" do
       e1 = create(:enterprise, name: 'One')
       e2 = create(:enterprise, name: 'Two')
-      er = create(:enterprise_relationship, parent: e1, child: e2,
+      er = create(
+:enterprise_relationship, parent: e1, child: e2,
                                             permissions_list: [:add_to_order_cycle])
 
       visit admin_enterprise_relationships_path

@@ -59,7 +59,8 @@ exchange.variants[0].product.supplier.name,
         it "loads products from the coordinator inventory" do
           # Add variant already in the exchange to the coordinator's inventory
           exchange.variants.first.inventory_items = [
-create(:inventory_item,
+create(
+:inventory_item,
                                                             enterprise: order_cycle.coordinator)]
 
           products = renderer.exchange_products(false, exchange.receiver)
@@ -83,11 +84,13 @@ create(:inventory_item,
         let(:exchange_with_visible_variant) { order_cycle.exchanges.incoming.last }
         let(:exchange_with_hidden_variant) { order_cycle.exchanges.incoming.first }
         let!(:visible_inventory_item) {
-          create(:inventory_item, enterprise: order_cycle.coordinator,
+          create(
+:inventory_item, enterprise: order_cycle.coordinator,
                                   variant: exchange_with_visible_variant.variants.first, visible: true)
         }
         let!(:hidden_inventory_item) {
-          create(:inventory_item, enterprise: order_cycle.coordinator,
+          create(
+:inventory_item, enterprise: order_cycle.coordinator,
                                   variant: exchange_with_hidden_variant.variants.first, visible: false)
         }
 

@@ -182,7 +182,8 @@ describe Spree::Admin::ProductsController, type: :controller do
     describe "change product supplier" do
       let(:distributor) { create(:distributor_enterprise) }
       let!(:order_cycle) {
-        create(:simple_order_cycle, variants: [product.variants.first], coordinator: distributor,
+        create(
+:simple_order_cycle, variants: [product.variants.first], coordinator: distributor,
                                     distributors: [distributor])
       }
 

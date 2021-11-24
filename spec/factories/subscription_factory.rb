@@ -18,13 +18,16 @@ FactoryBot.define do
 
     after(:create) do |subscription, proxy|
       if proxy.with_items
-        subscription.subscription_line_items = build_list(:subscription_line_item,
+        subscription.subscription_line_items = build_list(
+:subscription_line_item,
                                                           3,
                                                           subscription: subscription)
         subscription.order_cycles.each do |oc|
-          ex = oc.exchanges.outgoing.find_by(sender_id: subscription.shop_id,
+          ex = oc.exchanges.outgoing.find_by(
+sender_id: subscription.shop_id,
                                              receiver_id: subscription.shop_id)
-          ex ||= create(:exchange, order_cycle: oc,
+          ex ||= create(
+:exchange, order_cycle: oc,
                                    sender: subscription.shop,
                                    receiver: subscription.shop,
                                    incoming: false,
@@ -36,7 +39,8 @@ FactoryBot.define do
 
       if proxy.with_proxy_orders
         subscription.order_cycles.each do |oc|
-          subscription.proxy_orders << create(:proxy_order, subscription: subscription,
+          subscription.proxy_orders << create(
+:proxy_order, subscription: subscription,
                                                             order_cycle: oc)
         end
       end

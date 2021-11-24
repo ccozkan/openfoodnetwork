@@ -50,7 +50,8 @@ describe OrderManagement::Reports::EnterpriseFeeSummary::Renderers::CsvRenderer 
 
   before do
     allow(service).to receive(:list) { enterprise_fee_type_totals }
-    allow(request).to receive_messages(variant: double(Spree::Variant),
+    allow(request).to receive_messages(
+variant: double(Spree::Variant),
                                        should_apply_vary_header?: true)
   end
 

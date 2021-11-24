@@ -12,7 +12,8 @@ module OpenFoodNetwork
     end
 
     def shipping_method_services
-      @shipping_method_services ||= CacheService.cached_data_by_class("shipping_method_services",
+      @shipping_method_services ||= CacheService.cached_data_by_class(
+"shipping_method_services",
                                                                       Spree::ShippingMethod) do
         # This result relies on a simple join with DistributorShippingMethod.
         # Updated DistributorShippingMethod records touch their associated Spree::ShippingMethod.

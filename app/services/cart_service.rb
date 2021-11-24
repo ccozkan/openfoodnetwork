@@ -106,13 +106,15 @@ class CartService
     variants_array = []
     (data[:variants] || []).each do |variant_id, quantity|
       if quantity.is_a?(ActionController::Parameters)
-        variants_array.push({
+        variants_array.push(
+{
                               variant_id: variant_id.to_i,
                               quantity: quantity[:quantity].to_i,
                               max_quantity: quantity[:max_quantity].to_i
                             })
       else
-        variants_array.push({
+        variants_array.push(
+{
                               variant_id: variant_id.to_i,
                               quantity: quantity.to_i
                             })
@@ -153,7 +155,8 @@ class CartService
   end
 
   def check_variant_available_under_distribution(variant)
-    return true if OrderCycleDistributedVariants.new(@order_cycle,
+    return true if OrderCycleDistributedVariants.new(
+@order_cycle,
                                                      @distributor).available_variants.include? variant
 
     errors.add(:base, I18n.t(:spree_order_populator_availability_error))

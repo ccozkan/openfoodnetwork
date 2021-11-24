@@ -102,7 +102,8 @@ module Spree
     }
 
     scope :for_distribution, lambda { |order_cycle, distributor|
-      where('spree_variants.id IN (?)', order_cycle.variants_distributed_by(distributor)
+      where(
+'spree_variants.id IN (?)', order_cycle.variants_distributed_by(distributor)
         .select(&:id))
     }
 
@@ -119,7 +120,8 @@ module Spree
       enterprise_id = enterprise&.id.to_i
       return none if enterprise_id < 1
 
-      joins("
+      joins(
+"
         LEFT OUTER JOIN (SELECT *
                            FROM inventory_items
                            WHERE enterprise_id = #{enterprise_id})
@@ -138,7 +140,8 @@ module Spree
     # Define sope as class method to allow chaining with other scopes filtering id.
     # In Rails 3, merging two scopes on the same column will consider only the last scope.
     def self.in_distributor(distributor)
-      where(id: ExchangeVariant.select(:variant_id)
+      where(
+id: ExchangeVariant.select(:variant_id)
                 .joins(:exchange)
                 .where('exchanges.incoming = ? AND exchanges.receiver_id = ?', false, distributor))
     end
@@ -150,7 +153,8 @@ module Spree
     def self.active(currency = nil)
       # "where(id:" is necessary so that the returned relation has no includes
       # The relation without includes will not be readonly and allow updates on it
-      where("spree_variants.id in (?)", joins(:prices)
+      where(
+"spree_variants.id in (?)", joins(:prices)
                                           .where(deleted_at: nil)
                                           .where('spree_prices.currency' =>
                                             currency || Spree::Config[:currency])

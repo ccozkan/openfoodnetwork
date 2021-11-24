@@ -29,7 +29,8 @@ module OpenFoodNetwork
         let(:shipping_method) { create(:shipping_method) }
         let(:shipping_instructions) { 'pick up on thursday please!' }
         let(:order) {
-          create(:order,
+          create(
+:order,
                  state: 'complete', completed_at: Time.zone.now,
                  distributor: distributor, bill_address: bill_address,
                  special_instructions: shipping_instructions)
@@ -50,7 +51,8 @@ module OpenFoodNetwork
           table = subject.table
 
           expect(table.size).to eq 1
-          expect(table[0]).to eq([
+          expect(table[0]).to eq(
+[
                                    order.reload.completed_at.strftime("%F %T"),
                                    order.id,
                                    bill_address.full_name,

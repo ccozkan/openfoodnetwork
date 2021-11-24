@@ -13,7 +13,8 @@ module OpenFoodNetwork
 
       unless shipping_methods_ok?
         issues << {
-          description: I18n.t('admin.enterprise_issues.has_no_shipping_methods',
+          description: I18n.t(
+'admin.enterprise_issues.has_no_shipping_methods',
                               enterprise: @enterprise.name),
           link: "<a class='button fullwidth' href='#{spree_routes_helper.new_admin_shipping_method_path}'>#{I18n.t('admin.enterprise_issues.create_new')}</a>"
         }
@@ -21,7 +22,8 @@ module OpenFoodNetwork
 
       unless payment_methods_ok?
         issues << {
-          description: I18n.t('admin.enterprise_issues.has_no_payment_methods',
+          description: I18n.t(
+'admin.enterprise_issues.has_no_payment_methods',
                               enterprise: @enterprise.name),
           link: "<a class='button fullwidth' href='#{spree_routes_helper.new_admin_payment_method_path}'>#{I18n.t('admin.enterprise_issues.create_new')}</a>"
         }

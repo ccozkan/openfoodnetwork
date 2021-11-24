@@ -42,11 +42,13 @@ describe '
         create(:distributor_enterprise, name: "Missing", owner: user)
       }
       let!(:valid_stripe_account) {
-        create(:stripe_account, enterprise: connected_enterprise,
+        create(
+:stripe_account, enterprise: connected_enterprise,
                                 stripe_user_id: "acc_connected123")
       }
       let!(:disconnected_stripe_account) {
-        create(:stripe_account, enterprise: revoked_account_enterprise,
+        create(
+:stripe_account, enterprise: revoked_account_enterprise,
                                 stripe_user_id: "acc_revoked123")
       }
       let!(:stripe_account_mock) {
@@ -62,9 +64,11 @@ describe '
       before do
         Spree::Config.set(stripe_connect_enabled: true)
         Stripe.api_key = "sk_test_12345"
-        stub_request(:get,
+        stub_request(
+:get,
                      "https://api.stripe.com/v1/accounts/acc_connected123").to_return(body: JSON.generate(stripe_account_mock))
-        stub_request(:get,
+        stub_request(
+:get,
                      "https://api.stripe.com/v1/accounts/acc_revoked123").to_return(status: 404)
       end
 
@@ -79,7 +83,8 @@ describe '
                                       text: I18n.t("spree.admin.payment_methods.stripe_connect.account_missing_msg")
         connect_one = I18n.t("spree.admin.payment_methods.stripe_connect.connect_one")
         expect(page).to have_link connect_one,
-                                  href: edit_admin_enterprise_path(missing_account_enterprise,
+                                  href: edit_admin_enterprise_path(
+missing_account_enterprise,
                                                                    anchor: "/payment_methods")
 
         select2_select "Revoked", from: "payment_method_preferred_enterprise_id"
@@ -116,7 +121,8 @@ describe '
   end
 
   it "updating a payment method", js: true do
-    payment_method = create(:payment_method, distributors: [@distributors[0]],
+    payment_method = create(
+:payment_method, distributors: [@distributors[0]],
                                              calculator: build(:calculator_flat_rate))
     login_as_admin_and_visit spree.edit_admin_payment_method_path payment_method
 

@@ -12,13 +12,16 @@ describe '
 
   it "updating many order cycle opening/closing times at once", js: true do
     # Given three order cycles
-    oc1 = create(:simple_order_cycle,
+    oc1 = create(
+:simple_order_cycle,
                  orders_open_at: Time.zone.local(2000, 12, 12, 12, 12, 0),
                  orders_close_at: Time.zone.local(2041, 12, 12, 12, 12, 1))
-    oc2 = create(:simple_order_cycle,
+    oc2 = create(
+:simple_order_cycle,
                  orders_open_at: Time.zone.local(2000, 12, 12, 12, 12, 2),
                  orders_close_at: Time.zone.local(2041, 12, 12, 12, 12, 3))
-    oc3 = create(:simple_order_cycle,
+    oc3 = create(
+:simple_order_cycle,
                  orders_open_at: Time.zone.local(2040, 12, 12, 12, 12, 4),
                  orders_close_at: Time.zone.local(2041, 12, 12, 12, 12, 5))
 
@@ -129,11 +132,13 @@ describe '
       create(:enterprise_fee, enterprise: distributor_managed, name: 'Managed distributor fee')
     }
     let!(:shipping_method) {
-      create(:shipping_method,
+      create(
+:shipping_method,
              distributors: [distributor_managed, distributor_unmanaged, distributor_permitted])
     }
     let!(:payment_method) {
-      create(:payment_method,
+      create(
+:payment_method,
              distributors: [distributor_managed, distributor_unmanaged, distributor_permitted])
     }
     let!(:product_managed) { create(:product, supplier: supplier_managed) }
@@ -141,30 +146,37 @@ describe '
     let!(:product_permitted) { create(:product, supplier: supplier_permitted) }
     let!(:variant_permitted) { product_permitted.variants.first }
     let!(:schedule) {
-      create(:schedule, name: 'Schedule1',
+      create(
+:schedule, name: 'Schedule1',
                         order_cycles: [create(:simple_order_cycle, coordinator: distributor_managed)])
     }
     let!(:schedule_of_other_managed_distributor) {
-      create(:schedule, name: 'Other Schedule',
+      create(
+:schedule, name: 'Other Schedule',
                         order_cycles: [create(:simple_order_cycle, coordinator: other_distributor_managed)])
     }
 
     before do
       # Relationships required for interface to work
       # Both suppliers allow both managed distributor to distribute their products (and add them to the order cycle)
-      create(:enterprise_relationship, parent: supplier_managed, child: distributor_managed,
+      create(
+:enterprise_relationship, parent: supplier_managed, child: distributor_managed,
                                        permissions_list: [:add_to_order_cycle])
-      create(:enterprise_relationship, parent: supplier_permitted, child: distributor_managed,
+      create(
+:enterprise_relationship, parent: supplier_permitted, child: distributor_managed,
                                        permissions_list: [:add_to_order_cycle])
 
       # Both suppliers allow permitted distributor to distribute their products
-      create(:enterprise_relationship, parent: supplier_managed, child: distributor_permitted,
+      create(
+:enterprise_relationship, parent: supplier_managed, child: distributor_permitted,
                                        permissions_list: [:add_to_order_cycle])
-      create(:enterprise_relationship, parent: supplier_permitted, child: distributor_permitted,
+      create(
+:enterprise_relationship, parent: supplier_permitted, child: distributor_permitted,
                                        permissions_list: [:add_to_order_cycle])
 
       # Permitted distributor can be added to the order cycle
-      create(:enterprise_relationship, parent: distributor_permitted, child: distributor_managed,
+      create(
+:enterprise_relationship, parent: distributor_permitted, child: distributor_managed,
                                        permissions_list: [:add_to_order_cycle])
     end
 
@@ -179,9 +191,11 @@ describe '
       end
 
       it "viewing a list of order cycles I am coordinating" do
-        oc_user_coordinating = create(:simple_order_cycle,
+        oc_user_coordinating = create(
+:simple_order_cycle,
                                       suppliers: [supplier_managed, supplier_unmanaged], coordinator: distributor_managed, distributors: [distributor_managed, distributor_unmanaged], name: 'Order Cycle 1' )
-        oc_for_other_user = create(:simple_order_cycle, coordinator: supplier_unmanaged,
+        oc_for_other_user = create(
+:simple_order_cycle, coordinator: supplier_unmanaged,
                                                         name: 'Order Cycle 2' )
 
         visit spree.admin_dashboard_path
@@ -275,7 +289,8 @@ distributor_unmanaged.name, supplier_managed.name,
       end
 
       it "editing an order cycle" do
-        oc = create(:simple_order_cycle,
+        oc = create(
+:simple_order_cycle,
                     suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged], coordinator: distributor_managed, distributors: [distributor_managed, distributor_permitted, distributor_unmanaged], name: 'Order Cycle 1' )
         distributor_managed.update_attribute(:enable_subscriptions, true)
 
@@ -330,18 +345,21 @@ distributor_unmanaged.name, supplier_managed.name,
       end
 
       it "editing an order cycle" do
-        oc = create(:simple_order_cycle,
+        oc = create(
+:simple_order_cycle,
                     suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged], coordinator: distributor_managed, distributors: [distributor_managed, distributor_permitted, distributor_unmanaged], name: 'Order Cycle 1' )
         v1 = create(:variant, product: create(:product, supplier: supplier_managed) )
         v2 = create(:variant, product: create(:product, supplier: supplier_managed) )
 
         # Incoming exchange
-        ex_in = oc.exchanges.where(sender_id: supplier_managed, receiver_id: distributor_managed,
+        ex_in = oc.exchanges.where(
+sender_id: supplier_managed, receiver_id: distributor_managed,
                                    incoming: true).first
         ex_in.update(variant_ids: [v1.id, v2.id])
 
         # Outgoing exchange
-        ex_out = oc.exchanges.where(sender_id: distributor_managed,
+        ex_out = oc.exchanges.where(
+sender_id: distributor_managed,
                                     receiver_id: distributor_managed, incoming: false).first
         ex_out.update(variant_ids: [v1.id, v2.id])
 
@@ -400,7 +418,8 @@ distributor_managed, distributor_permitted,
       let(:new_user) { create(:user) }
 
       before do
-        create(:enterprise_relationship, parent: supplier_managed, child: my_distributor,
+        create(
+:enterprise_relationship, parent: supplier_managed, child: my_distributor,
                                          permissions_list: [:add_to_order_cycle])
 
         new_user.enterprise_roles.build(enterprise: my_distributor).save
@@ -408,18 +427,21 @@ distributor_managed, distributor_permitted,
       end
 
       it "editing an order cycle" do
-        oc = create(:simple_order_cycle,
+        oc = create(
+:simple_order_cycle,
                     suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged], coordinator: distributor_managed, distributors: [my_distributor, distributor_managed, distributor_permitted, distributor_unmanaged], name: 'Order Cycle 1' )
         v1 = create(:variant, product: create(:product, supplier: supplier_managed) )
         v2 = create(:variant, product: create(:product, supplier: supplier_managed) )
 
         # Incoming exchange
-        ex_in = oc.exchanges.where(sender_id: supplier_managed, receiver_id: distributor_managed,
+        ex_in = oc.exchanges.where(
+sender_id: supplier_managed, receiver_id: distributor_managed,
                                    incoming: true).first
         ex_in.update(variant_ids: [v1.id, v2.id])
 
         # Outgoing exchange
-        ex_out = oc.exchanges.where(sender_id: distributor_managed, receiver_id: my_distributor,
+        ex_out = oc.exchanges.where(
+sender_id: distributor_managed, receiver_id: my_distributor,
                                     incoming: false).first
         ex_out.update(variant_ids: [v1.id, v2.id])
 
@@ -567,7 +589,8 @@ my_distributor, distributor_managed,
     it "editing an order cycle" do
       # Given an order cycle with pickup time and instructions
       fee = create(:enterprise_fee, name: 'my fee', enterprise: enterprise)
-      oc = create(:simple_order_cycle, suppliers: [enterprise], coordinator: enterprise,
+      oc = create(
+:simple_order_cycle, suppliers: [enterprise], coordinator: enterprise,
                                        distributors: [enterprise], variants: [v1], coordinator_fees: [fee])
       ex = oc.exchanges.outgoing.first
       ex.update! pickup_time: 'pickup time', pickup_instructions: 'pickup instructions'
@@ -603,7 +626,8 @@ my_distributor, distributor_managed,
       # Given an order cycle with pickup time and instructions
       fee1 = create(:enterprise_fee, name: 'my fee', enterprise: enterprise)
       fee2 = create(:enterprise_fee, name: 'that fee', enterprise: enterprise)
-      oc = create(:simple_order_cycle, suppliers: [enterprise], coordinator: enterprise,
+      oc = create(
+:simple_order_cycle, suppliers: [enterprise], coordinator: enterprise,
                                        distributors: [enterprise], variants: [v1], coordinator_fees: [fee1])
       ex = oc.exchanges.outgoing.first
       ex.update! pickup_time: 'pickup time', pickup_instructions: 'pickup instructions'

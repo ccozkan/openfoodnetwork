@@ -33,7 +33,8 @@ describe Checkout::PaypalRedirect do
         describe "and the payment method is a paypal method" do
           let(:distributor) { create(:distributor_enterprise) }
           let(:payment_method) do
-            Spree::Gateway::PayPalExpress.create!(name: "PayPalExpress",
+            Spree::Gateway::PayPalExpress.create!(
+name: "PayPalExpress",
                                                   distributor_ids: [distributor.id])
           end
 

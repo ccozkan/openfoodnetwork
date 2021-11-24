@@ -68,7 +68,8 @@ module Spree
     # Find line items that are from order sorted by variant name and unit value
     scope :sorted_by_name_and_unit_value, -> {
       joins(variant: :product)
-        .reorder(Arel.sql("
+        .reorder(Arel.sql(
+"
           lower(spree_products.name) asc,
             lower(spree_variants.display_name) asc,
             spree_variants.unit_value asc"))
@@ -96,7 +97,8 @@ module Spree
 
     # Line items without a Spree::TaxRate-originated adjustment
     scope :without_tax, -> {
-      joins("
+      joins(
+"
         LEFT OUTER JOIN spree_adjustments
           ON (spree_adjustments.adjustable_id=spree_line_items.id
             AND spree_adjustments.adjustable_type = 'Spree::LineItem'

@@ -29,7 +29,8 @@ describe Calculator::FlexiRate do
   end
 
   it "allows creation of new object with all the attributes" do
-    Calculator::FlexiRate.new(preferred_first_item: 1, preferred_additional_item: 1,
+    Calculator::FlexiRate.new(
+preferred_first_item: 1, preferred_additional_item: 1,
                               preferred_max_items: 1)
   end
 

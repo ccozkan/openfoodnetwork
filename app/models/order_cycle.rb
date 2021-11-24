@@ -34,13 +34,15 @@ class OrderCycle < ApplicationRecord
   preference :product_selection_from_coordinator_inventory_only, :boolean, default: false
 
   scope :active, lambda {
-    where('order_cycles.orders_open_at <= ? AND order_cycles.orders_close_at >= ?',
+    where(
+'order_cycles.orders_open_at <= ? AND order_cycles.orders_close_at >= ?',
           Time.zone.now,
           Time.zone.now)
   }
   scope :active_or_complete, lambda { where('order_cycles.orders_open_at <= ?', Time.zone.now) }
   scope :inactive, lambda {
-    where('order_cycles.orders_open_at > ? OR order_cycles.orders_close_at < ?',
+    where(
+'order_cycles.orders_open_at > ? OR order_cycles.orders_close_at < ?',
           Time.zone.now,
           Time.zone.now)
   }
@@ -49,7 +51,8 @@ class OrderCycle < ApplicationRecord
     where('order_cycles.orders_close_at > ? OR order_cycles.orders_close_at IS NULL', Time.zone.now)
   }
   scope :closed, lambda {
-    where('order_cycles.orders_close_at < ?',
+    where(
+'order_cycles.orders_close_at < ?',
           Time.zone.now).order("order_cycles.orders_close_at DESC")
   }
   scope :undated, -> { where('order_cycles.orders_open_at IS NULL OR orders_close_at IS NULL') }
@@ -258,7 +261,8 @@ class OrderCycle < ApplicationRecord
   def items_bought_by_user(user, distributor)
     # The Spree::Order.complete scope only checks for completed_at date
     #   it does not ensure state is "complete"
-    orders = Spree::Order.complete.where(state: "complete",
+    orders = Spree::Order.complete.where(
+state: "complete",
                                          user_id: user,
                                          distributor_id: distributor,
                                          order_cycle_id: self)

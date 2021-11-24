@@ -118,7 +118,8 @@ module WebHelper
   end
 
   def open_select2(selector)
-    page.find(selector).scroll_to(page.find(selector)).find(:css,
+    page.find(selector).scroll_to(page.find(selector)).find(
+:css,
                                                             '.select2-choice, .select2-search-field').click
   end
 

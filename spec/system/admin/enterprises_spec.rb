@@ -300,7 +300,8 @@ describe '
     let(:distributor3) { create(:distributor_enterprise, name: 'Yet Another Distributor') }
     let(:enterprise_user) { create(:user, enterprise_limit: 1) }
     let!(:er) {
-      create(:enterprise_relationship, parent: distributor3, child: distributor1,
+      create(
+:enterprise_relationship, parent: distributor3, child: distributor1,
                                        permissions_list: [:edit_profile])
     }
 
@@ -326,7 +327,8 @@ describe '
           click_link 'New Enterprise'
         end
 
-        expect(page).to have_content I18n.t('js.admin.enterprise_limit_reached',
+        expect(page).to have_content I18n.t(
+'js.admin.enterprise_limit_reached',
                                             contact_email: ContentConfig.footer_email)
       end
     end

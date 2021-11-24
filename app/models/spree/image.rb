@@ -82,7 +82,8 @@ mini: "48x48#", small: "227x227#",
     def self.set_s3_attachment_attributes
       set_attachment_attribute(:storage, :s3)
       set_attachment_attribute(:s3_credentials, s3_credentials)
-      set_attachment_attribute(:s3_headers,
+      set_attachment_attribute(
+:s3_headers,
                                ActiveSupport::JSON.decode(Spree::Config[:s3_headers]))
       set_attachment_attribute(:bucket, Spree::Config[:s3_bucket])
 

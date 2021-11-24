@@ -147,21 +147,24 @@ class Enterprise < ApplicationRecord
   }
 
   scope :with_order_cycles_as_supplier_outer, -> {
-    joins("
+    joins(
+"
       LEFT OUTER JOIN exchanges
         ON (exchanges.sender_id = enterprises.id AND exchanges.incoming = 't')")
       .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
   scope :with_order_cycles_as_distributor_outer, -> {
-    joins("
+    joins(
+"
       LEFT OUTER JOIN exchanges
         ON (exchanges.receiver_id = enterprises.id AND exchanges.incoming = 'f')")
       .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
   scope :with_order_cycles_outer, -> {
-    joins("
+    joins(
+"
       LEFT OUTER JOIN exchanges
         ON (exchanges.receiver_id = enterprises.id OR exchanges.sender_id = enterprises.id)")
       .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
@@ -180,7 +183,8 @@ class Enterprise < ApplicationRecord
   }
 
   scope :distributing_products, lambda { |product_ids|
-    exchanges = joins("
+    exchanges = joins(
+"
         INNER JOIN exchanges
           ON (exchanges.receiver_id = enterprises.id AND exchanges.incoming = 'f')
       ")
@@ -199,7 +203,8 @@ class Enterprise < ApplicationRecord
     end
   }
   scope :relatives_of_one_union_others, lambda { |one, others|
-    where("
+    where(
+"
       enterprises.id IN
         (SELECT child_id FROM enterprise_relationships WHERE enterprise_relationships.parent_id=?)
       OR enterprises.id IN
@@ -211,7 +216,8 @@ class Enterprise < ApplicationRecord
 
   def business_address_empty?(attributes)
     attributes_exists = attributes['id'].present?
-    attributes_empty = attributes.slice(:company, :address1, :city, :phone,
+    attributes_empty = attributes.slice(
+:company, :address1, :city, :phone,
                                         :zipcode).values.all?(&:blank?)
     attributes.merge!(_destroy: 1) if attributes_exists && attributes_empty
     !attributes_exists && attributes_empty
@@ -253,7 +259,8 @@ class Enterprise < ApplicationRecord
   end
 
   def relatives
-    Enterprise.where("
+    Enterprise.where(
+"
       enterprises.id IN
         (SELECT child_id FROM enterprise_relationships WHERE enterprise_relationships.parent_id=?)
       OR enterprises.id IN
@@ -431,7 +438,9 @@ class Enterprise < ApplicationRecord
 
   def enforce_ownership_limit
     unless owner.can_own_more_enterprises?
-      errors.add(:owner, I18n.t(:enterprise_owner_error, email: owner.email,
+      errors.add(
+:owner, I18n.t(
+:enterprise_owner_error, email: owner.email,
                                                          enterprise_limit: owner.enterprise_limit ))
     end
   end
@@ -452,7 +461,8 @@ class Enterprise < ApplicationRecord
     hub_permissions = [:add_to_order_cycle]
     hub_permissions << :create_variant_overrides if is_primary_producer
     enterprises.is_hub.each do |enterprise|
-      EnterpriseRelationship.create!(parent: self,
+      EnterpriseRelationship.create!(
+parent: self,
                                      child: enterprise,
                                      permissions_list: hub_permissions)
     end
@@ -460,7 +470,8 @@ class Enterprise < ApplicationRecord
     # All pre-existing producers grant permission to new hubs
     if is_hub
       enterprises.is_primary_producer.each do |enterprise|
-        EnterpriseRelationship.create!(parent: enterprise,
+        EnterpriseRelationship.create!(
+parent: enterprise,
                                        child: self,
                                        permissions_list: [
 :add_to_order_cycle,

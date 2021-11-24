@@ -139,7 +139,8 @@ module OpenFoodNetwork
         end
 
         it "should do all the filters at once" do
-          allow(subject).to receive(:params).and_return(order_cycle_id: oc1.id,
+          allow(subject).to receive(:params).and_return(
+order_cycle_id: oc1.id,
                                                         shipping_method_name: sm1.name,
                                                         payment_method_name: pm1.name)
           expect(subject.filter(orders)).to eq([order1])
@@ -164,7 +165,8 @@ module OpenFoodNetwork
           end
 
           it 'returns rows with payment information' do
-            expect(subject.table_items).to eq([
+            expect(subject.table_items).to eq(
+[
 [
                                                 order.billing_address.firstname,
                                                 order.billing_address.lastname,
@@ -191,7 +193,8 @@ module OpenFoodNetwork
           end
 
           it 'returns rows with delivery information' do
-            expect(subject.table_items).to eq([
+            expect(subject.table_items).to eq(
+[
 [
                                                 order.ship_address.firstname,
                                                 order.ship_address.lastname,

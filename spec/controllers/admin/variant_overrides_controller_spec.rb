@@ -54,7 +54,8 @@ id: variant_override.id, price: 123.45, count_on_hand: 321, sku: "MySKU",
 
         context "and the producer has granted VO permission" do
           before do
-            create(:enterprise_relationship, parent: variant.product.supplier, child: hub,
+            create(
+:enterprise_relationship, parent: variant.product.supplier, child: hub,
                                              permissions_list: [:create_variant_overrides])
           end
 
@@ -121,11 +122,13 @@ id: variant_override.id, price: "", count_on_hand: "", default_stock: nil, reset
       let(:variant1) { create(:variant, product: product) }
       let(:variant2) { create(:variant, product: product) }
       let!(:variant_override1) {
-        create(:variant_override, hub: hub, variant: variant1, count_on_hand: 5, default_stock: 7,
+        create(
+:variant_override, hub: hub, variant: variant1, count_on_hand: 5, default_stock: 7,
                                   resettable: true)
       }
       let!(:variant_override2) {
-        create(:variant_override, hub: hub, variant: variant2, count_on_hand: 2, default_stock: 1,
+        create(
+:variant_override, hub: hub, variant: variant2, count_on_hand: 2, default_stock: 1,
                                   resettable: false)
       }
 
@@ -158,7 +161,8 @@ id: variant_override.id, price: "", count_on_hand: "", default_stock: nil, reset
 
         context "where the producer has granted create_variant_overrides permission to the hub" do
           let!(:er1) {
-            create(:enterprise_relationship, parent: producer, child: hub,
+            create(
+:enterprise_relationship, parent: producer, child: hub,
                                              permissions_list: [:create_variant_overrides])
           }
 
@@ -184,11 +188,13 @@ id: variant_override.id, price: "", count_on_hand: "", default_stock: nil, reset
             let(:product) { create(:product, supplier: producer) }
             let(:variant3) { create(:variant, product: product) }
             let!(:variant_override3) {
-              create(:variant_override, hub: hub2, variant: variant3, count_on_hand: 1, default_stock: 13,
+              create(
+:variant_override, hub: hub2, variant: variant3, count_on_hand: 1, default_stock: 13,
                                         resettable: true)
             }
             let!(:er2) {
-              create(:enterprise_relationship, parent: producer, child: hub2,
+              create(
+:enterprise_relationship, parent: producer, child: hub2,
                                                permissions_list: [:create_variant_overrides])
             }
 

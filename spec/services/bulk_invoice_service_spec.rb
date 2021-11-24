@@ -62,11 +62,14 @@ describe BulkInvoiceService do
     end
 
     it "orders with completed desc" do
-      order_old = create(:order_with_distributor, :with_line_item, :completed,
+      order_old = create(
+:order_with_distributor, :with_line_item, :completed,
                          completed_at: 2.minutes.ago)
-      order_oldest = create(:order_with_distributor, :with_line_item, :completed,
+      order_oldest = create(
+:order_with_distributor, :with_line_item, :completed,
                             completed_at: 4.minutes.ago)
-      order_older = create(:order_with_distributor, :with_line_item, :completed,
+      order_older = create(
+:order_with_distributor, :with_line_item, :completed,
                            completed_at: 3.minutes.ago)
 
       expect(renderer).to receive(:render_to_string).with(order_old).ordered.and_return("")

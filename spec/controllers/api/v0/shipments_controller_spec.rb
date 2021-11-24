@@ -180,7 +180,8 @@ quantity: 2,
         let!(:distributor) { create(:distributor_enterprise) }
         let(:fee_amount) { 10 }
         let!(:shipping_method_with_fee) {
-          create(:shipping_method_with, :shipping_fee, distributors: [distributor],
+          create(
+:shipping_method_with, :shipping_fee, distributors: [distributor],
                                                        shipping_fee: fee_amount)
         }
         let!(:order_cycle) { create(:order_cycle, distributors: [distributor]) }

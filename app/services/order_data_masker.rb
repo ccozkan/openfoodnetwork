@@ -19,16 +19,20 @@ class OrderDataMasker
   end
 
   def mask_customer_names
-    order.bill_address&.assign_attributes(firstname: I18n.t('admin.reports.hidden'),
+    order.bill_address&.assign_attributes(
+firstname: I18n.t('admin.reports.hidden'),
                                           lastname: "")
-    order.ship_address&.assign_attributes(firstname: I18n.t('admin.reports.hidden'),
+    order.ship_address&.assign_attributes(
+firstname: I18n.t('admin.reports.hidden'),
                                           lastname: "")
   end
 
   def mask_contact_data
-    order.bill_address&.assign_attributes(phone: "", address1: "", address2: "",
+    order.bill_address&.assign_attributes(
+phone: "", address1: "", address2: "",
                                           city: "", zipcode: "", state: nil)
-    order.ship_address&.assign_attributes(phone: "", address1: "", address2: "",
+    order.ship_address&.assign_attributes(
+phone: "", address1: "", address2: "",
                                           city: "", zipcode: "", state: nil)
     order.assign_attributes(email: I18n.t('admin.reports.hidden'))
   end

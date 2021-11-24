@@ -78,7 +78,8 @@ describe Admin::SchedulesController, type: :controller do
       create(:simple_order_cycle, coordinator: create(:enterprise))
     }
     let!(:coordinated_schedule) {
-      create(:schedule,
+      create(
+:schedule,
              order_cycles: [
 coordinated_order_cycle, uncoordinated_order_cycle,
                             uncoordinated_order_cycle3] )
@@ -177,7 +178,8 @@ coordinated_order_cycle2.id, uncoordinated_order_cycle2.id,
 
         context "where I manage at least one of the order cycles to be added to the schedules" do
           before do
-            params.merge!( order_cycle_ids: [
+            params.merge!( 
+order_cycle_ids: [
 coordinated_order_cycle.id,
                                              uncoordinated_order_cycle.id] )
           end
@@ -212,7 +214,8 @@ coordinated_order_cycle.id,
       context 'as an admin user' do
         before do
           allow(controller).to receive(:spree_current_user) { create(:admin_user) }
-          params.merge!( order_cycle_ids: [
+          params.merge!( 
+order_cycle_ids: [
 coordinated_order_cycle.id,
                                            uncoordinated_order_cycle.id] )
         end

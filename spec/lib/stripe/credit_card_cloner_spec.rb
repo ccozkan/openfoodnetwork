@@ -35,7 +35,8 @@ module Stripe
         stub_get_customer_payment_methods_request(customer: "cus_A456", response: {})
         stub_add_metadata_request(payment_method: "pm_456", response: {})
 
-        stub_request(:post,
+        stub_request(
+:post,
                      "https://api.stripe.com/v1/payment_methods/#{new_payment_method_id}/attach")
           .with(body: { customer: new_customer_id },
                 headers: { 'Stripe-Account' => stripe_account_id })

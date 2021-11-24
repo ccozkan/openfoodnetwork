@@ -152,7 +152,8 @@ module Spree
       def ensure_sufficient_stock_lines
         return if !@order.payment? || @order.insufficient_stock_lines.blank?
 
-        flash[:error] = I18n.t("spree.orders.line_item.insufficient_stock",
+        flash[:error] = I18n.t(
+"spree.orders.line_item.insufficient_stock",
                                on_hand: "0 #{out_of_stock_item_names}")
         redirect_to spree.edit_admin_order_url(@order)
       end

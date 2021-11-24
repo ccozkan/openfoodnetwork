@@ -549,7 +549,8 @@ id: profile_enterprise1.id, sells: 'any',
     context "when an order_cycle_id is provided in params" do
       before { get :for_order_cycle, as: :json, params: { order_cycle_id: 1 } }
       it "initializes permissions with the existing OrderCycle" do
-        expect(OpenFoodNetwork::OrderCyclePermissions).to have_received(:new).with(user,
+        expect(OpenFoodNetwork::OrderCyclePermissions).to have_received(:new).with(
+user,
                                                                                    "existing OrderCycle")
       end
     end
@@ -557,7 +558,8 @@ id: profile_enterprise1.id, sells: 'any',
     context "when a coordinator is provided in params" do
       before { get :for_order_cycle, as: :json, params: { coordinator_id: 1 } }
       it "initializes permissions with a new OrderCycle" do
-        expect(OpenFoodNetwork::OrderCyclePermissions).to have_received(:new).with(user,
+        expect(OpenFoodNetwork::OrderCyclePermissions).to have_received(:new).with(
+user,
                                                                                    "new OrderCycle")
       end
     end
@@ -565,7 +567,8 @@ id: profile_enterprise1.id, sells: 'any',
     context "when both an order cycle and a coordinator are provided in params" do
       before { get :for_order_cycle, as: :json, params: { order_cycle_id: 1, coordinator_id: 1 } }
       it "initializes permissions with the existing OrderCycle" do
-        expect(OpenFoodNetwork::OrderCyclePermissions).to have_received(:new).with(user,
+        expect(OpenFoodNetwork::OrderCyclePermissions).to have_received(:new).with(
+user,
                                                                                    "existing OrderCycle")
       end
     end
@@ -581,12 +584,14 @@ id: profile_enterprise1.id, sells: 'any',
       allow(controller).to receive_messages spree_current_user: user
 
       # :create_variant_overrides does not affect visiblity (at time of writing)
-      create(:enterprise_relationship, parent: not_visible_enterprise, child: visible_enterprise,
+      create(
+:enterprise_relationship, parent: not_visible_enterprise, child: visible_enterprise,
                                        permissions_list: [:create_variant_overrides])
     end
 
     it "uses permissions to determine which enterprises are visible and should be rendered" do
-      expect(controller).to receive(:render_as_json).with([visible_enterprise],
+      expect(controller).to receive(:render_as_json).with(
+[visible_enterprise],
                                                           ams_prefix: 'basic', spree_current_user: user).and_call_original
       get :visible, format: :json
     end

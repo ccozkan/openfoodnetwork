@@ -133,7 +133,8 @@ module Spree
     def remove_defunct_members
       return unless zone_members.any?
 
-      zone_members.where('zoneable_id IS NULL OR zoneable_type != ?',
+      zone_members.where(
+'zoneable_id IS NULL OR zoneable_type != ?',
                          "Spree::#{kind.capitalize}").destroy_all
     end
 

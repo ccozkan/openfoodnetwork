@@ -37,9 +37,11 @@ module Stripe
       # If no customer is given, it will clone the payment method only
       return [nil, new_payment_method.id] if @card.gateway_customer_profile_id.blank?
 
-      new_customer = Stripe::Customer.create({ email: @card.user.email },
+      new_customer = Stripe::Customer.create(
+{ email: @card.user.email },
                                              stripe_account: @stripe_account)
-      attach_payment_method_to_customer(new_payment_method.id,
+      attach_payment_method_to_customer(
+new_payment_method.id,
                                         new_customer.id)
 
       add_metadata_to_payment_method(new_payment_method.id)
@@ -51,20 +53,23 @@ module Stripe
       platform_acct_payment_method_id = @card.gateway_payment_profile_id
       customer_id = @card.gateway_customer_profile_id
 
-      Stripe::PaymentMethod.create({ 
+      Stripe::PaymentMethod.create(
+{ 
 customer: customer_id,
                                      payment_method: platform_acct_payment_method_id },
                                    stripe_account: @stripe_account)
     end
 
     def attach_payment_method_to_customer(payment_method_id, customer_id)
-      Stripe::PaymentMethod.attach(payment_method_id,
+      Stripe::PaymentMethod.attach(
+payment_method_id,
                                    { customer: customer_id },
                                    stripe_account: @stripe_account)
     end
 
     def add_metadata_to_payment_method(payment_method_id)
-      Stripe::PaymentMethod.update(payment_method_id,
+      Stripe::PaymentMethod.update(
+payment_method_id,
                                    { metadata: { "ofn-clone": true } },
                                    stripe_account: @stripe_account)
     end

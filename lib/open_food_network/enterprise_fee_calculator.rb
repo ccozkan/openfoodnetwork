@@ -61,7 +61,8 @@ module OpenFoodNetwork
 
       @order_cycle.exchanges_carrying(variant, @distributor).each do |exchange|
         exchange.enterprise_fees.per_item.each do |enterprise_fee|
-          fees << OpenFoodNetwork::EnterpriseFeeApplicator.new(enterprise_fee, variant,
+          fees << OpenFoodNetwork::EnterpriseFeeApplicator.new(
+enterprise_fee, variant,
                                                                exchange.role)
         end
       end

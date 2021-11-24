@@ -29,7 +29,8 @@ module StripeStubs
 
   # Attaches the payment method to the customer in the hub's stripe account
   def stub_payment_method_attach_request
-    stub_request(:post,
+    stub_request(
+:post,
                  "https://api.stripe.com/v1/payment_methods/pm_123/attach")
       .with(body: { customer: "cus_A123" })
       .to_return(hub_payment_method_response_mock({ pm_id: "pm_123" }))
@@ -103,7 +104,8 @@ module StripeStubs
     chargedata = [{ id: "ch_1234", amount: 2000, amount_refunded: options[:amount_refunded] || 0 }]
     { 
 status: options[:code] || 200,
-      body: JSON.generate(id: "pi_123",
+      body: JSON.generate(
+id: "pi_123",
                           object: "payment_intent",
                           amount: 2000,
                           amount_received: 2000,
@@ -114,7 +116,8 @@ status: options[:code] || 200,
 
   def payment_intent_redirect_response_mock(redirect_url)
     { 
-status: 200, body: JSON.generate(id: "pi_123",
+status: 200, body: JSON.generate(
+id: "pi_123",
                                        object: "payment_intent",
                                        next_source_action: {
                                          type: "authorize_with_url",
@@ -126,7 +129,8 @@ status: 200, body: JSON.generate(id: "pi_123",
   def payment_successful_capture_mock(options)
     { 
 status: options[:code] || 200,
-      body: JSON.generate(object: "payment_intent",
+      body: JSON.generate(
+object: "payment_intent",
                           amount: 2000,
                           charges: { data: [{ id: "ch_1234", amount: 2000 }] }) }
   end
@@ -134,7 +138,8 @@ status: options[:code] || 200,
   def payment_failed_capture_mock(options)
     { 
 status: options[:code] || 402,
-      body: JSON.generate(error: { 
+      body: JSON.generate(
+error: { 
 message:
                                      options[:message] || "payment-method-failure" }) }
   end
@@ -149,14 +154,16 @@ status: options[:code] || 200,
     customer_id = options[:customer_id] || "cus_A123"
     { 
 status: 200,
-      body: JSON.generate(id: customer_id,
+      body: JSON.generate(
+id: customer_id,
                           sources: { data: [id: customer_id] }) }
   end
 
   def payment_successful_refund_mock
     { 
 status: 200,
-      body: JSON.generate(object: "refund",
+      body: JSON.generate(
+object: "refund",
                           amount: 2000,
                           charge: "ch_1234") }
   end

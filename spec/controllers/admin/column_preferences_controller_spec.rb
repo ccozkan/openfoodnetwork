@@ -12,7 +12,8 @@ describe Admin::ColumnPreferencesController, type: :controller do
 
     context "json" do
       let!(:column_preference) {
-        ColumnPreference.create(user_id: user1.id, action_name: 'enterprises_index', column_name: "name",
+        ColumnPreference.create(
+user_id: user1.id, action_name: 'enterprises_index', column_name: "name",
                                 visible: true)
       }
 
@@ -50,7 +51,9 @@ id: nil, user_id: user1.id, action_name: "enterprises_index", column_name: 'stat
         it "allows me to update the column preferences" do
           spree_put :bulk_update, format: :json, action_name: "enterprises_index",
                                   column_preferences: column_preference_params
-          expect(ColumnPreference.where(user_id: user1.id,
+          expect(
+ColumnPreference.where(
+user_id: user1.id,
                                         action_name: 'enterprises_index').count).to be 3
         end
       end

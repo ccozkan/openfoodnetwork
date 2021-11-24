@@ -14,7 +14,8 @@ describe "Product Import", js: true do
   let!(:enterprise) { create(:supplier_enterprise, owner: user, name: "User Enterprise") }
   let!(:enterprise2) { create(:distributor_enterprise, owner: user2, name: "Another Enterprise") }
   let!(:relationship) {
-    create(:enterprise_relationship, parent: enterprise, child: enterprise2,
+    create(
+:enterprise_relationship, parent: enterprise, child: enterprise2,
                                      permissions_list: [:create_variant_overrides])
   }
 
@@ -26,11 +27,13 @@ describe "Product Import", js: true do
 
   let!(:product) { create(:simple_product, supplier: enterprise2, name: 'Hypothetical Cake') }
   let!(:variant) {
-    create(:variant, product_id: product.id, price: '8.50', on_hand: 100, unit_value: '500',
+    create(
+:variant, product_id: product.id, price: '8.50', on_hand: 100, unit_value: '500',
                      display_name: 'Preexisting Banana')
   }
   let!(:product2) {
-    create(:simple_product, supplier: enterprise, on_hand: 100, name: 'Beans', unit_value: '500',
+    create(
+:simple_product, supplier: enterprise, on_hand: 100, name: 'Beans', unit_value: '500',
                             description: '', primary_taxon_id: category.id)
   }
   let!(:product3) {
@@ -43,11 +46,13 @@ describe "Product Import", js: true do
     create(:simple_product, supplier: enterprise2, on_hand: 100, name: 'Lettuce', unit_value: '500')
   }
   let!(:variant_override) {
-    create(:variant_override, variant_id: product4.variants.first.id, hub: enterprise2,
+    create(
+:variant_override, variant_id: product4.variants.first.id, hub: enterprise2,
                               count_on_hand: 42)
   }
   let!(:variant_override2) {
-    create(:variant_override, variant_id: product5.variants.first.id, hub: enterprise,
+    create(
+:variant_override, variant_id: product5.variants.first.id, hub: enterprise,
                               count_on_hand: 96)
   }
 
@@ -338,11 +343,14 @@ describe "Product Import", js: true do
       expect(page).to have_selector '.inv-created-count', text: '2'
       expect(page).to have_selector '.inv-updated-count', text: '1'
 
-      beans_override = VariantOverride.where(variant_id: product2.variants.first.id,
+      beans_override = VariantOverride.where(
+variant_id: product2.variants.first.id,
                                              hub_id: enterprise2.id).first
-      sprouts_override = VariantOverride.where(variant_id: product3.variants.first.id,
+      sprouts_override = VariantOverride.where(
+variant_id: product3.variants.first.id,
                                                hub_id: enterprise2.id).first
-      cabbage_override = VariantOverride.where(variant_id: product4.variants.first.id,
+      cabbage_override = VariantOverride.where(
+variant_id: product4.variants.first.id,
                                                hub_id: enterprise2.id).first
 
       expect(Float(beans_override.price)).to eq 3.20
@@ -367,7 +375,8 @@ describe "Product Import", js: true do
     end
 
     it "handles a unit of kg for inventory import" do
-      product = create(:simple_product, supplier: enterprise, on_hand: 100, name: 'Beets',
+      product = create(
+:simple_product, supplier: enterprise, on_hand: 100, name: 'Beets',
                                         unit_value: '1000', variant_unit_scale: 1000)
       csv_data = CSV.generate do |csv|
         csv << [
@@ -405,7 +414,8 @@ describe "Product Import", js: true do
     end
 
     it "handles the Items unit for inventory import" do
-      product = create(:simple_product, supplier: enterprise, on_hand: nil, name: 'Aubergine',
+      product = create(
+:simple_product, supplier: enterprise, on_hand: nil, name: 'Aubergine',
                                         unit_value: '1', variant_unit_scale: nil, variant_unit: "items", variant_unit_name: "Bag")
       csv_data = CSV.generate do |csv|
         csv << [
@@ -472,11 +482,14 @@ describe "Product Import", js: true do
       expect(page).to have_selector '.inv-created-count', text: '2'
       expect(page).to have_selector '.inv-updated-count', text: '1'
 
-      beans_override = VariantOverride.where(variant_id: product2.variants.first.id,
+      beans_override = VariantOverride.where(
+variant_id: product2.variants.first.id,
                                              hub_id: enterprise2.id).first
-      sprouts_override = VariantOverride.where(variant_id: product3.variants.first.id,
+      sprouts_override = VariantOverride.where(
+variant_id: product3.variants.first.id,
                                                hub_id: enterprise2.id).first
-      cabbage_override = VariantOverride.where(variant_id: product4.variants.first.id,
+      cabbage_override = VariantOverride.where(
+variant_id: product4.variants.first.id,
                                                hub_id: enterprise2.id).first
 
       expect(Float(beans_override.price)).to eq 3.20
@@ -652,7 +665,9 @@ describe "Product Import", js: true do
       expect(page).to have_no_selector '.create-count'
       expect(page).to have_no_selector '.update-count'
       expect(page).to have_no_selector 'input[type=submit][value="Save"]'
-      expect(flash_message).to match(I18n.t('admin.product_import.model.malformed_csv',
+      expect(flash_message).to match(
+I18n.t(
+'admin.product_import.model.malformed_csv',
                                             error_message: ""))
 
       File.delete('/tmp/test.csv')

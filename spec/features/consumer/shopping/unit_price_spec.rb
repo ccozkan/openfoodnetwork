@@ -11,7 +11,8 @@ describe "As a consumer, I want to check unit price information for a product", 
   let(:distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
   let(:supplier) { create(:supplier_enterprise) }
   let(:oc1) {
-    create(:simple_order_cycle, distributors: [distributor],
+    create(
+:simple_order_cycle, distributors: [distributor],
                                 coordinator: create(:distributor_enterprise), orders_close_at: 2.days.from_now)
   }
   let(:product) { create(:simple_product, supplier: supplier) }

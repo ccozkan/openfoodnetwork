@@ -25,18 +25,22 @@ xdescribe '
     # And a coordinating, supplying and distributing enterprise with some products with variants
     coordinator = oc.coordinator
     supplier = create(:supplier_enterprise, name: 'My supplier')
-    distributor = create(:distributor_enterprise, name: 'My distributor',
+    distributor = create(
+:distributor_enterprise, name: 'My distributor',
                                                   with_payment_and_shipping: true)
     product = create(:product, supplier: supplier)
     v1 = create(:variant, product: product)
     v2 = create(:variant, product: product)
 
     # Relationships required for interface to work
-    create(:enterprise_relationship, parent: supplier, child: coordinator,
+    create(
+:enterprise_relationship, parent: supplier, child: coordinator,
                                      permissions_list: [:add_to_order_cycle])
-    create(:enterprise_relationship, parent: distributor, child: coordinator,
+    create(
+:enterprise_relationship, parent: distributor, child: coordinator,
                                      permissions_list: [:add_to_order_cycle])
-    create(:enterprise_relationship, parent: supplier, child: distributor,
+    create(
+:enterprise_relationship, parent: supplier, child: distributor,
                                      permissions_list: [:add_to_order_cycle])
 
     # And some enterprise fees
@@ -162,14 +166,19 @@ xdescribe '
 
     # And it should have some variants selected
     selected_initial_variants = initial_variants.take initial_variants.size - 1
-    expect(oc.variants.map(&:id)).to match_array((selected_initial_variants.map(&:id) + [
+    expect(oc.variants.map(&:id)).to match_array(
+(selected_initial_variants.map(&:id) + [
 v1.id,
                                                                                          v2.id]))
 
     # And the collection details should have been updated
-    expect(oc.exchanges.where(pickup_time: 'New time 0',
+    expect(
+oc.exchanges.where(
+pickup_time: 'New time 0',
                               pickup_instructions: 'New instructions 0')).to be_present
-    expect(oc.exchanges.where(pickup_time: 'New time 1',
+    expect(
+oc.exchanges.where(
+pickup_time: 'New time 1',
                               pickup_instructions: 'New instructions 1')).to be_present
   end
 

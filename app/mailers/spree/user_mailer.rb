@@ -24,7 +24,8 @@ module Spree
     def signup_confirmation(user)
       @user = user
       I18n.with_locale valid_locale(@user) do
-        mail(to: user.email, from: from_address,
+        mail(
+to: user.email, from: from_address,
              subject: t(:welcome_to) + ' ' + Spree::Config[:site_name])
       end
     end
@@ -38,7 +39,8 @@ module Spree
 
       I18n.with_locale valid_locale(@user) do
         subject = t('spree.user_mailer.confirmation_instructions.subject')
-        mail(to: confirmation_email_address,
+        mail(
+to: confirmation_email_address,
              from: from_address,
              subject: subject)
       end

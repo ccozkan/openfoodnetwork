@@ -16,11 +16,13 @@ describe Spree::Admin::MailMethodsController do
 
   it "can trigger testmail" do
     request.env["HTTP_REFERER"] = "/"
-    user = double('User', email: 'user@example.com',
+    user = double(
+'User', email: 'user@example.com',
                           spree_api_key: 'fake',
                           id: nil,
                           owned_groups: nil)
-    allow(user).to receive_messages(enterprises: [create(:enterprise)],
+    allow(user).to receive_messages(
+enterprises: [create(:enterprise)],
                                     has_spree_role?: true,
                                     locale: nil)
     allow(controller).to receive_messages(spree_current_user: user)

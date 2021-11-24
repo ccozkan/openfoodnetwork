@@ -18,7 +18,8 @@ describe Exchange do
   it "should not be valid when (sender, receiver, direction) set are not unique for its order cycle" do
     e1 = create(:exchange)
 
-    e2 = build(:exchange,
+    e2 = build(
+:exchange,
                order_cycle: e1.order_cycle, sender: e1.sender, receiver: e1.receiver, incoming: e1.incoming)
     expect(e2).not_to be_valid
 
@@ -180,7 +181,9 @@ describe Exchange do
 
       it "finds exchanges coming from any of a number of enterprises" do
         expect(Exchange.from_enterprises([coordinator])).to eq([outgoing_exchange])
-        expect(Exchange.from_enterprises([
+        expect(
+Exchange.from_enterprises(
+[
 supplier,
                                           coordinator])).to match_array [
 incoming_exchange,
@@ -189,7 +192,9 @@ incoming_exchange,
 
       it "finds exchanges going to any of a number of enterprises" do
         expect(Exchange.to_enterprises([coordinator])).to eq([incoming_exchange])
-        expect(Exchange.to_enterprises([
+        expect(
+Exchange.to_enterprises(
+[
 coordinator,
                                         distributor])).to match_array [
 incoming_exchange,

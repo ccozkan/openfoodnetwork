@@ -146,7 +146,8 @@ describe Admin::SubscriptionsController, type: :controller do
         # As 'user' I shouldnt be able to associate a subscription with any of these.
         let(:unmanaged_enterprise) { create(:enterprise) }
         let(:unmanaged_schedule) {
-          create(:schedule,
+          create(
+:schedule,
                  order_cycles: [create(:simple_order_cycle, coordinator: unmanaged_enterprise)])
         }
         let(:unmanaged_customer) { create(:customer, enterprise: unmanaged_enterprise) }
@@ -206,7 +207,8 @@ describe Admin::SubscriptionsController, type: :controller do
 
         context 'where the specified variants are available from the shop' do
           let!(:exchange) {
-            create(:exchange, order_cycle: order_cycle, incoming: false, receiver: shop,
+            create(
+:exchange, order_cycle: order_cycle, incoming: false, receiver: shop,
                               variants: [variant])
           }
 
@@ -238,7 +240,8 @@ describe Admin::SubscriptionsController, type: :controller do
     let!(:payment_method) { create(:payment_method, distributors: [shop]) }
     let!(:shipping_method) { create(:shipping_method, distributors: [shop]) }
     let!(:subscription) {
-      create(:subscription,
+      create(
+:subscription,
              shop: shop,
              customer: customer1,
              schedule: schedule,
@@ -267,25 +270,29 @@ describe Admin::SubscriptionsController, type: :controller do
     }
     let!(:enterprise_fee) { create(:enterprise_fee, amount: 1.75) }
     let!(:order_cycle) {
-      create(:simple_order_cycle, coordinator: shop, orders_open_at: 2.days.from_now,
+      create(
+:simple_order_cycle, coordinator: shop, orders_open_at: 2.days.from_now,
                                   orders_close_at: 7.days.from_now)
     }
     let!(:outgoing_exchange) {
-      order_cycle.exchanges.create(sender: shop, receiver: shop, variants: [variant1],
+      order_cycle.exchanges.create(
+sender: shop, receiver: shop, variants: [variant1],
                                    enterprise_fees: [enterprise_fee])
     }
     let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
     let!(:payment_method) { create(:payment_method, distributors: [shop]) }
     let!(:shipping_method) { create(:shipping_method, distributors: [shop]) }
     let!(:subscription) {
-      create(:subscription,
+      create(
+:subscription,
              shop: shop,
              customer: customer,
              schedule: schedule,
              payment_method: payment_method,
              shipping_method: shipping_method,
              subscription_line_items: [
-create(:subscription_line_item, variant: variant1,
+create(
+:subscription_line_item, variant: variant1,
                                                                        quantity: 2)])
     }
     let(:subscription_line_item1) { subscription.subscription_line_items.first }

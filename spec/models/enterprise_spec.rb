@@ -348,7 +348,8 @@ describe Enterprise do
         s = create(:supplier_enterprise)
         d = create(:distributor_enterprise)
         p = create(:product)
-        create(:simple_order_cycle, orders_open_at: 10.days.from_now,
+        create(
+:simple_order_cycle, orders_open_at: 10.days.from_now,
                                     orders_close_at: 17.days.from_now, suppliers: [s], distributors: [d], variants: [p.master])
         expect(Enterprise.distributors_with_active_order_cycles).not_to include d
       end
@@ -393,16 +394,20 @@ describe Enterprise do
       let(:product) { create(:product) }
 
       it "returns enterprises distributing via an order cycle" do
-        order_cycle = create(:simple_order_cycle, distributors: [distributor],
+        order_cycle = create(
+:simple_order_cycle, distributors: [distributor],
                                                   variants: [product.master])
         expect(Enterprise.distributing_products(product.id)).to eq([distributor])
       end
 
       it "does not return duplicate enterprises" do
         another_product = create(:product)
-        order_cycle = create(:simple_order_cycle, distributors: [distributor],
+        order_cycle = create(
+:simple_order_cycle, distributors: [distributor],
                                                   variants: [product.master, another_product.master])
-        expect(Enterprise.distributing_products([
+        expect(
+Enterprise.distributing_products(
+[
 product.id,
                                                  another_product.id])).to eq([distributor])
       end
@@ -560,7 +565,8 @@ product.id,
 
   describe "presentation of attributes" do
     let(:distributor) {
-      build_stubbed(:distributor_enterprise,
+      build_stubbed(
+:distributor_enterprise,
                     website: "http://www.google.com",
                     facebook: "www.facebook.com/roger",
                     linkedin: "https://linkedin.com")

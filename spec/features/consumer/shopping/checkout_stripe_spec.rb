@@ -16,17 +16,20 @@ describe "Check out with Stripe", js: true do
   let(:product) { create(:product, price: 10) }
   let(:variant) { product.variants.first }
   let(:order) {
-    create(:order, order_cycle: order_cycle, distributor: distributor, bill_address_id: nil,
+    create(
+:order, order_cycle: order_cycle, distributor: distributor, bill_address_id: nil,
                    ship_address_id: nil)
   }
 
   let(:shipping_with_fee) {
-    create(:shipping_method, require_ship_address: false, name: "Donkeys",
+    create(
+:shipping_method, require_ship_address: false, name: "Donkeys",
                              calculator: Calculator::FlatRate.new(preferred_amount: 4.56))
   }
   let(:free_shipping) { create(:shipping_method) }
   let!(:check_with_fee) {
-    create(:payment_method, distributors: [distributor],
+    create(
+:payment_method, distributors: [distributor],
                             calculator: Calculator::FlatRate.new(preferred_amount: 5.67))
   }
 
@@ -50,7 +53,8 @@ describe "Check out with Stripe", js: true do
       end
 
       let!(:saved_card) do
-        create(:credit_card,
+        create(
+:credit_card,
                user_id: user.id,
                month: "01",
                year: "2025",
@@ -251,7 +255,8 @@ describe "Check out with Stripe", js: true do
           expect(user_credit_card.gateway_customer_profile_id).to eq "cus_A123"
 
           # Prepare a second order
-          new_order = create(:order, user: user, order_cycle: order_cycle,
+          new_order = create(
+:order, user: user, order_cycle: order_cycle,
                                      distributor: distributor, bill_address_id: nil, ship_address_id: nil)
           set_order(new_order)
           add_product_to_cart(new_order, product, quantity: 10)

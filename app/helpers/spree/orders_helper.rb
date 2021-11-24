@@ -36,7 +36,8 @@ module Spree
     def shop_changeable_orders_alert_html
       return "" unless changeable_orders.any?
 
-      t(:shop_changeable_orders_alert_html,
+      t(
+:shop_changeable_orders_alert_html,
         count: changeable_orders.count,
         path: changeable_orders_link_path,
         order: changeable_orders.first.number,

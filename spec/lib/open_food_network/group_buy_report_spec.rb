@@ -8,7 +8,8 @@ module OpenFoodNetwork
     before(:each) do
       @orders = []
       bill_address = create(:address)
-      distributor_address = create(:address, address1: "distributor address", city: 'The Shire',
+      distributor_address = create(
+:address, address1: "distributor address", city: 'The Shire',
                                              zipcode: "1234")
       distributor = create(:distributor_enterprise, address: distributor_address)
 
@@ -20,12 +21,14 @@ module OpenFoodNetwork
 
       shipping_instructions = "pick up on thursday please!"
 
-      order1 = create(:order, distributor: distributor, bill_address: bill_address,
+      order1 = create(
+:order, distributor: distributor, bill_address: bill_address,
                               special_instructions: shipping_instructions)
       line_item11 = create(:line_item, variant: @variant1, order: order1)
       @orders << order1.reload
 
-      order2 = create(:order, distributor: distributor, bill_address: bill_address,
+      order2 = create(
+:order, distributor: distributor, bill_address: bill_address,
                               special_instructions: shipping_instructions)
       line_item21 = create(:line_item, variant: @variant1, order: order2)
 
@@ -41,7 +44,8 @@ module OpenFoodNetwork
       @variant3.product.supplier = @supplier2
       @variant3.product.save!
 
-      order3 = create(:order, distributor: distributor, bill_address: bill_address,
+      order3 = create(
+:order, distributor: distributor, bill_address: bill_address,
                               special_instructions: shipping_instructions)
       line_item31 = create(:line_item, variant: @variant3, order: order3)
       @orders << order3.reload
@@ -50,7 +54,8 @@ module OpenFoodNetwork
     it "should return a header row describing the report" do
       subject = GroupBuyReport.new [@order1]
       header = subject.header
-      expect(header).to eq([
+      expect(header).to eq(
+[
 "Supplier", "Product", "Unit Size", "Variant", "Weight",
                             "Total Ordered", "Total Max"])
     end
@@ -67,7 +72,8 @@ module OpenFoodNetwork
       sum_quantities = line_items.map(&:quantity).sum
       sum_max_quantities = line_items.map { |li| li.max_quantity || 0 }.sum
 
-      expect(table[0]).to eq([
+      expect(table[0]).to eq(
+[
 @variant1.product.supplier.name, @variant1.product.name, "UNITSIZE",
                               @variant1.options_text, @variant1.weight, sum_quantities, sum_max_quantities])
     end

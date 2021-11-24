@@ -71,9 +71,11 @@ Package::ContentItem.new(variant, 1, :on_hand),
         it 'builds a list of shipping methods from all categories' do
           shipping_method1 = create(:shipping_method, distributors: [distributor])
           shipping_method2 = create(:shipping_method, distributors: [distributor])
-          variant1 = create(:variant,
+          variant1 = create(
+:variant,
                             shipping_category: shipping_method1.shipping_categories.first)
-          variant2 = create(:variant,
+          variant2 = create(
+:variant,
                             shipping_category: shipping_method2.shipping_categories.first)
           variant3 = create(:variant, shipping_category: nil)
           contents = [

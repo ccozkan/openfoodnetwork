@@ -36,7 +36,8 @@ describe EnterprisesHelper, type: :helper do
       end
 
       it "does not return 'back office only' shipping method" do
-        backoffice_only_shipping_method = create(:shipping_method, require_ship_address: false,
+        backoffice_only_shipping_method = create(
+:shipping_method, require_ship_address: false,
                                                                    distributors: [distributor], display_on: 'back_end')
 
         expect(helper.available_shipping_methods).to_not include backoffice_only_shipping_method
@@ -48,13 +49,15 @@ describe EnterprisesHelper, type: :helper do
     context "when FilterShippingMethods tag rules are in effect" do
       let(:customer) { create(:customer, user: user, enterprise: distributor) }
       let!(:tag_rule) {
-        create(:filter_shipping_methods_tag_rule,
+        create(
+:filter_shipping_methods_tag_rule,
                enterprise: distributor,
                preferred_customer_tags: "local",
                preferred_shipping_method_tags: "local-delivery")
       }
       let!(:default_tag_rule) {
-        create(:filter_shipping_methods_tag_rule,
+        create(
+:filter_shipping_methods_tag_rule,
                enterprise: distributor,
                is_default: true,
                preferred_shipping_method_tags: "local-delivery")
@@ -73,7 +76,8 @@ describe EnterprisesHelper, type: :helper do
           tag_rule.update_attribute(:preferred_matched_shipping_methods_visibility, 'visible')
         }
         before {
-          default_tag_rule.update_attribute(:preferred_matched_shipping_methods_visibility,
+          default_tag_rule.update_attribute(
+:preferred_matched_shipping_methods_visibility,
                                             'hidden')
         }
 
@@ -110,7 +114,8 @@ describe EnterprisesHelper, type: :helper do
           tag_rule.update_attribute(:preferred_matched_shipping_methods_visibility, 'hidden')
         }
         before {
-          default_tag_rule.update_attribute(:preferred_matched_shipping_methods_visibility,
+          default_tag_rule.update_attribute(
+:preferred_matched_shipping_methods_visibility,
                                             'visible')
         }
 
@@ -169,13 +174,15 @@ describe EnterprisesHelper, type: :helper do
     context "when FilterPaymentMethods tag rules are in effect" do
       let(:customer) { create(:customer, user: user, enterprise: distributor) }
       let!(:tag_rule) {
-        create(:filter_payment_methods_tag_rule,
+        create(
+:filter_payment_methods_tag_rule,
                enterprise: distributor,
                preferred_customer_tags: "trusted",
                preferred_payment_method_tags: "trusted")
       }
       let!(:default_tag_rule) {
-        create(:filter_payment_methods_tag_rule,
+        create(
+:filter_payment_methods_tag_rule,
                enterprise: distributor,
                is_default: true,
                preferred_payment_method_tags: "trusted")
@@ -230,7 +237,8 @@ describe EnterprisesHelper, type: :helper do
           tag_rule.update_attribute(:preferred_matched_payment_methods_visibility, 'hidden')
         }
         before {
-          default_tag_rule.update_attribute(:preferred_matched_payment_methods_visibility,
+          default_tag_rule.update_attribute(
+:preferred_matched_payment_methods_visibility,
                                             'visible')
         }
 
@@ -264,11 +272,13 @@ describe EnterprisesHelper, type: :helper do
 
     context "when StripeConnect payment methods are present" do
       let!(:pm3) {
-        create(:stripe_connect_payment_method, distributors: [distributor],
+        create(
+:stripe_connect_payment_method, distributors: [distributor],
                                                preferred_enterprise_id: distributor.id)
       }
       let!(:pm4) {
-        create(:stripe_connect_payment_method, distributors: [distributor],
+        create(
+:stripe_connect_payment_method, distributors: [distributor],
                                                preferred_enterprise_id: some_other_distributor.id)
       }
       let(:available_payment_methods) { helper.available_payment_methods }

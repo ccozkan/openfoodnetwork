@@ -169,7 +169,9 @@ module Spree
     def limit_owned_enterprises
       return unless owned_enterprises.size > enterprise_limit
 
-      errors.add(:owned_enterprises, I18n.t(:spree_user_enterprise_limit_error,
+      errors.add(
+:owned_enterprises, I18n.t(
+:spree_user_enterprise_limit_error,
                                             email: email,
                                             enterprise_limit: enterprise_limit))
     end

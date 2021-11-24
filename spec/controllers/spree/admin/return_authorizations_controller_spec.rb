@@ -8,7 +8,8 @@ module Spree
       include AuthenticationHelper
 
       let(:order) do
-        create(:order, :with_line_item, :completed,
+        create(
+:order, :with_line_item, :completed,
                distributor: create(:distributor_enterprise) )
       end
 

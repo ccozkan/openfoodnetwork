@@ -18,7 +18,8 @@ class ProductsRenderer
   def products_json
     raise NoProducts unless order_cycle && distributor && products
 
-    ActiveModel::ArraySerializer.new(products,
+    ActiveModel::ArraySerializer.new(
+products,
                                      each_serializer: Api::ProductSerializer,
                                      current_order_cycle: order_cycle,
                                      current_distributor: distributor,

@@ -64,7 +64,8 @@ module OrderManagement
 
         def for_supported_adjustments
           chain_to_scope do
-            where(originator_type: [
+            where(
+originator_type: [
 "EnterpriseFee", "Spree::PaymentMethod",
                                     "Spree::ShippingMethod"])
           end

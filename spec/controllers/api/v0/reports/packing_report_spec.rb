@@ -34,7 +34,8 @@ describe Api::V0::ReportsController, type: :controller do
       let(:supplier) { order.line_items.first.product.supplier }
       let(:current_user) { supplier.owner }
       let!(:perms) {
-        create(:enterprise_relationship, parent: supplier, child: order.distributor,
+        create(
+:enterprise_relationship, parent: supplier, child: order.distributor,
                                          permissions_list: [:add_to_order_cycle])
       }
 

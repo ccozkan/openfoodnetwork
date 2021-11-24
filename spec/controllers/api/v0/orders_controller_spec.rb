@@ -20,15 +20,18 @@ module Api
       let!(:supplier) { create(:supplier_enterprise) }
       let!(:order_cycle2) { create(:simple_order_cycle, coordinator: coordinator2) }
       let!(:order1) do
-        create(:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
+        create(
+:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
                        distributor: distributor, billing_address: create(:address), total: 5.0)
       end
       let!(:order2) do
-        create(:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
+        create(
+:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
                        distributor: distributor2, billing_address: create(:address), total: 10.0)
       end
       let!(:order3) do
-        create(:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
+        create(
+:order, order_cycle: order_cycle, state: 'complete', completed_at: Time.zone.now,
                        distributor: distributor, billing_address: create(:address), total: 1.0 )
       end
       let!(:order4) do
@@ -36,19 +39,23 @@ module Api
       end
       let!(:order5) { create(:order, state: 'cart', completed_at: nil) }
       let!(:line_item1) do
-        create(:line_item_with_shipment, order: order1,
+        create(
+:line_item_with_shipment, order: order1,
                                          product: create(:product, supplier: supplier))
       end
       let!(:line_item2) do
-        create(:line_item_with_shipment, order: order2,
+        create(
+:line_item_with_shipment, order: order2,
                                          product: create(:product, supplier: supplier))
       end
       let!(:line_item3) do
-        create(:line_item_with_shipment, order: order2,
+        create(
+:line_item_with_shipment, order: order2,
                                          product: create(:product, supplier: supplier))
       end
       let!(:line_item4) do
-        create(:line_item_with_shipment, order: order3,
+        create(
+:line_item_with_shipment, order: order3,
                                          product: create(:product, supplier: supplier))
       end
 
@@ -223,7 +230,8 @@ module Api
         end
 
         it "can view an order with weight calculator (this validates case where options[current_order] is nil on the shipping method serializer)" do
-          order.shipping_method.update_attribute(:calculator,
+          order.shipping_method.update_attribute(
+:calculator,
                                                  create(:weight_calculator, calculable: order))
           allow(controller).to receive(:current_order).and_return order
           get :show, params: { id: order.number }
@@ -268,11 +276,13 @@ module Api
       let(:product) { create(:simple_product) }
       let(:distributor) { create(:distributor_enterprise, owner: user) }
       let(:order_cycle) {
-        create(:simple_order_cycle,
+        create(
+:simple_order_cycle,
                distributors: [distributor], variants: [product.variants.first])
       }
       let!(:order) {
-        create(:order_with_totals_and_distribution,
+        create(
+:order_with_totals_and_distribution,
                user: user, distributor: distributor, order_cycle: order_cycle,
                state: 'complete', payment_state: 'balance_due')
       }

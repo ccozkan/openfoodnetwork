@@ -182,7 +182,8 @@ module Spree
       def validate_calculator_preferred_value
         return if calculator_preferred_values.all? do |value|
           preferred_value_from_params = gateway_params.dig(:calculator_attributes, value)
-          preferred_value_from_params.nil? || Float(preferred_value_from_params,
+          preferred_value_from_params.nil? || Float(
+preferred_value_from_params,
                                                     exception: false)
         end
 

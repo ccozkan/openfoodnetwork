@@ -20,7 +20,9 @@ describe CheckoutHelper, type: :helper do
     let(:order) { double(:order, total_tax: 123.45, currency: 'AUD') }
 
     it "retrieves the total tax on the order" do
-      expect(helper.display_checkout_tax_total(order)).to eq(Spree::Money.new(123.45,
+      expect(helper.display_checkout_tax_total(order)).to eq(
+Spree::Money.new(
+123.45,
                                                                               currency: 'AUD'))
     end
   end
@@ -39,7 +41,8 @@ describe CheckoutHelper, type: :helper do
     let(:order) { create(:order_with_totals_and_distribution) }
     let(:enterprise_fee) { create(:enterprise_fee, amount: 123) }
     let!(:fee_adjustment) {
-      create(:adjustment, originator: enterprise_fee, adjustable: order,
+      create(
+:adjustment, originator: enterprise_fee, adjustable: order,
                           order: order)
     }
 
@@ -64,17 +67,20 @@ describe CheckoutHelper, type: :helper do
     context "tax rate adjustments" do
       let!(:tax_rate) { create(:tax_rate, amount: 0.1, calculator: ::Calculator::DefaultTax.new) }
       let!(:line_item_fee_adjustment) {
-        create(:adjustment, originator: enterprise_fee, adjustable: order.line_items.first,
+        create(
+:adjustment, originator: enterprise_fee, adjustable: order.line_items.first,
                             order: order)
       }
       let!(:order_tax_adjustment) {
-        create(:adjustment,
+        create(
+:adjustment,
                originator: tax_rate,
                adjustable: fee_adjustment,
                order: order)
       }
       let!(:line_item_fee_adjustment_tax_adjustment) {
-        create(:adjustment,
+        create(
+:adjustment,
                originator: tax_rate,
                adjustable: line_item_fee_adjustment,
                order: order)
@@ -91,7 +97,8 @@ describe CheckoutHelper, type: :helper do
 
     context "with return authorization adjustments" do
       let!(:return_adjustment) {
-        create(:adjustment, originator_type: 'Spree::ReturnAuthorization', adjustable: order,
+        create(
+:adjustment, originator_type: 'Spree::ReturnAuthorization', adjustable: order,
                             order: order)
       }
 

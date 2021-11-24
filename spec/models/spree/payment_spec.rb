@@ -24,7 +24,8 @@ describe Spree::Payment do
     let(:amount_in_cents) { payment.amount.to_f * 100 }
 
     let(:success_response) do
-      double('success_response', success?: true,
+      double(
+'success_response', success?: true,
                                  authorization: '123',
                                  avs_result: { 'code' => 'avs-code' },
                                  cvv_result: { code: nil, message: nil })
@@ -201,7 +202,8 @@ describe Spree::Payment do
 
       context "purchase" do
         it "should call purchase on the gateway with the payment amount" do
-          expect(gateway).to receive(:purchase).with(amount_in_cents, card,
+          expect(gateway).to receive(:purchase).with(
+amount_in_cents, card,
                                                      anything).and_return(success_response)
           payment.purchase!
         end
@@ -305,7 +307,8 @@ describe Spree::Payment do
         context "when profiles are supported" do
           it "should call payment_gateway.void with the payment's response_code" do
             gateway.stub payment_profiles_supported?: true
-            expect(gateway).to receive(:void).with('123', card,
+            expect(gateway).to receive(:void).with(
+'123', card,
                                                    anything).and_return(success_response)
             payment.void_transaction!
           end
@@ -372,7 +375,8 @@ describe Spree::Payment do
           end
 
           it "should call credit on the gateway with the credit amount and response_code" do
-            expect(gateway).to receive(:credit).with(1000, card, '123',
+            expect(gateway).to receive(:credit).with(
+1000, card, '123',
                                                      anything).and_return(success_response)
             payment.credit!
           end
@@ -885,7 +889,8 @@ amount: 100, payment_method: gateway,
           let!(:inventory_item) { create(:inventory_item, enterprise: shop, variant: variant) }
 
           it "creates adjustment" do
-            payment = create(:payment, order: order, payment_method: payment_method,
+            payment = create(
+:payment, order: order, payment_method: payment_method,
                                        amount: order.total)
             expect(payment.adjustment).to be_present
             expect(payment.adjustment.amount).not_to eq(0)
@@ -907,7 +912,8 @@ amount: 100, payment_method: gateway,
       context "to Stripe payments" do
         let(:shop) { create(:enterprise) }
         let(:payment_method) {
-          create(:stripe_connect_payment_method, distributor_ids: [create(:distributor_enterprise).id],
+          create(
+:stripe_connect_payment_method, distributor_ids: [create(:distributor_enterprise).id],
                                                  preferred_enterprise_id: shop.id)
         }
         let(:payment) {

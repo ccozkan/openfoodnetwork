@@ -16,7 +16,8 @@ describe EmbeddedPageService do
     )
   }
   let(:response) {
-    ActionDispatch::TestResponse.new(200, 'X-Frame-Options' => 'DENY',
+    ActionDispatch::TestResponse.new(
+200, 'X-Frame-Options' => 'DENY',
                                           'Content-Security-Policy' => "frame-ancestors 'none'")
   }
   let(:service) { EmbeddedPageService.new(params, session, request, response) }

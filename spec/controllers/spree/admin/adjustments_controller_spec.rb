@@ -11,7 +11,8 @@ module Spree
     describe "index" do
       let!(:order) { create(:completed_order_with_totals) }
       let!(:adjustment1) {
-        create(:adjustment, originator_type: "Spree::ShippingMethod", order: order,
+        create(
+:adjustment, originator_type: "Spree::ShippingMethod", order: order,
                             adjustable: order.shipment)
       }
       let!(:adjustment2) {
@@ -98,11 +99,13 @@ module Spree
         context "when the tax category has multiple rates for the same tax zone" do
           let(:tax_category) { create(:tax_category) }
           let!(:tax_rate1) {
-            create(:tax_rate, amount: 0.1, zone: zone, included_in_price: false,
+            create(
+:tax_rate, amount: 0.1, zone: zone, included_in_price: false,
                               tax_category: tax_category )
           }
           let!(:tax_rate2) {
-            create(:tax_rate, amount: 0.2, zone: zone, included_in_price: false,
+            create(
+:tax_rate, amount: 0.2, zone: zone, included_in_price: false,
                               tax_category: tax_category )
           }
           let(:tax_category_param) { tax_category.id.to_s }
@@ -145,7 +148,8 @@ module Spree
           }
         }
         let(:adjustment) {
-          create(:adjustment, adjustable: order, order: order,
+          create(
+:adjustment, adjustable: order, order: order,
                               amount: 1100, tax_category: old_tax_category)
         }
 

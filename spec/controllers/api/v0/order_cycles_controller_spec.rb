@@ -36,13 +36,15 @@ module Api
 
       context "with variant overrides" do
         let!(:vo1) {
-          create(:variant_override,
+          create(
+:variant_override,
                  hub: distributor,
                  variant: product1.variants.first,
                  price: 1234.56)
         }
         let!(:vo2) {
-          create(:variant_override,
+          create(
+:variant_override,
                  hub: distributor,
                  variant: product2.variants.first,
                  count_on_hand: 0)
@@ -84,36 +86,42 @@ module Api
 
       context "when tag rules apply" do
         let!(:vo1) {
-          create(:variant_override,
+          create(
+:variant_override,
                  hub: distributor,
                  variant: product1.variants.first)
         }
         let!(:vo2) {
-          create(:variant_override,
+          create(
+:variant_override,
                  hub: distributor,
                  variant: product2.variants.first)
         }
         let!(:vo3) {
-          create(:variant_override,
+          create(
+:variant_override,
                  hub: distributor,
                  variant: product3.variants.first)
         }
         let(:default_hide_rule) {
-          create(:filter_products_tag_rule,
+          create(
+:filter_products_tag_rule,
                  enterprise: distributor,
                  is_default: true,
                  preferred_variant_tags: "hide_these_variants_from_everyone",
                  preferred_matched_variants_visibility: "hidden")
         }
         let!(:hide_rule) {
-          create(:filter_products_tag_rule,
+          create(
+:filter_products_tag_rule,
                  enterprise: distributor,
                  preferred_variant_tags: "hide_these_variants",
                  preferred_customer_tags: "hide_from_these_customers",
                  preferred_matched_variants_visibility: "hidden" )
         }
         let!(:show_rule) {
-          create(:filter_products_tag_rule,
+          create(
+:filter_products_tag_rule,
                  enterprise: distributor,
                  preferred_variant_tags: "show_these_variants",
                  preferred_customer_tags: "show_for_these_customers",
@@ -139,7 +147,8 @@ module Api
 
         it "returns hidden variants made visible for this specific customer" do
           vo1.update_attribute(:tag_list, default_hide_rule.preferred_variant_tags)
-          vo3.update_attribute(:tag_list,
+          vo3.update_attribute(
+:tag_list,
                                "#{show_rule.preferred_variant_tags},#{default_hide_rule.preferred_variant_tags}")
           customer.update_attribute(:tag_list, show_rule.preferred_customer_tags)
 

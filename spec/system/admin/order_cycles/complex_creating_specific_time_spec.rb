@@ -20,15 +20,19 @@ describe '
     product = create(:product, supplier: supplier)
     v1 = create(:variant, product: product)
     v2 = create(:variant, product: product)
-    distributor = create(:distributor_enterprise, name: 'My distributor',
+    distributor = create(
+:distributor_enterprise, name: 'My distributor',
                                                   with_payment_and_shipping: true)
 
     # Relationships required for interface to work
-    create(:enterprise_relationship, parent: supplier, child: coordinator,
+    create(
+:enterprise_relationship, parent: supplier, child: coordinator,
                                      permissions_list: [:add_to_order_cycle])
-    create(:enterprise_relationship, parent: distributor, child: coordinator,
+    create(
+:enterprise_relationship, parent: distributor, child: coordinator,
                                      permissions_list: [:add_to_order_cycle])
-    create(:enterprise_relationship, parent: supplier, child: distributor,
+    create(
+:enterprise_relationship, parent: supplier, child: distributor,
                                      permissions_list: [:add_to_order_cycle])
 
     # And some enterprise fees

@@ -80,7 +80,8 @@ module OrderManagement
 
       describe "updating estimates for shipping and payment fees" do
         let(:subscription) {
-          create(:subscription, with_items: true,
+          create(
+:subscription, with_items: true,
                                 payment_method: payment_method,
                                 shipping_method: shipping_method)
         }
@@ -98,11 +99,13 @@ module OrderManagement
 
         context "using flat rate calculators" do
           let(:shipping_method) {
-            create(:shipping_method,
+            create(
+:shipping_method,
                    calculator: Calculator::FlatRate.new(preferred_amount: 12.34))
           }
           let(:payment_method) {
-            create(:payment_method,
+            create(
+:payment_method,
                    calculator: Calculator::FlatRate.new(preferred_amount: 9.12))
           }
 
@@ -115,13 +118,15 @@ module OrderManagement
 
         context "using flat percent item total calculators" do
           let(:shipping_method) {
-            create(:shipping_method,
+            create(
+:shipping_method,
                    calculator: Calculator::FlatPercentItemTotal.new(
                      preferred_flat_percent: 10
                    ))
           }
           let(:payment_method) {
-            create(:payment_method,
+            create(
+:payment_method,
                    calculator: Calculator::FlatPercentItemTotal.new(
                      preferred_flat_percent: 20
                    ))
@@ -136,11 +141,13 @@ module OrderManagement
 
         context "using flat percent per item calculators" do
           let(:shipping_method) {
-            create(:shipping_method,
+            create(
+:shipping_method,
                    calculator: Calculator::FlatPercentPerItem.new(preferred_flat_percent: 5))
           }
           let(:payment_method) {
-            create(:payment_method,
+            create(
+:payment_method,
                    calculator: Calculator::FlatPercentPerItem.new(preferred_flat_percent: 10))
           }
 
@@ -153,11 +160,13 @@ module OrderManagement
 
         context "using per item calculators" do
           let(:shipping_method) {
-            create(:shipping_method,
+            create(
+:shipping_method,
                    calculator: Calculator::PerItem.new(preferred_amount: 1.2))
           }
           let(:payment_method) {
-            create(:payment_method,
+            create(
+:payment_method,
                    calculator: Calculator::PerItem.new(preferred_amount: 0.3))
           }
 

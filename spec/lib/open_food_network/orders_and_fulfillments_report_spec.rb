@@ -211,7 +211,8 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
 
       let!(:second_address) { create(:address, last_name: "Armstrong", first_name: "Amari") }
       let!(:second_order) do
-        create(:order, completed_at: 1.day.ago, order_cycle: order_cycle, distributor: distributor,
+        create(
+:order, completed_at: 1.day.ago, order_cycle: order_cycle, distributor: distributor,
                        bill_address: second_address)
       end
 
@@ -219,7 +220,8 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
         # Add a second line item for Fuji variant to the order, to test grouping in this edge case.
         order.line_items << build(:line_item_with_shipment, variant: fuji, price: nil, quantity: 4)
 
-        second_order.line_items << build(:line_item_with_shipment, variant: fuji, price: nil,
+        second_order.line_items << build(
+:line_item_with_shipment, variant: fuji, price: nil,
                                                                    quantity: 8)
       end
 

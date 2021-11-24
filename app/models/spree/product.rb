@@ -127,7 +127,8 @@ module Spree
 
     # -- Joins
     scope :with_order_cycles_outer, -> {
-      joins("
+      joins(
+"
         LEFT OUTER JOIN spree_variants AS o_spree_variants
           ON (o_spree_variants.product_id = spree_products.id)")
         .joins("
@@ -144,7 +145,8 @@ module Spree
     scope :imported_on, lambda { |import_date|
       import_date = Time.zone.parse import_date if import_date.is_a? String
       import_date = import_date.to_date
-      joins(:variants).merge(Spree::Variant
+      joins(:variants).merge(
+Spree::Variant
         .where(import_date: import_date.beginning_of_day..import_date.end_of_day))
     }
 
@@ -153,7 +155,8 @@ module Spree
     }
 
     scope :visible_for, lambda { |enterprise|
-      joins('
+      joins(
+'
         LEFT OUTER JOIN spree_variants AS o_spree_variants
           ON (o_spree_variants.product_id = spree_products.id)')
         .joins('
@@ -296,7 +299,8 @@ module Spree
     def set_property(property_name, property_value)
       ActiveRecord::Base.transaction do
         property = Property.where(name: property_name).first_or_create!(presentation: property_name)
-        product_property = ProductProperty.where(product: self,
+        product_property = ProductProperty.where(
+product: self,
                                                  property: property).first_or_initialize
         product_property.value = property_value
         product_property.save!
@@ -351,7 +355,8 @@ module Spree
       option_type_presentation = variant_unit.capitalize
 
       Spree::OptionType.find_by(name: option_type_name) ||
-        Spree::OptionType.create!(name: option_type_name,
+        Spree::OptionType.create!(
+name: option_type_name,
                                   presentation: option_type_presentation)
     end
 

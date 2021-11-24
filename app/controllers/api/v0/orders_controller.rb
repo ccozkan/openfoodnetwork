@@ -16,7 +16,8 @@ module Api
         orders = SearchOrders.new(params, current_api_user).orders
 
         if pagination_required?
-          @pagy, orders = pagy(orders,
+          @pagy, orders = pagy(
+orders,
                                items: params[:per_page] || default_per_page)
         end
 

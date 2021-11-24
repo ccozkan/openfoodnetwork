@@ -15,7 +15,8 @@ describe Api::ProductSerializer do
   let(:variant1) { create(:variant, product: product) }
 
   let(:serializer) {
-    described_class.new(product,
+    described_class.new(
+product,
                         variants: [variant1],
                         current_distributor: distributor,
                         current_order_cycle: order_cycle)

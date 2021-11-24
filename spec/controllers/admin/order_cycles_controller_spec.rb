@@ -226,11 +226,13 @@ module Admin
       let(:hub) { create(:distributor_enterprise) }
       let(:v) { create(:variant) }
       let!(:incoming_exchange) {
-        create(:exchange, order_cycle: order_cycle, sender: producer, receiver: coordinator,
+        create(
+:exchange, order_cycle: order_cycle, sender: producer, receiver: coordinator,
                           incoming: true, variants: [v])
       }
       let!(:outgoing_exchange) {
-        create(:exchange, order_cycle: order_cycle, sender: coordinator, receiver: hub, incoming: false,
+        create(
+:exchange, order_cycle: order_cycle, sender: coordinator, receiver: hub, incoming: false,
                           variants: [v])
       }
 

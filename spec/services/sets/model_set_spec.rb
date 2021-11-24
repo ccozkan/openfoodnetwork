@@ -10,7 +10,8 @@ collection_attributes: {
 '1' => { name: 's1' },
                                          '2' => { name: 's2' } } }
 
-      ms = Sets::ModelSet.new(EnterpriseRelationshipPermission,
+      ms = Sets::ModelSet.new(
+EnterpriseRelationshipPermission,
                               EnterpriseRelationshipPermission.all,
                               attrs)
 
@@ -44,7 +45,8 @@ collection_attributes: {
 '1' => { id: e1.id, name: 'deleteme' },
                                               '2' => { id: e2.id, name: 'e2' } } }
 
-      ms = Sets::ModelSet.new(Enterprise, Enterprise.all, attributes, nil,
+      ms = Sets::ModelSet.new(
+Enterprise, Enterprise.all, attributes, nil,
                               proc { |attrs| attrs['name'] == 'deleteme' })
 
       expect { ms.save }.to change(Enterprise, :count).by(-1)
@@ -56,7 +58,8 @@ collection_attributes: {
     it "ignores deletable new records" do
       attributes = { collection_attributes: { '1' => { name: 'deleteme' } } }
 
-      ms = Sets::ModelSet.new(Enterprise, Enterprise.all, attributes, nil,
+      ms = Sets::ModelSet.new(
+Enterprise, Enterprise.all, attributes, nil,
                               proc { |attrs| attrs[:name] == 'deleteme' })
 
       expect { ms.save }.to change(Enterprise, :count).by(0)

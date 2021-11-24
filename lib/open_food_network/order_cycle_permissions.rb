@@ -24,7 +24,8 @@ module OpenFoodNetwork
 
         if @coordinator.sells == "any"
           # If the coordinator sells any, relationships come into play
-          related_enterprises_granting(:add_to_order_cycle,
+          related_enterprises_granting(
+:add_to_order_cycle,
                                        to: [@coordinator.id]).each do |enterprise_id|
             coordinator_permitted_ids << enterprise_id
           end
@@ -180,7 +181,8 @@ module OpenFoodNetwork
       else
         # Variants produced by MY PRODUCERS that are in this OC,
         #   where my producer has granted P-OC to the hub
-        producer_ids = related_enterprises_granting(:add_to_order_cycle,
+        producer_ids = related_enterprises_granting(
+:add_to_order_cycle,
                                                     to: [hub.id],
                                                     scope: managed_participating_producers)
         permitted_variants = variants_from_suppliers(producer_ids)
@@ -206,13 +208,15 @@ module OpenFoodNetwork
         visible_and_editable_variants(hub)
       else
         # Any of my managed producers in this order cycle granted P-OC by the hub
-        granted_producers = related_enterprises_granted(:add_to_order_cycle,
+        granted_producers = related_enterprises_granted(
+:add_to_order_cycle,
                                                         by: [hub.id],
                                                         scope: managed_participating_producers)
 
         # Variants produced by MY PRODUCERS that are in this OC,
         #   where my producer has granted P-OC to the hub
-        granting_producer_ids = related_enterprises_granting(:add_to_order_cycle,
+        granting_producer_ids = related_enterprises_granting(
+:add_to_order_cycle,
                                                              to: [hub.id],
                                                              scope: granted_producers)
         permitted_variants = variants_from_suppliers(granting_producer_ids)
@@ -225,7 +229,8 @@ module OpenFoodNetwork
 
     def visible_and_editable_variants(hub)
       # Producers that have granted the hub P-OC
-      producer_ids = related_enterprises_granting(:add_to_order_cycle,
+      producer_ids = related_enterprises_granting(
+:add_to_order_cycle,
                                                   to: [hub.id],
                                                   scope: Enterprise.is_primary_producer)
 
@@ -287,7 +292,8 @@ module OpenFoodNetwork
       # Find my managed hubs in this order cycle
       hubs = managed_participating_hubs
       # Any incoming exchange where the producer has granted P-OC to one or more of those hubs
-      producer_ids = related_enterprises_granting(:add_to_order_cycle,
+      producer_ids = related_enterprises_granting(
+:add_to_order_cycle,
                                                   to: hubs.select("enterprises.id"),
                                                   scope: Enterprise.is_primary_producer)
       permitted_exchange_ids = @order_cycle
@@ -320,7 +326,8 @@ module OpenFoodNetwork
       # Find my producers in this order cycle
       producer_ids = managed_participating_producers.pluck :id
       # Outgoing exchanges with distributor that has been granted P-OC by 1 or more of the producers
-      hub_ids = related_enterprises_granted(:add_to_order_cycle,
+      hub_ids = related_enterprises_granted(
+:add_to_order_cycle,
                                             by: producer_ids,
                                             scope: Enterprise.is_hub)
       permitted_exchange_ids = @order_cycle.exchanges.outgoing.where(receiver_id: hub_ids).pluck :id

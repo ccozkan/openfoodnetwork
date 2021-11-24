@@ -121,7 +121,8 @@ only: address_fields, include: {
 state: { only: :name },
                                                         country: { only: :name } } }
 
-          collection.to_json(only: [:id, :email], include:
+          collection.to_json(
+only: [:id, :email], include:
                              { bill_address: includes, ship_address: includes })
         end
       end

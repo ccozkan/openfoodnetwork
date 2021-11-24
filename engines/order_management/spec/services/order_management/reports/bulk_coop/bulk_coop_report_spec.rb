@@ -27,7 +27,8 @@ describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
         end
 
         it 'shows canceled orders' do
-          o2 = create(:order, state: 'canceled', completed_at: 1.day.ago, order_cycle: oc1,
+          o2 = create(
+:order, state: 'canceled', completed_at: 1.day.ago, order_cycle: oc1,
                               distributor: d1)
           line_item = build(:line_item_with_shipment)
           o2.line_items << line_item
@@ -45,7 +46,8 @@ describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
         end
 
         it 'shows canceled orders' do
-          o2 = create(:order, state: 'canceled', completed_at: 1.day.ago, order_cycle: oc1,
+          o2 = create(
+:order, state: 'canceled', completed_at: 1.day.ago, order_cycle: oc1,
                               distributor: d1)
           line_item = build(:line_item_with_shipment)
           o2.line_items << line_item
@@ -80,7 +82,8 @@ describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
       it do
         user = create(:admin_user)
         d2 = create(:distributor_enterprise)
-        o2 = create(:order, distributor: d2, order_cycle: oc1,
+        o2 = create(
+:order, distributor: d2, order_cycle: oc1,
                             completed_at: Time.zone.now)
         li2 = build(:line_item_with_shipment)
         o2.line_items << li2
@@ -112,7 +115,8 @@ describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
 
       context "that has granted P-OC to the distributor" do
         let(:o2) do
-          create(:order, distributor: d1, completed_at: 1.day.ago, bill_address: create(:address),
+          create(
+:order, distributor: d1, completed_at: 1.day.ago, bill_address: create(:address),
                          ship_address: create(:address))
         end
         let(:li2) do
@@ -121,7 +125,8 @@ describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
 
         before do
           o2.line_items << li2
-          create(:enterprise_relationship, parent: s1, child: d1,
+          create(
+:enterprise_relationship, parent: s1, child: d1,
                                            permissions_list: [:add_to_order_cycle])
         end
 
@@ -133,7 +138,8 @@ describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
 
       context "that has not granted P-OC to the distributor" do
         let(:o2) do
-          create(:order, distributor: d1, completed_at: 1.day.ago, bill_address: create(:address),
+          create(
+:order, distributor: d1, completed_at: 1.day.ago, bill_address: create(:address),
                          ship_address: create(:address))
         end
         let(:li2) do
