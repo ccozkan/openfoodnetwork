@@ -20,11 +20,14 @@ group_by: proc { |sentence|
                                          }, summary_columns: [
 proc { |is|
                                                                 is.first.paragraph.chapter.name
-                                                              }, proc { |_is|
+                                                              }, 
+proc { |_is|
                                                                    "TOTAL"
-                                                                 }, proc { |_is|
+                                                                 }, 
+proc { |_is|
                                                                       ""
-                                                                    }, proc { |is|
+                                                                    }, 
+proc { |is|
                                                                          is.sum(&:property1)
                                                                        }
 ] },
@@ -34,11 +37,14 @@ group_by: proc { |sentence| sentence.paragraph }, sort_by: proc { |paragraph|
                                                                               } }
 ]
         columns = [
-proc { |is| is.first.paragraph.chapter.name }, proc { |is|
+proc { |is| is.first.paragraph.chapter.name }, 
+proc { |is|
                                                                     is.first.paragraph.name
-                                                                  }, proc { |is|
+                                                                  }, 
+proc { |is|
                                                                        is.first.name
-                                                                     }, proc { |is|
+                                                                     }, 
+proc { |is|
                                                                           is.sum(&:property1)
                                                                         }
 ]

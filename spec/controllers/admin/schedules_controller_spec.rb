@@ -81,7 +81,8 @@ describe Admin::SchedulesController, type: :controller do
       create(
 :schedule,
              order_cycles: [
-coordinated_order_cycle, uncoordinated_order_cycle,
+coordinated_order_cycle, 
+uncoordinated_order_cycle,
                             uncoordinated_order_cycle3
 ] )
     }
@@ -106,7 +107,8 @@ coordinated_order_cycle, uncoordinated_order_cycle,
 
         it "allows me to add/remove only order cycles I coordinate to/from the schedule" do
           order_cycle_ids = [
-coordinated_order_cycle2.id, uncoordinated_order_cycle2.id,
+coordinated_order_cycle2.id, 
+uncoordinated_order_cycle2.id,
                              uncoordinated_order_cycle3.id
 ]
           spree_put :update, format: :json, id: coordinated_schedule.id,

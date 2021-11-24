@@ -20,8 +20,18 @@ describe Api::V0::ProductsController, type: :controller do
   let(:all_attributes) { ["id", "name", "price", "available_on", "variants"] }
   let(:variants_attributes) {
     [
-"id", "options_text", "unit_value", "unit_description", "unit_to_display", "on_demand",
-     "display_as", "display_name", "name_to_display", "sku", "on_hand", "price"
+"id", 
+"options_text", 
+"unit_value", 
+"unit_description", 
+"unit_to_display", 
+"on_demand",
+     "display_as", 
+"display_name", 
+"name_to_display", 
+"sku", 
+"on_hand", 
+"price"
 ]
   }
 
@@ -139,8 +149,12 @@ unit_description: "things" }
       errors = json_response["errors"]
       expect(errors.keys).to match_array(
 [
-"name", "price", "primary_taxon", "shipping_category",
-                                          "supplier", "variant_unit"
+"name", 
+"price", 
+"primary_taxon", 
+"shipping_category",
+                                          "supplier", 
+"variant_unit"
 ])
     end
 
@@ -266,8 +280,11 @@ unit_description: "things" }
       it "returns a list of products" do
         api_get :bulk_products, { page: 1, per_page: 15 }, format: :json
         expect(returned_product_ids).to eq [
-product4.id, product3.id, product2.id,
-                                            inactive_product.id, product.id
+product4.id, 
+product3.id, 
+product2.id,
+                                            inactive_product.id, 
+product.id
 ]
       end
 

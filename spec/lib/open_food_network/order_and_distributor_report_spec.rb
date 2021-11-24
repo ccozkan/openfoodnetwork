@@ -12,12 +12,26 @@ module OpenFoodNetwork
         header = subject.header
         expect(header).to eq(
           [
-            'Order date', 'Order Id',
-            'Customer Name', 'Customer Email', 'Customer Phone', 'Customer City',
-            'SKU', 'Item name', 'Variant', 'Quantity', 'Max Quantity', 'Cost', 'Shipping Cost',
+            'Order date', 
+'Order Id',
+            'Customer Name', 
+'Customer Email', 
+'Customer Phone', 
+'Customer City',
+            'SKU', 
+'Item name', 
+'Variant', 
+'Quantity', 
+'Max Quantity', 
+'Cost', 
+'Shipping Cost',
             'Payment Method',
-            'Distributor', 'Distributor address', 'Distributor city', 'Distributor postcode',
-            'Shipping Method', 'Shipping instructions'
+            'Distributor', 
+'Distributor address', 
+'Distributor city', 
+'Distributor postcode',
+            'Shipping Method', 
+'Shipping instructions'
           ]
         )
       end

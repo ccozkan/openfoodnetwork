@@ -20,9 +20,13 @@ module OpenFoodNetwork
       # rubocop:disable Metrics/MethodLength
       def header
         [
-I18n.t(:report_header_hub), I18n.t(:report_header_customer), I18n.t(:report_header_email),
-         I18n.t(:report_header_phone), I18n.t(:report_header_producer),
-         I18n.t(:report_header_product), I18n.t(:report_header_variant),
+I18n.t(:report_header_hub), 
+I18n.t(:report_header_customer), 
+I18n.t(:report_header_email),
+         I18n.t(:report_header_phone), 
+I18n.t(:report_header_producer),
+         I18n.t(:report_header_product), 
+I18n.t(:report_header_variant),
          I18n.t(:report_header_quantity),
          I18n.t(:report_header_item_price, currency: currency_symbol),
          I18n.t(:report_header_item_fees_price, currency: currency_symbol),
@@ -30,15 +34,24 @@ I18n.t(:report_header_hub), I18n.t(:report_header_customer), I18n.t(:report_head
          I18n.t(:report_header_ship_price, currency: currency_symbol),
          I18n.t(:report_header_pay_fee_price, currency: currency_symbol),
          I18n.t(:report_header_total_price, currency: currency_symbol),
-         I18n.t(:report_header_paid), I18n.t(:report_header_shipping),
-         I18n.t(:report_header_delivery), I18n.t(:report_header_ship_street),
-         I18n.t(:report_header_ship_street_2), I18n.t(:report_header_ship_city),
-         I18n.t(:report_header_ship_postcode), I18n.t(:report_header_ship_state),
-         I18n.t(:report_header_comments), I18n.t(:report_header_sku),
-         I18n.t(:report_header_order_cycle), I18n.t(:report_header_payment_method),
-         I18n.t(:report_header_customer_code), I18n.t(:report_header_tags),
-         I18n.t(:report_header_billing_street), I18n.t(:report_header_billing_street_2),
-         I18n.t(:report_header_billing_city), I18n.t(:report_header_billing_postcode),
+         I18n.t(:report_header_paid), 
+I18n.t(:report_header_shipping),
+         I18n.t(:report_header_delivery), 
+I18n.t(:report_header_ship_street),
+         I18n.t(:report_header_ship_street_2), 
+I18n.t(:report_header_ship_city),
+         I18n.t(:report_header_ship_postcode), 
+I18n.t(:report_header_ship_state),
+         I18n.t(:report_header_comments), 
+I18n.t(:report_header_sku),
+         I18n.t(:report_header_order_cycle), 
+I18n.t(:report_header_payment_method),
+         I18n.t(:report_header_customer_code), 
+I18n.t(:report_header_tags),
+         I18n.t(:report_header_billing_street), 
+I18n.t(:report_header_billing_street_2),
+         I18n.t(:report_header_billing_city), 
+I18n.t(:report_header_billing_postcode),
          I18n.t(:report_header_billing_state),
          I18n.t(:report_header_order_number),
          I18n.t(:report_header_date)
@@ -210,8 +223,14 @@ I18n.t(:report_header_hub), I18n.t(:report_header_customer), I18n.t(:report_head
 { 
 variant: [{ option_values: :option_type }, { product: :supplier }],
 order: [
-:bill_address, :ship_address, :order_cycle, :adjustments, :payments,
-                   :user, :distributor, :shipments
+:bill_address, 
+:ship_address, 
+:order_cycle, 
+:adjustments, 
+:payments,
+                   :user, 
+:distributor, 
+:shipments
 ] }
 ]
       end

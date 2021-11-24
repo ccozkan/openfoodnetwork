@@ -15,12 +15,15 @@ module OpenFoodNetwork
       when "payments_by_payment_type"
         I18n.t(:report_header_payment_type)
         [
-I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor), I18n.t(:report_header_payment_type),
+I18n.t(:report_header_payment_state), 
+I18n.t(:report_header_distributor), 
+I18n.t(:report_header_payment_type),
          I18n.t(:report_header_total_price, currency: currency_symbol)
 ]
       when "itemised_payment_totals"
         [
-I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor),
+I18n.t(:report_header_payment_state), 
+I18n.t(:report_header_distributor),
          I18n.t(:report_header_product_total_price, currency: currency_symbol),
          I18n.t(:report_header_shipping_total_price, currency: currency_symbol),
          I18n.t(:report_header_outstanding_balance_price, currency: currency_symbol),
@@ -28,7 +31,8 @@ I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor),
 ]
       when "payment_totals"
         [
-I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor),
+I18n.t(:report_header_payment_state), 
+I18n.t(:report_header_distributor),
          I18n.t(:report_header_product_total_price, currency: currency_symbol),
          I18n.t(:report_header_shipping_total_price, currency: currency_symbol),
          I18n.t(:report_header_total_price, currency: currency_symbol),
@@ -38,7 +42,9 @@ I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor),
 ]
       else
         [
-I18n.t(:report_header_payment_state), I18n.t(:report_header_distributor), I18n.t(:report_header_payment_type),
+I18n.t(:report_header_payment_state), 
+I18n.t(:report_header_distributor), 
+I18n.t(:report_header_payment_type),
          I18n.t(:report_header_total_price, currency: currency_symbol)
 ]
       end

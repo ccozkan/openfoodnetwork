@@ -39,8 +39,14 @@ module OrderManagement
 
         def enterprise_fee_type_summarizer_to_total_attributes
           [
-            :fee_type, :enterprise_name, :fee_name, :customer_name, :fee_placement,
-            :fee_calculated_on_transfer_through_name, :tax_category_name, :total_amount
+            :fee_type, 
+:enterprise_name, 
+:fee_name, 
+:customer_name, 
+:fee_placement,
+            :fee_calculated_on_transfer_through_name, 
+:tax_category_name, 
+:total_amount
           ]
         end
       end

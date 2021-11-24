@@ -9,8 +9,10 @@ module PermittedAttributes
     def call
       @params.permit(
         order: [
-          :email, :special_instructions,
-          :existing_card_id, :shipping_method_id,
+          :email, 
+:special_instructions,
+          :existing_card_id, 
+:shipping_method_id,
           { 
 payments_attributes: [
             :payment_method_id,

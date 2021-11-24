@@ -88,8 +88,13 @@ module Admin
       if request.format.json?
         permissions.editable_subscriptions.ransack(params[:q]).result
           .preload([
-:shop, :customer, :schedule, :subscription_line_items, :ship_address,
-                    :bill_address, { proxy_orders: { order: :order_cycle } }
+:shop, 
+:customer, 
+:schedule, 
+:subscription_line_items, 
+:ship_address,
+                    :bill_address, 
+{ proxy_orders: { order: :order_cycle } }
 ])
       else
         Subscription.where("1=0")

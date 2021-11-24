@@ -352,17 +352,39 @@ module Api
 
     def order_attributes
       [
-        :id, :number, :full_name, :email, :phone, :completed_at, :display_total,
-        :edit_path, :state, :payment_state, :shipment_state,
-        :payments_path, :ready_to_ship, :ready_to_capture, :created_at,
-        :distributor_name, :special_instructions
+        :id, 
+:number, 
+:full_name, 
+:email, 
+:phone, 
+:completed_at, 
+:display_total,
+        :edit_path, 
+:state, 
+:payment_state, 
+:shipment_state,
+        :payments_path, 
+:ready_to_ship, 
+:ready_to_capture, 
+:created_at,
+        :distributor_name, 
+:special_instructions
       ]
     end
 
     def order_detailed_attributes
       [
-        :number, :item_total, :total, :state, :adjustment_total, :payment_total,
-        :completed_at, :shipment_state, :payment_state, :email, :special_instructions
+        :number, 
+:item_total, 
+:total, 
+:state, 
+:adjustment_total, 
+:payment_total,
+        :completed_at, 
+:shipment_state, 
+:payment_state, 
+:email, 
+:special_instructions
       ]
     end
   end

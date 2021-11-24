@@ -126,27 +126,75 @@ describe ProductImport::ProductImporter do
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "variant_unit_name", "on_demand", "shipping_category"
+"name", 
+"producer", 
+"category", 
+"on_hand", 
+"price", 
+"units", 
+"unit_type",
+                "variant_unit_name", 
+"on_demand", 
+"shipping_category"
 ]
         csv << [
-"Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g", "", "",
+"Carrots", 
+enterprise.name, 
+"Vegetables", 
+"5", 
+"3.20", 
+"500", 
+"g", 
+"", 
+"",
                 shipping_category.name
 ]
         csv << [
-"Potatoes", enterprise.name, "Vegetables", "6", "6.50", "2", "kg", "", "",
+"Potatoes", 
+enterprise.name, 
+"Vegetables", 
+"6", 
+"6.50", 
+"2", 
+"kg", 
+"", 
+"",
                 shipping_category.name
 ]
         csv << [
-"Pea Soup", enterprise.name, "Vegetables", "8", "5.50", "750", "ml", "", "0",
+"Pea Soup", 
+enterprise.name, 
+"Vegetables", 
+"8", 
+"5.50", 
+"750", 
+"ml", 
+"", 
+"0",
                 shipping_category.name
 ]
         csv << [
-"Salad", enterprise.name, "Vegetables", "7", "4.50", "1", "", "bags", "",
+"Salad", 
+enterprise.name, 
+"Vegetables", 
+"7", 
+"4.50", 
+"1", 
+"", 
+"bags", 
+"",
                 shipping_category.name
 ]
         csv << [
-"Hot Cross Buns", enterprise.name, "Cake", "7", "3.50", "1", "", "buns", "1",
+"Hot Cross Buns", 
+enterprise.name, 
+"Cake", 
+"7", 
+"3.50", 
+"1", 
+"", 
+"buns", 
+"1",
                 shipping_category.name
 ]
       end
@@ -230,11 +278,23 @@ describe ProductImport::ProductImporter do
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", "producer", "category", "on_hand", "price", "units", "unit_type",
+"name", 
+"producer", 
+"category", 
+"on_hand", 
+"price", 
+"units", 
+"unit_type",
                 "shipping_category"
 ]
         csv << [
-"Good Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g",
+"Good Carrots", 
+enterprise.name, 
+"Vegetables", 
+"5", 
+"3.20", 
+"500", 
+"g",
                 shipping_category.name
 ]
         csv << ["Bad Potatoes", "", "Vegetables", "6", "6.50", "1", "", shipping_category.name]
@@ -294,11 +354,27 @@ I18n.t(
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "variant_unit_name", "on_demand", "shipping_category"
+"name", 
+"producer", 
+"category", 
+"on_hand", 
+"price", 
+"units", 
+"unit_type",
+                "variant_unit_name", 
+"on_demand", 
+"shipping_category"
 ]
         csv << [
-"Shipping Test", enterprise.name, "Vegetables", "5", "3.20", "500", "g", "", nil,
+"Shipping Test", 
+enterprise.name, 
+"Vegetables", 
+"5", 
+"3.20", 
+"500", 
+"g", 
+"", 
+nil,
                 nil
 ]
       end
@@ -336,16 +412,37 @@ I18n.t(
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "display_name", "shipping_category"
+"name", 
+"producer", 
+"category", 
+"on_hand", 
+"price", 
+"units", 
+"unit_type",
+                "display_name", 
+"shipping_category"
 ]
         csv << [
-"Hypothetical Cake", enterprise2.name, "Cake", "5", "5.50", "500", "g",
-                "Preexisting Banana", shipping_category.name
+"Hypothetical Cake", 
+enterprise2.name, 
+"Cake", 
+"5", 
+"5.50", 
+"500", 
+"g",
+                "Preexisting Banana", 
+shipping_category.name
 ]
         csv << [
-"Hypothetical Cake", enterprise2.name, "Cake", "6", "3.50", "500", "g",
-                "Emergent Coffee", shipping_category.name
+"Hypothetical Cake", 
+enterprise2.name, 
+"Cake", 
+"6", 
+"3.50", 
+"500", 
+"g",
+                "Emergent Coffee", 
+shipping_category.name
 ]
       end
     }
@@ -387,12 +484,28 @@ I18n.t(
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", "producer", "description", "category", "on_hand", "price", "units",
-                "unit_type", "display_name", "shipping_category"
+"name", 
+"producer", 
+"description", 
+"category", 
+"on_hand", 
+"price", 
+"units",
+                "unit_type", 
+"display_name", 
+"shipping_category"
 ]
         csv << [
-"Hypothetical Cake", enterprise2.name, "New Description", "Cake", "5", "5.50",
-                "500", "g", "Preexisting Banana", shipping_category.name
+"Hypothetical Cake", 
+enterprise2.name, 
+"New Description", 
+"Cake", 
+"5", 
+"5.50",
+                "500", 
+"g", 
+"Preexisting Banana", 
+shipping_category.name
 ]
       end
     }
@@ -412,27 +525,69 @@ I18n.t(
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "display_name", "shipping_category"
+"name", 
+"producer", 
+"category", 
+"on_hand", 
+"price", 
+"units", 
+"unit_type",
+                "display_name", 
+"shipping_category"
 ]
         csv << [
-"Potatoes", enterprise.name, "Vegetables", "5", "3.50", "500", "g", "Small Bag",
+"Potatoes", 
+enterprise.name, 
+"Vegetables", 
+"5", 
+"3.50", 
+"500", 
+"g", 
+"Small Bag",
                 shipping_category.name
 ]
         csv << [
-"Chives", enterprise.name, "Vegetables", "6", "4.50", "500", "g", "Bunch",
+"Chives", 
+enterprise.name, 
+"Vegetables", 
+"6", 
+"4.50", 
+"500", 
+"g", 
+"Bunch",
                 shipping_category.name
 ]
         csv << [
-"Potatoes", enterprise.name, "Vegetables", "6", "5.50", "2", "kg", "Big Bag",
+"Potatoes", 
+enterprise.name, 
+"Vegetables", 
+"6", 
+"5.50", 
+"2", 
+"kg", 
+"Big Bag",
                 shipping_category.name
 ]
         csv << [
-"Potatoes", enterprise.name, "Vegetables", "6", "22.00", "10000", "g",
-                "Small Sack", shipping_category.name
+"Potatoes", 
+enterprise.name, 
+"Vegetables", 
+"6", 
+"22.00", 
+"10000", 
+"g",
+                "Small Sack", 
+shipping_category.name
 ]
         csv << [
-"Potatoes", enterprise.name, "Vegetables", "6", "60.00", "30000", "", "Big Sack",
+"Potatoes", 
+enterprise.name, 
+"Vegetables", 
+"6", 
+"60.00", 
+"30000", 
+"", 
+"Big Sack",
                 shipping_category.name
 ]
       end
@@ -478,15 +633,39 @@ I18n.t(
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "on_demand", "sku", "shipping_category"
+"name", 
+"producer", 
+"category", 
+"on_hand", 
+"price", 
+"units", 
+"unit_type",
+                "on_demand", 
+"sku", 
+"shipping_category"
 ]
         csv << [
-"Beetroot", enterprise3.name, "Vegetables", "5", "3.50", "500", "g", "0", nil,
+"Beetroot", 
+enterprise3.name, 
+"Vegetables", 
+"5", 
+"3.50", 
+"500", 
+"g", 
+"0", 
+nil,
                 shipping_category.name
 ]
         csv << [
-"Tomato", enterprise3.name, "Vegetables", "6", "5.50", "500", "g", "1", "TOMS",
+"Tomato", 
+enterprise3.name, 
+"Vegetables", 
+"6", 
+"5.50", 
+"500", 
+"g", 
+"1", 
+"TOMS",
                 shipping_category.name
 ]
       end
@@ -548,8 +727,16 @@ I18n.t(
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", "producer", "category", "description", "on_hand", "price", "units",
-                "unit_type", "display_name", "shipping_category"
+"name", 
+"producer", 
+"category", 
+"description", 
+"on_hand", 
+"price", 
+"units",
+                "unit_type", 
+"display_name", 
+"shipping_category"
 ]
         csv << ["Oats", enterprise.name, "Cereal", "", "50", "3.50", "500", "g", "Rolled Oats", shipping_category.name]   # Update
         csv << ["Oats", enterprise.name, "Cereal", "", "80", "3.75", "500", "g", "Flaked Oats", shipping_category.name]   # Update
@@ -587,8 +774,15 @@ I18n.t(
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", "producer", "category", "on_hand", "price", "units", "unit_type",
-                "display_name", "shipping_category"
+"name", 
+"producer", 
+"category", 
+"on_hand", 
+"price", 
+"units", 
+"unit_type",
+                "display_name", 
+"shipping_category"
 ]
         csv << ["Bag of Oats", enterprise.name, "Cereal", "60", "5.50", "500", "g", "Magic Oats", shipping_category.name]     # Add
         csv << ["Bag of Oats", enterprise.name, "Cereal", "70", "8.50", "500", "g", "French Oats", shipping_category.name]    # Add
@@ -656,7 +850,13 @@ I18n.t(
       let(:csv_data) {
         CSV.generate do |csv|
           csv << [
-"name", "distributor", "producer", "on_hand", "price", "units", "unit_type",
+"name", 
+"distributor", 
+"producer", 
+"on_hand", 
+"price", 
+"units", 
+"unit_type",
                   "variant_unit_name"
 ]
           csv << ["Beans", enterprise2.name, enterprise.name, "5", "3.20", "500", "g", ""]
@@ -738,7 +938,12 @@ visible: false)
       let(:csv_data) {
         CSV.generate do |csv|
           csv << [
-"name", "distributor", "producer", "on_hand", "price", "units",
+"name", 
+"distributor", 
+"producer", 
+"on_hand", 
+"price", 
+"units",
                   "variant_unit_name"
 ]
           csv << ["Cabbage", enterprise2.name, enterprise.name, "900", "", "1", "Whole"]
@@ -768,15 +973,33 @@ enterprise_id: enterprise2.id).first.visible
     it "only allows product import into enterprises the user is permitted to manage" do
       csv_data = CSV.generate do |csv|
         csv << [
-"name", "producer", "category", "on_hand", "price", "units", "unit_type",
+"name", 
+"producer", 
+"category", 
+"on_hand", 
+"price", 
+"units", 
+"unit_type",
                 "shipping_category"
 ]
         csv << [
-"My Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g",
+"My Carrots", 
+enterprise.name, 
+"Vegetables", 
+"5", 
+"3.20", 
+"500", 
+"g",
                 shipping_category.name
 ]
         csv << [
-"Your Potatoes", enterprise2.name, "Vegetables", "6", "6.50", "1", "kg",
+"Your Potatoes", 
+enterprise2.name, 
+"Vegetables", 
+"6", 
+"6.50", 
+"1", 
+"kg",
                 shipping_category.name
 ]
       end
@@ -852,15 +1075,33 @@ hub_id: enterprise2.id).first
     it "can reset all products for an enterprise that are not present in the uploaded file to zero stock" do
       csv_data = CSV.generate do |csv|
         csv << [
-"name", "producer", "category", "on_hand", "price", "units", "unit_type",
+"name", 
+"producer", 
+"category", 
+"on_hand", 
+"price", 
+"units", 
+"unit_type",
                 "shipping_category"
 ]
         csv << [
-"Carrots", enterprise.name, "Vegetables", "5", "3.20", "500", "g",
+"Carrots", 
+enterprise.name, 
+"Vegetables", 
+"5", 
+"3.20", 
+"500", 
+"g",
                 shipping_category.name
 ]
         csv << [
-"Beans", enterprise.name, "Vegetables", "6", "6.50", "500", "g",
+"Beans", 
+enterprise.name, 
+"Vegetables", 
+"6", 
+"6.50", 
+"500", 
+"g",
                 shipping_category.name
 ]
       end

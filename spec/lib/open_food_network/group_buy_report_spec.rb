@@ -56,8 +56,13 @@ module OpenFoodNetwork
       header = subject.header
       expect(header).to eq(
 [
-"Supplier", "Product", "Unit Size", "Variant", "Weight",
-                            "Total Ordered", "Total Max"
+"Supplier", 
+"Product", 
+"Unit Size", 
+"Variant", 
+"Weight",
+                            "Total Ordered", 
+"Total Max"
 ])
     end
 
@@ -75,8 +80,13 @@ module OpenFoodNetwork
 
       expect(table[0]).to eq(
 [
-@variant1.product.supplier.name, @variant1.product.name, "UNITSIZE",
-                              @variant1.options_text, @variant1.weight, sum_quantities, sum_max_quantities
+@variant1.product.supplier.name, 
+@variant1.product.name, 
+"UNITSIZE",
+                              @variant1.options_text, 
+@variant1.weight, 
+sum_quantities, 
+sum_max_quantities
 ])
     end
 

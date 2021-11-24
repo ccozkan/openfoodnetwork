@@ -769,7 +769,8 @@ describe '
       expect(page).to have_content 'NEW PRODUCT'
       expect(page).to have_select 'product_supplier_id',
                                   with_options: [
-supplier_managed1.name, supplier_managed2.name,
+supplier_managed1.name, 
+supplier_managed2.name,
                                                  supplier_permitted.name
 ]
 

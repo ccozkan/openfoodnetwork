@@ -101,7 +101,9 @@ module OpenFoodNetwork
 
           it "selects only rules of the specified type, in order of priority" do
             expect(rules).to eq [
-default_product_tag_rule, product_tag_rule3, product_tag_rule2,
+default_product_tag_rule, 
+product_tag_rule3, 
+product_tag_rule2,
                                  product_tag_rule1
 ]
           end
@@ -281,7 +283,8 @@ default_product_tag_rule, product_tag_rule3, product_tag_rule2,
           expect(products_array).to eq [
             { 
 :id => 2, :name => 'product 2',
-"variants" => [{ :id => 9, "tag_list" => ["tag2"] }] }, product3
+"variants" => [{ :id => 9, "tag_list" => ["tag2"] }] }, 
+product3
           ]
         end
       end

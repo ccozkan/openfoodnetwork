@@ -18,8 +18,34 @@ module OpenFoodNetwork
     def header
       # NOTE: These are NOT to be translated, they need to be in this exact format to work with Xero
       %w(
-*ContactName EmailAddress POAddressLine1 POAddressLine2 POAddressLine3 POAddressLine4
-         POCity PORegion POPostalCode POCountry *InvoiceNumber Reference *InvoiceDate *DueDate InventoryItemCode *Description *Quantity *UnitAmount Discount *AccountCode *TaxType TrackingName1 TrackingOption1 TrackingName2 TrackingOption2 Currency BrandingTheme Paid?
+*ContactName 
+EmailAddress 
+POAddressLine1 
+POAddressLine2 
+POAddressLine3 
+POAddressLine4
+         POCity 
+PORegion 
+POPostalCode 
+POCountry 
+*InvoiceNumber 
+Reference 
+*InvoiceDate 
+*DueDate 
+InventoryItemCode 
+*Description 
+*Quantity 
+*UnitAmount 
+Discount 
+*AccountCode 
+*TaxType 
+TrackingName1 
+TrackingOption1 
+TrackingName2 
+TrackingOption2 
+Currency 
+BrandingTheme 
+Paid?
 )
     end
 
@@ -54,7 +80,8 @@ module OpenFoodNetwork
 
     def line_item_includes
       [
-:bill_address, :adjustments,
+:bill_address, 
+:adjustments,
        { line_items: { variant: [{ option_values: :option_type }, { product: :supplier }] } }
 ]
     end

@@ -47,8 +47,14 @@ module OpenFoodNetwork
         it "returns headers for addresses" do
           expect(subject.header).to eq(
 [
-"First Name", "Last Name", "Billing Address", "Email",
-                                        "Phone", "Hub", "Hub Address", "Shipping Method"
+"First Name", 
+"Last Name", 
+"Billing Address", 
+"Email",
+                                        "Phone", 
+"Hub", 
+"Hub Address", 
+"Shipping Method"
 ])
         end
 
@@ -62,9 +68,12 @@ module OpenFoodNetwork
           expect(subject.table).to eq(
 [
 [
-                                        a.firstname, a.lastname,
+                                        a.firstname, 
+a.lastname,
                                         [a.address1, a.address2, a.city].join(" "),
-                                        o.email, a.phone, d.name,
+                                        o.email, 
+a.phone, 
+d.name,
                                         [d.address.address1, d.address.address2, d.address.city].join(" "),
                                         o.shipping_method.name
                                       ]

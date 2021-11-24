@@ -14,7 +14,10 @@ module PermittedAttributes
 
     def self.basic_attributes
       [
-        :name, :orders_open_at, :orders_close_at, :coordinator_id,
+        :name, 
+:orders_open_at, 
+:orders_close_at, 
+:coordinator_id,
         :preferred_product_selection_from_coordinator_inventory_only,
         { schedule_ids: [], coordinator_fee_ids: [] }
       ]
@@ -31,9 +34,16 @@ outgoing_exchanges: permitted_exchange_attributes
 
     def permitted_exchange_attributes
       [
-        :id, :sender_id, :receiver_id, :enterprise_id, :incoming, :active,
-        :select_all_variants, :receival_instructions,
-        :pickup_time, :pickup_instructions,
+        :id, 
+:sender_id, 
+:receiver_id, 
+:enterprise_id, 
+:incoming, 
+:active,
+        :select_all_variants, 
+:receival_instructions,
+        :pickup_time, 
+:pickup_instructions,
         :tag_list,
         { 
 tags: [:text],

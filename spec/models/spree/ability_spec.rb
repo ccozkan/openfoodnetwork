@@ -390,7 +390,14 @@ describe Spree::Ability do
         is_expected.to have_ability([:create], for: Spree::Variant)
         is_expected.to have_ability(
           [
-:admin, :index, :read, :create, :edit, :search, :update, :destroy,
+:admin, 
+:index, 
+:read, 
+:create, 
+:edit, 
+:search, 
+:update, 
+:destroy,
            :delete
 ], for: p1.master
         )
@@ -405,7 +412,12 @@ describe Spree::Ability do
       it "should be able to read/write their enterprises' product properties" do
         is_expected.to have_ability(
           [
-:admin, :index, :read, :create, :edit, :update_positions,
+:admin, 
+:index, 
+:read, 
+:create, 
+:edit, 
+:update_positions,
            :destroy
 ], for: Spree::ProductProperty
         )
@@ -430,7 +442,12 @@ describe Spree::Ability do
       it "should be able to read/write their enterprises' producer properties" do
         is_expected.to have_ability(
           [
-:admin, :index, :read, :create, :edit, :update_positions,
+:admin, 
+:index, 
+:read, 
+:create, 
+:edit, 
+:update_positions,
            :destroy
 ], for: ProducerProperty
         )
@@ -455,7 +472,12 @@ describe Spree::Ability do
       it "should be able to read some reports" do
         is_expected.to have_ability(
           [
-:admin, :index, :customers, :bulk_coop, :orders_and_fulfillment, :products_and_inventory,
+:admin, 
+:index, 
+:customers, 
+:bulk_coop, 
+:orders_and_fulfillment, 
+:products_and_inventory,
            :order_cycle_management
 ], for: Spree::Admin::ReportsController
         )
@@ -466,7 +488,10 @@ describe Spree::Ability do
       it "should not be able to read other reports" do
         is_expected.not_to have_ability(
           [
-:group_buys, :payments, :orders_and_distributors, :users_and_enterprises,
+:group_buys, 
+:payments, 
+:orders_and_distributors, 
+:users_and_enterprises,
            :xero_invoices
 ], for: Spree::Admin::ReportsController
         )
@@ -561,8 +586,14 @@ describe Spree::Ability do
         it "should be able to edit enterprises it manages" do
           is_expected.to have_ability(
             [
-:read, :edit, :update, :remove_logo, :remove_promo_image, :remove_terms_and_conditions,
-             :bulk_update, :resend_confirmation
+:read, 
+:edit, 
+:update, 
+:remove_logo, 
+:remove_promo_image, 
+:remove_terms_and_conditions,
+             :bulk_update, 
+:resend_confirmation
 ], for: d1
           )
         end
@@ -570,8 +601,14 @@ describe Spree::Ability do
         it "should be able to edit enterprises it has permission to" do
           is_expected.to have_ability(
             [
-:read, :edit, :update, :remove_logo, :remove_promo_image, :remove_terms_and_conditions,
-             :bulk_update, :resend_confirmation
+:read, 
+:edit, 
+:update, 
+:remove_logo, 
+:remove_promo_image, 
+:remove_terms_and_conditions,
+             :bulk_update, 
+:resend_confirmation
 ], for: d_related
           )
         end
@@ -585,7 +622,8 @@ describe Spree::Ability do
         it "should not be able to manage shipping methods, payment methods and enterprise fees for enterprises it has edit profile permission to" do
           is_expected.not_to have_ability(
             [
-:manage_shipping_methods, :manage_payment_methods,
+:manage_shipping_methods, 
+:manage_payment_methods,
              :manage_enterprise_fees
 ], for: d_related
           )
@@ -706,8 +744,18 @@ describe Spree::Ability do
       it "should be able to read some reports" do
         is_expected.to have_ability(
           [
-:admin, :index, :customers, :sales_tax, :group_buys, :bulk_coop, :payments,
-           :orders_and_distributors, :orders_and_fulfillment, :products_and_inventory, :order_cycle_management, :xero_invoices
+:admin, 
+:index, 
+:customers, 
+:sales_tax, 
+:group_buys, 
+:bulk_coop, 
+:payments,
+           :orders_and_distributors, 
+:orders_and_fulfillment, 
+:products_and_inventory, 
+:order_cycle_management, 
+:xero_invoices
 ], for: Spree::Admin::ReportsController
         )
       end
@@ -780,7 +828,13 @@ describe Spree::Ability do
       it "should be able to read/write EnterpriseFees" do
         is_expected.to have_ability(
           [
-:admin, :index, :read, :create, :edit, :bulk_update, :destroy,
+:admin, 
+:index, 
+:read, 
+:create, 
+:edit, 
+:bulk_update, 
+:destroy,
            :for_order_cycle
 ], for: EnterpriseFee
         )

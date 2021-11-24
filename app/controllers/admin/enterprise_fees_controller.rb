@@ -101,8 +101,13 @@ spree_current_user,
     def enterprise_fee_bulk_params
       params.require(:sets_enterprise_fee_set).permit(
         collection_attributes: [
-          :id, :enterprise_id, :fee_type, :name, :tax_category_id,
-          :inherits_tax_category, :calculator_type,
+          :id, 
+:enterprise_id, 
+:fee_type, 
+:name, 
+:tax_category_id,
+          :inherits_tax_category, 
+:calculator_type,
           { calculator_attributes: PermittedAttributes::Calculator.attributes }
         ]
       )

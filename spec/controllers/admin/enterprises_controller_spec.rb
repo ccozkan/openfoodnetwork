@@ -159,7 +159,8 @@ address_attributes: address_params } }
 id: distributor,
 enterprise: { 
 user_ids: [
-distributor_owner.id, distributor_manager.id,
+distributor_owner.id, 
+distributor_manager.id,
                                                    user.id
 ] } }
         spree_post :update, update_params
@@ -290,7 +291,8 @@ enterprise: { show_customer_names_to_suppliers: "1" } }
 id: distributor,
 enterprise: { 
 user_ids: [
-distributor_owner.id, distributor_manager.id,
+distributor_owner.id, 
+distributor_manager.id,
                                                    user.id
 ] } }
         spree_post :update, update_params
@@ -325,7 +327,8 @@ distributor_owner.id, distributor_manager.id,
 id: distributor,
 enterprise: { 
 user_ids: [
-distributor_owner.id, distributor_manager.id,
+distributor_owner.id, 
+distributor_manager.id,
                                                    user.id
 ] } }
         spree_post :update, update_params

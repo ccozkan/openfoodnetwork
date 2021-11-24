@@ -69,7 +69,8 @@ describe '
     expect(page).to have_selector "#save-bar", text: "Order cycles have been updated."
     order_cycles = OrderCycle.order("id ASC")
     expect(order_cycles.map(&:name)).to eq [
-"Updated Order Cycle 1", "Updated Order Cycle 2",
+"Updated Order Cycle 1", 
+"Updated Order Cycle 2",
                                             "Updated Order Cycle 3"
 ]
     expect(order_cycles.map { |oc| oc.orders_open_at.sec }).to eq [0, 0, 4]
@@ -221,7 +222,8 @@ describe '
         click_link 'New Order Cycle'
 
         [
-distributor_unmanaged.name, supplier_managed.name,
+distributor_unmanaged.name, 
+supplier_managed.name,
          supplier_unmanaged.name
 ].each do |enterprise_name|
           expect(page).not_to have_select 'coordinator_id', with_options: [enterprise_name]
@@ -406,12 +408,14 @@ receiver_id: distributor_managed, incoming: false).first
 
         oc.reload
         expect(oc.suppliers).to match_array [
-supplier_managed, supplier_permitted,
+supplier_managed, 
+supplier_permitted,
                                              supplier_unmanaged
 ]
         expect(oc.coordinator).to eq(distributor_managed)
         expect(oc.distributors).to match_array [
-distributor_managed, distributor_permitted,
+distributor_managed, 
+distributor_permitted,
                                                 distributor_unmanaged
 ]
       end
@@ -490,13 +494,16 @@ incoming: false).first
 
         oc.reload
         expect(oc.suppliers).to match_array [
-supplier_managed, supplier_permitted,
+supplier_managed, 
+supplier_permitted,
                                              supplier_unmanaged
 ]
         expect(oc.coordinator).to eq(distributor_managed)
         expect(oc.distributors).to match_array [
-my_distributor, distributor_managed,
-                                                distributor_permitted, distributor_unmanaged
+my_distributor, 
+distributor_managed,
+                                                distributor_permitted, 
+distributor_unmanaged
 ]
       end
     end
