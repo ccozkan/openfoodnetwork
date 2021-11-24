@@ -306,7 +306,7 @@ created_by_id: created_by_id
 )
     end
 
-    # FIXME refactor this method and implement validation using validates_* utilities
+    # FIXME: refactor this method and implement validation using validates_* utilities
     def generate_order_number
       record = true
       while record

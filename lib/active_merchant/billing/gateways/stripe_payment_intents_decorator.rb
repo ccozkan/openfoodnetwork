@@ -37,7 +37,7 @@ ActiveMerchant::Billing::StripePaymentIntentsGateway.class_eval do
     super(money, charge_id, options)
   end
 
-  # Note: Not all payment methods are currently supported by the
+  # NOTE: Not all payment methods are currently supported by the
   #   {Payment Methods API}[https://stripe.com/docs/payments/payment-methods]
   # Current implementation will create
   #   a PaymentMethod object if the method is a token or credit card

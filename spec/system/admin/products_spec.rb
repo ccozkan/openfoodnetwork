@@ -696,7 +696,7 @@ position: 1
     context "editing a product's variant unit scale", js: true do
       let(:product) { create(:simple_product, name: 'a product', supplier: @supplier2) }
 
-      # TODO below -> assertions commented out refer to bug:
+      # TODO: below -> assertions commented out refer to bug:
       # https://github.com/openfoodfoundation/openfoodnetwork/issues/7180
 
       before do

@@ -184,7 +184,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
         OpenFoodNetwork::Permissions.new(spree_current_user).visible_enterprises
           .includes(:shipping_methods, :payment_methods).ransack(params[:q]).result
       else
-        # TODO was ordered with is_distributor DESC as well, not sure why or how we want to sort this now
+        # TODO: was ordered with is_distributor DESC as well, not sure why or how we want to sort this now
         OpenFoodNetwork::Permissions.new(spree_current_user)
           .editable_enterprises
           .order('is_primary_producer ASC, name')

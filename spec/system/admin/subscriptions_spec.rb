@@ -136,7 +136,7 @@ with_options: [shop.name, shop2.name],
             accept_alert 'Are you sure?' do
               find("a.resume-order").click
             end
-            # Note: the order itself was not complete when 'cancelled', so state remained as cart
+            # NOTE: the order itself was not complete when 'cancelled', so state remained as cart
             expect(page).to have_content 'PENDING'
             expect(proxy_order.reload.canceled_at).to be nil
           end

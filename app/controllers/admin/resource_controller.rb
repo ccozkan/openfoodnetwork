@@ -124,7 +124,7 @@ module Admin
       else
         @collection ||= collection
 
-        # note: we don't call authorize here as the collection method should use
+        # NOTE: we don't call authorize here as the collection method should use
         # CanCan's accessible_by method to restrict the actual records returned
 
         instance_variable_set("@#{controller_name}", @collection)

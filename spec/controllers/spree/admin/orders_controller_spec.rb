@@ -145,7 +145,7 @@ order_cycle: order_cycle
         end
 
         context "if the associated enterprise fee record is hard-deleted" do
-          # Note: Enterprise fees are soft-deleted now, but we still have hard-deleted
+          # NOTE: Enterprise fees are soft-deleted now, but we still have hard-deleted
           # enterprise fees referenced as the originator of some adjustments (in production).
           it "removes adjustments for deleted enterprise fees" do
             fee_amount = enterprise_fee.calculator.preferred_amount
