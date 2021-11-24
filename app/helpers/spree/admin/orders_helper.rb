@@ -51,13 +51,15 @@ module Spree
       end
 
       def edit_order_link
-        { name: t(:edit_order),
+        { 
+name: t(:edit_order),
           url: spree.edit_admin_order_path(@order),
           icon: 'icon-edit' }
       end
 
       def resend_confirmation_link
-        { name: t(:resend_confirmation),
+        { 
+name: t(:resend_confirmation),
           url: spree.resend_admin_order_path(@order),
           icon: 'icon-email',
           method: 'post',
@@ -65,42 +67,48 @@ module Spree
       end
 
       def send_invoice_link_with_url
-        { name: t(:send_invoice),
+        { 
+name: t(:send_invoice),
           url: invoice_admin_order_path(@order),
           icon: 'icon-email',
           confirm: t(:confirm_send_invoice) }
       end
 
       def send_invoice_link_without_url
-        { name: t(:send_invoice),
+        { 
+name: t(:send_invoice),
           url: "#",
           icon: 'icon-email',
           confirm: t(:must_have_valid_business_number, enterprise_name: @order.distributor.name) }
       end
 
       def print_invoice_link
-        { name: t(:print_invoice),
+        { 
+name: t(:print_invoice),
           url: spree.print_admin_order_path(@order),
           icon: 'icon-print',
           target: "_blank" }
       end
 
       def print_ticket_link
-        { name: t(:print_ticket),
+        { 
+name: t(:print_ticket),
           url: print_ticket_admin_order_path(@order),
           icon: 'icon-print',
           target: "_blank" }
       end
 
       def select_ticket_printer_link
-        { name: t(:select_ticket_printer),
+        { 
+name: t(:select_ticket_printer),
           url: "#{print_ticket_admin_order_path(@order)}#select-printer",
           icon: 'icon-print',
           target: "_blank" }
       end
 
       def ship_order_link
-        { name: t(:ship_order),
+        { 
+name: t(:ship_order),
           url: spree.fire_admin_order_path(@order, e: 'ship'),
           method: 'put',
           icon: 'icon-truck',
@@ -108,7 +116,8 @@ module Spree
       end
 
       def cancel_order_link
-        { name: t(:cancel_order),
+        { 
+name: t(:cancel_order),
           url: spree.fire_admin_order_path(@order.number, e: 'cancel'),
           icon: 'icon-trash',
           confirm: t(:are_you_sure) }

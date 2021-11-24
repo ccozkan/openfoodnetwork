@@ -116,7 +116,9 @@ module Spree
           address_fields = [
 :firstname, :lastname, :address1, :address2, :city,
                             :zipcode, :phone, :state_name, :state_id, :country_id]
-          includes = { only: address_fields, include: { state: { only: :name },
+          includes = { 
+only: address_fields, include: { 
+state: { only: :name },
                                                         country: { only: :name } } }
 
           collection.to_json(only: [:id, :email], include:

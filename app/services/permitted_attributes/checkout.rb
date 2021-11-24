@@ -11,7 +11,8 @@ module PermittedAttributes
         order: [
           :email, :special_instructions,
           :existing_card_id, :shipping_method_id,
-          { payments_attributes: [
+          { 
+payments_attributes: [
             :payment_method_id,
             { source_attributes: PermittedAttributes::PaymentSource.attributes }
           ],

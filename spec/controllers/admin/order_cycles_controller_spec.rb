@@ -270,7 +270,10 @@ module Admin
 
       context "when I manage the coordinator of an order cycle" do
         let(:params) do
-          { format: :json, order_cycle_set: { collection_attributes: { '0' => {
+          { 
+format: :json, order_cycle_set: { 
+collection_attributes: { 
+'0' => {
             id: oc.id,
             name: "Updated Order Cycle",
             orders_open_at: Date.current - 21.days,
@@ -298,7 +301,10 @@ module Admin
 
         context "when a validation error occurs" do
           let(:params) do
-            { format: :json, order_cycle_set: { collection_attributes: { '0' => {
+            { 
+format: :json, order_cycle_set: { 
+collection_attributes: { 
+'0' => {
               id: oc.id,
               name: "Updated Order Cycle",
               orders_open_at: Date.current + 25.days,
@@ -319,7 +325,9 @@ module Admin
         let!(:another_distributor) { create(:distributor_enterprise, users: [distributor_owner]) }
 
         it "doesn't update order cycle properties" do
-          spree_put :bulk_update, format: :json, order_cycle_set: { collection_attributes: { '0' => {
+          spree_put :bulk_update, format: :json, order_cycle_set: { 
+collection_attributes: { 
+'0' => {
             id: oc.id,
             name: "Updated Order Cycle",
             orders_open_at: Date.current - 21.days,

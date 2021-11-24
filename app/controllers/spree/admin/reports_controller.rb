@@ -302,7 +302,8 @@ module Spree
 
       def orders_and_fulfillment_default_filters
         now = Time.zone.now
-        { completed_at_gt: (now - 1.month).beginning_of_day,
+        { 
+completed_at_gt: (now - 1.month).beginning_of_day,
           completed_at_lt: (now + 1.day).beginning_of_day }
       end
     end

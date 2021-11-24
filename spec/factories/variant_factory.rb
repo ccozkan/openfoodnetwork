@@ -44,7 +44,8 @@ FactoryBot.define do
         end
 
         after(:create) do |variant, evaluator|
-          exchange_attributes = { order_cycle_id: evaluator.order_cycle.id, incoming: true,
+          exchange_attributes = { 
+order_cycle_id: evaluator.order_cycle.id, incoming: true,
                                   sender_id: evaluator.producer.id,
                                   receiver_id: evaluator.coordinator.id }
           exchange = Exchange.where(exchange_attributes).first_or_create!(exchange_attributes)
@@ -53,7 +54,8 @@ FactoryBot.define do
             exchange.enterprise_fees << enterprise_fee
           end
 
-          exchange_attributes = { order_cycle_id: evaluator.order_cycle.id, incoming: false,
+          exchange_attributes = { 
+order_cycle_id: evaluator.order_cycle.id, incoming: false,
                                   sender_id: evaluator.coordinator.id,
                                   receiver_id: evaluator.distributor.id }
           exchange = Exchange.where(exchange_attributes).first_or_create!(exchange_attributes)

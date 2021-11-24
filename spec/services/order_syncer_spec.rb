@@ -151,7 +151,9 @@ describe OrderSyncer do
     let!(:ship_address_attrs) { subscription.ship_address.attributes }
 
     let(:params) {
-      { bill_address_attributes: { id: bill_address_attrs["id"], firstname: "Bill",
+      { 
+bill_address_attributes: { 
+id: bill_address_attrs["id"], firstname: "Bill",
                                    address1: "123 abc st", phone: "1123581321" } }
     }
     let(:syncer) { OrderSyncer.new(subscription) }
@@ -259,7 +261,9 @@ describe OrderSyncer do
     let!(:ship_address_attrs) { subscription.ship_address.attributes }
 
     let(:params) {
-      { ship_address_attributes: { id: ship_address_attrs["id"], firstname: "Ship",
+      { 
+ship_address_attributes: { 
+id: ship_address_attrs["id"], firstname: "Ship",
                                    address1: "123 abc st", phone: "1123581321" } }
     }
     let(:syncer) { OrderSyncer.new(subscription) }
@@ -550,7 +554,8 @@ describe OrderSyncer do
             expect(line_items.map(&:quantity)).to eq []
 
             subscription.save # this is necessary to get an id on the subscription_line_items
-            params = { subscription_line_items_attributes: [
+            params = { 
+subscription_line_items_attributes: [
 {
   id: subscription.subscription_line_items.last.id, quantity: 2
 }] }

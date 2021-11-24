@@ -83,7 +83,8 @@ module Api
 
       def invalid_resource!(resource)
         @resource = resource
-        render(json: { error: I18n.t(:invalid_resource, scope: "spree.api"),
+        render(json: { 
+error: I18n.t(:invalid_resource, scope: "spree.api"),
                        errors: @resource.errors },
                status: :unprocessable_entity)
       end

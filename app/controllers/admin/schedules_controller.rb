@@ -16,7 +16,8 @@ module Admin
 
     respond_to :json
 
-    respond_override create: { json: {
+    respond_override create: { 
+json: {
       success: lambda {
                  render_as_json @schedule,
                                 editable_schedule_ids: permissions.editable_schedules.pluck(:id)
@@ -26,7 +27,8 @@ module Admin
                         status: :unprocessable_entity
                }
     } }
-    respond_override update: { json: {
+    respond_override update: { 
+json: {
       success: lambda {
                  render_as_json @schedule,
                                 editable_schedule_ids: permissions.editable_schedules.pluck(:id)

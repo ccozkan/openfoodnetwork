@@ -51,7 +51,8 @@ module Stripe
       platform_acct_payment_method_id = @card.gateway_payment_profile_id
       customer_id = @card.gateway_customer_profile_id
 
-      Stripe::PaymentMethod.create({ customer: customer_id,
+      Stripe::PaymentMethod.create({ 
+customer: customer_id,
                                      payment_method: platform_acct_payment_method_id },
                                    stripe_account: @stripe_account)
     end

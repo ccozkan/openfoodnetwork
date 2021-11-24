@@ -682,7 +682,8 @@ module Spree
         property = product.properties.last
 
         expect(product.properties_including_inherited).to eq([
-{ id: property.id,
+{ 
+id: property.id,
                                                                 name: "Organic Certified", value: 'NASAA 12345' }])
       end
 
@@ -694,7 +695,8 @@ module Spree
         property = supplier.properties.last
 
         expect(product.properties_including_inherited).to eq([
-{ id: property.id,
+{ 
+id: property.id,
                                                                 name: "Organic Certified", value: 'NASAA 54321' }])
       end
 
@@ -707,7 +709,8 @@ module Spree
         property = product.properties.last
 
         expect(product.properties_including_inherited).to eq([
-{ id: property.id,
+{ 
+id: property.id,
                                                                 name: "Organic Certified", value: 'NASAA 12345' }])
       end
 
@@ -720,7 +723,8 @@ module Spree
           property = supplier.properties.last
 
           expect(product.properties_including_inherited).to eq([
-{ id: property.id,
+{ 
+id: property.id,
                                                                   name: "Organic Certified", value: 'NASAA 54321' }])
         end
       end

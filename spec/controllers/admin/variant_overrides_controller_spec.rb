@@ -15,7 +15,8 @@ describe Admin::VariantOverridesController, type: :controller do
       let!(:variant_override) { create(:variant_override, hub: hub, variant: variant) }
       let(:variant_override_params) {
         [
-{ id: variant_override.id, price: 123.45, count_on_hand: 321, sku: "MySKU",
+{ 
+id: variant_override.id, price: 123.45, count_on_hand: 321, sku: "MySKU",
            on_demand: false }]
       }
 
@@ -78,7 +79,8 @@ describe Admin::VariantOverridesController, type: :controller do
           context "where params for a variant override are blank" do
             let(:variant_override_params) {
               [
-{ id: variant_override.id, price: "", count_on_hand: "", default_stock: nil, resettable: nil,
+{ 
+id: variant_override.id, price: "", count_on_hand: "", default_stock: nil, resettable: nil,
                  sku: nil, on_demand: nil }]
             }
 

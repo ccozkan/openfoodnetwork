@@ -115,7 +115,8 @@ describe Api::V0::ProductsController, type: :controller do
     end
 
     it "can create a new product" do
-      api_post :create, product: { name: "The Other Product",
+      api_post :create, product: { 
+name: "The Other Product",
                                    price: 19.99,
                                    shipping_category_id: create(:shipping_category).id,
                                    supplier_id: supplier.id,

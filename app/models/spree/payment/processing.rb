@@ -161,7 +161,8 @@ module Spree
       end
 
       def gateway_options
-        options = { email: order.email,
+        options = { 
+email: order.email,
                     customer: order.email,
                     ip: order.last_ip_address,
                     # Need to pass in a unique identifier here to make some
@@ -176,7 +177,8 @@ module Spree
                        discount: 0,
                        currency: currency)
 
-        options.merge!({ billing_address: order.bill_address.try(:active_merchant_hash),
+        options.merge!({ 
+billing_address: order.bill_address.try(:active_merchant_hash),
                          shipping_address: order.ship_address.try(:active_merchant_hash) })
 
         options

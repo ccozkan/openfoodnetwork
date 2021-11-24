@@ -119,7 +119,8 @@ module Admin
 
     def admin_inject_enterprise_permissions
       permissions =
-        { can_manage_shipping_methods: can?(:manage_shipping_methods, @enterprise),
+        { 
+can_manage_shipping_methods: can?(:manage_shipping_methods, @enterprise),
           can_manage_payment_methods: can?(:manage_payment_methods, @enterprise),
           can_manage_enterprise_fees: can?(:manage_enterprise_fees, @enterprise) }
 
@@ -127,7 +128,8 @@ module Admin
     end
 
     def admin_inject_hub_permissions
-      render partial: "admin/json/injection_ams", locals: { ngModule: "admin.variantOverrides",
+      render partial: "admin/json/injection_ams", locals: { 
+ngModule: "admin.variantOverrides",
                                                             name: "hubPermissions",
                                                             json: @hub_permissions.to_json }
     end
@@ -162,7 +164,8 @@ module Admin
 
     def admin_inject_order_cycle_instance
       render partial: "admin/json/injection_ams",
-             locals: { ngModule: 'admin.orderCycles',
+             locals: { 
+ngModule: 'admin.orderCycles',
                        name: 'ocInstance',
                        json: "{coordinator_id: '#{@order_cycle.coordinator.id}'}" }
     end
@@ -177,7 +180,8 @@ module Admin
 
     def admin_inject_spree_api_key
       render partial: "admin/json/injection_ams",
-             locals: { ngModule: 'admin.indexUtils',
+             locals: { 
+ngModule: 'admin.indexUtils',
                        name: 'SpreeApiKey',
                        json: "'#{@spree_api_key}'" }
     end
@@ -191,7 +195,8 @@ module Admin
     def admin_inject_json(ng_module, name, data)
       json = data.to_json
       render partial: "admin/json/injection_ams",
-             locals: { ngModule: ng_module,
+             locals: { 
+ngModule: ng_module,
                        name: name,
                        json: json }
     end
@@ -199,7 +204,8 @@ module Admin
     def admin_inject_json_ams(ng_module, name, data, serializer, opts = {})
       json = serializer.new(data, { scope: spree_current_user }.merge(opts)).to_json
       render partial: "admin/json/injection_ams",
-             locals: { ngModule: ng_module,
+             locals: { 
+ngModule: ng_module,
                        name: name,
                        json: json }
     end
@@ -209,7 +215,8 @@ module Admin
         .new(data, { each_serializer: serializer, scope: spree_current_user }.merge(opts)).to_json
 
       render partial: "admin/json/injection_ams",
-             locals: { ngModule: ng_module,
+             locals: { 
+ngModule: ng_module,
                        name: name,
                        json: json }
     end

@@ -732,7 +732,8 @@ total.fee_type, total.enterprise_name, total.fee_name,
   end
 
   def default_order_options
-    { customer: customer, distributor: distributor, order_cycle: order_cycle,
+    { 
+customer: customer, distributor: distributor, order_cycle: order_cycle,
       shipping_method: shipping_method, variant: variant }
   end
 
@@ -748,7 +749,8 @@ total.fee_type, total.enterprise_name, total.fee_name,
   end
 
   def default_variant_options
-    { product: product, producer: producer, is_master: false, coordinator: coordinator,
+    { 
+product: product, producer: producer, is_master: false, coordinator: coordinator,
       distributor: distributor, order_cycle: order_cycle }
   end
 

@@ -39,7 +39,8 @@ module Spree
       it "can create a payment method of a valid type" do
         expect {
           spree_post :create,
-                     payment_method: { name: "Test Method", type: "Spree::Gateway::Bogus",
+                     payment_method: { 
+name: "Test Method", type: "Spree::Gateway::Bogus",
                                        distributor_ids: [enterprise.id] }
         }.to change(Spree::PaymentMethod, :count).by(1)
 
@@ -50,7 +51,8 @@ module Spree
       it "can not create a payment method of an invalid type" do
         expect {
           spree_post :create,
-                     payment_method: { name: "Invalid Payment Method", type: "Spree::InvalidType",
+                     payment_method: { 
+name: "Invalid Payment Method", type: "Spree::InvalidType",
                                        distributor_ids: [enterprise.id] }
         }.to change(Spree::PaymentMethod, :count).by(0)
 

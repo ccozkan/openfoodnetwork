@@ -13,7 +13,8 @@ describe Admin::InventoryItemsController, type: :controller do
         create(:inventory_item, enterprise: enterprise, variant: variant, visible: true)
       }
       let(:params) {
-        { format: format,
+        { 
+format: format,
           inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible: false } }
       }
 
@@ -61,8 +62,10 @@ describe Admin::InventoryItemsController, type: :controller do
           context "with unacceptable data" do
             render_views
             let!(:bad_params) {
-              { format: format,
-                inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id,
+              { 
+format: format,
+                inventory_item: { 
+enterprise_id: enterprise.id, variant_id: variant.id,
                                   visible: nil } }
             }
 

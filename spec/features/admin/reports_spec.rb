@@ -490,7 +490,8 @@ product2.supplier.name, product1.supplier.address.city,
         fill_in 'account_code', with: 'abc123'
         click_button 'Search'
 
-        opts = { invoice_number: '5', invoice_date: '2015-02-12', due_date: '2015-03-12',
+        opts = { 
+invoice_number: '5', invoice_date: '2015-02-12', due_date: '2015-03-12',
                  account_code: 'abc123' }
 
         expect(xero_invoice_table).to match_table [

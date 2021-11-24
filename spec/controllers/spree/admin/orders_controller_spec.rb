@@ -39,8 +39,10 @@ describe Spree::Admin::OrdersController, type: :controller do
 
   context "#update" do
     let(:params) do
-      { id: order,
-        order: { number: order.number,
+      { 
+id: order,
+        order: { 
+number: order.number,
                  distributor_id: order.distributor_id,
                  order_cycle_id: order.order_cycle_id } }
     end

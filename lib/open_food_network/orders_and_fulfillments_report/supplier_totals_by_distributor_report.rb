@@ -73,7 +73,8 @@ I18n.t(:report_header_producer), I18n.t(:report_header_product),
 
       def line_item_includes
         [
-{ order: :distributor,
+{ 
+order: :distributor,
            variant: [{ option_values: :option_type }, { product: :supplier }] }]
       end
     end

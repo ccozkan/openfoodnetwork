@@ -255,7 +255,8 @@ default_product_tag_rule, product_tag_rule3, product_tag_rule2,
         { :id => 1, :name => 'product 1', "variants" => [{ :id => 4, "tag_list" => ["tag1"] }] }
       }
       let(:product2) {
-        { :id => 2, :name => 'product 2',
+        { 
+:id => 2, :name => 'product 2',
           "variants" => [{ :id => 5, "tag_list" => ["tag1"] }, { :id => 9, "tag_list" => ["tag2"] }] }
       }
       let(:product3) {
@@ -271,7 +272,8 @@ default_product_tag_rule, product_tag_rule3, product_tag_rule2,
         it "applies the default rule" do
           applicator.filter!(products_array)
           expect(products_array).to eq [
-            { :id => 2, :name => 'product 2',
+            { 
+:id => 2, :name => 'product 2',
               "variants" => [{ :id => 9, "tag_list" => ["tag2"] }] }, product3
           ]
         end

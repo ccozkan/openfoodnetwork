@@ -25,7 +25,8 @@ describe "checking out an order that initially fails", type: :request do
     create(:order, shipments: [shipment], distributor: shop, order_cycle: order_cycle)
   }
   let(:params) do
-    { order: {
+    { 
+order: {
       shipping_method_id: shipping_method.id,
       payments_attributes: [{ payment_method_id: payment_method.id }],
       bill_address_attributes: address.attributes.slice("firstname", "lastname", "address1",

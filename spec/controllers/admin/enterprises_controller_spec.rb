@@ -23,7 +23,9 @@ describe Admin::EnterprisesController, type: :controller do
 
   describe "creating an enterprise" do
     let(:enterprise_params) {
-      { enterprise: { name: 'zzz', permalink: 'zzz', is_primary_producer: '0',
+      { 
+enterprise: { 
+name: 'zzz', permalink: 'zzz', is_primary_producer: '0',
                       address_attributes: address_params } }
     }
 
@@ -153,8 +155,10 @@ describe Admin::EnterprisesController, type: :controller do
 
       it "does not allow managers to be changed" do
         allow(controller).to receive_messages spree_current_user: distributor_manager
-        update_params = { id: distributor,
-                          enterprise: { user_ids: [
+        update_params = { 
+id: distributor,
+                          enterprise: { 
+user_ids: [
 distributor_owner.id, distributor_manager.id,
                                                    user.id] } }
         spree_post :update, update_params
@@ -165,7 +169,8 @@ distributor_owner.id, distributor_manager.id,
 
       it "updates enterprise preferences" do
         allow(controller).to receive_messages spree_current_user: distributor_manager
-        update_params = { id: distributor,
+        update_params = { 
+id: distributor,
                           enterprise: { show_customer_names_to_suppliers: "1" } }
         spree_post :update, update_params
 
@@ -280,8 +285,10 @@ distributor_owner.id, distributor_manager.id,
 
       it "allows managers to be changed" do
         allow(controller).to receive_messages spree_current_user: distributor_owner
-        update_params = { id: distributor,
-                          enterprise: { user_ids: [
+        update_params = { 
+id: distributor,
+                          enterprise: { 
+user_ids: [
 distributor_owner.id, distributor_manager.id,
                                                    user.id] } }
         spree_post :update, update_params
@@ -312,8 +319,10 @@ distributor_owner.id, distributor_manager.id,
 
       it "allows managers to be changed" do
         allow(controller).to receive_messages spree_current_user: admin_user
-        update_params = { id: distributor,
-                          enterprise: { user_ids: [
+        update_params = { 
+id: distributor,
+                          enterprise: { 
+user_ids: [
 distributor_owner.id, distributor_manager.id,
                                                    user.id] } }
         spree_post :update, update_params
@@ -436,8 +445,11 @@ distributor_owner.id, distributor_manager.id,
         profile_enterprise1.enterprise_roles.build(user: new_owner).save
         profile_enterprise2.enterprise_roles.build(user: new_owner).save
         allow(controller).to receive_messages spree_current_user: new_owner
-        bulk_enterprise_params = { sets_enterprise_set: { collection_attributes: {
-          '0' => { id: profile_enterprise1.id, sells: 'any',
+        bulk_enterprise_params = { 
+sets_enterprise_set: { 
+collection_attributes: {
+          '0' => { 
+id: profile_enterprise1.id, sells: 'any',
                    owner_id: new_owner.id }, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
         } } }
 
@@ -454,7 +466,10 @@ distributor_owner.id, distributor_manager.id,
         allow_any_instance_of(Sets::EnterpriseSet).to receive(:save) { false }
         profile_enterprise1.enterprise_roles.build(user: new_owner).save
         allow(controller).to receive_messages spree_current_user: new_owner
-        bulk_enterprise_params = { sets_enterprise_set: { collection_attributes: { '0' => {
+        bulk_enterprise_params = { 
+sets_enterprise_set: { 
+collection_attributes: { 
+'0' => {
           id: profile_enterprise1.id, visible: 'false'
         } } } }
         spree_put :bulk_update, bulk_enterprise_params
@@ -465,8 +480,11 @@ distributor_owner.id, distributor_manager.id,
     context "as the owner of an enterprise" do
       it "allows 'sells' and 'owner' to be changed" do
         allow(controller).to receive_messages spree_current_user: original_owner
-        bulk_enterprise_params = { sets_enterprise_set: { collection_attributes: {
-          '0' => { id: profile_enterprise1.id, sells: 'any',
+        bulk_enterprise_params = { 
+sets_enterprise_set: { 
+collection_attributes: {
+          '0' => { 
+id: profile_enterprise1.id, sells: 'any',
                    owner_id: new_owner.id }, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
         } } }
 
@@ -485,8 +503,11 @@ distributor_owner.id, distributor_manager.id,
         profile_enterprise1.enterprise_roles.build(user: new_owner).save
         profile_enterprise2.enterprise_roles.build(user: new_owner).save
         allow(controller).to receive_messages spree_current_user: admin_user
-        bulk_enterprise_params = { sets_enterprise_set: { collection_attributes: {
-          '0' => { id: profile_enterprise1.id, sells: 'any',
+        bulk_enterprise_params = { 
+sets_enterprise_set: { 
+collection_attributes: {
+          '0' => { 
+id: profile_enterprise1.id, sells: 'any',
                    owner_id: new_owner.id }, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
         } } }
 

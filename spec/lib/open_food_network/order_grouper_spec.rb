@@ -12,7 +12,8 @@ module OpenFoodNetwork
     context "constructing the table" do
       it "should build a tree then build a table" do
         rules = [
-{ group_by: proc { |sentence|
+{ 
+group_by: proc { |sentence|
                                sentence.paragraph.chapter
                              }, sort_by: proc { |chapter|
                                            chapter.name
@@ -26,7 +27,8 @@ proc { |is|
                                                                     }, proc { |is|
                                                                          is.sum(&:property1)
                                                                        }] },
-                 { group_by: proc { |sentence| sentence.paragraph }, sort_by: proc { |paragraph|
+                 { 
+group_by: proc { |sentence| sentence.paragraph }, sort_by: proc { |paragraph|
                                                                                 paragraph.name
                                                                               } }]
         columns = [
@@ -159,7 +161,8 @@ proc { |is| is.first.paragraph.chapter.name }, proc { |is|
       end
 
       it "should return an extra row when a :summary_row key appears in a given Hash" do
-        groups = { items1: @items1, items2: @items2, items3: @items3,
+        groups = { 
+items1: @items1, items2: @items2, items3: @items3,
                    summary_row: { items: { items2: @items2, items3: @items3 }, columns: @sumcols } }
 
         subject = OrderGrouper.new @rules, @columns

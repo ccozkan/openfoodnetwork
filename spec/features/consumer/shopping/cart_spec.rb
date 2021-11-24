@@ -148,7 +148,8 @@ describe "full-page cart", js: true do
           add_enterprise_fee admin_fee
 
           cart_service = CartService.new(order)
-          cart_service.populate(variants: { product_with_fee.variants.first.id => 3,
+          cart_service.populate(variants: { 
+product_with_fee.variants.first.id => 3,
                                             product_with_tax.variants.first.id => 3 })
           order.recreate_all_fees!
 

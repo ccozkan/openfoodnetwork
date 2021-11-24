@@ -29,7 +29,11 @@ module Spree
       before(:each) do
         I18n.locale = I18n.default_locale
         I18n.backend.store_translations(:de,
-                                        { number: { currency: { format: { delimiter: '.',
+                                        { 
+number: { 
+currency: { 
+format: { 
+delimiter: '.',
                                                                           separator: ',' } } } })
       end
 

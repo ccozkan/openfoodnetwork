@@ -18,8 +18,10 @@ module Stripe
 
       context "when url is found in response" do
         let(:params) {
-          { "status" => "requires_source_action",
-            "next_source_action" => { "type" => "authorize_with_url",
+          { 
+"status" => "requires_source_action",
+            "next_source_action" => { 
+"type" => "authorize_with_url",
                                       "authorize_with_url" => { "url" => "https://www.stripe.com/authorize" } } }
         }
 

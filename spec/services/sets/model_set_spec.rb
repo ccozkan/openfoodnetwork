@@ -5,7 +5,9 @@ require 'spec_helper'
 describe Sets::ModelSet do
   describe "updating" do
     it "creates new models" do
-      attrs = { collection_attributes: { '1' => { name: 's1' },
+      attrs = { 
+collection_attributes: { 
+'1' => { name: 's1' },
                                          '2' => { name: 's2' } } }
 
       ms = Sets::ModelSet.new(EnterpriseRelationshipPermission,
@@ -21,7 +23,9 @@ describe Sets::ModelSet do
       e1 = create(:enterprise_group)
       e2 = create(:enterprise_group)
 
-      attrs = { collection_attributes: { '1' => { id: e1.id, name: 'e1zz', description: 'foo' },
+      attrs = { 
+collection_attributes: { 
+'1' => { id: e1.id, name: 'e1zz', description: 'foo' },
                                          '2' => { id: e2.id, name: 'e2yy', description: 'bar' } } }
 
       ms = Sets::ModelSet.new(EnterpriseGroup, EnterpriseGroup.all, attrs)
@@ -35,7 +39,9 @@ describe Sets::ModelSet do
       e1 = create(:enterprise)
       e2 = create(:enterprise)
 
-      attributes = { collection_attributes: { '1' => { id: e1.id, name: 'deleteme' },
+      attributes = { 
+collection_attributes: { 
+'1' => { id: e1.id, name: 'deleteme' },
                                               '2' => { id: e2.id, name: 'e2' } } }
 
       ms = Sets::ModelSet.new(Enterprise, Enterprise.all, attributes, nil,

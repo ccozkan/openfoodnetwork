@@ -12,7 +12,8 @@ class ColumnPreference < ApplicationRecord
   belongs_to :user, class_name: "Spree::User"
 
   validates :action_name, presence: true, inclusion: { in: proc { known_actions } }
-  validates :column_name, presence: true, inclusion: { in: proc { |p|
+  validates :column_name, presence: true, inclusion: { 
+in: proc { |p|
                                                              valid_columns_for(p.action_name)
                                                            } }
 

@@ -10,7 +10,8 @@ describe EmbeddedPageService do
   let(:session) { {} }
   let(:request) {
     ActionController::TestRequest.new(
-      { 'HTTP_HOST' => 'ofn-instance.com',
+      { 
+'HTTP_HOST' => 'ofn-instance.com',
         'HTTP_REFERER' => 'https://embedding-enterprise.com' }, nil, nil
     )
   }

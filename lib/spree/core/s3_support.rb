@@ -13,7 +13,8 @@ module Spree
           config = Spree::Config
           return unless config[:use_s3]
 
-          s3_creds = { access_key_id: config[:s3_access_key],
+          s3_creds = { 
+access_key_id: config[:s3_access_key],
                        secret_access_key: config[:s3_secret],
                        bucket: config[:s3_bucket] }
           attachment_definitions[field][:storage] = :s3

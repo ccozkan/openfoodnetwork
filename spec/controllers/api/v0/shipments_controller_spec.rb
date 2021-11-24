@@ -34,7 +34,8 @@ describe Api::V0::ShipmentsController, type: :controller do
     let!(:stock_location) { Spree::StockLocation.first || create(:stock_location) }
     let!(:variant) { create(:variant) }
     let(:params) do
-      { quantity: 2,
+      { 
+quantity: 2,
         variant_id: variant.to_param,
         order_id: order.number,
         stock_location_id: stock_location.to_param,

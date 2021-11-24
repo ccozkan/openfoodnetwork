@@ -7,7 +7,8 @@ module Admin
     before_action :load_managed_shops, only: :index, if: :html_request?
     respond_to :json
 
-    respond_override update: { json: {
+    respond_override update: { 
+json: {
       success: lambda {
         tag_rule_mapping = TagRule.mapping_for(Enterprise.where(id: @customer.enterprise))
         render_as_json @customer, tag_rule_mapping: tag_rule_mapping
@@ -120,7 +121,8 @@ module Admin
         .joins(:taggings)
         .includes(:taggings)
         .where(taggings:
-                { taggable_type: 'Customer',
+                { 
+taggable_type: 'Customer',
                   taggable_id: Customer.of(managed_enterprise_id),
                   context: 'tags' })
 

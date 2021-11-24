@@ -888,7 +888,8 @@ def import_data(csv_data, args = {})
   reset_all_absent = args[:reset_all_absent] || false
   updated_ids = args[:updated_ids] || nil
   enterprises_to_reset = args[:enterprises_to_reset] || nil
-  settings = args[:settings] || { 'import_into' => import_into,
+  settings = args[:settings] || { 
+'import_into' => import_into,
                                   'reset_all_absent' => reset_all_absent }
 
   File.write('/tmp/test-m.csv', csv_data)

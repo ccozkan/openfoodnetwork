@@ -301,7 +301,9 @@ describe Spree::OrdersController, type: :controller do
       it "should silently ignore the missing line item" do
         order = subject.current_order(true)
         li = order.contents.add(create(:simple_product, on_hand: 110).variants.first)
-        get :update, params: { order: { line_items_attributes: {
+        get :update, params: { 
+order: { 
+line_items_attributes: {
           "0" => { quantity: "0", id: "9999" },
           "1" => { quantity: "99", id: li.id }
         } } }
@@ -329,7 +331,9 @@ describe Spree::OrdersController, type: :controller do
       line_item = order.contents.add(create(:simple_product, on_hand: 110).variants.first)
       adjustment = create(:adjustment, adjustable: order)
 
-      get :update, params: { order: { line_items_attributes: {
+      get :update, params: { 
+order: { 
+line_items_attributes: {
         "1" => { quantity: "99", id: line_item.id }
       } } }
 
@@ -375,7 +379,8 @@ describe Spree::OrdersController, type: :controller do
 
       it "updates the shipping and payment fees" do
         spree_post :update,
-                   order: { line_items_attributes: {
+                   order: { 
+line_items_attributes: {
                      "0" => { id: line_item1.id, quantity: 1 },
                      "1" => { id: line_item2.id, quantity: 0 }
                    } }
@@ -408,7 +413,9 @@ describe Spree::OrdersController, type: :controller do
         order
       end
       let(:params) {
-        { order: { line_items_attributes: {
+        { 
+order: { 
+line_items_attributes: {
           "0" => { id: order.line_items.first.id, quantity: 2 }
         } } }
       }
@@ -431,7 +438,9 @@ describe Spree::OrdersController, type: :controller do
 
       context "when a line item is removed" do
         let(:params) {
-          { order: { line_items_attributes: {
+          { 
+order: { 
+line_items_attributes: {
             "0" => { id: order.line_items.first.id, quantity: 0 },
             "1" => { id: order.line_items.last.id, quantity: 1 }
           } } }
@@ -454,7 +463,9 @@ describe Spree::OrdersController, type: :controller do
   describe "request to remove items from a completed order" do
     let(:order) { create(:completed_order_with_totals, line_items_count: 2) }
     let(:params) {
-      { order: { line_items_attributes: {
+      { 
+order: { 
+line_items_attributes: {
         "0" => { id: order.line_items.first.id, quantity: 1 },
         "1" => { id: order.line_items.second.id, quantity: 0 }
       } } }

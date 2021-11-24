@@ -172,7 +172,8 @@ describe Spree::Payment do
         context "authorization is required" do
           before do
             allow(success_response).to receive(:cvv_result) {
-              { 'code' => "123",
+              { 
+'code' => "123",
                 'message' => "https://stripe.com/redirect" }
             }
             expect(payment.payment_method).to receive(:authorize).with(
@@ -667,7 +668,8 @@ describe Spree::Payment do
 
     context "#build_source" do
       it "should build the payment's source" do
-        params = { amount: 100, payment_method: gateway,
+        params = { 
+amount: 100, payment_method: gateway,
                    source_attributes: {
                      expiry: "1 / 99",
                      number: '1234567890123',
@@ -680,7 +682,8 @@ describe Spree::Payment do
       end
 
       it "errors when payment source not valid" do
-        params = { amount: 100, payment_method: gateway,
+        params = { 
+amount: 100, payment_method: gateway,
                    source_attributes: { expiry: "1 / 12" } }
 
         payment = Spree::Payment.new(params)
