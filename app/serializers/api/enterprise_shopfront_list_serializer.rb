@@ -29,7 +29,7 @@ module Api
         hub_profile: 'map_006-hub-profile.svg',
         producer_hub: 'map_005-hub.svg',
         producer_shop: 'map_003-producer-shop.svg',
-        producer: 'map_001-producer-only.svg',
+        producer: 'map_001-producer-only.svg'
       }
       '/map_icons/' + (icons[enterprise.category] || 'map_001-producer-only.svg')
     end
@@ -40,7 +40,7 @@ module Api
         hub_profile: 'ofn-i_064-hub-reversed',
         producer_hub: 'ofn-i_063-hub',
         producer_shop: 'ofn-i_059-producer',
-        producer: 'ofn-i_059-producer',
+        producer: 'ofn-i_059-producer'
       }
       icon_fonts[enterprise.category]
     end
@@ -51,7 +51,7 @@ module Api
         hub_profile: '',
         producer_hub: 'ofn-i_059-producer',
         producer_shop: 'ofn-i_059-producer',
-        producer: 'ofn-i_059-producer',
+        producer: 'ofn-i_059-producer'
       }
       icon_fonts[enterprise.category]
     end

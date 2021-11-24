@@ -30,7 +30,7 @@ describe 'Concurrent checkouts', concurrency: true, type: :request do
         }
       ],
       'bill_address_attributes' => address_params,
-      'ship_address_attributes' => address_params,
+      'ship_address_attributes' => address_params
     }
   end
   let(:params) { { format: :json, order: order_params } }

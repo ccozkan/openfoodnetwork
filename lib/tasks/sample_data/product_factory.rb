@@ -25,37 +25,37 @@ module SampleData
           name: 'Garlic',
           price: 20.00,
           supplier: producers[0],
-          taxons: [vegetables],
+          taxons: [vegetables]
         },
         {
           name: 'Fuji Apple',
           price: 5.00,
           supplier: producers[1],
-          taxons: [fruit],
+          taxons: [fruit]
         },
         {
           name: 'Mushrooms',
           price: 50.00,
           supplier: producers[1],
-          taxons: [fungi],
+          taxons: [fungi]
         },
         {
           name: 'Carrots',
           price: 3.00,
           supplier: producers[2],
-          taxons: [vegetables],
+          taxons: [vegetables]
         },
         {
           name: 'Potatoes',
           price: 2.00,
           supplier: producers[2],
-          taxons: [vegetables],
+          taxons: [vegetables]
         },
         {
           name: 'Tomatoes',
           price: 2.00,
           supplier: producers[2],
-          taxons: [vegetables],
+          taxons: [vegetables]
         }
       ]
     end

@@ -291,7 +291,7 @@ collection_attributes: {
             id: oc.id,
             name: 'Updated Order Cycle',
             orders_open_at: Date.current - 21.days,
-            orders_close_at: Date.current + 21.days,
+            orders_close_at: Date.current + 21.days
           }
 }
 }
@@ -326,7 +326,7 @@ collection_attributes: {
               id: oc.id,
               name: 'Updated Order Cycle',
               orders_open_at: Date.current + 25.days,
-              orders_close_at: Date.current + 21.days,
+              orders_close_at: Date.current + 21.days
             }
 }
 }
@@ -354,7 +354,7 @@ collection_attributes: {
             id: oc.id,
             name: 'Updated Order Cycle',
             orders_open_at: Date.current - 21.days,
-            orders_close_at: Date.current + 21.days,
+            orders_close_at: Date.current + 21.days
           }
 }
 }

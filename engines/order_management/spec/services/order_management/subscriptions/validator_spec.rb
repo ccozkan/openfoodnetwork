@@ -36,7 +36,7 @@ module OrderManagement
             bill_address: true,
             ship_address: true,
             begins_at: true,
-            ends_at: true,
+            ends_at: true
           }
         end
 

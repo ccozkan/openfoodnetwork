@@ -118,7 +118,7 @@ settings: params[:settings]
         import_url: main_app.admin_product_import_process_async_path,
         save_url: main_app.admin_product_import_save_async_path,
         reset_url: main_app.admin_product_import_reset_async_path,
-        importSettings: @importer.import_settings,
+        importSettings: @importer.import_settings
       }
     end
 

@@ -9,7 +9,7 @@ describe Admin::MatomoSettingsController, type: :controller do
         preferences: {
           matomo_url: 'test url',
           matomo_site_id: '42',
-          matomo_tag_manager_url: 'test manager url',
+          matomo_tag_manager_url: 'test manager url'
         }
       }
     end

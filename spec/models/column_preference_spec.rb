@@ -30,7 +30,7 @@ visible: false
       {
         col1: { name: 'col1', visible: false },
         col2: { name: 'col2', visible: true },
-        col3: { name: 'col3', visible: false },
+        col3: { name: 'col3', visible: false }
       }
     end
 

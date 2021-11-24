@@ -103,7 +103,7 @@ child: order.distributor,
       'product' => I18n.t('total_items', scope: i18n_scope),
       'variant' => '',
       'quantity' => order.line_items.sum(&:quantity),
-      'temp_controlled' => '',
+      'temp_controlled' => ''
     }
   end
 

@@ -9,7 +9,7 @@ describe Admin::InvoiceSettingsController, type: :controller do
         preferences: {
           enable_invoices?: 0,
           invoice_style2?: 1,
-          enable_receipt_printing?: 1,
+          enable_receipt_printing?: 1
         }
       }
     end

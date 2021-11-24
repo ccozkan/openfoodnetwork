@@ -167,7 +167,7 @@ scope: 'paypal',
           },
           TaxTotal: {
             currencyID: current_order.currency,
-            value: tax_adjustments_total,
+            value: tax_adjustments_total
           },
           ShipToAddress: address_options,
           PaymentDetailsItem: items,

@@ -15,7 +15,7 @@ module Reporting
               product: default_string(product_table[:name], summary_row_title),
               variant: default_blank(variant_full_name),
               quantity: sum_values(line_item_table[:quantity]),
-              temp_controlled: boolean_blank(shipping_category_table[:temperature_controlled]),
+              temp_controlled: boolean_blank(shipping_category_table[:temperature_controlled])
             }
           end
         end
