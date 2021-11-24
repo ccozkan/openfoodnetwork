@@ -83,12 +83,13 @@ module Admin
     class << self
       attr_accessor :parent_data
 
-      def belongs_to(model_name, options = {})
-        @parent_data ||= {}
-        @parent_data[:model_name] = model_name
-        @parent_data[:model_class] = model_name.to_s.classify.constantize
-        @parent_data[:find_by] = options[:find_by] || :id
-      end
+    end
+
+    def self.belongs_to(model_name, options = {})
+      @parent_data ||= {}
+      @parent_data[:model_name] = model_name
+      @parent_data[:model_class] = model_name.to_s.classify.constantize
+      @parent_data[:find_by] = options[:find_by] || :id
     end
 
     def model_class
