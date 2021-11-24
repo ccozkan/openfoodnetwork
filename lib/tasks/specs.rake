@@ -6,7 +6,7 @@ namespace :ofn do
       def spec_folders
         Pathname("spec/").children.select(&:directory?).map do |p|
           p.split.last.to_s
-        end - %w(support factories javascripts performance)
+        end - %w[support factories javascripts performance]
       end
 
       def execute_rspec_for_pattern(pattern)

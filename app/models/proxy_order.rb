@@ -23,7 +23,7 @@ lambda {
 
   def state
     # NOTE: the order is important here
-    %w(canceled paused pending cart).each do |state|
+    %w[canceled paused pending cart].each do |state|
       return state if __send__("#{state}?")
     end
     order.state

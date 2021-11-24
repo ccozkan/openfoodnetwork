@@ -115,9 +115,9 @@ presence: true,
                              if: proc { Spree::Config[:products_require_tax_category] }
 
     validates :variant_unit, presence: true
-    validates :unit_value, presence: { if: ->(p) { %w(weight volume).include?(p.variant_unit) } }
+    validates :unit_value, presence: { if: ->(p) { %w[weight volume].include?(p.variant_unit) } }
     validates :variant_unit_scale,
-              presence: { if: ->(p) { %w(weight volume).include?(p.variant_unit) } }
+              presence: { if: ->(p) { %w[weight volume].include?(p.variant_unit) } }
     validates :variant_unit_name, presence: { if: ->(p) { p.variant_unit == 'items' } }
 
     attr_accessor :option_values_hash

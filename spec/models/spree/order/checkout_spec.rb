@@ -38,14 +38,14 @@ to: transition.values.first
       context "when payment not required" do
         before { allow(order).to(receive_messages(payment_required?: false)) }
         specify do
-          expect(order.checkout_steps).to(eq(%w(address delivery complete)))
+          expect(order.checkout_steps).to(eq(%w[address delivery complete]))
         end
       end
 
       context "when payment required" do
         before { allow(order).to(receive_messages(payment_required?: true)) }
         specify do
-          expect(order.checkout_steps).to(eq(%w(address delivery payment complete)))
+          expect(order.checkout_steps).to(eq(%w[address delivery payment complete]))
         end
       end
     end

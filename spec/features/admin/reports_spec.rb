@@ -810,7 +810,7 @@ opts
     end
 
     def xero_invoice_header
-      %w(
+      %w[
 *ContactName
 EmailAddress
 POAddressLine1
@@ -839,7 +839,7 @@ TrackingOption2
 Currency
 BrandingTheme
 Paid?
-)
+]
     end
 
     def xero_invoice_summary_row(description, amount, tax_type, opts = {})

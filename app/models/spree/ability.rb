@@ -85,7 +85,7 @@ module Spree
 
     # Users can manage orders if they have a sells own/any enterprise.
     def can_manage_orders?(user)
-      (user.enterprises.map(&:sells) & %w(own any)).any?
+      (user.enterprises.map(&:sells) & %w[own any]).any?
     end
 
     def can_manage_relationships?(user)

@@ -790,7 +790,7 @@ source_attributes: {
         let(:payment) { build_stubbed(:payment, source: build_stubbed(:credit_card)) }
 
         it "can capture and void" do
-          expect(payment.actions).to(match_array(%w(capture void)))
+          expect(payment.actions).to(match_array(%w[capture void]))
         end
 
         describe "when a payment has been taken" do
@@ -800,7 +800,7 @@ source_attributes: {
           end
 
           it "can void and credit" do
-            expect(payment.actions).to(match_array(%w(void credit)))
+            expect(payment.actions).to(match_array(%w[void credit]))
           end
         end
       end

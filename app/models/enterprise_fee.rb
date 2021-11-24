@@ -14,7 +14,7 @@ class EnterpriseFee < ApplicationRecord
   has_many :exchange_fees, dependent: :destroy
   has_many :exchanges, through: :exchange_fees
 
-  FEE_TYPES = %w(packing transport admin sales fundraising).freeze
+  FEE_TYPES = %w[packing transport admin sales fundraising].freeze
   PER_ORDER_CALCULATORS = [
 'Calculator::FlatRate',
                            'Calculator::FlexiRate',

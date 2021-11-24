@@ -5,7 +5,7 @@ require 'active_support/concern'
 # Contains the methods to compute an order balance form the point of view of the enterprise and not
 # the individual shopper.
 module Balance
-  FINALIZED_NON_SUCCESSFUL_STATES = %w(canceled returned).freeze
+  FINALIZED_NON_SUCCESSFUL_STATES = %w[canceled returned].freeze
 
   # Branches by the OrderBalance abstraction
   def outstanding_balance

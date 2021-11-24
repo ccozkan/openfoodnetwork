@@ -519,7 +519,7 @@ child: shop,
       let!(:product) { create(:simple_product) }
       let!(:variant) { create(:variant, product: product) }
 
-      %w(weight volume).each do |unit|
+      %w[weight volume].each do |unit|
         context "when the product's unit is #{unit}" do
           before do
             product.update_attribute(:variant_unit, unit)

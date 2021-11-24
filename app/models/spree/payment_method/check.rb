@@ -4,7 +4,7 @@ module Spree
   class PaymentMethod
     class Check < Spree::PaymentMethod
       def actions
-        %w{capture void}
+        %w[capture void]
       end
 
       # Indicates whether its possible to capture the payment

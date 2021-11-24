@@ -7,7 +7,7 @@ module Spree
 
     localize_number :amount
 
-    IDENTIFIER_CHARS = (('A'..'Z').to_a + ('0'..'9').to_a - %w(0 1 I O)).freeze
+    IDENTIFIER_CHARS = (('A'..'Z').to_a + ('0'..'9').to_a - %w[0 1 I O]).freeze
 
     delegate :line_items, to: :order
     delegate :currency, to: :order
@@ -48,10 +48,10 @@ foreign_key: :source_id
     scope :from_credit_card, -> { where(source_type: 'Spree::CreditCard') }
     scope :with_state, ->(s) { where(state: s.to_s) }
     scope :completed, -> { with_state('completed') }
-    scope :incomplete, -> { where(state: %w(checkout pending requires_authorization)) }
+    scope :incomplete, -> { where(state: %w[checkout pending requires_authorization]) }
     scope :pending, -> { with_state('pending') }
     scope :failed, -> { with_state('failed') }
-    scope :valid, -> { where.not(state: %w(failed invalid)) }
+    scope :valid, -> { where.not(state: %w[failed invalid]) }
     scope :authorization_action_required, -> { where.not(cvv_response_message: nil) }
     scope :requires_authorization, -> { with_state("requires_authorization") }
     scope :with_payment_intent, ->(code) { where(response_code: code) }

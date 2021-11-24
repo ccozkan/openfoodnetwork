@@ -320,7 +320,7 @@ module Spree
           expect(product).not_to(be_valid)
         end
 
-        %w(weight volume).each do |unit|
+        %w[weight volume].each do |unit|
           context "when unit is #{unit}" do
             it "is valid when unit scale is set and unit name is not" do
               product.variant_unit = unit

@@ -5,7 +5,7 @@ require 'spec_helper'
 describe Spree::ShipmentMailer do
   let(:shipment) do
     order = build(:order_with_distributor)
-    product = build(:product, name: %{The "BEST" product})
+    product = build(:product, name: %(The "BEST" product))
     variant = build(:variant, product: product)
     line_item = build(:line_item, variant: variant, order: order, quantity: 1, price: 5)
     shipment = build(:shipment)
@@ -25,7 +25,7 @@ describe Spree::ShipmentMailer do
   # Regression test for #2196
   it "doesn't include out of stock in the email body" do
     shipment_email = Spree::ShipmentMailer.shipped_email(shipment)
-    expect(shipment_email.body).to_not(include(%{Out of Stock}))
+    expect(shipment_email.body).to_not(include(%(Out of Stock)))
   end
 
   it "shipment_email accepts an shipment id as an alternative to an Shipment object" do

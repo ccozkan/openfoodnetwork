@@ -11,13 +11,13 @@ module VariantUnits
       it "when description is blank" do
         allow(v).to(receive(:unit_description) { nil })
         allow(subject).to(receive(:value_scaled?) { true })
-        allow(subject).to(receive(:option_value_value_unit) { %w(value unit) })
+        allow(subject).to(receive(:option_value_value_unit) { %w[value unit] })
         expect(subject.name(v)).to(eq("valueunit"))
       end
 
       it "when description is present" do
         allow(v).to(receive(:unit_description) { 'desc' })
-        allow(subject).to(receive(:option_value_value_unit) { %w(value unit) })
+        allow(subject).to(receive(:option_value_value_unit) { %w[value unit] })
         allow(subject).to(receive(:value_scaled?) { true })
         expect(subject.name(v)).to(eq("valueunit desc"))
       end
@@ -31,7 +31,7 @@ module VariantUnits
 
       it "spaces value and unit when value is unscaled" do
         allow(v).to(receive(:unit_description) { nil })
-        allow(subject).to(receive(:option_value_value_unit) { %w(value unit) })
+        allow(subject).to(receive(:option_value_value_unit) { %w[value unit] })
         allow(subject).to(receive(:value_scaled?) { false })
         expect(subject.name(v)).to(eq("value unit"))
       end
@@ -126,7 +126,7 @@ module VariantUnits
       end
 
       it "generates values for item units" do
-        %w(packet box).each do |unit|
+        %w[packet box].each do |unit|
           p = double(
 :product,
 variant_unit: 'items',

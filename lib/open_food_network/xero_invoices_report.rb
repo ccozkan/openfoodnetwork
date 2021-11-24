@@ -17,7 +17,7 @@ module OpenFoodNetwork
 
     def header
       # NOTE: These are NOT to be translated, they need to be in this exact format to work with Xero
-      %w(
+      %w[
 *ContactName
 EmailAddress
 POAddressLine1
@@ -46,7 +46,7 @@ TrackingOption2
 Currency
 BrandingTheme
 Paid?
-)
+]
     end
 
     def search

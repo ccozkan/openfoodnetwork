@@ -81,7 +81,7 @@ module Spree
     end
 
     def actions
-      %w{capture void credit resend_authorization_email}
+      %w[capture void credit resend_authorization_email]
     end
 
     def can_resend_authorization_email?(payment)

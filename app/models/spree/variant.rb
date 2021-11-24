@@ -70,7 +70,7 @@ numericality: { greater_than_or_equal_to: 0 },
     validates :unit_value,
 presence: true,
 if: lambda { |variant|
-      %w(weight volume).include?(variant.product&.variant_unit)
+      %w[weight volume].include?(variant.product&.variant_unit)
     }
 
     validates :unit_value, numericality: { greater_than: 0 }

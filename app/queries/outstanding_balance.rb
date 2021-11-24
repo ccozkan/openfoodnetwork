@@ -14,7 +14,7 @@
 class OutstandingBalance
   # All the states of a finished order but that shouldn't count towards the balance (the customer
   # didn't get the order for whatever reason). Note it does not include complete
-  FINALIZED_NON_SUCCESSFUL_STATES = %w(canceled returned).freeze
+  FINALIZED_NON_SUCCESSFUL_STATES = %w[canceled returned].freeze
 
   # The relation must be an ActiveRecord::Relation object with `spree_orders` in the SQL statement
   # FROM for #statement to work.

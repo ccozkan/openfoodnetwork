@@ -73,7 +73,7 @@ module Sets
     end
 
     def validate_presence_of_unit_value_in_variant(product, variant)
-      return unless %w(weight volume).include?(product.variant_unit)
+      return unless %w[weight volume].include?(product.variant_unit)
       return if variant.unit_value.present?
 
       product.errors.add(:unit_value, "can't be blank")

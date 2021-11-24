@@ -161,7 +161,7 @@ lambda {
     }
 
     # All the states an order can be in after completing the checkout
-    FINALIZED_STATES = %w(complete canceled resumed awaiting_return returned).freeze
+    FINALIZED_STATES = %w[complete canceled resumed awaiting_return returned].freeze
 
     scope :finalized, -> { where(state: FINALIZED_STATES) }
     scope :complete, -> { where.not(completed_at: nil) }
@@ -269,7 +269,7 @@ lambda {
     def allow_cancel?
       return false unless completed? && (state != 'canceled')
 
-      shipment_state.nil? || %w{ready backorder pending}.include?(shipment_state)
+      shipment_state.nil? || %w[ready backorder pending].include?(shipment_state)
     end
 
     def allow_resume?
@@ -473,7 +473,7 @@ created_by_id: created_by_id
     end
 
     def shipped?
-      %w(partial shipped).include?(shipment_state)
+      %w[partial shipped].include?(shipment_state)
     end
 
     # Does this order have shipments that can be shipped?

@@ -122,7 +122,7 @@ authorization: '12345'
       end
 
       def actions
-        %w(capture void credit)
+        %w[capture void credit]
       end
 
       private
