@@ -31,7 +31,8 @@ module Spree
 
       before_action :cache_search_state
       # Fetches user's distributors, suppliers and order_cycles
-      before_action :load_basic_data, only: [:customers, :products_and_inventory, :order_cycle_management]
+      before_action :load_basic_data, 
+only: [:customers, :products_and_inventory, :order_cycle_management]
       before_action :load_associated_data, only: [:orders_and_fulfillment]
 
       respond_to :html

@@ -141,7 +141,8 @@ describe '
 
       before do
         payment.update response_code: "pi_123", amount: order.total, state: "completed"
-        stub_payment_intent_get_request response: { intent_status: "succeeded" }, stripe_account_header: false
+        stub_payment_intent_get_request response: { intent_status: "succeeded" }, 
+stripe_account_header: false
         stub_refund_request
       end
 
