@@ -218,9 +218,9 @@ opts
     end
 
     def row(order, sku, description, quantity, amount, invoice_number, tax_type, opts = {})
-      # rubocop:disable Style/NumericPredicate
+      
       return nil if amount == 0
-      # rubocop:enable Style/NumericPredicate
+      
 
       [
 order.bill_address&.full_name,

@@ -198,7 +198,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
     def load_methods_and_fees
       enterprise_payment_methods = @enterprise.payment_methods.to_a
       enterprise_shipping_methods = @enterprise.shipping_methods.to_a
-      # rubocop:disable Style/TernaryParentheses
+      
       @payment_methods =
  Spree::PaymentMethod.managed_by(spree_current_user).to_a.sort_by! do |pm|
         [(enterprise_payment_methods.include? pm) ? 0 : 1, pm.name]
@@ -207,7 +207,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
  Spree::ShippingMethod.managed_by(spree_current_user).to_a.sort_by! do |sm|
         [(enterprise_shipping_methods.include? sm) ? 0 : 1, sm.name]
       end
-      # rubocop:enable Style/TernaryParentheses
+      
 
       @enterprise_fees = EnterpriseFee
         .managed_by(spree_current_user)
@@ -325,9 +325,9 @@ ams_prefix: params[:ams_prefix] || 'basic',
     # Overriding method on Spree's resource controller
     def location_after_save
       referer_path = OpenFoodNetwork::RefererParser.path(request.referer)
-      # rubocop:disable Style/RegexpLiteral
+      
       refered_from_producer_properties = referer_path =~ /\/producer_properties$/
-      # rubocop:enable Style/RegexpLiteral
+      
 
       if refered_from_producer_properties
         main_app.admin_enterprise_producer_properties_path(@enterprise)

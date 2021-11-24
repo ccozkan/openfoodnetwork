@@ -20,7 +20,7 @@ module SampleData
 
     private
 
-    # rubocop:disable Metrics/MethodLength
+    
     def enterprise_data(users)
       [
         {
@@ -93,6 +93,6 @@ DESC
         }
       ]
     end
-    # rubocop:enable Metrics/MethodLength
+    
   end
 end

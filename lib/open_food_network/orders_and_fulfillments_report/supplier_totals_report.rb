@@ -27,7 +27,7 @@ I18n.t(:report_header_status),
 ]
       end
 
-      # rubocop:disable Metrics/MethodLength
+      
       def rules
         [
           {
@@ -44,9 +44,9 @@ I18n.t(:report_header_status),
           }
         ]
       end
-      # rubocop:enable Metrics/MethodLength
+      
 
-      # rubocop:disable Metrics/MethodLength
+      
       def columns
         [
           supplier_name,
@@ -60,7 +60,7 @@ I18n.t(:report_header_status),
           proc { |_line_items| I18n.t(:report_header_incoming_transport) }
         ]
       end
-      # rubocop:enable Metrics/MethodLength
+      
 
       def line_item_includes
         [{ variant: [{ option_values: :option_type }, { product: :supplier }] }]

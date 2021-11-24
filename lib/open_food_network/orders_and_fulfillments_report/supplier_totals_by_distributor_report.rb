@@ -26,8 +26,8 @@ I18n.t(:report_header_shipping_method)
 ]
       end
 
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
+      
+      
       def rules
         [
           {
@@ -58,10 +58,10 @@ I18n.t(:report_header_shipping_method)
           }
         ]
       end
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
+      
+      
 
-      # rubocop:disable Metrics/AbcSize
+      
       def columns
         [
           supplier_name,
@@ -74,7 +74,7 @@ I18n.t(:report_header_shipping_method)
           proc { |_line_items| I18n.t(:report_header_shipping_method) }
         ]
       end
-      # rubocop:enable Metrics/AbcSize
+      
 
       def line_item_includes
         [

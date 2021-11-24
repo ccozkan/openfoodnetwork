@@ -25,8 +25,8 @@ I18n.t(:report_header_total_shipping_cost),
 ]
       end
 
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
+      
+      
       def rules
         [
           {
@@ -58,10 +58,10 @@ I18n.t(:report_header_total_shipping_cost),
           }
         ]
       end
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
+      
+      
 
-      # rubocop:disable Metrics/AbcSize
+      
       def columns
         [
 proc { |line_items| line_items.first.order.distributor.name },
@@ -75,7 +75,7 @@ proc { |line_items| line_items.first.order.distributor.name },
          proc { |_line_items| I18n.t(:report_header_shipping_method) }
 ]
       end
-      # rubocop:enable Metrics/AbcSize
+      
 
       def line_item_includes
         [

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
+
 module OpenFoodNetwork
   class OrdersAndFulfillmentsReport
     class CustomerTotalsReport
@@ -16,8 +16,8 @@ module OpenFoodNetwork
         @scopers_by_distributor_id = {}
       end
 
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
+      
+      
       def header
         [
 I18n.t(:report_header_hub),
@@ -57,11 +57,11 @@ I18n.t(:report_header_billing_postcode),
          I18n.t(:report_header_date)
 ]
       end
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
+      
+      
 
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
+      
+      
       def rules
         [
           {
@@ -130,13 +130,13 @@ I18n.t(:report_header_billing_postcode),
           }
         ]
       end
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/MethodLength
+      
+      
 
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/MethodLength
-      # rubocop:disable Metrics/PerceivedComplexity
+      
+      
+      
+      
       def columns
         rsa = proc { |line_items| shipping_method(line_items)&.delivery? }
         [
@@ -213,10 +213,10 @@ I18n.t(:report_header_billing_postcode),
           proc { |line_items| line_items.first.order.completed_at.strftime("%F %T") },
         ]
       end
-      # rubocop:enable Metrics/AbcSize
-      # rubocop:enable Metrics/CyclomaticComplexity
-      # rubocop:enable Metrics/MethodLength
-      # rubocop:enable Metrics/PerceivedComplexity
+      
+      
+      
+      
 
       def line_item_includes
         [
@@ -249,4 +249,4 @@ order: [
     end
   end
 end
-# rubocop:enable Metrics/ClassLength
+

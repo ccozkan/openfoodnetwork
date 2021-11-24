@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
+
 namespace :ofn do
   namespace :subs do
     namespace :debug do
@@ -65,4 +65,4 @@ source_id: payment.id
     end
   end
 end
-# rubocop:enable Metrics/BlockLength
+

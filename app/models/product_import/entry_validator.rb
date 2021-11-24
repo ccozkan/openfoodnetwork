@@ -8,7 +8,7 @@ module ProductImport
   class EntryValidator
     SKIP_VALIDATE_ON_UPDATE = [:description].freeze
 
-    # rubocop:disable Metrics/ParameterLists
+    
     def initialize(
       current_user, import_time, spreadsheet_data, editable_enterprises,
       inventory_permissions, reset_counts, import_settings, all_entries
@@ -22,7 +22,7 @@ module ProductImport
       @import_settings = import_settings
       @all_entries = all_entries
     end
-    # rubocop:enable Metrics/ParameterLists
+    
 
     def self.non_updatable_fields
       {

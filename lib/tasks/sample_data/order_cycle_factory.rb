@@ -5,7 +5,7 @@ require "tasks/sample_data/logging"
 module SampleData
   class OrderCycleFactory
     include Logging
-    # rubocop:disable Metrics/MethodLength
+    
     def create_samples
       log "Creating order cycles"
       create_order_cycle(
@@ -46,7 +46,7 @@ module SampleData
         pickup_time: "dusk"
       )
     end
-    # rubocop:enable Metrics/MethodLength
+    
 
     private
 
