@@ -49,7 +49,7 @@ tax_rate_amount: 0.1,
 
         within_window ticket_window do
           accept_alert do
-            print_data = page.evaluate_script('printData');
+            print_data = page.evaluate_script('printData')
             elements_in_print_data = [
               order.distributor.name,
               order.distributor.address.address_part1,

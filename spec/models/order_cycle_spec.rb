@@ -458,7 +458,7 @@ pickup_time: nil
   end
 
   it "clones itself" do
-    coordinator = create(:enterprise);
+    coordinator = create(:enterprise)
     oc = create(
 :simple_order_cycle,
                 coordinator_fees: [create(:enterprise_fee, enterprise: coordinator)],

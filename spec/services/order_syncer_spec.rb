@@ -177,7 +177,7 @@ phone: "1123581321"
           subscription.assign_attributes(params)
           expect(syncer.sync!).to(be(true))
           expect(syncer.order_update_issues.keys).to_not(include(order.id))
-          order.reload;
+          order.reload
           expect(order.bill_address.firstname).to(eq("Bill"))
           expect(order.bill_address.lastname).to(eq(bill_address_attrs["lastname"]))
           expect(order.bill_address.address1).to(eq("123 abc st"))
@@ -199,7 +199,7 @@ phone: "1123581321"
           subscription.assign_attributes(params)
           expect(syncer.sync!).to(be(true))
           expect(syncer.order_update_issues.keys).to(include(order.id))
-          order.reload;
+          order.reload
           expect(order.bill_address.firstname).to(eq("Jane"))
           expect(order.bill_address.lastname).to(eq(bill_address_attrs["lastname"]))
           expect(order.bill_address.address1).to(eq(bill_address_attrs["address1"]))
@@ -222,7 +222,7 @@ phone: "1123581321"
           subscription.assign_attributes(params)
           expect(syncer.sync!).to(be(true))
           expect(syncer.order_update_issues.keys).to_not(include(order.id))
-          order.reload;
+          order.reload
           expect(order.bill_address.firstname).to(eq("Bill"))
           expect(order.bill_address.lastname).to(eq(bill_address_attrs["lastname"]))
           expect(order.bill_address.address1).to(eq("123 abc st"))
@@ -244,7 +244,7 @@ phone: "1123581321"
           subscription.assign_attributes(params)
           expect(syncer.sync!).to(be(true))
           expect(syncer.order_update_issues.keys).to(include(order.id))
-          order.reload;
+          order.reload
           expect(order.bill_address.firstname).to(eq("Jane"))
           expect(order.bill_address.lastname).to(eq(bill_address_attrs["lastname"]))
           expect(order.bill_address.address1).to(eq(bill_address_attrs["address1"]))
@@ -295,7 +295,7 @@ phone: "1123581321"
         subscription.assign_attributes(params)
         expect(syncer.sync!).to(be(true))
         expect(syncer.order_update_issues.keys).to_not(include(order.id))
-        order.reload;
+        order.reload
         expect(order.ship_address.firstname).to(eq(bill_address_attrs["firstname"]))
         expect(order.ship_address.lastname).to(eq(bill_address_attrs["lastname"]))
         expect(order.ship_address.address1).to(eq(distributor_address.address1))
@@ -378,7 +378,7 @@ with_items: true,
           subscription.assign_attributes(params)
           expect(syncer.sync!).to(be(true))
           expect(syncer.order_update_issues.keys).to_not(include(order.id))
-          order.reload;
+          order.reload
           expect(order.ship_address.firstname).to(eq("Ship"))
           expect(order.ship_address.lastname).to(eq(ship_address_attrs["lastname"]))
           expect(order.ship_address.address1).to(eq("123 abc st"))
@@ -396,7 +396,7 @@ with_items: true,
           subscription.assign_attributes(params)
           expect(syncer.sync!).to(be(true))
           expect(syncer.order_update_issues.keys).to(include(order.id))
-          order.reload;
+          order.reload
           expect(order.ship_address.firstname).to(eq("Jane"))
           expect(order.ship_address.lastname).to(eq(ship_address_attrs["lastname"]))
           expect(order.ship_address.address1).to(eq(ship_address_attrs["address1"]))

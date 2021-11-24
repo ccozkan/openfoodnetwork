@@ -220,7 +220,8 @@ hub: hub,
         end
 
         context "and is then removed" do
-          before { er.permissions_list = [:add_to_order_cycles]; er.save! }
+          before { er.permissions_list = [:add_to_order_cycles]
+ er.save! }
           it "should set permission_revoked_at to the current time for all relevant variant overrides" do
             expect(vo1.reload.permission_revoked_at).to_not(be_nil)
             expect(vo2.reload.permission_revoked_at).to_not(be_nil)
@@ -232,7 +233,8 @@ hub: hub,
         end
 
         context "and then some other permission is removed" do
-          before { er.permissions_list = [:create_variant_overrides]; er.save! }
+          before { er.permissions_list = [:create_variant_overrides]
+ er.save! }
 
           it "should have no effect on existing variant_overrides" do
             expect(vo1.reload.permission_revoked_at).to(be_nil)
@@ -286,7 +288,8 @@ permission_revoked_at: Time.now.in_time_zone
 
         context "and is then added" do
           before do
-            er.permissions_list = [:add_to_order_cycles, :create_variant_overrides]; er.save!
+            er.permissions_list = [:add_to_order_cycles, :create_variant_overrides]
+ er.save!
           end
           it "should set permission_revoked_at to nil for all relevant variant overrides" do
             expect(vo1.reload.permission_revoked_at).to(be_nil)
@@ -299,7 +302,8 @@ permission_revoked_at: Time.now.in_time_zone
         end
 
         context "and then some other permission is added" do
-          before { er.permissions_list = [:add_to_order_cycles, :manage_products]; er.save! }
+          before { er.permissions_list = [:add_to_order_cycles, :manage_products]
+ er.save! }
 
           it "should have no effect on existing variant_overrides" do
             expect(vo1.reload.permission_revoked_at).to_not(be_nil)

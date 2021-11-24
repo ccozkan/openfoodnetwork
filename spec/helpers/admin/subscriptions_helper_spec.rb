@@ -13,7 +13,9 @@ describe Admin::SubscriptionsHelper, type: :helper do
     end
 
     context "when a shop has no shipping methods present" do
-      before { customer; payment_method; schedule }
+      before { customer
+ payment_method
+ schedule }
       it { expect(helper.subscriptions_setup_complete?([shop])).to(be(false)) }
     end
 
@@ -21,22 +23,32 @@ describe Admin::SubscriptionsHelper, type: :helper do
       let!(:paypal) do
         Spree::Gateway::PayPalExpress.create!(name: "PayPalExpress", distributor_ids: [shop.id])
       end
-      before { customer; shipping_method; schedule }
+      before { customer
+ shipping_method
+ schedule }
       it { expect(helper.subscriptions_setup_complete?([shop])).to(be(false)) }
     end
 
     context "when a shop has no customers present" do
-      before { shipping_method; payment_method; schedule }
+      before { shipping_method
+ payment_method
+ schedule }
       it { expect(helper.subscriptions_setup_complete?([shop])).to(be(false)) }
     end
 
     context "when a shop does not coordinate any schedules" do
-      before { customer; shipping_method; payment_method; }
+      before { customer
+ shipping_method
+ payment_method
+ }
       it { expect(helper.subscriptions_setup_complete?([shop])).to(be(false)) }
     end
 
     context "when a shop meets all requirements" do
-      before { customer; shipping_method; payment_method; schedule }
+      before { customer
+ shipping_method
+ payment_method
+ schedule }
       let(:some_other_shop) { create(:distributor_enterprise) }
 
       context "but it is not passed in" do

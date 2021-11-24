@@ -27,7 +27,8 @@ describe MigrateAdminTaxAmounts do
 
     context "when the adjustments have tax" do
       before do
-        adjustment10; adjustment50
+        adjustment10
+ adjustment50
         allow(subject).to(receive(:applicable_rates) { [tax_rate10, tax_rate50] })
       end
 
