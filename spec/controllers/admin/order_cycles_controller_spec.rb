@@ -215,7 +215,7 @@ module Admin
 
           spree_put :update, 
 params
-            .merge(order_cycle: { preferred_product_selection_from_coordinator_inventory_only: true })
+  .merge(order_cycle: { preferred_product_selection_from_coordinator_inventory_only: true })
         end
       end
     end
