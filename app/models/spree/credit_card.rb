@@ -35,7 +35,7 @@ module Spree
       @number =
  begin
         num.gsub(/[^0-9]/, '')
-      rescue StandardError
+ rescue StandardError
         nil
       end
     end

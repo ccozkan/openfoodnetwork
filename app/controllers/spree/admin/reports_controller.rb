@@ -281,7 +281,7 @@ spree_current_user,
         description =
  begin
           I18n.t!(:description, scope: [:admin, :reports, report])
-        rescue I18n::MissingTranslationData
+ rescue I18n::MissingTranslationData
           render_to_string(
             partial: "#{report}_description",
             layout: false,

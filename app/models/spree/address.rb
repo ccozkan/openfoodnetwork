@@ -30,7 +30,7 @@ module Spree
       country =
  begin
         DefaultCountry.country
-      rescue StandardError
+ rescue StandardError
         Spree::Country.first
       end
       new(country: country)

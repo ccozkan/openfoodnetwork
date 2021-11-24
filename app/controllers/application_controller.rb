@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
     ::Rails.logger.error(
 "Redirected by #{begin
       caller(1).first
-    rescue StandardError
+rescue StandardError
       'unknown'
     end}"
 )
