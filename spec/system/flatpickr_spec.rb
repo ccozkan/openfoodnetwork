@@ -23,7 +23,7 @@ describe "Test Flatpickr", js: true do
       login_as_admin_and_visit 'admin/orders'
       open_datepicker('#q_completed_at_gteq')
       choose_today_from_datepicker
-      check_fielddate('#q_completed_at_gteq', Date.today())
+      check_fielddate('#q_completed_at_gteq', Date.today)
     end
 
     it "opens the datepicker and closes it by clicking outside" do
