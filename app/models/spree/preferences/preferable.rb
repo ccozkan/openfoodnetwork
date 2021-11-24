@@ -39,8 +39,8 @@ module Spree
         has_preference! name
         __send__ self.class.preference_getter_method(name)
       end
-      alias :preferred :get_preference
-      alias :prefers? :get_preference
+      alias preferred get_preference
+      alias prefers? get_preference
 
       def set_preference(name, value)
         has_preference! name

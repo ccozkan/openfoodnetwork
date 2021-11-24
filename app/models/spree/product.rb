@@ -94,7 +94,7 @@ through: :variants
     after_save :save_master
 
     delegate :images, to: :master, prefix: true
-    alias_method :images, :master_images
+    alias images master_images
 
     has_many :variant_images,
 -> { order(:position) },
@@ -128,7 +128,7 @@ presence: true,
 
     make_permalink order: :name
 
-    alias :options :product_option_types
+    alias options product_option_types
 
     after_initialize :ensure_master
     after_initialize :set_available_on_to_now, if: :new_record?

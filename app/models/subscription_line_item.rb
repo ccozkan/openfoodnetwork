@@ -15,7 +15,7 @@ class SubscriptionLineItem < ApplicationRecord
   end
 
   # Used to calculators to estimate fees
-  alias_method :amount, :total_estimate
+  alias amount total_estimate
 
   # Used to calculators to estimate fees
   def price

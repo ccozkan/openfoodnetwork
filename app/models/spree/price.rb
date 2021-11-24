@@ -12,7 +12,7 @@ module Spree
     def display_amount
       money
     end
-    alias :display_price :display_amount
+    alias display_price display_amount
 
     def money
       Spree::Money.new(amount || 0, currency: currency)

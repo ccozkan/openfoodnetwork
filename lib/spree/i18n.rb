@@ -20,7 +20,7 @@ module Spree
       super(*args, **options)
     end
 
-    alias_method :t, :translate
+    alias t translate
 
     def context
       Spree::ViewContext.context

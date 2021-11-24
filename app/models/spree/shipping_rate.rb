@@ -27,6 +27,6 @@ module Spree
       Spree::Money.new(cost, { currency: currency })
     end
 
-    alias_method :display_cost, :display_price
+    alias display_cost display_price
   end
 end

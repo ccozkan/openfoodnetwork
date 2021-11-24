@@ -22,7 +22,7 @@ module Spree
           super key
         end
       end
-      alias :[] :get_preference
+      alias [] get_preference
 
       def preference_type(name)
         if has_attachment? name

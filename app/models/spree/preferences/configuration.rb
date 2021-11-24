@@ -41,10 +41,10 @@ module Spree
         end
       end
 
-      alias :[] :get_preference
-      alias :[]= :set_preference
+      alias [] get_preference
+      alias []= set_preference
 
-      alias :get :get_preference
+      alias get get_preference
 
       def set(*args)
         options = args.extract_options!

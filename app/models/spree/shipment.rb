@@ -159,7 +159,7 @@ if: lambda { |shipment|
       Spree::Money.new(cost, currency: currency)
     end
 
-    alias_method :display_amount, :display_cost
+    alias display_amount display_cost
 
     def item_cost
       line_items.map(&:amount).sum
