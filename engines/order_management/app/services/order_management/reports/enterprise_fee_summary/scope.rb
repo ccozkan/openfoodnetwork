@@ -73,11 +73,10 @@ originator_type: [
 
         def include_adjustment_metadata
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN adjustment_metadata
                 ON (adjustment_metadata.adjustment_id = spree_adjustments.id)
             JOIN_STRING
-          )
         end
 
         # Includes:
@@ -86,23 +85,21 @@ originator_type: [
         # * Hub
         def include_order_details
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN spree_orders
                 ON (
                   spree_orders.id = spree_adjustments.order_id
                     AND spree_orders.completed_at IS NOT NULL
                 )
             JOIN_STRING
-          )
 
           join_scope("LEFT OUTER JOIN customers ON (customers.id = spree_orders.customer_id)")
 
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN enterprises AS hubs
                 ON (hubs.id = spree_orders.distributor_id)
             JOIN_STRING
-          )
         end
 
         # If for payment fee
@@ -111,24 +108,22 @@ originator_type: [
         # * Payment method
         def include_payment_fee_details
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN spree_payment_methods
                 ON (
                   spree_adjustments.originator_type = 'Spree::PaymentMethod'
                     AND spree_payment_methods.id = spree_adjustments.originator_id
                 )
             JOIN_STRING
-          )
 
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN enterprises AS payment_hubs
                 ON (
                   spree_payment_methods.id IS NOT NULL
                     AND payment_hubs.id = spree_orders.distributor_id
                 )
             JOIN_STRING
-          )
         end
 
         # If for shipping fee
@@ -137,14 +132,13 @@ originator_type: [
         # * Shipping method
         def include_shipping_fee_details
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN spree_shipping_methods
                 ON (
                   spree_adjustments.originator_type = 'Spree::ShippingMethod'
                     AND spree_shipping_methods.id = spree_adjustments.originator_id
                 )
             JOIN_STRING
-          )
         end
 
         # Includes:
@@ -153,28 +147,25 @@ originator_type: [
         # * Enterprise fee tax category
         def include_enterprise_fee_details
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN enterprise_fees
                 ON (
                   spree_adjustments.originator_type = 'EnterpriseFee'
                     AND enterprise_fees.id = spree_adjustments.originator_id
                 )
             JOIN_STRING
-          )
 
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN enterprises
                 ON (enterprises.id = enterprise_fees.enterprise_id)
             JOIN_STRING
-          )
 
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN spree_tax_categories
                 ON (spree_tax_categories.id = enterprise_fees.tax_category_id)
             JOIN_STRING
-          )
         end
 
         # If for order source
@@ -184,21 +175,19 @@ originator_type: [
         # * Distributor
         def include_order_source_details
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN spree_orders AS adjustment_source_orders
                 ON (
                   spree_adjustments.adjustable_type = 'Spree::Order'
                     AND adjustment_source_orders.id = spree_adjustments.adjustable_id
                 )
             JOIN_STRING
-          )
 
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN enterprises AS adjustment_source_distributors
                 ON (adjustment_source_distributors.id = adjustment_source_orders.distributor_id)
             JOIN_STRING
-          )
         end
 
         # If for line item source - Use data only if spree_line_items.id is present
@@ -210,41 +199,37 @@ originator_type: [
         # * Tax category of product, if enterprise fee tells to inherit
         def include_line_item_source_details
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN spree_line_items
                 ON (
                   spree_adjustments.adjustable_type = 'Spree::LineItem'
                     AND spree_line_items.id = spree_adjustments.adjustable_id
                 )
             JOIN_STRING
-          )
 
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN spree_variants
                 ON (
                   spree_adjustments.adjustable_type = 'Spree::LineItem'
                     AND spree_variants.id = spree_line_items.variant_id
                 )
             JOIN_STRING
-          )
 
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN spree_products
                 ON (spree_products.id = spree_variants.product_id)
             JOIN_STRING
-          )
 
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN spree_tax_categories AS product_tax_categories
                 ON (
                   enterprise_fees.inherits_tax_category IS TRUE
                     AND product_tax_categories.id = spree_products.tax_category_id
                 )
             JOIN_STRING
-          )
         end
 
         # If incoming exchange - Use data only if incoming_exchange_variants.id is present
@@ -255,7 +240,7 @@ originator_type: [
         # * Incoming exchange variant
         def include_incoming_exchange_details
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN
                 (
                   exchange_variants AS incoming_exchange_variants
@@ -273,14 +258,12 @@ originator_type: [
                     AND incoming_exchange_variants.variant_id = spree_line_items.variant_id
                 )
             JOIN_STRING
-          )
 
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN enterprises AS incoming_exchange_enterprises
                 ON (incoming_exchange_enterprises.id = incoming_exchanges.sender_id)
             JOIN_STRING
-          )
         end
 
         # If outgoing exchange - Use data only if outgoing_exchange_variants.id is present
@@ -291,7 +274,7 @@ originator_type: [
         # * Outgoing exchange variant
         def include_outgoing_exchange_details
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN
                 (
                   exchange_variants AS outgoing_exchange_variants
@@ -309,14 +292,12 @@ originator_type: [
                     AND outgoing_exchange_variants.variant_id = spree_line_items.variant_id
                 )
             JOIN_STRING
-          )
 
           join_scope(
-            <<-JOIN_STRING.strip_heredoc
+            <<-JOIN_STRING.strip_heredoc)
               LEFT OUTER JOIN enterprises AS outgoing_exchange_enterprises
                 ON (outgoing_exchange_enterprises.id = outgoing_exchanges.receiver_id)
             JOIN_STRING
-          )
         end
 
         def filter_by_date(params)
@@ -370,7 +351,7 @@ originator_type: [
         def select_attributes
           chain_to_scope do
             select(
-              <<-JOIN_STRING.strip_heredoc
+              <<-JOIN_STRING.strip_heredoc)
                 SUM(spree_adjustments.amount)::TEXT AS total_amount,
                   spree_payment_methods.name AS payment_method_name,
                   spree_shipping_methods.name AS shipping_method_name,
@@ -389,7 +370,6 @@ originator_type: [
                   incoming_exchange_enterprises.name AS incoming_exchange_enterprise_name,
                   outgoing_exchange_enterprises.name AS outgoing_exchange_enterprise_name
               JOIN_STRING
-            )
           end
         end
 
