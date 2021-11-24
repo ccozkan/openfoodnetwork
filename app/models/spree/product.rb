@@ -129,14 +129,14 @@ module Spree
     scope :with_order_cycles_outer, -> {
       joins("
         LEFT OUTER JOIN spree_variants AS o_spree_variants
-          ON (o_spree_variants.product_id = spree_products.id)").
-        joins("
+          ON (o_spree_variants.product_id = spree_products.id)")
+        .joins("
           LEFT OUTER JOIN exchange_variants AS o_exchange_variants
-            ON (o_exchange_variants.variant_id = o_spree_variants.id)").
-        joins("
+            ON (o_exchange_variants.variant_id = o_spree_variants.id)")
+        .joins("
           LEFT OUTER JOIN exchanges AS o_exchanges
-            ON (o_exchanges.id = o_exchange_variants.exchange_id)").
-        joins("
+            ON (o_exchanges.id = o_exchange_variants.exchange_id)")
+        .joins("
           LEFT OUTER JOIN order_cycles AS o_order_cycles
             ON (o_order_cycles.id = o_exchanges.order_cycle_id)")
     }
@@ -144,8 +144,8 @@ module Spree
     scope :imported_on, lambda { |import_date|
       import_date = Time.zone.parse import_date if import_date.is_a? String
       import_date = import_date.to_date
-      joins(:variants).merge(Spree::Variant.
-        where(import_date: import_date.beginning_of_day..import_date.end_of_day))
+      joins(:variants).merge(Spree::Variant
+        .where(import_date: import_date.beginning_of_day..import_date.end_of_day))
     }
 
     scope :with_order_cycles_inner, -> {
@@ -155,12 +155,12 @@ module Spree
     scope :visible_for, lambda { |enterprise|
       joins('
         LEFT OUTER JOIN spree_variants AS o_spree_variants
-          ON (o_spree_variants.product_id = spree_products.id)').
-        joins('
+          ON (o_spree_variants.product_id = spree_products.id)')
+        .joins('
           LEFT OUTER JOIN inventory_items AS o_inventory_items
-            ON (o_spree_variants.id = o_inventory_items.variant_id)').
-        where('o_inventory_items.enterprise_id = (?) AND visible = (?)', enterprise, true).
-        distinct
+            ON (o_spree_variants.id = o_inventory_items.variant_id)')
+        .where('o_inventory_items.enterprise_id = (?) AND visible = (?)', enterprise, true)
+        .distinct
     }
 
     # -- Scopes
@@ -170,41 +170,41 @@ module Spree
     scope :in_distributor, lambda { |distributor|
       distributor = distributor.respond_to?(:id) ? distributor.id : distributor.to_i
 
-      with_order_cycles_outer.
-        where('(o_exchanges.incoming = ? AND o_exchanges.receiver_id = ?)', false, distributor).
-        select('distinct spree_products.*')
+      with_order_cycles_outer
+        .where('(o_exchanges.incoming = ? AND o_exchanges.receiver_id = ?)', false, distributor)
+        .select('distinct spree_products.*')
     }
 
     scope :in_distributors, lambda { |distributors|
-      with_order_cycles_outer.
-        where('(o_exchanges.incoming = ? AND o_exchanges.receiver_id IN (?))', false, distributors).
-        distinct
+      with_order_cycles_outer
+        .where('(o_exchanges.incoming = ? AND o_exchanges.receiver_id IN (?))', false, distributors)
+        .distinct
     }
 
     # Products supplied by a given enterprise or distributed via that enterprise through an OC
     scope :in_supplier_or_distributor, lambda { |enterprise|
       enterprise = enterprise.respond_to?(:id) ? enterprise.id : enterprise.to_i
 
-      with_order_cycles_outer.
-        where("
+      with_order_cycles_outer
+        .where("
           spree_products.supplier_id = ?
           OR (o_exchanges.incoming = ? AND o_exchanges.receiver_id = ?)
-        ", enterprise, false, enterprise).
-        select('distinct spree_products.*')
+        ", enterprise, false, enterprise)
+        .select('distinct spree_products.*')
     }
 
     # Products distributed by the given order cycle
     scope :in_order_cycle, lambda { |order_cycle|
-      with_order_cycles_inner.
-        merge(Exchange.outgoing).
-        where('order_cycles.id = ?', order_cycle)
+      with_order_cycles_inner
+        .merge(Exchange.outgoing)
+        .where('order_cycles.id = ?', order_cycle)
     }
 
     scope :in_an_active_order_cycle, lambda {
-      with_order_cycles_inner.
-        merge(OrderCycle.active).
-        merge(Exchange.outgoing).
-        where('order_cycles.id IS NOT NULL')
+      with_order_cycles_inner
+        .merge(OrderCycle.active)
+        .merge(Exchange.outgoing)
+        .where('order_cycles.id IS NOT NULL')
     }
 
     scope :by_producer, -> { joins(:supplier).order('enterprises.name') }
@@ -322,9 +322,9 @@ module Spree
         ps = OpenFoodNetwork::PropertyMerge.merge(ps, supplier.producer_properties)
       end
 
-      ps.
-        sort_by(&:position).
-        map { |pp| { id: pp.property.id, name: pp.property.presentation, value: pp.value } }
+      ps
+        .sort_by(&:position)
+        .map { |pp| { id: pp.property.id, name: pp.property.presentation, value: pp.value } }
     end
 
     def in_distributor?(distributor)
@@ -363,9 +363,9 @@ module Spree
       transaction do
         touch_distributors
 
-        ExchangeVariant.
-          where('exchange_variants.variant_id IN (?)', variants_including_master.with_deleted.
-          select(:id)).destroy_all
+        ExchangeVariant
+          .where('exchange_variants.variant_id IN (?)', variants_including_master.with_deleted
+          .select(:id)).destroy_all
 
         super
       end

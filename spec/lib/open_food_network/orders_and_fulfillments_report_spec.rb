@@ -87,8 +87,8 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
 
           it "shows line items supplied by my producers, with names shown" do
             expect(subject.table_items).to eq([li2])
-            expect(subject.table_items.first.order.bill_address.firstname).
-              to eq(order.bill_address.firstname)
+            expect(subject.table_items.first.order.bill_address.firstname)
+              .to eq(order.bill_address.firstname)
           end
         end
       end

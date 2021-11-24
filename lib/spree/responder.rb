@@ -10,9 +10,9 @@ module Spree
       class_name = controller.class.name.to_sym
       action_name = options.delete(:action_name)
 
-      result = ApplicationController.spree_responders[class_name].
-        try(:[], action_name).
-        try(:[], self.format.to_sym)
+      result = ApplicationController.spree_responders[class_name]
+        .try(:[], action_name)
+        .try(:[], self.format.to_sym)
       return unless result
 
       self.on_success = handler(controller, result, :success)

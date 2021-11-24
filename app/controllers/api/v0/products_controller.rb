@@ -54,27 +54,27 @@ module Api
       end
 
       def bulk_products
-        product_query = OpenFoodNetwork::Permissions.
-          new(current_api_user).
-          editable_products.
-          merge(product_scope)
+        product_query = OpenFoodNetwork::Permissions
+          .new(current_api_user)
+          .editable_products
+          .merge(product_scope)
 
         if params[:import_date].present?
-          product_query = product_query.
-            imported_on(params[:import_date]).
-            group_by_products_id
+          product_query = product_query
+            .imported_on(params[:import_date])
+            .group_by_products_id
         end
 
-        @products = product_query.
-          ransack(query_params_with_defaults).
-          result
+        @products = product_query
+          .ransack(query_params_with_defaults)
+          .result
 
         render_paged_products @products
       end
 
       def overridable
-        producer_ids = OpenFoodNetwork::Permissions.new(current_api_user).
-          variant_override_producers.by_name.select('enterprises.id')
+        producer_ids = OpenFoodNetwork::Permissions.new(current_api_user)
+          .variant_override_producers.by_name.select('enterprises.id')
 
         @products = paged_products_for_producers producer_ids
 
@@ -123,12 +123,12 @@ module Api
       end
 
       def paged_products_for_producers(producer_ids)
-        Spree::Product.where(nil).
-          merge(product_scope).
-          includes(variants: [:product, :default_price, :stock_items]).
-          where(supplier_id: producer_ids).
-          by_producer.by_name.
-          ransack(params[:q]).result
+        Spree::Product.where(nil)
+          .merge(product_scope)
+          .includes(variants: [:product, :default_price, :stock_items])
+          .where(supplier_id: producer_ids)
+          .by_producer.by_name
+          .ransack(params[:q]).result
       end
 
       def render_paged_products(products, product_serializer = ::Api::Admin::ProductSerializer)

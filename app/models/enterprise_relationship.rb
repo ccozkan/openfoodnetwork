@@ -17,8 +17,8 @@ class EnterpriseRelationship < ApplicationRecord
   scope :with_enterprises, -> {
     joins("
       LEFT JOIN enterprises AS parent_enterprises
-        ON parent_enterprises.id = enterprise_relationships.parent_id").
-      joins("
+        ON parent_enterprises.id = enterprise_relationships.parent_id")
+      .joins("
         LEFT JOIN enterprises AS child_enterprises
           ON child_enterprises.id = enterprise_relationships.child_id")
   }
@@ -31,8 +31,8 @@ class EnterpriseRelationship < ApplicationRecord
   scope :permitted_by, ->(enterprise_ids) { where('parent_id IN (?)', enterprise_ids) }
 
   scope :with_permission, ->(permission) {
-    joins(:permissions).
-      where('enterprise_relationship_permissions.name = ?', permission)
+    joins(:permissions)
+      .where('enterprise_relationship_permissions.name = ?', permission)
   }
 
   scope :by_name, -> { with_enterprises.order('child_enterprises.name, parent_enterprises.name') }

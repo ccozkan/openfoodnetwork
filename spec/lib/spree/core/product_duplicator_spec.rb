@@ -72,9 +72,9 @@ describe Spree::Core::ProductDuplicator do
 
     expect(image.attachment).to receive(:clone).and_return(image.attachment)
 
-    expect(new_image).to receive(:assign_attributes).
-      with(attachment: image.attachment).
-      and_return(new_image)
+    expect(new_image).to receive(:assign_attributes)
+      .with(attachment: image.attachment)
+      .and_return(new_image)
 
     expect(new_property).to receive(:created_at=).with(nil)
     expect(new_property).to receive(:updated_at=).with(nil)

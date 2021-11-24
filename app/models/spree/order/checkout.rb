@@ -114,13 +114,13 @@ module Spree
           end
 
           def self.add_transition(options)
-            next_event_transitions << { options.delete(:from) => options.delete(:to) }.
-              merge(options)
+            next_event_transitions << { options.delete(:from) => options.delete(:to) }
+              .merge(options)
           end
 
           def checkout_steps
-            steps = self.class.checkout_steps.
-              each_with_object([]) { |(step, options), checkout_steps|
+            steps = self.class.checkout_steps
+              .each_with_object([]) { |(step, options), checkout_steps|
               next if options.include?(:if) && !options[:if].call(self)
 
               checkout_steps << step

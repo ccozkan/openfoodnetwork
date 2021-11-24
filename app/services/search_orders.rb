@@ -15,9 +15,9 @@ class SearchOrders
   attr_reader :params, :current_user
 
   def fetch_orders
-    @search = search_query.
-      includes(:payments, :subscription, :shipments, :bill_address, :distributor, :order_cycle).
-      ransack(params[:q])
+    @search = search_query
+      .includes(:payments, :subscription, :shipments, :bill_address, :distributor, :order_cycle)
+      .ransack(params[:q])
 
     @search.result(distinct: true)
   end

@@ -73,8 +73,8 @@ describe CheckoutController, type: :controller do
           "shipping_method_id" => shipping_method.id
         }
       }
-      expect { post :update, params: params }.
-        to change { Customer.count }.by(1)
+      expect { post :update, params: params }
+        .to change { Customer.count }.by(1)
       expect(order.completed?).to be true
       expect(response).to redirect_to order_path(order)
     end
@@ -116,8 +116,8 @@ describe CheckoutController, type: :controller do
 
         before do
           allow(order).to receive_message_chain(:insufficient_stock_lines, :empty?).and_return(false)
-          allow(order_cycle_distributed_variants).to receive(:distributes_order_variants?).
-            with(order).and_return(true)
+          allow(order_cycle_distributed_variants).to receive(:distributes_order_variants?)
+            .with(order).and_return(true)
           allow(controller).to receive(:valid_payment_intent_provided?) { true }
           order.save
           allow(order).to receive_message_chain(:payments, :completed) { [] }
@@ -386,8 +386,8 @@ describe CheckoutController, type: :controller do
         allow(controller).to receive(:state_callback)
 
         # The first time, raise a StaleObjectError. The second time, succeed.
-        allow(order).to receive(:next).once.
-          and_raise(ActiveRecord::StaleObjectError.new(Spree::Variant.new, 'update'))
+        allow(order).to receive(:next).once
+          .and_raise(ActiveRecord::StaleObjectError.new(Spree::Variant.new, 'update'))
         allow(order).to receive(:next).once do
           order.update_column :state, 'complete'
           true

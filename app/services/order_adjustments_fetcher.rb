@@ -68,8 +68,8 @@ class OrderAdjustmentsFetcher
           adjustment.adjustable_type != 'Spree::LineItem'
       end
     else
-      adjustments.eligible.
-        where("originator_type = ? AND adjustable_type != ?", 'EnterpriseFee', 'Spree::LineItem')
+      adjustments.eligible
+        .where("originator_type = ? AND adjustable_type != ?", 'EnterpriseFee', 'Spree::LineItem')
     end
   end
 

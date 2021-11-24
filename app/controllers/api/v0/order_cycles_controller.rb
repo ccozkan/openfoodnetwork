@@ -29,10 +29,10 @@ module Api
       end
 
       def taxons
-        taxons = Spree::Taxon.
-          joins(:products).
-          where(spree_products: { id: distributed_products }).
-          select('DISTINCT spree_taxons.*')
+        taxons = Spree::Taxon
+          .joins(:products)
+          .where(spree_products: { id: distributed_products })
+          .select('DISTINCT spree_taxons.*')
 
         render plain: ActiveModel::ArraySerializer.new(
           taxons, each_serializer: Api::TaxonSerializer
@@ -52,21 +52,21 @@ module Api
       end
 
       def product_properties
-        Spree::Property.
-          joins(:products).
-          where(spree_products: { id: distributed_products }).
-          select('DISTINCT spree_properties.*')
+        Spree::Property
+          .joins(:products)
+          .where(spree_products: { id: distributed_products })
+          .select('DISTINCT spree_properties.*')
       end
 
       def producer_properties
-        producers = Enterprise.
-          joins(:supplied_products).
-          where(spree_products: { id: distributed_products })
+        producers = Enterprise
+          .joins(:supplied_products)
+          .where(spree_products: { id: distributed_products })
 
-        Spree::Property.
-          joins(:producer_properties).
-          where(producer_properties: { producer_id: producers }).
-          select('DISTINCT spree_properties.*')
+        Spree::Property
+          .joins(:producer_properties)
+          .where(producer_properties: { producer_id: producers })
+          .select('DISTINCT spree_properties.*')
       end
 
       def search_params

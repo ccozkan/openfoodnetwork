@@ -165,14 +165,14 @@ describe Spree::CreditCardsController, type: :controller do
         before do
           card.update_attribute(:user_id, user.id)
 
-          stub_request(:get, "https://api.stripe.com/v1/customers/cus_AZNMJ").
-            to_return(status: 200, body: JSON.generate(id: "cus_AZNMJ"))
+          stub_request(:get, "https://api.stripe.com/v1/customers/cus_AZNMJ")
+            .to_return(status: 200, body: JSON.generate(id: "cus_AZNMJ"))
         end
 
         context "where the request to destroy the Stripe customer fails" do
           before do
-            stub_request(:delete, "https://api.stripe.com/v1/customers/cus_AZNMJ").
-              to_return(status: 402, body: JSON.generate(error: { message: 'Bup-bow!' }))
+            stub_request(:delete, "https://api.stripe.com/v1/customers/cus_AZNMJ")
+              .to_return(status: 402, body: JSON.generate(error: { message: 'Bup-bow!' }))
           end
 
           it "doesn't delete the card" do
@@ -184,8 +184,8 @@ describe Spree::CreditCardsController, type: :controller do
 
         context "where the request to destroy the Stripe customer succeeds" do
           before do
-            stub_request(:delete, "https://api.stripe.com/v1/customers/cus_AZNMJ").
-              to_return(status: 200, body: JSON.generate(deleted: true, id: "cus_AZNMJ"))
+            stub_request(:delete, "https://api.stripe.com/v1/customers/cus_AZNMJ")
+              .to_return(status: 200, body: JSON.generate(deleted: true, id: "cus_AZNMJ"))
           end
 
           it "deletes the card and redirects to account_path" do

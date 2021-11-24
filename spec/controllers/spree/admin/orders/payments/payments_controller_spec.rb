@@ -47,9 +47,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
       context "with Stripe payment where payment.process! errors out" do
         let!(:payment_method) { create(:stripe_connect_payment_method, distributors: [shop]) }
         before do
-          allow_any_instance_of(Spree::Payment).
-            to receive(:process_offline!).
-            and_raise(Spree::Core::GatewayError.new("Payment Gateway Error"))
+          allow_any_instance_of(Spree::Payment)
+            .to receive(:process_offline!)
+            .and_raise(Spree::Core::GatewayError.new("Payment Gateway Error"))
         end
 
         it "redirects to new payment page with flash error" do
@@ -65,9 +65,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
 
         context "where payment.authorize! raises GatewayError" do
           before do
-            allow_any_instance_of(Spree::Payment).
-              to receive(:authorize!).
-              and_raise(Spree::Core::GatewayError.new("Stripe Authorization Failure"))
+            allow_any_instance_of(Spree::Payment)
+              .to receive(:authorize!)
+              .and_raise(Spree::Core::GatewayError.new("Stripe Authorization Failure"))
           end
 
           it "redirects to new payment page with flash error" do

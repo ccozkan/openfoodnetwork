@@ -66,10 +66,10 @@ module Spree
     def self.supplied_taxons
       taxons = {}
 
-      Spree::Taxon.
-        joins(products: :supplier).
-        select('spree_taxons.*, enterprises.id AS enterprise_id').
-        each do |t|
+      Spree::Taxon
+        .joins(products: :supplier)
+        .select('spree_taxons.*, enterprises.id AS enterprise_id')
+        .each do |t|
           taxons[t.enterprise_id.to_i] ||= Set.new
           taxons[t.enterprise_id.to_i] << t.id
         end

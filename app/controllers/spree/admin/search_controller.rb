@@ -20,10 +20,10 @@ module Spree
       def customers
         @customers = []
         if spree_current_user.enterprises.pluck(:id).include? search_params[:distributor_id].to_i
-          @customers = Customer.
-            ransack(m: 'or', email_start: search_params[:q], name_start: search_params[:q]).
-            result.
-            where(enterprise_id: search_params[:distributor_id].to_i)
+          @customers = Customer
+            .ransack(m: 'or', email_start: search_params[:q], name_start: search_params[:q])
+            .result
+            .where(enterprise_id: search_params[:distributor_id].to_i)
         end
         render json: @customers, each_serializer: ::Api::Admin::CustomerSerializer
       end

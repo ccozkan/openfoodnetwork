@@ -20,8 +20,8 @@ module Api
         result = nil
 
         options[:controller].__send__(:with_format, :html) do
-          result = options[:controller].
-            render_to_string(partial: 'admin/enterprise_fees/calculator_settings',
+          result = options[:controller]
+            .render_to_string(partial: 'admin/enterprise_fees/calculator_settings',
                              locals: { enterprise_fee: object })
         end
 

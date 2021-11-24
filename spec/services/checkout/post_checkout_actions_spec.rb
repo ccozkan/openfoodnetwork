@@ -14,8 +14,8 @@ describe Checkout::PostCheckoutActions do
     let(:reset_order_service) { instance_double(OrderCompletionReset) }
 
     before do
-      expect(OrderCompletionReset).to receive(:new).
-        with(controller, order).and_return(reset_order_service)
+      expect(OrderCompletionReset).to receive(:new)
+        .with(controller, order).and_return(reset_order_service)
       expect(reset_order_service).to receive(:call)
     end
 
@@ -42,8 +42,8 @@ describe Checkout::PostCheckoutActions do
       let(:user_default_address_setter) { instance_double(UserDefaultAddressSetter) }
 
       before do
-        expect(UserDefaultAddressSetter).to receive(:new).
-          with(order, current_user).and_return(user_default_address_setter)
+        expect(UserDefaultAddressSetter).to receive(:new)
+          .with(order, current_user).and_return(user_default_address_setter)
       end
 
       it "sets user default bill address is option selected in params" do

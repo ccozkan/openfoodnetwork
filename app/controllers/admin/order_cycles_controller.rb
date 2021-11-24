@@ -128,29 +128,29 @@ module Admin
     end
 
     def order_cycles_as_distributor
-      OrderCycle.
-        preload(:schedules).
-        ransack(raw_params[:q]).
-        result.
-        involving_managed_distributors_of(spree_current_user).
-        order('updated_at DESC')
+      OrderCycle
+        .preload(:schedules)
+        .ransack(raw_params[:q])
+        .result
+        .involving_managed_distributors_of(spree_current_user)
+        .order('updated_at DESC')
     end
 
     def order_cycles_as_producer
-      OrderCycle.
-        preload(:schedules).
-        ransack(raw_params[:q]).
-        result.
-        involving_managed_producers_of(spree_current_user).
-        order('updated_at DESC')
+      OrderCycle
+        .preload(:schedules)
+        .ransack(raw_params[:q])
+        .result
+        .involving_managed_producers_of(spree_current_user)
+        .order('updated_at DESC')
     end
 
     def order_cycles_as_both
-      OrderCycle.
-        preload(:schedules).
-        ransack(raw_params[:q]).
-        result.
-        visible_by(spree_current_user)
+      OrderCycle
+        .preload(:schedules)
+        .ransack(raw_params[:q])
+        .result
+        .visible_by(spree_current_user)
     end
 
     def load_data_for_index
@@ -245,8 +245,8 @@ module Admin
     end
 
     def order_cycle_params
-      @order_cycle_params ||= PermittedAttributes::OrderCycle.new(params).call.
-        to_h.with_indifferent_access
+      @order_cycle_params ||= PermittedAttributes::OrderCycle.new(params).call
+        .to_h.with_indifferent_access
     end
 
     def order_cycle_bulk_params

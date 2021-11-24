@@ -47,8 +47,8 @@ module Api
       end
 
       def renderer
-        @renderer ||= ExchangeProductsRenderer.
-          new(@order_cycle, spree_current_user)
+        @renderer ||= ExchangeProductsRenderer
+          .new(@order_cycle, spree_current_user)
       end
 
       def load_data_from_exchange
@@ -93,8 +93,8 @@ module Api
       end
 
       def exchange_params
-        params.permit(:enterprise_id, :exchange_id, :order_cycle_id, :incoming).
-          to_h.with_indifferent_access
+        params.permit(:enterprise_id, :exchange_id, :order_cycle_id, :incoming)
+          .to_h.with_indifferent_access
       end
     end
   end

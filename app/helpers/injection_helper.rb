@@ -21,10 +21,10 @@ module InjectionHelper
 
     inject_json_array(
       "groups",
-      EnterpriseGroup.on_front_page.by_position.select(select_only).
-        includes(enterprises: [:shipping_methods, { address: [:state, :country] }],
-                 address: :state).
-        all,
+      EnterpriseGroup.on_front_page.by_position.select(select_only)
+        .includes(enterprises: [:shipping_methods, { address: [:state, :country] }],
+                 address: :state)
+        .all,
       Api::GroupListSerializer
     )
   end
@@ -48,11 +48,11 @@ module InjectionHelper
   end
 
   def inject_enterprise_and_relatives
-    enterprises_and_relatives = current_distributor.
-      relatives_including_self.
-      activated.
-      includes(:properties, address: [:state, :country], supplied_products: :properties).
-      all
+    enterprises_and_relatives = current_distributor
+      .relatives_including_self
+      .activated
+      .includes(:properties, address: [:state, :country], supplied_products: :properties)
+      .all
 
     inject_json_array "enterprises",
                       enterprises_and_relatives,

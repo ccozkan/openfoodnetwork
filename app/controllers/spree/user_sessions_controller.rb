@@ -66,8 +66,8 @@ module Spree
       # When creating a new user session we have to wait until after a successful
       # login to be able to persist a selected locale on the current user
 
-      UserLocaleSetter.new(spree_current_user, params[:locale], cookies).
-        ensure_valid_locale_persisted
+      UserLocaleSetter.new(spree_current_user, params[:locale], cookies)
+        .ensure_valid_locale_persisted
     end
   end
 end

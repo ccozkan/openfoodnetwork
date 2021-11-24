@@ -36,9 +36,9 @@ module OpenFoodNetwork
     end
 
     def search
-      @permissions.visible_orders.select("DISTINCT spree_orders.*").
-        complete.not_state(:canceled).
-        ransack(@params[:q])
+      @permissions.visible_orders.select("DISTINCT spree_orders.*")
+        .complete.not_state(:canceled)
+        .ransack(@params[:q])
     end
 
     def table
@@ -60,8 +60,8 @@ module OpenFoodNetwork
       if @permissions.editable_orders.empty?
         orders
       else
-        orders.
-          where('spree_orders.id NOT IN (?)',
+        orders
+          .where('spree_orders.id NOT IN (?)',
                 @permissions.editable_orders.select(&:id))
       end
     end

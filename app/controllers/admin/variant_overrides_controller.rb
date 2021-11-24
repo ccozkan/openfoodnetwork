@@ -42,24 +42,24 @@ module Admin
     private
 
     def load_data
-      @hubs = OpenFoodNetwork::Permissions.new(spree_current_user).
-        variant_override_hubs.by_name
+      @hubs = OpenFoodNetwork::Permissions.new(spree_current_user)
+        .variant_override_hubs.by_name
 
       # Used in JS to look up the name of the producer of each product
-      @producers = OpenFoodNetwork::Permissions.new(spree_current_user).
-        variant_override_producers
+      @producers = OpenFoodNetwork::Permissions.new(spree_current_user)
+        .variant_override_producers
 
-      @hub_permissions = OpenFoodNetwork::Permissions.new(spree_current_user).
-        variant_override_enterprises_per_hub
+      @hub_permissions = OpenFoodNetwork::Permissions.new(spree_current_user)
+        .variant_override_enterprises_per_hub
 
       @inventory_items = InventoryItem.where(enterprise_id: @hubs)
       @import_dates = inventory_import_dates.uniq.to_json
     end
 
     def inventory_import_dates
-      import_dates = VariantOverride.
-        distinct_import_dates.
-        for_hubs(editable_enterprises.collect(&:id))
+      import_dates = VariantOverride
+        .distinct_import_dates
+        .for_hubs(editable_enterprises.collect(&:id))
 
       options = [{ id: '0', name: 'All' }]
       import_dates.collect(&:import_date).map { |i|
@@ -76,11 +76,11 @@ module Admin
     end
 
     def collection
-      @variant_overrides = VariantOverride.
-        includes(:taggings).
-        joins(variant: :product).
-        preload(variant: :product).
-        for_hubs(params[:hub_id] || @hubs)
+      @variant_overrides = VariantOverride
+        .includes(:taggings)
+        .joins(variant: :product)
+        .preload(variant: :product)
+        .for_hubs(params[:hub_id] || @hubs)
 
       return @variant_overrides unless params.key?(:variant_overrides)
 

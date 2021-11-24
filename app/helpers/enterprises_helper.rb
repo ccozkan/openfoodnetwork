@@ -45,9 +45,9 @@ module EnterprisesHelper
   end
 
   def editable_enterprises
-    OpenFoodNetwork::Permissions.new(spree_current_user).
-      editable_enterprises.
-      order('is_primary_producer ASC, name')
+    OpenFoodNetwork::Permissions.new(spree_current_user)
+      .editable_enterprises
+      .order('is_primary_producer ASC, name')
   end
 
   def enterprises_options(enterprises)

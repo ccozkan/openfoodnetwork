@@ -109,8 +109,8 @@ describe Spree::Shipment do
       let(:mock_estimator) { double('estimator', shipping_rates: shipping_rates) }
 
       it 'should request new rates, and maintain shipping_method selection' do
-        expect(OrderManagement::Stock::Estimator).
-          to receive(:new).with(shipment.order).and_return(mock_estimator)
+        expect(OrderManagement::Stock::Estimator)
+          .to receive(:new).with(shipment.order).and_return(mock_estimator)
         # The first call is for the original shippping method,
         #   the second call is for the shippping method after the Estimator was executed
         allow(shipment).to receive(:shipping_method).and_return(shipping_method2, shipping_method1)
@@ -120,8 +120,8 @@ describe Spree::Shipment do
       end
 
       it 'should handle no shipping_method selection' do
-        expect(OrderManagement::Stock::Estimator).
-          to receive(:new).with(shipment.order).and_return(mock_estimator)
+        expect(OrderManagement::Stock::Estimator)
+          .to receive(:new).with(shipment.order).and_return(mock_estimator)
         allow(shipment).to receive_messages(shipping_method: nil)
         expect(shipment.refresh_rates).to eq shipping_rates
         expect(shipment.reload.selected_shipping_rate).to_not be_nil
@@ -137,8 +137,8 @@ describe Spree::Shipment do
       context 'to_package' do
         it 'should use symbols for states when adding contents to package' do
           shipment = Spree::Shipment.new(order: build_stubbed(:order))
-          allow(shipment).
-            to receive_message_chain(
+          allow(shipment)
+            .to receive_message_chain(
               :inventory_units,
               includes: [
                 build_stubbed(
@@ -167,8 +167,8 @@ describe Spree::Shipment do
     shared_examples_for "immutable once shipped" do
       it "should remain in shipped state once shipped" do
         shipment.state = 'shipped'
-        expect(shipment).to receive(:update_columns).
-          with(state: 'shipped', updated_at: kind_of(Time))
+        expect(shipment).to receive(:update_columns)
+          .with(state: 'shipped', updated_at: kind_of(Time))
         shipment.update!(order)
       end
     end
@@ -178,8 +178,8 @@ describe Spree::Shipment do
         unit = create(:inventory_unit)
         allow(unit).to receive(:backordered?) { true }
         allow(shipment).to receive_messages(inventory_units: [unit])
-        expect(shipment).to receive(:update_columns).
-          with(state: 'pending', updated_at: kind_of(Time))
+        expect(shipment).to receive(:update_columns)
+          .with(state: 'pending', updated_at: kind_of(Time))
         shipment.update!(order)
       end
     end
@@ -188,8 +188,8 @@ describe Spree::Shipment do
       it "should result in a 'pending' state" do
         allow(order).to receive(:canceled?) { true }
 
-        expect(shipment).to receive(:update_columns).
-          with(state: 'canceled', updated_at: kind_of(Time))
+        expect(shipment).to receive(:update_columns)
+          .with(state: 'canceled', updated_at: kind_of(Time))
         shipment.update!(order)
       end
     end
@@ -198,8 +198,8 @@ describe Spree::Shipment do
       it "should result in a 'pending' state" do
         allow(order).to receive(:can_ship?) { false }
 
-        expect(shipment).to receive(:update_columns).
-          with(state: 'pending', updated_at: kind_of(Time))
+        expect(shipment).to receive(:update_columns)
+          .with(state: 'pending', updated_at: kind_of(Time))
         shipment.update!(order)
       end
     end
@@ -211,8 +211,8 @@ describe Spree::Shipment do
         before { allow(order).to receive(:paid?) { true } }
 
         it "should result in a 'ready' state" do
-          expect(shipment).to receive(:update_columns).
-            with(state: 'ready', updated_at: kind_of(Time))
+          expect(shipment).to receive(:update_columns)
+            .with(state: 'ready', updated_at: kind_of(Time))
           shipment.update!(order)
         end
 
@@ -225,8 +225,8 @@ describe Spree::Shipment do
 
           it "should result in a 'ready' state" do
             shipment.state = 'pending'
-            expect(shipment).to receive(:update_columns).
-              with(state: 'ready', updated_at: kind_of(Time))
+            expect(shipment).to receive(:update_columns)
+              .with(state: 'ready', updated_at: kind_of(Time))
             shipment.update!(order)
           end
 
@@ -241,8 +241,8 @@ describe Spree::Shipment do
 
         it "should result in a 'pending' state" do
           shipment.state = 'ready'
-          expect(shipment).to receive(:update_columns).
-            with(state: 'pending', updated_at: kind_of(Time))
+          expect(shipment).to receive(:update_columns)
+            .with(state: 'pending', updated_at: kind_of(Time))
           shipment.update!(order)
         end
 
@@ -257,8 +257,8 @@ describe Spree::Shipment do
         shipment.state = 'pending'
         expect(shipment).to receive :after_ship
         allow(shipment).to receive_messages determine_state: 'shipped'
-        expect(shipment).to receive(:update_columns).
-          with(state: 'shipped', updated_at: kind_of(Time))
+        expect(shipment).to receive(:update_columns)
+          .with(state: 'shipped', updated_at: kind_of(Time))
         shipment.update!(order)
       end
     end
@@ -396,8 +396,8 @@ describe Spree::Shipment do
     end
 
     it "should update originator when adjustment is present" do
-      allow(shipment).
-        to receive_messages(selected_shipping_rate: Spree::ShippingRate.new(cost: 10.00))
+      allow(shipment)
+        .to receive_messages(selected_shipping_rate: Spree::ShippingRate.new(cost: 10.00))
       adjustment = build(:adjustment)
       allow(shipment).to receive_messages(fee_adjustment: adjustment, update_columns: true)
       allow(adjustment).to receive(:open?) { true }
@@ -410,8 +410,8 @@ describe Spree::Shipment do
     end
 
     it 'should not update amount if adjustment is not open?' do
-      allow(shipment).
-        to receive_messages(selected_shipping_rate: Spree::ShippingRate.new(cost: 10.00))
+      allow(shipment)
+        .to receive_messages(selected_shipping_rate: Spree::ShippingRate.new(cost: 10.00))
       adjustment = build(:adjustment)
       allow(shipment).to receive_messages(fee_adjustment: adjustment, update_columns: true)
       allow(adjustment).to receive(:open?) { false }

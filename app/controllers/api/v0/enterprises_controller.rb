@@ -78,8 +78,8 @@ module Api
       end
 
       def enterprise_params
-        @enterprise_params ||= PermittedAttributes::Enterprise.new(params).call.
-          to_h.with_indifferent_access
+        @enterprise_params ||= PermittedAttributes::Enterprise.new(params).call
+          .to_h.with_indifferent_access
       end
     end
   end

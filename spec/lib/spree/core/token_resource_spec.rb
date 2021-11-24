@@ -10,8 +10,8 @@ describe Spree::Core::TokenResource do
   let(:permission) { double(Spree::TokenizedPermission) }
 
   it 'should add has_one :tokenized_permission relationship' do
-    assert Spree::Order.
-      reflect_on_all_associations(:has_one).map(&:name).include?(:tokenized_permission)
+    assert Spree::Order
+      .reflect_on_all_associations(:has_one).map(&:name).include?(:tokenized_permission)
   end
 
   context '#token' do

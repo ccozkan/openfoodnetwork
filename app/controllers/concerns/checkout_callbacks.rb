@@ -74,8 +74,8 @@ module CheckoutCallbacks
 
   def valid_order_line_items?
     @order.insufficient_stock_lines.empty? &&
-      OrderCycleDistributedVariants.new(@order.order_cycle, @order.distributor).
-        distributes_order_variants?(@order)
+      OrderCycleDistributedVariants.new(@order.order_cycle, @order.distributor)
+        .distributes_order_variants?(@order)
   end
 
   def ensure_order_not_completed

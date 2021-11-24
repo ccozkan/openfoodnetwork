@@ -67,8 +67,8 @@ describe RemoveTransientData do
       it "removes any defunct line item option value records" do
         line_item.delete
 
-        expect{ RemoveTransientData.new.call }.
-          to change{ Spree::OptionValuesLineItem.count }.by(-1)
+        expect{ RemoveTransientData.new.call }
+          .to change{ Spree::OptionValuesLineItem.count }.by(-1)
       end
     end
   end

@@ -43,8 +43,8 @@ class OrderSyncer
   def orders_in_order_cycles_not_closed
     return @orders_in_order_cycles_not_closed unless @orders_in_order_cycles_not_closed.nil?
 
-    @orders_in_order_cycles_not_closed = orders.joins(:order_cycle).
-      merge(OrderCycle.not_closed).readonly(false)
+    @orders_in_order_cycles_not_closed = orders.joins(:order_cycle)
+      .merge(OrderCycle.not_closed).readonly(false)
   end
 
   def update_bill_address_for(order)
@@ -56,8 +56,8 @@ class OrderSyncer
   end
 
   def update_payment_for(order)
-    payment = order.payments.
-      with_state('checkout').where(payment_method_id: payment_method_id_was).last
+    payment = order.payments
+      .with_state('checkout').where(payment_method_id: payment_method_id_was).last
     if payment
       payment&.void_transaction!
       order.payments.create(payment_method_id: payment_method_id, amount: order.reload.total)

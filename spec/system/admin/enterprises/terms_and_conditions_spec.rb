@@ -49,8 +49,8 @@ describe "Uploading Terms and Conditions PDF" do
           click_button "Update"
           expect(distributor.reload.terms_and_conditions_updated_at).to eq run_time
         end
-        expect(page).
-          to have_content "Enterprise \"#{distributor.name}\" has been successfully updated!"
+        expect(page)
+          .to have_content "Enterprise \"#{distributor.name}\" has been successfully updated!"
 
         go_to_business_details
         expect(page).to have_selector "a[href*='logo-white.pdf'][target=\"_blank\"]"
@@ -59,8 +59,8 @@ describe "Uploading Terms and Conditions PDF" do
         # Replace PDF
         attach_file "enterprise[terms_and_conditions]", black_pdf_file_name
         click_button "Update"
-        expect(page).
-          to have_content "Enterprise \"#{distributor.name}\" has been successfully updated!"
+        expect(page)
+          .to have_content "Enterprise \"#{distributor.name}\" has been successfully updated!"
         expect(distributor.reload.terms_and_conditions_updated_at).to_not eq run_time
 
         go_to_business_details

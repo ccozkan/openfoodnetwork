@@ -121,9 +121,9 @@ module Spree
         @amount = params[:amount] || load_order.total
 
         # Only show payments for the order's distributor
-        @payment_methods = PaymentMethod.
-          available(:back_end).
-          for_distributor(@order.distributor)
+        @payment_methods = PaymentMethod
+          .available(:back_end)
+          .for_distributor(@order.distributor)
 
         @payment_method = if @payment&.payment_method
                             @payment.payment_method

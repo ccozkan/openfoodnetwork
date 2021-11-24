@@ -17,9 +17,9 @@ class ExchangeProductsRenderer
   end
 
   def exchange_variants(incoming, enterprise)
-    variants_relation = Spree::Variant.
-      not_master.
-      where(product_id: exchange_products(incoming, enterprise).select(&:id))
+    variants_relation = Spree::Variant
+      .not_master
+      .where(product_id: exchange_products(incoming, enterprise).select(&:id))
 
     filter_visible(variants_relation)
   end
@@ -46,9 +46,9 @@ class ExchangeProductsRenderer
   end
 
   def products_for_outgoing_exchange
-    supplied_products(enterprises_for_outgoing_exchange.select(:id)).
-      includes(:variants).
-      where("spree_variants.id": incoming_exchanges_variants)
+    supplied_products(enterprises_for_outgoing_exchange.select(:id))
+      .includes(:variants)
+      .where("spree_variants.id": incoming_exchanges_variants)
   end
 
   def incoming_exchanges_variants
@@ -66,11 +66,11 @@ class ExchangeProductsRenderer
   end
 
   def visible_incoming_exchanges
-    OpenFoodNetwork::OrderCyclePermissions.
-      new(@user, @order_cycle).
-      visible_exchanges.
-      by_enterprise_name.
-      incoming
+    OpenFoodNetwork::OrderCyclePermissions
+      .new(@user, @order_cycle)
+      .visible_exchanges
+      .by_enterprise_name
+      .incoming
   end
 
   def visible_incoming_variants(incoming_exchange_sender)
@@ -84,14 +84,14 @@ class ExchangeProductsRenderer
   end
 
   def permitted_incoming_variants(incoming_exchange_sender)
-    OpenFoodNetwork::OrderCyclePermissions.
-      new(@user, @order_cycle).
-      visible_variants_for_incoming_exchanges_from(incoming_exchange_sender)
+    OpenFoodNetwork::OrderCyclePermissions
+      .new(@user, @order_cycle)
+      .visible_variants_for_incoming_exchanges_from(incoming_exchange_sender)
   end
 
   def enterprises_for_outgoing_exchange
-    enterprises = OpenFoodNetwork::OrderCyclePermissions.
-      new(@user, @order_cycle)
+    enterprises = OpenFoodNetwork::OrderCyclePermissions
+      .new(@user, @order_cycle)
       .visible_enterprises
     return enterprises if enterprises.empty?
 

@@ -80,17 +80,17 @@ class OrderCycle < ApplicationRecord
     if user.has_spree_role?('admin')
       where(nil)
     else
-      with_exchanging_enterprises_outer.
-        where('order_cycles.coordinator_id IN (?) OR enterprises.id IN (?)',
+      with_exchanging_enterprises_outer
+        .where('order_cycles.coordinator_id IN (?) OR enterprises.id IN (?)',
               user.enterprises.map(&:id),
-              user.enterprises.map(&:id)).
-        select('DISTINCT order_cycles.*')
+              user.enterprises.map(&:id))
+        .select('DISTINCT order_cycles.*')
     end
   }
 
   scope :with_exchanging_enterprises_outer, lambda {
-    joins("LEFT OUTER JOIN exchanges ON (exchanges.order_cycle_id = order_cycles.id)").
-      joins("LEFT OUTER JOIN enterprises
+    joins("LEFT OUTER JOIN exchanges ON (exchanges.order_cycle_id = order_cycles.id)")
+      .joins("LEFT OUTER JOIN enterprises
           ON (enterprises.id = exchanges.sender_id OR enterprises.id = exchanges.receiver_id)")
   }
 
@@ -99,11 +99,11 @@ class OrderCycle < ApplicationRecord
 
     # Order cycles where I managed an enterprise at either end of an outgoing exchange
     # ie. coordinator or distributor
-    joins(:exchanges).merge(Exchange.outgoing).
-      where('exchanges.receiver_id IN (?) OR exchanges.sender_id IN (?)',
+    joins(:exchanges).merge(Exchange.outgoing)
+      .where('exchanges.receiver_id IN (?) OR exchanges.sender_id IN (?)',
             enterprises.pluck(:id),
-            enterprises.pluck(:id)).
-      select('DISTINCT order_cycles.*')
+            enterprises.pluck(:id))
+      .select('DISTINCT order_cycles.*')
   }
 
   scope :involving_managed_producers_of, lambda { |user|
@@ -111,11 +111,11 @@ class OrderCycle < ApplicationRecord
 
     # Order cycles where I managed an enterprise at either end of an incoming exchange
     # ie. coordinator or producer
-    joins(:exchanges).merge(Exchange.incoming).
-      where('exchanges.receiver_id IN (?) OR exchanges.sender_id IN (?)',
+    joins(:exchanges).merge(Exchange.incoming)
+      .where('exchanges.receiver_id IN (?) OR exchanges.sender_id IN (?)',
             enterprises.pluck(:id),
-            enterprises.pluck(:id)).
-      select('DISTINCT order_cycles.*')
+            enterprises.pluck(:id))
+      .select('DISTINCT order_cycles.*')
   }
 
   def self.first_opening_for(distributor)
@@ -134,14 +134,14 @@ class OrderCycle < ApplicationRecord
   # them in the format {distributor_id => closing_time, ...}
   def self.earliest_closing_times
     Hash[
-      Exchange.
-        outgoing.
-        joins(:order_cycle).
-        merge(OrderCycle.active).
-        group('exchanges.receiver_id').
-        select("exchanges.receiver_id AS receiver_id,
-                MIN(order_cycles.orders_close_at) AS earliest_close_at").
-        map { |ex| [ex.receiver_id, ex.earliest_close_at.to_time] }
+      Exchange
+        .outgoing
+        .joins(:order_cycle)
+        .merge(OrderCycle.active)
+        .group('exchanges.receiver_id')
+        .select("exchanges.receiver_id AS receiver_id,
+                MIN(order_cycles.orders_close_at) AS earliest_close_at")
+        .map { |ex| [ex.receiver_id, ex.earliest_close_at.to_time] }
     ]
   end
 
@@ -159,11 +159,11 @@ class OrderCycle < ApplicationRecord
   end
 
   def variants
-    Spree::Variant.
-      joins(:exchanges).
-      merge(Exchange.in_order_cycle(self)).
-      select('DISTINCT spree_variants.*').
-      to_a # http://stackoverflow.com/q/15110166
+    Spree::Variant
+      .joins(:exchanges)
+      .merge(Exchange.in_order_cycle(self))
+      .select('DISTINCT spree_variants.*')
+      .to_a # http://stackoverflow.com/q/15110166
   end
 
   def supplied_variants
@@ -177,12 +177,12 @@ class OrderCycle < ApplicationRecord
   def variants_distributed_by(distributor)
     return Spree::Variant.where("1=0") if distributor.blank?
 
-    Spree::Variant.
-      joins(:exchanges).
-      merge(distributor.inventory_variants).
-      merge(Exchange.in_order_cycle(self)).
-      merge(Exchange.outgoing).
-      merge(Exchange.to_enterprise(distributor))
+    Spree::Variant
+      .joins(:exchanges)
+      .merge(distributor.inventory_variants)
+      .merge(Exchange.in_order_cycle(self))
+      .merge(Exchange.outgoing)
+      .merge(Exchange.to_enterprise(distributor))
   end
 
   def products_distributed_by(distributor)

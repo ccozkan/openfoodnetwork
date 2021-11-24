@@ -26,10 +26,10 @@ module Spree
       if user.has_spree_role?('admin')
         where(nil)
       else
-        joins(:distributors).
-          where('distributors_payment_methods.distributor_id IN (?)',
-                user.enterprises.select(&:id)).
-          select('DISTINCT spree_payment_methods.*')
+        joins(:distributors)
+          .where('distributors_payment_methods.distributor_id IN (?)',
+                user.enterprises.select(&:id))
+          .select('DISTINCT spree_payment_methods.*')
       end
     }
 
@@ -39,8 +39,8 @@ module Spree
     }
 
     scope :for_distributor, lambda { |distributor|
-      joins(:distributors).
-        where('enterprises.id = ?', distributor)
+      joins(:distributors)
+        .where('enterprises.id = ?', distributor)
     }
 
     scope :for_subscriptions, -> { where(type: Subscription::ALLOWED_PAYMENT_METHOD_TYPES) }
@@ -48,9 +48,9 @@ module Spree
     scope :by_name, -> { order('spree_payment_methods.name ASC') }
 
     scope :available, lambda { |display_on = 'both'|
-      where(active: true).
-        where('spree_payment_methods.display_on=? OR spree_payment_methods.display_on=? OR spree_payment_methods.display_on IS NULL', display_on, '').
-        where('spree_payment_methods.environment=? OR spree_payment_methods.environment=? OR spree_payment_methods.environment IS NULL', Rails.env, '')
+      where(active: true)
+        .where('spree_payment_methods.display_on=? OR spree_payment_methods.display_on=? OR spree_payment_methods.display_on IS NULL', display_on, '')
+        .where('spree_payment_methods.environment=? OR spree_payment_methods.environment=? OR spree_payment_methods.environment IS NULL', Rails.env, '')
     }
 
     def self.providers

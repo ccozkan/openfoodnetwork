@@ -8,8 +8,8 @@ module Spree
     validates :value_type, presence: true
 
     scope :valid, -> {
-      where(Spree::Preference.arel_table[:key].not_eq(nil)).
-        where(Spree::Preference.arel_table[:value_type].not_eq(nil))
+      where(Spree::Preference.arel_table[:key].not_eq(nil))
+        .where(Spree::Preference.arel_table[:value_type].not_eq(nil))
     }
 
     # The type conversions here should match

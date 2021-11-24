@@ -58,9 +58,9 @@ module Stripe
             }
 
             before do
-              stub_request(:post, "https://connect.stripe.com/oauth/token").
-                with(body: { "code" => "code", "grant_type" => "authorization_code" }).
-                to_return(status: 200, body: JSON.generate(token_response) )
+              stub_request(:post, "https://connect.stripe.com/oauth/token")
+                .with(body: { "code" => "code", "grant_type" => "authorization_code" })
+                .to_return(status: 200, body: JSON.generate(token_response) )
             end
 
             context "but the user doesn't manage own or manage the corresponding enterprise" do

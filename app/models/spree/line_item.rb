@@ -53,11 +53,11 @@ module Spree
         where(nil)
       else
         # Find line items that are from orders distributed by the user or supplied by the user
-        joins(variant: :product).
-          joins(:order).
-          where('spree_orders.distributor_id IN (?) OR spree_products.supplier_id IN (?)',
-                user.enterprises, user.enterprises).
-          select('spree_line_items.*')
+        joins(variant: :product)
+          .joins(:order)
+          .where('spree_orders.distributor_id IN (?) OR spree_products.supplier_id IN (?)',
+                user.enterprises, user.enterprises)
+          .select('spree_line_items.*')
       end
     }
 
@@ -67,16 +67,16 @@ module Spree
 
     # Find line items that are from order sorted by variant name and unit value
     scope :sorted_by_name_and_unit_value, -> {
-      joins(variant: :product).
-        reorder(Arel.sql("
+      joins(variant: :product)
+        .reorder(Arel.sql("
           lower(spree_products.name) asc,
             lower(spree_variants.display_name) asc,
             spree_variants.unit_value asc"))
     }
 
     scope :from_order_cycle, lambda { |order_cycle|
-      joins(order: :order_cycle).
-        where('order_cycles.id = ?', order_cycle)
+      joins(order: :order_cycle)
+        .where('order_cycles.id = ?', order_cycle)
     }
 
     # Here we are simply joining the line item to its variant and product
@@ -89,9 +89,9 @@ module Spree
     }
 
     scope :with_tax, -> {
-      joins(:adjustments).
-        where('spree_adjustments.originator_type = ?', 'Spree::TaxRate').
-        select('DISTINCT spree_line_items.*')
+      joins(:adjustments)
+        .where('spree_adjustments.originator_type = ?', 'Spree::TaxRate')
+        .select('DISTINCT spree_line_items.*')
     }
 
     # Line items without a Spree::TaxRate-originated adjustment
@@ -100,8 +100,8 @@ module Spree
         LEFT OUTER JOIN spree_adjustments
           ON (spree_adjustments.adjustable_id=spree_line_items.id
             AND spree_adjustments.adjustable_type = 'Spree::LineItem'
-            AND spree_adjustments.originator_type='Spree::TaxRate')").
-        where('spree_adjustments.id IS NULL')
+            AND spree_adjustments.originator_type='Spree::TaxRate')")
+        .where('spree_adjustments.id IS NULL')
     }
 
     def copy_price

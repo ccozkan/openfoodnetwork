@@ -41,8 +41,8 @@ describe Api::V0::EnterprisesController, type: :controller do
         manager1 = create(:user)
         manager2 = create(:user)
         api_post :create, {
-          enterprise: new_enterprise_params.
-            merge({ user_ids: [enterprise_owner.id, manager1.id, manager2.id] })
+          enterprise: new_enterprise_params
+            .merge({ user_ids: [enterprise_owner.id, manager1.id, manager2.id] })
         }
         expect(response.status).to eq 201
 

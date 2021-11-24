@@ -15,8 +15,8 @@ describe CalculatedAdjustments do
   end
 
   it "should add has_one :calculator relationship" do
-    assert Spree::ShippingMethod.
-      reflect_on_all_associations(:has_one).map(&:name).include?(:calculator)
+    assert Spree::ShippingMethod
+      .reflect_on_all_associations(:has_one).map(&:name).include?(:calculator)
   end
 
   context "#create_adjustment and its resulting adjustment" do

@@ -19,11 +19,11 @@ module OrderManagement
         return @active unless @active.nil?
         return @active = [] if order_cycles.blank?
 
-        @active ||= ProxyOrder.
-          not_canceled.
-          group(:order_cycle_id).
-          where(order_cycle_id: order_cycles).
-          count
+        @active ||= ProxyOrder
+          .not_canceled
+          .group(:order_cycle_id)
+          .where(order_cycle_id: order_cycles)
+          .count
       end
     end
   end

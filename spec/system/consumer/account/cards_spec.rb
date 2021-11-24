@@ -32,11 +32,11 @@ describe "Credit Cards", js: true do
       allow(Stripe).to receive(:publishable_key).and_return("some_token")
       Spree::Config.set(stripe_connect_enabled: true)
 
-      stub_request(:get, "https://api.stripe.com/v1/customers/cus_AZNMJ").
-        to_return(status: 200, body: JSON.generate(id: "cus_AZNMJ"))
+      stub_request(:get, "https://api.stripe.com/v1/customers/cus_AZNMJ")
+        .to_return(status: 200, body: JSON.generate(id: "cus_AZNMJ"))
 
-      stub_request(:delete, "https://api.stripe.com/v1/customers/cus_AZNMJ").
-        to_return(status: 200, body: JSON.generate(deleted: true, id: "cus_AZNMJ"))
+      stub_request(:delete, "https://api.stripe.com/v1/customers/cus_AZNMJ")
+        .to_return(status: 200, body: JSON.generate(deleted: true, id: "cus_AZNMJ"))
       stub_retrieve_payment_method_request("card_1EY...")
       stub_list_customers_request(email: user.email, response: {})
       stub_get_customer_payment_methods_request(customer: "cus_AZNMJ", response: {})

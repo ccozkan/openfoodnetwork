@@ -48,8 +48,8 @@ module Spree
           field = self.class.permalink_field
 
           # Do other links exist with this permalink?
-          other = self.class.
-            default_scoped.where("#{self.class.table_name}.#{field} LIKE ?", "#{permalink_value}%")
+          other = self.class
+            .default_scoped.where("#{self.class.table_name}.#{field} LIKE ?", "#{permalink_value}%")
           if other.any?
 
             # Find the existing permalink with the highest number, and increment that number.

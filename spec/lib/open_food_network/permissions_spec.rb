@@ -69,9 +69,9 @@ module OpenFoodNetwork
       let(:e) { double(:enterprise) }
 
       it "returns managed and related enterprises with add_to_order_cycle permission" do
-        expect(permissions).to receive(:managed_and_related_enterprises_with).
-          with(:add_to_order_cycle).
-          and_return([e])
+        expect(permissions).to receive(:managed_and_related_enterprises_with)
+          .with(:add_to_order_cycle)
+          .and_return([e])
 
         expect(permissions.visible_enterprises_for_order_reports).to eq [e]
       end
@@ -81,9 +81,9 @@ module OpenFoodNetwork
       let(:e) { double(:enterprise) }
 
       it "returns managed and related enterprises with add_to_order_cycle permission" do
-        expect(permissions).to receive(:managed_and_related_enterprises_granting).
-          with(:add_to_order_cycle).
-          and_return([e])
+        expect(permissions).to receive(:managed_and_related_enterprises_granting)
+          .with(:add_to_order_cycle)
+          .and_return([e])
 
         expect(permissions.visible_enterprises).to eq [e]
       end
@@ -93,10 +93,10 @@ module OpenFoodNetwork
       let(:e) { double(:enterprise) }
 
       it "returns managed and related enterprises with edit_profile permission" do
-        expect(permissions).
-          to receive(:managed_and_related_enterprises_granting).
-          with(:edit_profile).
-          and_return([e])
+        expect(permissions)
+          .to receive(:managed_and_related_enterprises_granting)
+          .with(:edit_profile)
+          .and_return([e])
 
         expect(permissions.editable_enterprises).to eq([e])
       end
@@ -204,8 +204,8 @@ module OpenFoodNetwork
       end
 
       it "returns products produced by permitted enterprises" do
-        allow(permissions).to receive(:related_enterprises_granting).
-          with(:manage_products) { Enterprise.where(id: p2.supplier).select(:id) }
+        allow(permissions).to receive(:related_enterprises_granting)
+          .with(:manage_products) { Enterprise.where(id: p2.supplier).select(:id) }
         expect(permissions.editable_products).to eq([p2])
       end
     end
@@ -231,14 +231,14 @@ module OpenFoodNetwork
       end
 
       it "returns products produced by enterprises that have granted manage products" do
-        allow(permissions).to receive(:related_enterprises_granting).
-          with(:manage_products) { Enterprise.where(id: p2.supplier).select(:id) }
+        allow(permissions).to receive(:related_enterprises_granting)
+          .with(:manage_products) { Enterprise.where(id: p2.supplier).select(:id) }
         expect(permissions.visible_products).to eq([p2])
       end
 
       it "returns products produced by enterprises that have granted P-OC" do
-        allow(permissions).to receive(:related_enterprises_granting).
-          with(:add_to_order_cycle) { Enterprise.where(id: p3.supplier).select(:id) }
+        allow(permissions).to receive(:related_enterprises_granting)
+          .with(:add_to_order_cycle) { Enterprise.where(id: p3.supplier).select(:id) }
         expect(permissions.visible_products).to eq([p3])
       end
     end
@@ -247,10 +247,10 @@ module OpenFoodNetwork
       let(:e) { double(:enterprise) }
 
       it "returns managed and related enterprises with manage_products permission" do
-        expect(permissions).
-          to receive(:managed_and_related_enterprises_granting).
-          with(:manage_products).
-          and_return([e])
+        expect(permissions)
+          .to receive(:managed_and_related_enterprises_granting)
+          .with(:manage_products)
+          .and_return([e])
 
         expect(permissions.managed_product_enterprises).to eq([e])
       end
@@ -289,8 +289,8 @@ module OpenFoodNetwork
       end
 
       it "returns permitted enterprises" do
-        expect(permissions).to receive(:related_enterprises_granting).with(permission).
-          and_return(Enterprise.where(id: e2).select(:id))
+        expect(permissions).to receive(:related_enterprises_granting).with(permission)
+          .and_return(Enterprise.where(id: e2).select(:id))
         expect(permissions.send(:managed_and_related_enterprises_granting, permission)).to eq([e2])
       end
     end

@@ -36,15 +36,15 @@ module Reporting
     end
 
     def visible_orders_relation
-      ::Permissions::Order.new(current_user).
-        visible_orders.complete.not_state(:canceled).
-        select(:id).distinct
+      ::Permissions::Order.new(current_user)
+        .visible_orders.complete.not_state(:canceled)
+        .select(:id).distinct
     end
 
     def visible_line_items_relation
-      ::Permissions::Order.new(current_user).
-        visible_line_items.
-        select(:id).distinct
+      ::Permissions::Order.new(current_user)
+        .visible_line_items
+        .select(:id).distinct
     end
 
     def managed_orders_relation

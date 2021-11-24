@@ -22,9 +22,9 @@ describe "i18n" do
       }
     )
 
-    allow(ActionView::Base).
-      to receive(:raise_on_missing_translations).
-      and_return(false)
+    allow(ActionView::Base)
+      .to receive(:raise_on_missing_translations)
+      .and_return(false)
   end
 
   it "translates within the spree scope" do

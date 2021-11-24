@@ -46,19 +46,19 @@ module OpenFoodNetwork
     end
 
     def search
-      Spree::Order.
-        finalized.
-        not_state(:canceled).
-        distributed_by_user(@user).
-        managed_by(@user).
-        ransack(params[:q])
+      Spree::Order
+        .finalized
+        .not_state(:canceled)
+        .distributed_by_user(@user)
+        .managed_by(@user)
+        .ransack(params[:q])
     end
 
     def orders
       search_result = search.result.order(:completed_at)
-      orders_with_balance = OutstandingBalance.new(search_result).
-        query.
-        select('spree_orders.*')
+      orders_with_balance = OutstandingBalance.new(search_result)
+        .query
+        .select('spree_orders.*')
 
       filter(orders_with_balance)
     end

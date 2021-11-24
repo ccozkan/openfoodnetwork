@@ -88,27 +88,27 @@ module Spree
 
     scope :not_master, -> { where(is_master: false) }
     scope :in_order_cycle, lambda { |order_cycle|
-      with_order_cycles_inner.
-        merge(Exchange.outgoing).
-        where('order_cycles.id = ?', order_cycle).
-        select('DISTINCT spree_variants.*')
+      with_order_cycles_inner
+        .merge(Exchange.outgoing)
+        .where('order_cycles.id = ?', order_cycle)
+        .select('DISTINCT spree_variants.*')
     }
 
     scope :in_schedule, lambda { |schedule|
-      joins(exchanges: { order_cycle: :schedules }).
-        merge(Exchange.outgoing).
-        where(schedules: { id: schedule }).
-        select('DISTINCT spree_variants.*')
+      joins(exchanges: { order_cycle: :schedules })
+        .merge(Exchange.outgoing)
+        .where(schedules: { id: schedule })
+        .select('DISTINCT spree_variants.*')
     }
 
     scope :for_distribution, lambda { |order_cycle, distributor|
-      where('spree_variants.id IN (?)', order_cycle.variants_distributed_by(distributor).
-        select(&:id))
+      where('spree_variants.id IN (?)', order_cycle.variants_distributed_by(distributor)
+        .select(&:id))
     }
 
     scope :visible_for, lambda { |enterprise|
-      joins(:inventory_items).
-        where(
+      joins(:inventory_items)
+        .where(
           'inventory_items.enterprise_id = (?) AND inventory_items.visible = (?)',
           enterprise,
           true
@@ -131,16 +131,16 @@ module Spree
     scope :stockable_by, lambda { |enterprise|
       return where("1=0") if enterprise.blank?
 
-      joins(:product).
-        where(spree_products: { id: Spree::Product.stockable_by(enterprise).pluck(:id) })
+      joins(:product)
+        .where(spree_products: { id: Spree::Product.stockable_by(enterprise).pluck(:id) })
     }
 
     # Define sope as class method to allow chaining with other scopes filtering id.
     # In Rails 3, merging two scopes on the same column will consider only the last scope.
     def self.in_distributor(distributor)
-      where(id: ExchangeVariant.select(:variant_id).
-                joins(:exchange).
-                where('exchanges.incoming = ? AND exchanges.receiver_id = ?', false, distributor))
+      where(id: ExchangeVariant.select(:variant_id)
+                .joins(:exchange)
+                .where('exchanges.incoming = ? AND exchanges.receiver_id = ?', false, distributor))
     end
 
     def self.indexed
@@ -150,12 +150,12 @@ module Spree
     def self.active(currency = nil)
       # "where(id:" is necessary so that the returned relation has no includes
       # The relation without includes will not be readonly and allow updates on it
-      where("spree_variants.id in (?)", joins(:prices).
-                                          where(deleted_at: nil).
-                                          where('spree_prices.currency' =>
-                                            currency || Spree::Config[:currency]).
-                                          where('spree_prices.amount IS NOT NULL').
-                                          select("spree_variants.id"))
+      where("spree_variants.id in (?)", joins(:prices)
+                                          .where(deleted_at: nil)
+                                          .where('spree_prices.currency' =>
+                                            currency || Spree::Config[:currency])
+                                          .where('spree_prices.amount IS NOT NULL')
+                                          .select("spree_variants.id"))
     end
 
     def price_with_fees(distributor, order_cycle)

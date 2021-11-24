@@ -32,8 +32,8 @@ module Spree
         # Don't re-fetch associated stock items from the DB if we've already eager-loaded them
         return @variant.stock_items if @variant.stock_items.loaded?
 
-        Spree::StockItem.joins(:stock_location).
-          where(:variant_id => @variant, Spree::StockLocation.table_name => { active: true })
+        Spree::StockItem.joins(:stock_location)
+          .where(:variant_id => @variant, Spree::StockLocation.table_name => { active: true })
       end
     end
   end

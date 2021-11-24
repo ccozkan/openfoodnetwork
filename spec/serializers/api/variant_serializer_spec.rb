@@ -7,8 +7,8 @@ describe Api::VariantSerializer do
   let(:variant) { create(:variant) }
 
   it "includes the expected attributes" do
-    expect(subject.attributes.keys).
-      to include(
+    expect(subject.attributes.keys)
+      .to include(
         :id,
         :name_to_display,
         :is_master,

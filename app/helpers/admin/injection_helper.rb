@@ -205,8 +205,8 @@ module Admin
     end
 
     def admin_inject_json_ams_array(ng_module, name, data, serializer, opts = {})
-      json = ActiveModel::ArraySerializer.
-        new(data, { each_serializer: serializer, scope: spree_current_user }.merge(opts)).to_json
+      json = ActiveModel::ArraySerializer
+        .new(data, { each_serializer: serializer, scope: spree_current_user }.merge(opts)).to_json
 
       render partial: "admin/json/injection_ams",
              locals: { ngModule: ng_module,

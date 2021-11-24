@@ -14,10 +14,10 @@ class OrderCycleDistributedProducts
   end
 
   def variants_relation
-    order_cycle.
-      variants_distributed_by(distributor).
-      merge(stocked_variants_and_overrides).
-      select("DISTINCT spree_variants.*")
+    order_cycle
+      .variants_distributed_by(distributor)
+      .merge(stocked_variants_and_overrides)
+      .select("DISTINCT spree_variants.*")
   end
 
   private
@@ -25,18 +25,18 @@ class OrderCycleDistributedProducts
   attr_reader :distributor, :order_cycle, :customer
 
   def stocked_products
-    order_cycle.
-      variants_distributed_by(distributor).
-      merge(stocked_variants_and_overrides).
-      select("DISTINCT spree_variants.product_id")
+    order_cycle
+      .variants_distributed_by(distributor)
+      .merge(stocked_variants_and_overrides)
+      .select("DISTINCT spree_variants.product_id")
   end
 
   def stocked_variants_and_overrides
-    stocked_variants = Spree::Variant.
-      joins("LEFT OUTER JOIN variant_overrides ON variant_overrides.variant_id = spree_variants.id
-            AND variant_overrides.hub_id = #{distributor.id}").
-      joins(:stock_items).
-      where(query_stock_with_overrides)
+    stocked_variants = Spree::Variant
+      .joins("LEFT OUTER JOIN variant_overrides ON variant_overrides.variant_id = spree_variants.id
+            AND variant_overrides.hub_id = #{distributor.id}")
+      .joins(:stock_items)
+      .where(query_stock_with_overrides)
 
     ProductTagRulesFilterer.new(distributor, customer, stocked_variants).call
   end

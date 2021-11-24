@@ -99,8 +99,8 @@ module OrderManagement
           let(:subscription) { double(:subscription, shop_id: 1) }
 
           before do
-            allow(summarizer).to receive(:summary_for_shop_id).
-              with(subscription.shop_id) { summary }
+            allow(summarizer).to receive(:summary_for_shop_id)
+              .with(subscription.shop_id) { summary }
           end
 
           it "records a subscription issue" do

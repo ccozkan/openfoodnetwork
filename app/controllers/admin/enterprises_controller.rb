@@ -42,8 +42,8 @@ module Admin
     end
 
     def edit
-      @object = Enterprise.where(permalink: params[:id]).
-        includes(users: [:ship_address, :bill_address]).first
+      @object = Enterprise.where(permalink: params[:id])
+        .includes(users: [:ship_address, :bill_address]).first
       super
     end
 
@@ -168,9 +168,9 @@ module Admin
         end
       when :index
         if spree_current_user.admin?
-          OpenFoodNetwork::Permissions.new(spree_current_user).
-            editable_enterprises.
-            order('is_primary_producer ASC, name')
+          OpenFoodNetwork::Permissions.new(spree_current_user)
+            .editable_enterprises
+            .order('is_primary_producer ASC, name')
         elsif json_request?
           OpenFoodNetwork::Permissions.new(spree_current_user).editable_enterprises.ransack(params[:q]).result
         else
@@ -181,9 +181,9 @@ module Admin
           .includes(:shipping_methods, :payment_methods).ransack(params[:q]).result
       else
         # TODO was ordered with is_distributor DESC as well, not sure why or how we want to sort this now
-        OpenFoodNetwork::Permissions.new(spree_current_user).
-          editable_enterprises.
-          order('is_primary_producer ASC, name')
+        OpenFoodNetwork::Permissions.new(spree_current_user)
+          .editable_enterprises
+          .order('is_primary_producer ASC, name')
       end
     end
 
@@ -331,8 +331,8 @@ module Admin
     end
 
     def enterprise_params
-      @enterprise_params ||= PermittedAttributes::Enterprise.new(params).call.
-        to_h.with_indifferent_access
+      @enterprise_params ||= PermittedAttributes::Enterprise.new(params).call
+        .to_h.with_indifferent_access
     end
 
     def bulk_params

@@ -177,31 +177,31 @@ describe CartService do
 
     it "performs additional validations" do
       expect(cart_service).to receive(:check_order_cycle_provided) { true }
-      expect(cart_service).to receive(:check_variant_available_under_distribution).with(variant).
-        and_return(true)
+      expect(cart_service).to receive(:check_variant_available_under_distribution).with(variant)
+        .and_return(true)
       expect(variant).to receive(:on_demand).and_return(false)
-      expect(order).to receive_message_chain(:contents, :update_or_create).
-        with(variant, { quantity: quantity, max_quantity: nil })
+      expect(order).to receive_message_chain(:contents, :update_or_create)
+        .with(variant, { quantity: quantity, max_quantity: nil })
 
       cart_service.send(:attempt_cart_add, variant, quantity)
     end
 
     it "filters quantities through #final_quantities" do
-      expect(cart_service).to receive(:final_quantities).with(variant, 123, 123).
-        and_return({ quantity: 5, max_quantity: 5 })
+      expect(cart_service).to receive(:final_quantities).with(variant, 123, 123)
+        .and_return({ quantity: 5, max_quantity: 5 })
 
       allow(cart_service).to receive(:check_order_cycle_provided) { true }
       allow(cart_service).to receive(:check_variant_available_under_distribution) { true }
 
-      expect(order).to receive_message_chain(:contents, :update_or_create).
-        with(variant, { quantity: 5, max_quantity: 5 })
+      expect(order).to receive_message_chain(:contents, :update_or_create)
+        .with(variant, { quantity: 5, max_quantity: 5 })
 
       cart_service.send(:attempt_cart_add, variant, quantity, quantity)
     end
 
     it "removes variants which have become out of stock" do
-      expect(cart_service).to receive(:final_quantities).with(variant, 123, 123).
-        and_return({ quantity: 0, max_quantity: 0 })
+      expect(cart_service).to receive(:final_quantities).with(variant, 123, 123)
+        .and_return({ quantity: 0, max_quantity: 0 })
 
       allow(cart_service).to receive(:check_order_cycle_provided) { true }
       allow(cart_service).to receive(:check_variant_available_under_distribution) { true }
@@ -223,25 +223,25 @@ describe CartService do
 
       context "getting quantity and max_quantity" do
         it "returns full amount when available" do
-          expect(cart_service.send(:final_quantities, v, 5, nil)).
-            to eq({ quantity: 5, max_quantity: nil })
+          expect(cart_service.send(:final_quantities, v, 5, nil))
+            .to eq({ quantity: 5, max_quantity: nil })
         end
 
         it "returns a limited amount when not entirely available" do
-          expect(cart_service.send(:final_quantities, v, 15, nil)).
-            to eq({ quantity: 10, max_quantity: nil })
+          expect(cart_service.send(:final_quantities, v, 15, nil))
+            .to eq({ quantity: 10, max_quantity: nil })
         end
       end
 
       context "when max_quantity is provided" do
         it "returns full amount when available" do
-          expect(cart_service.send(:final_quantities, v, 5, 6)).
-            to eq({ quantity: 5, max_quantity: 6 })
+          expect(cart_service.send(:final_quantities, v, 5, 6))
+            .to eq({ quantity: 5, max_quantity: 6 })
         end
 
         it "also returns the full amount when not entirely available" do
-          expect(cart_service.send(:final_quantities, v, 15, 16)).
-            to eq({ quantity: 10, max_quantity: 16 })
+          expect(cart_service.send(:final_quantities, v, 15, 16))
+            .to eq({ quantity: 10, max_quantity: 16 })
         end
       end
     end
@@ -252,13 +252,13 @@ describe CartService do
       end
 
       it "does not limit quantity" do
-        expect(cart_service.send(:final_quantities, v, 15, nil)).
-          to eq({ quantity: 15, max_quantity: nil })
+        expect(cart_service.send(:final_quantities, v, 15, nil))
+          .to eq({ quantity: 15, max_quantity: nil })
       end
 
       it "does not limit max_quantity" do
-        expect(cart_service.send(:final_quantities, v, 15, 16)).
-          to eq({ quantity: 15, max_quantity: 16 })
+        expect(cart_service.send(:final_quantities, v, 15, 16))
+          .to eq({ quantity: 15, max_quantity: 16 })
       end
     end
   end

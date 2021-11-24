@@ -138,10 +138,10 @@ module Api
 
     def shipping_types?(type)
       require_shipping = type == :delivery ? 't' : 'f'
-      Spree::ShippingMethod.
-        joins(:distributor_shipping_methods).
-        where('distributors_shipping_methods.distributor_id = ?', enterprise.id).
-        where("spree_shipping_methods.require_ship_address = '#{require_shipping}'").exists?
+      Spree::ShippingMethod
+        .joins(:distributor_shipping_methods)
+        .where('distributors_shipping_methods.distributor_id = ?', enterprise.id)
+        .where("spree_shipping_methods.require_ship_address = '#{require_shipping}'").exists?
     end
   end
 end

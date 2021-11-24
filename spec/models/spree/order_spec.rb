@@ -492,9 +492,9 @@ describe Spree::Order do
       allow(fee_handler).to receive(:provided_by_order_cycle?) { true }
 
       order_cycle = double(:order_cycle)
-      expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).
-        to receive(:create_line_item_adjustments_for).
-        with(line_item)
+      expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator)
+        .to receive(:create_line_item_adjustments_for)
+        .with(line_item)
       allow_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).to receive(:create_order_adjustments_for)
       allow(subject).to receive(:order_cycle) { order_cycle }
 
@@ -505,9 +505,9 @@ describe Spree::Order do
       allow(EnterpriseFee).to receive(:clear_all_adjustments)
 
       order_cycle = double(:order_cycle)
-      expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).
-        to receive(:create_order_adjustments_for).
-        with(subject)
+      expect_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator)
+        .to receive(:create_order_adjustments_for)
+        .with(subject)
 
       allow(subject).to receive(:order_cycle) { order_cycle }
 

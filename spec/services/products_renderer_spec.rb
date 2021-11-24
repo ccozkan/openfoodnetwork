@@ -73,8 +73,8 @@ describe ProductsRenderer do
 
     it "returns price including fees" do
       # Price is 19.99
-      allow_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator).
-        to receive(:indexed_fees_for).and_return 978.01
+      allow_any_instance_of(OpenFoodNetwork::EnterpriseFeeCalculator)
+        .to receive(:indexed_fees_for).and_return 978.01
 
       expect(products_renderer.products_json).to include "998.0"
     end

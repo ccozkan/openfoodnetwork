@@ -71,9 +71,9 @@ module Api
 
       def visible_enterprises
         @visible_enterprises ||=
-          OpenFoodNetwork::OrderCyclePermissions.
-            new(options[:current_user], object).
-            visible_enterprises
+          OpenFoodNetwork::OrderCyclePermissions
+            .new(options[:current_user], object)
+            .visible_enterprises
       end
     end
   end

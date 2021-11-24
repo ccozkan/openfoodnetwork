@@ -18,8 +18,8 @@ module Spree
                        bucket: config[:s3_bucket] }
           attachment_definitions[field][:storage] = :s3
           attachment_definitions[field][:s3_credentials] = s3_creds
-          attachment_definitions[field][:s3_headers] = ActiveSupport::JSON.
-            decode(config[:s3_headers])
+          attachment_definitions[field][:s3_headers] = ActiveSupport::JSON
+            .decode(config[:s3_headers])
           attachment_definitions[field][:bucket] = config[:s3_bucket]
           if config[:s3_protocol].present?
             attachment_definitions[field][:s3_protocol] = config[:s3_protocol].downcase

@@ -31,8 +31,8 @@ module Admin
         let(:mail_mock) { double(:mailer, deliver_later: true) }
 
         before do
-          allow(EnterpriseMailer).to receive(:manager_invitation).
-            with(enterprise, kind_of(Spree::User)) { mail_mock }
+          allow(EnterpriseMailer).to receive(:manager_invitation)
+            .with(enterprise, kind_of(Spree::User)) { mail_mock }
 
           allow(controller).to receive_messages spree_current_user: admin
         end

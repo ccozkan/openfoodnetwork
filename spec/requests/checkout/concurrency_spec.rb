@@ -53,9 +53,9 @@ describe "Concurrent checkouts", concurrency: true, type: :request do
     # state and making payments. If two requests reach this breakpoint at the
     # same time, they are in a race condition and bad things can happen.
     # Examples are processing payments twice or selling more than we have.
-    allow_any_instance_of(CheckoutController).
-      to receive(:checkout_workflow).
-      and_wrap_original do |method, *args|
+    allow_any_instance_of(CheckoutController)
+      .to receive(:checkout_workflow)
+      .and_wrap_original do |method, *args|
 
       breakpoint_reached_counter += 1
       breakpoint.synchronize {}

@@ -3,13 +3,13 @@
 module Admin
   class EnterpriseRelationshipsController < Admin::ResourceController
     def index
-      @my_enterprises = Enterprise.
-        includes(:shipping_methods, :payment_methods).
-        managed_by(spree_current_user).by_name
+      @my_enterprises = Enterprise
+        .includes(:shipping_methods, :payment_methods)
+        .managed_by(spree_current_user).by_name
       @all_enterprises = Enterprise.includes(:shipping_methods, :payment_methods).by_name
-      @enterprise_relationships = EnterpriseRelationship.
-        includes(:parent, :child, :permissions).
-        by_name.involving_enterprises @my_enterprises
+      @enterprise_relationships = EnterpriseRelationship
+        .includes(:parent, :child, :permissions)
+        .by_name.involving_enterprises @my_enterprises
     end
 
     def create

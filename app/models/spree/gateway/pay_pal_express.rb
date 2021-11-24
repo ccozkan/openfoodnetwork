@@ -46,8 +46,8 @@ module Spree
             PaymentAction: "Sale",
             Token: express_checkout.token,
             PayerID: express_checkout.payer_id,
-            PaymentDetails: pp_details_response.
-              get_express_checkout_details_response_details.PaymentDetails
+            PaymentDetails: pp_details_response
+              .get_express_checkout_details_response_details.PaymentDetails
           }
         )
 
@@ -55,8 +55,8 @@ module Spree
         if pp_response.success?
           # We need to store the transaction id for the future.
           # This is mainly so we can use it later on to refund the payment if the user wishes.
-          transaction_id = pp_response.do_express_checkout_payment_response_details.
-            payment_info.first.transaction_id
+          transaction_id = pp_response.do_express_checkout_payment_response_details
+            .payment_info.first.transaction_id
           express_checkout.update_column(:transaction_id, transaction_id)
           # This is rather hackish, required for payment/processing handle_response code.
           Class.new do

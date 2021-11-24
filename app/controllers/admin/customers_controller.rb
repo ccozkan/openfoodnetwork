@@ -67,8 +67,8 @@ module Admin
 
     def collection
       if json_request? && params[:enterprise_id].present?
-        CustomersWithBalance.new(managed_enterprise_id).query.
-          includes(
+        CustomersWithBalance.new(managed_enterprise_id).query
+          .includes(
             :enterprise,
             { bill_address: [:state, :country] },
             { ship_address: [:state, :country] },
@@ -80,8 +80,8 @@ module Admin
     end
 
     def managed_enterprise_id
-      @managed_enterprise_id ||= Enterprise.managed_by(spree_current_user).
-        select('enterprises.id').find_by(id: params[:enterprise_id])
+      @managed_enterprise_id ||= Enterprise.managed_by(spree_current_user)
+        .select('enterprises.id').find_by(id: params[:enterprise_id])
     end
 
     def load_managed_shops
@@ -116,10 +116,10 @@ module Admin
 
     # Fetches tags for all customers of the enterprise and returns a hash indexed by customer_id
     def customer_tags_by_id
-      customer_tags = ::ActsAsTaggableOn::Tag.
-        joins(:taggings).
-        includes(:taggings).
-        where(taggings:
+      customer_tags = ::ActsAsTaggableOn::Tag
+        .joins(:taggings)
+        .includes(:taggings)
+        .where(taggings:
                 { taggable_type: 'Customer',
                   taggable_id: Customer.of(managed_enterprise_id),
                   context: 'tags' })

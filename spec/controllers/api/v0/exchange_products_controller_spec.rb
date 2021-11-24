@@ -15,10 +15,10 @@ module Api
     before do
       allow(controller).to receive_messages spree_current_user: coordinator.owner
       allow(ExchangeProductsRenderer).to receive(:new) { renderer }
-      allow(renderer).
-        to receive(:exchange_products).
-        with(exchange.incoming, exchange.sender).
-        and_return(products_relation)
+      allow(renderer)
+        .to receive(:exchange_products)
+        .with(exchange.incoming, exchange.sender)
+        .and_return(products_relation)
     end
 
     describe "#index" do

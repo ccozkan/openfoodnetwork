@@ -30,11 +30,11 @@ describe Spree::Gateway::StripeSCA, type: :model do
     }
 
     it "captures the payment" do
-      stub_request(:get, "https://api.stripe.com/v1/payment_intents/12345").
-        to_return(status: 200, body: payment_authorised)
-      stub_request(:post, "https://api.stripe.com/v1/payment_intents/12345/capture").
-        with(body: { "amount_to_capture" => order.total }).
-        to_return(status: 200, body: capture_successful)
+      stub_request(:get, "https://api.stripe.com/v1/payment_intents/12345")
+        .to_return(status: 200, body: payment_authorised)
+      stub_request(:post, "https://api.stripe.com/v1/payment_intents/12345/capture")
+        .with(body: { "amount_to_capture" => order.total })
+        .to_return(status: 200, body: capture_successful)
 
       response = subject.purchase(order.total, credit_card, gateway_options)
 
@@ -42,8 +42,8 @@ describe Spree::Gateway::StripeSCA, type: :model do
     end
 
     it "provides an error message to help developer debug" do
-      stub_request(:get, "https://api.stripe.com/v1/payment_intents/12345").
-        to_return(status: 200, body: capture_successful)
+      stub_request(:get, "https://api.stripe.com/v1/payment_intents/12345")
+        .to_return(status: 200, body: capture_successful)
 
       response = subject.purchase(order.total, credit_card, gateway_options)
 
@@ -57,12 +57,12 @@ describe Spree::Gateway::StripeSCA, type: :model do
       end
 
       it "succeeds if payment intent state is requires_capture" do
-        stub_request(:post, "https://api.stripe.com/v1/payment_intents/12345/capture").
-          with(body: { "amount_to_capture" => order.total }).
-          to_return(status: 200, body: capture_successful)
+        stub_request(:post, "https://api.stripe.com/v1/payment_intents/12345/capture")
+          .with(body: { "amount_to_capture" => order.total })
+          .to_return(status: 200, body: capture_successful)
 
-        allow(Stripe::PaymentIntentValidator).to receive_message_chain(:new, :call).
-          and_return(double(status: "requires_capture"))
+        allow(Stripe::PaymentIntentValidator).to receive_message_chain(:new, :call)
+          .and_return(double(status: "requires_capture"))
 
         response = subject.purchase(order.total, credit_card, gateway_options)
 
@@ -70,8 +70,8 @@ describe Spree::Gateway::StripeSCA, type: :model do
       end
 
       it "does not succeed if payment intent state is not requires_capture" do
-        allow(Stripe::PaymentIntentValidator).to receive_message_chain(:new, :call).
-          and_return(double(status: "not_ready_yet"))
+        allow(Stripe::PaymentIntentValidator).to receive_message_chain(:new, :call)
+          .and_return(double(status: "not_ready_yet"))
 
         response = subject.purchase(order.total, credit_card, gateway_options)
 

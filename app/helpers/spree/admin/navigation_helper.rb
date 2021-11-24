@@ -66,9 +66,9 @@ module Spree
         model_name = name.to_s
         klass = ["Spree::#{model_name.classify}",
                  model_name.classify,
-                 model_name.tr('_', '/').classify].
-          find(&:safe_constantize).
-          try(:safe_constantize)
+                 model_name.tr('_', '/').classify]
+          .find(&:safe_constantize)
+          .try(:safe_constantize)
 
         klass ||= name.singularize.to_sym
 

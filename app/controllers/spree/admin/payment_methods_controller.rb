@@ -154,8 +154,8 @@ module Spree
       end
 
       def base_params
-        @base_params ||= PermittedAttributes::PaymentMethod.new(params[:payment_method]).
-          call.to_h.with_indifferent_access
+        @base_params ||= PermittedAttributes::PaymentMethod.new(params[:payment_method])
+          .call.to_h.with_indifferent_access
       end
 
       def gateway_params

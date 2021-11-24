@@ -57,8 +57,8 @@ describe Reporting::ReportRenderer do
       it "exports as csv" do
         service.to_csv
 
-        expect(spreadsheet_architect).to have_received(:to_csv).
-          with(headers: service.table_headers, data: service.table_rows)
+        expect(spreadsheet_architect).to have_received(:to_csv)
+          .with(headers: service.table_headers, data: service.table_rows)
       end
     end
 
@@ -66,8 +66,8 @@ describe Reporting::ReportRenderer do
       it "exports as ods" do
         service.to_ods
 
-        expect(spreadsheet_architect).to have_received(:to_ods).
-          with(headers: service.table_headers, data: service.table_rows)
+        expect(spreadsheet_architect).to have_received(:to_ods)
+          .with(headers: service.table_headers, data: service.table_rows)
       end
     end
 
@@ -75,8 +75,8 @@ describe Reporting::ReportRenderer do
       it "exports as xlsx" do
         service.to_xlsx
 
-        expect(spreadsheet_architect).to have_received(:to_xlsx).
-          with(headers: service.table_headers, data: service.table_rows)
+        expect(spreadsheet_architect).to have_received(:to_xlsx)
+          .with(headers: service.table_headers, data: service.table_rows)
       end
     end
   end

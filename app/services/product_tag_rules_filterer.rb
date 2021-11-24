@@ -58,15 +58,15 @@ class ProductTagRulesFilterer
   end
 
   def overrides_to_hide
-    @overrides_to_hide ||= VariantOverride.where(hub_id: distributor.id).
-      tagged_with(default_rule_tags + hide_rule_tags, any: true).
-      pluck(:id)
+    @overrides_to_hide ||= VariantOverride.where(hub_id: distributor.id)
+      .tagged_with(default_rule_tags + hide_rule_tags, any: true)
+      .pluck(:id)
   end
 
   def overrides_to_show
-    @overrides_to_show ||= VariantOverride.where(hub_id: distributor.id).
-      tagged_with(show_rule_tags, any: true).
-      pluck(:id)
+    @overrides_to_show ||= VariantOverride.where(hub_id: distributor.id)
+      .tagged_with(show_rule_tags, any: true)
+      .pluck(:id)
   end
 
   def default_rule_tags
@@ -97,8 +97,8 @@ class ProductTagRulesFilterer
   end
 
   def hide_rules
-    @hide_rules ||= customer_applicable_rules.
-      select{ |rule| rule.preferred_matched_variants_visibility == 'hidden' }
+    @hide_rules ||= customer_applicable_rules
+      .select{ |rule| rule.preferred_matched_variants_visibility == 'hidden' }
   end
 
   def show_rules

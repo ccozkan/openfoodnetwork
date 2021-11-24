@@ -20,9 +20,9 @@ describe StripeAccount do
 
     context "when the Stripe API disconnect fails" do
       before do
-        stub_request(:post, "https://connect.stripe.com/oauth/deauthorize").
-          with(body: { "client_id" => client_id, "stripe_user_id" => stripe_user_id }).
-          to_return(status: 400, body: JSON.generate(error: 'invalid_grant',
+        stub_request(:post, "https://connect.stripe.com/oauth/deauthorize")
+          .with(body: { "client_id" => client_id, "stripe_user_id" => stripe_user_id })
+          .to_return(status: 400, body: JSON.generate(error: 'invalid_grant',
                                                      error_description: "Some Message"))
       end
 
@@ -35,9 +35,9 @@ describe StripeAccount do
 
     context "when the Stripe API disconnect succeeds" do
       before do
-        stub_request(:post, "https://connect.stripe.com/oauth/deauthorize").
-          with(body: { "client_id" => client_id, "stripe_user_id" => stripe_user_id }).
-          to_return(status: 200, body: JSON.generate(stripe_user_id: stripe_user_id))
+        stub_request(:post, "https://connect.stripe.com/oauth/deauthorize")
+          .with(body: { "client_id" => client_id, "stripe_user_id" => stripe_user_id })
+          .to_return(status: 200, body: JSON.generate(stripe_user_id: stripe_user_id))
       end
 
       it "destroys the record" do

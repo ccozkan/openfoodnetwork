@@ -229,18 +229,18 @@ module Spree
       end
 
       def suppliers_of_products_distributed_by(distributors)
-        supplier_ids = Spree::Product.in_distributors(distributors.select('enterprises.id')).
-          select('spree_products.supplier_id')
+        supplier_ids = Spree::Product.in_distributors(distributors.select('enterprises.id'))
+          .select('spree_products.supplier_id')
 
         Enterprise.where(id: supplier_ids)
       end
 
       # Load order cycles the current user has access to
       def my_order_cycles
-        OrderCycle.
-          active_or_complete.
-          visible_by(spree_current_user).
-          order('orders_close_at DESC')
+        OrderCycle
+          .active_or_complete
+          .visible_by(spree_current_user)
+          .order('orders_close_at DESC')
       end
 
       def order_grouper_table

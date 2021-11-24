@@ -61,8 +61,8 @@ module ProductImport
 
     def product_field_errors?
       @entries.each do |entry|
-        return true if entry.errors.messages.
-          value?([I18n.t('admin.product_import.model.not_updatable')])
+        return true if entry.errors.messages
+          .value?([I18n.t('admin.product_import.model.not_updatable')])
       end
       false
     end
@@ -199,9 +199,9 @@ module ProductImport
     def init_permissions
       permissions = OpenFoodNetwork::Permissions.new(@current_user)
 
-      permissions.editable_enterprises.
-        order('is_primary_producer ASC, name').
-        map { |e| @editable_enterprises[e.name] = e.id }
+      permissions.editable_enterprises
+        .order('is_primary_producer ASC, name')
+        .map { |e| @editable_enterprises[e.name] = e.id }
 
       @inventory_permissions = permissions.variant_override_enterprises_per_hub
     end

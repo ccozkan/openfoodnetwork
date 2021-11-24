@@ -581,11 +581,11 @@ describe Spree::Payment do
         before { allow(order).to receive(:completed?) { true } }
 
         it "updates payment_state and shipments" do
-          expect(OrderManagement::Order::Updater).to receive(:new).with(order).
-            and_return(order_updater)
+          expect(OrderManagement::Order::Updater).to receive(:new).with(order)
+            .and_return(order_updater)
 
-          expect(order_updater).to receive(:after_payment_update).with(kind_of(Spree::Payment)).
-            and_call_original
+          expect(order_updater).to receive(:after_payment_update).with(kind_of(Spree::Payment))
+            .and_call_original
 
           expect(order_updater).to receive(:update_payment_state)
           expect(order_updater).to receive(:update_shipment_state)

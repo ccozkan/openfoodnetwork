@@ -34,12 +34,12 @@ class ProductsRenderer
     return unless order_cycle
 
     @products ||= begin
-      results = distributed_products.
-        products_relation.
-        order(Arel.sql(products_order))
+      results = distributed_products
+        .products_relation
+        .order(Arel.sql(products_order))
 
-      filter_and_paginate(results).
-        each { |product| product_scoper.scope(product) } # Scope results with variant_overrides
+      filter_and_paginate(results)
+        .each { |product| product_scoper.scope(product) } # Scope results with variant_overrides
     end
   end
 
@@ -87,10 +87,10 @@ class ProductsRenderer
     @variants_for_shop ||= begin
       scoper = OpenFoodNetwork::ScopeVariantToHub.new(distributor)
 
-      distributed_products.variants_relation.
-        includes(:default_price, :stock_locations, :product).
-        where(product_id: products).
-        each { |v| scoper.scope(v) } # Scope results with variant_overrides
+      distributed_products.variants_relation
+        .includes(:default_price, :stock_locations, :product)
+        .where(product_id: products)
+        .each { |v| scoper.scope(v) } # Scope results with variant_overrides
     end
   end
 

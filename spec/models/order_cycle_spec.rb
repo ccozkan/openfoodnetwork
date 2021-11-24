@@ -544,9 +544,9 @@ describe OrderCycle do
 
   def core_exchange_attributes(exchange)
     exterior_attribute_keys = %w(id order_cycle_id created_at updated_at)
-    exchange.attributes.
-      reject { |k| exterior_attribute_keys.include? k }.
-      merge(
+    exchange.attributes
+      .reject { |k| exterior_attribute_keys.include? k }
+      .merge(
         'variant_ids' => exchange.variant_ids.sort,
         'enterprise_fee_ids' => exchange.enterprise_fee_ids.sort
       )

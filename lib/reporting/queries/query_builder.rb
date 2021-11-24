@@ -33,11 +33,11 @@ module Reporting
       end
 
       def with_managed_orders(orders_relation)
-        reflect query.
-          outer_join(managed_orders_alias).
-          on(
-            managed_orders_alias[:id].eq(line_item_table[:order_id]).
-            and(managed_orders_alias[:distributor_id].in(Arel.sql(orders_relation.to_sql)))
+        reflect query
+          .outer_join(managed_orders_alias)
+          .on(
+            managed_orders_alias[:id].eq(line_item_table[:order_id])
+            .and(managed_orders_alias[:distributor_id].in(Arel.sql(orders_relation.to_sql)))
           )
       end
 
@@ -50,10 +50,10 @@ module Reporting
       end
 
       def masked(field, message = nil, mask_rule = nil)
-        Case.new.
-          when(mask_rule || default_mask_rule).
-          then(field).
-          else(quoted(message || I18n.t("hidden_field", scope: i18n_scope)))
+        Case.new
+          .when(mask_rule || default_mask_rule)
+          .then(field)
+          .else(quoted(message || I18n.t("hidden_field", scope: i18n_scope)))
       end
 
       def distinct_results(fields = nil)
@@ -70,17 +70,17 @@ module Reporting
         unit_to_display = coalesce(nullify_empty_strings(display_as), options_text)
         combined_description = sql_concat(display_name, raw("' ('"), unit_to_display, raw("')'"))
 
-        Case.new.
-          when(nullify_empty_strings(display_name).eq(nil)).then(unit_to_display).
-          when(nullify_empty_strings(unit_to_display).not_eq(nil)).then(combined_description).
-          else(display_name)
+        Case.new
+          .when(nullify_empty_strings(display_name).eq(nil)).then(unit_to_display)
+          .when(nullify_empty_strings(unit_to_display).not_eq(nil)).then(combined_description)
+          .else(display_name)
       end
 
       private
 
       def default_mask_rule
-        line_item_table[:order_id].in(raw("#{managed_orders_alias.name}.id")).
-          or(distributor_alias[:show_customer_names_to_suppliers].eq(true))
+        line_item_table[:order_id].in(raw("#{managed_orders_alias.name}.id"))
+          .or(distributor_alias[:show_customer_names_to_suppliers].eq(true))
       end
 
       def summary_row_title

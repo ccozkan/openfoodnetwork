@@ -119,17 +119,17 @@ class Enterprise < ApplicationRecord
   scope :visible, -> { where(visible: true) }
   scope :activated, -> { where("sells != 'unspecified'") }
   scope :ready_for_checkout, lambda {
-    joins(:shipping_methods).
-      joins(:payment_methods).
-      merge(Spree::PaymentMethod.available).
-      select('DISTINCT enterprises.*')
+    joins(:shipping_methods)
+      .joins(:payment_methods)
+      .merge(Spree::PaymentMethod.available)
+      .select('DISTINCT enterprises.*')
   }
   scope :not_ready_for_checkout, lambda {
     # When ready_for_checkout is empty, return all rows when there are no enterprises ready for
     # checkout.
-    ready_enterprises = Enterprise.default_scoped.ready_for_checkout.
-      except(:select).
-      select('DISTINCT enterprises.id')
+    ready_enterprises = Enterprise.default_scoped.ready_for_checkout
+      .except(:select)
+      .select('DISTINCT enterprises.id')
 
     if ready_enterprises.any?
       where("enterprises.id NOT IN (?)", ready_enterprises)
@@ -141,52 +141,52 @@ class Enterprise < ApplicationRecord
   scope :is_distributor, -> { where('sells != ?', 'none') }
   scope :is_hub, -> { where(sells: 'any') }
   scope :supplying_variant_in, lambda { |variants|
-    joins(supplied_products: :variants_including_master).
-      where('spree_variants.id IN (?)', variants).
-      select('DISTINCT enterprises.*')
+    joins(supplied_products: :variants_including_master)
+      .where('spree_variants.id IN (?)', variants)
+      .select('DISTINCT enterprises.*')
   }
 
   scope :with_order_cycles_as_supplier_outer, -> {
     joins("
       LEFT OUTER JOIN exchanges
-        ON (exchanges.sender_id = enterprises.id AND exchanges.incoming = 't')").
-      joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
+        ON (exchanges.sender_id = enterprises.id AND exchanges.incoming = 't')")
+      .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
   scope :with_order_cycles_as_distributor_outer, -> {
     joins("
       LEFT OUTER JOIN exchanges
-        ON (exchanges.receiver_id = enterprises.id AND exchanges.incoming = 'f')").
-      joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
+        ON (exchanges.receiver_id = enterprises.id AND exchanges.incoming = 'f')")
+      .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
   scope :with_order_cycles_outer, -> {
     joins("
       LEFT OUTER JOIN exchanges
-        ON (exchanges.receiver_id = enterprises.id OR exchanges.sender_id = enterprises.id)").
-      joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
+        ON (exchanges.receiver_id = enterprises.id OR exchanges.sender_id = enterprises.id)")
+      .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
   scope :with_order_cycles_and_exchange_variants_outer, -> {
-    with_order_cycles_as_distributor_outer.
-      joins("LEFT OUTER JOIN exchange_variants ON (exchange_variants.exchange_id = exchanges.id)").
-      joins("LEFT OUTER JOIN spree_variants ON (spree_variants.id = exchange_variants.variant_id)")
+    with_order_cycles_as_distributor_outer
+      .joins("LEFT OUTER JOIN exchange_variants ON (exchange_variants.exchange_id = exchanges.id)")
+      .joins("LEFT OUTER JOIN spree_variants ON (spree_variants.id = exchange_variants.variant_id)")
   }
 
   scope :distributors_with_active_order_cycles, lambda {
-    with_order_cycles_as_distributor_outer.
-      merge(OrderCycle.active).
-      select('DISTINCT enterprises.*')
+    with_order_cycles_as_distributor_outer
+      .merge(OrderCycle.active)
+      .select('DISTINCT enterprises.*')
   }
 
   scope :distributing_products, lambda { |product_ids|
     exchanges = joins("
         INNER JOIN exchanges
           ON (exchanges.receiver_id = enterprises.id AND exchanges.incoming = 'f')
-      ").
-      joins('INNER JOIN exchange_variants ON (exchange_variants.exchange_id = exchanges.id)').
-      joins('INNER JOIN spree_variants ON (spree_variants.id = exchange_variants.variant_id)').
-      where('spree_variants.product_id IN (?)', product_ids).select('DISTINCT enterprises.id')
+      ")
+      .joins('INNER JOIN exchange_variants ON (exchange_variants.exchange_id = exchanges.id)')
+      .joins('INNER JOIN spree_variants ON (spree_variants.id = exchange_variants.variant_id)')
+      .where('spree_variants.product_id IN (?)', product_ids).select('DISTINCT enterprises.id')
 
     where(id: exchanges)
   }
@@ -237,12 +237,12 @@ class Enterprise < ApplicationRecord
 
   def set_producer_property(property_name, property_value)
     transaction do
-      property = Spree::Property.
-        where(name: property_name).
-        first_or_create!(presentation: property_name)
-      producer_property = ProducerProperty.
-        where(producer_id: id, property_id: property.id).
-        first_or_initialize
+      property = Spree::Property
+        .where(name: property_name)
+        .first_or_create!(presentation: property_name)
+      producer_property = ProducerProperty
+        .where(producer_id: id, property_id: property.id)
+        .first_or_initialize
       producer_property.value = property_value
       producer_property.save!
     end
@@ -299,10 +299,10 @@ class Enterprise < ApplicationRecord
   end
 
   def distributed_variants
-    Spree::Variant.
-      joins(:product).
-      merge(Spree::Product.in_distributor(self)).
-      select('spree_variants.*')
+    Spree::Variant
+      .joins(:product)
+      .merge(Spree::Product.in_distributor(self))
+      .select('spree_variants.*')
   end
 
   def is_distributor
@@ -338,10 +338,10 @@ class Enterprise < ApplicationRecord
 
   # Return all taxons for all distributed products
   def distributed_taxons
-    Spree::Taxon.
-      joins(:products).
-      where('spree_products.id IN (?)', Spree::Product.in_distributor(self).select(&:id)).
-      select('DISTINCT spree_taxons.*')
+    Spree::Taxon
+      .joins(:products)
+      .where('spree_products.id IN (?)', Spree::Product.in_distributor(self).select(&:id))
+      .select('DISTINCT spree_taxons.*')
   end
 
   def current_distributed_taxons
@@ -354,10 +354,10 @@ class Enterprise < ApplicationRecord
 
   # Return all taxons for all supplied products
   def supplied_taxons
-    Spree::Taxon.
-      joins(:products).
-      where('spree_products.id IN (?)', Spree::Product.in_supplier(self).select(&:id)).
-      select('DISTINCT spree_taxons.*')
+    Spree::Taxon
+      .joins(:products)
+      .where('spree_products.id IN (?)', Spree::Product.in_supplier(self).select(&:id))
+      .select('DISTINCT spree_taxons.*')
   end
 
   def ready_for_checkout?
@@ -367,11 +367,11 @@ class Enterprise < ApplicationRecord
   def self.find_available_permalink(test_permalink)
     test_permalink = test_permalink.parameterize
     test_permalink = "my-enterprise" if test_permalink.blank?
-    existing = Enterprise.
-      select(:permalink).
-      order(:permalink).
-      where("permalink LIKE ?", "#{test_permalink}%").
-      map(&:permalink)
+    existing = Enterprise
+      .select(:permalink)
+      .order(:permalink)
+      .where("permalink LIKE ?", "#{test_permalink}%")
+      .map(&:permalink)
 
     if existing.include?(test_permalink)
       used_indices = existing.map do |p|
@@ -494,8 +494,8 @@ class Enterprise < ApplicationRecord
   # Touch distributors without them touching their distributors.
   # We avoid an infinite loop and don't need to touch the whole distributor tree.
   def touch_distributors
-    Enterprise.distributing_products(supplied_products.select(:id)).
-      where('enterprises.id != ?', id).
-      update_all(updated_at: Time.zone.now)
+    Enterprise.distributing_products(supplied_products.select(:id))
+      .where('enterprises.id != ?', id)
+      .update_all(updated_at: Time.zone.now)
   end
 end

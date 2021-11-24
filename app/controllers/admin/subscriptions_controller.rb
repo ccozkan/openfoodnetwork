@@ -162,8 +162,8 @@ module Admin
     end
 
     def subscription_params
-      @subscription_params ||= PermittedAttributes::Subscription.new(params).call.
-        to_h.with_indifferent_access
+      @subscription_params ||= PermittedAttributes::Subscription.new(params).call
+        .to_h.with_indifferent_access
     end
   end
 end

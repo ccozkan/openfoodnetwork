@@ -58,15 +58,15 @@ module Reporting
       end
 
       def boolean_blank(field, true_string = I18n.t(:yes), false_string = I18n.t(:no))
-        Case.new(sql_grouping(grouping_fields)).when(0).
-          then(pretty_boolean(field, true_string, false_string).maximum).
-          else(empty_string)
+        Case.new(sql_grouping(grouping_fields)).when(0)
+          .then(pretty_boolean(field, true_string, false_string).maximum)
+          .else(empty_string)
       end
 
       def pretty_boolean(field, true_string, false_string)
-        Case.new(field).when(true).
-          then(Arel.sql("'#{true_string}'")).
-          else(Arel.sql("'#{false_string}'"))
+        Case.new(field).when(true)
+          .then(Arel.sql("'#{true_string}'"))
+          .else(Arel.sql("'#{false_string}'"))
       end
 
       def cast(field, type)

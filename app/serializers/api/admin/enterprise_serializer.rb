@@ -39,9 +39,9 @@ module Api
 
       def tag_groups
         prioritized_tag_rules.each_with_object([]) do |tag_rule, tag_groups|
-          tag_group = find_match(tag_groups, tag_rule.preferred_customer_tags.
-                                               split(",").
-                                               map{ |t| { text: t } })
+          tag_group = find_match(tag_groups, tag_rule.preferred_customer_tags
+                                               .split(",")
+                                               .map{ |t| { text: t } })
           if tag_group[:rules].blank?
             tag_groups << tag_group
             tag_group[:position] = tag_groups.count

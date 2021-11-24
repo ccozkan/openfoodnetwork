@@ -36,9 +36,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
 
         context "where the request succeeds" do
           before do
-            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds").
-              with(basic_auth: ["sk_test_12345", ""]).
-              to_return(status: 200,
+            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds")
+              .with(basic_auth: ["sk_test_12345", ""])
+              .to_return(status: 200,
                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
           end
 
@@ -56,9 +56,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
 
         context "where the request fails" do
           before do
-            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds").
-              with(basic_auth: ["sk_test_12345", ""]).
-              to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
+            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds")
+              .with(basic_auth: ["sk_test_12345", ""])
+              .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
           end
 
           it "does not void the payment" do
@@ -95,9 +95,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
 
         context "where the request succeeds" do
           before do
-            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds").
-              with(basic_auth: ["sk_test_12345", ""]).
-              to_return(status: 200,
+            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds")
+              .with(basic_auth: ["sk_test_12345", ""])
+              .to_return(status: 200,
                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
           end
 
@@ -115,9 +115,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
 
         context "where the request fails" do
           before do
-            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds").
-              with(basic_auth: ["sk_test_12345", ""]).
-              to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
+            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1a2b3c/refunds")
+              .with(basic_auth: ["sk_test_12345", ""])
+              .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
           end
 
           it "does not void the payment" do
@@ -161,9 +161,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
             before do
               stub_payment_intent_get_request(response: { intent_status: "succeeded" })
               # Issues the refund
-              stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds").
-                with(basic_auth: ["sk_test_12345", ""]).
-                to_return(status: 200,
+              stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
+                .with(basic_auth: ["sk_test_12345", ""])
+                .to_return(status: 200,
                           body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
             end
 
@@ -182,9 +182,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
           context "where the request fails" do
             before do
               stub_payment_intent_get_request(response: { intent_status: "succeeded" })
-              stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds").
-                with(basic_auth: ["sk_test_12345", ""]).
-                to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
+              stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
+                .with(basic_auth: ["sk_test_12345", ""])
+                .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
             end
 
             it "does not void the payment" do
@@ -204,9 +204,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
             before do
               stub_payment_intent_get_request(response: { intent_status: "succeeded",
                                                           amount_refunded: 200 })
-              stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds").
-                with(basic_auth: ["sk_test_12345", ""]).
-                to_return(status: 200,
+              stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
+                .with(basic_auth: ["sk_test_12345", ""])
+                .to_return(status: 200,
                           body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
             end
 
@@ -226,9 +226,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
         context "when the payment has not been confirmed yet" do
           before do
             stub_payment_intent_get_request(response: { intent_status: "requires_action" })
-            stub_request(:post, "https://api.stripe.com/v1/payment_intents/pi_123/cancel").
-              with(basic_auth: ["sk_test_12345", ""]).
-              to_return(status: 200,
+            stub_request(:post, "https://api.stripe.com/v1/payment_intents/pi_123/cancel")
+              .with(basic_auth: ["sk_test_12345", ""])
+              .to_return(status: 200,
                         body: JSON.generate(id: 'pi_123', object: 'payment_intent',
                                             status: 'canceled') )
           end
@@ -268,9 +268,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
 
         context "where the request succeeds" do
           before do
-            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds").
-              with(basic_auth: ["sk_test_12345", ""]).
-              to_return(status: 200,
+            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
+              .with(basic_auth: ["sk_test_12345", ""])
+              .to_return(status: 200,
                         body: JSON.generate(id: 're_123', object: 'refund', status: 'succeeded') )
           end
 
@@ -288,9 +288,9 @@ describe Spree::Admin::PaymentsController, type: :controller do
 
         context "where the request fails" do
           before do
-            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds").
-              with(basic_auth: ["sk_test_12345", ""]).
-              to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
+            stub_request(:post, "https://api.stripe.com/v1/charges/ch_1234/refunds")
+              .with(basic_auth: ["sk_test_12345", ""])
+              .to_return(status: 200, body: JSON.generate(error: { message: "Bup-bow!" }) )
           end
 
           it "does not void the payment" do

@@ -34,8 +34,8 @@ module Spree
         end
 
         it "redirects to the cart with out of stock error" do
-          expect(spree_post(:confirm, payment_method_id: payment_method.id)).
-            to redirect_to cart_path
+          expect(spree_post(:confirm, payment_method_id: payment_method.id))
+            .to redirect_to cart_path
 
           order = controller.current_order.reload
 
@@ -51,8 +51,8 @@ module Spree
         end
 
         it "redirects to checkout state path" do
-          expect(spree_post(:confirm, payment_method_id: payment_method.id)).
-            to redirect_to checkout_state_path(:cart)
+          expect(spree_post(:confirm, payment_method_id: payment_method.id))
+            .to redirect_to checkout_state_path(:cart)
         end
       end
     end

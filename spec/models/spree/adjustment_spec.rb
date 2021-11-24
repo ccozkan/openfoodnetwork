@@ -563,8 +563,8 @@ module Spree
 
       describe "#update_adjustment!" do
         it "sets a negative value equal to the return authorization amount" do
-          expect { return_adjustment.update_adjustment! }.
-            to change { return_adjustment.reload.amount }.to(-123)
+          expect { return_adjustment.update_adjustment! }
+            .to change { return_adjustment.reload.amount }.to(-123)
         end
       end
     end

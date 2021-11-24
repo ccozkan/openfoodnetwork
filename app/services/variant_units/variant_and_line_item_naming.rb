@@ -16,8 +16,8 @@ module VariantUnits
                  # or: `Spree::Product.includes(variant: {option_values: :option_type})`
                  option_values.sort_by{ |o| o.option_type.position }
                else
-                 option_values.joins(:option_type).
-                   order("#{Spree::OptionType.table_name}.position asc")
+                 option_values.joins(:option_type)
+                   .order("#{Spree::OptionType.table_name}.position asc")
                end
 
       values.map { |option_value|

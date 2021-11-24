@@ -149,8 +149,8 @@ module Spree
       end
 
       def products_bulk_params
-        params.permit(products: ::PermittedAttributes::Product.attributes).
-          to_h.with_indifferent_access
+        params.permit(products: ::PermittedAttributes::Product.attributes)
+          .to_h.with_indifferent_access
       end
 
       def permitted_resource_params
@@ -164,29 +164,29 @@ module Spree
       end
 
       def load_form_data
-        @producers = OpenFoodNetwork::Permissions.new(spree_current_user).
-          managed_product_enterprises.is_primary_producer.by_name
+        @producers = OpenFoodNetwork::Permissions.new(spree_current_user)
+          .managed_product_enterprises.is_primary_producer.by_name
         @taxons = Spree::Taxon.order(:name)
         @import_dates = product_import_dates.uniq.to_json
       end
 
       def product_import_dates
         options = [{ id: '0', name: '' }]
-        product_import_dates_query.collect(&:import_date).
-          map { |i| options.push(id: i.to_date, name: i.to_date.to_formatted_s(:long)) }
+        product_import_dates_query.collect(&:import_date)
+          .map { |i| options.push(id: i.to_date, name: i.to_date.to_formatted_s(:long)) }
 
         options
       end
 
       def product_import_dates_query
-        Spree::Variant.
-          select('DISTINCT spree_variants.import_date').
-          joins(:product).
-          where('spree_products.supplier_id IN (?)', editable_enterprises.collect(&:id)).
-          where('spree_variants.import_date IS NOT NULL').
-          where(spree_variants: { is_master: false }).
-          where(spree_variants: { deleted_at: nil }).
-          order('spree_variants.import_date DESC')
+        Spree::Variant
+          .select('DISTINCT spree_variants.import_date')
+          .joins(:product)
+          .where('spree_products.supplier_id IN (?)', editable_enterprises.collect(&:id))
+          .where('spree_variants.import_date IS NOT NULL')
+          .where(spree_variants: { is_master: false })
+          .where(spree_variants: { deleted_at: nil })
+          .order('spree_variants.import_date DESC')
       end
 
       def strip_new_properties

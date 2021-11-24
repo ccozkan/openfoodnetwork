@@ -51,8 +51,8 @@ describe ProcessPaymentIntent do
 
       context "where the stripe payment intent validation responds with errors" do
         before do
-          allow(validator).to receive(:call).
-            and_raise(Stripe::StripeError, "error message")
+          allow(validator).to receive(:call)
+            .and_raise(Stripe::StripeError, "error message")
         end
 
         it "returns returns the error message" do

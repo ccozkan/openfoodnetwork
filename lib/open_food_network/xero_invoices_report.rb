@@ -5,10 +5,10 @@ module OpenFoodNetwork
     def initialize(user, opts = {}, compile_table = false)
       @user = user
 
-      @opts = opts.
-        symbolize_keys.
-        reject { |_k, v| v.blank? }.
-        reverse_merge( report_type: 'summary',
+      @opts = opts
+        .symbolize_keys
+        .reject { |_k, v| v.blank? }
+        .reverse_merge( report_type: 'summary',
                        invoice_date: Time.zone.today,
                        due_date: Time.zone.today + 1.month,
                        account_code: 'food sales' )

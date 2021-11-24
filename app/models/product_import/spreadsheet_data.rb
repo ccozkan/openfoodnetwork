@@ -47,8 +47,8 @@ module ProductImport
 
         next if @enterprises_index.key? enterprise_name
 
-        enterprise = Enterprise.select([:id, :is_primary_producer]).
-          where(name: enterprise_name).first
+        enterprise = Enterprise.select([:id, :is_primary_producer])
+          .where(name: enterprise_name).first
 
         @enterprises_index[enterprise_name] =
           { id: enterprise.try(:id), is_primary_producer: enterprise.try(:is_primary_producer) }

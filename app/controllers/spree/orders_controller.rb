@@ -42,8 +42,8 @@ module Spree
     def edit
       @order = current_order(true)
       @insufficient_stock_lines = @order.insufficient_stock_lines
-      @unavailable_order_variants = OrderCycleDistributedVariants.
-        new(current_order_cycle, current_distributor).unavailable_order_variants(@order)
+      @unavailable_order_variants = OrderCycleDistributedVariants
+        .new(current_order_cycle, current_distributor).unavailable_order_variants(@order)
 
       if @order.line_items.empty?
         redirect_to main_app.shop_path

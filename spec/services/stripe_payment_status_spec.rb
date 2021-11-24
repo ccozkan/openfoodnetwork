@@ -17,16 +17,16 @@ describe StripePaymentStatus do
       before { allow(payment).to receive(:response_code) { "pi_1234" } }
 
       it "fetches the status with Stripe::PaymentIntentValidator" do
-        expect(Stripe::PaymentIntentValidator).
-          to receive_message_chain(:new, :call, :status) { true }
+        expect(Stripe::PaymentIntentValidator)
+          .to receive_message_chain(:new, :call, :status) { true }
 
         subject.stripe_status
       end
 
       context "and the last action on the Stripe payment failed" do
         it "returns failed response" do
-          allow(Stripe::PaymentIntentValidator).
-            to receive_message_chain(:new, :call, :status).and_raise(Stripe::StripeError)
+          allow(Stripe::PaymentIntentValidator)
+            .to receive_message_chain(:new, :call, :status).and_raise(Stripe::StripeError)
 
           expect(subject.stripe_status).to eq "failed"
         end
@@ -45,8 +45,8 @@ describe StripePaymentStatus do
       before { allow(payment).to receive(:response_code) { "pi_1234" } }
 
       it "returns true" do
-        allow(Stripe::PaymentIntentValidator).
-          to receive_message_chain(:new, :call, :status) { "succeeded" }
+        allow(Stripe::PaymentIntentValidator)
+          .to receive_message_chain(:new, :call, :status) { "succeeded" }
 
         expect(subject.stripe_captured?).to eq true
       end

@@ -33,8 +33,8 @@ module Api
       end
 
       def permitted_incoming_variants
-        OpenFoodNetwork::OrderCyclePermissions.new(options[:current_user], object.order_cycle).
-          visible_variants_for_incoming_exchanges_from(object.sender)
+        OpenFoodNetwork::OrderCyclePermissions.new(options[:current_user], object.order_cycle)
+          .visible_variants_for_incoming_exchanges_from(object.sender)
       end
 
       def permitted_outgoing_variants

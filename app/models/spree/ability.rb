@@ -192,20 +192,20 @@ module Spree
       can [:create], Spree::Variant
       can [:admin, :index, :read, :edit,
            :update, :search, :delete, :destroy], Spree::Variant do |variant|
-        OpenFoodNetwork::Permissions.new(user).
-          managed_product_enterprises.include? variant.product.supplier
+        OpenFoodNetwork::Permissions.new(user)
+          .managed_product_enterprises.include? variant.product.supplier
       end
 
       can [:admin, :index, :read, :update, :bulk_update, :bulk_reset], VariantOverride do |vo|
         next false unless vo.hub.present? && vo.variant&.product&.supplier.present?
 
-        hub_auth = OpenFoodNetwork::Permissions.new(user).
-          variant_override_hubs.
-          include? vo.hub
+        hub_auth = OpenFoodNetwork::Permissions.new(user)
+          .variant_override_hubs
+          .include? vo.hub
 
-        producer_auth = OpenFoodNetwork::Permissions.new(user).
-          variant_override_producers.
-          include? vo.variant.product.supplier
+        producer_auth = OpenFoodNetwork::Permissions.new(user)
+          .variant_override_producers
+          .include? vo.variant.product.supplier
 
         hub_auth && producer_auth
       end
@@ -214,13 +214,13 @@ module Spree
         next false unless ii.enterprise.present? &&
                           ii.variant&.product&.supplier.present?
 
-        hub_auth = OpenFoodNetwork::Permissions.new(user).
-          variant_override_hubs.
-          include? ii.enterprise
+        hub_auth = OpenFoodNetwork::Permissions.new(user)
+          .variant_override_hubs
+          .include? ii.enterprise
 
-        producer_auth = OpenFoodNetwork::Permissions.new(user).
-          variant_override_producers.
-          include? ii.variant.product.supplier
+        producer_auth = OpenFoodNetwork::Permissions.new(user)
+          .variant_override_producers
+          .include? ii.variant.product.supplier
 
         hub_auth && producer_auth
       end

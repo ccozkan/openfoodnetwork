@@ -28,9 +28,9 @@ module Reporting
       end
 
       def joins_order_and_distributor
-        reflect query.
-          join(association(Spree::LineItem, :order)).
-          join(association(Spree::Order, :distributor, distributor_alias))
+        reflect query
+          .join(association(Spree::LineItem, :order))
+          .join(association(Spree::Order, :distributor, distributor_alias))
       end
 
       def joins_order_customer
@@ -42,9 +42,9 @@ module Reporting
       end
 
       def join_line_item_option_values
-        reflect query.
-          join(association(Spree::LineItem, :option_values)).
-          join(association(Spree::OptionValuesLineItem, :option_value)
+        reflect query
+          .join(association(Spree::LineItem, :option_values))
+          .join(association(Spree::OptionValuesLineItem, :option_value)
               )
       end
     end

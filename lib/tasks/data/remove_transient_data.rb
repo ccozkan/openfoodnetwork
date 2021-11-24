@@ -22,9 +22,9 @@ class RemoveTransientData
   private
 
   def clear_old_cart_data!
-    old_carts = Spree::Order.
-      where("spree_orders.state = 'cart' AND spree_orders.updated_at < ?", RETENTION_PERIOD).
-      merge(orders_without_payments)
+    old_carts = Spree::Order
+      .where("spree_orders.state = 'cart' AND spree_orders.updated_at < ?", RETENTION_PERIOD)
+      .merge(orders_without_payments)
 
     old_cart_line_items = Spree::LineItem.where(order_id: old_carts)
     old_line_item_options = Spree::OptionValuesLineItem.where(line_item_id: old_cart_line_items)
@@ -38,8 +38,8 @@ class RemoveTransientData
 
   def orders_without_payments
     # Carts with failed payments are ignored, as they contain potentially useful data
-    Spree::Order.
-      joins("LEFT OUTER JOIN spree_payments ON spree_orders.id = spree_payments.order_id").
-      where("spree_payments.id IS NULL")
+    Spree::Order
+      .joins("LEFT OUTER JOIN spree_payments ON spree_orders.id = spree_payments.order_id")
+      .where("spree_payments.id IS NULL")
   end
 end
