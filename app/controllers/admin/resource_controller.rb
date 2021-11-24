@@ -116,9 +116,7 @@ module Admin
         instance_variable_set("@#{object_name}", @object)
 
         # If we don't have access, clear the object
-        unless can? action, @object
-          instance_variable_set("@#{object_name}", nil)
-        end
+        instance_variable_set("@#{object_name}", nil) unless can? action, @object
 
         authorize! action, @object
       else

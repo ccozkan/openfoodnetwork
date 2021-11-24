@@ -30,9 +30,7 @@ module Api
       def states
         states = scope.ransack(params[:q]).result.includes(:country).order('name ASC')
 
-        if pagination?
-          _pagy, states = pagy(states)
-        end
+        _pagy, states = pagy(states) if pagination?
 
         states
       end

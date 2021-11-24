@@ -54,9 +54,7 @@ RSpec::Matchers.define :have_select2 do |id, options = {}|
       # results << no_options_present(from, options[:without_options]) if options.key? :without_options
     end
 
-    if (options.keys & %i(selected options without_options)).any?
-      raise "Not yet implemented"
-    end
+    raise "Not yet implemented" if (options.keys & %i(selected options without_options)).any?
 
     results.any?
   end

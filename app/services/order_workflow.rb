@@ -66,9 +66,7 @@ class OrderWorkflow
   end
 
   def after_transition_hook(options)
-    if order.state == "delivery"
-      order.select_shipping_method(options["shipping_method_id"])
-    end
+    order.select_shipping_method(options["shipping_method_id"]) if order.state == "delivery"
 
     persist_all_payments if order.state == "payment"
   end

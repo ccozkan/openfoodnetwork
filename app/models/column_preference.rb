@@ -58,6 +58,8 @@ column_name: column_name
   def self.filter(default_preferences, user, action_name)
     return unless action_name == 'order_cycles_index'
 
-    default_preferences.delete(:schedules) unless user.admin? || user.enterprises.where(enable_subscriptions: true).any?
+    unless user.admin? || user.enterprises.where(enable_subscriptions: true).any?
+      default_preferences.delete(:schedules)
+    end
   end
 end

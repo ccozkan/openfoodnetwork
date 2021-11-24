@@ -655,9 +655,7 @@ created_by_id: created_by_id
 
         yield payment
 
-        if payment.completed?
-          self.payment_total += payment.amount
-        end
+        self.payment_total += payment.amount if payment.completed?
       end
     end
 

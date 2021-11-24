@@ -87,9 +87,7 @@ entry,
       if entry.attributes['on_demand'].present?
         new_variant.on_demand = entry.attributes['on_demand']
       end
-      if entry.attributes['on_hand'].present?
-        new_variant.on_hand = entry.attributes['on_hand']
-      end
+      new_variant.on_hand = entry.attributes['on_hand'] if entry.attributes['on_hand'].present?
 
       new_variant.product_id = product_id
       check_on_hand_nil(entry, new_variant)

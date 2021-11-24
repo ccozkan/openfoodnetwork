@@ -53,9 +53,7 @@ module Spree
         @url_filters = ::ProductFilters.new.extract(request.query_parameters)
         destroy_before
 
-        if @object.destroy
-          flash[:success] = flash_message_for(@object, :successfully_removed)
-        end
+        flash[:success] = flash_message_for(@object, :successfully_removed) if @object.destroy
 
         redirect_to spree.admin_product_images_url(params[:product_id], @url_filters)
       end

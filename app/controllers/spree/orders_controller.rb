@@ -31,9 +31,7 @@ module Spree
     end
 
     def empty
-      if @order = current_order
-        @order.empty!
-      end
+      @order.empty! if @order = current_order
 
       redirect_to main_app.cart_path
     end

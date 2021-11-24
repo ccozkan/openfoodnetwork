@@ -78,9 +78,7 @@ module Spree
       back_order.times { shipment.set_up_inventory('backordered', variant, order) }
 
       # adding to this shipment, and removing from stock_location
-      if order.completed?
-        shipment.stock_location.unstock(variant, quantity, shipment)
-      end
+      shipment.stock_location.unstock(variant, quantity, shipment) if order.completed?
 
       quantity
     end
@@ -103,9 +101,7 @@ module Spree
       shipment.destroy if shipment.inventory_units.reload.count == 0
 
       # removing this from shipment, and adding to stock_location
-      if order.completed?
-        shipment.stock_location.restock variant, removed_quantity, shipment
-      end
+      shipment.stock_location.restock variant, removed_quantity, shipment if order.completed?
 
       removed_quantity
     end

@@ -71,7 +71,9 @@ class EmbeddedPageService
   end
 
   def enterprise_slug
-    return false unless @params[:controller] == 'enterprises' && @params[:action] == 'shop' && @params[:id]
+    unless @params[:controller] == 'enterprises' && @params[:action] == 'shop' && @params[:id]
+      return false
+    end
 
     @params[:id]
   end

@@ -169,9 +169,7 @@ module Spree
           params_for_update = base_params.merge(gateway_params)
 
           params_for_update.each do |key, value|
-            if key.include?("password") && value.blank?
-              params_for_update.delete(key)
-            end
+            params_for_update.delete(key) if key.include?("password") && value.blank?
           end
 
           params_for_update

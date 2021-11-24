@@ -131,9 +131,7 @@ incoming: incoming
     end
 
     def destroy_untouched_exchanges
-      if manages_coordinator?
-        untouched_exchanges.each(&:destroy)
-      end
+      untouched_exchanges.each(&:destroy) if manages_coordinator?
     end
 
     def untouched_exchanges

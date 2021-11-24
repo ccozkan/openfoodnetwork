@@ -30,9 +30,7 @@ class LineItemSyncer
         next
       end
 
-      unless update_quantity(line_item, sli)
-        add_order_update_issue(order, line_item)
-      end
+      add_order_update_issue(order, line_item) unless update_quantity(line_item, sli)
     end
   end
 

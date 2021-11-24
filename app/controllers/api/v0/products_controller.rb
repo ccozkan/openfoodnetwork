@@ -100,9 +100,7 @@ module Api
       def product_scope
         if current_api_user.has_spree_role?("admin") || current_api_user.enterprises.present?
           scope = Spree::Product
-          if params[:show_deleted]
-            scope = scope.with_deleted
-          end
+          scope = scope.with_deleted if params[:show_deleted]
         else
           scope = Spree::Product.active
         end

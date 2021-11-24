@@ -7,7 +7,9 @@ module ProductStock
 
   def on_demand
     if variants?
-      raise 'Cannot determine product on_demand value of product with multiple variants' if variants.size > 1
+      if variants.size > 1
+        raise 'Cannot determine product on_demand value of product with multiple variants'
+      end
 
       variants.first.on_demand
     else

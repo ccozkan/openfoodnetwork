@@ -248,9 +248,7 @@ shipping_address: order.ship_address.try(:active_merchant_hash)
             if response.cvv_result
               self.cvv_response_code = response.cvv_result['code']
               self.cvv_response_message = response.cvv_result['message']
-              if cvv_response_message.present?
-                return require_authorization!
-              end
+              return require_authorization! if cvv_response_message.present?
             end
           end
           __send__("#{success_state}!")

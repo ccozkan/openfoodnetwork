@@ -43,13 +43,9 @@ module Stripe
             zip: address.zipcode
           }
 
-          if address.country
-            hash[:country] = address.country.name
-          end
+          hash[:country] = address.country.name if address.country
 
-          if address.state
-            hash[:state] = address.state.name
-          end
+          hash[:state] = address.state.name if address.state
         end
       end
     end

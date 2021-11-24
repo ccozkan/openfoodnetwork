@@ -64,9 +64,7 @@ module Api
         else
           variants = Spree::Variant.where(nil)
           if current_api_user.has_spree_role?("admin")
-            unless params[:show_deleted]
-              variants = Spree::Variant.active
-            end
+            variants = Spree::Variant.active unless params[:show_deleted]
           else
             variants = variants.active
           end

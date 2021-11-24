@@ -21,9 +21,7 @@ module Api
               .new(object)
               .issues_summary(confirmation_only: true)
 
-          if issues.nil? && products.empty?
-            issues = I18n.t(:no_products)
-          end
+          issues = I18n.t(:no_products) if issues.nil? && products.empty?
           issues
         end
 

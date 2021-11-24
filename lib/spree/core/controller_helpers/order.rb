@@ -45,9 +45,7 @@ module Spree
             @current_order.save!
 
             # Verify that the user has access to the order (if they are a guest)
-            if spree_current_user.nil?
-              session[:access_token] = @current_order.token
-            end
+            session[:access_token] = @current_order.token if spree_current_user.nil?
           end
 
           return unless @current_order

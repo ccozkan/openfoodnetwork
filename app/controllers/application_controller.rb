@@ -133,9 +133,7 @@ rescue StandardError
   end
 
   def require_order_cycle
-    unless current_order_cycle
-      redirect_to main_app.shop_path
-    end
+    redirect_to main_app.shop_path unless current_order_cycle
   end
 
   def check_hub_ready_for_checkout

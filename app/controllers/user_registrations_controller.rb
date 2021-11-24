@@ -14,9 +14,7 @@ class UserRegistrationsController < Spree::UserRegistrationsController
   def create
     @user = build_resource(spree_user_params)
     @user.locale = I18n.locale.to_s
-    unless resource.save
-      return render_error(@user.errors)
-    end
+    return render_error(@user.errors) unless resource.save
 
     session[:confirmation_return_url] = params[:return_url]
     associate_user

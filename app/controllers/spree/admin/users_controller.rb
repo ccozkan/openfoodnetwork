@@ -27,16 +27,12 @@ only: [
       end
 
       def create
-        if params[:user]
-          roles = params[:user].delete("spree_role_ids")
-        end
+        roles = params[:user].delete("spree_role_ids") if params[:user]
 
         @user = Spree::User.new(user_params)
         if @user.save
 
-          if roles
-            @user.spree_roles = roles.reject(&:blank?).collect { |r| Spree::Role.find(r) }
-          end
+          @user.spree_roles = roles.reject(&:blank?).collect { |r| Spree::Role.find(r) } if roles
 
           flash.now[:success] = Spree.t(:created_successfully)
           render :edit
@@ -46,14 +42,10 @@ only: [
       end
 
       def update
-        if params[:user]
-          roles = params[:user].delete("spree_role_ids")
-        end
+        roles = params[:user].delete("spree_role_ids") if params[:user]
 
         if @user.update(user_params)
-          if roles
-            @user.spree_roles = roles.reject(&:blank?).collect { |r| Spree::Role.find(r) }
-          end
+          @user.spree_roles = roles.reject(&:blank?).collect { |r| Spree::Role.find(r) } if roles
 
           message =
  if new_email_unconfirmed?
@@ -67,16 +59,12 @@ only: [
       end
 
       def generate_api_key
-        if @user.generate_spree_api_key!
-          flash[:success] = t('spree.api.key_generated')
-        end
+        flash[:success] = t('spree.api.key_generated') if @user.generate_spree_api_key!
         redirect_to spree.edit_admin_user_path(@user)
       end
 
       def clear_api_key
-        if @user.clear_spree_api_key!
-          flash[:success] = t('spree.api.key_cleared')
-        end
+        flash[:success] = t('spree.api.key_cleared') if @user.clear_spree_api_key!
         redirect_to spree.edit_admin_user_path(@user)
       end
 

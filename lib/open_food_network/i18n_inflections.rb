@@ -45,9 +45,7 @@ module OpenFoodNetwork
 
       # The user may switch the locale. `I18n.t` is always using the current
       # locale and we need a lookup table for each of them.
-      unless @lookup.key?(I18n.locale)
-        @lookup[I18n.locale] = build_i18n_key_lookup
-      end
+      @lookup[I18n.locale] = build_i18n_key_lookup unless @lookup.key?(I18n.locale)
 
       @lookup[I18n.locale][word.downcase]
     end

@@ -30,17 +30,11 @@ module Api
         params[:shipment] ||= []
         unlock = params[:shipment].delete(:unlock)
 
-        if unlock == 'yes'
-          @shipment.fee_adjustment.fire_events(:open)
-        end
+        @shipment.fee_adjustment.fire_events(:open) if unlock == 'yes'
 
-        if @shipment.update(shipment_params)
-          @order.updater.update_totals_and_states
-        end
+        @order.updater.update_totals_and_states if @shipment.update(shipment_params)
 
-        if unlock == 'yes'
-          @shipment.fee_adjustment.close
-        end
+        @shipment.fee_adjustment.close if unlock == 'yes'
 
         render json: @shipment.reload, serializer: Api::ShipmentSerializer, status: :ok
       end
@@ -62,9 +56,7 @@ status: :unprocessable_entity
 
       def ship
         authorize! :read, Spree::Shipment
-        unless @shipment.shipped?
-          @shipment.ship!
-        end
+        @shipment.ship! unless @shipment.shipped?
         render json: @shipment, serializer: Api::ShipmentSerializer, status: :ok
       end
 

@@ -10,7 +10,9 @@ module Spree
       ability         = Ability.new(user)
       target          = options[:for]
       @ability_result = {}
-      ability_hash    = { ability_hash => true } if ability_hash.is_a? Symbol # e.g.: :create => {:create => true}
+      if ability_hash.is_a? Symbol
+        ability_hash    = { ability_hash => true }
+      end # e.g.: :create => {:create => true}
       if ability_hash.is_a? Array
         ability_hash =
  ability_hash.inject({}) do |member, i|

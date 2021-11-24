@@ -80,9 +80,7 @@ options
     return unless transfer_data = options[:transfer_data]
 
     post[:transfer_data] = {}
-    if transfer_data[:destination]
-      post[:transfer_data][:destination] = transfer_data[:destination]
-    end
+    post[:transfer_data][:destination] = transfer_data[:destination] if transfer_data[:destination]
     post[:transfer_data][:amount] = transfer_data[:amount] if transfer_data[:amount]
     post[:on_behalf_of] = options[:on_behalf_of] if options[:on_behalf_of]
     post[:transfer_group] = options[:transfer_group] if options[:transfer_group]

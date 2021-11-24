@@ -467,7 +467,9 @@ id
   end
 
   def set_unused_address_fields
-    address.firstname = address.lastname = address.phone = address.company = 'unused' if address.present?
+    if address.present?
+      address.firstname = address.lastname = address.phone = address.company = 'unused'
+    end
     business_address.first_name = business_address.last_name = 'unused' if business_address.present?
   end
 

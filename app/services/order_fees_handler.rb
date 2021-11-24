@@ -27,9 +27,7 @@ class OrderFeesHandler
 
   def create_line_item_fees!
     order.line_items.includes(variant: :product).each do |line_item|
-      if provided_by_order_cycle? line_item
-        calculator.create_line_item_adjustments_for line_item
-      end
+      calculator.create_line_item_adjustments_for line_item if provided_by_order_cycle? line_item
     end
   end
 

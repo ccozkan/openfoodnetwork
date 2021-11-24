@@ -147,9 +147,7 @@ module OrderManagement
       end
 
       def after_payment_update(payment)
-        if payment.completed? || payment.void?
-          update_payment_total
-        end
+        update_payment_total if payment.completed? || payment.void?
 
         if order.completed?
           update_payment_state
@@ -157,9 +155,7 @@ module OrderManagement
           update_shipment_state
         end
 
-        if payment.completed? || order.completed?
-          persist_totals
-        end
+        persist_totals if payment.completed? || order.completed?
       end
 
       private

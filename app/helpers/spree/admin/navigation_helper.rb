@@ -13,9 +13,7 @@ module Spree
       #       e.g. match_path = '/admin/orders', except_paths = ['/admin/orders/bulk_management']
       def tab(*args)
         options = { label: args.first.to_s }
-        if args.last.is_a?(Hash)
-          options = options.merge(args.last)
-        end
+        options = options.merge(args.last) if args.last.is_a?(Hash)
 
         # Return if resource is found and user is not allowed to :admin
         klass = klass_for(options[:label])
@@ -49,9 +47,7 @@ options[:label],
                    end
         css_classes << 'selected' if selected
 
-        if options[:css_class]
-          css_classes << options[:css_class]
-        end
+        css_classes << options[:css_class] if options[:css_class]
         content_tag('li', link, class: css_classes.join(' '))
       end
 
@@ -134,9 +130,7 @@ options[:label],
 
           html_options[:class] = 'button'
 
-          if html_options[:icon]
-            html_options[:class] += " #{html_options[:icon]}"
-          end
+          html_options[:class] += " #{html_options[:icon]}" if html_options[:icon]
           link_to(text_for_button_link(text, html_options), url, html_options)
         end
       end
