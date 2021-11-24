@@ -76,7 +76,7 @@ module Spree
           list_values = object.__send__("#{field}_values")
           selected_value = object.__send__(field)
           form.select(
-field, 
+field,
 options_for_select(list_values, selected_value),
                       preference_field_options(options)
 )
@@ -89,32 +89,32 @@ options_for_select(list_values, selected_value),
         field_options =
  case options[:type]
                         when :integer
-                          { 
+                          {
 size: 10,
-class: 'input_integer' 
+class: 'input_integer'
 }
                         when :boolean
                           {}
                         when :string
-                          { 
+                          {
 size: 10,
-class: 'input_string fullwidth' 
+class: 'input_string fullwidth'
 }
                         when :password
-                          { 
+                          {
 size: 10,
-class: 'password_string fullwidth' 
+class: 'password_string fullwidth'
 }
                         when :text
-                          { 
+                          {
 rows: 15,
 cols: 85,
-class: 'fullwidth' 
+class: 'fullwidth'
 }
                         else
-                          { 
+                          {
 size: 10,
-class: 'input_string fullwidth' 
+class: 'input_string fullwidth'
 }
                         end
 
@@ -138,7 +138,7 @@ class: 'input_string fullwidth'
           preference_field = preference_field_for(
             form,
             "preferred_#{key}",
-            { type: object.preference_type(key) }, 
+            { type: object.preference_type(key) },
 object
           ).html_safe
           { label: preference_label, field: preference_field }
@@ -164,10 +164,10 @@ object
         options[:class] = '' unless options[:class]
         options[:class] += 'no-text with-tip' if options[:no_text]
 
-        html_options = { 
+        html_options = {
 class: "remove_fields #{options[:class]}",
 data: { action: 'remove' },
-title: t(:remove) 
+title: t(:remove)
 }
         html_options.merge!(options[:html]) if options.key? :html
 

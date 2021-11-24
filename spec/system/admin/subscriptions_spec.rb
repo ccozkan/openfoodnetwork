@@ -22,9 +22,9 @@ describe 'Subscriptions' do
       let!(:customer) { create(:customer, name: "Customer A") }
       let!(:other_subscription) {
         create(
-:subscription, 
-shop: shop, 
-customer: customer, 
+:subscription,
+shop: shop,
+customer: customer,
 with_items: true,
                with_proxy_orders: true
 )
@@ -48,7 +48,7 @@ with_items: true,
         click_link 'Orders'
         click_link 'Subscriptions'
 
-        expect(page).to have_select2 "shop_id", 
+        expect(page).to have_select2 "shop_id",
 with_options: [shop.name, shop2.name],
                                                 without_options: [shop_unmanaged.name]
 
@@ -201,19 +201,19 @@ with_options: [shop.name, shop2.name],
       let!(:customer_user) { create(:user) }
       let!(:credit_card1) {
         create(
-:stored_credit_card, 
-user: customer_user, 
-cc_type: 'visa', 
-last_digits: 1111, 
+:stored_credit_card,
+user: customer_user,
+cc_type: 'visa',
+last_digits: 1111,
 month: 10,
                      year: 2030
 )
       }
       let!(:customer) {
         create(
-:customer, 
-enterprise: shop, 
-bill_address: address, 
+:customer,
+enterprise: shop,
+bill_address: address,
 user: customer_user,
            allow_charges: true
 )
@@ -229,16 +229,16 @@ user: customer_user,
       let!(:enterprise_fee) { create(:enterprise_fee, amount: 1.75) }
       let!(:order_cycle) {
         create(
-:simple_order_cycle, 
-coordinator: shop, 
+:simple_order_cycle,
+coordinator: shop,
 orders_open_at: 2.days.from_now,
                      orders_close_at: 7.days.from_now
 )
       }
       let!(:outgoing_exchange) {
         order_cycle.exchanges.create(
-sender: shop, 
-receiver: shop, 
+sender: shop,
+receiver: shop,
 variants: [test_variant, shop_variant],
 enterprise_fees: [enterprise_fee]
 )
@@ -396,16 +396,16 @@ enterprise_fees: [enterprise_fee]
       let!(:enterprise_fee) { create(:enterprise_fee, amount: 1.75) }
       let!(:order_cycle) {
         create(
-:simple_order_cycle, 
-coordinator: shop, 
+:simple_order_cycle,
+coordinator: shop,
 orders_open_at: 2.days.from_now,
                      orders_close_at: 7.days.from_now
 )
       }
       let!(:outgoing_exchange) {
         order_cycle.exchanges.create(
-sender: shop, 
-receiver: shop, 
+sender: shop,
+receiver: shop,
 variants: [variant1, variant2],
 enterprise_fees: [enterprise_fee]
 )
@@ -413,8 +413,8 @@ enterprise_fees: [enterprise_fee]
       let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
       let!(:variant3_oc) {
         create(
-:simple_order_cycle, 
-coordinator: shop, 
+:simple_order_cycle,
+coordinator: shop,
 orders_open_at: 2.days.from_now,
                      orders_close_at: 7.days.from_now
 )
@@ -552,8 +552,8 @@ create(:subscription_line_item, variant: variant1, quantity: 2, price_estimate: 
       let!(:permitted_supplier) do
         create(:supplier_enterprise).tap do |supplier|
           create(
-:enterprise_relationship, 
-child: shop, 
+:enterprise_relationship,
+child: shop,
 parent: supplier,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -567,9 +567,9 @@ parent: supplier,
       let!(:incoming_exchange_variant) do
         create(:variant, product: incoming_exchange_product, unit_value: "2000").tap do |variant|
           create(
-:exchange, 
-order_cycle: order_cycle, 
-incoming: true, 
+:exchange,
+order_cycle: order_cycle,
+incoming: true,
 receiver: shop,
            variants: [variant]
 )
@@ -579,9 +579,9 @@ receiver: shop,
       let!(:outgoing_exchange_variant) do
         create(:variant, product: outgoing_exchange_product, unit_value: "2000").tap do |variant|
           create(
-:exchange, 
-order_cycle: order_cycle, 
-incoming: false, 
+:exchange,
+order_cycle: order_cycle,
+incoming: false,
 receiver: shop,
            variants: [variant]
 )

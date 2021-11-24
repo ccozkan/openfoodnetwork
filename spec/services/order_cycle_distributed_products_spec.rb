@@ -16,7 +16,7 @@ describe OrderCycleDistributedProducts do
       it "returns products" do
         expect(
 described_class.new(
-distributor, 
+distributor,
 order_cycle,
                                    customer
 ).products_relation
@@ -36,7 +36,7 @@ order_cycle,
       it "does not return product" do
         expect(
 described_class.new(
-distributor, 
+distributor,
 order_cycle,
                                    customer
 ).products_relation
@@ -53,7 +53,7 @@ order_cycle,
       it "does not return product" do
         expect(
 described_class.new(
-distributor, 
+distributor,
 order_cycle,
                                    customer
 ).products_relation
@@ -66,7 +66,7 @@ order_cycle,
         it "returns product when variant is in stock" do
           expect(
 described_class.new(
-distributor, 
+distributor,
 order_cycle,
                                      customer
 ).products_relation
@@ -77,7 +77,7 @@ order_cycle,
           variant.update_attribute(:on_hand, 0)
           expect(
 described_class.new(
-distributor, 
+distributor,
 order_cycle,
                                      customer
 ).products_relation
@@ -93,7 +93,7 @@ order_cycle,
         it "does not return product when an override is out of stock" do
           expect(
 described_class.new(
-distributor, 
+distributor,
 order_cycle,
                                      customer
 ).products_relation
@@ -105,7 +105,7 @@ order_cycle,
           override.update_attribute(:count_on_hand, 10)
           expect(
 described_class.new(
-distributor, 
+distributor,
 order_cycle,
                                      customer
 ).products_relation

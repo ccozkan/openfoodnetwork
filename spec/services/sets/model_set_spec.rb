@@ -23,11 +23,11 @@ EnterpriseRelationshipPermission,
       e1 = create(:enterprise_group)
       e2 = create(:enterprise_group)
 
-      attrs = { 
-collection_attributes: { 
+      attrs = {
+collection_attributes: {
 '1' => { id: e1.id, name: 'e1zz', description: 'foo' },
-'2' => { id: e2.id, name: 'e2yy', description: 'bar' } 
-} 
+'2' => { id: e2.id, name: 'e2yy', description: 'bar' }
+}
 }
 
       ms = Sets::ModelSet.new(EnterpriseGroup, EnterpriseGroup.all, attrs)
@@ -42,17 +42,17 @@ collection_attributes: {
       e1 = create(:enterprise)
       e2 = create(:enterprise)
 
-      attributes = { 
-collection_attributes: { 
+      attributes = {
+collection_attributes: {
 '1' => { id: e1.id, name: 'deleteme' },
-'2' => { id: e2.id, name: 'e2' } 
-} 
+'2' => { id: e2.id, name: 'e2' }
+}
 }
 
       ms = Sets::ModelSet.new(
-Enterprise, 
-Enterprise.all, 
-attributes, 
+Enterprise,
+Enterprise.all,
+attributes,
 nil,
                               proc { |attrs| attrs['name'] == 'deleteme' }
 )
@@ -68,9 +68,9 @@ nil,
       attributes = { collection_attributes: { '1' => { name: 'deleteme' } } }
 
       ms = Sets::ModelSet.new(
-Enterprise, 
-Enterprise.all, 
-attributes, 
+Enterprise,
+Enterprise.all,
+attributes,
 nil,
                               proc { |attrs| attrs[:name] == 'deleteme' }
 )

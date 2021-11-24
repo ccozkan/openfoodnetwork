@@ -7,7 +7,7 @@ class Schedule < ApplicationRecord
   has_many :order_cycles, through: :order_cycle_schedules
   has_many :coordinators, -> { distinct }, through: :order_cycles
 
-  scope :with_coordinator, 
+  scope :with_coordinator,
 lambda { |enterprise|
                              joins(:order_cycles).where('coordinator_id = ?', enterprise.id).select('DISTINCT schedules.*')
                            }

@@ -35,7 +35,7 @@ describe ProductTagRulesFilterer do
              enterprise: distributor,
              preferred_variant_tags: "hide_these_variants",
              preferred_customer_tags: "hide_from_these_customers",
-             preferred_matched_variants_visibility: "hidden" 
+             preferred_matched_variants_visibility: "hidden"
 )
     }
     let!(:show_rule) {
@@ -44,7 +44,7 @@ describe ProductTagRulesFilterer do
              enterprise: distributor,
              preferred_variant_tags: "show_these_variants",
              preferred_customer_tags: "show_for_these_customers",
-             preferred_matched_variants_visibility: "visible" 
+             preferred_matched_variants_visibility: "visible"
 )
     }
     let!(:non_applicable_rule) {
@@ -53,7 +53,7 @@ describe ProductTagRulesFilterer do
              enterprise: distributor,
              preferred_variant_tags: "hide_these_other_variants",
              preferred_customer_tags: "hide_from_other_customers",
-             preferred_matched_variants_visibility: "hidden" 
+             preferred_matched_variants_visibility: "hidden"
 )
     }
     let(:filterer) { described_class.new(distributor, customer, variants_relation) }

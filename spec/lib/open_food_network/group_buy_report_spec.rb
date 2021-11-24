@@ -9,8 +9,8 @@ module OpenFoodNetwork
       @orders = []
       bill_address = create(:address)
       distributor_address = create(
-:address, 
-address1: "distributor address", 
+:address,
+address1: "distributor address",
 city: 'The Shire',
           zipcode: "1234"
 )
@@ -25,8 +25,8 @@ city: 'The Shire',
       shipping_instructions = "pick up on thursday please!"
 
       order1 = create(
-:order, 
-distributor: distributor, 
+:order,
+distributor: distributor,
 bill_address: bill_address,
         special_instructions: shipping_instructions
 )
@@ -34,8 +34,8 @@ bill_address: bill_address,
       @orders << order1.reload
 
       order2 = create(
-:order, 
-distributor: distributor, 
+:order,
+distributor: distributor,
 bill_address: bill_address,
         special_instructions: shipping_instructions
 )
@@ -54,8 +54,8 @@ bill_address: bill_address,
       @variant3.product.save!
 
       order3 = create(
-:order, 
-distributor: distributor, 
+:order,
+distributor: distributor,
 bill_address: bill_address,
         special_instructions: shipping_instructions
 )
@@ -68,12 +68,12 @@ bill_address: bill_address,
       header = subject.header
       expect(header).to eq(
 [
-"Supplier", 
-"Product", 
-"Unit Size", 
-"Variant", 
+"Supplier",
+"Product",
+"Unit Size",
+"Variant",
 "Weight",
-                            "Total Ordered", 
+                            "Total Ordered",
 "Total Max"
 ]
 )
@@ -95,12 +95,12 @@ bill_address: bill_address,
 
       expect(table[0]).to eq(
 [
-@variant1.product.supplier.name, 
-@variant1.product.name, 
+@variant1.product.supplier.name,
+@variant1.product.name,
 "UNITSIZE",
-                              @variant1.options_text, 
-@variant1.weight, 
-sum_quantities, 
+                              @variant1.options_text,
+@variant1.weight,
+sum_quantities,
 sum_max_quantities
 ]
 )

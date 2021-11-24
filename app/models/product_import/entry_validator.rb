@@ -73,13 +73,13 @@ entry,
     def mark_as_new_variant(entry, product_id)
       new_variant = Spree::Variant.new(
         entry.assignable_attributes.except(
-'id', 
-'product_id', 
-'on_hand', 
+'id',
+'product_id',
+'on_hand',
 'on_demand',
-                                           'variant_unit', 
+                                           'variant_unit',
 'variant_unit_name',
-                                           'variant_unit_scale', 
+                                           'variant_unit_scale',
 'primary_taxon_id'
 )
       )
@@ -176,7 +176,7 @@ entry,
 
       unless entry.units&.present?
         mark_as_invalid(
-entry, 
+entry,
 attribute: 'units',
        error: I18n.t('admin.product_import.model.blank')
 )
@@ -189,7 +189,7 @@ attribute: 'units',
         unit_type = entry.unit_type.to_s.strip.downcase
         unless unit_types.include?(unit_type)
           mark_as_invalid(
-entry, 
+entry,
 attribute: 'unit_type',
        error: I18n.t('admin.product_import.model.incorrect_value')
 )
@@ -201,7 +201,7 @@ attribute: 'unit_type',
       return if entry.variant_unit_name&.present?
 
       mark_as_invalid(
-entry, 
+entry,
 attribute: 'variant_unit_name',
        error: I18n.t('admin.product_import.model.conditional_blank')
 )
@@ -237,7 +237,7 @@ attribute: 'variant_unit_name',
 
       if producer_name.blank?
         mark_as_invalid(
-entry, 
+entry,
 attribute: "producer",
        error: I18n.t('admin.product_import.model.blank')
 )
@@ -247,7 +247,7 @@ attribute: "producer",
       unless @spreadsheet_data.producers_index[producer_name]
         model_not_found = I18n.t('admin.product_import.model.not_found')
         mark_as_invalid(
-entry, 
+entry,
 attribute: "producer",
        error: "\"#{producer_name}\" #{model_not_found}"
 )
@@ -261,7 +261,7 @@ attribute: "producer",
 
         inventory_no_permission = I18n.t('admin.product_import.model.inventory_no_permission')
         mark_as_invalid(
-entry, 
+entry,
 attribute: "producer",
        error: "\"#{producer_name}\": #{inventory_no_permission}"
 )
@@ -280,7 +280,7 @@ deleted_at: nil
 
       if products.empty?
         mark_as_invalid(
-entry, 
+entry,
 attribute: 'name',
        error: I18n.t('admin.product_import.model.no_product')
 )
@@ -299,7 +299,7 @@ attribute: 'name',
       end
 
       mark_as_invalid(
-entry, 
+entry,
 attribute: 'product',
        error: I18n.t('admin.product_import.model.not_found')
 )
@@ -322,7 +322,7 @@ attribute: 'product',
         entry.primary_taxon_id = @spreadsheet_data.categories_index[category_name]
       else
         mark_as_invalid(
-entry, 
+entry,
 attribute: "category",
        error: I18n.t(:error_not_found_in_database, name: category_name)
 )
@@ -336,7 +336,7 @@ attribute: "category",
         entry.public_send("#{type}_category_id=", index[category])
       else
         mark_as_invalid(
-entry, 
+entry,
 attribute: "#{type}_category",
        error: I18n.t('admin.product_import.model.not_found')
 )
@@ -392,11 +392,11 @@ deleted_at: nil
     def mark_as_existing_variant(entry, existing_variant)
       existing_variant.assign_attributes(
         entry.assignable_attributes.except(
-'id', 
-'product_id', 
-'variant_unit', 
+'id',
+'product_id',
+'variant_unit',
 'variant_unit_name',
-                                           'variant_unit_scale', 
+                                           'variant_unit_scale',
 'primary_taxon_id'
 )
       )
@@ -419,7 +419,7 @@ deleted_at: nil
         next if ignore_when_updating_product?(attribute)
 
         mark_as_invalid(
-entry, 
+entry,
 attribute: display_name,
        error: I18n.t('admin.product_import.model.not_updatable')
 )
@@ -473,7 +473,7 @@ attribute: display_name,
 
     def mark_as_not_updatable(entry, attribute)
       mark_as_invalid(
-entry, 
+entry,
 attribute: attribute,
        error: I18n.t("admin.product_import.model.not_updatable")
 )

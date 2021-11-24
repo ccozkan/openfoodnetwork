@@ -11,13 +11,13 @@ describe Api::V0::VariantsController, type: :controller do
   let!(:variant3) { FactoryBot.create(:variant) }
   let(:attributes) {
     [
-:id, 
-:options_text, 
-:price, 
-:on_hand, 
-:unit_value, 
-:unit_description, 
-:on_demand, 
+:id,
+:options_text,
+:price,
+:on_hand,
+:unit_value,
+:unit_description,
+:on_demand,
 :display_as,
      :display_name
 ]
@@ -145,7 +145,7 @@ describe Api::V0::VariantsController, type: :controller do
 
     it "can create a new variant" do
       original_number_of_variants = variant.product.variants.count
-      api_post :create, 
+      api_post :create,
 variant: { sku: "12345", unit_value: "1", unit_description: "L" },
                         product_id: variant.product.to_param
 

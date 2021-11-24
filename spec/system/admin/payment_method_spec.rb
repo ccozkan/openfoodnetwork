@@ -40,14 +40,14 @@ describe ' As a Super Admin I want to be able to set a distributor on each payme
       }
       let!(:valid_stripe_account) {
         create(
-:stripe_account, 
+:stripe_account,
 enterprise: connected_enterprise,
                  stripe_user_id: "acc_connected123"
 )
       }
       let!(:disconnected_stripe_account) {
         create(
-:stripe_account, 
+:stripe_account,
 enterprise: revoked_account_enterprise,
                  stripe_user_id: "acc_revoked123"
 )
@@ -126,7 +126,7 @@ missing_account_enterprise,
 
   it "updating a payment method", js: true do
     payment_method = create(
-:payment_method, 
+:payment_method,
 distributors: [@distributors[0]],
                  calculator: build(:calculator_flat_rate)
 )

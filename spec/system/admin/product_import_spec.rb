@@ -15,8 +15,8 @@ describe "Product Import", js: true do
   let!(:enterprise2) { create(:distributor_enterprise, owner: user2, name: "Another Enterprise") }
   let!(:relationship) {
     create(
-:enterprise_relationship, 
-parent: enterprise, 
+:enterprise_relationship,
+parent: enterprise,
 child: enterprise2,
                           permissions_list: [:create_variant_overrides]
 )
@@ -31,22 +31,22 @@ child: enterprise2,
   let!(:product) { create(:simple_product, supplier: enterprise2, name: 'Hypothetical Cake') }
   let!(:variant) {
     create(
-:variant, 
-product_id: product.id, 
-price: '8.50', 
-on_hand: 100, 
+:variant,
+product_id: product.id,
+price: '8.50',
+on_hand: 100,
 unit_value: '500',
           display_name: 'Preexisting Banana'
 )
   }
   let!(:product2) {
     create(
-:simple_product, 
-supplier: enterprise, 
-on_hand: 100, 
-name: 'Beans', 
+:simple_product,
+supplier: enterprise,
+on_hand: 100,
+name: 'Beans',
 unit_value: '500',
-                 description: '', 
+                 description: '',
 primary_taxon_id: category.id
 )
   }
@@ -61,16 +61,16 @@ primary_taxon_id: category.id
   }
   let!(:variant_override) {
     create(
-:variant_override, 
-variant_id: product4.variants.first.id, 
+:variant_override,
+variant_id: product4.variants.first.id,
 hub: enterprise2,
                    count_on_hand: 42
 )
   }
   let!(:variant_override2) {
     create(
-:variant_override, 
-variant_id: product5.variants.first.id, 
+:variant_override,
+variant_id: product5.variants.first.id,
 hub: enterprise,
                    count_on_hand: 96
 )
@@ -89,32 +89,32 @@ hub: enterprise,
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
                 "shipping_category_id"
 ]
         csv << [
-"Carrots", 
-"User Enterprise", 
-"Vegetables", 
-"5", 
-"3.20", 
-"500", 
+"Carrots",
+"User Enterprise",
+"Vegetables",
+"5",
+"3.20",
+"500",
 "g",
                 shipping_category_id_str
 ]
         csv << [
-"Potatoes", 
-"User Enterprise", 
-"Vegetables", 
-"6", 
-"6.50", 
-"1", 
+"Potatoes",
+"User Enterprise",
+"Vegetables",
+"6",
+"6.50",
+"1",
 "kg",
                 shipping_category_id_str
 ]
@@ -160,42 +160,42 @@ hub: enterprise,
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
                 "shipping_category_id"
 ]
         csv << [
-"Carrots", 
-"User Enterprise", 
-"Vegetables", 
-"5", 
-"3.20", 
-"500", 
+"Carrots",
+"User Enterprise",
+"Vegetables",
+"5",
+"3.20",
+"500",
 "g",
                 shipping_category_id_str
 ]
         csv << [
-"Carrots", 
-"User Enterprise", 
-"Vegetables", 
-"5", 
-"5.50", 
-"1", 
+"Carrots",
+"User Enterprise",
+"Vegetables",
+"5",
+"5.50",
+"1",
 "kg",
                 shipping_category_id_str
 ]
         csv << [
-"Bad Carrots", 
-"Unkown Enterprise", 
-"Mouldy vegetables", 
-"666", 
-"3.20", 
-"", 
+"Bad Carrots",
+"Unkown Enterprise",
+"Mouldy vegetables",
+"666",
+"3.20",
+"",
 "g",
                 shipping_category_id_str
 ]
@@ -223,25 +223,25 @@ hub: enterprise,
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
-                "tax_category", 
+                "tax_category",
 "shipping_category"
 ]
         csv << [
-"Carrots", 
-"User Enterprise", 
-"Vegetables", 
-"5", 
-"3.20", 
-"500", 
+"Carrots",
+"User Enterprise",
+"Vegetables",
+"5",
+"3.20",
+"500",
 "g",
-                tax_category.name, 
+                tax_category.name,
 shipping_category.name
 ]
       end
@@ -273,32 +273,32 @@ shipping_category.name
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
                 "shipping_category_id"
 ]
         csv << [
-"Carrots", 
-"User Enterprise", 
-"Vegetables", 
-"5", 
-"3.20", 
-"500", 
+"Carrots",
+"User Enterprise",
+"Vegetables",
+"5",
+"3.20",
+"500",
 "g",
                 shipping_category_id_str
 ]
         csv << [
-"Potatoes", 
-"User Enterprise", 
-"Vegetables", 
-"6", 
-"6.50", 
-"1", 
+"Potatoes",
+"User Enterprise",
+"Vegetables",
+"6",
+"6.50",
+"1",
 "kg",
                 shipping_category_id_str
 ]
@@ -347,22 +347,22 @@ shipping_category.name
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
                 "shipping_category_id"
 ]
         csv << [
-"Carrots", 
-"User Enterprise", 
-"Vegetables", 
-"500", 
-"3.20", 
-"500", 
+"Carrots",
+"User Enterprise",
+"Vegetables",
+"500",
+"3.20",
+"500",
 "g",
                 shipping_category_id_str
 ]
@@ -393,46 +393,46 @@ shipping_category.name
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
-                "display_name", 
+                "display_name",
 "shipping_category_id"
 ]
         csv << [
-"Potatoes", 
-"User Enterprise", 
-"Vegetables", 
-"5", 
-"3.50", 
-"500", 
-"g", 
+"Potatoes",
+"User Enterprise",
+"Vegetables",
+"5",
+"3.50",
+"500",
+"g",
 "Small Bag",
                 shipping_category_id_str
 ]
         csv << [
-"Potatoes", 
-"User Enterprise", 
-"Vegetables", 
-"6", 
-"5.50", 
-"2000", 
-"g", 
+"Potatoes",
+"User Enterprise",
+"Vegetables",
+"6",
+"5.50",
+"2000",
+"g",
 "Big Bag",
                 shipping_category_id_str
 ]
         csv << [
-"Beans", 
-"User Enterprise", 
-"Vegetables", 
-"7", 
-"2.50", 
-"250", 
-"g", 
+"Beans",
+"User Enterprise",
+"Vegetables",
+"7",
+"2.50",
+"250",
+"g",
 nil,
                 shipping_category_id_str
 ]
@@ -473,20 +473,20 @@ nil,
         csv << ["name", "distributor", "producer", "category", "on_hand", "price", "units"]
         csv << ["Beans", "Another Enterprise", "User Enterprise", "Vegetables", "5", "3.20", "500"]
         csv << [
-"Sprouts", 
-"Another Enterprise", 
-"User Enterprise", 
-"Vegetables", 
-"6", 
+"Sprouts",
+"Another Enterprise",
+"User Enterprise",
+"Vegetables",
+"6",
 "6.50",
                 "500"
 ]
         csv << [
-"Cabbage", 
-"Another Enterprise", 
-"User Enterprise", 
-"Vegetables", 
-"2001", 
+"Cabbage",
+"Another Enterprise",
+"User Enterprise",
+"Vegetables",
+"2001",
 "1.50",
                 "500"
 ]
@@ -550,35 +550,35 @@ hub_id: enterprise2.id
 
     it "handles a unit of kg for inventory import" do
       product = create(
-:simple_product, 
-supplier: enterprise, 
-on_hand: 100, 
+:simple_product,
+supplier: enterprise,
+on_hand: 100,
 name: 'Beets',
-                 unit_value: '1000', 
+                 unit_value: '1000',
 variant_unit_scale: 1000
 )
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"distributor", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
+"name",
+"distributor",
+"producer",
+"category",
+"on_hand",
+"price",
 "unit_type",
-                "units", 
+                "units",
 "on_demand"
 ]
         csv << [
-"Beets", 
-"Another Enterprise", 
-"User Enterprise", 
-"Vegetables", 
-nil, 
-"3.20", 
+"Beets",
+"Another Enterprise",
+"User Enterprise",
+"Vegetables",
+nil,
+"3.20",
 "kg",
-                "1", 
+                "1",
 "true"
 ]
       end
@@ -611,39 +611,39 @@ nil,
 
     it "handles the Items unit for inventory import" do
       product = create(
-:simple_product, 
-supplier: enterprise, 
-on_hand: nil, 
+:simple_product,
+supplier: enterprise,
+on_hand: nil,
 name: 'Aubergine',
-                 unit_value: '1', 
-variant_unit_scale: nil, 
-variant_unit: "items", 
+                 unit_value: '1',
+variant_unit_scale: nil,
+variant_unit: "items",
 variant_unit_name: "Bag"
 )
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"distributor", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
+"name",
+"distributor",
+"producer",
+"category",
+"on_hand",
+"price",
 "unit_type",
-                "units", 
-"on_demand", 
+                "units",
+"on_demand",
 "variant_unit_name"
 ]
         csv << [
-"Aubergine", 
-"Another Enterprise", 
-"User Enterprise", 
-"Vegetables", 
-"", 
+"Aubergine",
+"Another Enterprise",
+"User Enterprise",
+"Vegetables",
+"",
 "3.3",
-                "kg", 
-"1", 
-"true", 
+                "kg",
+"1",
+"true",
 "Bag"
 ]
       end
@@ -674,43 +674,43 @@ variant_unit_name: "Bag"
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"distributor", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
+"name",
+"distributor",
+"producer",
+"category",
+"on_hand",
+"price",
 "units",
                 "on_demand"
 ]
         csv << [
-"Beans", 
-"Another Enterprise", 
-"User Enterprise", 
-"Vegetables", 
-nil, 
-"3.20", 
+"Beans",
+"Another Enterprise",
+"User Enterprise",
+"Vegetables",
+nil,
+"3.20",
 "500",
                 "true"
 ]
         csv << [
-"Sprouts", 
-"Another Enterprise", 
-"User Enterprise", 
-"Vegetables", 
-"6", 
+"Sprouts",
+"Another Enterprise",
+"User Enterprise",
+"Vegetables",
+"6",
 "6.50",
-                "500", 
+                "500",
 "false"
 ]
         csv << [
-"Cabbage", 
-"Another Enterprise", 
-"User Enterprise", 
-"Vegetables", 
-nil, 
+"Cabbage",
+"Another Enterprise",
+"User Enterprise",
+"Vegetables",
+nil,
 "1.50",
-                "500", 
+                "500",
 nil
 ]
       end
@@ -763,32 +763,32 @@ hub_id: enterprise2.id
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
                 "shipping_category_id"
 ]
         csv << [
-"Carrots", 
-"User Enterprise", 
-"Vegetables", 
-"5", 
-"3.20", 
-"1", 
+"Carrots",
+"User Enterprise",
+"Vegetables",
+"5",
+"3.20",
+"1",
 "lb",
                 shipping_category_id_str
 ]
         csv << [
-"Potatoes", 
-"User Enterprise", 
-"Vegetables", 
-"6", 
-"6.50", 
-"8", 
+"Potatoes",
+"User Enterprise",
+"Vegetables",
+"6",
+"6.50",
+"8",
 "oz",
                 shipping_category_id_str
 ]
@@ -826,24 +826,24 @@ hub_id: enterprise2.id
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
-                "variant_unit_name", 
+                "variant_unit_name",
 "shipping_category_id"
 ]
         csv << [
-"Cupcake", 
-"User Enterprise", 
-"Cake", 
-"5", 
-"2.2", 
-"1", 
-"", 
+"Cupcake",
+"User Enterprise",
+"Cake",
+"5",
+"2.2",
+"1",
+"",
 "Bunch",
                 shipping_category_id_str
 ]
@@ -884,23 +884,23 @@ hub_id: enterprise2.id
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
                 "shipping_category_id"
 ]
         csv << [
-"Heavy Carrots", 
-"Unkown Enterprise", 
-"Mouldy vegetables", 
-"666", 
-"3.20", 
+"Heavy Carrots",
+"Unkown Enterprise",
+"Mouldy vegetables",
+"666",
+"3.20",
 "1",
-                "stones", 
+                "stones",
 shipping_category_id_str
 ]
       end
@@ -991,32 +991,32 @@ I18n.t(
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
                 "shipping_category_id"
 ]
         csv << [
-"My Carrots", 
-"User Enterprise", 
-"Vegetables", 
-"5", 
-"3.20", 
-"500", 
+"My Carrots",
+"User Enterprise",
+"Vegetables",
+"5",
+"3.20",
+"500",
 "g",
                 shipping_category_id_str
 ]
         csv << [
-"Your Potatoes", 
-"Another Enterprise", 
-"Vegetables", 
-"6", 
-"6.50", 
-"1", 
+"Your Potatoes",
+"Another Enterprise",
+"Vegetables",
+"6",
+"6.50",
+"1",
 "kg",
                 shipping_category_id_str
 ]

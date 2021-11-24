@@ -20,16 +20,16 @@ describe "Packing Reports", js: true do
     let(:distributor) { create(:distributor_enterprise, address: distributor_address) }
     let(:order1) {
       create(
-:completed_order_with_totals, 
-line_items_count: 0, 
+:completed_order_with_totals,
+line_items_count: 0,
 distributor: distributor,
                               bill_address: bill_address1
 )
     }
     let(:order2) {
       create(
-:completed_order_with_totals, 
-line_items_count: 0, 
+:completed_order_with_totals,
+line_items_count: 0,
 distributor: distributor,
                               bill_address: bill_address2
 )
@@ -61,14 +61,14 @@ distributor: distributor,
         expect(table).to eq(
 [
                               [
-"Hub", 
-"Code", 
-"First Name", 
-"Last Name", 
+"Hub",
+"Code",
+"First Name",
+"Last Name",
 "Supplier",
-                               "Product", 
-"Variant", 
-"Quantity", 
+                               "Product",
+"Variant",
+"Quantity",
 "TempControlled?"
 ].map(&:upcase)
                             ]
@@ -107,14 +107,14 @@ distributor: distributor,
         expect(table).to eq(
 [
                               [
-"Hub", 
-"Supplier", 
-"Code", 
-"First Name", 
+"Hub",
+"Supplier",
+"Code",
+"First Name",
 "Last Name",
-                               "Product", 
-"Variant", 
-"Quantity", 
+                               "Product",
+"Variant",
+"Quantity",
 "TempControlled?"
 ].map(&:upcase)
                             ]
@@ -129,10 +129,10 @@ distributor: distributor,
     let(:oc) { create(:simple_order_cycle) }
     let(:order) {
       create(
-:completed_order_with_totals, 
-line_items_count: 0, 
+:completed_order_with_totals,
+line_items_count: 0,
 completed_at: 1.day.ago,
-                              order_cycle: oc, 
+                              order_cycle: oc,
 distributor: distributor
 )
     }

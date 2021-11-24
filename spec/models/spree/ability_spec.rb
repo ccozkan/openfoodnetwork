@@ -332,8 +332,8 @@ describe Spree::Ability do
 
     let(:er_ps) {
       create(
-:enterprise_relationship, 
-parent: s_related, 
+:enterprise_relationship,
+parent: s_related,
 child: s1,
                           permissions_list: [:manage_products]
 )
@@ -397,16 +397,16 @@ child: s1,
         is_expected.to have_ability([:create], for: Spree::Variant)
         is_expected.to have_ability(
           [
-:admin, 
-:index, 
-:read, 
-:create, 
-:edit, 
-:search, 
-:update, 
+:admin,
+:index,
+:read,
+:create,
+:edit,
+:search,
+:update,
 :destroy,
            :delete
-], 
+],
 for: p1.master
         )
       end
@@ -420,14 +420,14 @@ for: p1.master
       it "should be able to read/write their enterprises' product properties" do
         is_expected.to have_ability(
           [
-:admin, 
-:index, 
-:read, 
-:create, 
-:edit, 
+:admin,
+:index,
+:read,
+:create,
+:edit,
 :update_positions,
            :destroy
-], 
+],
 for: Spree::ProductProperty
         )
       end
@@ -453,14 +453,14 @@ for: Spree::ProductProperty
       it "should be able to read/write their enterprises' producer properties" do
         is_expected.to have_ability(
           [
-:admin, 
-:index, 
-:read, 
-:create, 
-:edit, 
+:admin,
+:index,
+:read,
+:create,
+:edit,
 :update_positions,
            :destroy
-], 
+],
 for: ProducerProperty
         )
       end
@@ -484,14 +484,14 @@ for: ProducerProperty
       it "should be able to read some reports" do
         is_expected.to have_ability(
           [
-:admin, 
-:index, 
-:customers, 
-:bulk_coop, 
-:orders_and_fulfillment, 
+:admin,
+:index,
+:customers,
+:bulk_coop,
+:orders_and_fulfillment,
 :products_and_inventory,
            :order_cycle_management
-], 
+],
 for: Spree::Admin::ReportsController
         )
       end
@@ -501,12 +501,12 @@ for: Spree::Admin::ReportsController
       it "should not be able to read other reports" do
         is_expected.not_to have_ability(
           [
-:group_buys, 
-:payments, 
-:orders_and_distributors, 
+:group_buys,
+:payments,
+:orders_and_distributors,
 :users_and_enterprises,
            :xero_invoices
-], 
+],
 for: Spree::Admin::ReportsController
         )
       end
@@ -543,9 +543,9 @@ for: Spree::Admin::ReportsController
           let!(:order_cycle) { create(:simple_order_cycle) }
           let!(:exchange) {
             create(
-:exchange, 
-incoming: true, 
-order_cycle: order_cycle, 
+:exchange,
+incoming: true,
+order_cycle: order_cycle,
 receiver: order_cycle.coordinator,
            sender: s1
 )
@@ -598,8 +598,8 @@ receiver: order_cycle.coordinator,
         let!(:d_related) { create(:distributor_enterprise) }
         let!(:er_pd) {
           create(
-:enterprise_relationship, 
-parent: d_related, 
+:enterprise_relationship,
+parent: d_related,
 child: d1,
                           permissions_list: [:edit_profile]
 )
@@ -608,15 +608,15 @@ child: d1,
         it "should be able to edit enterprises it manages" do
           is_expected.to have_ability(
             [
-:read, 
-:edit, 
-:update, 
-:remove_logo, 
-:remove_promo_image, 
+:read,
+:edit,
+:update,
+:remove_logo,
+:remove_promo_image,
 :remove_terms_and_conditions,
-             :bulk_update, 
+             :bulk_update,
 :resend_confirmation
-], 
+],
 for: d1
           )
         end
@@ -624,15 +624,15 @@ for: d1
         it "should be able to edit enterprises it has permission to" do
           is_expected.to have_ability(
             [
-:read, 
-:edit, 
-:update, 
-:remove_logo, 
-:remove_promo_image, 
+:read,
+:edit,
+:update,
+:remove_logo,
+:remove_promo_image,
 :remove_terms_and_conditions,
-             :bulk_update, 
+             :bulk_update,
 :resend_confirmation
-], 
+],
 for: d_related
           )
         end
@@ -646,10 +646,10 @@ for: d_related
         it "should not be able to manage shipping methods, payment methods and enterprise fees for enterprises it has edit profile permission to" do
           is_expected.not_to have_ability(
             [
-:manage_shipping_methods, 
+:manage_shipping_methods,
 :manage_payment_methods,
              :manage_enterprise_fees
-], 
+],
 for: d_related
           )
         end
@@ -663,8 +663,8 @@ for: d_related
 
         let!(:er1) {
           create(
-:enterprise_relationship, 
-parent: s1, 
+:enterprise_relationship,
+parent: s1,
 child: d1,
                           permissions_list: [:create_variant_overrides]
 )
@@ -779,19 +779,19 @@ child: d1,
       it "should be able to read some reports" do
         is_expected.to have_ability(
           [
-:admin, 
-:index, 
-:customers, 
-:sales_tax, 
-:group_buys, 
-:bulk_coop, 
+:admin,
+:index,
+:customers,
+:sales_tax,
+:group_buys,
+:bulk_coop,
 :payments,
-           :orders_and_distributors, 
-:orders_and_fulfillment, 
-:products_and_inventory, 
-:order_cycle_management, 
+           :orders_and_distributors,
+:orders_and_fulfillment,
+:products_and_inventory,
+:order_cycle_management,
 :xero_invoices
-], 
+],
 for: Spree::Admin::ReportsController
         )
       end
@@ -813,9 +813,9 @@ for: Spree::Admin::ReportsController
         let!(:order_cycle) { create(:simple_order_cycle, coordinator: d2) }
         let!(:exchange) {
           create(
-:exchange, 
-incoming: false, 
-order_cycle: order_cycle, 
+:exchange,
+incoming: false,
+order_cycle: order_cycle,
 receiver: d1,
            sender: order_cycle.coordinator
 )
@@ -869,15 +869,15 @@ receiver: d1,
       it "should be able to read/write EnterpriseFees" do
         is_expected.to have_ability(
           [
-:admin, 
-:index, 
-:read, 
-:create, 
-:edit, 
-:bulk_update, 
+:admin,
+:index,
+:read,
+:create,
+:edit,
+:bulk_update,
 :destroy,
            :for_order_cycle
-], 
+],
 for: EnterpriseFee
         )
       end
@@ -985,8 +985,8 @@ for: EnterpriseFee
       let!(:unauthorized_enterprise) do
         create(:enterprise, sells: "any").tap do |record|
           create(
-:enterprise_relationship, 
-parent: producer, 
+:enterprise_relationship,
+parent: producer,
 child: record,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -1003,8 +1003,8 @@ child: record,
       let!(:authorized_enterprise) do
         create(:enterprise, sells: "any").tap do |record|
           create(
-:enterprise_relationship, 
-parent: producer, 
+:enterprise_relationship,
+parent: producer,
 child: record,
                           permissions_list: [:create_variant_overrides]
 )
@@ -1020,8 +1020,8 @@ child: record,
         let!(:authorized_enterprise) do
           create(:enterprise, sells: "none").tap do |record|
             create(
-:enterprise_relationship, 
-parent: producer, 
+:enterprise_relationship,
+parent: producer,
 child: record,
                           permissions_list: [:create_variant_overrides]
 )

@@ -180,8 +180,8 @@ describe Spree::Admin::ProductsController, type: :controller do
       let(:distributor) { create(:distributor_enterprise) }
       let!(:order_cycle) {
         create(
-:simple_order_cycle, 
-variants: [product.variants.first], 
+:simple_order_cycle,
+variants: [product.variants.first],
 coordinator: distributor,
                      distributors: [distributor]
 )

@@ -108,15 +108,15 @@ module Admin
     def variant_overrides_params
       params.permit(
         variant_overrides: [
-          :id, 
-:variant_id, 
+          :id,
+:variant_id,
 :hub_id,
-          :price, 
-:count_on_hand, 
-:sku, 
+          :price,
+:count_on_hand,
+:sku,
 :on_demand,
-          :default_stock, 
-:resettable, 
+          :default_stock,
+:resettable,
 :tag_list
         ]
       ).to_h[:variant_overrides]

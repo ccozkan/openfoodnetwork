@@ -36,31 +36,31 @@ class Exchange < ApplicationRecord
   scope :to_enterprise, lambda { |enterprise| where(receiver_id: enterprise) }
   scope :from_enterprises, lambda { |enterprises| where('exchanges.sender_id IN (?)', enterprises) }
   scope :to_enterprises, lambda { |enterprises| where('exchanges.receiver_id IN (?)', enterprises) }
-  scope :involving, 
+  scope :involving,
 lambda { |enterprises|
     where('exchanges.receiver_id IN (?) OR exchanges.sender_id IN (?)', enterprises, enterprises)
       .select('DISTINCT exchanges.*')
   }
-  scope :supplying_to, 
+  scope :supplying_to,
 lambda { |distributor|
     where('exchanges.incoming OR exchanges.receiver_id = ?', distributor)
   }
-  scope :with_variant, 
+  scope :with_variant,
 lambda { |variant|
     joins(:exchange_variants).where('exchange_variants.variant_id = ?', variant)
   }
-  scope :with_any_variant, 
+  scope :with_any_variant,
 lambda { |variant_ids|
     joins(:exchange_variants)
       .where(exchange_variants: { variant_id: variant_ids })
       .select('DISTINCT exchanges.*')
   }
-  scope :with_product, 
+  scope :with_product,
 lambda { |product|
     joins(:exchange_variants)
       .where('exchange_variants.variant_id IN (?)', product.variants_including_master.select(&:id))
   }
-  scope :by_enterprise_name, 
+  scope :by_enterprise_name,
 -> {
     joins('INNER JOIN enterprises AS sender   ON (sender.id   = exchanges.sender_id)')
       .joins('INNER JOIN enterprises AS receiver ON (receiver.id = exchanges.receiver_id)')
@@ -68,7 +68,7 @@ lambda { |product|
   }
 
   # Exchanges on order cycles that are dated and are upcoming or open are cached
-  scope :cachable, 
+  scope :cachable,
 -> {
     outgoing
       .joins(:order_cycle)
@@ -76,7 +76,7 @@ lambda { |product|
       .merge(OrderCycle.not_closed)
   }
 
-  scope :managed_by, 
+  scope :managed_by,
 lambda { |user|
     if user.has_spree_role?('admin')
       where(nil)

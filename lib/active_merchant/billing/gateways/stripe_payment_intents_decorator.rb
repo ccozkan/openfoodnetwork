@@ -66,7 +66,7 @@ ActiveMerchant::Billing::StripePaymentIntentsGateway.class_eval do
     commit(
 :post,
            "payment_methods/#{params[:payment_method]}/attach",
-           { customer: customer_id }, 
+           { customer: customer_id },
 options
 )
     # else

@@ -41,8 +41,8 @@ module OpenFoodNetwork
         context "where P-OC has been granted to the coordinator by other enterprises" do
           before do
             create(
-:enterprise_relationship, 
-parent: hub, 
+:enterprise_relationship,
+parent: hub,
 child: coordinator,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -69,18 +69,18 @@ child: coordinator,
           context "where the other enterprise are already in the order cycle" do
             let!(:ex_incoming) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: producer, 
+:exchange,
+order_cycle: oc,
+sender: producer,
 receiver: coordinator,
            incoming: true
 )
             }
             let!(:ex_outgoing) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -119,8 +119,8 @@ receiver: hub,
         context "that has granted P-OC to the coordinator" do
           before do
             create(
-:enterprise_relationship, 
-parent: hub, 
+:enterprise_relationship,
+parent: hub,
 child: coordinator,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -129,9 +129,9 @@ child: coordinator,
           context "where my hub is in the order cycle" do
             let!(:ex_outgoing) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -146,8 +146,8 @@ receiver: hub,
             context "and has been granted P-OC by a producer" do
               before do
                 create(
-:enterprise_relationship, 
-parent: producer, 
+:enterprise_relationship,
+parent: producer,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -156,9 +156,9 @@ child: hub,
               context "where the producer is in the order cycle" do
                 let!(:ex_incoming) {
                   create(
-:exchange, 
-order_cycle: oc, 
-sender: producer, 
+:exchange,
+order_cycle: oc,
+sender: producer,
 receiver: coordinator,
            incoming: true
 )
@@ -183,8 +183,8 @@ receiver: coordinator,
             context "and has granted P-OC to a producer" do
               before do
                 create(
-:enterprise_relationship, 
-parent: hub, 
+:enterprise_relationship,
+parent: hub,
 child: producer,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -193,9 +193,9 @@ child: producer,
               context "where the producer is in the order cycle" do
                 let!(:ex_incoming) {
                   create(
-:exchange, 
-order_cycle: oc, 
-sender: producer, 
+:exchange,
+order_cycle: oc,
+sender: producer,
 receiver: coordinator,
            incoming: true
 )
@@ -237,9 +237,9 @@ receiver: coordinator,
           context "but is already in the order cycle" do
             let!(:ex) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -275,8 +275,8 @@ receiver: hub,
         context "which has granted P-OC to the coordinator" do
           before do
             create(
-:enterprise_relationship, 
-parent: producer, 
+:enterprise_relationship,
+parent: producer,
 child: coordinator,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -285,9 +285,9 @@ child: coordinator,
           context "where my producer is in the order cycle" do
             let!(:ex_incoming) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: producer, 
+:exchange,
+order_cycle: oc,
+sender: producer,
 receiver: coordinator,
            incoming: true
 )
@@ -302,8 +302,8 @@ receiver: coordinator,
             context "and has been granted P-OC by a hub" do
               before do
                 create(
-:enterprise_relationship, 
-parent: hub, 
+:enterprise_relationship,
+parent: hub,
 child: producer,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -312,9 +312,9 @@ child: producer,
               context "where the hub is also in the order cycle" do
                 let!(:ex_outgoing) {
                   create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -340,8 +340,8 @@ receiver: hub,
             context "and has granted P-OC to a hub" do
               before do
                 create(
-:enterprise_relationship, 
-parent: producer, 
+:enterprise_relationship,
+parent: producer,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -350,9 +350,9 @@ child: hub,
               context "where the hub is also in the order cycle" do
                 let!(:ex_outgoing) {
                   create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -395,9 +395,9 @@ receiver: hub,
           context "but is already in the order cycle" do
             let!(:ex_incoming) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: producer, 
+:exchange,
+order_cycle: oc,
+sender: producer,
 receiver: coordinator,
            incoming: true
 )
@@ -413,9 +413,9 @@ receiver: coordinator,
             context "and has variants distributed by an outgoing hub" do
               let!(:ex_outgoing) {
                 create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -443,9 +443,9 @@ receiver: hub,
       describe "as the manager of the coordinator" do
         let!(:ex_in) {
           create(
-:exchange, 
-order_cycle: oc, 
-sender: producer, 
+:exchange,
+order_cycle: oc,
+sender: producer,
 receiver: coordinator,
            incoming: true
 )
@@ -468,9 +468,9 @@ receiver: coordinator,
       describe "as the manager of a hub" do
         let!(:ex_in) {
           create(
-:exchange, 
-order_cycle: oc, 
-sender: producer, 
+:exchange,
+order_cycle: oc,
+sender: producer,
 receiver: coordinator,
            incoming: true
 )
@@ -492,8 +492,8 @@ receiver: coordinator,
           context "where my hub has been granted P-OC by an incoming producer" do
             before do
               create(
-:enterprise_relationship, 
-parent: producer, 
+:enterprise_relationship,
+parent: producer,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -546,9 +546,9 @@ child: hub,
         context "where my producer supplies to the order cycle" do
           let!(:ex_in) {
             create(
-:exchange, 
-order_cycle: oc, 
-sender: producer, 
+:exchange,
+order_cycle: oc,
+sender: producer,
 receiver: coordinator,
            incoming: true
 )
@@ -561,8 +561,8 @@ receiver: coordinator,
           context "my producer has granted P-OC to an outgoing hub" do
             before do
               create(
-:enterprise_relationship, 
-parent: producer, 
+:enterprise_relationship,
+parent: producer,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -596,9 +596,9 @@ child: hub,
             context "where my producer supplies to the order cycle" do
               let!(:ex_in) {
                 create(
-:exchange, 
-order_cycle: oc, 
-sender: producer, 
+:exchange,
+order_cycle: oc,
+sender: producer,
 receiver: coordinator,
            incoming: true
 )
@@ -658,8 +658,8 @@ receiver: coordinator,
           before do
             allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
             create(
-:enterprise_relationship, 
-parent: producer1, 
+:enterprise_relationship,
+parent: producer1,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -668,9 +668,9 @@ child: hub,
           context "where the hub is in the order cycle" do
             let!(:ex) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -701,8 +701,8 @@ receiver: hub,
                                     Enterprise.where(id: [coordinator])
                                   }
             create(
-:enterprise_relationship, 
-parent: producer1, 
+:enterprise_relationship,
+parent: producer1,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -734,9 +734,9 @@ child: hub,
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
             let!(:ex) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -756,8 +756,8 @@ receiver: hub,
           before do
             allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
             create(
-:enterprise_relationship, 
-parent: producer1, 
+:enterprise_relationship,
+parent: producer1,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -783,9 +783,9 @@ child: hub,
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
             let!(:ex) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -807,8 +807,8 @@ receiver: hub,
                                     Enterprise.where(id: [producer1])
                                   }
             create(
-:enterprise_relationship, 
-parent: producer1, 
+:enterprise_relationship,
+parent: producer1,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -817,9 +817,9 @@ child: hub,
           context "where my producer is in the order cycle" do
             let!(:ex) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: producer1, 
+:exchange,
+order_cycle: oc,
+sender: producer1,
 receiver: coordinator,
            incoming: true
 )
@@ -848,8 +848,8 @@ receiver: coordinator,
                                     Enterprise.where(id: [producer2])
                                   }
             create(
-:enterprise_relationship, 
-parent: producer1, 
+:enterprise_relationship,
+parent: producer1,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -863,9 +863,9 @@ child: hub,
           context "but which has variants already in the exchange" do
             let!(:ex) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -924,8 +924,8 @@ receiver: hub,
           before do
             allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
             create(
-:enterprise_relationship, 
-parent: producer1, 
+:enterprise_relationship,
+parent: producer1,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -945,8 +945,8 @@ child: hub,
                                     Enterprise.where(id: [coordinator])
                                   }
             create(
-:enterprise_relationship, 
-parent: producer1, 
+:enterprise_relationship,
+parent: producer1,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -978,9 +978,9 @@ child: hub,
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
             let!(:ex) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -1000,8 +1000,8 @@ receiver: hub,
           before do
             allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
             create(
-:enterprise_relationship, 
-parent: producer1, 
+:enterprise_relationship,
+parent: producer1,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -1027,9 +1027,9 @@ child: hub,
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
             let!(:ex) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )
@@ -1051,8 +1051,8 @@ receiver: hub,
                                     Enterprise.where(id: [producer1])
                                   }
             create(
-:enterprise_relationship, 
-parent: producer1, 
+:enterprise_relationship,
+parent: producer1,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -1061,9 +1061,9 @@ child: hub,
           context "where my producer is in the order cycle" do
             let!(:ex) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: producer1, 
+:exchange,
+order_cycle: oc,
+sender: producer1,
 receiver: coordinator,
            incoming: true
 )
@@ -1072,8 +1072,8 @@ receiver: coordinator,
             context "where the outgoing hub has granted P-OC to my producer" do
               before do
                 create(
-:enterprise_relationship, 
-parent: hub, 
+:enterprise_relationship,
+parent: hub,
 child: producer1,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -1112,8 +1112,8 @@ child: producer1,
                                     Enterprise.where(id: [producer2])
                                   }
             create(
-:enterprise_relationship, 
-parent: producer1, 
+:enterprise_relationship,
+parent: producer1,
 child: hub,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -1127,9 +1127,9 @@ child: hub,
           context "but which has variants already in the exchange" do
             let!(:ex) {
               create(
-:exchange, 
-order_cycle: oc, 
-sender: coordinator, 
+:exchange,
+order_cycle: oc,
+sender: coordinator,
 receiver: hub,
            incoming: false
 )

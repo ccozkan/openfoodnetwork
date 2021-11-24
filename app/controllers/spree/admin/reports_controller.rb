@@ -28,7 +28,7 @@ module Spree
 
       before_action :cache_search_state
       # Fetches user's distributors, suppliers and order_cycles
-      before_action :load_basic_data, 
+      before_action :load_basic_data,
 only: [:customers, :products_and_inventory, :order_cycle_management]
       before_action :load_associated_data, only: [:orders_and_fulfillment]
 
@@ -46,7 +46,7 @@ only: [:customers, :products_and_inventory, :order_cycle_management]
       def customers
         @report_types = report_types[:customers]
         @report_type = params[:report_type]
-        @report = OpenFoodNetwork::CustomersReport.new spree_current_user, 
+        @report = OpenFoodNetwork::CustomersReport.new spree_current_user,
 raw_params,
                                                        render_content?
         render_report(@report.header, @report.table, params[:csv], "customers_#{timestamp}.csv")
@@ -65,8 +65,8 @@ raw_params,
         @table = @report.table_items
 
         render_report(
-@report.header, 
-@table, 
+@report.header,
+@table,
 params[:csv],
                       "order_cycle_management_#{timestamp}.csv"
 )
@@ -84,7 +84,7 @@ params[:csv],
       def sales_tax
         @distributors = my_distributors
         @report_type = params[:report_type]
-        @report = OpenFoodNetwork::SalesTaxReport.new spree_current_user, 
+        @report = OpenFoodNetwork::SalesTaxReport.new spree_current_user,
 raw_params,
                                                       render_content?
         render_report(@report.header, @report.table, params[:csv], "sales_tax.csv")
@@ -96,7 +96,7 @@ raw_params,
         @report_type = params[:report_type]
 
         # -- Build Report with Order Grouper
-        @report = OpenFoodNetwork::PaymentsReport.new spree_current_user, 
+        @report = OpenFoodNetwork::PaymentsReport.new spree_current_user,
 raw_params,
                                                       render_content?
         @table = order_grouper_table
@@ -145,8 +145,8 @@ raw_params,
       def users_and_enterprises
         @report = OpenFoodNetwork::UsersAndEnterprisesReport.new raw_params, render_content?
         render_report(
-@report.header, 
-@report.table, 
+@report.header,
+@report.table,
 params[:csv],
                       "users_and_enterprises_#{timestamp}.csv"
 )
@@ -313,9 +313,9 @@ spree_current_user,
 
       def orders_and_fulfillment_default_filters
         now = Time.zone.now
-        { 
+        {
 completed_at_gt: (now - 1.month).beginning_of_day,
-completed_at_lt: (now + 1.day).beginning_of_day 
+completed_at_lt: (now + 1.day).beginning_of_day
 }
       end
     end

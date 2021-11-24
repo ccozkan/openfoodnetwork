@@ -13,16 +13,16 @@ describe ProductImport::ProductImporter do
   }
   let!(:enterprise2) {
     create(
-:distributor_enterprise, 
-is_primary_producer: true, 
+:distributor_enterprise,
+is_primary_producer: true,
 owner: user2,
                          name: "Another Enterprise"
 )
   }
   let!(:enterprise3) {
     create(
-:distributor_enterprise, 
-is_primary_producer: true, 
+:distributor_enterprise,
+is_primary_producer: true,
 owner: user3,
                          name: "And Another Enterprise"
 )
@@ -32,8 +32,8 @@ owner: user3,
   }
   let!(:relationship) {
     create(
-:enterprise_relationship, 
-parent: enterprise, 
+:enterprise_relationship,
+parent: enterprise,
 child: enterprise2,
                           permissions_list: [:create_variant_overrides]
 )
@@ -49,147 +49,147 @@ child: enterprise2,
 
   let!(:product) {
     create(
-:simple_product, 
-supplier: enterprise2, 
-name: 'Hypothetical Cake', 
+:simple_product,
+supplier: enterprise2,
+name: 'Hypothetical Cake',
 description: nil,
                  primary_taxon_id: category2.id
 )
   }
   let!(:variant) {
     create(
-:variant, 
-product_id: product.id, 
-price: '8.50', 
-on_hand: '100', 
+:variant,
+product_id: product.id,
+price: '8.50',
+on_hand: '100',
 unit_value: '500',
           display_name: 'Preexisting Banana'
 )
   }
   let!(:product2) {
     create(
-:simple_product, 
-supplier: enterprise, 
-on_hand: '100', 
-name: 'Beans', 
+:simple_product,
+supplier: enterprise,
+on_hand: '100',
+name: 'Beans',
 unit_value: '500',
-                 primary_taxon_id: category.id, 
+                 primary_taxon_id: category.id,
 description: nil
 )
   }
   let!(:product3) {
     create(
-:simple_product, 
-supplier: enterprise, 
-on_hand: '100', 
-name: 'Sprouts', 
+:simple_product,
+supplier: enterprise,
+on_hand: '100',
+name: 'Sprouts',
 unit_value: '500',
                  primary_taxon_id: category.id
 )
   }
   let!(:product4) {
     create(
-:simple_product, 
-supplier: enterprise, 
-on_hand: '100', 
-name: 'Cabbage', 
+:simple_product,
+supplier: enterprise,
+on_hand: '100',
+name: 'Cabbage',
 unit_value: '1',
-                 variant_unit_scale: nil, 
-variant_unit: "items", 
-variant_unit_name: "Whole", 
+                 variant_unit_scale: nil,
+variant_unit: "items",
+variant_unit_name: "Whole",
 primary_taxon_id: category.id
 )
   }
   let!(:product5) {
     create(
-:simple_product, 
-supplier: enterprise2, 
-on_hand: '100', 
-name: 'Lettuce', 
+:simple_product,
+supplier: enterprise2,
+on_hand: '100',
+name: 'Lettuce',
 unit_value: '500',
                  primary_taxon_id: category.id
 )
   }
   let!(:product6) {
     create(
-:simple_product, 
-supplier: enterprise3, 
-on_hand: '100', 
+:simple_product,
+supplier: enterprise3,
+on_hand: '100',
 name: 'Beetroot',
-                 unit_value: '500', 
-on_demand: true, 
-variant_unit_scale: 1, 
-variant_unit: 'weight', 
-primary_taxon_id: category.id, 
+                 unit_value: '500',
+on_demand: true,
+variant_unit_scale: 1,
+variant_unit: 'weight',
+primary_taxon_id: category.id,
 description: nil
 )
   }
   let!(:product7) {
     create(
-:simple_product, 
-supplier: enterprise3, 
-on_hand: '100', 
-name: 'Tomato', 
+:simple_product,
+supplier: enterprise3,
+on_hand: '100',
+name: 'Tomato',
 unit_value: '500',
-                 variant_unit_scale: 1, 
-variant_unit: 'weight', 
-primary_taxon_id: category.id, 
+                 variant_unit_scale: 1,
+variant_unit: 'weight',
+primary_taxon_id: category.id,
 description: nil
 )
   }
 
   let!(:product8) {
     create(
-:simple_product, 
-supplier: enterprise, 
-on_hand: '100', 
-name: 'Oats', 
+:simple_product,
+supplier: enterprise,
+on_hand: '100',
+name: 'Oats',
 description: "",
-                 unit_value: '500', 
-variant_unit_scale: 1, 
-variant_unit: 'weight', 
+                 unit_value: '500',
+variant_unit_scale: 1,
+variant_unit: 'weight',
 primary_taxon_id: category4.id
 )
   }
   let!(:product9) {
     create(
-:simple_product, 
-supplier: enterprise, 
-on_hand: '100', 
-name: 'Oats', 
+:simple_product,
+supplier: enterprise,
+on_hand: '100',
+name: 'Oats',
 description: "",
-                 unit_value: '500', 
-variant_unit_scale: 1, 
-variant_unit: 'weight', 
+                 unit_value: '500',
+variant_unit_scale: 1,
+variant_unit: 'weight',
 primary_taxon_id: category4.id
 )
   }
   let!(:variant2) {
     create(
-:variant, 
-product_id: product8.id, 
-price: '4.50', 
-on_hand: '100', 
+:variant,
+product_id: product8.id,
+price: '4.50',
+on_hand: '100',
 unit_value: '500',
           display_name: 'Porridge Oats'
 )
   }
   let!(:variant3) {
     create(
-:variant, 
-product_id: product8.id, 
-price: '5.50', 
-on_hand: '100', 
+:variant,
+product_id: product8.id,
+price: '5.50',
+on_hand: '100',
 unit_value: '500',
           display_name: 'Rolled Oats'
 )
   }
   let!(:variant4) {
     create(
-:variant, 
-product_id: product9.id, 
-price: '6.50', 
-on_hand: '100', 
+:variant,
+product_id: product9.id,
+price: '6.50',
+on_hand: '100',
 unit_value: '500',
           display_name: 'Flaked Oats'
 )
@@ -197,16 +197,16 @@ unit_value: '500',
 
   let!(:variant_override) {
     create(
-:variant_override, 
-variant_id: product4.variants.first.id, 
+:variant_override,
+variant_id: product4.variants.first.id,
 hub: enterprise2,
                    count_on_hand: 42
 )
   }
   let!(:variant_override2) {
     create(
-:variant_override, 
-variant_id: product5.variants.first.id, 
+:variant_override,
+variant_id: product5.variants.first.id,
 hub: enterprise,
                    count_on_hand: 96
 )
@@ -222,74 +222,74 @@ hub: enterprise,
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
-                "variant_unit_name", 
-"on_demand", 
+                "variant_unit_name",
+"on_demand",
 "shipping_category"
 ]
         csv << [
-"Carrots", 
-enterprise.name, 
-"Vegetables", 
-"5", 
-"3.20", 
-"500", 
-"g", 
-"", 
+"Carrots",
+enterprise.name,
+"Vegetables",
+"5",
+"3.20",
+"500",
+"g",
+"",
 "",
                 shipping_category.name
 ]
         csv << [
-"Potatoes", 
-enterprise.name, 
-"Vegetables", 
-"6", 
-"6.50", 
-"2", 
-"kg", 
-"", 
+"Potatoes",
+enterprise.name,
+"Vegetables",
+"6",
+"6.50",
+"2",
+"kg",
+"",
 "",
                 shipping_category.name
 ]
         csv << [
-"Pea Soup", 
-enterprise.name, 
-"Vegetables", 
-"8", 
-"5.50", 
-"750", 
-"ml", 
-"", 
+"Pea Soup",
+enterprise.name,
+"Vegetables",
+"8",
+"5.50",
+"750",
+"ml",
+"",
 "0",
                 shipping_category.name
 ]
         csv << [
-"Salad", 
-enterprise.name, 
-"Vegetables", 
-"7", 
-"4.50", 
-"1", 
-"", 
-"bags", 
+"Salad",
+enterprise.name,
+"Vegetables",
+"7",
+"4.50",
+"1",
+"",
+"bags",
 "",
                 shipping_category.name
 ]
         csv << [
-"Hot Cross Buns", 
-enterprise.name, 
-"Cake", 
-"7", 
-"3.50", 
-"1", 
-"", 
-"buns", 
+"Hot Cross Buns",
+enterprise.name,
+"Cake",
+"7",
+"3.50",
+"1",
+"",
+"buns",
 "1",
                 shipping_category.name
 ]
@@ -374,22 +374,22 @@ enterprise.name,
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
                 "shipping_category"
 ]
         csv << [
-"Good Carrots", 
-enterprise.name, 
-"Vegetables", 
-"5", 
-"3.20", 
-"500", 
+"Good Carrots",
+enterprise.name,
+"Vegetables",
+"5",
+"3.20",
+"500",
 "g",
                 shipping_category.name
 ]
@@ -451,26 +451,26 @@ I18n.t(
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
-                "variant_unit_name", 
-"on_demand", 
+                "variant_unit_name",
+"on_demand",
 "shipping_category"
 ]
         csv << [
-"Shipping Test", 
-enterprise.name, 
-"Vegetables", 
-"5", 
-"3.20", 
-"500", 
-"g", 
-"", 
+"Shipping Test",
+enterprise.name,
+"Vegetables",
+"5",
+"3.20",
+"500",
+"g",
+"",
 nil,
                 nil
 ]
@@ -509,36 +509,36 @@ nil,
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
-                "display_name", 
+                "display_name",
 "shipping_category"
 ]
         csv << [
-"Hypothetical Cake", 
-enterprise2.name, 
-"Cake", 
-"5", 
-"5.50", 
-"500", 
+"Hypothetical Cake",
+enterprise2.name,
+"Cake",
+"5",
+"5.50",
+"500",
 "g",
-                "Preexisting Banana", 
+                "Preexisting Banana",
 shipping_category.name
 ]
         csv << [
-"Hypothetical Cake", 
-enterprise2.name, 
-"Cake", 
-"6", 
-"3.50", 
-"500", 
+"Hypothetical Cake",
+enterprise2.name,
+"Cake",
+"6",
+"3.50",
+"500",
 "g",
-                "Emergent Coffee", 
+                "Emergent Coffee",
 shipping_category.name
 ]
       end
@@ -581,27 +581,27 @@ shipping_category.name
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"description", 
-"category", 
-"on_hand", 
-"price", 
+"name",
+"producer",
+"description",
+"category",
+"on_hand",
+"price",
 "units",
-                "unit_type", 
-"display_name", 
+                "unit_type",
+"display_name",
 "shipping_category"
 ]
         csv << [
-"Hypothetical Cake", 
-enterprise2.name, 
-"New Description", 
-"Cake", 
-"5", 
+"Hypothetical Cake",
+enterprise2.name,
+"New Description",
+"Cake",
+"5",
 "5.50",
-                "500", 
-"g", 
-"Preexisting Banana", 
+                "500",
+"g",
+"Preexisting Banana",
 shipping_category.name
 ]
       end
@@ -622,68 +622,68 @@ shipping_category.name
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
-                "display_name", 
+                "display_name",
 "shipping_category"
 ]
         csv << [
-"Potatoes", 
-enterprise.name, 
-"Vegetables", 
-"5", 
-"3.50", 
-"500", 
-"g", 
+"Potatoes",
+enterprise.name,
+"Vegetables",
+"5",
+"3.50",
+"500",
+"g",
 "Small Bag",
                 shipping_category.name
 ]
         csv << [
-"Chives", 
-enterprise.name, 
-"Vegetables", 
-"6", 
-"4.50", 
-"500", 
-"g", 
+"Chives",
+enterprise.name,
+"Vegetables",
+"6",
+"4.50",
+"500",
+"g",
 "Bunch",
                 shipping_category.name
 ]
         csv << [
-"Potatoes", 
-enterprise.name, 
-"Vegetables", 
-"6", 
-"5.50", 
-"2", 
-"kg", 
+"Potatoes",
+enterprise.name,
+"Vegetables",
+"6",
+"5.50",
+"2",
+"kg",
 "Big Bag",
                 shipping_category.name
 ]
         csv << [
-"Potatoes", 
-enterprise.name, 
-"Vegetables", 
-"6", 
-"22.00", 
-"10000", 
+"Potatoes",
+enterprise.name,
+"Vegetables",
+"6",
+"22.00",
+"10000",
 "g",
-                "Small Sack", 
+                "Small Sack",
 shipping_category.name
 ]
         csv << [
-"Potatoes", 
-enterprise.name, 
-"Vegetables", 
-"6", 
-"60.00", 
-"30000", 
-"", 
+"Potatoes",
+enterprise.name,
+"Vegetables",
+"6",
+"60.00",
+"30000",
+"",
 "Big Sack",
                 shipping_category.name
 ]
@@ -730,38 +730,38 @@ enterprise.name,
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
-                "on_demand", 
-"sku", 
+                "on_demand",
+"sku",
 "shipping_category"
 ]
         csv << [
-"Beetroot", 
-enterprise3.name, 
-"Vegetables", 
-"5", 
-"3.50", 
-"500", 
-"g", 
-"0", 
+"Beetroot",
+enterprise3.name,
+"Vegetables",
+"5",
+"3.50",
+"500",
+"g",
+"0",
 nil,
                 shipping_category.name
 ]
         csv << [
-"Tomato", 
-enterprise3.name, 
-"Vegetables", 
-"6", 
-"5.50", 
-"500", 
-"g", 
-"1", 
+"Tomato",
+enterprise3.name,
+"Vegetables",
+"6",
+"5.50",
+"500",
+"g",
+"1",
 "TOMS",
                 shipping_category.name
 ]
@@ -824,15 +824,15 @@ enterprise3.name,
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"description", 
-"on_hand", 
-"price", 
+"name",
+"producer",
+"category",
+"description",
+"on_hand",
+"price",
 "units",
-                "unit_type", 
-"display_name", 
+                "unit_type",
+"display_name",
 "shipping_category"
 ]
         csv << ["Oats", enterprise.name, "Cereal", "", "50", "3.50", "500", "g", "Rolled Oats", shipping_category.name]   # Update
@@ -871,14 +871,14 @@ enterprise3.name,
     let(:csv_data) {
       CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
-                "display_name", 
+                "display_name",
 "shipping_category"
 ]
         csv << ["Bag of Oats", enterprise.name, "Cereal", "60", "5.50", "500", "g", "Magic Oats", shipping_category.name]     # Add
@@ -947,12 +947,12 @@ enterprise3.name,
       let(:csv_data) {
         CSV.generate do |csv|
           csv << [
-"name", 
-"distributor", 
-"producer", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"distributor",
+"producer",
+"on_hand",
+"price",
+"units",
 "unit_type",
                   "variant_unit_name"
 ]
@@ -1033,7 +1033,7 @@ enterprise_id: enterprise2.id
     describe "updating existing item that was set to hidden in inventory" do
       let!(:inventory) {
         InventoryItem.create(
-variant_id: product4.variants.first.id, 
+variant_id: product4.variants.first.id,
 enterprise_id: enterprise2.id,
 visible: false
 )
@@ -1041,11 +1041,11 @@ visible: false
       let(:csv_data) {
         CSV.generate do |csv|
           csv << [
-"name", 
-"distributor", 
-"producer", 
-"on_hand", 
-"price", 
+"name",
+"distributor",
+"producer",
+"on_hand",
+"price",
 "units",
                   "variant_unit_name"
 ]
@@ -1079,32 +1079,32 @@ enterprise_id: enterprise2.id
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
                 "shipping_category"
 ]
         csv << [
-"My Carrots", 
-enterprise.name, 
-"Vegetables", 
-"5", 
-"3.20", 
-"500", 
+"My Carrots",
+enterprise.name,
+"Vegetables",
+"5",
+"3.20",
+"500",
 "g",
                 shipping_category.name
 ]
         csv << [
-"Your Potatoes", 
-enterprise2.name, 
-"Vegetables", 
-"6", 
-"6.50", 
-"1", 
+"Your Potatoes",
+enterprise2.name,
+"Vegetables",
+"6",
+"6.50",
+"1",
 "kg",
                 shipping_category.name
 ]
@@ -1185,32 +1185,32 @@ hub_id: enterprise2.id
       csv_data =
  CSV.generate do |csv|
         csv << [
-"name", 
-"producer", 
-"category", 
-"on_hand", 
-"price", 
-"units", 
+"name",
+"producer",
+"category",
+"on_hand",
+"price",
+"units",
 "unit_type",
                 "shipping_category"
 ]
         csv << [
-"Carrots", 
-enterprise.name, 
-"Vegetables", 
-"5", 
-"3.20", 
-"500", 
+"Carrots",
+enterprise.name,
+"Vegetables",
+"5",
+"3.20",
+"500",
 "g",
                 shipping_category.name
 ]
         csv << [
-"Beans", 
-enterprise.name, 
-"Vegetables", 
-"6", 
-"6.50", 
-"500", 
+"Beans",
+enterprise.name,
+"Vegetables",
+"6",
+"6.50",
+"500",
 "g",
                 shipping_category.name
 ]
@@ -1234,8 +1234,8 @@ enterprise.name,
 
       updated_ids = importer.updated_ids
 
-      importer = import_data csv_data, 
-reset_all_absent: true, 
+      importer = import_data csv_data,
+reset_all_absent: true,
 updated_ids: updated_ids,
                                        enterprises_to_reset: [enterprise.id]
       importer.reset_absent(updated_ids)
@@ -1273,10 +1273,10 @@ updated_ids: updated_ids,
 
       updated_ids = importer.updated_ids
 
-      importer = import_data csv_data, 
-import_into: 'inventories', 
+      importer = import_data csv_data,
+import_into: 'inventories',
 reset_all_absent: true,
-                                       updated_ids: updated_ids, 
+                                       updated_ids: updated_ids,
 enterprises_to_reset: [enterprise2.id]
       importer.reset_absent(updated_ids)
 
@@ -1315,9 +1315,9 @@ def import_data(csv_data, args = {})
   reset_all_absent = args[:reset_all_absent] || false
   updated_ids = args[:updated_ids] || nil
   enterprises_to_reset = args[:enterprises_to_reset] || nil
-  settings = args[:settings] || { 
+  settings = args[:settings] || {
 'import_into' => import_into,
-'reset_all_absent' => reset_all_absent 
+'reset_all_absent' => reset_all_absent
 }
 
   File.write('/tmp/test-m.csv', csv_data)

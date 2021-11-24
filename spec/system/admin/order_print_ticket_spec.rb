@@ -13,10 +13,10 @@ describe ' As an administrator I want to print a ticket for an order ', js: true
 
     let!(:order) do
       create(
-:order_with_taxes, 
-distributor: distributor, 
+:order_with_taxes,
+distributor: distributor,
 ship_address: create(:address),
-                   product_price: 110, 
+                   product_price: 110,
 tax_rate_amount: 0.1,
                    tax_rate_name: "Tax 1"
 ).tap do |order|
@@ -54,7 +54,7 @@ tax_rate_amount: 0.1,
               order.distributor.name,
               order.distributor.address.address_part1,
               order.distributor.address.address_part2,
-              order.distributor.contact.email, 
+              order.distributor.contact.email,
 order.number,
               line_items_in_print_data,
               adjustments_in_print_data,

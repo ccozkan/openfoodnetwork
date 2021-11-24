@@ -11,7 +11,7 @@ describe Api::Admin::ForOrderCycle::SuppliedProductSerializer do
   let(:serialized_product) {
     Api::Admin::ForOrderCycle::SuppliedProductSerializer.new(
 product,
-                                                             order_cycle: order_cycle 
+                                                             order_cycle: order_cycle
 ).to_json
   }
   let!(:inventory_item) {

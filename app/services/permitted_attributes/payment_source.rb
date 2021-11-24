@@ -4,14 +4,14 @@ module PermittedAttributes
   class PaymentSource
     def self.attributes
       [
-        :gateway_payment_profile_id, 
-:cc_type, 
+        :gateway_payment_profile_id,
+:cc_type,
 :last_digits,
-        :month, 
-:year, 
-:first_name, 
+        :month,
+:year,
+:first_name,
 :last_name,
-        :number, 
+        :number,
 :verification_value,
         :save_requested_by_customer
       ]

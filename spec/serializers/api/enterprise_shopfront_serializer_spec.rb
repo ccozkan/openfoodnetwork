@@ -18,10 +18,10 @@ describe Api::EnterpriseShopfrontSerializer do
 
   let!(:ex) {
     create(
-:exchange, 
-order_cycle: oc, 
+:exchange,
+order_cycle: oc,
 incoming: false,
-           sender: producer, 
+           sender: producer,
 receiver: hub
 )
   }

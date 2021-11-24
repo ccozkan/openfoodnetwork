@@ -47,7 +47,7 @@ module Spree
         display_name = variant.name.to_s
         display_name += %{(#{variant.options_text})} if variant.options_text.present?
         line_item.errors.add(
-:quantity, 
+:quantity,
 Spree.t(
 :out_of_stock,
                                                 scope: :order_populator,

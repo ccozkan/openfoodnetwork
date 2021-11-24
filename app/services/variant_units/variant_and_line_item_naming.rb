@@ -82,7 +82,7 @@ module VariantUnits
       if option_type
         name = option_value_name
         ov = Spree::OptionValue.where(
-option_type_id: option_type, 
+option_type_id: option_type,
 name: name,
 presentation: name
 ).first ||

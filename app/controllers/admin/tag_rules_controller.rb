@@ -4,10 +4,10 @@ module Admin
   class TagRulesController < Admin::ResourceController
     respond_to :json
 
-    respond_override destroy: { 
+    respond_override destroy: {
 json: {
       success: lambda { render body: nil, status: :no_content }
-    } 
+    }
 }
 
     def map_by_tag

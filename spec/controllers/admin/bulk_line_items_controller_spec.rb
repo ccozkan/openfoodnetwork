@@ -8,13 +8,13 @@ describe Admin::BulkLineItemsController, type: :controller do
 
     let(:line_item_attributes) {
       %i[
-id 
-quantity 
-max_quantity 
-price 
-supplier 
-final_weight_volume 
-units_product 
+id
+quantity
+max_quantity
+price
+supplier
+final_weight_volume
+units_product
 units_variant
          order
 ]
@@ -22,29 +22,29 @@ units_variant
     let!(:dist1) { FactoryBot.create(:distributor_enterprise) }
     let!(:order1) {
       FactoryBot.create(
-:order, 
-state: 'complete', 
-completed_at: 1.day.ago, 
+:order,
+state: 'complete',
+completed_at: 1.day.ago,
 distributor: dist1,
-        billing_address: FactoryBot.create(:address) 
+        billing_address: FactoryBot.create(:address)
 )
     }
     let!(:order2) {
       FactoryBot.create(
-:order, 
-state: 'complete', 
-completed_at: Time.zone.now, 
+:order,
+state: 'complete',
+completed_at: Time.zone.now,
 distributor: dist1,
-        billing_address: FactoryBot.create(:address) 
+        billing_address: FactoryBot.create(:address)
 )
     }
     let!(:order3) {
       FactoryBot.create(
-:order, 
-state: 'complete', 
-completed_at: Time.zone.now, 
+:order,
+state: 'complete',
+completed_at: Time.zone.now,
 distributor: dist1,
-        billing_address: FactoryBot.create(:address) 
+        billing_address: FactoryBot.create(:address)
 )
     }
     let!(:line_item1) { FactoryBot.create(:line_item_with_shipment, order: order1) }
@@ -127,41 +127,41 @@ json_response['line_items'].map { |line_item|
       let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
       let!(:order1) {
         FactoryBot.create(
-:order, 
-order_cycle: order_cycle, 
+:order,
+order_cycle: order_cycle,
 state: 'complete',
-        completed_at: Time.zone.now, 
-distributor: distributor1, 
-billing_address: FactoryBot.create(:address) 
+        completed_at: Time.zone.now,
+distributor: distributor1,
+billing_address: FactoryBot.create(:address)
 )
       }
       let!(:line_item1) {
         FactoryBot.create(
-:line_item_with_shipment, 
+:line_item_with_shipment,
 order: order1,
                           product: FactoryBot.create(:product, supplier: supplier)
 )
       }
       let!(:line_item2) {
         FactoryBot.create(
-:line_item_with_shipment, 
+:line_item_with_shipment,
 order: order1,
                           product: FactoryBot.create(:product, supplier: supplier)
 )
       }
       let!(:order2) {
         FactoryBot.create(
-:order, 
-order_cycle: order_cycle, 
+:order,
+order_cycle: order_cycle,
 state: 'complete',
-        completed_at: Time.zone.now, 
-distributor: distributor2, 
-billing_address: FactoryBot.create(:address) 
+        completed_at: Time.zone.now,
+distributor: distributor2,
+billing_address: FactoryBot.create(:address)
 )
       }
       let!(:line_item3) {
         FactoryBot.create(
-:line_item_with_shipment, 
+:line_item_with_shipment,
 order: order2,
                           product: FactoryBot.create(:product, supplier: supplier)
 )
@@ -237,17 +237,17 @@ order: order2,
     let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
     let!(:order1) {
       FactoryBot.create(
-:order, 
-order_cycle: order_cycle, 
+:order,
+order_cycle: order_cycle,
 state: 'complete',
-        completed_at: Time.zone.now, 
-distributor: distributor1, 
-billing_address: FactoryBot.create(:address) 
+        completed_at: Time.zone.now,
+distributor: distributor1,
+billing_address: FactoryBot.create(:address)
 )
     }
     let!(:line_item1) {
       line_item1 = FactoryBot.create(
-:line_item_with_shipment, 
+:line_item_with_shipment,
 order: order1,
                           product: FactoryBot.create(:product, supplier: supplier)
 )
@@ -351,17 +351,17 @@ order: order1,
     let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
     let!(:order1) {
       FactoryBot.create(
-:order, 
-order_cycle: order_cycle, 
+:order,
+order_cycle: order_cycle,
 state: 'complete',
-        completed_at: Time.zone.now, 
-distributor: distributor1, 
-billing_address: FactoryBot.create(:address) 
+        completed_at: Time.zone.now,
+distributor: distributor1,
+billing_address: FactoryBot.create(:address)
 )
     }
     let!(:line_item1) {
       FactoryBot.create(
-:line_item_with_shipment, 
+:line_item_with_shipment,
 order: order1,
                           product: FactoryBot.create(:product, supplier: supplier)
 )
@@ -399,7 +399,7 @@ order: order1,
     let(:distributor) { create(:distributor_enterprise_with_tax) }
     let!(:order_cycle) {
       create(
-:order_cycle, 
+:order_cycle,
 distributors: [distributor],
               coordinator_fees: [line_item_fee1, line_item_fee2, order_fee]
 )
@@ -408,8 +408,8 @@ distributors: [distributor],
 
     let!(:order) {
       create(
-:order_with_line_items, 
-line_items_count: 2, 
+:order_with_line_items,
+line_items_count: 2,
 distributor: distributor,
                         order_cycle: order_cycle
 )
@@ -432,9 +432,9 @@ distributor: distributor,
 
     let!(:shipping_method) {
       create(
-:shipping_method_with, 
-:shipping_fee, 
-tax_category: tax_cat5, 
+:shipping_method_with,
+:shipping_fee,
+tax_category: tax_cat5,
 name: "Shiperoo",
                                       distributors: [distributor]
 )
@@ -443,9 +443,9 @@ name: "Shiperoo",
 
     let(:line_item_fee1) {
       create(
-:enterprise_fee, 
-:per_item, 
-amount: 1, 
+:enterprise_fee,
+:per_item,
+amount: 1,
 inherits_tax_category: false,
                             tax_category: tax_cat15
 )
@@ -468,8 +468,8 @@ inherits_tax_category: false,
       order.create_tax_charge!
       order.update_order!
       order.payments << create(
-:payment, 
-payment_method: payment_method, 
+:payment,
+payment_method: payment_method,
 amount: order.total,
           state: "completed"
 )

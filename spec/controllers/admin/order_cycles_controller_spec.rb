@@ -213,7 +213,7 @@ module Admin
                  anything) { form_mock }
           allow(form_mock).to receive(:save) { true }
 
-          spree_put :update, 
+          spree_put :update,
 params
   .merge(order_cycle: { preferred_product_selection_from_coordinator_inventory_only: true })
         end
@@ -228,20 +228,20 @@ params
       let(:v) { create(:variant) }
       let!(:incoming_exchange) {
         create(
-:exchange, 
-order_cycle: order_cycle, 
-sender: producer, 
+:exchange,
+order_cycle: order_cycle,
+sender: producer,
 receiver: coordinator,
-           incoming: true, 
+           incoming: true,
 variants: [v]
 )
       }
       let!(:outgoing_exchange) {
         create(
-:exchange, 
-order_cycle: order_cycle, 
-sender: coordinator, 
-receiver: hub, 
+:exchange,
+order_cycle: order_cycle,
+sender: coordinator,
+receiver: hub,
 incoming: false,
            variants: [v]
 )
@@ -283,18 +283,18 @@ incoming: false,
 
       context "when I manage the coordinator of an order cycle" do
         let(:params) do
-          { 
-format: :json, 
-order_cycle_set: { 
-collection_attributes: { 
+          {
+format: :json,
+order_cycle_set: {
+collection_attributes: {
 '0' => {
             id: oc.id,
             name: "Updated Order Cycle",
             orders_open_at: Date.current - 21.days,
             orders_close_at: Date.current + 21.days,
-          } 
-} 
-} 
+          }
+}
+}
 }
         end
 
@@ -318,18 +318,18 @@ collection_attributes: {
 
         context "when a validation error occurs" do
           let(:params) do
-            { 
-format: :json, 
-order_cycle_set: { 
-collection_attributes: { 
+            {
+format: :json,
+order_cycle_set: {
+collection_attributes: {
 '0' => {
               id: oc.id,
               name: "Updated Order Cycle",
               orders_open_at: Date.current + 25.days,
               orders_close_at: Date.current + 21.days,
-            } 
-} 
-} 
+            }
+}
+}
 }
           end
 
@@ -346,17 +346,17 @@ collection_attributes: {
         let!(:another_distributor) { create(:distributor_enterprise, users: [distributor_owner]) }
 
         it "doesn't update order cycle properties" do
-          spree_put :bulk_update, 
-format: :json, 
-order_cycle_set: { 
-collection_attributes: { 
+          spree_put :bulk_update,
+format: :json,
+order_cycle_set: {
+collection_attributes: {
 '0' => {
             id: oc.id,
             name: "Updated Order Cycle",
             orders_open_at: Date.current - 21.days,
             orders_close_at: Date.current + 21.days,
-          } 
-} 
+          }
+}
 }
 
           oc.reload

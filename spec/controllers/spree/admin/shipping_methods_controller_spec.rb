@@ -37,7 +37,7 @@ describe Spree::Admin::ShippingMethodsController, type: :controller do
 
       spree_post :update, params
 
-      expect(flash[:error]).to match I18n.t(:calculator_preferred_value_error) 
+      expect(flash[:error]).to match I18n.t(:calculator_preferred_value_error)
       expect(response).to redirect_to spree.edit_admin_shipping_method_path(shipping_method)
     end
 

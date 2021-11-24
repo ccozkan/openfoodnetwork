@@ -24,7 +24,7 @@ module Spree
         else
           flash[:error] =
             Spree.t(
-'flash.generic_error', 
+'flash.generic_error',
 scope: 'paypal',
                        reasons: pp_response.errors.map(&:long_message).join(" ")
 )

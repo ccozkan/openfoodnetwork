@@ -52,7 +52,7 @@ module InjectionHelper
 
     inject_json_array "enterprises",
                       enterprises_and_relatives,
-                      Api::EnterpriseSerializer, 
+                      Api::EnterpriseSerializer,
 enterprise_injection_data
   end
 
@@ -87,16 +87,16 @@ enterprise_injection_data
   end
 
   def inject_available_shipping_methods
-    inject_json_array "shippingMethods", 
+    inject_json_array "shippingMethods",
 available_shipping_methods,
-                      Api::ShippingMethodSerializer, 
+                      Api::ShippingMethodSerializer,
 current_order: current_order
   end
 
   def inject_available_payment_methods
-    inject_json_array "paymentMethods", 
+    inject_json_array "paymentMethods",
 available_payment_methods,
-                      Api::PaymentMethodSerializer, 
+                      Api::PaymentMethodSerializer,
 current_order: current_order
   end
 

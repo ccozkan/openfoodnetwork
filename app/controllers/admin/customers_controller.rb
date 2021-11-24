@@ -7,7 +7,7 @@ module Admin
     before_action :load_managed_shops, only: :index, if: :html_request?
     respond_to :json
 
-    respond_override update: { 
+    respond_override update: {
 json: {
       success: lambda {
         tag_rule_mapping = TagRule.mapping_for(Enterprise.where(id: @customer.enterprise))
@@ -17,7 +17,7 @@ json: {
                  render json: { errors: @customer.errors.full_messages },
                         status: :unprocessable_entity
                }
-    } 
+    }
 }
 
     def index
@@ -100,10 +100,10 @@ json: {
 
     def customer_params
       params.require(:customer).permit(
-        :enterprise_id, 
-:name, 
-:email, 
-:code, 
+        :enterprise_id,
+:name,
+:email,
+:code,
 :tag_list,
         ship_address_attributes: PermittedAttributes::Address.attributes,
         bill_address_attributes: PermittedAttributes::Address.attributes,
@@ -125,10 +125,10 @@ json: {
         .joins(:taggings)
         .includes(:taggings)
         .where(taggings:
-                { 
+                {
 taggable_type: 'Customer',
 taggable_id: Customer.of(managed_enterprise_id),
-context: 'tags' 
+context: 'tags'
 })
 
       customer_tags.each_with_object({}) do |tag, indexed_hash|

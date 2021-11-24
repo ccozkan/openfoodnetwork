@@ -136,8 +136,8 @@ permissions.send(
       let!(:producer) { create(:supplier_enterprise) }
       let!(:er) {
         create(
-:enterprise_relationship, 
-parent: producer, 
+:enterprise_relationship,
+parent: producer,
 child: hub,
                           permissions_list: [:create_variant_overrides]
 )
@@ -154,8 +154,8 @@ child: hub,
 
       it "returns only permissions relating to managed hubs" do
         create(
-:enterprise_relationship, 
-parent: e1, 
+:enterprise_relationship,
+parent: e1,
 child: e2,
                           permissions_list: [:create_variant_overrides]
 )
@@ -166,8 +166,8 @@ child: e2,
       it "returns only create_variant_overrides permissions" do
         allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub, e2]) }
         create(
-:enterprise_relationship, 
-parent: e1, 
+:enterprise_relationship,
+parent: e1,
 child: e2,
                           permissions_list: [:manage_products]
 )
@@ -179,8 +179,8 @@ child: e2,
         let!(:producer_managed) { create(:supplier_enterprise) }
         let!(:er_oc) {
           create(
-:enterprise_relationship, 
-parent: hub, 
+:enterprise_relationship,
+parent: hub,
 child: producer_managed,
                           permissions_list: [:add_to_order_cycle, :create_variant_overrides]
 )

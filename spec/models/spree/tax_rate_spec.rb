@@ -9,9 +9,9 @@ module Spree
       let!(:order) { create(:order, distributor: hub, bill_address: create(:address)) }
       let!(:tax_rate) {
         create(
-:tax_rate, 
+:tax_rate,
 included_in_price: true,
-           calculator: ::Calculator::FlatRate.new(preferred_amount: 0.1), 
+           calculator: ::Calculator::FlatRate.new(preferred_amount: 0.1),
 zone: zone
 )
       }

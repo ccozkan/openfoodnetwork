@@ -14,8 +14,8 @@ describe ' As an administrator I want to manage orders ', js: true do
   let(:distributor4) { create(:distributor_enterprise, owner: user, charges_sales_tax: true) }
   let(:order_cycle) do
     create(
-:simple_order_cycle, 
-name: 'One', 
+:simple_order_cycle,
+name: 'One',
 distributors: [distributor, distributor2, distributor3, distributor4],
                      variants: [product.variants.first]
 )
@@ -24,11 +24,11 @@ distributors: [distributor, distributor2, distributor3, distributor4],
   context "with a complete order" do
     let(:order) do
       create(
-:order_with_totals_and_distribution, 
-user: user, 
+:order_with_totals_and_distribution,
+user: user,
 distributor: distributor,
                                      order_cycle: order_cycle,
-                                     state: 'complete', 
+                                     state: 'complete',
 payment_state: 'balance_due'
 )
     end
@@ -45,25 +45,25 @@ payment_state: 'balance_due'
 
     let!(:order2) {
       create(
-:order_with_credit_payment, 
-user: user, 
+:order_with_credit_payment,
+user: user,
 distributor: distributor2,
-                            order_cycle: order_cycle2, 
+                            order_cycle: order_cycle2,
 completed_at: 2.days.ago
 )
     }
     let!(:order3) {
       create(
-:order_with_credit_payment, 
-user: user, 
+:order_with_credit_payment,
+user: user,
 distributor: distributor3,
                             order_cycle: order_cycle3
 )
     }
     let!(:order4) {
       create(
-:order_with_credit_payment, 
-user: user, 
+:order_with_credit_payment,
+user: user,
 distributor: distributor4,
                             order_cycle: order_cycle4
 )
@@ -184,9 +184,9 @@ find(
   context "with incomplete order" do
     it "can edit order" do
       incomplete_order = create(
-:order_with_line_items, 
+:order_with_line_items,
 distributor: distributor,
-                        order_cycle: order_cycle, 
+                        order_cycle: order_cycle,
 line_items_count: 1
 )
 
@@ -203,9 +203,9 @@ line_items_count: 1
   context "test the 'Only show the complete orders' checkbox" do
     it "display or not incomplete order" do
       incomplete_order = create(
-:order_with_line_items, 
+:order_with_line_items,
 distributor: distributor,
-                        order_cycle: order_cycle, 
+                        order_cycle: order_cycle,
 line_items_count: 1
 )
       complete_order = create(

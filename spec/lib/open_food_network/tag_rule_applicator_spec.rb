@@ -8,62 +8,62 @@ module OpenFoodNetwork
     let!(:enterprise) { create(:distributor_enterprise) }
     let!(:oc_tag_rule) {
       create(
-:filter_order_cycles_tag_rule, 
-enterprise: enterprise, 
+:filter_order_cycles_tag_rule,
+enterprise: enterprise,
 priority: 6,
-                               preferred_customer_tags: "tag1", 
-preferred_exchange_tags: "tag1", 
-preferred_matched_order_cycles_visibility: "visible" 
+                               preferred_customer_tags: "tag1",
+preferred_exchange_tags: "tag1",
+preferred_matched_order_cycles_visibility: "visible"
 )
     }
     let!(:product_tag_rule1) {
       create(
-:filter_products_tag_rule, 
-enterprise: enterprise, 
+:filter_products_tag_rule,
+enterprise: enterprise,
 priority: 5,
-                           preferred_customer_tags: "tag1", 
-preferred_variant_tags: "tag1", 
-preferred_matched_variants_visibility: "visible" 
+                           preferred_customer_tags: "tag1",
+preferred_variant_tags: "tag1",
+preferred_matched_variants_visibility: "visible"
 )
     }
     let!(:product_tag_rule2) {
       create(
-:filter_products_tag_rule, 
-enterprise: enterprise, 
+:filter_products_tag_rule,
+enterprise: enterprise,
 priority: 4,
-                           preferred_customer_tags: "tag1", 
-preferred_variant_tags: "tag3", 
-preferred_matched_variants_visibility: "hidden" 
+                           preferred_customer_tags: "tag1",
+preferred_variant_tags: "tag3",
+preferred_matched_variants_visibility: "hidden"
 )
     }
     let!(:product_tag_rule3) {
       create(
-:filter_products_tag_rule, 
-enterprise: enterprise, 
+:filter_products_tag_rule,
+enterprise: enterprise,
 priority: 3,
-                           preferred_customer_tags: "tag2", 
-preferred_variant_tags: "tag1", 
-preferred_matched_variants_visibility: "visible" 
+                           preferred_customer_tags: "tag2",
+preferred_variant_tags: "tag1",
+preferred_matched_variants_visibility: "visible"
 )
     }
     let!(:default_product_tag_rule) {
       create(
-:filter_products_tag_rule, 
-enterprise: enterprise, 
-priority: 2, 
+:filter_products_tag_rule,
+enterprise: enterprise,
+priority: 2,
 is_default: true,
-                           preferred_variant_tags: "tag1", 
-preferred_matched_variants_visibility: "hidden" 
+                           preferred_variant_tags: "tag1",
+preferred_matched_variants_visibility: "hidden"
 )
     }
     let!(:sm_tag_rule) {
       create(
-:filter_shipping_methods_tag_rule, 
-enterprise: enterprise, 
+:filter_shipping_methods_tag_rule,
+enterprise: enterprise,
 priority: 1,
-                                   preferred_customer_tags: "tag1", 
-preferred_shipping_method_tags: "tag1", 
-preferred_matched_shipping_methods_visibility: "visible" 
+                                   preferred_customer_tags: "tag1",
+preferred_shipping_method_tags: "tag1",
+preferred_matched_shipping_methods_visibility: "visible"
 )
     }
 
@@ -134,8 +134,8 @@ preferred_matched_shipping_methods_visibility: "visible"
 
           it "selects only rules of the specified type, in order of priority" do
             expect(rules).to eq [
-default_product_tag_rule, 
-product_tag_rule3, 
+default_product_tag_rule,
+product_tag_rule3,
 product_tag_rule2,
                                  product_tag_rule1
 ]
@@ -297,10 +297,10 @@ product_tag_rule2,
         { :id => 1, :name => 'product 1', "variants" => [{ :id => 4, "tag_list" => ["tag1"] }] }
       }
       let(:product2) {
-        { 
-:id => 2, 
+        {
+:id => 2,
 :name => 'product 2',
-"variants" => [{ :id => 5, "tag_list" => ["tag1"] }, { :id => 9, "tag_list" => ["tag2"] }] 
+"variants" => [{ :id => 5, "tag_list" => ["tag1"] }, { :id => 9, "tag_list" => ["tag2"] }]
 }
       }
       let(:product3) {
@@ -316,11 +316,11 @@ product_tag_rule2,
         it "applies the default rule" do
           applicator.filter!(products_array)
           expect(products_array).to eq [
-            { 
-:id => 2, 
+            {
+:id => 2,
 :name => 'product 2',
-"variants" => [{ :id => 9, "tag_list" => ["tag2"] }] 
-}, 
+"variants" => [{ :id => 9, "tag_list" => ["tag2"] }]
+},
 product3
           ]
         end

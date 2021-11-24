@@ -13,8 +13,8 @@ describe Admin::ColumnPreferencesController, type: :controller do
     context "json" do
       let!(:column_preference) {
         ColumnPreference.create(
-user_id: user1.id, 
-action_name: 'enterprises_index', 
+user_id: user1.id,
+action_name: 'enterprises_index',
 column_name: "name",
 visible: true
 )
@@ -22,26 +22,26 @@ visible: true
 
       let(:column_preference_params) {
         [
-          { 
-id: column_preference.id, 
-user_id: user1.id, 
+          {
+id: column_preference.id,
+user_id: user1.id,
 action_name: "enterprises_index",
-column_name: 'name', 
-visible: false 
+column_name: 'name',
+visible: false
 },
-          { 
-id: nil, 
-user_id: user1.id, 
-action_name: "enterprises_index", 
+          {
+id: nil,
+user_id: user1.id,
+action_name: "enterprises_index",
 column_name: 'producer',
-visible: true 
+visible: true
 },
-          { 
-id: nil, 
-user_id: user1.id, 
-action_name: "enterprises_index", 
+          {
+id: nil,
+user_id: user1.id,
+action_name: "enterprises_index",
 column_name: 'status',
-visible: true 
+visible: true
 }
         ]
       }
@@ -52,8 +52,8 @@ visible: true
         end
 
         it "prevents me from updating the column preferences" do
-          spree_put :bulk_update, 
-format: :json, 
+          spree_put :bulk_update,
+format: :json,
 action_name: "enterprises_index",
                                   column_preferences: column_preference_params
           expect(ColumnPreference.count).to be 1
@@ -66,8 +66,8 @@ action_name: "enterprises_index",
         end
 
         it "allows me to update the column preferences" do
-          spree_put :bulk_update, 
-format: :json, 
+          spree_put :bulk_update,
+format: :json,
 action_name: "enterprises_index",
                                   column_preferences: column_preference_params
           expect(

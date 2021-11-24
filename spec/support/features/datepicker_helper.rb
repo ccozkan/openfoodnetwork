@@ -12,8 +12,8 @@ module Features
       navigate_datepicker_to_month date
       find(
 '.flatpickr-calendar.open .flatpickr-days .flatpickr-day:not(.prevMonthDay)',
-           text: date.strftime("%e").to_s.strip, 
-exact_text: true, 
+           text: date.strftime("%e").to_s.strip,
+exact_text: true,
 match: :first
 ).click
     end

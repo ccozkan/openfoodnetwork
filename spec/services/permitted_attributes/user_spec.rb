@@ -10,10 +10,10 @@ module PermittedAttributes
       describe "permits basic attributes" do
         let(:params) {
           ActionController::Parameters.new(
-user: { 
+user: {
 name: "John",
-email: "email@example.com" 
-} 
+email: "email@example.com"
+}
 )
         }
 
@@ -37,10 +37,10 @@ email: "email@example.com"
       let(:user_permitted_attributes) { PermittedAttributes::User.new(params, :spree_user) }
       let(:params) {
         ActionController::Parameters.new(
-spree_user: { 
+spree_user: {
 name: "John",
-email: "email@example.com" 
-} 
+email: "email@example.com"
+}
 )
       }
 

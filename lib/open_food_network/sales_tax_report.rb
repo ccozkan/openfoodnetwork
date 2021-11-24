@@ -67,17 +67,17 @@ I18n.t(:report_header_order_number),
           shipping_cost = shipping_cost_for order
 
           [
-order.number, 
-order.completed_at.strftime("%F %T"), 
-totals[:items], 
+order.number,
+order.completed_at.strftime("%F %T"),
+totals[:items],
 totals[:items_total],
-           totals[:taxable_total], 
-totals[:sales_tax], 
-shipping_cost, 
-order.shipping_tax, 
-order.enterprise_fee_tax, 
+           totals[:taxable_total],
+totals[:sales_tax],
+shipping_cost,
+order.shipping_tax,
+order.enterprise_fee_tax,
 order.total_tax,
-           order.bill_address.full_name, 
+           order.bill_address.full_name,
 order.distributor&.name
 ]
         end

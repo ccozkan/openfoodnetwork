@@ -5,15 +5,15 @@ require 'open_food_network/enterprise_issue_validator'
 module Api
   module Admin
     class IndexEnterpriseSerializer < ActiveModel::Serializer
-      attributes :name, 
-:id, 
-:permalink, 
-:is_primary_producer, 
+      attributes :name,
+:id,
+:permalink,
+:is_primary_producer,
 :sells,
-                 :producer_profile_only, 
-:owned, 
-:edit_path, 
-:issues, 
+                 :producer_profile_only,
+:owned,
+:edit_path,
+:issues,
 :warnings
 
       def owned

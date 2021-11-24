@@ -11,9 +11,9 @@ describe ProducerMailer, type: :mailer do
   let!(:zone) { create(:zone_with_member) }
   let!(:tax_rate) {
     create(
-:tax_rate, 
-included_in_price: true, 
-calculator: Calculator::DefaultTax.new, 
+:tax_rate,
+included_in_price: true,
+calculator: Calculator::DefaultTax.new,
 zone: zone,
            amount: 0.1
 )
@@ -34,14 +34,14 @@ zone: zone,
   let(:p6) { create(:product, name: "Eggs", price: 67.89, supplier: s1) }
   let(:order_cycle) { create(:simple_order_cycle) }
   let!(:incoming_exchange) {
-    order_cycle.exchanges.create! sender: s1, 
-receiver: d1, 
+    order_cycle.exchanges.create! sender: s1,
+receiver: d1,
 incoming: true,
                                   receival_instructions: 'Outside shed.'
   }
   let!(:outgoing_exchange) {
-    order_cycle.exchanges.create! sender: d1, 
-receiver: d1, 
+    order_cycle.exchanges.create! sender: d1,
+receiver: d1,
 incoming: false,
                                   pickup_time: 'Tue, 23rd Dec'
   }
@@ -186,18 +186,18 @@ body_as_html(mail).find(
 
     it "it orders list via last name" do
       create(
-:order, 
-:with_line_item, 
-distributor: d1, 
-order_cycle: order_cycle, 
+:order,
+:with_line_item,
+distributor: d1,
+order_cycle: order_cycle,
 state: 'complete',
                          bill_address: FactoryBot.create(:address, last_name: "Abby")
 )
       create(
-:order, 
-:with_line_item, 
-distributor: d1, 
-order_cycle: order_cycle, 
+:order,
+:with_line_item,
+distributor: d1,
+order_cycle: order_cycle,
 state: 'complete',
                          bill_address: FactoryBot.create(:address, last_name: "maggie")
 )

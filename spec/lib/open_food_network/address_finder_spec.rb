@@ -90,9 +90,9 @@ module OpenFoodNetwork
       let(:address) { create(:address) }
       let(:order) {
         create(
-:completed_order_with_totals, 
-user: nil, 
-email: email, 
+:completed_order_with_totals,
+user: nil,
+email: email,
 distributor: distributor,
                               bill_address: nil
 )
@@ -157,10 +157,10 @@ distributor: distributor,
         context "and an order with a required ship address exists" do
           let(:order) {
             create(
-:shipped_order, 
-user: nil, 
-email: email, 
-distributor: distributor, 
+:shipped_order,
+user: nil,
+email: email,
+distributor: distributor,
 shipments: [],
                 ship_address: address
 )
@@ -184,10 +184,10 @@ shipments: [],
         context "and an order with a ship address exists" do
           let(:order) {
             create(
-:shipped_order, 
-user: nil, 
-email: email, 
-distributor: distributor, 
+:shipped_order,
+user: nil,
+email: email,
+distributor: distributor,
 shipments: [],
                 ship_address: address
 )
@@ -213,10 +213,10 @@ shipments: [],
         context "and an order without a ship address exists" do
           let!(:order) {
             create(
-:shipped_order, 
-user: nil, 
-email: email, 
-distributor: distributor, 
+:shipped_order,
+user: nil,
+email: email,
+distributor: distributor,
 shipments: [],
                 ship_address: nil
 )

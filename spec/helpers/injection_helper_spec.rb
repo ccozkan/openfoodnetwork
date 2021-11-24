@@ -19,7 +19,7 @@ describe InjectionHelper, type: :helper do
   it "will inject via AMS" do
     expect(
 helper.inject_json_array(
-"test", 
+"test",
 [enterprise],
                                     Api::IdSerializer
 )
@@ -81,14 +81,14 @@ helper.inject_json_array(
   it "only injects credit cards with a payment profile" do
     allow(helper).to receive(:spree_current_user) { user }
     card1 = create(
-:credit_card, 
-last_digits: "1234", 
+:credit_card,
+last_digits: "1234",
 user_id: user.id,
               gateway_customer_profile_id: 'cust_123'
 )
     card2 = create(
-:credit_card, 
-last_digits: "4321", 
+:credit_card,
+last_digits: "4321",
 user_id: user.id,
               gateway_customer_profile_id: nil
 )

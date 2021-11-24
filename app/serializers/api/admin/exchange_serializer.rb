@@ -3,15 +3,15 @@
 module Api
   module Admin
     class ExchangeSerializer < ActiveModel::Serializer
-      attributes :id, 
-:sender_id, 
-:receiver_id, 
-:incoming, 
+      attributes :id,
+:sender_id,
+:receiver_id,
+:incoming,
 :variants,
-                 :receival_instructions, 
-:pickup_time, 
+                 :receival_instructions,
+:pickup_time,
 :pickup_instructions,
-                 :tags, 
+                 :tags,
 :tag_list
 
       has_many :enterprise_fees, serializer: Api::Admin::BasicEnterpriseFeeSerializer

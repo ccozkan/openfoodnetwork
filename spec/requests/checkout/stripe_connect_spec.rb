@@ -54,7 +54,7 @@ describe "checking out an order with a Stripe Connect payment method", type: :re
   end
   let(:params) do
     {
-      format: :json, 
+      format: :json,
 order: {
         shipping_method_id: shipping_method.id,
         payments_attributes: [payments_attributes],
@@ -236,7 +236,7 @@ order: {
         cc_type: "master",
         first_name: "Sammy",
         last_name: "Signpost",
-        month: 11, 
+        month: 11,
 year: 2026
       )
     end

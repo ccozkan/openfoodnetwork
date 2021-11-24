@@ -13,17 +13,17 @@ describe "As a consumer I want to shop with a distributor", js: true do
     let(:supplier) { create(:supplier_enterprise) }
     let(:oc1) {
       create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [distributor],
-                     coordinator: create(:distributor_enterprise), 
+                     coordinator: create(:distributor_enterprise),
 orders_close_at: 2.days.from_now
 )
     }
     let(:oc2) {
       create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [distributor],
-                     coordinator: create(:distributor_enterprise), 
+                     coordinator: create(:distributor_enterprise),
 orders_close_at: 3.days.from_now
 )
     }
@@ -520,8 +520,8 @@ orders_close_at: 3.days.from_now
 
       it "shows the last order cycle" do
         oc1 = create(
-:simple_order_cycle, 
-distributors: [distributor], 
+:simple_order_cycle,
+distributors: [distributor],
 orders_open_at: 17.days.ago,
                      orders_close_at: 10.days.ago
 )
@@ -531,9 +531,9 @@ orders_open_at: 17.days.ago,
 
       it "shows the next order cycle" do
         oc1 = create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [distributor],
-                     orders_open_at: 10.days.from_now, 
+                     orders_open_at: 10.days.from_now,
 orders_close_at: 17.days.from_now
 )
         visit shop_path

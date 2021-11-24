@@ -135,9 +135,9 @@ module Spree
         }
         let!(:shipment) {
           create(
-:shipment_with, 
-:shipping_method, 
-order: order, 
+:shipment_with,
+:shipping_method,
+order: order,
 cost: 50,
                                   shipping_method: shipping_method
 )
@@ -154,11 +154,11 @@ cost: 50,
         context "when the order has legacy taxes" do
           let!(:legacy_tax_adjustment) {
             create(
-:adjustment, 
-order: order, 
-adjustable: order, 
+:adjustment,
+order: order,
+adjustable: order,
 included: false,
-             label: "legacy", 
+             label: "legacy",
 originator_type: "Spree::TaxRate"
 )
           }

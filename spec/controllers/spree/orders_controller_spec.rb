@@ -87,8 +87,8 @@ describe Spree::OrdersController, type: :controller do
     let(:customer) { create(:customer) }
     let(:order) {
       create(
-:order_with_totals, 
-customer: customer, 
+:order_with_totals,
+customer: customer,
 distributor: customer.enterprise,
                     state: "payment"
 )
@@ -251,7 +251,7 @@ distributor: customer.enterprise,
       let(:oc) { create(:simple_order_cycle, distributors: [d], variants: [variant]) }
       let(:d) {
         create(
-:distributor_enterprise, 
+:distributor_enterprise,
 shipping_methods: [create(:shipping_method)],
                          payment_methods: [create(:payment_method)]
 )
@@ -308,14 +308,14 @@ shipping_methods: [create(:shipping_method)],
       it "should silently ignore the missing line item" do
         order = subject.current_order(true)
         li = order.contents.add(create(:simple_product, on_hand: 110).variants.first)
-        get :update, 
-params: { 
-order: { 
+        get :update,
+params: {
+order: {
 line_items_attributes: {
           "0" => { quantity: "0", id: "9999" },
           "1" => { quantity: "99", id: li.id }
-        } 
-} 
+        }
+}
 }
         expect(response.status).to eq(302)
         expect(li.reload.quantity).to eq(99)
@@ -338,13 +338,13 @@ line_items_attributes: {
       line_item = order.contents.add(create(:simple_product, on_hand: 110).variants.first)
       adjustment = create(:adjustment, adjustable: order)
 
-      get :update, 
-params: { 
-order: { 
+      get :update,
+params: {
+order: {
 line_items_attributes: {
         "1" => { quantity: "99", id: line_item.id }
-      } 
-} 
+      }
+}
 }
 
       expect(adjustment.state).to eq('open')
@@ -362,10 +362,10 @@ line_items_attributes: {
       let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
       let(:order) {
         create(
-:completed_order_with_fees, 
-distributor: distributor, 
+:completed_order_with_fees,
+distributor: distributor,
 shipping_fee: shipping_fee,
-                            payment_fee: payment_fee, 
+                            payment_fee: payment_fee,
 shipping_tax_category: shipping_tax_category
 )
       }
@@ -394,11 +394,11 @@ shipping_tax_category: shipping_tax_category
 
       it "updates the shipping and payment fees" do
         spree_post :update,
-                   order: { 
+                   order: {
 line_items_attributes: {
                      "0" => { id: line_item1.id, quantity: 1 },
                      "1" => { id: line_item2.id, quantity: 0 }
-                   } 
+                   }
 }
 
         expect(order.reload.line_items.count).to eq 1
@@ -417,20 +417,20 @@ line_items_attributes: {
       let(:enterprise_fee) { create(:enterprise_fee, calculator: build(:calculator_per_item)) }
       let!(:exchange) {
         create(
-:exchange, 
-incoming: true, 
+:exchange,
+incoming: true,
 sender: variant1.product.supplier,
-           receiver: order_cycle.coordinator, 
-variants: [variant1, variant2], 
+           receiver: order_cycle.coordinator,
+variants: [variant1, variant2],
 enterprise_fees: [enterprise_fee]
 )
       }
       let!(:order) do
         order = create(
-:completed_order_with_totals, 
-line_items_count: 2, 
+:completed_order_with_totals,
+line_items_count: 2,
 user: user,
-                              distributor: distributor, 
+                              distributor: distributor,
 order_cycle: order_cycle
 )
         order.reload.line_items.first.update(variant_id: variant1.id)
@@ -440,12 +440,12 @@ order_cycle: order_cycle
         order
       end
       let(:params) {
-        { 
-order: { 
+        {
+order: {
 line_items_attributes: {
           "0" => { id: order.line_items.first.id, quantity: 2 }
-        } 
-} 
+        }
+}
 }
       }
 
@@ -467,13 +467,13 @@ line_items_attributes: {
 
       context "when a line item is removed" do
         let(:params) {
-          { 
-order: { 
+          {
+order: {
 line_items_attributes: {
             "0" => { id: order.line_items.first.id, quantity: 0 },
             "1" => { id: order.line_items.last.id, quantity: 1 }
-          } 
-} 
+          }
+}
 }
         }
 
@@ -494,13 +494,13 @@ line_items_attributes: {
   describe "request to remove items from a completed order" do
     let(:order) { create(:completed_order_with_totals, line_items_count: 2) }
     let(:params) {
-      { 
-order: { 
+      {
+order: {
 line_items_attributes: {
         "0" => { id: order.line_items.first.id, quantity: 1 },
         "1" => { id: order.line_items.second.id, quantity: 0 }
-      } 
-} 
+      }
+}
 }
     }
 
@@ -626,7 +626,7 @@ line_items_attributes: {
       context "when the order is complete" do
         let(:order) {
           create(
-:completed_order_with_totals, 
+:completed_order_with_totals,
 user: user,
                               distributor: create(:distributor_enterprise)
 )

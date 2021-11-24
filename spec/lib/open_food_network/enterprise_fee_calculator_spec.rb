@@ -25,23 +25,23 @@ module OpenFoodNetwork
           describe "supplier fees" do
             let!(:exchange1) {
               create(
-:exchange, 
-order_cycle: order_cycle, 
-sender: supplier1, 
-receiver: coordinator, 
+:exchange,
+order_cycle: order_cycle,
+sender: supplier1,
+receiver: coordinator,
 incoming: true,
-           enterprise_fees: [enterprise_fee1], 
+           enterprise_fees: [enterprise_fee1],
 variants: [product1.master]
 )
             }
             let!(:exchange2) {
               create(
-:exchange, 
-order_cycle: order_cycle, 
-sender: supplier2, 
-receiver: coordinator, 
+:exchange,
+order_cycle: order_cycle,
+sender: supplier2,
+receiver: coordinator,
 incoming: true,
-           enterprise_fees: [enterprise_fee2], 
+           enterprise_fees: [enterprise_fee2],
 variants: [product2.master]
 )
             }
@@ -80,12 +80,12 @@ distributor,
           describe "coordinator fees" do
             let!(:exchange) {
               create(
-:exchange, 
-order_cycle: order_cycle, 
-sender: coordinator, 
-receiver: distributor, 
+:exchange,
+order_cycle: order_cycle,
+sender: coordinator,
+receiver: distributor,
 incoming: false,
-           enterprise_fees: [], 
+           enterprise_fees: [],
 variants: [product1.master]
 )
             }
@@ -116,12 +116,12 @@ distributor,
           describe "distributor fees" do
             let!(:exchange) {
               create(
-:exchange, 
-order_cycle: order_cycle, 
-sender: coordinator, 
-receiver: distributor, 
+:exchange,
+order_cycle: order_cycle,
+sender: coordinator,
+receiver: distributor,
 incoming: false,
-           enterprise_fees: [enterprise_fee1, enterprise_fee2, enterprise_fee3], 
+           enterprise_fees: [enterprise_fee1, enterprise_fee2, enterprise_fee3],
 variants: [product1.master]
 )
             }
@@ -149,20 +149,20 @@ distributor,
         describe "summing percentage fees for the variant" do
           let!(:enterprise_fee1) {
             create(
-:enterprise_fee, 
-amount: 20, 
+:enterprise_fee,
+amount: 20,
 fee_type: "admin",
                  calculator: ::Calculator::FlatPercentPerItem.new(preferred_flat_percent: 20)
 )
           }
           let!(:exchange) {
             create(
-:exchange, 
-order_cycle: order_cycle, 
-sender: coordinator, 
-receiver: distributor, 
+:exchange,
+order_cycle: order_cycle,
+sender: coordinator,
+receiver: distributor,
 incoming: false,
-           enterprise_fees: [enterprise_fee1], 
+           enterprise_fees: [enterprise_fee1],
 variants: [product1.master]
 )
           }
@@ -195,10 +195,10 @@ distributor,
         let!(:ef_fundraising) { create(:enterprise_fee, fee_type: 'fundraising', amount: 3.45) }
         let!(:exchange) {
           create(
-:exchange, 
+:exchange,
 order_cycle: order_cycle,
-           sender: coordinator, 
-receiver: distributor, 
+           sender: coordinator,
+receiver: distributor,
 incoming: false,
            enterprise_fees: [ef_admin, ef_sales, ef_packing, ef_transport, ef_fundraising],
            variants: [product1.master]
@@ -213,10 +213,10 @@ distributor,
                                                order_cycle
 ).fees_by_type_for(product1.master)
 ).to eq(
-admin: 1.23, 
-sales: 4.56, 
+admin: 1.23,
+sales: 4.56,
 packing: 7.89,
-transport: 0.12, 
+transport: 0.12,
 fundraising: 3.45
 )
           end
@@ -229,8 +229,8 @@ distributor,
                                                order_cycle
 ).fees_by_type_for(product1.master)
 ).to eq(
-sales: 4.56, 
-packing: 7.89, 
+sales: 4.56,
+packing: 7.89,
 transport: 0.12,
 fundraising: 3.45
 )
@@ -245,10 +245,10 @@ distributor,
                                                order_cycle
 ).indexed_fees_by_type_for(product1.master)
 ).to eq(
-admin: 1.23, 
+admin: 1.23,
 sales: 4.56,
-packing: 7.89, 
-transport: 0.12, 
+packing: 7.89,
+transport: 0.12,
 fundraising: 3.45
 )
           end
@@ -261,9 +261,9 @@ distributor,
                                                order_cycle
 ).indexed_fees_by_type_for(product1.master)
 ).to eq(
-sales: 4.56, 
+sales: 4.56,
 packing: 7.89,
-transport: 0.12, 
+transport: 0.12,
 fundraising: 3.45
 )
           end
@@ -279,11 +279,11 @@ fundraising: 3.45
         }
         let!(:exchange) {
           create(
-:exchange, 
-order_cycle: order_cycle, 
-sender: coordinator, 
+:exchange,
+order_cycle: order_cycle,
+sender: coordinator,
 receiver: distributor,
-           incoming: false, 
+           incoming: false,
 variants: [product1.master]
 )
         }
@@ -324,11 +324,11 @@ distributor,
       let!(:ef_other_distributor) { create(:enterprise_fee) }
       let!(:exchange) {
         create(
-:exchange, 
-sender: order_cycle.coordinator, 
+:exchange,
+sender: order_cycle.coordinator,
 receiver: distributor,
-           order_cycle: order_cycle, 
-enterprise_fees: [ef_exchange], 
+           order_cycle: order_cycle,
+enterprise_fees: [ef_exchange],
 variants: [v]
 )
       }
@@ -351,11 +351,11 @@ variants: [v]
 
         it "does not include outgoing exchanges to other distributors" do
           create(
-:exchange, 
-order_cycle: order_cycle, 
+:exchange,
+order_cycle: order_cycle,
 sender: order_cycle.coordinator,
-           receiver: distributor_other, 
-enterprise_fees: [ef_other_distributor], 
+           receiver: distributor_other,
+enterprise_fees: [ef_other_distributor],
 variants: [v]
 )
 
@@ -422,12 +422,12 @@ variants: [v]
               .to eq [
 OpenFoodNetwork::EnterpriseFeeApplicator.new(ef1, line_item.variant, 'supplier'),
                       OpenFoodNetwork::EnterpriseFeeApplicator.new(
-ef2, 
+ef2,
 line_item.variant,
                                                                    'distributor'
 ),
                       OpenFoodNetwork::EnterpriseFeeApplicator.new(
-ef3, 
+ef3,
 line_item.variant,
                                                                    'coordinator'
 )

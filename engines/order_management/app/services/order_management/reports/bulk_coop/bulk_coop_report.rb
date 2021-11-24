@@ -80,33 +80,33 @@ I18n.t(:report_header_supplier),
             @allocation_report.rules
           when "bulk_coop_packing_sheets"
             [
-{ 
+{
 group_by: proc { |li| li.product },
-sort_by: proc { |product| product.name } 
+sort_by: proc { |product| product.name }
 },
-             { 
+             {
 group_by: proc { |li| li.full_name },
-sort_by: proc { |full_name| full_name } 
+sort_by: proc { |full_name| full_name }
 },
-             { 
+             {
 group_by: proc { |li| li.order },
-sort_by: proc { |order| order.to_s } 
+sort_by: proc { |order| order.to_s }
 }
 ]
           when "bulk_coop_customer_payments"
             [
-{ 
+{
 group_by: proc { |li| li.order },
-sort_by: proc { |order| order.completed_at } 
+sort_by: proc { |order| order.completed_at }
 }
 ]
           else
             [
-{ 
+{
 group_by: proc { |li| li.product.supplier },
-sort_by: proc { |supplier| supplier.name } 
+sort_by: proc { |supplier| supplier.name }
 },
-             { 
+             {
 group_by: proc { |li| li.product },
 sort_by: proc { |product| product.name },
 summary_columns: [
@@ -154,11 +154,11 @@ li.max_quantity || 0,
                                                } / lis.first.product.group_buy_unit_size)
                                            end).floor * (lis.first.product.group_buy_unit_size || 0))
                                  }
-] 
+]
 },
-             { 
+             {
 group_by: proc { |li| li.full_name },
-sort_by: proc { |full_name| full_name } 
+sort_by: proc { |full_name| full_name }
 }
 ]
           end

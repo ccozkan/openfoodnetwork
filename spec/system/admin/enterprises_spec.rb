@@ -177,8 +177,8 @@ describe ' As an administrator I want to manage enterprises ' do
     shop_message_input = page.find("text-angular#enterprise_preferred_shopfront_message div[id^='taTextElement']")
     shop_message_input.native.send_keys('This is my shopfront message.')
     expect(page).to have_checked_field "enterprise_preferred_shopfront_order_cycle_order_orders_close_at"
-    # using "find" as fields outside of the screen and are not visible  
-    find(:xpath, 
+    # using "find" as fields outside of the screen and are not visible
+    find(:xpath,
 '//*[@id="enterprise_preferred_shopfront_order_cycle_order_orders_open_at"]').trigger("click")
     find(:xpath, '//*[@id="enterprise_enable_subscriptions_true"]').trigger("click")
 
@@ -299,8 +299,8 @@ describe ' As an administrator I want to manage enterprises ' do
     let(:enterprise_user) { create(:user, enterprise_limit: 1) }
     let!(:er) {
       create(
-:enterprise_relationship, 
-parent: distributor3, 
+:enterprise_relationship,
+parent: distributor3,
 child: distributor1,
                           permissions_list: [:edit_profile]
 )

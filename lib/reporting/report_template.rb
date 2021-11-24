@@ -2,14 +2,14 @@
 
 module Reporting
   class ReportTemplate
-    delegate :as_json, 
-:as_arrays, 
-:table_headers, 
+    delegate :as_json,
+:as_arrays,
+:table_headers,
 :table_rows,
-             :to_csv, 
-:to_xlsx, 
-:to_ods, 
-:to_json, 
+             :to_csv,
+:to_xlsx,
+:to_ods,
+:to_json,
 to: :renderer
 
     attr_reader :options

@@ -9,8 +9,8 @@ describe ProcessPaymentIntent do
     let(:customer) { create(:customer) }
     let(:order) {
       create(
-:order_with_totals, 
-customer: customer, 
+:order_with_totals,
+customer: customer,
 distributor: customer.enterprise,
                     state: "payment"
 )

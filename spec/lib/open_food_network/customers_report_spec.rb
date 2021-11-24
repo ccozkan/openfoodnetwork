@@ -25,9 +25,9 @@ module OpenFoodNetwork
         it "builds a table from a list of variants" do
           order = double(:order, email: "test@test.com")
           address = double(
-:billing_address, 
+:billing_address,
 firstname: "Firsty",
-                  lastname: "Lasty", 
+                  lastname: "Lasty",
 city: "Suburbia"
 )
           allow(order).to receive(:billing_address).and_return address
@@ -45,13 +45,13 @@ city: "Suburbia"
         it "returns headers for addresses" do
           expect(subject.header).to eq(
 [
-"First Name", 
-"Last Name", 
-"Billing Address", 
+"First Name",
+"Last Name",
+"Billing Address",
 "Email",
-                                        "Phone", 
-"Hub", 
-"Hub Address", 
+                                        "Phone",
+"Hub",
+"Hub Address",
 "Shipping Method"
 ]
 )
@@ -67,11 +67,11 @@ city: "Suburbia"
           expect(subject.table).to eq(
 [
 [
-                                        a.firstname, 
+                                        a.firstname,
 a.lastname,
                                         [a.address1, a.address2, a.city].join(" "),
-                                        o.email, 
-a.phone, 
+                                        o.email,
+a.phone,
 d.name,
                                         [d.address.address1, d.address.address2, d.address.city].join(" "),
                                         o.shipping_method.name

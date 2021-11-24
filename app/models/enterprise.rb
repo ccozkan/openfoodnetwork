@@ -8,12 +8,12 @@ class Enterprise < ApplicationRecord
   ENTERPRISE_SEARCH_RADIUS = 100
   searchable_attributes :sells, :is_primary_producer
   searchable_associations :properties
-  searchable_scopes :is_primary_producer, 
-:is_distributor, 
-:is_hub, 
-:activated, 
+  searchable_scopes :is_primary_producer,
+:is_distributor,
+:is_hub,
+:activated,
 :visible,
-                    :ready_for_checkout, 
+                    :ready_for_checkout,
 :not_ready_for_checkout
 
   preference :shopfront_message, :text, default: ""
@@ -28,20 +28,20 @@ class Enterprise < ApplicationRecord
 
   has_paper_trail only: [:owner_id, :sells], on: [:update]
 
-  has_many :relationships_as_parent, 
+  has_many :relationships_as_parent,
 class_name: 'EnterpriseRelationship',
                                      foreign_key: 'parent_id',
                                      dependent: :destroy
-  has_many :relationships_as_child, 
+  has_many :relationships_as_child,
 class_name: 'EnterpriseRelationship',
                                     foreign_key: 'child_id',
                                     dependent: :destroy
-  has_and_belongs_to_many :groups, 
+  has_and_belongs_to_many :groups,
 join_table: 'enterprise_groups_enterprises',
                                    class_name: 'EnterpriseGroup'
   has_many :producer_properties, foreign_key: 'producer_id'
   has_many :properties, through: :producer_properties
-  has_many :supplied_products, 
+  has_many :supplied_products,
 class_name: 'Spree::Product',
                                foreign_key: 'supplier_id',
                                dependent: :destroy
@@ -52,7 +52,7 @@ class_name: 'Spree::Product',
   has_many :enterprise_roles, dependent: :destroy
   has_many :users, through: :enterprise_roles
   belongs_to :owner, class_name: 'Spree::User', inverse_of: :owned_enterprises
-  has_and_belongs_to_many :payment_methods, 
+  has_and_belongs_to_many :payment_methods,
 join_table: 'distributors_payment_methods',
                                             class_name: 'Spree::PaymentMethod',
                                             foreign_key: 'distributor_id'
@@ -66,15 +66,15 @@ join_table: 'distributors_payment_methods',
   delegate :latitude, :longitude, :city, :state_name, to: :address
 
   accepts_nested_attributes_for :address
-  accepts_nested_attributes_for :business_address, 
+  accepts_nested_attributes_for :business_address,
 reject_if: :business_address_empty?,
                                                    allow_destroy: true
-  accepts_nested_attributes_for :producer_properties, 
+  accepts_nested_attributes_for :producer_properties,
 allow_destroy: true,
                                                       reject_if: lambda { |pp|
                                                         pp[:property_name].blank?
                                                       }
-  accepts_nested_attributes_for :tag_rules, 
+  accepts_nested_attributes_for :tag_rules,
 allow_destroy: true,
                                             reject_if: lambda { |tag_rule|
                                               tag_rule[:preferred_customer_tags].blank?
@@ -130,14 +130,14 @@ allow_destroy: true,
   scope :by_name, -> { order('name') }
   scope :visible, -> { where(visible: true) }
   scope :activated, -> { where("sells != 'unspecified'") }
-  scope :ready_for_checkout, 
+  scope :ready_for_checkout,
 lambda {
     joins(:shipping_methods)
       .joins(:payment_methods)
       .merge(Spree::PaymentMethod.available)
       .select('DISTINCT enterprises.*')
   }
-  scope :not_ready_for_checkout, 
+  scope :not_ready_for_checkout,
 lambda {
     # When ready_for_checkout is empty, return all rows when there are no enterprises ready for
     # checkout.
@@ -154,14 +154,14 @@ lambda {
   scope :is_primary_producer, -> { where("enterprises.is_primary_producer IS TRUE") }
   scope :is_distributor, -> { where('sells != ?', 'none') }
   scope :is_hub, -> { where(sells: 'any') }
-  scope :supplying_variant_in, 
+  scope :supplying_variant_in,
 lambda { |variants|
     joins(supplied_products: :variants_including_master)
       .where('spree_variants.id IN (?)', variants)
       .select('DISTINCT enterprises.*')
   }
 
-  scope :with_order_cycles_as_supplier_outer, 
+  scope :with_order_cycles_as_supplier_outer,
 -> {
     joins(
 "
@@ -171,7 +171,7 @@ lambda { |variants|
       .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
-  scope :with_order_cycles_as_distributor_outer, 
+  scope :with_order_cycles_as_distributor_outer,
 -> {
     joins(
 "
@@ -181,7 +181,7 @@ lambda { |variants|
       .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
-  scope :with_order_cycles_outer, 
+  scope :with_order_cycles_outer,
 -> {
     joins(
 "
@@ -191,21 +191,21 @@ lambda { |variants|
       .joins("LEFT OUTER JOIN order_cycles ON (order_cycles.id = exchanges.order_cycle_id)")
   }
 
-  scope :with_order_cycles_and_exchange_variants_outer, 
+  scope :with_order_cycles_and_exchange_variants_outer,
 -> {
     with_order_cycles_as_distributor_outer
       .joins("LEFT OUTER JOIN exchange_variants ON (exchange_variants.exchange_id = exchanges.id)")
       .joins("LEFT OUTER JOIN spree_variants ON (spree_variants.id = exchange_variants.variant_id)")
   }
 
-  scope :distributors_with_active_order_cycles, 
+  scope :distributors_with_active_order_cycles,
 lambda {
     with_order_cycles_as_distributor_outer
       .merge(OrderCycle.active)
       .select('DISTINCT enterprises.*')
   }
 
-  scope :distributing_products, 
+  scope :distributing_products,
 lambda { |product_ids|
     exchanges = joins(
 "
@@ -220,7 +220,7 @@ lambda { |product_ids|
     where(id: exchanges)
   }
 
-  scope :managed_by, 
+  scope :managed_by,
 lambda { |user|
     if user.has_spree_role?('admin')
       where(nil)
@@ -228,7 +228,7 @@ lambda { |user|
       joins(:enterprise_roles).where('enterprise_roles.user_id = ?', user.id)
     end
   }
-  scope :relatives_of_one_union_others, 
+  scope :relatives_of_one_union_others,
 lambda { |one, others|
     where(
 "
@@ -238,9 +238,9 @@ lambda { |one, others|
         (SELECT parent_id FROM enterprise_relationships WHERE enterprise_relationships.child_id=?)
       OR enterprises.id IN
         (?)
-    ", 
-one, 
-one, 
+    ",
+one,
+one,
 others
 )
   }
@@ -248,9 +248,9 @@ others
   def business_address_empty?(attributes)
     attributes_exists = attributes['id'].present?
     attributes_empty = attributes.slice(
-:company, 
-:address1, 
-:city, 
+:company,
+:address1,
+:city,
 :phone,
                                         :zipcode
 ).values.all?(&:blank?)
@@ -300,8 +300,8 @@ others
         (SELECT child_id FROM enterprise_relationships WHERE enterprise_relationships.parent_id=?)
       OR enterprises.id IN
         (SELECT parent_id FROM enterprise_relationships WHERE enterprise_relationships.child_id=?)
-    ", 
-id, 
+    ",
+id,
 id
 )
   end
@@ -478,11 +478,11 @@ id
   def enforce_ownership_limit
     unless owner.can_own_more_enterprises?
       errors.add(
-:owner, 
+:owner,
 I18n.t(
-:enterprise_owner_error, 
+:enterprise_owner_error,
 email: owner.email,
-                         enterprise_limit: owner.enterprise_limit 
+                         enterprise_limit: owner.enterprise_limit
 )
 )
     end

@@ -11,9 +11,9 @@ module OpenFoodNetwork
 
     describe "option defaults" do
       let(:report) {
-        XeroInvoicesReport.new user, 
-initial_invoice_number: '', 
-invoice_date: '', 
+        XeroInvoicesReport.new user,
+initial_invoice_number: '',
+invoice_date: '',
 due_date: '',
                                      account_code: ''
       }
@@ -21,20 +21,20 @@ due_date: '',
       around { |example| Timecop.travel(Time.zone.local(2015, 5, 5, 14, 0, 0)) { example.run } }
 
       it "uses defaults when blank params are passed" do
-        expect(report.instance_variable_get(:@opts)).to eq( 
+        expect(report.instance_variable_get(:@opts)).to eq(
 invoice_date: Date.civil(2015, 5, 5),
 due_date: Date.civil(2015, 6, 5),
 account_code: 'food sales',
-report_type: 'summary' 
+report_type: 'summary'
 )
       end
     end
 
     describe "summary rows" do
       let(:report) {
-        XeroInvoicesReport.new user, 
-initial_invoice_number: '', 
-invoice_date: '', 
+        XeroInvoicesReport.new user,
+initial_invoice_number: '',
+invoice_date: '',
 due_date: '',
                                      account_code: ''
       }

@@ -3,10 +3,10 @@
 module MarkdownHelper
   def render_markdown(markdown)
     md ||= Redcarpet::Markdown.new(
-Redcarpet::Render::HTML, 
-no_intra_emphasis: true, 
+Redcarpet::Render::HTML,
+no_intra_emphasis: true,
 tables: true,
-                         autolink: true, 
+                         autolink: true,
 superscript: true
 )
     md.render markdown

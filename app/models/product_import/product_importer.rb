@@ -184,22 +184,22 @@ module ProductImport
 
       @spreadsheet_data = SpreadsheetData.new(@entries, @import_settings)
       @validator = EntryValidator.new(
-@current_user, 
-@import_time, 
+@current_user,
+@import_time,
 @spreadsheet_data,
-                                      @editable_enterprises, 
-@inventory_permissions, 
+                                      @editable_enterprises,
+@inventory_permissions,
 @reset_counts,
-                                      @import_settings, 
+                                      @import_settings,
 build_all_entries
 )
       @processor = EntryProcessor.new(
-self, 
-@validator, 
-@import_settings, 
+self,
+@validator,
+@import_settings,
 @spreadsheet_data,
-                                      @editable_enterprises, 
-@import_time, 
+                                      @editable_enterprises,
+@import_time,
 @updated_ids
 )
 
@@ -251,7 +251,7 @@ self,
         errors.add(:importer, I18n.t('admin.product_import.model.encoding_error'))
       else
         errors.add(
-:importer, 
+:importer,
 I18n.t(
 'admin.product_import.model.unexpected_error',
                                      error_message: e.message
@@ -268,7 +268,7 @@ I18n.t(
     # build_entries and buils_all_entries
     def add_malformed_csv_error(error_message)
       unless errors.added?(
-:importer, 
+:importer,
 I18n.t(
 'admin.product_import.model.malformed_csv',
                                              error_message: error_message
@@ -276,7 +276,7 @@ I18n.t(
 )
 
         errors.add(
-:importer, 
+:importer,
 I18n.t(
 'admin.product_import.model.malformed_csv',
                                      error_message: error_message

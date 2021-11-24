@@ -23,13 +23,13 @@ describe Admin::EnterprisesController, type: :controller do
 
   describe "creating an enterprise" do
     let(:enterprise_params) {
-      { 
-enterprise: { 
-name: 'zzz', 
-permalink: 'zzz', 
+      {
+enterprise: {
+name: 'zzz',
+permalink: 'zzz',
 is_primary_producer: '0',
-address_attributes: address_params 
-} 
+address_attributes: address_params
+}
 }
     }
 
@@ -159,15 +159,15 @@ address_attributes: address_params
 
       it "does not allow managers to be changed" do
         allow(controller).to receive_messages spree_current_user: distributor_manager
-        update_params = { 
+        update_params = {
 id: distributor,
-enterprise: { 
+enterprise: {
 user_ids: [
-distributor_owner.id, 
+distributor_owner.id,
 distributor_manager.id,
                                                    user.id
-] 
-} 
+]
+}
 }
         spree_post :update, update_params
 
@@ -291,15 +291,15 @@ distributor_manager.id,
 
       it "allows managers to be changed" do
         allow(controller).to receive_messages spree_current_user: distributor_owner
-        update_params = { 
+        update_params = {
 id: distributor,
-enterprise: { 
+enterprise: {
 user_ids: [
-distributor_owner.id, 
+distributor_owner.id,
 distributor_manager.id,
                                                    user.id
-] 
-} 
+]
+}
 }
         spree_post :update, update_params
 
@@ -329,15 +329,15 @@ distributor_manager.id,
 
       it "allows managers to be changed" do
         allow(controller).to receive_messages spree_current_user: admin_user
-        update_params = { 
+        update_params = {
 id: distributor,
-enterprise: { 
+enterprise: {
 user_ids: [
-distributor_owner.id, 
+distributor_owner.id,
 distributor_manager.id,
                                                    user.id
-] 
-} 
+]
+}
 }
         spree_post :update, update_params
 
@@ -459,17 +459,17 @@ distributor_manager.id,
         profile_enterprise1.enterprise_roles.build(user: new_owner).save
         profile_enterprise2.enterprise_roles.build(user: new_owner).save
         allow(controller).to receive_messages spree_current_user: new_owner
-        bulk_enterprise_params = { 
-sets_enterprise_set: { 
+        bulk_enterprise_params = {
+sets_enterprise_set: {
 collection_attributes: {
-          '0' => { 
-id: profile_enterprise1.id, 
+          '0' => {
+id: profile_enterprise1.id,
 sells: 'any',
-owner_id: new_owner.id 
-}, 
+owner_id: new_owner.id
+},
 '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
-        } 
-} 
+        }
+}
 }
 
         spree_put :bulk_update, bulk_enterprise_params
@@ -485,14 +485,14 @@ owner_id: new_owner.id
         allow_any_instance_of(Sets::EnterpriseSet).to receive(:save) { false }
         profile_enterprise1.enterprise_roles.build(user: new_owner).save
         allow(controller).to receive_messages spree_current_user: new_owner
-        bulk_enterprise_params = { 
-sets_enterprise_set: { 
-collection_attributes: { 
+        bulk_enterprise_params = {
+sets_enterprise_set: {
+collection_attributes: {
 '0' => {
           id: profile_enterprise1.id, visible: 'false'
-        } 
-} 
-} 
+        }
+}
+}
 }
         spree_put :bulk_update, bulk_enterprise_params
         expect(assigns(:enterprise_set).collection).to eq [profile_enterprise1]
@@ -502,17 +502,17 @@ collection_attributes: {
     context "as the owner of an enterprise" do
       it "allows 'sells' and 'owner' to be changed" do
         allow(controller).to receive_messages spree_current_user: original_owner
-        bulk_enterprise_params = { 
-sets_enterprise_set: { 
+        bulk_enterprise_params = {
+sets_enterprise_set: {
 collection_attributes: {
-          '0' => { 
-id: profile_enterprise1.id, 
+          '0' => {
+id: profile_enterprise1.id,
 sells: 'any',
-owner_id: new_owner.id 
-}, 
+owner_id: new_owner.id
+},
 '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
-        } 
-} 
+        }
+}
 }
 
         spree_put :bulk_update, bulk_enterprise_params
@@ -530,17 +530,17 @@ owner_id: new_owner.id
         profile_enterprise1.enterprise_roles.build(user: new_owner).save
         profile_enterprise2.enterprise_roles.build(user: new_owner).save
         allow(controller).to receive_messages spree_current_user: admin_user
-        bulk_enterprise_params = { 
-sets_enterprise_set: { 
+        bulk_enterprise_params = {
+sets_enterprise_set: {
 collection_attributes: {
-          '0' => { 
-id: profile_enterprise1.id, 
+          '0' => {
+id: profile_enterprise1.id,
 sells: 'any',
-owner_id: new_owner.id 
-}, 
+owner_id: new_owner.id
+},
 '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
-        } 
-} 
+        }
+}
 }
 
         spree_put :bulk_update, bulk_enterprise_params
@@ -620,8 +620,8 @@ user,
 
       # :create_variant_overrides does not affect visiblity (at time of writing)
       create(
-:enterprise_relationship, 
-parent: not_visible_enterprise, 
+:enterprise_relationship,
+parent: not_visible_enterprise,
 child: visible_enterprise,
                           permissions_list: [:create_variant_overrides]
 )
@@ -630,7 +630,7 @@ child: visible_enterprise,
     it "uses permissions to determine which enterprises are visible and should be rendered" do
       expect(controller).to receive(:render_as_json).with(
 [visible_enterprise],
-                                                          ams_prefix: 'basic', 
+                                                          ams_prefix: 'basic',
 spree_current_user: user
 ).and_call_original
       get :visible, format: :json

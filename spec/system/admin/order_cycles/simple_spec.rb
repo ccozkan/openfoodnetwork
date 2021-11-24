@@ -69,7 +69,7 @@ describe ' As an administrator I want to manage simple order cycles ', js: true 
     expect(page).to have_selector "#save-bar", text: "Order cycles have been updated."
     order_cycles = OrderCycle.order("id ASC")
     expect(order_cycles.map(&:name)).to eq [
-"Updated Order Cycle 1", 
+"Updated Order Cycle 1",
 "Updated Order Cycle 2",
                                             "Updated Order Cycle 3"
 ]
@@ -151,14 +151,14 @@ describe ' As an administrator I want to manage simple order cycles ', js: true 
     let!(:variant_permitted) { product_permitted.variants.first }
     let!(:schedule) {
       create(
-:schedule, 
+:schedule,
 name: 'Schedule1',
            order_cycles: [create(:simple_order_cycle, coordinator: distributor_managed)]
 )
     }
     let!(:schedule_of_other_managed_distributor) {
       create(
-:schedule, 
+:schedule,
 name: 'Other Schedule',
            order_cycles: [create(:simple_order_cycle, coordinator: other_distributor_managed)]
 )
@@ -168,36 +168,36 @@ name: 'Other Schedule',
       # Relationships required for interface to work
       # Both suppliers allow both managed distributor to distribute their products (and add them to the order cycle)
       create(
-:enterprise_relationship, 
-parent: supplier_managed, 
+:enterprise_relationship,
+parent: supplier_managed,
 child: distributor_managed,
                           permissions_list: [:add_to_order_cycle]
 )
       create(
-:enterprise_relationship, 
-parent: supplier_permitted, 
+:enterprise_relationship,
+parent: supplier_permitted,
 child: distributor_managed,
                           permissions_list: [:add_to_order_cycle]
 )
 
       # Both suppliers allow permitted distributor to distribute their products
       create(
-:enterprise_relationship, 
-parent: supplier_managed, 
+:enterprise_relationship,
+parent: supplier_managed,
 child: distributor_permitted,
                           permissions_list: [:add_to_order_cycle]
 )
       create(
-:enterprise_relationship, 
-parent: supplier_permitted, 
+:enterprise_relationship,
+parent: supplier_permitted,
 child: distributor_permitted,
                           permissions_list: [:add_to_order_cycle]
 )
 
       # Permitted distributor can be added to the order cycle
       create(
-:enterprise_relationship, 
-parent: distributor_permitted, 
+:enterprise_relationship,
+parent: distributor_permitted,
 child: distributor_managed,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -216,15 +216,15 @@ child: distributor_managed,
       it "viewing a list of order cycles I am coordinating" do
         oc_user_coordinating = create(
 :simple_order_cycle,
-                                      suppliers: [supplier_managed, supplier_unmanaged], 
-coordinator: distributor_managed, 
-distributors: [distributor_managed, distributor_unmanaged], 
-name: 'Order Cycle 1' 
+                                      suppliers: [supplier_managed, supplier_unmanaged],
+coordinator: distributor_managed,
+distributors: [distributor_managed, distributor_unmanaged],
+name: 'Order Cycle 1'
 )
         oc_for_other_user = create(
-:simple_order_cycle, 
+:simple_order_cycle,
 coordinator: supplier_unmanaged,
-                     name: 'Order Cycle 2' 
+                     name: 'Order Cycle 2'
 )
 
         visit spree.admin_dashboard_path
@@ -249,7 +249,7 @@ coordinator: supplier_unmanaged,
         click_link 'New Order Cycle'
 
         [
-distributor_unmanaged.name, 
+distributor_unmanaged.name,
 supplier_managed.name,
          supplier_unmanaged.name
 ].each do |enterprise_name|
@@ -322,10 +322,10 @@ supplier_managed.name,
       it "editing an order cycle" do
         oc = create(
 :simple_order_cycle,
-                    suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged], 
-coordinator: distributor_managed, 
-distributors: [distributor_managed, distributor_permitted, distributor_unmanaged], 
-name: 'Order Cycle 1' 
+                    suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged],
+coordinator: distributor_managed,
+distributors: [distributor_managed, distributor_permitted, distributor_unmanaged],
+name: 'Order Cycle 1'
 )
         distributor_managed.update_attribute(:enable_subscriptions, true)
 
@@ -382,17 +382,17 @@ name: 'Order Cycle 1'
       it "editing an order cycle" do
         oc = create(
 :simple_order_cycle,
-                    suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged], 
-coordinator: distributor_managed, 
-distributors: [distributor_managed, distributor_permitted, distributor_unmanaged], 
-name: 'Order Cycle 1' 
+                    suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged],
+coordinator: distributor_managed,
+distributors: [distributor_managed, distributor_permitted, distributor_unmanaged],
+name: 'Order Cycle 1'
 )
         v1 = create(:variant, product: create(:product, supplier: supplier_managed))
         v2 = create(:variant, product: create(:product, supplier: supplier_managed))
 
         # Incoming exchange
         ex_in = oc.exchanges.where(
-sender_id: supplier_managed, 
+sender_id: supplier_managed,
 receiver_id: distributor_managed,
 incoming: true
 ).first
@@ -401,7 +401,7 @@ incoming: true
         # Outgoing exchange
         ex_out = oc.exchanges.where(
 sender_id: distributor_managed,
-receiver_id: distributor_managed, 
+receiver_id: distributor_managed,
 incoming: false
 ).first
         ex_out.update(variant_ids: [v1.id, v2.id])
@@ -447,13 +447,13 @@ incoming: false
 
         oc.reload
         expect(oc.suppliers).to match_array [
-supplier_managed, 
+supplier_managed,
 supplier_permitted,
                                              supplier_unmanaged
 ]
         expect(oc.coordinator).to eq(distributor_managed)
         expect(oc.distributors).to match_array [
-distributor_managed, 
+distributor_managed,
 distributor_permitted,
                                                 distributor_unmanaged
 ]
@@ -466,8 +466,8 @@ distributor_permitted,
 
       before do
         create(
-:enterprise_relationship, 
-parent: supplier_managed, 
+:enterprise_relationship,
+parent: supplier_managed,
 child: my_distributor,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -479,17 +479,17 @@ child: my_distributor,
       it "editing an order cycle" do
         oc = create(
 :simple_order_cycle,
-                    suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged], 
-coordinator: distributor_managed, 
-distributors: [my_distributor, distributor_managed, distributor_permitted, distributor_unmanaged], 
-name: 'Order Cycle 1' 
+                    suppliers: [supplier_managed, supplier_permitted, supplier_unmanaged],
+coordinator: distributor_managed,
+distributors: [my_distributor, distributor_managed, distributor_permitted, distributor_unmanaged],
+name: 'Order Cycle 1'
 )
         v1 = create(:variant, product: create(:product, supplier: supplier_managed))
         v2 = create(:variant, product: create(:product, supplier: supplier_managed))
 
         # Incoming exchange
         ex_in = oc.exchanges.where(
-sender_id: supplier_managed, 
+sender_id: supplier_managed,
 receiver_id: distributor_managed,
 incoming: true
 ).first
@@ -497,7 +497,7 @@ incoming: true
 
         # Outgoing exchange
         ex_out = oc.exchanges.where(
-sender_id: distributor_managed, 
+sender_id: distributor_managed,
 receiver_id: my_distributor,
 incoming: false
 ).first
@@ -544,15 +544,15 @@ incoming: false
 
         oc.reload
         expect(oc.suppliers).to match_array [
-supplier_managed, 
+supplier_managed,
 supplier_permitted,
                                              supplier_unmanaged
 ]
         expect(oc.coordinator).to eq(distributor_managed)
         expect(oc.distributors).to match_array [
-my_distributor, 
+my_distributor,
 distributor_managed,
-                                                distributor_permitted, 
+                                                distributor_permitted,
 distributor_unmanaged
 ]
       end
@@ -632,10 +632,10 @@ distributor_unmanaged
 
       expect(page).to have_input "oc#{oc.id}[name]", value: "Plums & Avos"
       expect(page).to have_input "oc#{oc.id}[orders_open_at]",
-                                 value: Time.zone.local(2040, 10, 17, 0o6, 0o0, 0o0).strftime("%F %T %z"), 
+                                 value: Time.zone.local(2040, 10, 17, 0o6, 0o0, 0o0).strftime("%F %T %z"),
 visible: false
       expect(page).to have_input "oc#{oc.id}[orders_close_at]",
-                                 value: Time.zone.local(2040, 10, 24, 17, 0o0, 0o0).strftime("%F %T %z"), 
+                                 value: Time.zone.local(2040, 10, 24, 17, 0o0, 0o0).strftime("%F %T %z"),
 visible: false
 
       # And it should have some variants selected
@@ -655,11 +655,11 @@ visible: false
       # Given an order cycle with pickup time and instructions
       fee = create(:enterprise_fee, name: 'my fee', enterprise: enterprise)
       oc = create(
-:simple_order_cycle, 
-suppliers: [enterprise], 
+:simple_order_cycle,
+suppliers: [enterprise],
 coordinator: enterprise,
-                     distributors: [enterprise], 
-variants: [v1], 
+                     distributors: [enterprise],
+variants: [v1],
 coordinator_fees: [fee]
 )
       ex = oc.exchanges.outgoing.first
@@ -697,11 +697,11 @@ coordinator_fees: [fee]
       fee1 = create(:enterprise_fee, name: 'my fee', enterprise: enterprise)
       fee2 = create(:enterprise_fee, name: 'that fee', enterprise: enterprise)
       oc = create(
-:simple_order_cycle, 
-suppliers: [enterprise], 
+:simple_order_cycle,
+suppliers: [enterprise],
 coordinator: enterprise,
-                     distributors: [enterprise], 
-variants: [v1], 
+                     distributors: [enterprise],
+variants: [v1],
 coordinator_fees: [fee1]
 )
       ex = oc.exchanges.outgoing.first
@@ -744,10 +744,10 @@ coordinator_fees: [fee1]
 
       expect(page).to have_input "oc#{oc.id}[name]", value: "Plums & Avos"
       expect(page).to have_input "oc#{oc.id}[orders_open_at]",
-                                 value: Time.zone.local(2040, 10, 17, 0o6, 0o0, 0o0).strftime("%F %T %z"), 
+                                 value: Time.zone.local(2040, 10, 17, 0o6, 0o0, 0o0).strftime("%F %T %z"),
 visible: false
       expect(page).to have_input "oc#{oc.id}[orders_close_at]",
-                                 value: Time.zone.local(2040, 10, 24, 17, 0o0, 0o0).strftime("%F %T %z"), 
+                                 value: Time.zone.local(2040, 10, 24, 17, 0o0, 0o0).strftime("%F %T %z"),
 visible: false
 
       # And it should have a variant selected

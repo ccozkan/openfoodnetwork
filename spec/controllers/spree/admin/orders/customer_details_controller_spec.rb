@@ -43,11 +43,11 @@ describe Spree::Admin::Orders::CustomerDetailsController, type: :controller do
 
       it "advances the order state" do
         expect {
-          spree_post :update, 
-order: { 
-email: user.email, 
+          spree_post :update,
+order: {
+email: user.email,
 bill_address_attributes: address_params,
-ship_address_attributes: address_params 
+ship_address_attributes: address_params
 },
                               order_id: order.number
         }.to change { order.reload.state }
@@ -57,7 +57,7 @@ ship_address_attributes: address_params
       context "when adding details of a registered user" do
         it "redirects to shipments on success" do
           spree_post :update,
-                     order: { email: user.email, bill_address_attributes: address_params, ship_address_attributes: address_params }, 
+                     order: { email: user.email, bill_address_attributes: address_params, ship_address_attributes: address_params },
 order_id: order.number
 
           order.reload
@@ -69,7 +69,7 @@ order_id: order.number
       context "when adding details of an unregistered user" do
         it "redirects to shipments on success" do
           spree_post :update,
-                     order: { email: 'unregistered@email.com', bill_address_attributes: address_params, ship_address_attributes: address_params }, 
+                     order: { email: 'unregistered@email.com', bill_address_attributes: address_params, ship_address_attributes: address_params },
 order_id: order.number
 
           order.reload

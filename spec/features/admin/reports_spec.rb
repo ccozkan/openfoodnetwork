@@ -54,12 +54,12 @@ describe ' As an administrator I want numbers, all the numbers! ' do
       expect(table.sort).to eq(
 [
         [
-"First Name", 
-"Last Name", 
-"Billing Address", 
-"Email", 
-"Phone", 
-"Hub", 
+"First Name",
+"Last Name",
+"Billing Address",
+"Email",
+"Phone",
+"Hub",
 "Hub Address",
          "Shipping Method"
 ]
@@ -81,15 +81,15 @@ describe ' As an administrator I want numbers, all the numbers! ' do
       expect(table.sort).to eq(
 [
         [
-"First Name", 
-"Last Name", 
-"Hub", 
-"Hub Code", 
-"Email", 
-"Phone", 
+"First Name",
+"Last Name",
+"Hub",
+"Hub Code",
+"Email",
+"Phone",
 "Shipping Method",
-         "Payment Method", 
-"Amount", 
+         "Payment Method",
+"Amount",
 "Balance"
 ]
       ].sort
@@ -104,18 +104,18 @@ describe ' As an administrator I want numbers, all the numbers! ' do
       expect(table.sort).to eq(
 [
         [
-"First Name", 
-"Last Name", 
-"Hub", 
-"Hub Code", 
-"Delivery Address", 
+"First Name",
+"Last Name",
+"Hub",
+"Hub Code",
+"Delivery Address",
 "Delivery Postcode",
-         "Phone", 
-"Shipping Method", 
-"Payment Method", 
-"Amount", 
-"Balance", 
-"Temp Controlled Items?", 
+         "Phone",
+"Shipping Method",
+"Payment Method",
+"Amount",
+"Balance",
+"Temp Controlled Items?",
 "Special Instructions"
 ]
       ].sort
@@ -152,26 +152,26 @@ describe ' As an administrator I want numbers, all the numbers! ' do
     let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
     let!(:shipping_method) {
       create(
-:shipping_method_with, 
-:expensive_name, 
+:shipping_method_with,
+:expensive_name,
 distributors: [distributor1],
                                         tax_category: shipping_tax_category
 )
     }
     let(:enterprise_fee) {
       create(
-:enterprise_fee, 
-enterprise: user1.enterprises.first, 
+:enterprise_fee,
+enterprise: user1.enterprises.first,
 tax_category: product2.tax_category,
                  calculator: Calculator::FlatRate.new(preferred_amount: 120.0)
 )
     }
     let(:order_cycle) {
       create(
-:simple_order_cycle, 
-coordinator: distributor1, 
+:simple_order_cycle,
+coordinator: distributor1,
 coordinator_fees: [enterprise_fee],
-                     distributors: [distributor1], 
+                     distributors: [distributor1],
 variants: [product1.variants.first, product2.variants.first]
 )
     }
@@ -180,10 +180,10 @@ variants: [product1.variants.first, product2.variants.first]
     let(:address) { create(:address) }
     let(:order1) {
       create(
-:order, 
-order_cycle: order_cycle, 
+:order,
+order_cycle: order_cycle,
 distributor: user1.enterprises.first,
-        ship_address: address, 
+        ship_address: address,
 bill_address: address
 )
     }
@@ -195,9 +195,9 @@ bill_address: address
     }
     let!(:line_item2) {
       create(
-:line_item, 
-variant: product2.variants.first, 
-price: 500.15, 
+:line_item,
+variant: product2.variants.first,
+price: 500.15,
 quantity: 3,
             order: order1
 )
@@ -210,9 +210,9 @@ quantity: 3,
       order1.recreate_all_fees!
       break unless order1.next! until order1.payment?
       create(
-:payment, 
-state: "checkout", 
-order: order1, 
+:payment,
+state: "checkout",
+order: order1,
 amount: order1.reload.total,
           payment_method: create(:payment_method, distributors: [distributor1])
 )
@@ -270,16 +270,16 @@ amount: order1.reload.total,
       let(:shipping_instructions) { "pick up on thursday please!" }
       let(:order1) {
         create(
-:order, 
-distributor: distributor, 
+:order,
+distributor: distributor,
 bill_address: bill_address,
         special_instructions: shipping_instructions
 )
       }
       let(:order2) {
         create(
-:order, 
-distributor: distributor, 
+:order,
+distributor: distributor,
 bill_address: bill_address,
         special_instructions: shipping_instructions
 )
@@ -310,10 +310,10 @@ bill_address: bill_address,
     it "handles order cycles with nil opening or closing times" do
       distributor = create(:distributor_enterprise)
       oc = create(
-:simple_order_cycle, 
-name: "My Order Cycle", 
+:simple_order_cycle,
+name: "My Order Cycle",
 distributors: [distributor],
-                     orders_open_at: Time.zone.now, 
+                     orders_open_at: Time.zone.now,
 orders_close_at: nil
 )
       o = create(:order, order_cycle: oc, distributor: distributor)
@@ -329,23 +329,23 @@ orders_close_at: nil
     let(:taxon)    { create(:taxon, name: 'Taxon Name') }
     let(:product1) {
       create(
-:simple_product, 
-name: "Product Name", 
-price: 100, 
+:simple_product,
+name: "Product Name",
+price: 100,
 supplier: supplier,
                  primary_taxon: taxon
 )
     }
     let(:product2) {
       create(
-:simple_product, 
-name: "Product 2", 
-price: 99.0, 
+:simple_product,
+name: "Product 2",
+price: 99.0,
 variant_unit: 'weight',
-                 variant_unit_scale: 1, 
-unit_value: '100', 
-supplier: supplier, 
-primary_taxon: taxon, 
+                 variant_unit_scale: 1,
+unit_value: '100',
+supplier: supplier,
+primary_taxon: taxon,
 sku: "product_sku"
 )
     }
@@ -377,51 +377,51 @@ sku: "product_sku"
       click_button "Go"
       expect(page).to have_content "Supplier"
       expect(page).to have_table_row [
-"Supplier", 
-"Producer Suburb", 
+"Supplier",
+"Producer Suburb",
 "Product",
-                                      "Product Properties", 
-"Taxons", 
-"Variant Value", 
-"Price", 
-"Group Buy Unit Quantity", 
-"Amount", 
+                                      "Product Properties",
+"Taxons",
+"Variant Value",
+"Price",
+"Group Buy Unit Quantity",
+"Amount",
 "SKU"
 ].map(&:upcase)
       expect(page).to have_table_row [
-product1.supplier.name, 
+product1.supplier.name,
 product1.supplier.address.city,
-                                      "Product Name", 
-product1.properties.map(&:presentation).join(", "), 
-product1.primary_taxon.name,  
-"Test",           
-"100.0",  
-product1.group_buy_unit_size.to_s, 
-"",       
+                                      "Product Name",
+product1.properties.map(&:presentation).join(", "),
+product1.primary_taxon.name,
+"Test",
+"100.0",
+product1.group_buy_unit_size.to_s,
+"",
 "sku1"
 ]
       expect(page).to have_table_row [
-product1.supplier.name, 
+product1.supplier.name,
 product1.supplier.address.city,
-                                      "Product Name", 
-product1.properties.map(&:presentation).join(", "), 
-product1.primary_taxon.name,  
-"Something",      
-"80.0",   
-product1.group_buy_unit_size.to_s, 
-"",       
+                                      "Product Name",
+product1.properties.map(&:presentation).join(", "),
+product1.primary_taxon.name,
+"Something",
+"80.0",
+product1.group_buy_unit_size.to_s,
+"",
 "sku2"
 ]
       expect(page).to have_table_row [
-product2.supplier.name, 
+product2.supplier.name,
 product1.supplier.address.city,
-                                      "Product 2",    
-product1.properties.map(&:presentation).join(", "), 
-product2.primary_taxon.name,  
-"100g",           
-"99.0",   
-product1.group_buy_unit_size.to_s, 
-"",       
+                                      "Product 2",
+product1.properties.map(&:presentation).join(", "),
+product2.primary_taxon.name,
+"100g",
+"99.0",
+product1.group_buy_unit_size.to_s,
+"",
 "product_sku"
 ]
     end
@@ -432,27 +432,27 @@ product1.group_buy_unit_size.to_s,
       click_button "Go"
 
       expect(page).to have_table_row [
-'PRODUCT', 
-'Description', 
-'Qty', 
-'Pack Size', 
+'PRODUCT',
+'Description',
+'Qty',
+'Pack Size',
 'Unit',
-                                      'Unit Price', 
-'Total', 
-'GST incl.', 
-'Grower and growing method', 
+                                      'Unit Price',
+'Total',
+'GST incl.',
+'Grower and growing method',
 'Taxon'
 ].map(&:upcase)
       expect(page).to have_table_row [
-'Product 2', 
-'100g', 
-'', 
-'100', 
-'g', 
-'99.0', 
-'', 
+'Product 2',
+'100g',
+'',
+'100',
+'g',
+'99.0',
+'',
 '0',
-                                      'Supplier Name (Organic - NASAA 12345)', 
+                                      'Supplier Name (Organic - NASAA 12345)',
 'Taxon Name'
 ]
     end
@@ -523,26 +523,26 @@ product1.group_buy_unit_size.to_s,
 
     let(:enterprise_fee1) {
       create(
-:enterprise_fee, 
-enterprise: user1.enterprises.first, 
+:enterprise_fee,
+enterprise: user1.enterprises.first,
 tax_category: product2.tax_category,
                  calculator: Calculator::FlatRate.new(preferred_amount: 10)
 )
     }
     let(:enterprise_fee2) {
       create(
-:enterprise_fee, 
-enterprise: user1.enterprises.first, 
+:enterprise_fee,
+enterprise: user1.enterprises.first,
 tax_category: product2.tax_category,
                  calculator: Calculator::FlatRate.new(preferred_amount: 20)
 )
     }
     let(:order_cycle) {
       create(
-:simple_order_cycle, 
+:simple_order_cycle,
 coordinator: distributor1,
-                     coordinator_fees: [enterprise_fee1, enterprise_fee2], 
-distributors: [distributor1], 
+                     coordinator_fees: [enterprise_fee1, enterprise_fee2],
+distributors: [distributor1],
 variants: [product1.master]
 )
     }
@@ -550,21 +550,21 @@ variants: [product1.master]
     let!(:zone) { create(:zone_with_member) }
     let(:bill_address) {
       create(
-:address, 
-firstname: 'Customer', 
-lastname: 'Name', 
+:address,
+firstname: 'Customer',
+lastname: 'Name',
 address1: 'customer l1',
-          address2: '', 
-city: 'customer city', 
+          address2: '',
+city: 'customer city',
 zipcode: 1234
 )
     }
     let(:order1) {
       create(
-:order, 
-order_cycle: order_cycle, 
+:order,
+order_cycle: order_cycle,
 distributor: user1.enterprises.first,
-        shipments: [shipment], 
+        shipments: [shipment],
 bill_address: bill_address
 )
     }
@@ -578,18 +578,18 @@ bill_address: bill_address
     describe "with adjustments" do
       let!(:line_item1) {
         create(
-:line_item, 
-variant: product1.variants.first, 
-price: 12.54, 
+:line_item,
+variant: product1.variants.first,
+price: 12.54,
 quantity: 1,
             order: order1
 )
       }
       let!(:line_item2) {
         create(
-:line_item, 
-variant: product2.variants.first, 
-price: 500.15, 
+:line_item,
+variant: product2.variants.first,
+price: 500.15,
 quantity: 3,
             order: order1
 )
@@ -599,63 +599,63 @@ quantity: 3,
       let!(:tax_rate) { create(:tax_rate, tax_category: tax_category) }
       let!(:adj_shipping) {
         create(
-:adjustment, 
-order: order1, 
-adjustable: order1, 
+:adjustment,
+order: order1,
+adjustable: order1,
 label: "Shipping",
-             originator: shipping_method, 
+             originator: shipping_method,
 amount: 100.55
 )
       }
       let!(:adj_fee1) {
         create(
-:adjustment, 
-order: order1, 
-adjustable: order1, 
+:adjustment,
+order: order1,
+adjustable: order1,
 originator: enterprise_fee1,
-             label: "Enterprise fee untaxed", 
+             label: "Enterprise fee untaxed",
 amount: 10
 )
       }
       let!(:adj_fee2) {
         create(
-:adjustment, 
-order: order1, 
-adjustable: order1, 
+:adjustment,
+order: order1,
+adjustable: order1,
 originator: enterprise_fee2,
-             label: "Enterprise fee taxed", 
-amount: 20, 
+             label: "Enterprise fee taxed",
+amount: 20,
 tax_category: tax_category
 )
       }
       let!(:adj_fee2_tax) {
         create(
-:adjustment, 
-order: order1, 
-adjustable: adj_fee2, 
-originator: tax_rate, 
+:adjustment,
+order: order1,
+adjustable: adj_fee2,
+originator: tax_rate,
 amount: 3,
              state: "closed"
 )
       }
       let!(:adj_admin1) {
         create(
-:adjustment, 
-order: order1, 
-adjustable: order1, 
+:adjustment,
+order: order1,
+adjustable: order1,
 originator: nil,
-             label: "Manual adjustment", 
+             label: "Manual adjustment",
 amount: 30
 )
       }
       let!(:adj_admin2) {
         create(
-:adjustment, 
-order: order1, 
-adjustable: order1, 
+:adjustment,
+order: order1,
+adjustable: order1,
 originator: nil,
-             label: "Manual adjustment", 
-amount: 40, 
+             label: "Manual adjustment",
+amount: 40,
 tax_category: tax_category
 )
       }
@@ -684,24 +684,24 @@ tax_category: tax_category
           xero_invoice_header,
           xero_invoice_summary_row('Total untaxable produce (no tax)', 12.54, 'GST Free Income'),
           xero_invoice_summary_row(
-'Total taxable produce (tax inclusive)',  
+'Total taxable produce (tax inclusive)',
 1500.45,
                                    'GST on Income'
 ),
           xero_invoice_summary_row('Total untaxable fees (no tax)', 10.0, 'GST Free Income'),
           xero_invoice_summary_row('Total taxable fees (tax inclusive)',     20.0, 'GST on Income'),
           xero_invoice_summary_row(
-'Delivery Shipping Cost (tax inclusive)', 
+'Delivery Shipping Cost (tax inclusive)',
 100.55,
                                    'GST on Income'
 ),
           xero_invoice_summary_row(
-'Total untaxable admin adjustments (no tax)',      
+'Total untaxable admin adjustments (no tax)',
 30.0,
                                    'GST Free Income'
 ),
           xero_invoice_summary_row(
-'Total taxable admin adjustments (tax inclusive)', 
+'Total taxable admin adjustments (tax inclusive)',
 40.0,
                                    'GST on Income'
 )
@@ -715,55 +715,55 @@ tax_category: tax_category
         fill_in 'account_code', with: 'abc123'
         click_button 'Search'
 
-        opts = { 
-invoice_number: '5', 
-invoice_date: '2015-02-12', 
+        opts = {
+invoice_number: '5',
+invoice_date: '2015-02-12',
 due_date: '2015-03-12',
-account_code: 'abc123' 
+account_code: 'abc123'
 }
 
         expect(xero_invoice_table).to match_table [
           xero_invoice_header,
           xero_invoice_summary_row(
-'Total untaxable produce (no tax)',       
+'Total untaxable produce (no tax)',
 12.54,
-                                   'GST Free Income', 
+                                   'GST Free Income',
 opts
 ),
           xero_invoice_summary_row(
-'Total taxable produce (tax inclusive)',  
+'Total taxable produce (tax inclusive)',
 1500.45,
-                                   'GST on Income',   
+                                   'GST on Income',
 opts
 ),
           xero_invoice_summary_row(
-'Total untaxable fees (no tax)',          
+'Total untaxable fees (no tax)',
 10.0,
-                                   'GST Free Income', 
+                                   'GST Free Income',
 opts
 ),
           xero_invoice_summary_row(
-'Total taxable fees (tax inclusive)',     
+'Total taxable fees (tax inclusive)',
 20.0,
-                                   'GST on Income',   
+                                   'GST on Income',
 opts
 ),
           xero_invoice_summary_row(
-'Delivery Shipping Cost (tax inclusive)', 
+'Delivery Shipping Cost (tax inclusive)',
 100.55,
-                                   'GST on Income',   
+                                   'GST on Income',
 opts
 ),
           xero_invoice_summary_row(
-'Total untaxable admin adjustments (no tax)',      
+'Total untaxable admin adjustments (no tax)',
 30.0,
-                                   'GST Free Income', 
+                                   'GST Free Income',
 opts
 ),
           xero_invoice_summary_row(
-'Total taxable admin adjustments (tax inclusive)', 
+'Total taxable admin adjustments (tax inclusive)',
 40.0,
-                                   'GST on Income',   
+                                   'GST on Income',
 opts
 )
         ]
@@ -782,21 +782,21 @@ opts
           xero_invoice_adjustment_row(adj_admin1),
           xero_invoice_adjustment_row(adj_admin2),
           xero_invoice_summary_row(
-'Total untaxable fees (no tax)',          
+'Total untaxable fees (no tax)',
 10.0,
-                                   'GST Free Income', 
+                                   'GST Free Income',
 opts
 ),
           xero_invoice_summary_row(
-'Total taxable fees (tax inclusive)',     
+'Total taxable fees (tax inclusive)',
 20.0,
-                                   'GST on Income',   
+                                   'GST on Income',
 opts
 ),
           xero_invoice_summary_row(
-'Delivery Shipping Cost (tax inclusive)', 
+'Delivery Shipping Cost (tax inclusive)',
 100.55,
-                                   'GST on Income',   
+                                   'GST on Income',
 opts
 )
         ]
@@ -811,33 +811,33 @@ opts
 
     def xero_invoice_header
       %w(
-*ContactName 
-EmailAddress 
-POAddressLine1 
-POAddressLine2 
-POAddressLine3 
+*ContactName
+EmailAddress
+POAddressLine1
+POAddressLine2
+POAddressLine3
 POAddressLine4
-         POCity 
-PORegion 
-POPostalCode 
-POCountry 
-*InvoiceNumber 
-Reference 
-*InvoiceDate 
-*DueDate 
-InventoryItemCode 
-*Description 
-*Quantity 
-*UnitAmount 
-Discount 
-*AccountCode 
-*TaxType 
-TrackingName1 
-TrackingOption1 
-TrackingName2 
-TrackingOption2 
-Currency 
-BrandingTheme 
+         POCity
+PORegion
+POPostalCode
+POCountry
+*InvoiceNumber
+Reference
+*InvoiceDate
+*DueDate
+InventoryItemCode
+*Description
+*Quantity
+*UnitAmount
+Discount
+*AccountCode
+*TaxType
+TrackingName1
+TrackingOption1
+TrackingName2
+TrackingOption2
+Currency
+BrandingTheme
 Paid?
 )
     end
@@ -848,11 +848,11 @@ Paid?
 
     def xero_invoice_li_row(line_item, opts = {})
       tax_type = line_item.has_tax? ? 'GST on Income' : 'GST Free Income'
-      xero_invoice_row line_item.product.sku, 
+      xero_invoice_row line_item.product.sku,
 line_item.product_and_full_name,
-                       line_item.price.to_s, 
-line_item.quantity.to_s, 
-tax_type, 
+                       line_item.price.to_s,
+line_item.quantity.to_s,
+tax_type,
 opts
     end
 
@@ -863,48 +863,48 @@ opts
 
     def xero_invoice_row(sku, description, amount, quantity, tax_type, opts = {})
       opts.reverse_merge!(
-customer_name: 'Customer Name', 
+customer_name: 'Customer Name',
 address1: 'customer l1',
-city: 'customer city', 
-state: 'Victoria', 
-zipcode: '1234', 
-country: 'Australia', 
-invoice_number: order1.number, 
-order_number: order1.number, 
-invoice_date: '2015-04-26', 
-due_date: '2015-05-26', 
+city: 'customer city',
+state: 'Victoria',
+zipcode: '1234',
+country: 'Australia',
+invoice_number: order1.number,
+order_number: order1.number,
+invoice_date: '2015-04-26',
+due_date: '2015-05-26',
 account_code: 'food sales'
 )
 
       [
-opts[:customer_name], 
-'customer@email.com', 
-opts[:address1], 
-'', 
-'', 
-'', 
-opts[:city], 
-opts[:state], 
-opts[:zipcode], 
-opts[:country], 
-opts[:invoice_number], 
-opts[:order_number], 
-opts[:invoice_date], 
+opts[:customer_name],
+'customer@email.com',
+opts[:address1],
+'',
+'',
+'',
+opts[:city],
+opts[:state],
+opts[:zipcode],
+opts[:country],
+opts[:invoice_number],
+opts[:order_number],
+opts[:invoice_date],
 opts[:due_date],
 
        sku,
        description,
        quantity,
-       amount.to_s, 
-'', 
-opts[:account_code], 
-tax_type, 
-'', 
-'', 
-'', 
-'', 
-Spree::Config.currency, 
-'', 
+       amount.to_s,
+'',
+opts[:account_code],
+tax_type,
+'',
+'',
+'',
+'',
+Spree::Config.currency,
+'',
 'N'
 ]
     end

@@ -22,11 +22,11 @@ module OrderManagement
 
         def rules
           [
-            { 
+            {
 group_by: proc { |line_item| line_item.product.supplier },
-sort_by: proc { |supplier| supplier.name } 
+sort_by: proc { |supplier| supplier.name }
 },
-            { 
+            {
 group_by: proc { |line_item| line_item.product },
 sort_by: proc { |product| product.name },
 summary_columns: [
@@ -41,11 +41,11 @@ summary_columns: [
                 :units_required,
                 :remainder,
                 :max_quantity_excess
-              ] 
+              ]
 },
-            { 
+            {
 group_by: proc { |line_item| line_item.full_name },
-sort_by: proc { |full_name| full_name } 
+sort_by: proc { |full_name| full_name }
 }
           ]
         end

@@ -17,7 +17,7 @@ describe Spree::Admin::MailMethodsController do
   it "can trigger testmail" do
     request.env["HTTP_REFERER"] = "/"
     user = double(
-'User', 
+'User',
 email: 'user@example.com',
         spree_api_key: 'fake',
         id: nil,

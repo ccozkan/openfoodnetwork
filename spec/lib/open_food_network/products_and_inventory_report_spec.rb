@@ -34,7 +34,7 @@ module OpenFoodNetwork
 
       it "should build a table from a list of variants" do
         variant = double(
-:variant, 
+:variant,
 sku: "sku",
           full_name: "Variant Name",
           count_on_hand: 10,
@@ -42,8 +42,8 @@ sku: "sku",
 )
         allow(variant).to receive_message_chain(:product, :supplier, :name).and_return("Supplier")
         allow(variant).to receive_message_chain(
-:product, 
-:supplier, 
+:product,
+:supplier,
 :address,
                                                 :city
 ).and_return("A city")
@@ -148,9 +148,9 @@ double(name: "taxon1"),
           product1 = create(:simple_product, supplier: supplier)
           product2 = create(:simple_product, supplier: supplier)
           order_cycle = create(
-:simple_order_cycle, 
+:simple_order_cycle,
 suppliers: [supplier],
-                     distributors: [distributor], 
+                     distributors: [distributor],
 variants: [product2.variants.first]
 )
 
@@ -163,9 +163,9 @@ variants: [product2.variants.first]
           product = create(:simple_product, supplier: supplier, price: 5)
           variant = product.variants.first
           order_cycle = create(
-:simple_order_cycle, 
+:simple_order_cycle,
 suppliers: [supplier],
-                     distributors: [distributor], 
+                     distributors: [distributor],
 variants: [product.variants.first]
 )
           create(:variant_override, hub: distributor, variant: variant, price: 2)
@@ -180,9 +180,9 @@ variants: [product.variants.first]
           product = create(:simple_product, supplier: supplier, price: 5)
           variant = product.variants.first
           order_cycle = create(
-:simple_order_cycle, 
+:simple_order_cycle,
 suppliers: [supplier],
-                     distributors: [distributor], 
+                     distributors: [distributor],
 variants: [product.variants.first]
 )
           create(:variant_override, hub: distributor, variant: variant, price: 2)
@@ -198,9 +198,9 @@ variants: [product.variants.first]
           product1 = create(:simple_product, supplier: supplier)
           product2 = create(:simple_product, supplier: supplier)
           order_cycle = create(
-:simple_order_cycle, 
+:simple_order_cycle,
 suppliers: [supplier],
-                     distributors: [distributor], 
+                     distributors: [distributor],
 variants: [product1.variants.first]
 )
 
@@ -228,7 +228,7 @@ variants: [product1.variants.first]
                                                 supplier: other_supplier
 ).variants.first
           variant_filtered_by_stock = create(
-:simple_product, 
+:simple_product,
 supplier: supplier,
                  on_hand: 0
 ).variants.first

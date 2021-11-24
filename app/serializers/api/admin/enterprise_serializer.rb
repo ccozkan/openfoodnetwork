@@ -3,37 +3,37 @@
 module Api
   module Admin
     class EnterpriseSerializer < ActiveModel::Serializer
-      attributes :name, 
-:id, 
-:is_primary_producer, 
-:is_distributor, 
-:sells, 
-:category, 
+      attributes :name,
+:id,
+:is_primary_producer,
+:is_distributor,
+:sells,
+:category,
 :permalink,
-                 :payment_method_ids, 
-:shipping_method_ids, 
+                 :payment_method_ids,
+:shipping_method_ids,
 :producer_profile_only,
-                 :long_description, 
+                 :long_description,
 :preferred_product_selection_from_inventory_only,
-                 :preferred_shopfront_message, 
+                 :preferred_shopfront_message,
 :preferred_shopfront_closed_message,
-                 :preferred_shopfront_taxon_order, 
+                 :preferred_shopfront_taxon_order,
 :preferred_shopfront_producer_order,
-                 :preferred_shopfront_order_cycle_order, 
+                 :preferred_shopfront_order_cycle_order,
 :show_customer_names_to_suppliers,
-                 :preferred_shopfront_product_sorting_method, 
-:owner, 
-:contact, 
-:users, 
+                 :preferred_shopfront_product_sorting_method,
+:owner,
+:contact,
+:users,
 :tag_groups,
-                 :default_tag_group, 
-:require_login, 
-:allow_guest_orders, 
+                 :default_tag_group,
+:require_login,
+:allow_guest_orders,
 :allow_order_changes,
-                 :logo, 
-:promo_image, 
+                 :logo,
+:promo_image,
 :terms_and_conditions,
-                 :terms_and_conditions_file_name, 
+                 :terms_and_conditions_file_name,
 :terms_and_conditions_updated_at
 
       has_one :owner, serializer: Api::Admin::UserSerializer
@@ -62,7 +62,7 @@ module Api
       def tag_groups
         prioritized_tag_rules.each_with_object([]) do |tag_rule, tag_groups|
           tag_group = find_match(
-tag_groups, 
+tag_groups,
 tag_rule.preferred_customer_tags
                                                .split(",")
                                                .map { |t| { text: t } }

@@ -15,7 +15,7 @@ module Admin
     def import
       @filepath = save_uploaded_file(params[:file])
       @importer = ProductImport::ProductImporter.new(
-File.new(@filepath), 
+File.new(@filepath),
 spree_current_user,
                                                      params[:settings]
 )
@@ -42,10 +42,10 @@ spree_current_user,
     def reset_absent_products
       @importer = ProductImport::ProductImporter.new(
 File.new(params[:filepath]),
-                                                     spree_current_user, 
-import_into: params[:import_into], 
-enterprises_to_reset: params[:enterprises_to_reset], 
-updated_ids: params[:updated_ids], 
+                                                     spree_current_user,
+import_into: params[:import_into],
+enterprises_to_reset: params[:enterprises_to_reset],
+updated_ids: params[:updated_ids],
 settings: params[:settings]
 )
 
@@ -67,9 +67,9 @@ settings: params[:settings]
     def process_data(method)
       @importer = ProductImport::ProductImporter.new(
 File.new(params[:filepath]),
-                                                     spree_current_user, 
-start: params[:start], 
-end: params[:end], 
+                                                     spree_current_user,
+start: params[:start],
+end: params[:end],
 settings: params[:settings]
 )
 

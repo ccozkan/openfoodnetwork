@@ -2,17 +2,17 @@
 
 module Api
   class GroupListSerializer < ActiveModel::Serializer
-    attributes :id, 
-:name, 
-:permalink, 
-:email, 
-:website, 
-:facebook, 
+    attributes :id,
+:name,
+:permalink,
+:email,
+:website,
+:facebook,
 :instagram,
-               :linkedin, 
-:twitter, 
-:enterprises, 
-:state, 
+               :linkedin,
+:twitter,
+:enterprises,
+:state,
 :address_id
 
     def state

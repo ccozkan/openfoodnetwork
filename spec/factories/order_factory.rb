@@ -76,7 +76,7 @@ FactoryBot.define do
 
       after(:create) do |order, evaluator|
         line_item = create(
-:line_item_with_shipment, 
+:line_item_with_shipment,
 order: order,
                           variant: evaluator.variant,
                           shipping_method: evaluator.shipping_method
@@ -93,9 +93,9 @@ order: order,
 
       after(:create) do |order, evaluator|
         create(
-:payment, 
-state: "checkout", 
-order: order, 
+:payment,
+state: "checkout",
+order: order,
 amount: order.total,
           payment_method: evaluator.payment_method
 )
@@ -119,7 +119,7 @@ amount: order.total,
     after(:create) do |order, proxy|
       product = create(:simple_product)
       create(
-:line_item_with_shipment, 
+:line_item_with_shipment,
 shipping_fee: proxy.shipping_fee,
                           order: order,
                           product: product
@@ -138,9 +138,9 @@ shipping_fee: proxy.shipping_fee,
       after(:create) do |order, evaluator|
         # Ensure order is valid and passes through necessary checkout steps
         create(
-:payment, 
-state: "checkout", 
-order: order, 
+:payment,
+state: "checkout",
+order: order,
 amount: order.total,
           payment_method: evaluator.payment_method
 )
@@ -170,7 +170,7 @@ amount: order.total,
     after(:create) do |order, proxy|
       order.distributor.update_attribute(:charges_sales_tax, true)
       product = FactoryBot.create(
-:taxed_product, 
+:taxed_product,
 zone: proxy.zone,
                 price: proxy.product_price,
                 tax_rate_amount: proxy.tax_rate_amount,
@@ -191,8 +191,8 @@ zone: proxy.zone,
 
     after(:create) do |order, evaluator|
       create(
-:payment, 
-amount: order.total + evaluator.credit_amount, 
+:payment,
+amount: order.total + evaluator.credit_amount,
 order: order,
           state: "completed"
 )
@@ -210,8 +210,8 @@ order: order,
 
     after(:create) do |order, evaluator|
       create(
-:payment, 
-amount: order.total - evaluator.unpaid_amount, 
+:payment,
+amount: order.total - evaluator.unpaid_amount,
 order: order,
           state: "completed"
 )
@@ -237,7 +237,7 @@ order: order,
       payment_calculator = build(:calculator_per_item, preferred_amount: evaluator.payment_fee)
       payment_method = create(:payment_method, calculator: payment_calculator)
       create(
-:payment, 
+:payment,
 order: order,
           amount: order.total,
           payment_method: payment_method,
@@ -245,8 +245,8 @@ order: order,
 )
 
       create(
-:shipping_method_with, 
-:shipping_fee, 
+:shipping_method_with,
+:shipping_fee,
 shipping_fee: evaluator.shipping_fee,
                                       distributors: [order.distributor],
                                       tax_category: evaluator.shipping_tax_category

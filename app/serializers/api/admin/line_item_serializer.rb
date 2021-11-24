@@ -3,13 +3,13 @@
 module Api
   module Admin
     class LineItemSerializer < ActiveModel::Serializer
-      attributes :id, 
-:quantity, 
-:max_quantity, 
-:price, 
-:supplier, 
+      attributes :id,
+:quantity,
+:max_quantity,
+:price,
+:supplier,
 :final_weight_volume,
-                 :units_product, 
+                 :units_product,
 :units_variant
 
       has_one :order, serializer: Api::Admin::IdSerializer

@@ -22,7 +22,7 @@ module Spree
 
     scope :production, -> { where(environment: 'production') }
 
-    scope :managed_by, 
+    scope :managed_by,
 lambda { |user|
       if user.has_spree_role?('admin')
         where(nil)
@@ -34,13 +34,13 @@ lambda { |user|
       end
     }
 
-    scope :for_distributors, 
+    scope :for_distributors,
 ->(distributors) {
       non_unique_matches = unscoped.joins(:distributors).where(enterprises: { id: distributors })
       where(id: non_unique_matches.map(&:id))
     }
 
-    scope :for_distributor, 
+    scope :for_distributor,
 lambda { |distributor|
       joins(:distributors)
         .where('enterprises.id = ?', distributor)
@@ -50,7 +50,7 @@ lambda { |distributor|
 
     scope :by_name, -> { order('spree_payment_methods.name ASC') }
 
-    scope :available, 
+    scope :available,
 lambda { |display_on = 'both'|
       where(active: true)
         .where('spree_payment_methods.display_on=? OR spree_payment_methods.display_on=? OR spree_payment_methods.display_on IS NULL', display_on, '')

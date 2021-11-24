@@ -9,7 +9,7 @@ module Api
       skip_authorization_check
       skip_before_action :authenticate_user, :ensure_api_key, only: [:taxons, :properties]
 
-      caches_action :taxons, 
+      caches_action :taxons,
 :properties,
                     expires_in: CacheService::FILTERS_EXPIRY,
                     cache_path: proc { |controller| controller.request.url }

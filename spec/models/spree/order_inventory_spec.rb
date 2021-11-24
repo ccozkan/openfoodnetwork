@@ -107,12 +107,12 @@ inventory_units_for: [
 build(:inventory_unit, variant_id: variant.id, state: 'backordered'),
                                                                   build(
 :inventory_unit,
-                                                                        variant_id: variant.id, 
+                                                                        variant_id: variant.id,
 state: 'on_hand'
 ),
                                                                   build(
 :inventory_unit,
-                                                                        variant_id: variant.id, 
+                                                                        variant_id: variant.id,
 state: 'backordered'
 )
 ]
@@ -131,10 +131,10 @@ inventory_units_for: [
 build(:inventory_unit, variant_id: variant.id, state: 'shipped'),
                                                                   build(
 :inventory_unit,
-                                                                        variant_id: variant.id, 
+                                                                        variant_id: variant.id,
 state: 'on_hand'
 )
-] 
+]
 )
 
         expect(shipment.inventory_units_for[0]).not_to receive(:destroy)
@@ -149,10 +149,10 @@ inventory_units_for: [
 build(:inventory_unit, variant_id: variant.id, state: 'shipped'),
                                                                   build(
 :inventory_unit,
-                                                                        variant_id: variant.id, 
+                                                                        variant_id: variant.id,
 state: 'on_hand'
 )
-] 
+]
 )
 
         expect(shipment.inventory_units_for[0]).not_to receive(:destroy)

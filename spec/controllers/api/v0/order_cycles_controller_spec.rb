@@ -68,8 +68,8 @@ module Api
 
       context "with property filters" do
         it "filters by product property" do
-          api_get :products, 
-id: order_cycle.id, 
+          api_get :products,
+id: order_cycle.id,
 distributor: distributor.id,
                              q: { properties_id_or_supplier_properties_id_in_any: [property1.id, property2.id] }
 
@@ -80,8 +80,8 @@ distributor: distributor.id,
 
       context "with taxon filters" do
         it "filters by taxon" do
-          api_get :products, 
-id: order_cycle.id, 
+          api_get :products,
+id: order_cycle.id,
 distributor: distributor.id,
                              q: { primary_taxon_id_in_any: [taxon2.id] }
 
@@ -127,7 +127,7 @@ distributor: distributor.id,
                  enterprise: distributor,
                  preferred_variant_tags: "hide_these_variants",
                  preferred_customer_tags: "hide_from_these_customers",
-                 preferred_matched_variants_visibility: "hidden" 
+                 preferred_matched_variants_visibility: "hidden"
 )
         }
         let!(:show_rule) {
@@ -136,7 +136,7 @@ distributor: distributor.id,
                  enterprise: distributor,
                  preferred_variant_tags: "show_these_variants",
                  preferred_customer_tags: "show_for_these_customers",
-                 preferred_matched_variants_visibility: "visible" 
+                 preferred_matched_variants_visibility: "visible"
 )
         }
 
@@ -221,7 +221,7 @@ distributor: distributor.id,
           properties = json_response.map { |property| property['name'] }
 
           expect(json_response.length).to be 3
-          expect(properties).to include property1.presentation, 
+          expect(properties).to include property1.presentation,
 property2.presentation,
                                         producer_property.property.presentation
         end
@@ -254,12 +254,12 @@ property2.presentation,
       it "displays products in new order" do
         api_get :products, id: order_cycle.id, distributor: distributor.id
         expect(product_ids).to eq [
-product7.id, 
-product8.id, 
-product2.id, 
-product3.id, 
+product7.id,
+product8.id,
+product2.id,
+product3.id,
 product5.id,
-                                   product6.id, 
+                                   product6.id,
 product1.id
 ]
       end

@@ -92,10 +92,10 @@ describe Spree::OrderContents do
     let!(:line_item) { subject.add variant, 1 }
 
     let(:params) do
-      { 
+      {
 line_items_attributes: {
         "0" => { id: line_item.id, quantity: 3 }
-      } 
+      }
 }
     end
 
@@ -112,10 +112,10 @@ line_items_attributes: {
 
     context "submits item quantity 0" do
       let(:params) do
-        { 
+        {
 line_items_attributes: {
           "0" => { id: line_item.id, quantity: 0 }
-        } 
+        }
 }
       end
 

@@ -15,13 +15,13 @@ module OpenFoodNetwork
 
       def header
         [
-I18n.t(:report_header_producer), 
+I18n.t(:report_header_producer),
 I18n.t(:report_header_product),
-         I18n.t(:report_header_variant), 
+         I18n.t(:report_header_variant),
 I18n.t(:report_header_to_hub),
-         I18n.t(:report_header_quantity), 
+         I18n.t(:report_header_quantity),
 I18n.t(:report_header_curr_cost_per_unit),
-         I18n.t(:report_header_total_cost), 
+         I18n.t(:report_header_total_cost),
 I18n.t(:report_header_shipping_method)
 ]
       end
@@ -78,9 +78,9 @@ I18n.t(:report_header_shipping_method)
 
       def line_item_includes
         [
-{ 
+{
 order: :distributor,
-variant: [{ option_values: :option_type }, { product: :supplier }] 
+variant: [{ option_values: :option_type }, { product: :supplier }]
 }
 ]
       end

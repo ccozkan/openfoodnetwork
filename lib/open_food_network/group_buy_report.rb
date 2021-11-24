@@ -5,12 +5,12 @@ module OpenFoodNetwork
  Struct.new(:variant, :sum_quantities, :sum_max_quantities) do
     def to_row
       [
-variant.product.supplier.name, 
-variant.product.name, 
+variant.product.supplier.name,
+variant.product.name,
 I18n.t('admin.reports.unitsize'),
-       variant.options_text, 
-variant.weight, 
-sum_quantities, 
+       variant.options_text,
+variant.weight,
+sum_quantities,
 sum_max_quantities
 ]
     end
@@ -20,12 +20,12 @@ sum_max_quantities
  Struct.new(:product, :sum_quantities, :sum_max_quantities) do
     def to_row
       [
-product.supplier.name, 
-product.name, 
+product.supplier.name,
+product.name,
 I18n.t('admin.reports.unitsize'),
-       I18n.t('admin.reports.total'), 
-"", 
-sum_quantities, 
+       I18n.t('admin.reports.total'),
+"",
+sum_quantities,
 sum_max_quantities
 ]
     end
@@ -61,7 +61,7 @@ sum_max_quantities
             sum_quantities = line_items_by_variant.to_a.sum(&:quantity)
             sum_max_quantities = line_items_by_variant.sum { |li| li.max_quantity || 0 }
             variants_and_quantities << GroupBuyVariantRow.new(
-variant, 
+variant,
 sum_quantities,
                                                               sum_max_quantities
 )
@@ -74,7 +74,7 @@ sum_quantities,
             (li.variant.weight || 0) * (li.max_quantity || 0)
           }
           variants_and_quantities << GroupBuyProductRow.new(
-product, 
+product,
 sum_quantities,
                                                             sum_max_quantities
 )

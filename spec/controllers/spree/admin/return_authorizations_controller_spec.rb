@@ -9,10 +9,10 @@ module Spree
 
       let(:order) do
         create(
-:order, 
-:with_line_item, 
+:order,
+:with_line_item,
 :completed,
-               distributor: create(:distributor_enterprise) 
+               distributor: create(:distributor_enterprise)
 )
       end
 
@@ -29,7 +29,7 @@ module Spree
 
       it "creates and updates a return authorization" do
         # Create return authorization
-        spree_post :create, 
+        spree_post :create,
 order_id: order.number,
                             return_authorization: { amount: "20.2", reason: "broken" }
 
@@ -42,7 +42,7 @@ order_id: order.number,
         reset_controller_environment
 
         # Update return authorization
-        spree_put :update, 
+        spree_put :update,
 id: return_authorization.id,
                            return_authorization: { amount: "10.2", reason: "half broken" }
 

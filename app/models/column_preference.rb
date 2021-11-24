@@ -12,12 +12,12 @@ class ColumnPreference < ApplicationRecord
   belongs_to :user, class_name: "Spree::User"
 
   validates :action_name, presence: true, inclusion: { in: proc { known_actions } }
-  validates :column_name, 
-presence: true, 
-inclusion: { 
+  validates :column_name,
+presence: true,
+inclusion: {
 in: proc { |p|
                                                              valid_columns_for(p.action_name)
-                                                           } 
+                                                           }
 }
 
   def self.for(user, action_name)
@@ -30,12 +30,12 @@ in: proc { |p|
         stored_preference.assign_attributes(
 default_attributes.select { |k, _v|
                                               stored_preference[k].nil?
-                                            } 
+                                            }
 )
         preferences << stored_preference
       else
         attributes = default_attributes.merge(
-user_id: user.id, 
+user_id: user.id,
 action_name: action_name,
 column_name: column_name
 )

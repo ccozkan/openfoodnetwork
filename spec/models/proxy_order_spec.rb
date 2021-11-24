@@ -87,7 +87,7 @@ describe ProxyOrder, type: :model do
     let!(:shipment) { create(:shipment) }
     let(:order) {
       create(
-:order_with_totals, 
+:order_with_totals,
 ship_address: create(:address),
                     shipments: [shipment],
                     payments: [create(:payment)],

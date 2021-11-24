@@ -6,7 +6,7 @@ describe '
     As a consumer
     I want to view my order history with each hub
     and view any outstanding balance.
-', 
+',
 js: true do
   include UIComponentHelper
   include AuthenticationHelper
@@ -26,18 +26,18 @@ js: true do
       let(:order_cycle) { create(:simple_order_cycle) }
       let!(:d1o1) {
         create(
-:completed_order_with_totals, 
-distributor: distributor1, 
-user: user, 
+:completed_order_with_totals,
+distributor: distributor1,
+user: user,
 total: 10_000,
                               order_cycle: order_cycle
 )
       }
       let!(:d1o2) {
         create(
-:order_without_full_payment, 
-distributor: distributor1, 
-user: user, 
+:order_without_full_payment,
+distributor: distributor1,
+user: user,
 total: 5000,
                              order_cycle: order_cycle
 )
@@ -65,19 +65,19 @@ total: 5000,
         expect(page).to have_content d1o2.number.to_s
         expect(page).to have_link(
 distributor1.name,
-                                  href: "#{distributor1.permalink}/shop", 
+                                  href: "#{distributor1.permalink}/shop",
 count: 2
 )
         expect(page).to have_content d2o1.number.to_s
         expect(page).to have_link(
 distributor2.name,
-                                  href: "#{distributor2.permalink}/shop", 
+                                  href: "#{distributor2.permalink}/shop",
 count: 1
 )
         expect(page).to have_content credit_order.number.to_s
         expect(page).to have_link(
 distributor_credit.name,
-                                  href: "#{distributor_credit.permalink}/shop", 
+                                  href: "#{distributor_credit.permalink}/shop",
 count: 1
 )
 
@@ -88,13 +88,13 @@ count: 1
         expect(page).to have_content distributor1.name
         expect(page).to have_link(
 distributor1.name,
-                                  href: "#{distributor1.permalink}/shop", 
+                                  href: "#{distributor1.permalink}/shop",
 count: 1
 )
         expect(page).to have_content distributor2.name
         expect(page).to have_link(
 distributor2.name,
-                                  href: "#{distributor2.permalink}/shop", 
+                                  href: "#{distributor2.permalink}/shop",
 count: 1
 )
         expect(page).not_to have_content distributor_without_orders.name
@@ -123,7 +123,7 @@ count: 1
           expect(page).to have_link d1o2.number, href: order_path(d1o2)
           expect(page).to have_link(
 distributor1.name,
-                                    href: "#{distributor1.permalink}/shop", 
+                                    href: "#{distributor1.permalink}/shop",
 count: 2
 )
           expect(page).to have_link I18n.t('spree.users.open_orders.cancel'),

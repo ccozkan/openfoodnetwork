@@ -13,7 +13,7 @@ describe Spree::UserSessionsController, type: :controller do
     context "succeed" do
       context "when referer is not '/checkout'" do
         it "redirects to root" do
-          spree_post :create, 
+          spree_post :create,
 spree_user: { email: user.email, password: user.password },
                               use_route: :spree
           expect(response).to redirect_to root_path
@@ -24,7 +24,7 @@ spree_user: { email: user.email, password: user.password },
         before { @request.env['HTTP_REFERER'] = 'http://test.com/checkout' }
 
         it "redirects to checkout" do
-          spree_post :create, 
+          spree_post :create,
 spree_user: { email: user.email, password: user.password },
                               use_route: :spree
           expect(response).to redirect_to checkout_path

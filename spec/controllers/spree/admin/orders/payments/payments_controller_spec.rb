@@ -32,7 +32,7 @@ describe Spree::Admin::PaymentsController, type: :controller do
     context "order is complete" do
       let!(:order) do
         create(
-:order_with_totals_and_distribution, 
+:order_with_totals_and_distribution,
 distributor: shop,
                                      state: "complete",
                                      completed_at: Time.zone.now
@@ -126,7 +126,7 @@ distributor: shop,
               year: "2100"
             }
 
-            spree_post :create, 
+            spree_post :create,
 payment: params.merge({ source_attributes: source_attributes }),
                                 order_id: order.number
 

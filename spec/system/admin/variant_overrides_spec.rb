@@ -6,7 +6,7 @@ describe "
   Managing a hub's inventory
   I want to override the stock level and price of products
   Without affecting other hubs that share the same products
-", 
+",
 js: true do
   include AdminHelper
   include AuthenticationHelper
@@ -21,16 +21,16 @@ js: true do
     let!(:producer_unrelated) { create(:supplier_enterprise) }
     let!(:er1) {
       create(
-:enterprise_relationship, 
-parent: producer, 
+:enterprise_relationship,
+parent: producer,
 child: hub,
                           permissions_list: [:create_variant_overrides]
 )
     }
     let!(:er2) {
       create(
-:enterprise_relationship, 
-parent: producer_related, 
+:enterprise_relationship,
+parent: producer_related,
 child: hub,
                           permissions_list: [:create_variant_overrides]
 )
@@ -42,8 +42,8 @@ child: hub,
     describe "selecting a hub" do
       let!(:er1) {
         create(
-:enterprise_relationship, 
-parent: hub2, 
+:enterprise_relationship,
+parent: hub2,
 child: producer_managed,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -67,8 +67,8 @@ child: producer_managed,
 
       let!(:product_managed) {
         create(
-:simple_product, 
-supplier: producer_managed, 
+:simple_product,
+supplier: producer_managed,
 variant_unit: 'weight',
                  variant_unit_scale: 1
 )
@@ -259,13 +259,13 @@ variant_unit: 'weight',
         context "with overrides" do
           let!(:vo) {
             create(
-:variant_override, 
-:on_demand, 
-variant: variant, 
-hub: hub, 
+:variant_override,
+:on_demand,
+variant: variant,
+hub: hub,
 price: 77.77,
-                               default_stock: 1000, 
-resettable: true, 
+                               default_stock: 1000,
+resettable: true,
 tag_list: ["tag1", "tag2", "tag3"]
 )
           }
@@ -274,8 +274,8 @@ tag_list: ["tag1", "tag2", "tag3"]
           }
           let!(:product2) {
             create(
-:simple_product, 
-supplier: producer, 
+:simple_product,
+supplier: producer,
 variant_unit: 'weight',
                  variant_unit_scale: 1
 )
@@ -286,12 +286,12 @@ variant_unit: 'weight',
           let!(:inventory_item2) { create(:inventory_item, enterprise: hub, variant: variant2) }
           let!(:vo_no_reset) {
             create(
-:variant_override, 
-variant: variant2, 
-hub: hub, 
-price: 3.99, 
+:variant_override,
+variant: variant2,
+hub: hub,
+price: 3.99,
 count_on_hand: 40,
-                   default_stock: 100, 
+                   default_stock: 100,
 resettable: false
 )
           }
@@ -300,13 +300,13 @@ resettable: false
           }
           let!(:vo3) {
             create(
-:variant_override, 
-variant: variant3, 
-hub: hub, 
-price: 6, 
-count_on_hand: 7, 
+:variant_override,
+variant: variant3,
+hub: hub,
+price: 6,
+count_on_hand: 7,
 sku: "SOMESKU",
-                   default_stock: 100, 
+                   default_stock: 100,
 resettable: false
 )
           }
@@ -318,17 +318,17 @@ resettable: false
           end
 
           it "product values are affected by overrides" do
-            expect(page).to have_input "variant-overrides-#{variant.id}-price", 
+            expect(page).to have_input "variant-overrides-#{variant.id}-price",
 with: '77.77',
                                                                                 placeholder: '1.23'
-            expect(page).to have_input "variant-overrides-#{variant.id}-count_on_hand", 
+            expect(page).to have_input "variant-overrides-#{variant.id}-count_on_hand",
 with: "",
                                                                                         placeholder: I18n.t("js.variants.on_demand.yes")
             expect(page).to have_select "variant-overrides-#{variant.id}-on_demand",
                                         selected: I18n.t("js.variant_overrides.on_demand.yes")
 
             expect(page).to have_input "variant-overrides-#{variant2.id}-count_on_hand",
-                                       with: "40", 
+                                       with: "40",
 placeholder: ""
           end
 
@@ -419,7 +419,7 @@ placeholder: ""
             expect(page).to have_content 'Stocks reset to defaults.'
             vo.reload
             expect(page).to have_input "variant-overrides-#{variant.id}-count_on_hand",
-                                       with: "1000", 
+                                       with: "1000",
 placeholder: ""
             expect(vo.count_on_hand).to eq(1000)
           end
@@ -432,7 +432,7 @@ placeholder: ""
 ).click
             vo_no_reset.reload
             expect(page).to have_input "variant-overrides-#{variant2.id}-count_on_hand",
-                                       with: "40", 
+                                       with: "40",
 placeholder: ""
             expect(vo_no_reset.count_on_hand).to eq(40)
           end

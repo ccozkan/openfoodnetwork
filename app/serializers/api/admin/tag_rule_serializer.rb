@@ -20,7 +20,7 @@ module Api
       end
 
       class FilterShippingMethodsSerializer < BaseSerializer
-        attributes :preferred_matched_shipping_methods_visibility, 
+        attributes :preferred_matched_shipping_methods_visibility,
 :preferred_shipping_method_tags,
                    :shipping_method_tags
 
@@ -30,7 +30,7 @@ module Api
       end
 
       class FilterPaymentMethodsSerializer < BaseSerializer
-        attributes :preferred_matched_payment_methods_visibility, 
+        attributes :preferred_matched_payment_methods_visibility,
 :preferred_payment_method_tags,
                    :payment_method_tags
 

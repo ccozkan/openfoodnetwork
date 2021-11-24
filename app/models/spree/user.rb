@@ -6,16 +6,16 @@ module Spree
 
     searchable_attributes :email
 
-    devise :database_authenticatable, 
-:token_authenticatable, 
-:registerable, 
+    devise :database_authenticatable,
+:token_authenticatable,
+:registerable,
 :recoverable,
-           :rememberable, 
-:trackable, 
+           :rememberable,
+:trackable,
 :validatable,
-           :encryptable, 
-:confirmable, 
-encryptor: 'authlogic_sha512', 
+           :encryptable,
+:confirmable,
+encryptor: 'authlogic_sha512',
 reconfirmable: true
 
     has_many :orders
@@ -35,13 +35,13 @@ reconfirmable: true
 
     has_many :enterprise_roles, dependent: :destroy
     has_many :enterprises, through: :enterprise_roles
-    has_many :owned_enterprises, 
+    has_many :owned_enterprises,
 class_name: 'Enterprise',
-                                 foreign_key: :owner_id, 
+                                 foreign_key: :owner_id,
 inverse_of: :owner
-    has_many :owned_groups, 
+    has_many :owned_groups,
 class_name: 'EnterpriseGroup',
-                            foreign_key: :owner_id, 
+                            foreign_key: :owner_id,
 inverse_of: :owner
     has_many :customers
     has_many :credit_cards
@@ -180,7 +180,7 @@ inverse_of: :owner
       return unless owned_enterprises.size > enterprise_limit
 
       errors.add(
-:owned_enterprises, 
+:owned_enterprises,
 I18n.t(
 :spree_user_enterprise_limit_error,
                                             email: email,

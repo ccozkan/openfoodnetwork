@@ -4,18 +4,18 @@ module PermittedAttributes
   class Variant
     def self.attributes
       [
-        :id, 
-:sku, 
-:on_hand, 
+        :id,
+:sku,
+:on_hand,
 :on_demand,
-        :price, 
-:unit_value, 
+        :price,
+:unit_value,
 :unit_description,
-        :display_name, 
+        :display_name,
 :display_as,
-        :weight, 
-:height, 
-:width, 
+        :weight,
+:height,
+:width,
 :depth
       ]
     end

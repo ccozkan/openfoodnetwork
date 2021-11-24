@@ -18,33 +18,33 @@ module OpenFoodNetwork
     def header
       # NOTE: These are NOT to be translated, they need to be in this exact format to work with Xero
       %w(
-*ContactName 
-EmailAddress 
-POAddressLine1 
-POAddressLine2 
-POAddressLine3 
+*ContactName
+EmailAddress
+POAddressLine1
+POAddressLine2
+POAddressLine3
 POAddressLine4
-         POCity 
-PORegion 
-POPostalCode 
-POCountry 
-*InvoiceNumber 
-Reference 
-*InvoiceDate 
-*DueDate 
-InventoryItemCode 
-*Description 
-*Quantity 
-*UnitAmount 
-Discount 
-*AccountCode 
-*TaxType 
-TrackingName1 
-TrackingOption1 
-TrackingName2 
-TrackingOption2 
-Currency 
-BrandingTheme 
+         POCity
+PORegion
+POPostalCode
+POCountry
+*InvoiceNumber
+Reference
+*InvoiceDate
+*DueDate
+InventoryItemCode
+*Description
+*Quantity
+*UnitAmount
+Discount
+*AccountCode
+*TaxType
+TrackingName1
+TrackingOption1
+TrackingName2
+TrackingOption2
+Currency
+BrandingTheme
 Paid?
 )
     end
@@ -80,7 +80,7 @@ Paid?
 
     def line_item_includes
       [
-:bill_address, 
+:bill_address,
 :adjustments,
        { line_items: { variant: [{ option_values: :option_type }, { product: :supplier }] } }
 ]
@@ -149,11 +149,11 @@ adjustment_order(adjustment),
       [
 summary_row(order, I18n.t(:report_header_total_untaxable_produce), total_untaxable_products(order), invoice_number, I18n.t(:report_header_gst_free_income), opts),
        summary_row(
-order, 
+order,
 I18n.t(:report_header_total_taxable_produce),
-                   total_taxable_products(order), 
-invoice_number, 
-I18n.t(:report_header_gst_on_income), 
+                   total_taxable_products(order),
+invoice_number,
+I18n.t(:report_header_gst_on_income),
 opts
 )
 ]
@@ -163,11 +163,11 @@ opts
       [
 summary_row(order, I18n.t(:report_header_total_untaxable_fees), total_untaxable_fees(order), invoice_number, I18n.t(:report_header_gst_free_income), opts),
        summary_row(
-order, 
-I18n.t(:report_header_total_taxable_fees), 
+order,
+I18n.t(:report_header_total_taxable_fees),
 total_taxable_fees(order),
-                   invoice_number, 
-I18n.t(:report_header_gst_on_income), 
+                   invoice_number,
+I18n.t(:report_header_gst_on_income),
 opts
 )
 ]
@@ -176,11 +176,11 @@ opts
     def shipping_summary_rows(order, invoice_number, opts)
       [
 summary_row(
-order, 
-I18n.t(:report_header_delivery_shipping_cost), 
+order,
+I18n.t(:report_header_delivery_shipping_cost),
 total_shipping(order),
-                   invoice_number, 
-tax_on_shipping_s(order), 
+                   invoice_number,
+tax_on_shipping_s(order),
 opts
 )
 ]
@@ -189,11 +189,11 @@ opts
     def payment_summary_rows(order, invoice_number, opts)
       [
 summary_row(
-order, 
-I18n.t(:report_header_transaction_fee), 
+order,
+I18n.t(:report_header_transaction_fee),
 total_transaction(order),
-                   invoice_number, 
-I18n.t(:report_header_gst_free_income), 
+                   invoice_number,
+I18n.t(:report_header_gst_free_income),
 opts
 )
 ]
@@ -203,11 +203,11 @@ opts
       [
 summary_row(order, I18n.t(:report_header_total_untaxable_admin), total_untaxable_admin_adjustments(order), invoice_number, I18n.t(:report_header_gst_free_income), opts),
        summary_row(
-order, 
+order,
 I18n.t(:report_header_total_taxable_admin),
-                   total_taxable_admin_adjustments(order), 
-invoice_number, 
-I18n.t(:report_header_gst_on_income), 
+                   total_taxable_admin_adjustments(order),
+invoice_number,
+I18n.t(:report_header_gst_on_income),
 opts
 )
 ]

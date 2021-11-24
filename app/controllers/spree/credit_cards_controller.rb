@@ -14,18 +14,18 @@ module Spree
         render json: @credit_card, serializer: ::Api::CreditCardSerializer, status: :ok
       else
         message = t(:card_could_not_be_saved)
-        render json: { 
-flash: { 
-error: I18n.t(:spree_gateway_error_flash_for_checkout, error: message) 
-} 
+        render json: {
+flash: {
+error: I18n.t(:spree_gateway_error_flash_for_checkout, error: message)
+}
 },
                status: :bad_request
       end
     rescue Stripe::CardError => e
-      render json: { 
-flash: { 
-error: I18n.t(:spree_gateway_error_flash_for_checkout, error: e.message) 
-} 
+      render json: {
+flash: {
+error: I18n.t(:spree_gateway_error_flash_for_checkout, error: e.message)
+}
 },
              status: :bad_request
     end

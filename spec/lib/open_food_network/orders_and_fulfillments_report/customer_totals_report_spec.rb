@@ -22,10 +22,10 @@ RSpec.describe OpenFoodNetwork::OrdersAndFulfillmentsReport::CustomerTotalsRepor
   context "viewing the report" do
     let!(:order) do
       create(
-:completed_order_with_totals, 
-line_items_count: 1, 
+:completed_order_with_totals,
+line_items_count: 1,
 user: customer.user,
-                              customer: customer, 
+                              customer: customer,
 distributor: distributor
 )
     end
@@ -78,10 +78,10 @@ distributor: distributor
     }
     let!(:order) do
       create(
-:completed_order_with_totals, 
-line_items_count: 1, 
+:completed_order_with_totals,
+line_items_count: 1,
 user: customer.user,
-                              customer: customer, 
+                              customer: customer,
 distributor: distributor
 )
     end
@@ -101,9 +101,9 @@ distributor: distributor
     context "with both failed and completed payments present" do
       let!(:order) {
         create(
-:order_ready_to_ship, 
+:order_ready_to_ship,
 user: customer.user,
-                      customer: customer, 
+                      customer: customer,
 distributor: distributor
 )
       }
@@ -125,10 +125,10 @@ distributor: distributor
   context 'when a variant override applies' do
     let!(:order) do
       create(
-:completed_order_with_totals, 
-line_items_count: 1, 
+:completed_order_with_totals,
+line_items_count: 1,
 user: customer.user,
-                              customer: customer, 
+                              customer: customer,
 distributor: distributor
 )
     end

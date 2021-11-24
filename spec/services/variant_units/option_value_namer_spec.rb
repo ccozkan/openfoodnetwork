@@ -96,9 +96,9 @@ module VariantUnits
 
       it "generates values for all weight scales" do
         [
-[1.0, 'g'], 
-[28.35, 'oz'], 
-[453.6, 'lb'], 
+[1.0, 'g'],
+[28.35, 'oz'],
+[453.6, 'lb'],
 [1000.0, 'kg'],
          [1_000_000.0, 'T']
 ].each do |scale, unit|
@@ -128,8 +128,8 @@ module VariantUnits
       it "generates values for item units" do
         %w(packet box).each do |unit|
           p = double(
-:product, 
-variant_unit: 'items', 
+:product,
+variant_unit: 'items',
 variant_unit_scale: nil,
           variant_unit_name: unit
 )
@@ -141,8 +141,8 @@ variant_unit_scale: nil,
 
       it "generates singular values for item units when value is 1" do
         p = double(
-:product, 
-variant_unit: 'items', 
+:product,
+variant_unit: 'items',
 variant_unit_scale: nil,
           variant_unit_name: 'packet'
 )
@@ -153,8 +153,8 @@ variant_unit_scale: nil,
 
       it "returns [nil, nil] when unit value is not set" do
         p = double(
-:product, 
-variant_unit: 'items', 
+:product,
+variant_unit: 'items',
 variant_unit_scale: nil,
           variant_unit_name: 'foo'
 )

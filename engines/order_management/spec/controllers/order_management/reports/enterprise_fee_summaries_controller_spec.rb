@@ -49,7 +49,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummariesController, type: :cont
       let(:current_user) { distributor.owner }
 
       it "renders the report form with an error" do
-        post :create, 
+        post :create,
 params: {
           report: { distributor_ids: [other_distributor.id] }, report_format: "csv"
         }

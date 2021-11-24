@@ -14,7 +14,7 @@ describe 'Shops', js: true do
   let!(:d2) { create(:distributor_enterprise, with_payment_and_shipping: true) }
   let!(:order_cycle) {
     create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise)
 )
@@ -83,7 +83,7 @@ distributors: [distributor],
   describe "filtering by product property" do
     let!(:order_cycle) {
       create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [d1, d2],
                      coordinator: create(:distributor_enterprise)
 )
@@ -154,9 +154,9 @@ distributors: [d1, d2],
   describe "property badges" do
     let!(:order_cycle) {
       create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [distributor],
-                     coordinator: create(:distributor_enterprise), 
+                     coordinator: create(:distributor_enterprise),
 variants: [product.variants.first]
 )
     }
@@ -187,9 +187,9 @@ variants: [product.variants.first]
     let!(:taxon) { create(:taxon, name: 'Fruit') }
     let!(:order_cycle) {
       create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [distributor],
-                     coordinator: create(:distributor_enterprise), 
+                     coordinator: create(:distributor_enterprise),
 variants: [product.variants.first]
 )
     }

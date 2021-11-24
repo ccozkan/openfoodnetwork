@@ -28,9 +28,9 @@ describe OrderManagement::Reports::BulkCoop::BulkCoopReport do
 
         it 'shows canceled orders' do
           o2 = create(
-:order, 
-state: 'canceled', 
-completed_at: 1.day.ago, 
+:order,
+state: 'canceled',
+completed_at: 1.day.ago,
 order_cycle: oc1,
         distributor: d1
 )
@@ -51,9 +51,9 @@ order_cycle: oc1,
 
         it 'shows canceled orders' do
           o2 = create(
-:order, 
-state: 'canceled', 
-completed_at: 1.day.ago, 
+:order,
+state: 'canceled',
+completed_at: 1.day.ago,
 order_cycle: oc1,
         distributor: d1
 )
@@ -122,9 +122,9 @@ order_cycle: oc1,
       context "that has granted P-OC to the distributor" do
         let(:o2) do
           create(
-:order, 
-distributor: d1, 
-completed_at: 1.day.ago, 
+:order,
+distributor: d1,
+completed_at: 1.day.ago,
 bill_address: create(:address),
         ship_address: create(:address)
 )
@@ -136,8 +136,8 @@ bill_address: create(:address),
         before do
           o2.line_items << li2
           create(
-:enterprise_relationship, 
-parent: s1, 
+:enterprise_relationship,
+parent: s1,
 child: d1,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -152,9 +152,9 @@ child: d1,
       context "that has not granted P-OC to the distributor" do
         let(:o2) do
           create(
-:order, 
-distributor: d1, 
-completed_at: 1.day.ago, 
+:order,
+distributor: d1,
+completed_at: 1.day.ago,
 bill_address: create(:address),
         ship_address: create(:address)
 )

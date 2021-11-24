@@ -19,8 +19,8 @@ describe Api::V0::EnterprisesController, type: :controller do
       let(:australia) { Spree::Country.find_by(name: 'Australia') }
       let(:new_enterprise_params) do
         {
-          name: 'name', 
-contact_name: 'Sheila', 
+          name: 'name',
+contact_name: 'Sheila',
 address_attributes: {
             address1: '123 Abc Street',
             city: 'Northcote',
@@ -42,7 +42,7 @@ address_attributes: {
       it "saves all user ids submitted" do
         manager1 = create(:user)
         manager2 = create(:user)
-        api_post :create, 
+        api_post :create,
 {
           enterprise: new_enterprise_params
             .merge({ user_ids: [enterprise_owner.id, manager1.id, manager2.id] })

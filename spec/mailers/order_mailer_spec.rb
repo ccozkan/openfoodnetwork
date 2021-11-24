@@ -145,9 +145,9 @@ describe Spree::OrderMailer do
     }
     let(:order) {
       create(
-:order_with_line_items, 
-distributor: distributor, 
-bill_address: bill_address, 
+:order_with_line_items,
+distributor: distributor,
+bill_address: bill_address,
 ship_address: ship_address,
                         special_instructions: shipping_instructions
 )

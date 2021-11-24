@@ -12,8 +12,8 @@ describe "Credit Cards", js: true do
     let!(:customer) { create(:customer, user: user) }
     let!(:default_card) {
       create(
-:stored_credit_card, 
-user_id: user.id, 
+:stored_credit_card,
+user_id: user.id,
 gateway_customer_profile_id: 'cus_AZNMJ',
                      is_default: true
 )

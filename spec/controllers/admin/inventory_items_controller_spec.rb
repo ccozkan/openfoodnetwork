@@ -13,9 +13,9 @@ describe Admin::InventoryItemsController, type: :controller do
         create(:inventory_item, enterprise: enterprise, variant: variant, visible: true)
       }
       let(:params) {
-        { 
+        {
 format: format,
-inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible: false } 
+inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible: false }
 }
       }
 
@@ -47,8 +47,8 @@ inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible:
         context "and the producer has granted VO permission" do
           before do
             create(
-:enterprise_relationship, 
-parent: variant.product.supplier, 
+:enterprise_relationship,
+parent: variant.product.supplier,
 child: enterprise,
                           permissions_list: [:create_variant_overrides]
 )
@@ -69,13 +69,13 @@ child: enterprise,
           context "with unacceptable data" do
             render_views
             let!(:bad_params) {
-              { 
+              {
 format: format,
-inventory_item: { 
-enterprise_id: enterprise.id, 
+inventory_item: {
+enterprise_id: enterprise.id,
 variant_id: variant.id,
-visible: nil 
-} 
+visible: nil
+}
 }
             }
 
@@ -130,8 +130,8 @@ visible: nil
         context "and the producer has granted VO permission" do
           before do
             create(
-:enterprise_relationship, 
-parent: variant.product.supplier, 
+:enterprise_relationship,
+parent: variant.product.supplier,
 child: enterprise,
                           permissions_list: [:create_variant_overrides]
 )

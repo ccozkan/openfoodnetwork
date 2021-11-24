@@ -114,7 +114,7 @@ module Spree
         end
 
         params.require(:payment).permit(
-          :amount, 
+          :amount,
 :payment_method_id,
           source_attributes: ::PermittedAttributes::PaymentSource.attributes
         )

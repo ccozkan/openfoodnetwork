@@ -164,7 +164,7 @@ module Spree
       end
 
       def gateway_options
-        options = { 
+        options = {
 email: order.email,
 customer: order.email,
 ip: order.last_ip_address,
@@ -172,7 +172,7 @@ ip: order.last_ip_address,
                     # payment gateways happy.
                     #
                     # For more information, please see Spree::Payment#set_unique_identifier
-order_id: gateway_order_id 
+order_id: gateway_order_id
 }
 
         options.merge!(
@@ -184,9 +184,9 @@ currency: currency
 )
 
         options.merge!(
-{ 
+{
 billing_address: order.bill_address.try(:active_merchant_hash),
-shipping_address: order.ship_address.try(:active_merchant_hash) 
+shipping_address: order.ship_address.try(:active_merchant_hash)
 }
 )
 

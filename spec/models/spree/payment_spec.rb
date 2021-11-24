@@ -25,7 +25,7 @@ describe Spree::Payment do
 
     let(:success_response) do
       double(
-'success_response', 
+'success_response',
 success?: true,
                     authorization: '123',
                     avs_result: { 'code' => 'avs-code' },
@@ -177,9 +177,9 @@ success?: true,
         context "authorization is required" do
           before do
             allow(success_response).to receive(:cvv_result) {
-              { 
+              {
 'code' => "123",
-'message' => "https://stripe.com/redirect" 
+'message' => "https://stripe.com/redirect"
 }
             }
             expect(payment.payment_method).to receive(:authorize).with(
@@ -208,7 +208,7 @@ success?: true,
       context "purchase" do
         it "should call purchase on the gateway with the payment amount" do
           expect(gateway).to receive(:purchase).with(
-amount_in_cents, 
+amount_in_cents,
 card,
                                                      anything
 ).and_return(success_response)
@@ -318,7 +318,7 @@ card,
           it "should call payment_gateway.void with the payment's response_code" do
             gateway.stub payment_profiles_supported?: true
             expect(gateway).to receive(:void).with(
-'123', 
+'123',
 card,
                                                    anything
 ).and_return(success_response)
@@ -390,8 +390,8 @@ card,
 
           it "should call credit on the gateway with the credit amount and response_code" do
             expect(gateway).to receive(:credit).with(
-1000, 
-card, 
+1000,
+card,
 '123',
                                                      anything
 ).and_return(success_response)
@@ -692,14 +692,14 @@ card,
 
     context "#build_source" do
       it "should build the payment's source" do
-        params = { 
-amount: 100, 
+        params = {
+amount: 100,
 payment_method: gateway,
 source_attributes: {
                      expiry: "1 / 99",
                      number: '1234567890123',
                      verification_value: '123'
-                   } 
+                   }
 }
 
         payment = Spree::Payment.new(params)
@@ -910,8 +910,8 @@ source_attributes: {
 
           it "creates adjustment" do
             payment = create(
-:payment, 
-order: order, 
+:payment,
+order: order,
 payment_method: payment_method,
           amount: order.total
 )
@@ -936,7 +936,7 @@ payment_method: payment_method,
         let(:shop) { create(:enterprise) }
         let(:payment_method) {
           create(
-:stripe_connect_payment_method, 
+:stripe_connect_payment_method,
 distributor_ids: [create(:distributor_enterprise).id],
                                 preferred_enterprise_id: shop.id
 )

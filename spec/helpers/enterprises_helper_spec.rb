@@ -37,9 +37,9 @@ describe EnterprisesHelper, type: :helper do
 
       it "does not return 'back office only' shipping method" do
         backoffice_only_shipping_method = create(
-:shipping_method, 
+:shipping_method,
 require_ship_address: false,
-                  distributors: [distributor], 
+                  distributors: [distributor],
 display_on: 'back_end'
 )
 
@@ -283,14 +283,14 @@ display_on: 'back_end'
     context "when StripeConnect payment methods are present" do
       let!(:pm3) {
         create(
-:stripe_connect_payment_method, 
+:stripe_connect_payment_method,
 distributors: [distributor],
                                 preferred_enterprise_id: distributor.id
 )
       }
       let!(:pm4) {
         create(
-:stripe_connect_payment_method, 
+:stripe_connect_payment_method,
 distributors: [distributor],
                                 preferred_enterprise_id: some_other_distributor.id
 )

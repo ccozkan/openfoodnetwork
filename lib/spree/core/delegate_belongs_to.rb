@@ -22,16 +22,16 @@ module DelegateBelongsTo
 
   module ClassMethods
     @@default_rejected_delegate_columns = [
-'created_at', 
-'created_on', 
+'created_at',
+'created_on',
 'updated_at',
-                                           'updated_on', 
-'lock_version', 
-'type', 
+                                           'updated_on',
+'lock_version',
+'type',
 'id',
-                                           'position', 
-'parent_id', 
-'lft', 
+                                           'position',
+'parent_id',
+'lft',
 'rgt'
 ]
     mattr_accessor :default_rejected_delegate_columns

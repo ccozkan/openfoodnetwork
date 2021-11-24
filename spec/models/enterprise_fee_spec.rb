@@ -120,7 +120,7 @@ describe EnterpriseFee do
       order = create(:order)
       enterprise_fee = create(:enterprise_fee)
       enterprise_fee_aplicator = OpenFoodNetwork::EnterpriseFeeApplicator.new(
-enterprise_fee, 
+enterprise_fee,
 nil,
                                                                               'coordinator'
 )
@@ -135,11 +135,11 @@ nil,
       order = create(:order)
       tax_rate = create(:tax_rate, calculator: build(:calculator))
       order.adjustments.create(
-{ 
+{
 amount: 12.34,
 originator: tax_rate,
 state: 'closed',
-label: 'hello' 
+label: 'hello'
 }
 )
 

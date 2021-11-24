@@ -23,8 +23,8 @@ module Checkout
 
     def apply_strong_parameters
       @order_params = params.require(:order).permit(
-        :email, 
-:shipping_method_id, 
+        :email,
+:shipping_method_id,
 :special_instructions,
         bill_address_attributes: ::PermittedAttributes::Address.attributes,
         ship_address_attributes: ::PermittedAttributes::Address.attributes,

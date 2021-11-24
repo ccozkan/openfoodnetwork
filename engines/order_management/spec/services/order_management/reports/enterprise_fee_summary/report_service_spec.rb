@@ -61,20 +61,20 @@ outgoing_exchange_fees: variant_outgoing_exchange_fees
     let!(:order_cycle_fees) do
       [
         create(
-:enterprise_fee, 
-:per_item, 
-name: "Coordinator Fee 1", 
+:enterprise_fee,
+:per_item,
+name: "Coordinator Fee 1",
 enterprise: coordinator,
-                            fee_type: "admin", 
+                            fee_type: "admin",
 amount: 512.0,
                             tax_category: coordinator_tax_category
 ),
         create(
-:enterprise_fee, 
-:per_item, 
-name: "Coordinator Fee 2", 
+:enterprise_fee,
+:per_item,
+name: "Coordinator Fee 2",
 enterprise: coordinator,
-                            fee_type: "sales", 
+                            fee_type: "sales",
 amount: 1024.0,
                             inherits_tax_category: true
 )
@@ -85,20 +85,20 @@ amount: 1024.0,
     let!(:variant_incoming_exchange_fees) do
       [
         create(
-:enterprise_fee, 
-:per_item, 
-name: "Producer Fee 1", 
+:enterprise_fee,
+:per_item,
+name: "Producer Fee 1",
 enterprise: producer,
-                            fee_type: "sales", 
+                            fee_type: "sales",
 amount: 64.0,
                             tax_category: producer_tax_category
 ),
         create(
-:enterprise_fee, 
-:per_item, 
-name: "Producer Fee 2", 
+:enterprise_fee,
+:per_item,
+name: "Producer Fee 2",
 enterprise: producer,
-                            fee_type: "sales", 
+                            fee_type: "sales",
 amount: 128.0,
                             inherits_tax_category: true
 )
@@ -109,20 +109,20 @@ amount: 128.0,
     let!(:variant_outgoing_exchange_fees) do
       [
         create(
-:enterprise_fee, 
-:per_item, 
-name: "Distributor Fee 1", 
+:enterprise_fee,
+:per_item,
+name: "Distributor Fee 1",
 enterprise: distributor,
-                            fee_type: "admin", 
+                            fee_type: "admin",
 amount: 4.0,
                             tax_category: distributor_tax_category
 ),
         create(
-:enterprise_fee, 
-:per_item, 
-name: "Distributor Fee 2", 
+:enterprise_fee,
+:per_item,
+name: "Distributor Fee 2",
 enterprise: distributor,
-                            fee_type: "sales", 
+                            fee_type: "sales",
 amount: 8.0,
                             inherits_tax_category: true
 )
@@ -152,163 +152,163 @@ amount: 8.0,
 
       expected_result = [
         [
-"Admin", 
-"Sample Coordinator", 
-"Coordinator Fee 1", 
+"Admin",
+"Sample Coordinator",
+"Coordinator Fee 1",
 "Another Customer",
-         "Coordinator", 
-"All", 
-"Sample Coordinator Tax", 
+         "Coordinator",
+"All",
+"Sample Coordinator Tax",
 "512.00"
 ],
         [
-"Admin", 
-"Sample Coordinator", 
-"Coordinator Fee 1", 
+"Admin",
+"Sample Coordinator",
+"Coordinator Fee 1",
 "Sample Customer",
-         "Coordinator", 
-"All", 
-"Sample Coordinator Tax", 
+         "Coordinator",
+"All",
+"Sample Coordinator Tax",
 "1024.00"
 ],
         [
-"Admin", 
-"Sample Distributor", 
-"Distributor Fee 1", 
+"Admin",
+"Sample Distributor",
+"Distributor Fee 1",
 "Another Customer",
-         "Outgoing", 
-"Sample Distributor", 
-"Sample Distributor Tax", 
+         "Outgoing",
+"Sample Distributor",
+"Sample Distributor Tax",
 "4.00"
 ],
         [
-"Admin", 
-"Sample Distributor", 
-"Distributor Fee 1", 
+"Admin",
+"Sample Distributor",
+"Distributor Fee 1",
 "Sample Customer",
-         "Outgoing", 
-"Sample Distributor", 
-"Sample Distributor Tax", 
+         "Outgoing",
+"Sample Distributor",
+"Sample Distributor Tax",
 "8.00"
 ],
         [
-"Payment Transaction", 
-"Sample Distributor", 
-"Sample Payment Method", 
+"Payment Transaction",
+"Sample Distributor",
+"Sample Payment Method",
 "Another Customer",
-         nil, 
-nil, 
-nil, 
+         nil,
+nil,
+nil,
 "2.00"
 ],
         [
-"Payment Transaction", 
-"Sample Distributor", 
-"Sample Payment Method", 
+"Payment Transaction",
+"Sample Distributor",
+"Sample Payment Method",
 "Sample Customer",
-         nil, 
-nil, 
-nil, 
+         nil,
+nil,
+nil,
 "4.00"
 ],
         [
-"Sales", 
-"Sample Coordinator", 
-"Coordinator Fee 2", 
+"Sales",
+"Sample Coordinator",
+"Coordinator Fee 2",
 "Another Customer",
-         "Coordinator", 
-"All", 
-"Various", 
+         "Coordinator",
+"All",
+"Various",
 "1024.00"
 ],
         [
-"Sales", 
-"Sample Coordinator", 
-"Coordinator Fee 2", 
+"Sales",
+"Sample Coordinator",
+"Coordinator Fee 2",
 "Sample Customer",
-         "Coordinator", 
-"All", 
-"Various", 
+         "Coordinator",
+"All",
+"Various",
 "2048.00"
 ],
         [
-"Sales", 
-"Sample Distributor", 
-"Distributor Fee 2", 
+"Sales",
+"Sample Distributor",
+"Distributor Fee 2",
 "Another Customer",
-         "Outgoing", 
-"Sample Distributor", 
-"Sample Product Tax", 
+         "Outgoing",
+"Sample Distributor",
+"Sample Product Tax",
 "8.00"
 ],
         [
-"Sales", 
-"Sample Distributor", 
-"Distributor Fee 2", 
+"Sales",
+"Sample Distributor",
+"Distributor Fee 2",
 "Sample Customer",
-         "Outgoing", 
-"Sample Distributor", 
-"Sample Product Tax", 
+         "Outgoing",
+"Sample Distributor",
+"Sample Product Tax",
 "16.00"
 ],
         [
-"Sales", 
-"Sample Producer", 
-"Producer Fee 1", 
+"Sales",
+"Sample Producer",
+"Producer Fee 1",
 "Another Customer",
-         "Incoming", 
-"Sample Producer", 
-"Sample Producer Tax", 
+         "Incoming",
+"Sample Producer",
+"Sample Producer Tax",
 "64.00"
 ],
         [
-"Sales", 
-"Sample Producer", 
-"Producer Fee 1", 
+"Sales",
+"Sample Producer",
+"Producer Fee 1",
 "Sample Customer",
-         "Incoming", 
-"Sample Producer", 
-"Sample Producer Tax", 
+         "Incoming",
+"Sample Producer",
+"Sample Producer Tax",
 "128.00"
 ],
         [
-"Sales", 
-"Sample Producer", 
-"Producer Fee 2", 
+"Sales",
+"Sample Producer",
+"Producer Fee 2",
 "Another Customer",
-         "Incoming", 
-"Sample Producer", 
-"Sample Product Tax", 
+         "Incoming",
+"Sample Producer",
+"Sample Product Tax",
 "128.00"
 ],
         [
-"Sales", 
-"Sample Producer", 
-"Producer Fee 2", 
+"Sales",
+"Sample Producer",
+"Producer Fee 2",
 "Sample Customer",
-         "Incoming", 
-"Sample Producer", 
-"Sample Product Tax", 
+         "Incoming",
+"Sample Producer",
+"Sample Product Tax",
 "256.00"
 ],
         [
-"Shipment", 
-"Sample Distributor", 
-"Sample Shipping Method", 
+"Shipment",
+"Sample Distributor",
+"Sample Shipping Method",
 "Another Customer",
-         nil, 
-nil, 
-"Platform Rate", 
+         nil,
+nil,
+"Platform Rate",
 "1.00"
 ],
         [
-"Shipment", 
-"Sample Distributor", 
-"Sample Shipping Method", 
+"Shipment",
+"Sample Distributor",
+"Sample Shipping Method",
 "Sample Customer",
-         nil, 
-nil, 
-"Platform Rate", 
+         nil,
+nil,
+"Platform Rate",
 "2.00"
 ]
       ]
@@ -337,13 +337,13 @@ nil,
 
         expected_result = [
           [
-"Shipment", 
-"Sample Distributor", 
-"Sample Shipping Method", 
+"Shipment",
+"Sample Distributor",
+"Sample Shipping Method",
 "Sample Customer",
-           nil, 
-nil, 
-"Platform Rate", 
+           nil,
+nil,
+"Platform Rate",
 "1.00"
 ]
         ]
@@ -359,11 +359,11 @@ nil,
 
       let!(:enterprise_fee) do
         create(
-:enterprise_fee, 
-:per_item, 
-name: "Sample Enterprise Fee", 
+:enterprise_fee,
+:per_item,
+name: "Sample Enterprise Fee",
 enterprise: distributor,
-                            fee_type: "admin", 
+                            fee_type: "admin",
 amount: 0
 )
       end
@@ -386,23 +386,23 @@ amount: 0
 
         expected_result = [
           [
-"Payment Transaction", 
-"Sample Distributor", 
-"Sample Payment Method", 
+"Payment Transaction",
+"Sample Distributor",
+"Sample Payment Method",
 "Sample Customer",
-           nil, 
-nil, 
-nil, 
+           nil,
+nil,
+nil,
 "2.00"
 ],
           [
-"Shipment", 
-"Sample Distributor", 
-"Sample Shipping Method", 
+"Shipment",
+"Sample Distributor",
+"Sample Shipping Method",
 "Sample Customer",
-           nil, 
-nil, 
-"Platform Rate", 
+           nil,
+nil,
+"Platform Rate",
 "1.00"
 ]
         ]
@@ -427,13 +427,13 @@ nil,
 
         expected_result = [
           [
-"Shipment", 
-"Sample Distributor", 
-"Sample Shipping Method", 
+"Shipment",
+"Sample Distributor",
+"Sample Shipping Method",
 "Sample Customer",
-           nil, 
-nil, 
-"Platform Rate", 
+           nil,
+nil,
+"Platform Rate",
 "1.00"
 ]
         ]
@@ -459,11 +459,11 @@ outgoing_exchange_fees: variant_outgoing_exchange_fees
       let!(:producer_fee) do
         tax_category = create(:tax_category, name: "Sample Producer Tax")
         create(
-:enterprise_fee, 
-:per_item, 
-name: "Sample Producer Fee", 
+:enterprise_fee,
+:per_item,
+name: "Sample Producer Fee",
 enterprise: producer,
-                            fee_type: "sales", 
+                            fee_type: "sales",
 amount: 64.0,
                             tax_category: tax_category
 )
@@ -471,11 +471,11 @@ amount: 64.0,
       let!(:coordinator_fee) do
         tax_category = create(:tax_category, name: "Sample Coordinator Tax")
         create(
-:enterprise_fee, 
-:per_item, 
-name: "Sample Coordinator Fee", 
+:enterprise_fee,
+:per_item,
+name: "Sample Coordinator Fee",
 enterprise: coordinator,
-                            fee_type: "admin", 
+                            fee_type: "admin",
 amount: 512.0,
                             tax_category: tax_category
 )
@@ -483,11 +483,11 @@ amount: 512.0,
       let!(:distributor_fee) do
         tax_category = create(:tax_category, name: "Sample Distributor Tax")
         create(
-:enterprise_fee, 
-:per_item, 
-name: "Sample Distributor Fee", 
+:enterprise_fee,
+:per_item,
+name: "Sample Distributor Fee",
 enterprise: distributor,
-                            fee_type: "admin", 
+                            fee_type: "admin",
 amount: 4.0,
                             tax_category: tax_category
 )
@@ -502,63 +502,63 @@ amount: 4.0,
 
         expected_result = [
           [
-"Admin", 
-"Sample Coordinator", 
-"Sample Coordinator Fee", 
+"Admin",
+"Sample Coordinator",
+"Sample Coordinator Fee",
 "Sample Customer",
-           "Incoming", 
-"Sample Producer", 
-"Sample Coordinator Tax", 
+           "Incoming",
+"Sample Producer",
+"Sample Coordinator Tax",
 "512.00"
 ],
           [
-"Admin", 
-"Sample Coordinator", 
-"Sample Coordinator Fee", 
+"Admin",
+"Sample Coordinator",
+"Sample Coordinator Fee",
 "Sample Customer",
-           "Outgoing", 
-"Sample Distributor", 
-"Sample Coordinator Tax", 
+           "Outgoing",
+"Sample Distributor",
+"Sample Coordinator Tax",
 "512.00"
 ],
           [
-"Admin", 
-"Sample Distributor", 
-"Sample Distributor Fee", 
+"Admin",
+"Sample Distributor",
+"Sample Distributor Fee",
 "Sample Customer",
-           "Incoming", 
-"Sample Producer", 
-"Sample Distributor Tax", 
+           "Incoming",
+"Sample Producer",
+"Sample Distributor Tax",
 "4.00"
 ],
           [
-"Payment Transaction", 
-"Sample Distributor", 
-"Sample Payment Method", 
+"Payment Transaction",
+"Sample Distributor",
+"Sample Payment Method",
 "Sample Customer",
-           nil, 
-nil, 
-nil, 
+           nil,
+nil,
+nil,
 "2.00"
 ],
           [
-"Sales", 
-"Sample Producer", 
-"Sample Producer Fee", 
+"Sales",
+"Sample Producer",
+"Sample Producer Fee",
 "Sample Customer",
-           "Outgoing", 
-"Sample Distributor", 
-"Sample Producer Tax", 
+           "Outgoing",
+"Sample Distributor",
+"Sample Producer Tax",
 "64.00"
 ],
           [
-"Shipment", 
-"Sample Distributor", 
-"Sample Shipping Method", 
+"Shipment",
+"Sample Distributor",
+"Sample Shipping Method",
 "Sample Customer",
-           nil, 
-nil, 
-"Platform Rate", 
+           nil,
+nil,
+"Platform Rate",
 "1.00"
 ]
         ]
@@ -573,11 +573,11 @@ nil,
       let!(:producer_fee) do
         tax_category = create(:tax_category, name: "Producer Tax A")
         create(
-:enterprise_fee, 
-:flat_rate, 
-name: "Producer Fee A", 
+:enterprise_fee,
+:flat_rate,
+name: "Producer Fee A",
 enterprise: producer,
-                             fee_type: "sales", 
+                             fee_type: "sales",
 tax_category: tax_category,
                              amount: 10
 )
@@ -585,44 +585,44 @@ tax_category: tax_category,
       let!(:coordinator_fee) do
         tax_category = create(:tax_category, name: "Coordinator Tax A")
         create(
-:enterprise_fee, 
-:flat_rate, 
-name: "Coordinator Fee A", 
+:enterprise_fee,
+:flat_rate,
+name: "Coordinator Fee A",
 enterprise: coordinator,
-                             fee_type: "admin", 
+                             fee_type: "admin",
 tax_category: tax_category,
                              amount: 15
 )
       end
       let!(:coordinator_fee_inheriting_product_tax_category) do
         create(
-:enterprise_fee, 
-:flat_rate, 
-name: "Coordinator Fee B", 
+:enterprise_fee,
+:flat_rate,
+name: "Coordinator Fee B",
 enterprise: coordinator,
-                             fee_type: "admin", 
+                             fee_type: "admin",
 inherits_tax_category: true,
                              amount: 20
 )
       end
       let!(:coordinator_fee_without_tax) do
         create(
-:enterprise_fee, 
-:flat_rate, 
-name: "Coordinator Fee C", 
+:enterprise_fee,
+:flat_rate,
+name: "Coordinator Fee C",
 enterprise: coordinator,
-                             fee_type: "admin", 
+                             fee_type: "admin",
 inherits_tax_category: false,
                              amount: 25
 )
       end
       let!(:distributor_fee) do
         create(
-:enterprise_fee, 
-:flat_rate, 
-name: "Distributor Fee A", 
+:enterprise_fee,
+:flat_rate,
+name: "Distributor Fee A",
 enterprise: distributor,
-                             fee_type: "admin", 
+                             fee_type: "admin",
 inherits_tax_category: false,
                              amount: 30
 )
@@ -665,113 +665,113 @@ outgoing_exchange_fees: variant_outgoing_exchange_fees
 
         expected_result = [
           [
-"Admin", 
-"Sample Coordinator", 
-"Coordinator Fee A", 
+"Admin",
+"Sample Coordinator",
+"Coordinator Fee A",
 "Sample Customer",
-           "Coordinator", 
-"All", 
-"Coordinator Tax A", 
+           "Coordinator",
+"All",
+"Coordinator Tax A",
 "15.00"
 ],
           [
-"Admin", 
-"Sample Coordinator", 
-"Coordinator Fee A", 
+"Admin",
+"Sample Coordinator",
+"Coordinator Fee A",
 "Sample Customer",
-           "Incoming", 
-entire_orders_text, 
-"Coordinator Tax A", 
+           "Incoming",
+entire_orders_text,
+"Coordinator Tax A",
 "15.00"
 ],
           [
-"Admin", 
-"Sample Coordinator", 
-"Coordinator Fee A", 
+"Admin",
+"Sample Coordinator",
+"Coordinator Fee A",
 "Sample Customer",
-           "Outgoing", 
-entire_orders_text, 
-"Coordinator Tax A", 
+           "Outgoing",
+entire_orders_text,
+"Coordinator Tax A",
 "15.00"
 ],
           [
-"Admin", 
-"Sample Coordinator", 
-"Coordinator Fee B", 
+"Admin",
+"Sample Coordinator",
+"Coordinator Fee B",
 "Sample Customer",
-           "Coordinator", 
-"All", 
-various_tax_categories_text, 
+           "Coordinator",
+"All",
+various_tax_categories_text,
 "20.00"
 ],
           [
-"Admin", 
-"Sample Coordinator", 
-"Coordinator Fee C", 
+"Admin",
+"Sample Coordinator",
+"Coordinator Fee C",
 "Sample Customer",
-           "Coordinator", 
-"All", 
-nil, 
+           "Coordinator",
+"All",
+nil,
 "25.00"
 ],
           [
-"Admin", 
-"Sample Distributor", 
-"Distributor Fee A", 
+"Admin",
+"Sample Distributor",
+"Distributor Fee A",
 "Sample Customer",
-           "Incoming", 
-entire_orders_text, 
-various_tax_categories_text, 
+           "Incoming",
+entire_orders_text,
+various_tax_categories_text,
 "30.00"
 ],
           [
-"Admin", 
-"Sample Distributor", 
-"Distributor Fee A", 
+"Admin",
+"Sample Distributor",
+"Distributor Fee A",
 "Sample Customer",
-           "Outgoing", 
-entire_orders_text, 
-various_tax_categories_text, 
+           "Outgoing",
+entire_orders_text,
+various_tax_categories_text,
 "30.00"
 ],
           [
-"Payment Transaction", 
-"Sample Distributor", 
-"Sample Payment Method", 
+"Payment Transaction",
+"Sample Distributor",
+"Sample Payment Method",
 "Sample Customer",
-           nil, 
-nil, 
-nil, 
+           nil,
+nil,
+nil,
 "2.00"
 ],
           [
-"Sales", 
-"Sample Producer", 
-"Producer Fee A", 
+"Sales",
+"Sample Producer",
+"Producer Fee A",
 "Sample Customer",
-           "Incoming", 
-entire_orders_text, 
-"Producer Tax A", 
+           "Incoming",
+entire_orders_text,
+"Producer Tax A",
 "10.00"
 ],
           [
-"Sales", 
-"Sample Producer", 
-"Producer Fee A", 
+"Sales",
+"Sample Producer",
+"Producer Fee A",
 "Sample Customer",
-           "Outgoing", 
-entire_orders_text, 
-"Producer Tax A", 
+           "Outgoing",
+entire_orders_text,
+"Producer Tax A",
 "10.00"
 ],
           [
-"Shipment", 
-"Sample Distributor", 
-"Sample Shipping Method", 
+"Shipment",
+"Sample Distributor",
+"Sample Shipping Method",
 "Sample Customer",
-           nil, 
-nil, 
-"Platform Rate", 
+           nil,
+nil,
+"Platform Rate",
 "1.00"
 ]
         ]
@@ -786,16 +786,16 @@ nil,
   describe "filtering results based on permissions" do
     let!(:distributor_a) do
       create(
-:distributor_enterprise, 
-name: "Distributor A", 
+:distributor_enterprise,
+name: "Distributor A",
 payment_methods: [payment_method],
                          shipping_methods: [shipping_method]
 )
     end
     let!(:distributor_b) do
       create(
-:distributor_enterprise, 
-name: "Distributor B", 
+:distributor_enterprise,
+name: "Distributor B",
 payment_methods: [payment_method],
                          shipping_methods: [shipping_method]
 )
@@ -890,24 +890,24 @@ payment_methods: [payment_method],
     describe "for specified shops" do
       let!(:distributor_a) do
         create(
-:distributor_enterprise, 
-name: "Distributor A", 
+:distributor_enterprise,
+name: "Distributor A",
 payment_methods: [payment_method],
                          shipping_methods: [shipping_method]
 )
       end
       let!(:distributor_b) do
         create(
-:distributor_enterprise, 
-name: "Distributor B", 
+:distributor_enterprise,
+name: "Distributor B",
 payment_methods: [payment_method],
                          shipping_methods: [shipping_method]
 )
       end
       let!(:distributor_c) do
         create(
-:distributor_enterprise, 
-name: "Distributor C", 
+:distributor_enterprise,
+name: "Distributor C",
 payment_methods: [payment_method],
                          shipping_methods: [shipping_method]
 )
@@ -969,24 +969,24 @@ payment_methods: [payment_method],
     describe "for specified order cycles" do
       let!(:distributor_a) do
         create(
-:distributor_enterprise, 
-name: "Distributor A", 
+:distributor_enterprise,
+name: "Distributor A",
 payment_methods: [payment_method],
                          shipping_methods: [shipping_method]
 )
       end
       let!(:distributor_b) do
         create(
-:distributor_enterprise, 
-name: "Distributor B", 
+:distributor_enterprise,
+name: "Distributor B",
 payment_methods: [payment_method],
                          shipping_methods: [shipping_method]
 )
       end
       let!(:distributor_c) do
         create(
-:distributor_enterprise, 
-name: "Distributor C", 
+:distributor_enterprise,
+name: "Distributor C",
 payment_methods: [payment_method],
                          shipping_methods: [shipping_method]
 )
@@ -1109,12 +1109,12 @@ payment_methods: [payment_method],
 
   def expect_total_attributes(total, expected_attribute_list)
     actual_attribute_list = [
-total.fee_type, 
-total.enterprise_name, 
+total.fee_type,
+total.enterprise_name,
 total.fee_name,
-                             total.customer_name, 
+                             total.customer_name,
 total.fee_placement,
-                             total.fee_calculated_on_transfer_through_name, 
+                             total.fee_calculated_on_transfer_through_name,
 total.tax_category_name,
                              total.total_amount
 ]
@@ -1126,12 +1126,12 @@ total.tax_category_name,
   end
 
   def default_order_options
-    { 
-customer: customer, 
-distributor: distributor, 
+    {
+customer: customer,
+distributor: distributor,
 order_cycle: order_cycle,
-shipping_method: shipping_method, 
-variant: variant 
+shipping_method: shipping_method,
+variant: variant
 }
   end
 
@@ -1147,13 +1147,13 @@ variant: variant
   end
 
   def default_variant_options
-    { 
-product: product, 
-producer: producer, 
-is_master: false, 
+    {
+product: product,
+producer: producer,
+is_master: false,
 coordinator: coordinator,
-distributor: distributor, 
-order_cycle: order_cycle 
+distributor: distributor,
+order_cycle: order_cycle
 }
   end
 

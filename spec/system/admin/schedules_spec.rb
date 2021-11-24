@@ -20,8 +20,8 @@ describe 'Schedules', js: true do
     let!(:oc3) { create(:simple_order_cycle, coordinator: managed_enterprise, name: 'oc3') }
     let!(:oc4) {
       create(
-:simple_order_cycle, 
-coordinator: unmanaged_enterprise, 
+:simple_order_cycle,
+coordinator: unmanaged_enterprise,
 distributors: [managed_enterprise],
                      name: 'oc4'
 )

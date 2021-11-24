@@ -16,9 +16,9 @@ module Spree
     belongs_to :source, polymorphic: true
     belongs_to :payment_method, class_name: 'Spree::PaymentMethod'
 
-    has_many :offsets, 
+    has_many :offsets,
 -> { where("source_type = 'Spree::Payment' AND amount < 0").completed },
-             class_name: "Spree::Payment", 
+             class_name: "Spree::Payment",
 foreign_key: :source_id
     has_many :log_entries, as: :source, dependent: :destroy
 

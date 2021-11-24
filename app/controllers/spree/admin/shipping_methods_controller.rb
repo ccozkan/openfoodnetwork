@@ -89,13 +89,13 @@ module Spree
 
       def permitted_resource_params
         params.require(:shipping_method).permit(
-          :name, 
-:description, 
-:display_on, 
-:require_ship_address, 
-:tag_list, 
+          :name,
+:description,
+:display_on,
+:require_ship_address,
+:tag_list,
 :calculator_type,
-          :tax_category_id, 
+          :tax_category_id,
 distributor_ids: [],
                             calculator_attributes: PermittedAttributes::Calculator.attributes
         )
@@ -104,9 +104,9 @@ distributor_ids: [],
       def check_shipping_fee_input
         shipping_amount = permitted_resource_params.dig('calculator_attributes', 'preferred_amount')
 
-        unless shipping_amount.nil? || Float(shipping_amount, exception: false) 
-          flash[:error] = I18n.t(:calculator_preferred_value_error) 
-          return redirect_to location_after_save      
+        unless shipping_amount.nil? || Float(shipping_amount, exception: false)
+          flash[:error] = I18n.t(:calculator_preferred_value_error)
+          return redirect_to location_after_save
         end
       end
     end

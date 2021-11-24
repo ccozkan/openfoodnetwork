@@ -59,7 +59,7 @@ describe Api::V0::TaxonsController do
     end
 
     it "cannot update a taxon" do
-      api_put :update, 
+      api_put :update,
 taxonomy_id: taxonomy.id,
                        id: taxon.id,
                        taxon: { name: "I hacked your store!" }

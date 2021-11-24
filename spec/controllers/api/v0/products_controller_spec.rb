@@ -20,17 +20,17 @@ describe Api::V0::ProductsController, type: :controller do
   let(:all_attributes) { ["id", "name", "price", "available_on", "variants"] }
   let(:variants_attributes) {
     [
-"id", 
-"options_text", 
-"unit_value", 
-"unit_description", 
-"unit_to_display", 
+"id",
+"options_text",
+"unit_value",
+"unit_description",
+"unit_to_display",
 "on_demand",
-     "display_as", 
-"display_name", 
-"name_to_display", 
-"sku", 
-"on_hand", 
+     "display_as",
+"display_name",
+"name_to_display",
+"sku",
+"on_hand",
 "price"
 ]
   }
@@ -58,7 +58,7 @@ describe Api::V0::ProductsController, type: :controller do
       expect(
 variants_attributes.all? { |attr|
                json_response['variants'].first.keys.include? attr
-             } 
+             }
 ).to eq(true)
     end
 
@@ -130,8 +130,8 @@ variants_attributes.all? { |attr|
     end
 
     it "can create a new product" do
-      api_post :create, 
-product: { 
+      api_post :create,
+product: {
 name: "The Other Product",
 price: 19.99,
 shipping_category_id: create(:shipping_category).id,
@@ -139,7 +139,7 @@ supplier_id: supplier.id,
 primary_taxon_id: FactoryBot.create(:taxon).id,
 variant_unit: "items",
 variant_unit_name: "things",
-unit_description: "things" 
+unit_description: "things"
 }
 
       expect(all_attributes.all? { |attr| json_response.keys.include? attr }).to eq(true)
@@ -154,11 +154,11 @@ unit_description: "things"
       errors = json_response["errors"]
       expect(errors.keys).to match_array(
 [
-"name", 
-"price", 
-"primary_taxon", 
+"name",
+"price",
+"primary_taxon",
 "shipping_category",
-                                          "supplier", 
+                                          "supplier",
 "variant_unit"
 ]
 )
@@ -286,26 +286,26 @@ unit_description: "things"
       it "returns a list of products" do
         api_get :bulk_products, { page: 1, per_page: 15 }, format: :json
         expect(returned_product_ids).to eq [
-product4.id, 
-product3.id, 
+product4.id,
+product3.id,
 product2.id,
-                                            inactive_product.id, 
+                                            inactive_product.id,
 product.id
 ]
       end
 
       it "returns pagination data" do
         api_get :bulk_products, { page: 1, per_page: 15 }, format: :json
-        expect(json_response['pagination']).to eq "results" => 5, 
-"pages" => 1, 
+        expect(json_response['pagination']).to eq "results" => 5,
+"pages" => 1,
 "page" => 1,
                                                   "per_page" => 15
       end
 
       it "uses defaults when page and per_page are not supplied" do
         api_get :bulk_products, format: :json
-        expect(json_response['pagination']).to eq "results" => 5, 
-"pages" => 1, 
+        expect(json_response['pagination']).to eq "results" => 5,
+"pages" => 1,
 "page" => 1,
                                                   "per_page" => 15
       end
@@ -319,14 +319,14 @@ product.id
       end
 
       it "filters results by supplier" do
-        api_get :bulk_products, 
+        api_get :bulk_products,
 { page: 1, per_page: 15, q: { supplier_id_eq: supplier.id } },
                 format: :json
         expect(returned_product_ids).to eq [product2.id, inactive_product.id, product.id]
       end
 
       it "filters results by product category" do
-        api_get :bulk_products, 
+        api_get :bulk_products,
 { page: 1, per_page: 15, q: { primary_taxon_id_eq: taxon.id } },
                 format: :json
         expect(returned_product_ids).to eq [product3.id, product2.id]
@@ -337,7 +337,7 @@ product.id
         product2.variants.first.update_attribute :import_date, 2.days.ago
         product3.variants.first.update_attribute :import_date, 1.day.ago
 
-        api_get :bulk_products, 
+        api_get :bulk_products,
 { page: 1, per_page: 15, import_date: 1.day.ago.to_date.to_s },
                 format: :json
         expect(returned_product_ids).to eq [product3.id, product.id]

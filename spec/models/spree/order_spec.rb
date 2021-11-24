@@ -645,41 +645,41 @@ create(:line_item, price: 1.0, quantity: 2),
     let(:enterprise_fee) { create(:enterprise_fee) }
     let!(:fee_adjustment) {
       create(
-:adjustment, 
-adjustable: order, 
+:adjustment,
+adjustable: order,
 originator: enterprise_fee,
-             amount: 100, 
-order: order, 
+             amount: 100,
+order: order,
 state: "closed"
 )
     }
     let!(:fee_tax1) {
       create(
-:adjustment, 
-adjustable: fee_adjustment, 
+:adjustment,
+adjustable: fee_adjustment,
 originator_type: "Spree::TaxRate",
-             amount: 12.3, 
-order: order, 
+             amount: 12.3,
+order: order,
 state: "closed"
 )
     }
     let!(:fee_tax2) {
       create(
-:adjustment, 
-adjustable: fee_adjustment, 
+:adjustment,
+adjustable: fee_adjustment,
 originator_type: "Spree::TaxRate",
-             amount: 4.5, 
-order: order, 
+             amount: 4.5,
+order: order,
 state: "closed"
 )
     }
     let!(:admin_adjustment) {
       create(
-:adjustment, 
-adjustable: order, 
+:adjustment,
+adjustable: order,
 originator: nil,
-             amount: 6.7, 
-order: order, 
+             amount: 6.7,
+order: order,
 state: "closed"
 )
     }
@@ -700,31 +700,31 @@ state: "closed"
     let(:enterprise_fee) { create(:enterprise_fee) }
     let!(:fee) {
       create(
-:adjustment, 
-adjustable: order, 
-originator: enterprise_fee, 
-label: "EF", 
+:adjustment,
+adjustable: order,
+originator: enterprise_fee,
+label: "EF",
 amount: 20,
              order: order
 )
     }
     let!(:fee_tax) {
       create(
-:adjustment, 
-adjustable: fee, 
+:adjustment,
+adjustable: fee,
 originator: fee_tax_rate,
-             amount: 2, 
-order: order, 
+             amount: 2,
+order: order,
 state: "closed"
 )
     }
     let!(:shipping_tax) {
       create(
-:adjustment, 
-adjustable: shipment, 
+:adjustment,
+adjustable: shipment,
 originator: shipping_tax_rate,
-             amount: 10, 
-order: order, 
+             amount: 10,
+order: order,
 state: "closed"
 )
     }
@@ -852,7 +852,7 @@ state: "closed"
 
     before do
       subject.order_cycle = create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [distributor],
                      variants: [variant1, variant2]
 )
@@ -867,7 +867,7 @@ distributors: [distributor],
     it "allows the change when all variants in the order are provided by the new distributor in the new order cycle" do
       new_distributor = create(:enterprise)
       new_order_cycle = create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [new_distributor],
                      variants: [variant1, variant2]
 )
@@ -1139,8 +1139,8 @@ distributors: [new_distributor],
     let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
     let(:order) {
       create(
-:completed_order_with_fees, 
-distributor: distributor, 
+:completed_order_with_fees,
+distributor: distributor,
 shipping_fee: shipping_fee,
                             payment_fee: payment_fee,
                             shipping_tax_category: shipping_tax_category
@@ -1251,16 +1251,16 @@ create(:shipment_with, :shipping_method, shipping_method: shipping_method)
     context "when an order has been finalised in this order cycle" do
       let!(:prev_order) {
         create(
-:completed_order_with_totals, 
-distributor: distributor, 
+:completed_order_with_totals,
+distributor: distributor,
 order_cycle: order_cycle,
                               user: order.user
 )
       }
       let!(:prev_order2) {
         create(
-:completed_order_with_totals, 
-distributor: distributor, 
+:completed_order_with_totals,
+distributor: distributor,
 order_cycle: order_cycle,
                               user: order.user
 )

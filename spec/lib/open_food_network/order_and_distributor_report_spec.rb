@@ -12,25 +12,25 @@ module OpenFoodNetwork
         header = subject.header
         expect(header).to eq(
           [
-            'Order date', 
+            'Order date',
 'Order Id',
-            'Customer Name', 
-'Customer Email', 
-'Customer Phone', 
+            'Customer Name',
+'Customer Email',
+'Customer Phone',
 'Customer City',
-            'SKU', 
-'Item name', 
-'Variant', 
-'Quantity', 
-'Max Quantity', 
-'Cost', 
+            'SKU',
+'Item name',
+'Variant',
+'Quantity',
+'Max Quantity',
+'Cost',
 'Shipping Cost',
             'Payment Method',
-            'Distributor', 
-'Distributor address', 
-'Distributor city', 
+            'Distributor',
+'Distributor address',
+'Distributor city',
 'Distributor postcode',
-            'Shipping Method', 
+            'Shipping Method',
 'Shipping instructions'
           ]
         )
@@ -45,9 +45,9 @@ module OpenFoodNetwork
         let(:order) {
           create(
 :order,
-                 state: 'complete', 
+                 state: 'complete',
 completed_at: Time.zone.now,
-                 distributor: distributor, 
+                 distributor: distributor,
 bill_address: bill_address,
                  special_instructions: shipping_instructions
 )

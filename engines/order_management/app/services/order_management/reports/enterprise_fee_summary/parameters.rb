@@ -8,13 +8,13 @@ module OrderManagement
         extend ActiveModel::Translation
         include ActiveModel::Validations
 
-        attr_accessor :start_at, 
-:end_at, 
-:distributor_ids, 
-:producer_ids, 
+        attr_accessor :start_at,
+:end_at,
+:distributor_ids,
+:producer_ids,
 :order_cycle_ids,
-                      :enterprise_fee_ids, 
-:shipping_method_ids, 
+                      :enterprise_fee_ids,
+:shipping_method_ids,
 :payment_method_ids
 
         before_validation :cleanup_arrays

@@ -11,8 +11,8 @@ describe ' As an administrator I want to create and edit orders ', js: true do
   let(:distributor) { create(:distributor_enterprise, owner: user, charges_sales_tax: true) }
   let(:order_cycle) do
     create(
-:simple_order_cycle, 
-name: 'One', 
+:simple_order_cycle,
+name: 'One',
 distributors: [distributor],
                      variants: [product.variants.first]
 )
@@ -20,10 +20,10 @@ distributors: [distributor],
 
   let(:order) do
     create(
-:order_with_totals_and_distribution, 
-user: user, 
+:order_with_totals_and_distribution,
+user: user,
 distributor: distributor,
-                                     order_cycle: order_cycle, 
+                                     order_cycle: order_cycle,
 state: 'complete',
                                      payment_state: 'balance_due'
 )
@@ -96,7 +96,7 @@ state: 'complete',
     select2_select product.name, from: 'add_variant_id', search: true
 
     find('button.add_variant').click
-    page.has_selector? "table.index tbody[data-hook='admin_order_form_line_items'] tr" # Wait for JS    
+    page.has_selector? "table.index tbody[data-hook='admin_order_form_line_items'] tr" # Wait for JS
     expect(page).to have_selector 'td', text: product.name
     expect(order.line_items.reload.map(&:product)).to include product
   end
@@ -184,8 +184,8 @@ state: 'complete',
   context "creating a new order with a variant override" do
     let!(:override) {
       create(
-:variant_override, 
-hub: distributor, 
+:variant_override,
+hub: distributor,
 variant: product.variants.first,
                    count_on_hand: 100
 )
@@ -320,10 +320,10 @@ variant: product.variants.first,
       end
       let!(:order) do
         create(
-:order_with_taxes, 
-distributor: distributor1, 
+:order_with_taxes,
+distributor: distributor1,
 ship_address: create(:address),
-                   product_price: 110, 
+                   product_price: 110,
 tax_rate_amount: 0.1,
                    tax_rate_name: "Tax 1"
 ).tap do |order|
@@ -405,7 +405,7 @@ tax_rate_amount: 0.1,
                                        with_options: [
                                          shipping_method_for_distributor1.name,
                                          different_shipping_method_for_distributor1.name
-                                       ], 
+                                       ],
 without_options: [shipping_method_for_distributor2.name]
           select2_select different_shipping_method_for_distributor1.name,
                          from: 'selected_shipping_rate_id'

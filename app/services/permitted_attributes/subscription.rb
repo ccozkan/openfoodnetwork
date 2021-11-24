@@ -16,17 +16,17 @@ module PermittedAttributes
 
     def basic_permitted_attributes
       [
-        :id, 
-:shop_id, 
-:schedule_id, 
+        :id,
+:shop_id,
+:schedule_id,
 :customer_id,
-        :payment_method_id, 
+        :payment_method_id,
 :shipping_method_id,
-        :begins_at, 
+        :begins_at,
 :ends_at,
-        :canceled_at, 
+        :canceled_at,
 :paused_at,
-        :shipping_fee_estimate, 
+        :shipping_fee_estimate,
 :payment_fee_estimate,
       ]
     end

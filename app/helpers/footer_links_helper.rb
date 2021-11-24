@@ -4,7 +4,7 @@ require 'web/cookies_consent'
 
 module FooterLinksHelper
   def cookies_policy_link
-    link_to( 
+    link_to(
 t('.footer_data_cookies_policy'),
              '',
              'cookies-policy-modal' => true,
@@ -14,11 +14,11 @@ t('.footer_data_cookies_policy'),
   end
 
   def privacy_policy_link
-    link_to( 
+    link_to(
 t('.footer_data_privacy_policy'),
              Spree::Config.privacy_policy_url,
              target: '_blank',
-             rel: 'noopener' 
+             rel: 'noopener'
 )
   end
 

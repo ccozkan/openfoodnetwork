@@ -144,9 +144,9 @@ describe OrderSyncer do
     let!(:distributor) { create(:distributor_enterprise, address: distributor_address) }
     let(:subscription) do
       create(
-:subscription, 
-shop: distributor, 
-shipping_method: shipping_method, 
+:subscription,
+shop: distributor,
+shipping_method: shipping_method,
 with_items: true,
                with_proxy_orders: true
 )
@@ -156,13 +156,13 @@ with_items: true,
     let!(:ship_address_attrs) { subscription.ship_address.attributes }
 
     let(:params) {
-      { 
-bill_address_attributes: { 
-id: bill_address_attrs["id"], 
+      {
+bill_address_attributes: {
+id: bill_address_attrs["id"],
 firstname: "Bill",
-address1: "123 abc st", 
-phone: "1123581321" 
-} 
+address1: "123 abc st",
+phone: "1123581321"
+}
 }
     }
     let(:syncer) { OrderSyncer.new(subscription) }
@@ -263,9 +263,9 @@ phone: "1123581321"
     let!(:distributor) { create(:distributor_enterprise, address: distributor_address) }
     let!(:subscription) do
       create(
-:subscription, 
-shop: distributor, 
-shipping_method: shipping_method, 
+:subscription,
+shop: distributor,
+shipping_method: shipping_method,
 with_items: true,
                with_proxy_orders: true
 )
@@ -275,13 +275,13 @@ with_items: true,
     let!(:ship_address_attrs) { subscription.ship_address.attributes }
 
     let(:params) {
-      { 
-ship_address_attributes: { 
-id: ship_address_attrs["id"], 
+      {
+ship_address_attributes: {
+id: ship_address_attrs["id"],
 firstname: "Ship",
-address1: "123 abc st", 
-phone: "1123581321" 
-} 
+address1: "123 abc st",
+phone: "1123581321"
+}
 }
     }
     let(:syncer) { OrderSyncer.new(subscription) }
@@ -313,7 +313,7 @@ phone: "1123581321"
           let!(:original_bill_address) { create(:address, :randomized) }
           let!(:original_ship_address) do
             create(
-:address, 
+:address,
 firstname: original_bill_address.firstname,
           lastname: original_bill_address.lastname,
           address1: distributor_address.address1,
@@ -322,11 +322,11 @@ firstname: original_bill_address.firstname,
           end
           let(:subscription) do
             create(
-:subscription, 
-shop: distributor, 
+:subscription,
+shop: distributor,
 bill_address: original_bill_address,
                ship_address: original_ship_address,
-               shipping_method: shipping_method, 
+               shipping_method: shipping_method,
 with_items: true,
                with_proxy_orders: true
 )
@@ -588,12 +588,12 @@ variant_id: variant.id
             expect(line_items.map(&:quantity)).to eq []
 
             subscription.save # this is necessary to get an id on the subscription_line_items
-            params = { 
+            params = {
 subscription_line_items_attributes: [
 {
   id: subscription.subscription_line_items.last.id, quantity: 2
 }
-] 
+]
 }
             subscription.assign_attributes(params)
             expect(syncer.sync!).to be true

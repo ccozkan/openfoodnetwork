@@ -12,8 +12,8 @@ module Spree
       let!(:order) { create(:completed_order_with_totals) }
       let!(:adjustment1) {
         create(
-:adjustment, 
-originator_type: "Spree::ShippingMethod", 
+:adjustment,
+originator_type: "Spree::ShippingMethod",
 order: order,
              adjustable: order.shipment
 )
@@ -103,20 +103,20 @@ order: order,
           let(:tax_category) { create(:tax_category) }
           let!(:tax_rate1) {
             create(
-:tax_rate, 
-amount: 0.1, 
-zone: zone, 
+:tax_rate,
+amount: 0.1,
+zone: zone,
 included_in_price: false,
-           tax_category: tax_category 
+           tax_category: tax_category
 )
           }
           let!(:tax_rate2) {
             create(
-:tax_rate, 
-amount: 0.2, 
-zone: zone, 
+:tax_rate,
+amount: 0.2,
+zone: zone,
 included_in_price: false,
-           tax_category: tax_category 
+           tax_category: tax_category
 )
           }
           let(:tax_category_param) { tax_category.id.to_s }
@@ -160,10 +160,10 @@ included_in_price: false,
         }
         let(:adjustment) {
           create(
-:adjustment, 
-adjustable: order, 
+:adjustment,
+adjustable: order,
 order: order,
-             amount: 1100, 
+             amount: 1100,
 tax_category: old_tax_category
 )
         }
@@ -254,7 +254,7 @@ tax_category: old_tax_category
 
       it "doesn't create adjustments" do
         expect {
-          spree_post :create, 
+          spree_post :create,
 order_id: order.number,
                               adjustment: { label: "Testing", amount: "110" }
         }.to_not change { [Adjustment.count, order.reload.total] }
@@ -264,8 +264,8 @@ order_id: order.number,
 
       it "doesn't change adjustments" do
         expect {
-          spree_put :update, 
-order_id: order.number, 
+          spree_put :update,
+order_id: order.number,
 id: adjustment.id,
                              adjustment: { label: "Testing", amount: "110" }
         }.to_not change { [adjustment.reload.amount, order.reload.total] }

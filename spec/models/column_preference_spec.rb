@@ -12,16 +12,16 @@ describe ColumnPreference, type: :model do
     let(:user) { create(:user) }
     let!(:col1_pref) {
       ColumnPreference.create(
-user_id: user.id, 
-action_name: 'some_action', 
+user_id: user.id,
+action_name: 'some_action',
 column_name: 'col1',
 visible: true
 )
     }
     let!(:col2_pref) {
       ColumnPreference.create(
-user_id: user.id, 
-action_name: 'some_action', 
+user_id: user.id,
+action_name: 'some_action',
 column_name: 'col2',
 visible: false
 )

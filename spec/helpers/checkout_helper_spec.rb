@@ -8,13 +8,13 @@ describe CheckoutHelper, type: :helper do
       "shared/validated_input",
       name: "test",
       path: "foo",
-      attributes: { 
-:required => true, 
-:type => :email, 
-:name => "foo", 
+      attributes: {
+:required => true,
+:type => :email,
+:name => "foo",
 :id => "foo",
-"ng-model" => "foo", 
-"ng-class" => "{error: !fieldValid('foo')}" 
+"ng-model" => "foo",
+"ng-class" => "{error: !fieldValid('foo')}"
 }
     )
 
@@ -49,8 +49,8 @@ Spree::Money.new(
     let(:enterprise_fee) { create(:enterprise_fee, amount: 123) }
     let!(:fee_adjustment) {
       create(
-:adjustment, 
-originator: enterprise_fee, 
+:adjustment,
+originator: enterprise_fee,
 adjustable: order,
              order: order
 )
@@ -78,8 +78,8 @@ adjustable: order,
       let!(:tax_rate) { create(:tax_rate, amount: 0.1, calculator: ::Calculator::DefaultTax.new) }
       let!(:line_item_fee_adjustment) {
         create(
-:adjustment, 
-originator: enterprise_fee, 
+:adjustment,
+originator: enterprise_fee,
 adjustable: order.line_items.first,
              order: order
 )
@@ -113,8 +113,8 @@ adjustable: order.line_items.first,
     context "with return authorization adjustments" do
       let!(:return_adjustment) {
         create(
-:adjustment, 
-originator_type: 'Spree::ReturnAuthorization', 
+:adjustment,
+originator_type: 'Spree::ReturnAuthorization',
 adjustable: order,
              order: order
 )

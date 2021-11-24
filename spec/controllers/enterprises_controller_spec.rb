@@ -11,19 +11,19 @@ describe EnterprisesController, type: :controller do
     let!(:distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
     let!(:order_cycle1) {
       create(
-:simple_order_cycle, 
-distributors: [distributor], 
+:simple_order_cycle,
+distributors: [distributor],
 orders_open_at: 2.days.ago,
-                     orders_close_at: 3.days.from_now, 
-variants: [line_item.variant] 
+                     orders_close_at: 3.days.from_now,
+variants: [line_item.variant]
 )
     }
     let!(:order_cycle2) {
       create(
-:simple_order_cycle, 
-distributors: [distributor], 
+:simple_order_cycle,
+distributors: [distributor],
 orders_open_at: 3.days.ago,
-                     orders_close_at: 4.days.from_now 
+                     orders_close_at: 4.days.from_now
 )
     }
 
@@ -65,8 +65,8 @@ orders_open_at: 3.days.ago,
     context "using FilterOrderCycles tag rules" do
       let!(:order_cycle3) {
         create(
-:simple_order_cycle, 
-distributors: [distributor], 
+:simple_order_cycle,
+distributors: [distributor],
 orders_open_at: 3.days.ago,
                      orders_close_at: 4.days.from_now
 )

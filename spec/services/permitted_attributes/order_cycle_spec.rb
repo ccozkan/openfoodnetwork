@@ -22,15 +22,15 @@ module PermittedAttributes
     describe "nested incoming_exchanges attributes" do
       let(:params) {
         ActionController::Parameters.new(
-order_cycle: { 
+order_cycle: {
 incoming_exchanges: [
-{ 
+{
 sender_id: "2",
-name: "Exchange Name", 
-variants: [] 
+name: "Exchange Name",
+variants: []
 }
-] 
-} 
+]
+}
 )
       }
 
@@ -46,16 +46,16 @@ variants: []
     describe "variants inside incoming_exchanges attributes" do
       let(:params) {
         ActionController::Parameters.new(
-order_cycle: { 
+order_cycle: {
 incoming_exchanges: [
-{ 
-variants: { 
+{
+variants: {
 "7" => true,
-"12" => true 
-} 
+"12" => true
 }
-] 
-} 
+}
+]
+}
 )
       }
 

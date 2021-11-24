@@ -11,21 +11,21 @@ module OpenFoodNetwork
     let(:v3)  { create(:variant, price: 33.33, on_hand: 6) }
     let(:vo)  {
       create(
-:variant_override, 
-hub: hub, 
-variant: v, 
-price: 22.22, 
-count_on_hand: 2, 
+:variant_override,
+hub: hub,
+variant: v,
+price: 22.22,
+count_on_hand: 2,
 on_demand: false,
                    sku: "VOSKU"
 )
     }
     let(:vo2) {
       create(
-:variant_override, 
-hub: hub, 
-variant: v2, 
-price: 33.33, 
+:variant_override,
+hub: hub,
+variant: v2,
+price: 33.33,
 count_on_hand: nil,
                    on_demand: true
 )

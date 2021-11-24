@@ -5,7 +5,7 @@ require 'system_helper'
 xdescribe '
     As an administrator
     I want to create/update complex order cycles with a specific time
-', 
+',
 js: true do
   include AdminHelper
   include AuthenticationHelper
@@ -27,7 +27,7 @@ js: true do
     coordinator = oc.coordinator
     supplier = create(:supplier_enterprise, name: 'My supplier')
     distributor = create(
-:distributor_enterprise, 
+:distributor_enterprise,
 name: 'My distributor',
                          with_payment_and_shipping: true
 )
@@ -37,20 +37,20 @@ name: 'My distributor',
 
     # Relationships required for interface to work
     create(
-:enterprise_relationship, 
-parent: supplier, 
+:enterprise_relationship,
+parent: supplier,
 child: coordinator,
                           permissions_list: [:add_to_order_cycle]
 )
     create(
-:enterprise_relationship, 
-parent: distributor, 
+:enterprise_relationship,
+parent: distributor,
 child: coordinator,
                           permissions_list: [:add_to_order_cycle]
 )
     create(
-:enterprise_relationship, 
-parent: supplier, 
+:enterprise_relationship,
+parent: supplier,
 child: distributor,
                           permissions_list: [:add_to_order_cycle]
 )

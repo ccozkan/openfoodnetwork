@@ -22,19 +22,19 @@ describe Spree::Admin::ReportsController, type: :controller do
   # Given two order cycles with both distributors
   let(:ocA) {
     create(
-:simple_order_cycle, 
-coordinator: coordinator1, 
+:simple_order_cycle,
+coordinator: coordinator1,
 distributors: [distributor1, distributor2],
-                     suppliers: [supplier1, supplier2, supplier3], 
+                     suppliers: [supplier1, supplier2, supplier3],
 variants: [product1.master, product3.master]
 )
   }
   let(:ocB) {
     create(
-:simple_order_cycle, 
-coordinator: coordinator2, 
+:simple_order_cycle,
+coordinator: coordinator2,
 distributors: [distributor1, distributor2],
-                     suppliers: [supplier1, supplier2, supplier3], 
+                     suppliers: [supplier1, supplier2, supplier3],
 variants: [product2.master]
 )
   }
@@ -42,11 +42,11 @@ variants: [product2.master]
   # orderA1 can only be accessed by supplier1, supplier3 and distributor1
   let(:orderA1) do
     order = create(
-:order, 
-distributor: distributor1, 
+:order,
+distributor: distributor1,
 bill_address: bill_address,
-        ship_address: ship_address, 
-special_instructions: instructions, 
+        ship_address: ship_address,
+special_instructions: instructions,
 order_cycle: ocA
 )
     order.line_items << create(:line_item, variant: product1.master)
@@ -58,11 +58,11 @@ order_cycle: ocA
   # orderA2 can only be accessed by supplier2 and distributor2
   let(:orderA2) do
     order = create(
-:order, 
-distributor: distributor2, 
+:order,
+distributor: distributor2,
 bill_address: bill_address,
-        ship_address: ship_address, 
-special_instructions: instructions, 
+        ship_address: ship_address,
+special_instructions: instructions,
 order_cycle: ocA
 )
     order.line_items << create(:line_item, variant: product2.master)
@@ -73,11 +73,11 @@ order_cycle: ocA
   # orderB1 can only be accessed by supplier1, supplier3 and distributor1
   let(:orderB1) do
     order = create(
-:order, 
-distributor: distributor1, 
+:order,
+distributor: distributor1,
 bill_address: bill_address,
-        ship_address: ship_address, 
-special_instructions: instructions, 
+        ship_address: ship_address,
+special_instructions: instructions,
 order_cycle: ocB
 )
     order.line_items << create(:line_item, variant: product1.master)
@@ -89,11 +89,11 @@ order_cycle: ocB
   # orderB2 can only be accessed by supplier2 and distributor2
   let(:orderB2) do
     order = create(
-:order, 
-distributor: distributor2, 
+:order,
+distributor: distributor2,
 bill_address: bill_address,
-        ship_address: ship_address, 
-special_instructions: instructions, 
+        ship_address: ship_address,
+special_instructions: instructions,
 order_cycle: ocB
 )
     order.line_items << create(:line_item, variant: product2.master)
@@ -196,8 +196,8 @@ order_cycle: ocB
       context "where I have granted P-OC to the distributor" do
         before do
           create(
-:enterprise_relationship, 
-parent: supplier1, 
+:enterprise_relationship,
+parent: supplier1,
 child: distributor1,
                           permissions_list: [:add_to_order_cycle]
 )
@@ -277,13 +277,13 @@ child: distributor1,
     it "creates a ProductAndInventoryReport" do
       expect(OpenFoodNetwork::ProductsAndInventoryReport).to receive(:new)
         .with(@admin_user,
-              { 
-"test" => "foo", 
-"controller" => "spree/admin/reports", 
+              {
+"test" => "foo",
+"controller" => "spree/admin/reports",
 "report" => {},
-"action" => "products_and_inventory", 
-"use_route" => "main_app" 
-}, 
+"action" => "products_and_inventory",
+"use_route" => "main_app"
+},
 false)
         .and_return(report = double(:report))
       allow(report).to receive(:header).and_return []
@@ -337,14 +337,14 @@ false)
 
     it "creates a CustomersReport" do
       expect(OpenFoodNetwork::CustomersReport).to receive(:new)
-        .with(@admin_user, 
-{ 
-"test" => "foo", 
+        .with(@admin_user,
+{
+"test" => "foo",
 "controller" => "spree/admin/reports",
-"action" => "customers", 
+"action" => "customers",
 "use_route" => "main_app",
-"report" => {} 
-}, 
+"report" => {}
+},
 false)
         .and_return(report = double(:report))
       allow(report).to receive(:header).and_return []
@@ -362,7 +362,7 @@ false)
     end
 
     it 'renders the delivery report' do
-      spree_post :order_cycle_management, 
+      spree_post :order_cycle_management,
 {
         q: { completed_at_lt: 1.day.ago },
         shipping_method_in: ["123"], # We just need to search for shipping methods

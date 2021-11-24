@@ -45,7 +45,7 @@ class EnterpriseGroup < ApplicationRecord
 
   scope :by_position, -> { order('position ASC') }
   scope :on_front_page, -> { where(on_front_page: true) }
-  scope :managed_by, 
+  scope :managed_by,
 lambda { |user|
     if user.has_spree_role?('admin')
       where(nil)

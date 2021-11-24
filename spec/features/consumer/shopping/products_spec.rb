@@ -13,9 +13,9 @@ describe "As a consumer I want to view products", js: true do
     let(:supplier) { create(:supplier_enterprise) }
     let(:oc1) {
       create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [distributor],
-                     coordinator: create(:distributor_enterprise), 
+                     coordinator: create(:distributor_enterprise),
 orders_close_at: 2.days.from_now
 )
     }

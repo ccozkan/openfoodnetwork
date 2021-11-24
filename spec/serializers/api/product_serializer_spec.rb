@@ -29,19 +29,19 @@ product,
 
   it "serializes various attributes" do
     expect(serializer.serializable_hash.keys).to eq [
-      :id, 
-:name, 
-:permalink, 
-:meta_keywords, 
-:group_buy, 
-:notes, 
-:description, 
+      :id,
+:name,
+:permalink,
+:meta_keywords,
+:group_buy,
+:notes,
+:description,
 :description_html,
-      :properties_with_values, 
-:variants, 
-:primary_taxon, 
-:taxons, 
-:images, 
+      :properties_with_values,
+:variants,
+:primary_taxon,
+:taxons,
+:images,
 :supplier
     ]
   end

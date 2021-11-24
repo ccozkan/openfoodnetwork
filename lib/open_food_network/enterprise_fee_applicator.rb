@@ -18,10 +18,10 @@ module OpenFoodNetwork
         label, adjustable, true, "closed", tax_category(adjustable)
       )
 
-      AdjustmentMetadata.create! adjustment: adjustment, 
+      AdjustmentMetadata.create! adjustment: adjustment,
 enterprise: enterprise_fee.enterprise,
-                                 fee_name: enterprise_fee.name, 
-fee_type: enterprise_fee.fee_type, 
+                                 fee_name: enterprise_fee.name,
+fee_type: enterprise_fee.fee_type,
 enterprise_role: role
     end
 
@@ -35,8 +35,8 @@ enterprise_role: role
 
     def base_adjustment_label
       I18n.t(
-:enterprise_fee_by, 
-type: enterprise_fee.fee_type, 
+:enterprise_fee_by,
+type: enterprise_fee.fee_type,
 role: role,
                     enterprise_name: enterprise_fee.enterprise.name
 )

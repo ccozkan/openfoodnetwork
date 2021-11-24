@@ -15,14 +15,14 @@ module OpenFoodNetwork
       when "payments_by_payment_type"
         I18n.t(:report_header_payment_type)
         [
-I18n.t(:report_header_payment_state), 
-I18n.t(:report_header_distributor), 
+I18n.t(:report_header_payment_state),
+I18n.t(:report_header_distributor),
 I18n.t(:report_header_payment_type),
          I18n.t(:report_header_total_price, currency: currency_symbol)
 ]
       when "itemised_payment_totals"
         [
-I18n.t(:report_header_payment_state), 
+I18n.t(:report_header_payment_state),
 I18n.t(:report_header_distributor),
          I18n.t(:report_header_product_total_price, currency: currency_symbol),
          I18n.t(:report_header_shipping_total_price, currency: currency_symbol),
@@ -31,7 +31,7 @@ I18n.t(:report_header_distributor),
 ]
       when "payment_totals"
         [
-I18n.t(:report_header_payment_state), 
+I18n.t(:report_header_payment_state),
 I18n.t(:report_header_distributor),
          I18n.t(:report_header_product_total_price, currency: currency_symbol),
          I18n.t(:report_header_shipping_total_price, currency: currency_symbol),
@@ -42,8 +42,8 @@ I18n.t(:report_header_distributor),
 ]
       else
         [
-I18n.t(:report_header_payment_state), 
-I18n.t(:report_header_distributor), 
+I18n.t(:report_header_payment_state),
+I18n.t(:report_header_distributor),
 I18n.t(:report_header_payment_type),
          I18n.t(:report_header_total_price, currency: currency_symbol)
 ]
@@ -78,54 +78,54 @@ I18n.t(:report_header_payment_type),
       case params[:report_type]
       when "payments_by_payment_type"
         [
-{ 
+{
 group_by: proc { |payment| payment.order.payment_state },
-sort_by: proc { |payment_state| payment_state } 
+sort_by: proc { |payment_state| payment_state }
 },
-         { 
+         {
 group_by: proc { |payment| payment.order.distributor },
-sort_by: proc { |distributor| distributor.name } 
+sort_by: proc { |distributor| distributor.name }
 },
-         { 
+         {
 group_by: proc { |payment| Spree::PaymentMethod.unscoped { payment.payment_method } },
-sort_by: proc { |method| method.name } 
+sort_by: proc { |method| method.name }
 }
 ]
       when "itemised_payment_totals"
         [
-{ 
+{
 group_by: proc { |order| order.payment_state },
-sort_by: proc { |payment_state| payment_state } 
+sort_by: proc { |payment_state| payment_state }
 },
-         { 
+         {
 group_by: proc { |order| order.distributor },
-sort_by: proc { |distributor| distributor.name } 
+sort_by: proc { |distributor| distributor.name }
 }
 ]
       when "payment_totals"
         [
-{ 
+{
 group_by: proc { |order| order.payment_state },
-sort_by: proc { |payment_state| payment_state } 
+sort_by: proc { |payment_state| payment_state }
 },
-         { 
+         {
 group_by: proc { |order| order.distributor },
-sort_by: proc { |distributor| distributor.name } 
+sort_by: proc { |distributor| distributor.name }
 }
 ]
       else
         [
-{ 
+{
 group_by: proc { |payment| payment.order.payment_state },
-sort_by: proc { |payment_state| payment_state } 
+sort_by: proc { |payment_state| payment_state }
 },
-         { 
+         {
 group_by: proc { |payment| payment.order.distributor },
-sort_by: proc { |distributor| distributor.name } 
+sort_by: proc { |distributor| distributor.name }
 },
-         { 
+         {
 group_by: proc { |payment| payment.payment_method },
-sort_by: proc { |method| method.name } 
+sort_by: proc { |method| method.name }
 }
 ]
       end

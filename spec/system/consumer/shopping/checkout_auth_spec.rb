@@ -14,9 +14,9 @@ describe "As a consumer I want to check out my cart", js: true do
     let(:supplier) { create(:supplier_enterprise) }
     let!(:order_cycle) {
       create(
-:simple_order_cycle, 
+:simple_order_cycle,
 distributors: [distributor],
-                     coordinator: create(:distributor_enterprise), 
+                     coordinator: create(:distributor_enterprise),
 variants: [product.variants.first]
 )
     }

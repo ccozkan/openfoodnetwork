@@ -35,7 +35,7 @@ module Admin
       respond_to do |format|
         format.html
         format.json {
-          render_as_json @collection, 
+          render_as_json @collection,
 ams_prefix: params[:ams_prefix],
                                       spree_current_user: spree_current_user
         }
@@ -112,8 +112,8 @@ ams_prefix: params[:ams_prefix],
       respond_to do |format|
         format.json do
           render json: @collection,
-                 each_serializer: Api::Admin::ForOrderCycle::EnterpriseSerializer, 
-order_cycle: @order_cycle, 
+                 each_serializer: Api::Admin::ForOrderCycle::EnterpriseSerializer,
+order_cycle: @order_cycle,
 spree_current_user: spree_current_user
         end
       end
@@ -122,7 +122,7 @@ spree_current_user: spree_current_user
     def visible
       respond_to do |format|
         format.json do
-          render_as_json @collection, 
+          render_as_json @collection,
 ams_prefix: params[:ams_prefix] || 'basic',
                                       spree_current_user: spree_current_user
         end

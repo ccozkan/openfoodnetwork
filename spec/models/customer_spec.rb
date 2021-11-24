@@ -26,7 +26,7 @@ describe Customer, type: :model do
     it 'updates the shipping address' do
       expect(customer.shipping_address).to be_nil
 
-      ship_address = { 
+      ship_address = {
 firstname: 'fname',
 lastname: 'lname',
 zipcode: "3127",
@@ -34,7 +34,7 @@ city: "Melbourne",
 state_id: 1,
 phone: "455500146",
 address1: "U 3/32 Florence Road Surrey Hills2",
-country_id: 1 
+country_id: 1
 }
       customer.update!(ship_address_attributes: ship_address)
 

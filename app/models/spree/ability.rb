@@ -138,15 +138,15 @@ module Spree
 
       can [:admin, :index, :create], Enterprise
       can [
-:read, 
-:edit, 
+:read,
+:edit,
 :update,
-           :remove_logo, 
-:remove_promo_image, 
+           :remove_logo,
+:remove_promo_image,
 :remove_terms_and_conditions,
-           :bulk_update, 
+           :bulk_update,
 :resend_confirmation
-], 
+],
 Enterprise do |enterprise|
         OpenFoodNetwork::Permissions.new(user).editable_enterprises.include? enterprise
       end
@@ -157,7 +157,7 @@ Enterprise do |enterprise|
 :manage_payment_methods,
            :manage_shipping_methods,
            :manage_enterprise_fees
-], 
+],
 Enterprise do |enterprise|
         user.enterprises.include? enterprise
       end
@@ -192,32 +192,32 @@ Enterprise do |enterprise|
       # Enterprise User can only access products that they are a supplier for
       can [:create], Spree::Product
       can [
-:admin, 
-:read, 
-:index, 
+:admin,
+:read,
+:index,
 :update,
-           :seo, 
+           :seo,
 :group_buy_options,
-           :bulk_update, 
-:clone, 
+           :bulk_update,
+:clone,
 :delete,
            :destroy
-], 
+],
 Spree::Product do |product|
         OpenFoodNetwork::Permissions.new(user).managed_product_enterprises.include? product.supplier
       end
 
       can [:create], Spree::Variant
       can [
-:admin, 
-:index, 
-:read, 
+:admin,
+:index,
+:read,
 :edit,
-           :update, 
-:search, 
-:delete, 
+           :update,
+:search,
+:delete,
 :destroy
-], 
+],
 Spree::Variant do |variant|
         OpenFoodNetwork::Permissions.new(user)
           .managed_product_enterprises.include? variant.product.supplier
@@ -250,14 +250,14 @@ Spree::Variant do |variant|
       end
 
       can [
-:admin, 
-:index, 
-:read, 
+:admin,
+:index,
+:read,
 :create,
-           :edit, 
-:update_positions, 
+           :edit,
+:update_positions,
 :destroy
-], 
+],
 Spree::ProductProperty
       can [:admin, :index, :read, :create, :edit, :update, :destroy], Spree::Image
 
@@ -265,28 +265,28 @@ Spree::ProductProperty
       can [:admin, :index, :read, :create, :edit], Spree::Classification
 
       can [
-:admin, 
-:index, 
-:guide, 
-:import, 
-:save, 
+:admin,
+:index,
+:guide,
+:import,
+:save,
 :save_data,
-           :validate_data, 
+           :validate_data,
 :reset_absent_products
-], 
+],
 ProductImport::ProductImporter
 
       # Reports page
       can [
-:admin, 
-:index, 
-:customers, 
-:orders_and_distributors, 
-:group_buys, 
+:admin,
+:index,
+:customers,
+:orders_and_distributors,
+:group_buys,
 :payments,
-           :orders_and_fulfillment, 
-:products_and_inventory, 
-:order_cycle_management, 
+           :orders_and_fulfillment,
+:products_and_inventory,
+:order_cycle_management,
 :packing
 ],
           Spree::Admin::ReportsController
@@ -357,14 +357,14 @@ ProductImport::ProductImporter
       # Enterprise user can only access payment and shipping methods for their distributors
       can [:index, :create], Spree::PaymentMethod
       can [
-:admin, 
-:read, 
-:update, 
-:fire, 
+:admin,
+:read,
+:update,
+:fire,
 :resend,
-           :destroy, 
+           :destroy,
 :show_provider_preferences
-], 
+],
 Spree::PaymentMethod do |payment_method|
         (user.enterprises & payment_method.distributors).any?
       end
@@ -376,31 +376,31 @@ Spree::PaymentMethod do |payment_method|
 
       # Reports page
       can [
-:admin, 
-:index, 
-:customers, 
-:group_buys, 
-:sales_tax, 
+:admin,
+:index,
+:customers,
+:group_buys,
+:sales_tax,
 :payments,
-           :orders_and_distributors, 
-:orders_and_fulfillment, 
+           :orders_and_distributors,
+:orders_and_fulfillment,
 :products_and_inventory,
-           :order_cycle_management, 
+           :order_cycle_management,
 :xero_invoices
-], 
+],
 Spree::Admin::ReportsController
       add_bulk_coop_abilities
       add_enterprise_fee_summary_abilities
 
       can [:create], Customer
       can [
-:admin, 
-:index, 
+:admin,
+:index,
 :update,
-           :destroy, 
+           :destroy,
 :show
-], 
-Customer, 
+],
+Customer,
 enterprise_id: Enterprise.managed_by(user).pluck(:id)
       can [:admin, :new, :index], Subscription
       can [:create, :edit, :update, :cancel, :pause, :unpause], Subscription do |subscription|

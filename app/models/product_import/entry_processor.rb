@@ -6,13 +6,13 @@
 
 module ProductImport
   class EntryProcessor
-    attr_reader :inventory_created, 
-:inventory_updated, 
+    attr_reader :inventory_created,
+:inventory_updated,
 :products_created,
-                :variants_created, 
-:variants_updated, 
+                :variants_created,
+:variants_updated,
 :enterprise_products,
-                :total_enterprise_products, 
+                :total_enterprise_products,
 :products_reset_count
 
     def initialize(importer, validator, import_settings, spreadsheet_data, editable_enterprises, import_time, updated_ids)

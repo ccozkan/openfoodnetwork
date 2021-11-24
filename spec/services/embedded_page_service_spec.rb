@@ -10,17 +10,17 @@ describe EmbeddedPageService do
   let(:session) { {} }
   let(:request) {
     ActionController::TestRequest.new(
-      { 
+      {
 'HTTP_HOST' => 'ofn-instance.com',
-'HTTP_REFERER' => 'https://embedding-enterprise.com' 
-}, 
-nil, 
+'HTTP_REFERER' => 'https://embedding-enterprise.com'
+},
+nil,
 nil
     )
   }
   let(:response) {
     ActionDispatch::TestResponse.new(
-200, 
+200,
 'X-Frame-Options' => 'DENY',
      'Content-Security-Policy' => "frame-ancestors 'none'"
 )

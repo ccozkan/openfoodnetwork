@@ -5,7 +5,7 @@ require 'system_helper'
 describe '
   As an Administrator
   I want to manage relationships between users and enterprises
-', 
+',
 js: true do
   include AuthenticationHelper
   include WebHelper
@@ -17,9 +17,9 @@ js: true do
     it "listing relationships" do
       # Given some users and enterprises with relationships
       u1, u2 = create(:user), create(:user)
-      e1, e2, e3, e4 = 
-create(:enterprise), 
-create(:enterprise), 
+      e1, e2, e3, e4 =
+create(:enterprise),
+create(:enterprise),
 create(:enterprise),
 create(:enterprise)
       create(:enterprise_role, user: u1, enterprise: e1)

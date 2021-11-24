@@ -37,10 +37,10 @@ describe ' As an Administrator I want to be able to manage products in bulk ', j
 
       visit spree.admin_products_path
 
-      expect(page).to have_select "producer_id", 
+      expect(page).to have_select "producer_id",
 with_options: [s1.name, s2.name, s3.name],
                                                  selected: s2.name
-      expect(page).to have_select "producer_id", 
+      expect(page).to have_select "producer_id",
 with_options: [s1.name, s2.name, s3.name],
                                                  selected: s3.name
     end
@@ -86,8 +86,8 @@ with_options: [s1.name, s2.name, s3.name],
 
     it "displays a select box for the unit of measure for the product's variants" do
       p = FactoryBot.create(
-:product, 
-variant_unit: 'weight', 
+:product,
+variant_unit: 'weight',
 variant_unit_scale: 1,
           variant_unit_name: ''
 )
@@ -99,8 +99,8 @@ variant_unit_scale: 1,
 
     it "displays a text field for the item name when unit is set to 'Items'" do
       p = FactoryBot.create(
-:product, 
-variant_unit: 'items', 
+:product,
+variant_unit: 'items',
 variant_unit_scale: nil,
           variant_unit_name: 'packet'
 )
@@ -168,27 +168,27 @@ variant_unit_scale: nil,
 
     it "displays a unit value field (for each variant) for each product" do
       p1 = FactoryBot.create(
-:product, 
-price: 2.0, 
+:product,
+price: 2.0,
 variant_unit: "weight",
           variant_unit_scale: "1000"
 )
       v1 = FactoryBot.create(
-:variant, 
-product: p1, 
-is_master: false, 
+:variant,
+product: p1,
+is_master: false,
 price: 12.75,
-          unit_value: 1200, 
-unit_description: "(small bag)", 
+          unit_value: 1200,
+unit_description: "(small bag)",
 display_as: "bag"
 )
       v2 = FactoryBot.create(
-:variant, 
-product: p1, 
-is_master: false, 
+:variant,
+product: p1,
+is_master: false,
 price: 2.50,
-          unit_value: 4800, 
-unit_description: "(large bag)", 
+          unit_value: 4800,
+unit_description: "(large bag)",
 display_as: "bin"
 )
 
@@ -305,12 +305,12 @@ display_as: "bin"
     t1 = FactoryBot.create(:taxon)
     t2 = FactoryBot.create(:taxon)
     p = FactoryBot.create(
-:product, 
-supplier: s1, 
+:product,
+supplier: s1,
 available_on: Date.current,
-          variant_unit: 'volume', 
-variant_unit_scale: 1, 
-primary_taxon: t2, 
+          variant_unit: 'volume',
+variant_unit_scale: 1,
+primary_taxon: t2,
 sku: "OLD SKU"
 )
 
@@ -375,14 +375,14 @@ sku: "OLD SKU"
     s1 = FactoryBot.create(:supplier_enterprise)
     s2 = FactoryBot.create(:supplier_enterprise)
     p = FactoryBot.create(
-:product, 
-supplier: s1, 
-available_on: Date.current, 
-variant_unit: 'volume', 
+:product,
+supplier: s1,
+available_on: Date.current,
+variant_unit: 'volume',
 variant_unit_scale: 0.001,
-          price: 3.0, 
-unit_value: 0.25, 
-unit_description: '(bottle)' 
+          price: 3.0,
+unit_value: 0.25,
+unit_description: '(bottle)'
 )
     v = p.variants.first
     v.update_attribute(:sku, "VARIANTSKU")
@@ -755,8 +755,8 @@ unit_description: '(bottle)'
 
     let!(:supplier_permitted_relationship) do
       create(
-:enterprise_relationship, 
-parent: supplier_permitted, 
+:enterprise_relationship,
+parent: supplier_permitted,
 child: supplier_managed1,
                           permissions_list: [:manage_products]
 )
@@ -783,7 +783,7 @@ child: supplier_managed1,
       visit spree.admin_products_path
 
       expect(page).to have_select 'producer_id',
-                                  with_options: [supplier_managed1.name, supplier_managed2.name, supplier_permitted.name], 
+                                  with_options: [supplier_managed1.name, supplier_managed2.name, supplier_permitted.name],
 selected: supplier_managed1.name
       expect(page).to have_no_select 'producer_id', with_options: [supplier_unmanaged.name]
     end
@@ -806,7 +806,7 @@ selected: supplier_managed1.name
       expect(page).to have_content 'NEW PRODUCT'
       expect(page).to have_select 'product_supplier_id',
                                   with_options: [
-supplier_managed1.name, 
+supplier_managed1.name,
 supplier_managed2.name,
                                                  supplier_permitted.name
 ]
@@ -842,7 +842,7 @@ supplier_managed2.name,
 
         fill_in "product_name", with: "Big Bag Of Potatoes"
         select supplier_managed2.name, from: 'producer_id'
-        fill_in "available_on", 
+        fill_in "available_on",
 with: 3.days.ago.beginning_of_day.strftime("%F %T"),
                                 fill_options: { clear: :backspace }
         select "Weight (kg)", from: "variant_unit_with_scale"

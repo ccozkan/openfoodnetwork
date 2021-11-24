@@ -5,13 +5,13 @@ module Spree
     belongs_to :variant, -> { with_deleted }, class_name: "Spree::Variant"
     belongs_to :order, class_name: "Spree::Order"
     belongs_to :shipment, class_name: "Spree::Shipment"
-    belongs_to :return_authorization, 
+    belongs_to :return_authorization,
 class_name: "Spree::ReturnAuthorization",
                                       inverse_of: :inventory_units
 
     scope :backordered, -> { where state: 'backordered' }
     scope :shipped, -> { where state: 'shipped' }
-    scope :backordered_per_variant, 
+    scope :backordered_per_variant,
 ->(stock_item) do
       includes(:shipment)
         .where("spree_shipments.state != 'canceled'").references(:shipment)

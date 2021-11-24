@@ -19,8 +19,8 @@ module OrderManagement
 
         let(:current_order_cycle) do
           create(
-:simple_order_cycle, 
-coordinator: shop, 
+:simple_order_cycle,
+coordinator: shop,
 orders_open_at: 1.week.ago,
                      orders_close_at: 1.week.from_now
 )
@@ -28,8 +28,8 @@ orders_open_at: 1.week.ago,
 
         let(:future_order_cycle) do
           create(
-:simple_order_cycle, 
-coordinator: shop, 
+:simple_order_cycle,
+coordinator: shop,
 orders_open_at: 1.week.from_now,
                      orders_close_at: 2.weeks.from_now
 )
@@ -37,8 +37,8 @@ orders_open_at: 1.week.from_now,
 
         let(:past_order_cycle) do
           create(
-:simple_order_cycle, 
-coordinator: shop, 
+:simple_order_cycle,
+coordinator: shop,
 orders_open_at: 2.weeks.ago,
                      orders_close_at: 1.week.ago
 )
@@ -57,7 +57,7 @@ orders_open_at: 2.weeks.ago,
         context "if the supplier is permitted for the shop" do
           let!(:enterprise_relationship) {
             create(
-:enterprise_relationship, 
+:enterprise_relationship,
 child: shop,
                           parent: product.supplier,
                           permissions_list: [:add_to_order_cycle]
@@ -78,7 +78,7 @@ child: shop,
               order_cycle.exchanges.create(
 sender: product.supplier,
 receiver: shop,
-incoming: true, 
+incoming: true,
 variants: [variant]
 )
             }

@@ -49,14 +49,14 @@ namespace :ofn do
 
   def headers
     [
-      "Created", 
-"Order", 
-"Success", 
-"Message", 
-"Payment ID", 
+      "Created",
+"Order",
+"Success",
+"Message",
+"Payment ID",
 "Action",
-      "Amount", 
-"Currencty", 
+      "Amount",
+"Currencty",
 "Receipt"
     ]
   end
@@ -69,8 +69,8 @@ namespace :ofn do
       details.message,
       params["id"],
       params["object"],
-      params["amount"], 
-params["currency"], 
+      params["amount"],
+params["currency"],
 params["receipt_url"]
     ]
   end

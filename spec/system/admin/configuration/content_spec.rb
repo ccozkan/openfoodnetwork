@@ -14,7 +14,7 @@ describe " As a site administrator I want to configure the site content " do
   it "fills in a setting shows the result on the home page" do
     fill_in "footer_facebook_url", with: ""
     fill_in "footer_twitter_url", with: "http://twitter.com/me"
-    fill_in "footer_links_md", 
+    fill_in "footer_links_md",
 with: \
     "[markdown link](/:/?#@!$&'()*+,;=0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ)"
     click_button "Update"
@@ -28,8 +28,8 @@ with: \
 
     # And markdown is rendered
     # expect(page).to have_link "markdown link" and the correct href
-    expect(page).to have_selector :link, 
-"markdown link", 
+    expect(page).to have_selector :link,
+"markdown link",
 href: \
     "/:/?#@!$&'()*+,;=0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
   end

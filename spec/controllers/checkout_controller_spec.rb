@@ -338,9 +338,9 @@ describe CheckoutController, type: :controller do
       spree_post :update, format: :json, order: {}
       expect(response.status).to eq(400)
       expect(response.body).to eq(
-{ 
+{
 errors: assigns[:order].errors,
-flash: { error: order.errors.full_messages.to_sentence } 
+flash: { error: order.errors.full_messages.to_sentence }
 }.to_json
 )
     end
@@ -350,9 +350,9 @@ flash: { error: order.errors.full_messages.to_sentence }
       allow(order).to receive(:next).and_return false
       spree_post :update, format: :json, order: {}
       expect(response.body).to eq(
-{ 
+{
 errors: assigns[:order].errors,
-flash: { error: "Payment could not be processed, please check the details you entered" } 
+flash: { error: "Payment could not be processed, please check the details you entered" }
 }.to_json
 )
     end
@@ -375,9 +375,9 @@ flash: { error: "Payment could not be processed, please check the details you en
       spree_post :update, format: :json, order: {}
       expect(response.status).to eq(400)
       expect(response.body).to eq(
-{ 
+{
 errors: {},
-flash: { error: I18n.t("checkout.failed") } 
+flash: { error: I18n.t("checkout.failed") }
 }.to_json
 )
     end

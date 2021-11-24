@@ -16,7 +16,7 @@ module Admin
 
     respond_to :json
 
-    respond_override create: { 
+    respond_override create: {
 json: {
       success: lambda {
                  render_as_json @schedule,
@@ -26,9 +26,9 @@ json: {
                  render json: { errors: @schedule.errors.full_messages },
                         status: :unprocessable_entity
                }
-    } 
+    }
 }
-    respond_override update: { 
+    respond_override update: {
 json: {
       success: lambda {
                  render_as_json @schedule,
@@ -38,13 +38,13 @@ json: {
                  render json: { errors: @schedule.errors.full_messages },
                         status: :unprocessable_entity
                }
-    } 
+    }
 }
 
     def index
       respond_to do |format|
         format.json do
-          render_as_json @collection, 
+          render_as_json @collection,
 ams_prefix: params[:ams_prefix],
                                       editable_schedule_ids: permissions.editable_schedules.pluck(:id)
         end

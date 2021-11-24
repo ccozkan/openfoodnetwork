@@ -3,10 +3,10 @@
 module Api
   module Admin
     class SubscriptionLineItemSerializer < ActiveModel::Serializer
-      attributes :id, 
-:variant_id, 
-:quantity, 
-:description, 
+      attributes :id,
+:variant_id,
+:quantity,
+:description,
 :price_estimate,
                  :in_open_and_upcoming_order_cycles
 

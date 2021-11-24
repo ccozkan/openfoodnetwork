@@ -34,12 +34,12 @@ describe Api::V0::ShipmentsController, type: :controller do
     let!(:stock_location) { Spree::StockLocation.first || create(:stock_location) }
     let!(:variant) { create(:variant) }
     let(:params) do
-      { 
+      {
 quantity: 2,
 variant_id: variant.to_param,
 order_id: order.number,
 stock_location_id: stock_location.to_param,
-format: :json 
+format: :json
 }
     end
     let(:error_message) { "broken shipments creation" }
@@ -186,8 +186,8 @@ format: :json
         let(:fee_amount) { 10 }
         let!(:shipping_method_with_fee) {
           create(
-:shipping_method_with, 
-:shipping_fee, 
+:shipping_method_with,
+:shipping_fee,
 distributors: [distributor],
                                       shipping_fee: fee_amount
 )
@@ -316,7 +316,7 @@ distributors: [distributor],
 
       it "can transition a shipment from ready to ship" do
         shipment.reload
-        api_put :ship, 
+        api_put :ship,
 order_id: shipment.order.to_param,
                        id: shipment.to_param,
                        shipment: { tracking: "123123" }

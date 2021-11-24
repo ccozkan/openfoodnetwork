@@ -15,12 +15,12 @@ module Spree
     has_many :shipping_method_categories
     has_many :shipping_categories, through: :shipping_method_categories
     has_many :distributor_shipping_methods
-    has_many :distributors, 
+    has_many :distributors,
 through: :distributor_shipping_methods,
                             class_name: 'Enterprise',
                             foreign_key: 'distributor_id'
 
-    has_and_belongs_to_many :zones, 
+    has_and_belongs_to_many :zones,
 join_table: 'spree_shipping_methods_zones',
                                     class_name: 'Spree::Zone'
 
@@ -32,7 +32,7 @@ join_table: 'spree_shipping_methods_zones',
 
     after_save :touch_distributors
 
-    scope :managed_by, 
+    scope :managed_by,
 lambda { |user|
       if user.has_spree_role?('admin')
         where(nil)
@@ -44,19 +44,19 @@ lambda { |user|
       end
     }
 
-    scope :for_distributors, 
+    scope :for_distributors,
 ->(distributors) {
       non_unique_matches = unscoped.joins(:distributors).where(enterprises: { id: distributors })
       where(id: non_unique_matches.map(&:id))
     }
-    scope :for_distributor, 
+    scope :for_distributor,
 lambda { |distributor|
       joins(:distributors)
         .where('enterprises.id = ?', distributor)
     }
 
     scope :by_name, -> { order('spree_shipping_methods.name ASC') }
-    scope :display_on_checkout, 
+    scope :display_on_checkout,
 -> {
       where("spree_shipping_methods.display_on is null OR spree_shipping_methods.display_on = ''")
     }

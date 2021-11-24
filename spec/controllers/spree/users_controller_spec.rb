@@ -82,12 +82,12 @@ describe Spree::UsersController, type: :controller do
   context '#create' do
     it 'should create a new user' do
       post :create,
-           params: { 
-user: { 
-email: 'foobar@example.com', 
+           params: {
+user: {
+email: 'foobar@example.com',
 password: 'foobar123',
-password_confirmation: 'foobar123' 
-} 
+password_confirmation: 'foobar123'
+}
 }
       expect(assigns[:user].new_record?).to be_falsey
     end

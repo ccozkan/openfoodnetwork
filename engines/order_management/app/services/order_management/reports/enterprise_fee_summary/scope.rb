@@ -56,8 +56,8 @@ module OrderManagement
           chain_to_scope do
             where(
               adjustable_type: [
-"Spree::Order", 
-"Spree::Shipment", 
+"Spree::Order",
+"Spree::Shipment",
 "Spree::LineItem",
                                 "Spree::Payment"
 ]
@@ -69,7 +69,7 @@ module OrderManagement
           chain_to_scope do
             where(
 originator_type: [
-"EnterpriseFee", 
+"EnterpriseFee",
 "Spree::PaymentMethod",
                                     "Spree::ShippingMethod"
 ]

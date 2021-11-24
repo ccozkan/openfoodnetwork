@@ -14,7 +14,7 @@ module OrderManagement
         @report_parameters.authorize!(@permissions)
 
         @report = report_klass::ReportService.new(
-@permissions, 
+@permissions,
 legacy_format_report_params,
                                                   spree_current_user
 )

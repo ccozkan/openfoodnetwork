@@ -19,7 +19,7 @@ module Spree
     has_one :product, through: :variant
     has_many :adjustments, as: :adjustable, dependent: :destroy
 
-    has_and_belongs_to_many :option_values, 
+    has_and_belongs_to_many :option_values,
 join_table: 'spree_option_values_line_items',
                                             class_name: 'Spree::OptionValue'
 
@@ -28,7 +28,7 @@ join_table: 'spree_option_values_line_items',
     before_validation :copy_tax_category
 
     validates :variant, presence: true
-    validates :quantity, 
+    validates :quantity,
 numericality: {
       only_integer: true,
       greater_than: -1,
@@ -38,7 +38,7 @@ numericality: {
     validates_with Stock::AvailabilityValidator
 
     before_save :update_inventory
-    before_save :calculate_final_weight_volume, 
+    before_save :calculate_final_weight_volume,
 if: :quantity_changed?,
                                                 unless: :final_weight_volume_changed?
     after_save :update_order
@@ -51,7 +51,7 @@ if: :quantity_changed?,
     attr_accessor :skip_stock_check, :target_shipment # Allows manual skipping of Stock::AvailabilityValidator
 
     # -- Scopes
-    scope :managed_by, 
+    scope :managed_by,
 lambda { |user|
       if user.has_spree_role?('admin')
         where(nil)
@@ -60,19 +60,19 @@ lambda { |user|
         joins(variant: :product)
           .joins(:order)
           .where('spree_orders.distributor_id IN (?) OR spree_products.supplier_id IN (?)',
-                user.enterprises, 
+                user.enterprises,
 user.enterprises)
           .select('spree_line_items.*')
       end
     }
 
-    scope :in_orders, 
+    scope :in_orders,
 lambda { |orders|
       where(order_id: orders)
     }
 
     # Find line items that are from order sorted by variant name and unit value
-    scope :sorted_by_name_and_unit_value, 
+    scope :sorted_by_name_and_unit_value,
 -> {
       joins(variant: :product)
         .reorder(Arel.sql(
@@ -83,7 +83,7 @@ lambda { |orders|
 ))
     }
 
-    scope :from_order_cycle, 
+    scope :from_order_cycle,
 lambda { |order_cycle|
       joins(order: :order_cycle)
         .where('order_cycles.id = ?', order_cycle)
@@ -92,14 +92,14 @@ lambda { |order_cycle|
     # Here we are simply joining the line item to its variant and product
     # We dont use joins here to avoid the default scopes,
     #   and with that, include deleted variants and deleted products
-    scope :supplied_by_any, 
+    scope :supplied_by_any,
 lambda { |enterprises|
       product_ids = Spree::Product.unscoped.where(supplier_id: enterprises).select(:id)
       variant_ids = Spree::Variant.unscoped.where(product_id: product_ids).select(:id)
       where("spree_line_items.variant_id IN (?)", variant_ids)
     }
 
-    scope :with_tax, 
+    scope :with_tax,
 -> {
       joins(:adjustments)
         .where('spree_adjustments.originator_type = ?', 'Spree::TaxRate')
@@ -107,7 +107,7 @@ lambda { |enterprises|
     }
 
     # Line items without a Spree::TaxRate-originated adjustment
-    scope :without_tax, 
+    scope :without_tax,
 -> {
       joins(
 "

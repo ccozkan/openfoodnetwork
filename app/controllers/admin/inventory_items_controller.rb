@@ -4,24 +4,24 @@ module Admin
   class InventoryItemsController < Admin::ResourceController
     respond_to :json
 
-    respond_override update: { 
+    respond_override update: {
 json: {
       success: lambda { render_as_json @inventory_item },
       failure: lambda {
                  render json: { errors: @inventory_item.errors.full_messages },
                         status: :unprocessable_entity
                }
-    } 
+    }
 }
 
-    respond_override create: { 
+    respond_override create: {
 json: {
       success: lambda { render_as_json @inventory_item },
       failure: lambda {
                  render json: { errors: @inventory_item.errors.full_messages },
                         status: :unprocessable_entity
                }
-    } 
+    }
 }
 
     private

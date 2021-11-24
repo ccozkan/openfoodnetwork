@@ -14,11 +14,11 @@ module Spree
     #                                      and Product image edit page
     # - large: used in the FrontOffice: product modal
     has_attached_file :attachment,
-                      styles: { 
-mini: "48x48#", 
+                      styles: {
+mini: "48x48#",
 small: "227x227#",
-product: "240x240>", 
-large: "600x600>" 
+product: "240x240>",
+large: "600x600>"
 },
                       default_style: :product,
                       url: '/spree/products/:id/:style/:basename.:extension',
@@ -98,10 +98,10 @@ large: "600x600>"
     private_class_method :set_s3_attachment_attributes
 
     def self.s3_credentials
-      { 
+      {
 access_key_id: Spree::Config[:s3_access_key],
 secret_access_key: Spree::Config[:s3_secret],
-bucket: Spree::Config[:s3_bucket] 
+bucket: Spree::Config[:s3_bucket]
 }
     end
     private_class_method :s3_credentials

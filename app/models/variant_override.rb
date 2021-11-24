@@ -20,12 +20,12 @@ class VariantOverride < ApplicationRecord
 
   default_scope { where(permission_revoked_at: nil) }
 
-  scope :for_hubs, 
+  scope :for_hubs,
 lambda { |hubs|
     where(hub_id: hubs)
   }
 
-  scope :distinct_import_dates, 
+  scope :distinct_import_dates,
 lambda {
     select('DISTINCT variant_overrides.import_date')
       .where('variant_overrides.import_date IS NOT NULL')

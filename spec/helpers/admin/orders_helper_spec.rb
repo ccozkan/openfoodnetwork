@@ -14,9 +14,9 @@ describe Admin::OrdersHelper, type: :helper do
 
     it "filters shipping method adjustments" do
       create(
-:adjustment, 
-order: order, 
-adjustable: build(:shipment), 
+:adjustment,
+order: order,
+adjustable: build(:shipment),
 amount: 1,
              originator_type: "Spree::ShippingMethod"
 )
@@ -26,11 +26,11 @@ amount: 1,
 
     it "filters ineligible payment adjustments" do
       create(
-:adjustment, 
-adjustable: build(:payment), 
-amount: 0, 
+:adjustment,
+adjustable: build(:payment),
+amount: 0,
 eligible: false,
-             originator_type: "Spree::PaymentMethod", 
+             originator_type: "Spree::PaymentMethod",
 order: order
 )
 
@@ -39,11 +39,11 @@ order: order
 
     it "filters out line item adjustments" do
       create(
-:adjustment, 
-adjustable: build(:line_item), 
-amount: 0, 
+:adjustment,
+adjustable: build(:line_item),
+amount: 0,
 eligible: false,
-             originator_type: "EnterpriseFee", 
+             originator_type: "EnterpriseFee",
 order: order
 )
 

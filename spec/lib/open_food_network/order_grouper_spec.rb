@@ -12,43 +12,43 @@ module OpenFoodNetwork
     context "constructing the table" do
       it "should build a tree then build a table" do
         rules = [
-{ 
+{
 group_by: proc { |sentence|
                                sentence.paragraph.chapter
-                             }, 
+                             },
 sort_by: proc { |chapter|
                                            chapter.name
-                                         }, 
+                                         },
 summary_columns: [
 proc { |is|
                                                                 is.first.paragraph.chapter.name
-                                                              }, 
+                                                              },
 proc { |_is|
                                                                    "TOTAL"
-                                                                 }, 
+                                                                 },
 proc { |_is|
                                                                       ""
-                                                                    }, 
+                                                                    },
 proc { |is|
                                                                          is.sum(&:property1)
                                                                        }
-] 
+]
 },
-                 { 
-group_by: proc { |sentence| sentence.paragraph }, 
+                 {
+group_by: proc { |sentence| sentence.paragraph },
 sort_by: proc { |paragraph|
                                                                                 paragraph.name
-                                                                              } 
+                                                                              }
 }
 ]
         columns = [
-proc { |is| is.first.paragraph.chapter.name }, 
+proc { |is| is.first.paragraph.chapter.name },
 proc { |is|
                                                                     is.first.paragraph.name
-                                                                  }, 
+                                                                  },
 proc { |is|
                                                                        is.first.name
-                                                                     }, 
+                                                                     },
 proc { |is|
                                                                           is.sum(&:property1)
                                                                         }
@@ -104,7 +104,7 @@ proc { |is|
 
         grouped_tree = double(:grouped_tree)
         expect(subject).to receive(:group_and_sort).with(
-@rule1, 
+@rule1,
 @rules[1..-1],
                                                          @items
 ).and_return(grouped_tree)
@@ -178,11 +178,11 @@ proc { |is|
       end
 
       it "should return an extra row when a :summary_row key appears in a given Hash" do
-        groups = { 
-items1: @items1, 
-items2: @items2, 
+        groups = {
+items1: @items1,
+items2: @items2,
 items3: @items3,
-summary_row: { items: { items2: @items2, items3: @items3 }, columns: @sumcols } 
+summary_row: { items: { items2: @items2, items3: @items3 }, columns: @sumcols }
 }
 
         subject = OrderGrouper.new @rules, @columns

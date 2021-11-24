@@ -77,7 +77,7 @@ spree_current_user,
       else
         collection = EnterpriseFee.managed_by(spree_current_user).order(
 'enterprise_id',
-                                                                        'fee_type', 
+                                                                        'fee_type',
 'name'
 )
         collection = collection.for_enterprise(current_enterprise) if current_enterprise
@@ -104,12 +104,12 @@ spree_current_user,
     def enterprise_fee_bulk_params
       params.require(:sets_enterprise_fee_set).permit(
         collection_attributes: [
-          :id, 
-:enterprise_id, 
-:fee_type, 
-:name, 
+          :id,
+:enterprise_id,
+:fee_type,
+:name,
 :tax_category_id,
-          :inherits_tax_category, 
+          :inherits_tax_category,
 :calculator_type,
           { calculator_attributes: PermittedAttributes::Calculator.attributes }
         ]

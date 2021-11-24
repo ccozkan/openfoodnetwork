@@ -15,8 +15,8 @@ describe Admin::SubscriptionLineItemsController, type: :controller do
     }
     let!(:outgoing_exchange) {
       order_cycle.exchanges.create(
-sender: shop, 
-receiver: shop, 
+sender: shop,
+receiver: shop,
 variants: [variant],
 enterprise_fees: [enterprise_fee]
 )
@@ -24,8 +24,8 @@ enterprise_fees: [enterprise_fee]
     let!(:enterprise_fee) { create(:enterprise_fee, amount: 3.50) }
     let!(:order_cycle) {
       create(
-:simple_order_cycle, 
-coordinator: shop, 
+:simple_order_cycle,
+coordinator: shop,
 orders_open_at: 2.days.from_now,
                      orders_close_at: 7.days.from_now
 )
