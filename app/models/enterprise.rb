@@ -3,6 +3,7 @@
 require 'spree/core/s3_support'
 
 class Enterprise < ApplicationRecord
+  include Spree::Core::S3Support
   SELLS = %w(unspecified none own any).freeze
   ENTERPRISE_SEARCH_RADIUS = 100
   searchable_attributes :sells, :is_primary_producer
@@ -90,7 +91,6 @@ class Enterprise < ApplicationRecord
                                     content_type: "application/pdf",
                                     message: I18n.t(:enterprise_terms_and_conditions_type_error)
 
-  include Spree::Core::S3Support
   supports_s3 :logo
   supports_s3 :promo_image
 

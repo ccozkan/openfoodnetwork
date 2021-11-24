@@ -3,11 +3,11 @@
 require 'open_food_network/error_logger'
 
 class UserRegistrationsController < Spree::UserRegistrationsController
+  include I18nHelper
   I18N_SCOPE = 'devise.user_registrations.spree_user'
 
   before_action :set_checkout_redirect, only: :create
 
-  include I18nHelper
   before_action :set_locale
 
   # POST /resource/sign_up
