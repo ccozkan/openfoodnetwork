@@ -132,7 +132,8 @@ module Spree
 :country_id
 ]
           includes = { 
-only: address_fields, include: { 
+only: address_fields, 
+include: { 
 state: { only: :name },
 country: { only: :name } 
 } 

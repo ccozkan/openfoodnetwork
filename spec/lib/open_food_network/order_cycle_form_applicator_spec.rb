@@ -14,8 +14,11 @@ module OpenFoodNetwork
         supplier_id = 456
 
         incoming_exchange = { 
-enterprise_id: supplier_id, incoming: true,
-variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions' 
+enterprise_id: supplier_id, 
+incoming: true,
+variants: { '1' => true, '2' => false, '3' => true }, 
+enterprise_fee_ids: [1, 2], 
+receival_instructions: 'receival instructions' 
 }
 
         oc = double(
@@ -44,8 +47,13 @@ supplier_id, coordinator_id, true,
         distributor_id = 456
 
         outgoing_exchange = { 
-enterprise_id: distributor_id, incoming: false,
-variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale' 
+enterprise_id: distributor_id, 
+incoming: false,
+variants: { '1' => true, '2' => false, '3' => true }, 
+enterprise_fee_ids: [1, 2], 
+pickup_time: 'pickup time', 
+pickup_instructions: 'pickup instructions', 
+tag_list: 'wholesale' 
 }
 
         oc = double(
@@ -74,8 +82,11 @@ coordinator_id, distributor_id, false,
         supplier_id = 456
 
         incoming_exchange = { 
-enterprise_id: supplier_id, incoming: true,
-variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], receival_instructions: 'receival instructions' 
+enterprise_id: supplier_id, 
+incoming: true,
+variants: { '1' => true, '2' => false, '3' => true }, 
+enterprise_fee_ids: [1, 2], 
+receival_instructions: 'receival instructions' 
 }
 
         oc = double(
@@ -111,8 +122,13 @@ supplier_id, coordinator_id, true,
         distributor_id = 456
 
         outgoing_exchange = { 
-enterprise_id: distributor_id, incoming: false,
-variants: { '1' => true, '2' => false, '3' => true }, enterprise_fee_ids: [1, 2], pickup_time: 'pickup time', pickup_instructions: 'pickup instructions', tag_list: 'wholesale' 
+enterprise_id: distributor_id, 
+incoming: false,
+variants: { '1' => true, '2' => false, '3' => true }, 
+enterprise_fee_ids: [1, 2], 
+pickup_time: 'pickup time', 
+pickup_instructions: 'pickup instructions', 
+tag_list: 'wholesale' 
 }
 
         oc = double(

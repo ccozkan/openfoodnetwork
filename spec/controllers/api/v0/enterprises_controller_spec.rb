@@ -19,7 +19,9 @@ describe Api::V0::EnterprisesController, type: :controller do
       let(:australia) { Spree::Country.find_by(name: 'Australia') }
       let(:new_enterprise_params) do
         {
-          name: 'name', contact_name: 'Sheila', address_attributes: {
+          name: 'name', 
+contact_name: 'Sheila', 
+address_attributes: {
             address1: '123 Abc Street',
             city: 'Northcote',
             zipcode: '3070',

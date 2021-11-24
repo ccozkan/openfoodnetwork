@@ -674,7 +674,8 @@ amount_in_cents, card,
     context "#build_source" do
       it "should build the payment's source" do
         params = { 
-amount: 100, payment_method: gateway,
+amount: 100, 
+payment_method: gateway,
 source_attributes: {
                      expiry: "1 / 99",
                      number: '1234567890123',
@@ -689,7 +690,8 @@ source_attributes: {
 
       it "errors when payment source not valid" do
         params = { 
-amount: 100, payment_method: gateway,
+amount: 100, 
+payment_method: gateway,
 source_attributes: { expiry: "1 / 12" } 
 }
 

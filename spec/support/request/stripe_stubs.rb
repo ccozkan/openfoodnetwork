@@ -117,7 +117,8 @@ charges: { data: chargedata })
 
   def payment_intent_redirect_response_mock(redirect_url)
     { 
-status: 200, body: JSON.generate(
+status: 200, 
+body: JSON.generate(
 id: "pi_123",
 object: "payment_intent",
 next_source_action: {

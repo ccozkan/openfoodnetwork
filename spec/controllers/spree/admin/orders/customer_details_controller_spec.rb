@@ -44,7 +44,8 @@ describe Spree::Admin::Orders::CustomerDetailsController, type: :controller do
       it "advances the order state" do
         expect {
           spree_post :update, order: { 
-email: user.email, bill_address_attributes: address_params,
+email: user.email, 
+bill_address_attributes: address_params,
 ship_address_attributes: address_params 
 },
                               order_id: order.number

@@ -1024,8 +1024,11 @@ total.tax_category_name,
 
   def default_order_options
     { 
-customer: customer, distributor: distributor, order_cycle: order_cycle,
-shipping_method: shipping_method, variant: variant 
+customer: customer, 
+distributor: distributor, 
+order_cycle: order_cycle,
+shipping_method: shipping_method, 
+variant: variant 
 }
   end
 
@@ -1042,8 +1045,12 @@ shipping_method: shipping_method, variant: variant
 
   def default_variant_options
     { 
-product: product, producer: producer, is_master: false, coordinator: coordinator,
-distributor: distributor, order_cycle: order_cycle 
+product: product, 
+producer: producer, 
+is_master: false, 
+coordinator: coordinator,
+distributor: distributor, 
+order_cycle: order_cycle 
 }
   end
 

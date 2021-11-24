@@ -84,7 +84,8 @@ describe Spree::UsersController, type: :controller do
       post :create,
            params: { 
 user: { 
-email: 'foobar@example.com', password: 'foobar123',
+email: 'foobar@example.com', 
+password: 'foobar123',
 password_confirmation: 'foobar123' 
 } 
 }

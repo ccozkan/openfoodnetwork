@@ -273,7 +273,8 @@ module Admin
       context "when I manage the coordinator of an order cycle" do
         let(:params) do
           { 
-format: :json, order_cycle_set: { 
+format: :json, 
+order_cycle_set: { 
 collection_attributes: { 
 '0' => {
             id: oc.id,
@@ -307,7 +308,8 @@ collection_attributes: {
         context "when a validation error occurs" do
           let(:params) do
             { 
-format: :json, order_cycle_set: { 
+format: :json, 
+order_cycle_set: { 
 collection_attributes: { 
 '0' => {
               id: oc.id,

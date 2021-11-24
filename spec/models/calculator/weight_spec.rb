@@ -176,7 +176,9 @@ describe Calculator::Weight do
     context "when the product uses item unit" do
       let!(:product_attributes) {
         { 
-variant_unit: "items", variant_unit_scale: nil, variant_unit_name: "pc",
+variant_unit: "items", 
+variant_unit_scale: nil, 
+variant_unit_name: "pc",
 display_as: "pc" 
 }
       }

@@ -25,7 +25,9 @@ describe Admin::EnterprisesController, type: :controller do
     let(:enterprise_params) {
       { 
 enterprise: { 
-name: 'zzz', permalink: 'zzz', is_primary_producer: '0',
+name: 'zzz', 
+permalink: 'zzz', 
+is_primary_producer: '0',
 address_attributes: address_params 
 } 
 }
@@ -464,9 +466,11 @@ distributor_manager.id,
 sets_enterprise_set: { 
 collection_attributes: {
           '0' => { 
-id: profile_enterprise1.id, sells: 'any',
+id: profile_enterprise1.id, 
+sells: 'any',
 owner_id: new_owner.id 
-}, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
+}, 
+'1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
         } 
 } 
 }
@@ -505,9 +509,11 @@ collection_attributes: {
 sets_enterprise_set: { 
 collection_attributes: {
           '0' => { 
-id: profile_enterprise1.id, sells: 'any',
+id: profile_enterprise1.id, 
+sells: 'any',
 owner_id: new_owner.id 
-}, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
+}, 
+'1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
         } 
 } 
 }
@@ -531,9 +537,11 @@ owner_id: new_owner.id
 sets_enterprise_set: { 
 collection_attributes: {
           '0' => { 
-id: profile_enterprise1.id, sells: 'any',
+id: profile_enterprise1.id, 
+sells: 'any',
 owner_id: new_owner.id 
-}, '1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
+}, 
+'1' => { id: profile_enterprise2.id, sells: 'any', owner_id: new_owner.id }
         } 
 } 
 }

@@ -41,7 +41,8 @@ distributor_ids: [enterprise.id])
         expect {
           spree_post :create,
                      payment_method: { 
-name: "Test Method", type: "Spree::Gateway::Bogus",
+name: "Test Method", 
+type: "Spree::Gateway::Bogus",
 distributor_ids: [enterprise.id] 
 }
         }.to change(Spree::PaymentMethod, :count).by(1)
@@ -54,7 +55,8 @@ distributor_ids: [enterprise.id]
         expect {
           spree_post :create,
                      payment_method: { 
-name: "Invalid Payment Method", type: "Spree::InvalidType",
+name: "Invalid Payment Method", 
+type: "Spree::InvalidType",
 distributor_ids: [enterprise.id] 
 }
         }.to change(Spree::PaymentMethod, :count).by(0)

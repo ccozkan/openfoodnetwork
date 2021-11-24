@@ -15,8 +15,10 @@ module Spree
     # - large: used in the FrontOffice: product modal
     has_attached_file :attachment,
                       styles: { 
-mini: "48x48#", small: "227x227#",
-product: "240x240>", large: "600x600>" 
+mini: "48x48#", 
+small: "227x227#",
+product: "240x240>", 
+large: "600x600>" 
 },
                       default_style: :product,
                       url: '/spree/products/:id/:style/:basename.:extension',

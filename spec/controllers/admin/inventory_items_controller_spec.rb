@@ -67,7 +67,8 @@ inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible:
               { 
 format: format,
 inventory_item: { 
-enterprise_id: enterprise.id, variant_id: variant.id,
+enterprise_id: enterprise.id, 
+variant_id: variant.id,
 visible: nil 
 } 
 }

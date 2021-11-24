@@ -154,8 +154,10 @@ describe OrderSyncer do
     let(:params) {
       { 
 bill_address_attributes: { 
-id: bill_address_attrs["id"], firstname: "Bill",
-address1: "123 abc st", phone: "1123581321" 
+id: bill_address_attrs["id"], 
+firstname: "Bill",
+address1: "123 abc st", 
+phone: "1123581321" 
 } 
 }
     }
@@ -267,8 +269,10 @@ address1: "123 abc st", phone: "1123581321"
     let(:params) {
       { 
 ship_address_attributes: { 
-id: ship_address_attrs["id"], firstname: "Ship",
-address1: "123 abc st", phone: "1123581321" 
+id: ship_address_attrs["id"], 
+firstname: "Ship",
+address1: "123 abc st", 
+phone: "1123581321" 
 } 
 }
     }

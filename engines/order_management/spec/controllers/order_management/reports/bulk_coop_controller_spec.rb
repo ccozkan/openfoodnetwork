@@ -29,7 +29,8 @@ describe OrderManagement::Reports::BulkCoopController, type: :controller do
           report: {
             start_at: "2018-10-09 07:30:00",
             report_type: "bulk_coop_supplier_report"
-          }, report_format: "csv"
+          }, 
+report_format: "csv"
         }
 
         expect(response.status).to eq 200
@@ -44,7 +45,8 @@ describe OrderManagement::Reports::BulkCoopController, type: :controller do
           report: {
             start_at: "invalid_date",
             report_type: "bulk_coop_supplier_report"
-          }, report_format: "csv"
+          }, 
+report_format: "csv"
         }
 
         expect(flash[:error]).to eq(I18n.t("invalid_filter_parameters", scope: i18n_scope))
@@ -63,7 +65,8 @@ describe OrderManagement::Reports::BulkCoopController, type: :controller do
           report: {
             distributor_ids: [other_distributor.id],
             report_type: "bulk_coop_supplier_report"
-          }, report_format: "csv"
+          }, 
+report_format: "csv"
         }
 
         expect(flash[:error]).to eq(report_klass::Authorizer.parameter_not_allowed_error_message)

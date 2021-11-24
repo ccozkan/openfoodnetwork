@@ -45,7 +45,8 @@ FactoryBot.define do
 
         after(:create) do |variant, evaluator|
           exchange_attributes = { 
-order_cycle_id: evaluator.order_cycle.id, incoming: true,
+order_cycle_id: evaluator.order_cycle.id, 
+incoming: true,
 sender_id: evaluator.producer.id,
 receiver_id: evaluator.coordinator.id 
 }
@@ -56,7 +57,8 @@ receiver_id: evaluator.coordinator.id
           end
 
           exchange_attributes = { 
-order_cycle_id: evaluator.order_cycle.id, incoming: false,
+order_cycle_id: evaluator.order_cycle.id, 
+incoming: false,
 sender_id: evaluator.coordinator.id,
 receiver_id: evaluator.distributor.id 
 }

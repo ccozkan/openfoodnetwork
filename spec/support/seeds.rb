@@ -10,8 +10,11 @@
 if Spree::Country.where(name: "Australia").empty?
   Spree::Country.create!(
 { 
-"name" => "Australia", "iso3" => "AUS", "iso" => "AU",
-"iso_name" => "AUSTRALIA", "numcode" => "36" 
+"name" => "Australia", 
+"iso3" => "AUS", 
+"iso" => "AU",
+"iso_name" => "AUSTRALIA", 
+"numcode" => "36" 
 })
   country = Spree::Country.find_by(name: 'Australia')
   Spree::State.create!({ "name" => "Victoria", "abbr" => "Vic", :country => country })

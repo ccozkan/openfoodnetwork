@@ -9,8 +9,12 @@ describe CheckoutHelper, type: :helper do
       name: "test",
       path: "foo",
       attributes: { 
-:required => true, :type => :email, :name => "foo", :id => "foo",
-"ng-model" => "foo", "ng-class" => "{error: !fieldValid('foo')}" 
+:required => true, 
+:type => :email, 
+:name => "foo", 
+:id => "foo",
+"ng-model" => "foo", 
+"ng-class" => "{error: !fieldValid('foo')}" 
 }
     )
 
