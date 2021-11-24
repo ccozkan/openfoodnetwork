@@ -30,9 +30,7 @@ bill_address_attributes: new_bill_address.dup.attributes.merge('id' => old_bill_
           new_ship_address = create(:address, firstname: 'abc')
 
           user.update(
-ship_address_attributes: new_ship_address.dup.attributes.except!(
-            'created_at', 'updated_at'
-          )
+ship_address_attributes: new_ship_address.dup.attributes.except!( 'created_at', 'updated_at' )
 )
 
           expect(user.ship_address.id).not_to eq new_ship_address.id

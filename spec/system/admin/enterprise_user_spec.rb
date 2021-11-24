@@ -2,10 +2,7 @@
 
 require "system_helper"
 
-describe '
-    As a Super User
-    I want to setup users to manage an enterprise
-' do
+describe ' As a Super User I want to setup users to manage an enterprise ' do
   include WebHelper
   include AuthenticationHelper
 

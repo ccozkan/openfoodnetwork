@@ -265,8 +265,7 @@ module OrderManagement
           before { order.payment_state = 'paid' }
 
           it 'does not create any state_change' do
-            expect { updater.update_payment_state }
-              .not_to change { order.state_changes.size }
+            expect { updater.update_payment_state }.not_to change { order.state_changes.size }
           end
         end
 
@@ -277,8 +276,7 @@ module OrderManagement
             before { allow(order).to receive(:persisted?) { true } }
 
             it 'creates a new state_change for the order' do
-              expect { updater.update_payment_state }
-                .to change { order.state_changes.size }.by(1)
+              expect { updater.update_payment_state }.to change { order.state_changes.size }.by(1)
             end
           end
 
@@ -286,8 +284,7 @@ module OrderManagement
             before { allow(order).to receive(:persisted?) { false } }
 
             it 'creates a new state_change for the order' do
-              expect { updater.update_payment_state }
-                .not_to change { order.state_changes.size }
+              expect { updater.update_payment_state }.not_to change { order.state_changes.size }
             end
           end
         end

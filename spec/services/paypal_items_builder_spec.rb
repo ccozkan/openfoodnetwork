@@ -13,10 +13,7 @@ describe PaypalItemsBuilder do
     expect(items.first[:Name]).to eq line_item.variant.name
     expect(items.first[:Number]).to eq line_item.variant.sku
     expect(items.first[:Quantity]).to eq line_item.quantity
-    expect(items.first[:Amount]).to eq(
-currencyID: order.currency,
-value: line_item.price
-)
+    expect(items.first[:Amount]).to eq( currencyID: order.currency, value: line_item.price )
     expect(items.first[:ItemCategory]).to eq "Physical"
   end
 

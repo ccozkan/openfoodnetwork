@@ -30,15 +30,11 @@ describe TaxHelper, type: :helper do
     end
 
     it "displays formatted 0.00 amount when amount is zero" do
-      expect(
-        helper.display_taxes(no_tax_adjustment)
-      ).to eq Spree::Money.new(0.00)
+      expect( helper.display_taxes(no_tax_adjustment) ).to eq Spree::Money.new(0.00)
     end
 
     it "optionally displays nothing when amount is zero" do
-      expect(
-        helper.display_taxes(no_tax_adjustment, display_zero: false)
-      ).to be_nil
+      expect( helper.display_taxes(no_tax_adjustment, display_zero: false) ).to be_nil
     end
   end
 

@@ -26,8 +26,7 @@ describe DefaultStockLocation do
     it "removes all stock locations named 'default'" do
       create(:stock_location)
 
-      expect { described_class.destroy_all }
-        .to change { Spree::StockLocation.count }.to(0)
+      expect { described_class.destroy_all }.to change { Spree::StockLocation.count }.to(0)
     end
   end
 
@@ -36,11 +35,7 @@ describe DefaultStockLocation do
       let!(:location) do
         country = create(:country)
         state = Spree::State.create(name: 'Alabama', country: country)
-        Spree::StockLocation.create!(
-          name: 'default',
-          country_id: country.id,
-          state_id: state.id
-        )
+        Spree::StockLocation.create!( name: 'default', country_id: country.id, state_id: state.id )
       end
 
       it 'returns the location' do

@@ -37,9 +37,7 @@ products,
 
     @products ||=
  begin
-      results = distributed_products
-        .products_relation
-        .order(Arel.sql(products_order))
+      results = distributed_products.products_relation.order(Arel.sql(products_order))
 
       filter_and_paginate(results)
         .each { |product| product_scoper.scope(product) } # Scope results with variant_overrides

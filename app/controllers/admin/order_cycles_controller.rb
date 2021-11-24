@@ -148,11 +148,7 @@ edit_path: main_app.admin_order_cycle_incoming_path(@order_cycle)
     end
 
     def order_cycles_as_both
-      OrderCycle
-        .preload(:schedules)
-        .ransack(raw_params[:q])
-        .result
-        .visible_by(spree_current_user)
+      OrderCycle.preload(:schedules).ransack(raw_params[:q]).result.visible_by(spree_current_user)
     end
 
     def load_data_for_index

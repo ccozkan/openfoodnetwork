@@ -14,11 +14,7 @@ module DfcProvider
     end
 
     def decode_token
-      data = JWT.decode(
-        @access_token,
-        nil,
-        false
-      )
+      data = JWT.decode( @access_token, nil, false )
 
       @header = data.last
       @payload = data.first

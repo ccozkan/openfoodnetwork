@@ -40,8 +40,7 @@ describe VariantStock do
       end
 
       it 'returns the total items in stock' do
-        expect(variant.on_hand)
-          .to eq(variant.stock_items.sum(:count_on_hand))
+        expect(variant.on_hand).to eq(variant.stock_items.sum(:count_on_hand))
       end
     end
   end
@@ -57,8 +56,7 @@ describe VariantStock do
       let(:variant) { build_stubbed(:variant) }
 
       it 'raises' do
-        expect { variant.on_hand = 3 }
-          .to raise_error(StandardError)
+        expect { variant.on_hand = 3 }.to raise_error(StandardError)
       end
     end
   end
@@ -81,10 +79,7 @@ describe VariantStock do
 
       context 'when the stock items is not backorderable' do
         it 'returns false' do
-          variant = build_stubbed(
-            :variant,
-            stock_locations: [build_stubbed(:stock_location)]
-          )
+          variant = build_stubbed( :variant, stock_locations: [build_stubbed(:stock_location)] )
           expect(variant.on_demand).to be_falsy
         end
       end

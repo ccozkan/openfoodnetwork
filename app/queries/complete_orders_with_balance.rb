@@ -13,9 +13,6 @@ class CompleteOrdersWithBalance
   private
 
   def sorted_finalized_orders
-    @user.orders
-      .finalized
-      .select('spree_orders.*')
-      .order(completed_at: :desc)
+    @user.orders.finalized.select('spree_orders.*').order(completed_at: :desc)
   end
 end

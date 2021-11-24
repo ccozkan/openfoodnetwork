@@ -59,15 +59,12 @@ describe Sets::ProductSet do
           it 'updates the product' do
             product_set.save
 
-            expect(product.reload.attributes).to include(
-              'variant_unit' => 'weight'
-            )
+            expect(product.reload.attributes).to include( 'variant_unit' => 'weight' )
           end
 
           it 'does not add an error' do
             product_set.save
-            expect(product_set.errors)
-              .to be_empty
+            expect(product_set.errors).to be_empty
           end
 
           it 'returns true' do
@@ -100,9 +97,7 @@ variants: [product.variants.first],
           it 'updates the product and removes the product from order cycles' do
             product_set.save
 
-            expect(product.reload.attributes).to include(
-              'supplier_id' => producer.id
-            )
+            expect(product.reload.attributes).to include( 'supplier_id' => producer.id )
             expect(order_cycle.distributed_variants).to_not include product.variants.first
           end
         end
@@ -129,9 +124,7 @@ variants: [product.variants.first],
                 product_set.save
 
                 expect(product.reload.variants.first[:sku]).to eq variants_attributes.first[:sku]
-                expect(product.reload.attributes).to include(
-                  'permalink' => "test_permalink"
-                )
+                expect(product.reload.attributes).to include( 'permalink' => "test_permalink" )
               end
             end
           end
@@ -178,8 +171,7 @@ variants: [product.variants.first],
                 it 'does not create variant and notifies bugsnag still raising the exception' do
                   expect(Bugsnag).to receive(:notify)
                   number_of_variants = Spree::Variant.all.size
-                  expect { product_set.save }
-                    .to raise_error(StandardError)
+                  expect { product_set.save }.to raise_error(StandardError)
                   expect(Spree::Variant.all.size).to eq number_of_variants
                   expect(Spree::Variant.last.sku).not_to eq('321')
                 end

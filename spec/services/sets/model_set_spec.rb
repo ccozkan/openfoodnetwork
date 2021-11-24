@@ -5,12 +5,7 @@ require 'spec_helper'
 describe Sets::ModelSet do
   describe "updating" do
     it "creates new models" do
-      attrs = { 
-collection_attributes: { 
-'1' => { name: 's1' },
-'2' => { name: 's2' } 
-} 
-}
+      attrs = { collection_attributes: { '1' => { name: 's1' }, '2' => { name: 's2' } } }
 
       ms = Sets::ModelSet.new(
 EnterpriseRelationshipPermission,

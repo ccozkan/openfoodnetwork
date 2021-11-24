@@ -8,18 +8,11 @@ module DfcProvider
     attribute :type, key: '@type'
     attribute :vat_number, key: 'dfc:VATnumber'
     has_many :defines, key: 'dfc:defines'
-    has_many :supplies,
-             key: 'dfc:supplies',
-             serializer: DfcProvider::SuppliedProductSerializer
-    has_many :manages,
-             key: 'dfc:manages',
-             serializer: DfcProvider::CatalogItemSerializer
+    has_many :supplies, key: 'dfc:supplies', serializer: DfcProvider::SuppliedProductSerializer
+    has_many :manages, key: 'dfc:manages', serializer: DfcProvider::CatalogItemSerializer
 
     def id
-      dfc_provider_routes.api_dfc_provider_enterprise_url(
-        id: object.id,
-        host: host
-      )
+      dfc_provider_routes.api_dfc_provider_enterprise_url( id: object.id, host: host )
     end
 
     def type

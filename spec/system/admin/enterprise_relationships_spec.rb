@@ -2,11 +2,7 @@
 
 require 'system_helper'
 
-describe '
-  As an Administrator
-  I want to manage relationships between enterprises
-', 
-js: true do
+describe ' As an Administrator I want to manage relationships between enterprises ', js: true do
   include WebHelper
   include AuthenticationHelper
 

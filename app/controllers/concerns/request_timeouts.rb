@@ -5,8 +5,7 @@ module RequestTimeouts
 
   included do
     if defined? Rack::Timeout
-      rescue_from Rack::Timeout::RequestTimeoutException,
-                  with: :timeout_response
+      rescue_from Rack::Timeout::RequestTimeoutException, with: :timeout_response
     end
   end
 

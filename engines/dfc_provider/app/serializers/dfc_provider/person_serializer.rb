@@ -9,12 +9,8 @@ module DfcProvider
     attribute :type, key: '@type'
     attribute :family_name, key: 'dfc:familyName'
     attribute :first_name, key: 'dfc:firstName'
-    has_one :address,
-            key: 'dfc:hasAddress',
-            serializer: DfcProvider::AddressSerializer
-    has_many :affiliates,
-             key: 'dfc:affiliates',
-             serializer: DfcProvider::EnterpriseSerializer
+    has_one :address, key: 'dfc:hasAddress', serializer: DfcProvider::AddressSerializer
+    has_many :affiliates, key: 'dfc:affiliates', serializer: DfcProvider::EnterpriseSerializer
 
     # Context should be provided inside the controller,
     # but AMS doesn't not supported `meta` and `meta_key` with `root` to nil...
@@ -26,10 +22,7 @@ module DfcProvider
     end
 
     def id
-      dfc_provider_routes.api_dfc_provider_person_url(
-        id: object.id,
-        host: host
-      )
+      dfc_provider_routes.api_dfc_provider_person_url( id: object.id, host: host )
     end
 
     def type

@@ -30,11 +30,7 @@ module InjectionHelper
   end
 
   def inject_enterprise_shopfront(enterprise)
-    inject_json(
-      "shopfront",
-      enterprise,
-      Api::EnterpriseShopfrontSerializer
-    )
+    inject_json( "shopfront", enterprise, Api::EnterpriseShopfrontSerializer )
   end
 
   def inject_enterprise_shopfront_list
@@ -141,8 +137,7 @@ current_order: current_order
   def inject_shops
     customers = spree_current_user.customers
     shops = Enterprise.where(
-id: @orders.pluck(:distributor_id).uniq |
-                                 customers.pluck(:enterprise_id)
+id: @orders.pluck(:distributor_id).uniq | customers.pluck(:enterprise_id)
 )
     inject_json_array "shops", shops.all, Api::ShopForOrdersSerializer
   end

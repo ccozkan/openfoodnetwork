@@ -115,8 +115,7 @@ describe MigrateAdminTaxAmounts do
 
     context "when a tax rate is given" do
       it "makes a detailed label" do
-        expect(subject.tax_adjustment_label(tax_rate))
-          .to eq("Test Rate 20.0% (Included in price)")
+        expect(subject.tax_adjustment_label(tax_rate)).to eq("Test Rate 20.0% (Included in price)")
       end
     end
 

@@ -13,11 +13,7 @@ module SampleData
       return if Customer.where(user_id: jane, enterprise_id: maryse_shop).exists?
 
       log "- #{jane.email}"
-      Customer.create!(
-        email: jane.email,
-        user: jane,
-        enterprise: maryse_shop
-      )
+      Customer.create!( email: jane.email, user: jane, enterprise: maryse_shop )
     end
   end
 end

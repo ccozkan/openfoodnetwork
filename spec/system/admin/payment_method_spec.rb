@@ -2,10 +2,7 @@
 
 require "system_helper"
 
-describe '
-    As a Super Admin
-    I want to be able to set a distributor on each payment method
-' do
+describe ' As a Super Admin I want to be able to set a distributor on each payment method ' do
   include WebHelper
   include AuthenticationHelper
 

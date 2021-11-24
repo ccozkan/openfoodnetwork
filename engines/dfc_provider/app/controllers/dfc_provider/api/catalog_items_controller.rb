@@ -22,8 +22,7 @@ module DfcProvider
       private
 
       def variant
-        @variant ||=
-          DfcProvider::VariantFetcher.new(current_enterprise).scope.find(params[:id])
+        @variant ||= DfcProvider::VariantFetcher.new(current_enterprise).scope.find(params[:id])
       end
     end
   end

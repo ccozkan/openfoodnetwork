@@ -58,9 +58,7 @@ class OrderFactory
   end
 
   def build_item_from(attrs)
-    @order.line_items.build(
-      attrs.merge(skip_stock_check: opts[:skip_stock_check])
-    )
+    @order.line_items.build( attrs.merge(skip_stock_check: opts[:skip_stock_check]) )
   end
 
   def set_user

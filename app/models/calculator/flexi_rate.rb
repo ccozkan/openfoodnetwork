@@ -11,8 +11,7 @@ module Calculator
     preference :max_items,       :integer, default: 0
     preference :currency,        :string,  default: Spree::Config[:currency]
 
-    localize_number :preferred_first_item,
-                    :preferred_additional_item
+    localize_number :preferred_first_item, :preferred_additional_item
 
     def self.description
       I18n.t(:flexible_rate)

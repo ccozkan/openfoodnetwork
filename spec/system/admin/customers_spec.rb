@@ -398,8 +398,7 @@ amount: -25.00
             expect{
               fill_in 'email', with: "invalid_email_with_no_complete_domain@incomplete"
               click_button 'Add Customer'
-              expect(page).to have_selector "#new-customer-dialog .error",
-                                            text: "Email is invalid"
+              expect(page).to have_selector "#new-customer-dialog .error", text: "Email is invalid"
             }.to_not change{ Customer.of(managed_distributor1).count }
 
             # When an existing email is used

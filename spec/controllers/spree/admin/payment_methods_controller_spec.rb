@@ -251,9 +251,7 @@ password: 'blahblah',
 
       context "on a new payment method" do
         it "renders provider settings with a new payment method of type" do
-          spree_get :show_provider_preferences,
-                    pm_id: "",
-                    provider_type: "Spree::Gateway::Bogus"
+          spree_get :show_provider_preferences, pm_id: "", provider_type: "Spree::Gateway::Bogus"
           expect(assigns(:payment_method)).to be_a_new Spree::Gateway::Bogus
           expect(response).to render_template partial: '_provider_settings'
         end

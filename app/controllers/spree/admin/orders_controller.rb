@@ -144,10 +144,7 @@ only: [
         @shops = Enterprise.is_distributor.managed_by(spree_current_user).by_name
 
         ocs = OrderCycle.includes(:suppliers, :distributors).managed_by(spree_current_user)
-        @order_cycles = ocs.soonest_closing +
-                        ocs.soonest_opening +
-                        ocs.closed +
-                        ocs.undated
+        @order_cycles = ocs.soonest_closing + ocs.soonest_opening + ocs.closed + ocs.undated
       end
 
       def ensure_distribution

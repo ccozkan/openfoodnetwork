@@ -326,10 +326,7 @@ line_items_attributes: {
       order = subject.current_order(true)
       li = order.contents.add(create(:simple_product).variants.first)
 
-      attrs = {
-        "0" => { quantity: "0", id: "9999" },
-        "1" => { quantity: "99", id: li.id }
-      }
+      attrs = { "0" => { quantity: "0", id: "9999" }, "1" => { quantity: "99", id: li.id } }
 
       expect(controller.__send__(:remove_missing_line_items, attrs)).to eq(
         "1" => { quantity: "99", id: li.id }

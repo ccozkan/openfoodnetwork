@@ -247,10 +247,7 @@ distributors: [distributor],
         order.shipments.first.shipping_methods = [shipping_method1, shipping_method2]
         order.select_shipping_method(shipping_method1.id)
         order.update_order!
-        order.update_columns(
-          payment_total: 60,
-          payment_state: "paid"
-        )
+        order.update_columns( payment_total: 60, payment_state: "paid" )
       end
 
       context "when an order has multiple shipping methods available which could be chosen" do

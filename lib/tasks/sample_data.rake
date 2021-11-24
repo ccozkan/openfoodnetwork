@@ -57,8 +57,6 @@ namespace :ofn do
   end
 
   def seeded?
-    Spree::User.count > 0 &&
-      Spree::Country.count > 0 &&
-      Spree::State.count > 0
+    Spree::User.count > 0 && Spree::Country.count > 0 && Spree::State.count > 0
   end
 end

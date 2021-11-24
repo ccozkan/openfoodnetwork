@@ -68,10 +68,7 @@ module Admin
 
     def admin_inject_shops(opts = {})
       opts.reverse_merge!(module: 'admin.customers')
-      admin_inject_json_ams_array opts[:module],
-                                  "shops",
-                                  @shops,
-                                  Api::Admin::IdNameSerializer
+      admin_inject_json_ams_array opts[:module], "shops", @shops, Api::Admin::IdNameSerializer
     end
 
     def admin_inject_available_countries(opts = {})
@@ -84,10 +81,7 @@ module Admin
 
     def admin_inject_hubs(opts = {})
       opts.reverse_merge!(module: 'ofn.admin')
-      admin_inject_json_ams_array opts[:module],
-                                  "hubs",
-                                  @hubs,
-                                  Api::Admin::IdNameSerializer
+      admin_inject_json_ams_array opts[:module], "hubs", @hubs, Api::Admin::IdNameSerializer
     end
 
     def admin_inject_producers(opts = {})
@@ -115,10 +109,7 @@ module Admin
     end
 
     def admin_inject_currency_config
-      admin_inject_json_ams 'admin.utils',
-                            "currencyConfig",
-                            {},
-                            Api::CurrencyConfigSerializer
+      admin_inject_json_ams 'admin.utils', "currencyConfig", {}, Api::CurrencyConfigSerializer
     end
 
     def admin_inject_enterprise_permissions
@@ -149,17 +140,11 @@ json: @hub_permissions.to_json
     end
 
     def admin_inject_taxons
-      admin_inject_json_ams_array "admin.taxons",
-                                  "taxons",
-                                  @taxons,
-                                  Api::Admin::TaxonSerializer
+      admin_inject_json_ams_array "admin.taxons", "taxons", @taxons, Api::Admin::TaxonSerializer
     end
 
     def admin_inject_users
-      admin_inject_json_ams_array "ofn.admin",
-                                  "users",
-                                  @users,
-                                  Api::Admin::UserSerializer
+      admin_inject_json_ams_array "ofn.admin", "users", @users, Api::Admin::UserSerializer
     end
 
     def admin_inject_variant_overrides
@@ -196,9 +181,7 @@ json: "'#{@spree_api_key}'"
     end
 
     def admin_inject_available_units
-      admin_inject_json "admin.products",
-                        "availableUnits",
-                        Spree::Config.available_units
+      admin_inject_json "admin.products", "availableUnits", Spree::Config.available_units
     end
 
     def admin_inject_json(ng_module, name, data)

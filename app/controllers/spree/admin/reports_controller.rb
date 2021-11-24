@@ -22,10 +22,7 @@ module Spree
       include Spree::ReportsHelper
       helper ::ReportsHelper
 
-      ORDER_MANAGEMENT_ENGINE_REPORTS = [
-        :bulk_coop,
-        :enterprise_fee_summary
-      ].freeze
+      ORDER_MANAGEMENT_ENGINE_REPORTS = [ :bulk_coop, :enterprise_fee_summary ].freeze
 
       helper_method :render_content?
 
@@ -252,10 +249,7 @@ spree_current_user,
 
       # Load order cycles the current user has access to
       def my_order_cycles
-        OrderCycle
-          .active_or_complete
-          .visible_by(spree_current_user)
-          .order('orders_close_at DESC')
+        OrderCycle.active_or_complete.visible_by(spree_current_user).order('orders_close_at DESC')
       end
 
       def order_grouper_table

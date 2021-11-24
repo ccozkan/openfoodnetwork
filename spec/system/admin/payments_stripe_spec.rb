@@ -2,10 +2,7 @@
 
 require 'system_helper'
 
-describe '
-    As an hub manager
-    I want to make Stripe payments
-' do
+describe ' As an hub manager I want to make Stripe payments ' do
   include AuthenticationHelper
   include StripeHelper
   include StripeStubs

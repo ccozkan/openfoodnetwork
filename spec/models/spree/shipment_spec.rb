@@ -290,11 +290,7 @@ describe Spree::Shipment do
     it 'restocks the items' do
       unit = double(:inventory_unit, variant: variant)
       allow(unit).to receive(:quantity) { 1 }
-      allow(shipment).to receive_message_chain(
-:inventory_units,
-                                               :group_by,
-                                               map: [unit]
-)
+      allow(shipment).to receive_message_chain( :inventory_units, :group_by, map: [unit] )
       shipment.stock_location = build(:stock_location)
       expect(shipment.stock_location).to receive(:restock).with(variant, 1, shipment)
       shipment.after_cancel
@@ -316,11 +312,7 @@ describe Spree::Shipment do
     it 'unstocks the items' do
       unit = create(:inventory_unit, variant: variant)
       allow(unit).to receive(:quantity) { 1 }
-      allow(shipment).to receive_message_chain(
-:inventory_units,
-                                               :group_by,
-                                               map: [unit]
-)
+      allow(shipment).to receive_message_chain( :inventory_units, :group_by, map: [unit] )
       shipment.stock_location = create(:stock_location)
       expect(shipment.stock_location).to receive(:unstock).with(variant, 1, shipment)
       shipment.after_resume

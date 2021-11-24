@@ -2,10 +2,7 @@
 
 require 'system_helper'
 
-describe '
-    As an admin
-    I want to manage product variants
-' do
+describe ' As an admin I want to manage product variants ' do
   include AuthenticationHelper
   include WebHelper
 

@@ -177,10 +177,7 @@ distributor_manager.id,
 
       it "updates enterprise preferences" do
         allow(controller).to receive_messages spree_current_user: distributor_manager
-        update_params = { 
-id: distributor,
-enterprise: { show_customer_names_to_suppliers: "1" } 
-}
+        update_params = { id: distributor, enterprise: { show_customer_names_to_suppliers: "1" } }
         spree_post :update, update_params
 
         distributor.reload

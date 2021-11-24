@@ -15,10 +15,7 @@ module Spree
 
     def set_name
       if root
-        root.update_columns(
-          name: name,
-          updated_at: Time.zone.now
-        )
+        root.update_columns( name: name, updated_at: Time.zone.now )
       else
         self.root = Taxon.create!(taxonomy_id: id, name: name)
       end

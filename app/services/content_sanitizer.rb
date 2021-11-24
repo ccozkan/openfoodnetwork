@@ -7,11 +7,7 @@ class ContentSanitizer
 
   ALLOWED_TAGS = ["p", "b", "strong", "em", "i", "a", "u"].freeze
   ALLOWED_ATTRIBUTES = ["href", "target"].freeze
-  FILTERED_CHARACTERS = {
-    "&amp;amp;" => "&",
-    "&amp;" => "&",
-    "&nbsp;" => " "
-  }.freeze
+  FILTERED_CHARACTERS = { "&amp;amp;" => "&", "&amp;" => "&", "&nbsp;" => " " }.freeze
 
   def strip_content(content)
     return unless content.present?

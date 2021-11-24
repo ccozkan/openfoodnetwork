@@ -2,10 +2,7 @@
 
 require "system_helper"
 
-describe "
-  As a site administrator
-  I want to configure the site content
-" do
+describe " As a site administrator I want to configure the site content " do
   include AuthenticationHelper
   include WebHelper
 

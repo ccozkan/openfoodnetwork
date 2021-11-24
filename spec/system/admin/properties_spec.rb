@@ -2,10 +2,7 @@
 
 require "system_helper"
 
-describe '
-    As an admin
-    I want to manage product properties
-' do
+describe ' As an admin I want to manage product properties ' do
   include AuthenticationHelper
 
   it "creating and editing a property" do

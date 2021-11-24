@@ -24,8 +24,7 @@ describe RemoveTransientData do
     it 'deletes log entries older than retention_period' do
       Spree::LogEntry.create(created_at: retention_period - 1.day)
 
-      expect { RemoveTransientData.new.call }
-        .to change(Spree::LogEntry, :count).by(-1)
+      expect { RemoveTransientData.new.call }.to change(Spree::LogEntry, :count).by(-1)
     end
 
     it 'deletes sessions older than retention_period' do
@@ -67,8 +66,7 @@ describe RemoveTransientData do
       it "removes any defunct line item option value records" do
         line_item.delete
 
-        expect{ RemoveTransientData.new.call }
-          .to change{ Spree::OptionValuesLineItem.count }.by(-1)
+        expect{ RemoveTransientData.new.call }.to change{ Spree::OptionValuesLineItem.count }.by(-1)
       end
     end
   end

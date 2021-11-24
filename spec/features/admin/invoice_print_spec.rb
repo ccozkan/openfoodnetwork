@@ -2,11 +2,7 @@
 
 require "spec_helper"
 
-describe '
-    As an administrator
-    I want to print a invoice as PDF
-', 
-js: false do
+describe ' As an administrator I want to print a invoice as PDF ', js: false do
   include WebHelper
   include AuthenticationHelper
 

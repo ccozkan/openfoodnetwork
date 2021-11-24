@@ -6,8 +6,7 @@ module DfcProvider
     class BaseController < ActionController::Base
       rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
-      before_action :check_authorization,
-                    :check_user
+      before_action :check_authorization, :check_user
 
       respond_to :json
 

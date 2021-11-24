@@ -44,11 +44,9 @@ module ProductImport
         }
 
         before do
-          allow(entry_processor)
-            .to receive(:permission_by_id?).with(enterprise.id.to_s) { true }
+          allow(entry_processor).to receive(:permission_by_id?).with(enterprise.id.to_s) { true }
 
-          allow(reset_stock_strategy)
-            .to receive(:reset).with([enterprise.id]) { 2 }
+          allow(reset_stock_strategy).to receive(:reset).with([enterprise.id]) { 2 }
         end
 
         it 'returns the number of products reset' do
@@ -74,8 +72,7 @@ module ProductImport
         let(:reset_stock_strategy) { instance_double(InventoryResetStrategy) }
 
         before do
-          allow(entry_processor)
-            .to receive(:permission_by_id?).with(enterprise.id.to_s) { false }
+          allow(entry_processor).to receive(:permission_by_id?).with(enterprise.id.to_s) { false }
 
           allow(reset_stock_strategy).to receive(:reset).with([nil]) { 0 }
         end

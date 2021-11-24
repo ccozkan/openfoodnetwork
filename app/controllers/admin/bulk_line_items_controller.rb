@@ -17,10 +17,7 @@ module Admin
 
       @pagy, @line_items = pagy(@line_items) if pagination_required?
 
-      render json: {
-        line_items: serialized_line_items,
-        pagination: pagination_data
-      }
+      render json: { line_items: serialized_line_items, pagination: pagination_data }
     end
 
     # PUT /admin/bulk_line_items/:id.json

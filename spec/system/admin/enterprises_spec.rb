@@ -2,10 +2,7 @@
 
 require "system_helper"
 
-describe '
-    As an administrator
-    I want to manage enterprises
-' do
+describe ' As an administrator I want to manage enterprises ' do
   include WebHelper
   include AuthenticationHelper
 

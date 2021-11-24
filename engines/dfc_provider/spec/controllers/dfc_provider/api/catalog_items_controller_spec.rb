@@ -33,12 +33,9 @@ describe DfcProvider::Api::CatalogItemsController, type: :controller do
               end
 
               it 'renders the required content' do
-                expect(response.body)
-                  .to include(variant.name)
-                expect(response.body)
-                  .to include(variant.sku)
-                expect(response.body)
-                  .to include("offers/#{variant.id}")
+                expect(response.body).to include(variant.name)
+                expect(response.body).to include(variant.sku)
+                expect(response.body).to include("offers/#{variant.id}")
               end
             end
 
@@ -60,12 +57,9 @@ describe DfcProvider::Api::CatalogItemsController, type: :controller do
             end
 
             it 'renders the required content' do
-              expect(response.body)
-                .to include(variant.name)
-              expect(response.body)
-                .to include(variant.sku)
-              expect(response.body)
-                .to include("offers/#{variant.id}")
+              expect(response.body).to include(variant.name)
+              expect(response.body).to include(variant.sku)
+              expect(response.body).to include("offers/#{variant.id}")
             end
           end
         end

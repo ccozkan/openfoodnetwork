@@ -119,12 +119,7 @@ receival_instructions: 'receival instructions'
 :order_cycle,
                     coordinator_id: coordinator_id,
                     exchanges: [
-double(
-:exchange, 
-sender_id: supplier_id,
-           receiver_id: coordinator_id, 
-incoming: true
-)
+double( :exchange, sender_id: supplier_id, receiver_id: coordinator_id, incoming: true )
 ],
                     incoming_exchanges: [incoming_exchange],
                     outgoing_exchanges: []
@@ -173,12 +168,7 @@ tag_list: 'wholesale'
 :order_cycle,
                     coordinator_id: coordinator_id,
                     exchanges: [
-double(
-:exchange, 
-sender_id: coordinator_id,
-           receiver_id: distributor_id, 
-incoming: false
-)
+double( :exchange, sender_id: coordinator_id, receiver_id: distributor_id, incoming: false )
 ],
                     incoming_exchanges: [],
                     outgoing_exchanges: [outgoing_exchange]

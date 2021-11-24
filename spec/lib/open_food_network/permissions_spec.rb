@@ -149,9 +149,7 @@ child: hub,
       end
 
       it "returns enterprises as hub_id => [producer, ...]" do
-        expect(permissions.variant_override_enterprises_per_hub).to eq(
-          hub.id => [producer.id]
-        )
+        expect(permissions.variant_override_enterprises_per_hub).to eq( hub.id => [producer.id] )
       end
 
       it "returns only permissions relating to managed hubs" do
@@ -162,9 +160,7 @@ child: e2,
                           permissions_list: [:create_variant_overrides]
 )
 
-        expect(permissions.variant_override_enterprises_per_hub).to eq(
-          hub.id => [producer.id]
-        )
+        expect(permissions.variant_override_enterprises_per_hub).to eq( hub.id => [producer.id] )
       end
 
       it "returns only create_variant_overrides permissions" do
@@ -176,9 +172,7 @@ child: e2,
                           permissions_list: [:manage_products]
 )
 
-        expect(permissions.variant_override_enterprises_per_hub).to eq(
-          hub.id => [producer.id]
-        )
+        expect(permissions.variant_override_enterprises_per_hub).to eq( hub.id => [producer.id] )
       end
 
       describe "hubs connected to the user by relationships only" do

@@ -16,10 +16,7 @@ module Spree
         message = t(:card_could_not_be_saved)
         render json: { 
 flash: { 
-error: I18n.t(
-:spree_gateway_error_flash_for_checkout,
-                                              error: message
-) 
+error: I18n.t( :spree_gateway_error_flash_for_checkout, error: message ) 
 } 
 },
                status: :bad_request
@@ -27,10 +24,7 @@ error: I18n.t(
     rescue Stripe::CardError => e
       render json: { 
 flash: { 
-error: I18n.t(
-:spree_gateway_error_flash_for_checkout,
-                                            error: e.message
-) 
+error: I18n.t( :spree_gateway_error_flash_for_checkout, error: e.message ) 
 } 
 },
              status: :bad_request

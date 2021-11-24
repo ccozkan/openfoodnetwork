@@ -108,10 +108,7 @@ module Spree
 
       if originator.present?
         amount = originator.compute_amount(calculable || adjustable)
-        update_columns(
-          amount: amount,
-          updated_at: Time.zone.now,
-        )
+        update_columns( amount: amount, updated_at: Time.zone.now, )
       end
 
       amount

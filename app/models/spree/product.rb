@@ -50,10 +50,7 @@ module Spree
     belongs_to :supplier, class_name: 'Enterprise', touch: true
     belongs_to :primary_taxon, class_name: 'Spree::Taxon', touch: true
 
-    has_one :master,
-            -> { where is_master: true },
-            class_name: 'Spree::Variant',
-            dependent: :destroy
+    has_one :master, -> { where is_master: true }, class_name: 'Spree::Variant', dependent: :destroy
 
     has_many :variants, 
 -> {
@@ -121,8 +118,7 @@ presence: true,
     validates :unit_value, presence: { if: ->(p) { %w(weight volume).include? p.variant_unit } }
     validates :variant_unit_scale,
               presence: { if: ->(p) { %w(weight volume).include? p.variant_unit } }
-    validates :variant_unit_name,
-              presence: { if: ->(p) { p.variant_unit == 'items' } }
+    validates :variant_unit_name, presence: { if: ->(p) { p.variant_unit == 'items' } }
 
     attr_accessor :option_values_hash
 

@@ -80,8 +80,7 @@ module Spree
     # Users can manage order cycles if they manage a sells own/any enterprise
     # OR if they manage a producer which is included in any order cycles
     def can_manage_order_cycles?(user)
-      can_manage_orders?(user) ||
-        OrderCycle.visible_by(user).any?
+      can_manage_orders?(user) || OrderCycle.visible_by(user).any?
     end
 
     # Users can manage orders if they have a sells own/any enterprise.
@@ -95,8 +94,7 @@ module Spree
 
     def add_shopping_abilities(user)
       can [:destroy], Spree::LineItem do |item|
-        user == item.order.user &&
-          item.order.changes_allowed?
+        user == item.order.user && item.order.changes_allowed?
       end
 
       can [:cancel], Spree::Order do |order|
@@ -228,9 +226,7 @@ Spree::Variant do |variant|
       can [:admin, :index, :read, :update, :bulk_update, :bulk_reset], VariantOverride do |vo|
         next false unless vo.hub.present? && vo.variant&.product&.supplier.present?
 
-        hub_auth = OpenFoodNetwork::Permissions.new(user)
-          .variant_override_hubs
-          .include? vo.hub
+        hub_auth = OpenFoodNetwork::Permissions.new(user).variant_override_hubs.include? vo.hub
 
         producer_auth = OpenFoodNetwork::Permissions.new(user)
           .variant_override_producers
@@ -240,8 +236,7 @@ Spree::Variant do |variant|
       end
 
       can [:admin, :create, :update], InventoryItem do |ii|
-        next false unless ii.enterprise.present? &&
-                          ii.variant&.product&.supplier.present?
+        next false unless ii.enterprise.present? && ii.variant&.product&.supplier.present?
 
         hub_auth = OpenFoodNetwork::Permissions.new(user)
           .variant_override_hubs
@@ -349,8 +344,7 @@ ProductImport::ProductImporter
           true
         else
           order = adjustment.order
-          user.enterprises.include?(order.distributor) ||
-            order.order_cycle&.coordinated_by?(user)
+          user.enterprises.include?(order.distributor) || order.order_cycle&.coordinated_by?(user)
         end
       end
 

@@ -33,9 +33,7 @@ module Api
       private
 
       def render_variant_count
-        render plain: {
-          count: variants.count
-        }.to_json
+        render plain: { count: variants.count }.to_json
       end
 
       def variants
@@ -47,8 +45,7 @@ module Api
       end
 
       def renderer
-        @renderer ||= ExchangeProductsRenderer
-          .new(@order_cycle, spree_current_user)
+        @renderer ||= ExchangeProductsRenderer.new(@order_cycle, spree_current_user)
       end
 
       def load_data_from_exchange
@@ -76,10 +73,7 @@ module Api
         results = products
 
         if pagination_required?
-          @pagy, results = pagy(
-results,
-                                items: params[:per_page] || DEFAULT_PER_PAGE
-)
+          @pagy, results = pagy( results, items: params[:per_page] || DEFAULT_PER_PAGE )
         end
 
         serialized_products = ActiveModel::ArraySerializer.new(
@@ -88,10 +82,7 @@ results,
           order_cycle: @order_cycle
         )
 
-        render json: {
-          products: serialized_products,
-          pagination: pagination_data
-        }
+        render json: { products: serialized_products, pagination: pagination_data }
       end
 
       def exchange_params

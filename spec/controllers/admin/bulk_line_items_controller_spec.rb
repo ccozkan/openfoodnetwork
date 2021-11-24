@@ -299,8 +299,7 @@ order: order1,
           end
 
           it 'applies enterprise fees locking the order with an exclusive row lock' do
-            allow(Spree::LineItem)
-              .to receive(:find).with(line_item1.id.to_s).and_return(line_item1)
+            allow(Spree::LineItem).to receive(:find).with(line_item1.id.to_s).and_return(line_item1)
 
             expect(line_item1.order).to receive(:with_lock).and_call_original
             expect(line_item1.order).to receive(:update_line_item_fees!)

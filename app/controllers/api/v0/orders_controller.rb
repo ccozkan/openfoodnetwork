@@ -16,16 +16,10 @@ module Api
         orders = SearchOrders.new(params, current_api_user).orders
 
         if pagination_required?
-          @pagy, orders = pagy(
-orders,
-                               items: params[:per_page] || default_per_page
-)
+          @pagy, orders = pagy( orders, items: params[:per_page] || default_per_page )
         end
 
-        render json: {
-          orders: serialized_orders(orders),
-          pagination: pagination_data
-        }
+        render json: { orders: serialized_orders(orders), pagination: pagination_data }
       end
 
       def ship
@@ -62,10 +56,7 @@ orders,
       end
 
       def serialized_orders(orders)
-        ActiveModel::ArraySerializer.new(
-          orders,
-          each_serializer: Api::Admin::OrderSerializer
-        )
+        ActiveModel::ArraySerializer.new( orders, each_serializer: Api::Admin::OrderSerializer )
       end
 
       def order

@@ -124,17 +124,13 @@ with_items: true,
           let(:shipping_method) {
             create(
 :shipping_method,
-                   calculator: Calculator::FlatPercentItemTotal.new(
-                     preferred_flat_percent: 10
-                   )
+                   calculator: Calculator::FlatPercentItemTotal.new( preferred_flat_percent: 10 )
 )
           }
           let(:payment_method) {
             create(
 :payment_method,
-                   calculator: Calculator::FlatPercentItemTotal.new(
-                     preferred_flat_percent: 20
-                   )
+                   calculator: Calculator::FlatPercentItemTotal.new( preferred_flat_percent: 20 )
 )
           }
 

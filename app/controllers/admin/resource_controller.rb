@@ -198,9 +198,7 @@ module Admin
 object, 
 options
       else
-        url_helper.public_send "edit_admin_#{object_name}_url",
-                               object, 
-options
+        url_helper.public_send "edit_admin_#{object_name}_url", object, options
       end
     end
 

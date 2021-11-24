@@ -59,9 +59,7 @@ c.states.map { |s|
   end
 
   def redirect_to_shop?
-    !@order ||
-      !@order.checkout_allowed? ||
-      @order.completed?
+    !@order || !@order.checkout_allowed? || @order.completed?
   end
 
   def redirect_to_cart_path

@@ -23,9 +23,7 @@ module Permissions
 
     # Any orders that the user can edit
     def editable_orders
-      orders = Spree::Order
-        .where(managed_orders_where_values
-          .or(coordinated_orders_where_values))
+      orders = Spree::Order.where(managed_orders_where_values.or(coordinated_orders_where_values))
 
       filtered_orders(orders)
     end
@@ -33,8 +31,7 @@ module Permissions
     def visible_line_items
       Spree::LineItem.where(
 id:
-        editable_line_items.select(:id) |
-        produced_line_items.select("spree_line_items.id")
+        editable_line_items.select(:id) | produced_line_items.select("spree_line_items.id")
 )
     end
 

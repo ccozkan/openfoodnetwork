@@ -1194,11 +1194,7 @@ shipping_fee: shipping_fee,
 
       it "updates shipping fees" do
         order.shipments = [
-create(
-:shipment_with, 
-:shipping_method,
-                                  shipping_method: shipping_method
-)
+create( :shipment_with, :shipping_method, shipping_method: shipping_method )
 ]
         order.save
 
@@ -1379,8 +1375,7 @@ product.variants.first,
       end
 
       it 'raises' do
-        expect { order.restart_checkout! }
-          .to raise_error(StateMachines::InvalidTransition)
+        expect { order.restart_checkout! }.to raise_error(StateMachines::InvalidTransition)
       end
     end
 

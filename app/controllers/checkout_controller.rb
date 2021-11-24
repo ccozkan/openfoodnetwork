@@ -91,9 +91,7 @@ class CheckoutController < ::BaseController
   end
 
   def redirect_to_shop?
-    !@order ||
-      !@order.checkout_allowed? ||
-      @order.completed?
+    !@order || !@order.checkout_allowed? || @order.completed?
   end
 
   def valid_order_line_items?

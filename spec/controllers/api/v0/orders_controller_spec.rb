@@ -163,9 +163,7 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
         end
 
         it 'can sort orders by total' do
-          get :index, 
-params: { q: { completed_at_not_null: true, s: 'total desc' } },
-                      as: :json
+          get :index, params: { q: { completed_at_not_null: true, s: 'total desc' } }, as: :json
 
           expect(json_response['orders']).to eq serialized_orders([order4, order2, order1, order3])
         end
@@ -179,12 +177,7 @@ params: { q: { completed_at_not_null: true, s: 'total desc' } },
         it 'returns pagination data when query params contain :per_page]' do
           get :index, params: { per_page: 15, page: 1 }
 
-          pagination_data = {
-            'results' => 2,
-            'pages' => 1,
-            'page' => 1,
-            'per_page' => 15
-          }
+          pagination_data = { 'results' => 2, 'pages' => 1, 'page' => 1, 'per_page' => 15 }
 
           expect(json_response['pagination']).to eq pagination_data
         end

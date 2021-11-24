@@ -140,8 +140,7 @@ child: distributor,
 
     # And I add a distributor fee
     within("tr.distributor-#{distributor.id}") { click_button 'Add fee' }
-    select 'My distributor',
-           from: 'order_cycle_outgoing_exchange_0_enterprise_fees_0_enterprise_id'
+    select 'My distributor', from: 'order_cycle_outgoing_exchange_0_enterprise_fees_0_enterprise_id'
     select 'Distributor fee',
            from: 'order_cycle_outgoing_exchange_0_enterprise_fees_0_enterprise_fee_id'
 

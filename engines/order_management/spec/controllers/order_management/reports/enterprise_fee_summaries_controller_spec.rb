@@ -25,10 +25,7 @@ describe OrderManagement::Reports::EnterpriseFeeSummariesController, type: :cont
   describe "#create" do
     context "when the parameters are valid" do
       it "sends the generated report in the correct format" do
-        post :create, 
-params: {
-          report: { start_at: "2018-10-09 07:30:00" }, report_format: "csv"
-        }
+        post :create, params: { report: { start_at: "2018-10-09 07:30:00" }, report_format: "csv" }
 
         expect(response.status).to eq 200
         expect(response.body).not_to be_blank
@@ -38,10 +35,7 @@ params: {
 
     context "when the parameters are invalid" do
       it "renders the report form with an error" do
-        post :create, 
-params: {
-          report: { start_at: "invalid date" }, report_format: "csv"
-        }
+        post :create, params: { report: { start_at: "invalid date" }, report_format: "csv" }
 
         expect(flash[:error]).to eq(I18n.t("invalid_filter_parameters", scope: i18n_scope))
         expect(response).to render_template(new_template_path)

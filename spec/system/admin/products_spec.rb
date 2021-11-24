@@ -2,10 +2,7 @@
 
 require "system_helper"
 
-describe '
-    As an admin
-    I want to set a supplier and distributor(s) for a product
-' do
+describe ' As an admin I want to set a supplier and distributor(s) for a product ' do
   include WebHelper
   include AuthenticationHelper
 

@@ -2,10 +2,7 @@
 
 require 'system_helper'
 
-describe '
-    As an admin
-    I want to manage payments
-' do
+describe ' As an admin I want to manage payments ' do
   include AuthenticationHelper
 
   let(:order) { create(:completed_order_with_fees) }

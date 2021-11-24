@@ -20,8 +20,7 @@ module Api
 
         def variants
           variants =
- if order_cycle.present? &&
-    order_cycle.prefers_product_selection_from_coordinator_inventory_only?
+ if order_cycle.present? && order_cycle.prefers_product_selection_from_coordinator_inventory_only?
 
                        object.variants.visible_for(order_cycle.coordinator)
                      else

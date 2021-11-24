@@ -18,8 +18,7 @@ describe EnterpriseMailer do
       EnterpriseMailer.welcome(enterprise).deliver_now
 
       mail = ActionMailer::Base.deliveries.first
-      expect(mail.subject)
-        .to eq "#{enterprise.name} is now on #{Spree::Config[:site_name]}"
+      expect(mail.subject).to eq "#{enterprise.name} is now on #{Spree::Config[:site_name]}"
     end
   end
 

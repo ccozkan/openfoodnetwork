@@ -41,10 +41,7 @@ module Stripe
 { email: @card.user.email },
                                              stripe_account: @stripe_account
 )
-      attach_payment_method_to_customer(
-new_payment_method.id,
-                                        new_customer.id
-)
+      attach_payment_method_to_customer( new_payment_method.id, new_customer.id )
 
       add_metadata_to_payment_method(new_payment_method.id)
 

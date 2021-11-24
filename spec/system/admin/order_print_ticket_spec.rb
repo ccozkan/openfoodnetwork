@@ -2,11 +2,7 @@
 
 require "system_helper"
 
-describe '
-    As an administrator
-    I want to print a ticket for an order
-', 
-js: true do
+describe ' As an administrator I want to print a ticket for an order ', js: true do
   include CheckoutHelper
   include AuthenticationHelper
   include ActionView::Helpers::NumberHelper

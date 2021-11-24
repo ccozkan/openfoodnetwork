@@ -51,9 +51,7 @@ class_name: 'Spree::Product',
   has_many :enterprise_fees
   has_many :enterprise_roles, dependent: :destroy
   has_many :users, through: :enterprise_roles
-  belongs_to :owner, 
-class_name: 'Spree::User',
-                     inverse_of: :owned_enterprises
+  belongs_to :owner, class_name: 'Spree::User', inverse_of: :owned_enterprises
   has_and_belongs_to_many :payment_methods, 
 join_table: 'distributors_payment_methods',
                                             class_name: 'Spree::PaymentMethod',

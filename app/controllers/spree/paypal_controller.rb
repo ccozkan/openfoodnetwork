@@ -12,9 +12,7 @@ module Spree
     def express
       order = current_order || raise(ActiveRecord::RecordNotFound)
 
-      pp_request = provider.build_set_express_checkout(
-        express_checkout_request_details(order)
-      )
+      pp_request = provider.build_set_express_checkout( express_checkout_request_details(order) )
 
       begin
         pp_response = provider.set_express_checkout(pp_request)

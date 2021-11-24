@@ -24,8 +24,7 @@ describe Spree::Admin::OverviewController, type: :controller do
 
           it "redirects to the welcome page for the enterprise" do
             spree_get :index
-            expect(response)
-              .to redirect_to welcome_admin_enterprise_path(enterprise)
+            expect(response).to redirect_to welcome_admin_enterprise_path(enterprise)
           end
         end
 

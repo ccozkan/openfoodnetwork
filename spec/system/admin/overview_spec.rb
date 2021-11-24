@@ -65,8 +65,7 @@ js: true do
       before do
         @enterprise_user.enterprise_roles.build(enterprise: d1).save
         @enterprise_user.enterprise_roles.build(enterprise: d2).save
-        @enterprise_user
-          .enterprise_roles.build(enterprise: non_distributor_enterprise).save
+        @enterprise_user.enterprise_roles.build(enterprise: non_distributor_enterprise).save
       end
 
       it "displays information about the enterprise" do

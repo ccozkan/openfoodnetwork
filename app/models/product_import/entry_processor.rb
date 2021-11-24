@@ -44,10 +44,7 @@ module ProductImport
       end
 
       if total_saved_count.zero?
-        @importer.errors.add(
-:importer,
-                             I18n.t(:product_importer_products_save_error)
-)
+        @importer.errors.add( :importer, I18n.t(:product_importer_products_save_error) )
       end
     end
 
@@ -91,8 +88,7 @@ module ProductImport
     end
 
     def reset_stock_strategy
-      @reset_stock_strategy ||= reset_stock_strategy_factory
-        .new(settings.updated_ids)
+      @reset_stock_strategy ||= reset_stock_strategy_factory.new(settings.updated_ids)
     end
 
     def total_saved_count
@@ -163,8 +159,7 @@ module ProductImport
       # If we've already added a new product with these attributes
       # from this spreadsheet, mark this entry as a new variant with
       # the new product id, as this is a now variant of that product...
-      if @already_created[entry.enterprise_id] &&
-         @already_created[entry.enterprise_id][entry.name]
+      if @already_created[entry.enterprise_id] && @already_created[entry.enterprise_id][entry.name]
 
         product_id = @already_created[entry.enterprise_id][entry.name]
         @validator.mark_as_new_variant(entry, product_id)

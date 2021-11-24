@@ -13,8 +13,7 @@ module Sets
     end
 
     def collection_attributes=(attributes)
-      @collection = Spree::Product
-        .where(id: attributes.each_value.map { |product| product[:id] })
+      @collection = Spree::Product.where(id: attributes.each_value.map { |product| product[:id] })
       @collection_hash = attributes
     end
 
@@ -52,8 +51,7 @@ module Sets
 
       ExchangeVariantDeleter.new.delete(product) if original_supplier != product.supplier_id
 
-      update_product_variants(product, attributes) &&
-        update_product_master(product, attributes)
+      update_product_variants(product, attributes) && update_product_master(product, attributes)
     end
 
     def update_product_only_attributes(product, attributes)

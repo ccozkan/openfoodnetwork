@@ -10,9 +10,7 @@ module DfcProvider
     end
 
     def scope
-      Spree::Variant
-        .joins(product: :supplier)
-        .where('enterprises.id' => @enterprise.id)
+      Spree::Variant.joins(product: :supplier).where('enterprises.id' => @enterprise.id)
     end
   end
 end

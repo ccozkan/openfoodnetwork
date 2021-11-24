@@ -31,12 +31,9 @@ describe DfcProvider::Api::EnterprisesController, type: :controller do
             end
 
             it 'renders the required content' do
-              expect(response.body)
-                .to include(product.name)
-              expect(response.body)
-                .to include(product.sku)
-              expect(response.body)
-                .to include("offers/#{product.variants.first.id}")
+              expect(response.body).to include(product.name)
+              expect(response.body).to include(product.sku)
+              expect(response.body).to include("offers/#{product.variants.first.id}")
             end
           end
 

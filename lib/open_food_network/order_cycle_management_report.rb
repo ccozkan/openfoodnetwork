@@ -56,9 +56,7 @@ module OpenFoodNetwork
 
     def orders
       search_result = search.result.order(:completed_at)
-      orders_with_balance = OutstandingBalance.new(search_result)
-        .query
-        .select('spree_orders.*')
+      orders_with_balance = OutstandingBalance.new(search_result).query.select('spree_orders.*')
 
       filter(orders_with_balance)
     end

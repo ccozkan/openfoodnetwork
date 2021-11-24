@@ -2,11 +2,7 @@
 
 require 'system_helper'
 
-describe '
-    As an administrator
-    I want to manage simple order cycles
-', 
-js: true do
+describe ' As an administrator I want to manage simple order cycles ', js: true do
   include AdminHelper
   include AuthenticationHelper
   include WebHelper

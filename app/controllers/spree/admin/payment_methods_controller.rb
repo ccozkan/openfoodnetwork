@@ -32,10 +32,7 @@ module Spree
         force_environment
 
         if @payment_method.type.to_s != payment_method_class
-          @payment_method.update_columns(
-            type: payment_method_class,
-            updated_at: Time.zone.now
-          )
+          @payment_method.update_columns( type: payment_method_class, updated_at: Time.zone.now )
           @payment_method = PaymentMethod.find(params[:id])
         end
 
@@ -79,10 +76,7 @@ module Spree
           authorize! :show_provider_preferences, @payment_method
           payment_method_type = params[:provider_type]
           if @payment_method['type'].to_s != payment_method_type
-            @payment_method.update_columns(
-              type: payment_method_type,
-              updated_at: Time.zone.now
-            )
+            @payment_method.update_columns( type: payment_method_type, updated_at: Time.zone.now )
             @payment_method = PaymentMethod.find(params[:pm_id])
           end
         else
@@ -132,8 +126,7 @@ module Spree
       # Show Stripe as an option if enabled, or if the
       # current payment_method is already a Stripe method
       def show_stripe?
-        Spree::Config.stripe_connect_enabled ||
-          stripe_payment_method?
+        Spree::Config.stripe_connect_enabled || stripe_payment_method?
       end
 
       def restrict_stripe_account_change
@@ -187,10 +180,7 @@ module Spree
       def validate_calculator_preferred_value
         return if calculator_preferred_values.all? do |value|
           preferred_value_from_params = gateway_params.dig(:calculator_attributes, value)
-          preferred_value_from_params.nil? || Float(
-preferred_value_from_params,
-                                                    exception: false
-)
+          preferred_value_from_params.nil? || Float( preferred_value_from_params, exception: false )
         end
 
         flash[:error] = I18n.t(:calculator_preferred_value_error)

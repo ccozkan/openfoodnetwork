@@ -131,8 +131,7 @@ incoming: false,
 
   it "includes the total" do
     expect(mail.body.encoded).to include 'Total: $50.00'
-    expect(body_as_html(mail).find("tr.total-row"))
-      .to have_selector("td", text: "$50.00")
+    expect(body_as_html(mail).find("tr.total-row")).to have_selector("td", text: "$50.00")
   end
 
   it "sends no mail when the producer has no orders" do

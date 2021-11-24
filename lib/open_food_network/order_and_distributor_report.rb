@@ -60,9 +60,7 @@ module OpenFoodNetwork
       if @permissions.editable_orders.empty?
         orders
       else
-        orders
-          .where('spree_orders.id NOT IN (?)',
-                @permissions.editable_orders.select(&:id))
+        orders.where('spree_orders.id NOT IN (?)', @permissions.editable_orders.select(&:id))
       end
     end
 

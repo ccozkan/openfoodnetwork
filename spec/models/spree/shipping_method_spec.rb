@@ -135,20 +135,14 @@ module Spree
 
     context "validations" do
       it "validates presence of name" do
-        shipping_method = build_stubbed(
-          :shipping_method,
-          name: ''
-        )
+        shipping_method = build_stubbed( :shipping_method, name: '' )
         expect(shipping_method).not_to be_valid
         expect(shipping_method.errors[:name].first).to eq "can't be blank"
       end
 
       context "shipping category" do
         it "validates presence of at least one" do
-          shipping_method = build_stubbed(
-            :shipping_method,
-            shipping_categories: []
-          )
+          shipping_method = build_stubbed( :shipping_method, shipping_categories: [] )
           expect(shipping_method).not_to be_valid
           expect(shipping_method.errors[:base].first).to eq "You need to select at least one shipping category"
         end

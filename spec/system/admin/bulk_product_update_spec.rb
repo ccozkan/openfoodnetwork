@@ -2,11 +2,7 @@
 
 require 'system_helper'
 
-describe '
-  As an Administrator
-  I want to be able to manage products in bulk
-', 
-js: true do
+describe ' As an Administrator I want to be able to manage products in bulk ', js: true do
   include AdminHelper
   include AuthenticationHelper
   include WebHelper

@@ -42,12 +42,10 @@ module Admin
     private
 
     def load_data
-      @hubs = OpenFoodNetwork::Permissions.new(spree_current_user)
-        .variant_override_hubs.by_name
+      @hubs = OpenFoodNetwork::Permissions.new(spree_current_user).variant_override_hubs.by_name
 
       # Used in JS to look up the name of the producer of each product
-      @producers = OpenFoodNetwork::Permissions.new(spree_current_user)
-        .variant_override_producers
+      @producers = OpenFoodNetwork::Permissions.new(spree_current_user).variant_override_producers
 
       @hub_permissions = OpenFoodNetwork::Permissions.new(spree_current_user)
         .variant_override_enterprises_per_hub

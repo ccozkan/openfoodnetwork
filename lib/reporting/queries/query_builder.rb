@@ -21,15 +21,11 @@ module Reporting
       end
 
       def scoped_to_orders(orders_relation)
-        reflect query.where(
-          line_item_table[:order_id].in(Arel.sql(orders_relation.to_sql))
-        )
+        reflect query.where( line_item_table[:order_id].in(Arel.sql(orders_relation.to_sql)) )
       end
 
       def scoped_to_line_items(line_items_relation)
-        reflect query.where(
-          line_item_table[:id].in(Arel.sql(line_items_relation.to_sql))
-        )
+        reflect query.where( line_item_table[:id].in(Arel.sql(line_items_relation.to_sql)) )
       end
 
       def with_managed_orders(orders_relation)

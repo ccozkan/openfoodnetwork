@@ -2,11 +2,7 @@
 
 require 'system_helper'
 
-describe '
-    As an administrator
-    I want to list and filter order cycles
-', 
-js: true do
+describe ' As an administrator I want to list and filter order cycles ', js: true do
   include AdminHelper
   include AuthenticationHelper
   include WebHelper
@@ -39,12 +35,7 @@ name: 'oc5',
 orders_close_at: 2.weeks.ago
 )
     oc1 = create(:order_cycle, name: 'oc1')
-    oc0 = create(
-:simple_order_cycle, 
-name: 'oc0',
-                     orders_open_at: nil, 
-orders_close_at: nil
-)
+    oc0 = create( :simple_order_cycle, name: 'oc0', orders_open_at: nil, orders_close_at: nil )
     oc7 = create(
 :simple_order_cycle, 
 name: 'oc7',

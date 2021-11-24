@@ -104,8 +104,7 @@ address_attributes: {
     let(:non_managing_user) { create(:user) }
 
     before do
-      allow(Enterprise)
-        .to receive(:find_by).with({ permalink: enterprise.id.to_s }) { enterprise }
+      allow(Enterprise).to receive(:find_by).with({ permalink: enterprise.id.to_s }) { enterprise }
       allow(controller).to receive(:spree_current_user) { non_managing_user }
     end
 

@@ -13,8 +13,7 @@ describe Spree::Admin::ProductsController, type: :controller do
 
       before do
         controller_login_as_enterprise_user [s_managed]
-        spree_post :bulk_update,
-                   "products" => [{ "id" => product.id, "name" => "Pine nuts" }]
+        spree_post :bulk_update, "products" => [{ "id" => product.id, "name" => "Pine nuts" }]
       end
 
       it "denies access" do
@@ -65,9 +64,7 @@ describe Spree::Admin::ProductsController, type: :controller do
                      }
                    ]
 
-        expect(response).to redirect_to(
-          '/api/v0/products/bulk_products'
-        )
+        expect(response).to redirect_to( '/api/v0/products/bulk_products' )
       end
     end
 

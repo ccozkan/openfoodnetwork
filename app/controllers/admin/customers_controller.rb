@@ -91,8 +91,7 @@ json: {
     end
 
     def user_can_create_customer?
-      spree_current_user.admin? ||
-        spree_current_user.enterprises.include?(@customer.enterprise)
+      spree_current_user.admin? || spree_current_user.enterprises.include?(@customer.enterprise)
     end
 
     def ams_prefix_whitelist

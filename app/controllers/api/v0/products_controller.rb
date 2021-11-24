@@ -60,14 +60,10 @@ module Api
           .merge(product_scope)
 
         if params[:import_date].present?
-          product_query = product_query
-            .imported_on(params[:import_date])
-            .group_by_products_id
+          product_query = product_query.imported_on(params[:import_date]).group_by_products_id
         end
 
-        @products = product_query
-          .ransack(query_params_with_defaults)
-          .result
+        @products = product_query.ransack(query_params_with_defaults).result
 
         render_paged_products @products
       end
@@ -144,10 +140,7 @@ module Api
           each_serializer: product_serializer
         )
 
-        render json: {
-          products: serialized_products,
-          pagination: pagination_data
-        }
+        render json: { products: serialized_products, pagination: pagination_data }
       end
 
       def query_params_with_defaults
