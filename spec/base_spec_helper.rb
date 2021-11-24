@@ -88,9 +88,9 @@ RSpec.configure do |config|
   end
 
   # Geocoding
-  config.before(:each) {
+  config.before(:each) do
     allow_any_instance_of(Spree::Address).to receive(:geocode).and_return([1, 1])
-  }
+  end
 
   default_country_id = DefaultCountry.id
   checkout_zone = Spree::Config[:checkout_zone]

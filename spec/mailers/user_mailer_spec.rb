@@ -52,9 +52,9 @@ describe Spree::UserMailer do
       token = "random"
       email = Spree::UserMailer.confirmation_instructions(user, token)
 
-      expect {
+      expect do
         email.deliver_now
-      }.to change {
+      end.to change {
         ActionMailer::Base.deliveries.count
       }.by(1)
     end

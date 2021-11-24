@@ -120,11 +120,11 @@ module Spree
 
           def checkout_steps
             steps = self.class.checkout_steps
-              .each_with_object([]) { |(step, options), checkout_steps|
+              .each_with_object([]) do |(step, options), checkout_steps|
               next if options.include?(:if) && !options[:if].call(self)
 
               checkout_steps << step
-            }.map(&:to_s)
+            end.map(&:to_s)
             # Ensure there is always a complete step
             steps << "complete" unless steps.include?("complete")
             steps

@@ -7,14 +7,14 @@ module Spree
     describe "#match" do
       let!(:zone) { create(:zone_with_member) }
       let!(:order) { create(:order, distributor: hub, bill_address: create(:address)) }
-      let!(:tax_rate) {
+      let!(:tax_rate) do
         create(
 :tax_rate,
 included_in_price: true,
            calculator: ::Calculator::FlatRate.new(preferred_amount: 0.1),
 zone: zone
 )
-      }
+      end
 
       describe "when the order's hub charges sales tax" do
         let(:hub) { create(:distributor_enterprise, charges_sales_tax: true) }

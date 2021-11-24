@@ -77,7 +77,7 @@ module OpenFoodNetwork
                  "#{email_user}.email AS user_email"
 ])
         .to_a
-        .map { |x|
+        .map do |x|
         {
           name: x.name,
           sells: x.sells,
@@ -87,7 +87,7 @@ module OpenFoodNetwork
           relationship_type: relationship_type,
           user_email: x.user_email
         }.stringify_keys
-      }
+      end
     end
 
     def users_and_enterprises

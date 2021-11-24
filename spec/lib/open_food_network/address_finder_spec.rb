@@ -88,7 +88,7 @@ module OpenFoodNetwork
     describe "last_used_bill_address" do
       let(:distributor) { create(:distributor_enterprise) }
       let(:address) { create(:address) }
-      let(:order) {
+      let(:order) do
         create(
 :completed_order_with_totals,
 user: nil,
@@ -96,7 +96,7 @@ email: email,
 distributor: distributor,
                               bill_address: nil
 )
-      }
+      end
       let(:finder) { AddressFinder.new(email) }
 
       context "when searching by email is not allowed" do
@@ -155,7 +155,7 @@ distributor: distributor,
         end
 
         context "and an order with a required ship address exists" do
-          let(:order) {
+          let(:order) do
             create(
 :shipped_order,
 user: nil,
@@ -164,7 +164,7 @@ distributor: distributor,
 shipments: [],
                 ship_address: address
 )
-          }
+          end
 
           before do
             order.shipping_method.update_attribute(:require_ship_address, true)
@@ -182,7 +182,7 @@ shipments: [],
         end
 
         context "and an order with a ship address exists" do
-          let(:order) {
+          let(:order) do
             create(
 :shipped_order,
 user: nil,
@@ -191,7 +191,7 @@ distributor: distributor,
 shipments: [],
                 ship_address: address
 )
-          }
+          end
 
           context "and the shipping method requires an address" do
             before { order.shipping_method.update_attribute(:require_ship_address, true) }
@@ -211,7 +211,7 @@ shipments: [],
         end
 
         context "and an order without a ship address exists" do
-          let!(:order) {
+          let!(:order) do
             create(
 :shipped_order,
 user: nil,
@@ -220,7 +220,7 @@ distributor: distributor,
 shipments: [],
                 ship_address: nil
 )
-          }
+          end
 
           it "return nil" do
             expect(finder.send(:last_used_ship_address)).to eq nil

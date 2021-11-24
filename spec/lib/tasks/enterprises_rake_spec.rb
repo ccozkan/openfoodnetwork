@@ -12,9 +12,9 @@ describe 'enterprises.rake' do
         Rake.application.rake_require 'tasks/enterprises'
         Rake::Task.define_task(:environment)
 
-        expect {
+        expect do
           Rake.application.invoke_task "ofn:remove_enterprise[#{enterprise.id}]"
-        }.to change(Enterprise, :count).by(-1)
+        end.to change(Enterprise, :count).by(-1)
       end
     end
   end

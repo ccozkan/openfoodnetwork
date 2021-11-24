@@ -25,27 +25,27 @@ module Stripe
       end
 
       context "when payment intent is valid" do
-        let(:payment_intent_response_body) {
+        let(:payment_intent_response_body) do
           JSON.generate(id: payment_intent_id, status: "requires_capture")
-        }
+        end
 
         it "returns payment intent id and does not raise" do
-          expect {
+          expect do
             result = validator.call
             expect(result).to eq payment_intent_response_body
-          }.to_not raise_error Stripe::StripeError
+          end.to_not raise_error Stripe::StripeError
         end
       end
 
       context "when payment intent contains an error" do
-        let(:payment_intent_response_body) {
+        let(:payment_intent_response_body) do
           JSON.generate(id: payment_intent_id, last_payment_error: { message: "No money" })
-        }
+        end
 
         it "raises Stripe error with payment intent last_payment_error as message" do
-          expect {
+          expect do
             validator.call
-          }.to raise_error Stripe::StripeError, "No money"
+          end.to raise_error Stripe::StripeError, "No money"
         end
       end
     end

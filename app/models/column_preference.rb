@@ -28,9 +28,9 @@ in: proc { |p|
       stored_preference = stored_preferences.find_by(column_name: column_name)
       if stored_preference
         stored_preference.assign_attributes(
-default_attributes.select { |k, _v|
+default_attributes.select do |k, _v|
                                               stored_preference[k].nil?
-                                            }
+                                            end
 )
         preferences << stored_preference
       else

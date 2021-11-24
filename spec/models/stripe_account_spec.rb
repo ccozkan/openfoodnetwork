@@ -9,9 +9,9 @@ describe StripeAccount do
     let!(:enterprise2) { create(:enterprise) }
     let(:client_id) { 'ca_abc123' }
     let(:stripe_user_id) { 'acct_abc123' }
-    let!(:stripe_account) {
+    let!(:stripe_account) do
       create(:stripe_account, enterprise: enterprise, stripe_user_id: stripe_user_id)
-    }
+    end
 
     before do
       Stripe.api_key = "sk_test_12345"
@@ -47,9 +47,9 @@ body: JSON.generate(error: 'invalid_grant', error_description: "Some Message"))
     end
 
     context "if the account is also associated with another Enterprise" do
-      let!(:another_stripe_account) {
+      let!(:another_stripe_account) do
         create(:stripe_account, enterprise: enterprise2, stripe_user_id: stripe_user_id)
-      }
+      end
 
       it "Doesn't make a Stripe API disconnection request " do
         expect(Stripe::OAuth).to_not receive(:deauthorize)

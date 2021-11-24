@@ -13,9 +13,9 @@ describe ProxyOrder, type: :model do
     end
 
     context "when the order cycle is not yet closed" do
-      let(:proxy_order) {
+      let(:proxy_order) do
         create(:proxy_order, subscription: subscription, order: order, order_cycle: order_cycle)
-      }
+      end
       before { order_cycle.update(orders_open_at: 1.day.ago, orders_close_at: 3.days.from_now) }
 
       context "and an order has not been initialised" do
@@ -55,9 +55,9 @@ describe ProxyOrder, type: :model do
     end
 
     context "when the order cycle is already closed" do
-      let(:proxy_order) {
+      let(:proxy_order) do
         create(:proxy_order, subscription: subscription, order: order, order_cycle: order_cycle)
-      }
+      end
       before { order_cycle.update(orders_open_at: 3.days.ago, orders_close_at: 1.minute.ago) }
 
       context "and an order has not been initialised" do
@@ -85,7 +85,7 @@ describe ProxyOrder, type: :model do
 
   describe "resume" do
     let!(:shipment) { create(:shipment) }
-    let(:order) {
+    let(:order) do
       create(
 :order_with_totals,
 ship_address: create(:address),
@@ -93,7 +93,7 @@ ship_address: create(:address),
                     payments: [create(:payment)],
                     distributor: shipment.shipping_method.distributors.first
 )
-    }
+    end
     let(:proxy_order) { create(:proxy_order, order: order, canceled_at: Time.zone.now) }
     let(:order_cycle) { proxy_order.order_cycle }
 

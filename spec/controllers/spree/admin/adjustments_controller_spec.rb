@@ -10,20 +10,20 @@ module Spree
 
     describe "index" do
       let!(:order) { create(:completed_order_with_totals) }
-      let!(:adjustment1) {
+      let!(:adjustment1) do
         create(
 :adjustment,
 originator_type: "Spree::ShippingMethod",
 order: order,
              adjustable: order.shipment
 )
-      }
-      let!(:adjustment2) {
+      end
+      let!(:adjustment2) do
         create(:adjustment, originator_type: "Spree::PaymentMethod", eligible: true, order: order)
-      }
-      let!(:adjustment3) {
+      end
+      let!(:adjustment3) do
         create(:adjustment, originator_type: "Spree::PaymentMethod", eligible: false, order: order)
-      }
+      end
       let!(:adjustment4) { create(:adjustment, originator_type: "EnterpriseFee", order: order) }
       let!(:adjustment5) { create(:adjustment, originator: nil, adjustable: order, order: order) }
 
@@ -54,14 +54,14 @@ order: order,
 
       describe "creating an adjustment" do
         let(:tax_category_param) { '' }
-        let(:params) {
+        let(:params) do
           {
             order_id: order.number,
             adjustment: {
               label: 'Testing included tax', amount: '110', tax_category_id: tax_category_param
             }
           }
-        }
+        end
 
         context "when no tax category is specified" do
           it "doesn't apply tax" do
@@ -101,7 +101,7 @@ order: order,
 
         context "when the tax category has multiple rates for the same tax zone" do
           let(:tax_category) { create(:tax_category) }
-          let!(:tax_rate1) {
+          let!(:tax_rate1) do
             create(
 :tax_rate,
 amount: 0.1,
@@ -109,8 +109,8 @@ zone: zone,
 included_in_price: false,
            tax_category: tax_category
 )
-          }
-          let!(:tax_rate2) {
+          end
+          let!(:tax_rate2) do
             create(
 :tax_rate,
 amount: 0.2,
@@ -118,16 +118,16 @@ zone: zone,
 included_in_price: false,
            tax_category: tax_category
 )
-          }
+          end
           let(:tax_category_param) { tax_category.id.to_s }
-          let(:params) {
+          let(:params) do
             {
               order_id: order.number,
               adjustment: {
                 label: 'Testing multiple rates', amount: '100', tax_category_id: tax_category_param
               }
             }
-          }
+          end
 
           it "applies both rates" do
             spree_post :create, params
@@ -149,7 +149,7 @@ included_in_price: false,
       describe "updating an adjustment" do
         let(:old_tax_category) { create(:tax_category) }
         let(:tax_category_param) { '' }
-        let(:params) {
+        let(:params) do
           {
             id: adjustment.id,
             order_id: order.number,
@@ -157,8 +157,8 @@ included_in_price: false,
               label: 'Testing included tax', amount: '110', tax_category_id: tax_category_param
             }
           }
-        }
-        let(:adjustment) {
+        end
+        let(:adjustment) do
           create(
 :adjustment,
 adjustable: order,
@@ -166,7 +166,7 @@ order: order,
              amount: 1100,
 tax_category: old_tax_category
 )
-        }
+        end
 
         context "when no tax category is specified" do
           it "doesn't apply tax" do
@@ -208,9 +208,9 @@ tax_category: old_tax_category
 
     describe "#delete" do
       let!(:order) { create(:completed_order_with_totals) }
-      let(:payment_fee) {
+      let(:payment_fee) do
         create(:adjustment, amount: 0.50, order: order, adjustable: order.payments.first)
-      }
+      end
 
       context "as an enterprise user with edit permissions on the order" do
         before do
@@ -244,31 +244,31 @@ tax_category: old_tax_category
     describe "with a cancelled order" do
       let(:order) { create(:completed_order_with_totals) }
       let(:tax_rate) { create(:tax_rate, amount: 0.1, calculator: ::Calculator::DefaultTax.new) }
-      let(:adjustment) {
+      let(:adjustment) do
         create(:adjustment, adjustable: order, order: order, amount: 1100)
-      }
+      end
 
       before do
         expect(order.cancel).to eq true
       end
 
       it "doesn't create adjustments" do
-        expect {
+        expect do
           spree_post :create,
 order_id: order.number,
                               adjustment: { label: "Testing", amount: "110" }
-        }.to_not change { [Adjustment.count, order.reload.total] }
+        end.to_not change { [Adjustment.count, order.reload.total] }
 
         expect(response).to redirect_to spree.admin_order_adjustments_path(order)
       end
 
       it "doesn't change adjustments" do
-        expect {
+        expect do
           spree_put :update,
 order_id: order.number,
 id: adjustment.id,
                              adjustment: { label: "Testing", amount: "110" }
-        }.to_not change { [adjustment.reload.amount, order.reload.total] }
+        end.to_not change { [adjustment.reload.amount, order.reload.total] }
 
         expect(response).to redirect_to spree.admin_order_adjustments_path(order)
       end

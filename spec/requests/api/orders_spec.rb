@@ -56,13 +56,13 @@ required: false,
           }
         }
         context "when there are four orders with different properties set" do
-          let!(:order_dist_1) {
+          let!(:order_dist_1) do
             create(:order_with_distributor, email: "specific_name@example.com")
-          }
+          end
           let!(:li1) { create(:line_item, order: order_dist_1) }
           let!(:order_dist_2) { create(:order_with_totals_and_distribution) }
           let!(:li2) { create(:line_item, order: order_dist_2) }
-          let!(:order_dist_1_complete) {
+          let!(:order_dist_1_complete) do
             create(
 :completed_order_with_totals,
 distributor: order_dist_1.distributor,
@@ -70,20 +70,20 @@ state: 'complete',
                                completed_at: Time.zone.today - 7.days,
 line_items_count: 1
 )
-          }
-          let!(:order_dist_1_credit_owed) {
+          end
+          let!(:order_dist_1_credit_owed) do
             create(
 :order,
 distributor: order_dist_1.distributor,
 payment_state: 'credit_owed',
         completed_at: Time.zone.today
 )
-          }
+          end
           let!(:li4) { create(:line_item_with_shipment, order: order_dist_1_credit_owed) }
 
-          let!(:order_empty) {
+          let!(:order_empty) do
             create(:order_with_line_items, line_items_count: 0)
-          }
+          end
 
           let(:user) { order_dist_1.distributor.owner }
           let(:'X-Spree-Token') do
@@ -167,9 +167,9 @@ payment_state: 'credit_owed',
           end
 
           context "and queried by a specific order_cycle" do
-            let(:'q[order_cycle_id_eq]') {
+            let(:'q[order_cycle_id_eq]') do
               order_dist_2.order_cycle.id
-            }
+            end
 
             before { order_dist_2.distributor.update owner: user }
 

@@ -18,12 +18,12 @@ module OpenFoodNetwork
         describe "summing all the per-item fees for the variant in the specified hub + order cycle" do
           let(:enterprise_fee1) { create(:enterprise_fee, amount: 20) }
           let(:enterprise_fee2) { create(:enterprise_fee, amount: 3) }
-          let(:enterprise_fee3) {
+          let(:enterprise_fee3) do
             create(:enterprise_fee, calculator: Calculator::FlatRate.new(preferred_amount: 2))
-          }
+          end
 
           describe "supplier fees" do
-            let!(:exchange1) {
+            let!(:exchange1) do
               create(
 :exchange,
 order_cycle: order_cycle,
@@ -33,8 +33,8 @@ incoming: true,
            enterprise_fees: [enterprise_fee1],
 variants: [product1.master]
 )
-            }
-            let!(:exchange2) {
+            end
+            let!(:exchange2) do
               create(
 :exchange,
 order_cycle: order_cycle,
@@ -44,7 +44,7 @@ incoming: true,
            enterprise_fees: [enterprise_fee2],
 variants: [product2.master]
 )
-            }
+            end
 
             it "calculates via regular computation" do
               expect(
@@ -78,7 +78,7 @@ distributor,
           end
 
           describe "coordinator fees" do
-            let!(:exchange) {
+            let!(:exchange) do
               create(
 :exchange,
 order_cycle: order_cycle,
@@ -88,7 +88,7 @@ incoming: false,
            enterprise_fees: [],
 variants: [product1.master]
 )
-            }
+            end
 
             before do
               order_cycle.coordinator_fees = [enterprise_fee1, enterprise_fee2, enterprise_fee3]
@@ -114,7 +114,7 @@ distributor,
           end
 
           describe "distributor fees" do
-            let!(:exchange) {
+            let!(:exchange) do
               create(
 :exchange,
 order_cycle: order_cycle,
@@ -124,7 +124,7 @@ incoming: false,
            enterprise_fees: [enterprise_fee1, enterprise_fee2, enterprise_fee3],
 variants: [product1.master]
 )
-            }
+            end
 
             it "sums via regular computation" do
               expect(
@@ -147,15 +147,15 @@ distributor,
         end
 
         describe "summing percentage fees for the variant" do
-          let!(:enterprise_fee1) {
+          let!(:enterprise_fee1) do
             create(
 :enterprise_fee,
 amount: 20,
 fee_type: "admin",
                  calculator: ::Calculator::FlatPercentPerItem.new(preferred_flat_percent: 20)
 )
-          }
-          let!(:exchange) {
+          end
+          let!(:exchange) do
             create(
 :exchange,
 order_cycle: order_cycle,
@@ -165,7 +165,7 @@ incoming: false,
            enterprise_fees: [enterprise_fee1],
 variants: [product1.master]
 )
-          }
+          end
 
           it "sums via regular computation" do
             expect(
@@ -193,7 +193,7 @@ distributor,
         let!(:ef_packing) { create(:enterprise_fee, fee_type: 'packing', amount: 7.89) }
         let!(:ef_transport) { create(:enterprise_fee, fee_type: 'transport', amount: 0.12) }
         let!(:ef_fundraising) { create(:enterprise_fee, fee_type: 'fundraising', amount: 3.45) }
-        let!(:exchange) {
+        let!(:exchange) do
           create(
 :exchange,
 order_cycle: order_cycle,
@@ -203,7 +203,7 @@ incoming: false,
            enterprise_fees: [ef_admin, ef_sales, ef_packing, ef_transport, ef_fundraising],
            variants: [product1.master]
 )
-        }
+        end
 
         describe "regular computation" do
           it "returns a breakdown of fees" do
@@ -274,10 +274,10 @@ fundraising: 3.45
         let(:order) { create(:order, distributor: distributor, order_cycle: order_cycle) }
         let!(:line_item) { create(:line_item, order: order, variant: product1.master) }
         let(:enterprise_fee_line_item) { create(:enterprise_fee) }
-        let(:enterprise_fee_order) {
+        let(:enterprise_fee_order) do
           create(:enterprise_fee, calculator: Calculator::FlatRate.new(preferred_amount: 2))
-        }
-        let!(:exchange) {
+        end
+        let!(:exchange) do
           create(
 :exchange,
 order_cycle: order_cycle,
@@ -286,7 +286,7 @@ receiver: distributor,
            incoming: false,
 variants: [product1.master]
 )
-        }
+        end
 
         before { order.reload }
 
@@ -322,7 +322,7 @@ distributor,
       let!(:ef_exchange) { create(:enterprise_fee) }
       let!(:ef_coordinator) { create(:enterprise_fee) }
       let!(:ef_other_distributor) { create(:enterprise_fee) }
-      let!(:exchange) {
+      let!(:exchange) do
         create(
 :exchange,
 sender: order_cycle.coordinator,
@@ -331,7 +331,7 @@ receiver: distributor,
 enterprise_fees: [ef_exchange],
 variants: [v]
 )
-      }
+      end
       let(:v) { create(:variant) }
       let(:indexed_variants) { { v.id => v } }
       let(:indexed_enterprise_fees) { subject.instance_variable_get(:@indexed_enterprise_fees) }

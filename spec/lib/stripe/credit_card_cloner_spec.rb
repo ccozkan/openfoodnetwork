@@ -19,9 +19,9 @@ module Stripe
       let(:new_payment_method_id) { "pm_456" }
       let(:payment_method_response_mock) { { status: 200, body: payment_method_response_body } }
 
-      let(:payment_method_response_body) {
+      let(:payment_method_response_body) do
         JSON.generate(id: new_payment_method_id)
-      }
+      end
 
       before do
         Stripe.api_key = "sk_test_12345"

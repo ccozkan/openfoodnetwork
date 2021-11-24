@@ -10,7 +10,7 @@ describe ' As an administrator I want to manage adjustments on orders ', js: tru
   let!(:distributor) { create(:distributor_enterprise, charges_sales_tax: true) }
   let!(:order_cycle) { create(:simple_order_cycle, distributors: [distributor]) }
 
-  let!(:order) {
+  let!(:order) do
     create(
 :order_with_totals_and_distribution,
 user: user,
@@ -19,9 +19,9 @@ distributor: distributor,
 state: 'complete',
 payment_state: 'balance_due'
 )
-  }
+  end
   let!(:tax_category) { create(:tax_category, name: 'GST') }
-  let!(:tax_rate) {
+  let!(:tax_rate) do
     create(
 :tax_rate,
 name: 'GST',
@@ -29,7 +29,7 @@ calculator: build(:calculator, preferred_amount: 10),
            zone: create(:zone_with_member),
 tax_category: tax_category
 )
-  }
+  end
 
   before do
     order.finalize!

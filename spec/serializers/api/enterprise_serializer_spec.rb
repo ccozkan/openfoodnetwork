@@ -6,7 +6,7 @@ describe Api::EnterpriseSerializer do
   let(:serializer) { Api::EnterpriseSerializer.new enterprise, data: data }
   let(:enterprise) { create(:distributor_enterprise, is_primary_producer: true) }
   let(:taxon) { create(:taxon) }
-  let(:data) {
+  let(:data) do
     OpenStruct.new(
 earliest_closing_times: {},
 active_distributors: [],
@@ -15,7 +15,7 @@ current_distributed_taxons: { enterprise.id => [123] },
 supplied_taxons: { enterprise.id => [456] },
 shipping_method_services: {}
 )
-  }
+  end
 
   it "serializes an enterprise" do
     expect(serializer.to_json).to match enterprise.name

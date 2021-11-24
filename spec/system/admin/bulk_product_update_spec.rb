@@ -207,9 +207,9 @@ display_as: "bin"
       let(:variant) { product.variants.first }
       let(:hub) { create(:distributor_enterprise) }
       let!(:override) { create(:variant_override, variant: variant, hub: hub) }
-      let(:variant_overrides_tip) {
+      let(:variant_overrides_tip) do
         I18n.t('spree.admin.products.index.products_variant.variant_has_n_overrides', n: 1)
-      }
+      end
 
       it "displays an icon indicating a variant has overrides" do
         visit spree.admin_products_path
@@ -746,12 +746,12 @@ unit_description: '(bottle)'
     let(:distributor_unmanaged) { create(:distributor_enterprise, name: 'Distributor Unmanaged') }
     let!(:product_supplied) { create(:product, supplier: supplier_managed1, price: 10.0) }
     let!(:product_not_supplied) { create(:product, supplier: supplier_unmanaged) }
-    let!(:product_supplied_permitted) {
+    let!(:product_supplied_permitted) do
       create(:product, name: 'Product Permitted', supplier: supplier_permitted, price: 10.0)
-    }
-    let(:product_supplied_inactive) {
+    end
+    let(:product_supplied_inactive) do
       create(:product, supplier: supplier_managed1, price: 10.0, available_on: 1.week.from_now)
-    }
+    end
 
     let!(:supplier_permitted_relationship) do
       create(

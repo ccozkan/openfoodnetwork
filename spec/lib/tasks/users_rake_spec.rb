@@ -23,9 +23,9 @@ describe 'users.rake' do
 
     context 'when the user does not exist' do
       it 'raises' do
-        expect {
+        expect do
           RemoveEnterpriseLimit.new(-1).call
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        end.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

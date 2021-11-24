@@ -10,29 +10,29 @@ describe ColumnPreference, type: :model do
     end
 
     let(:user) { create(:user) }
-    let!(:col1_pref) {
+    let!(:col1_pref) do
       ColumnPreference.create(
 user_id: user.id,
 action_name: 'some_action',
 column_name: 'col1',
 visible: true
 )
-    }
-    let!(:col2_pref) {
+    end
+    let!(:col2_pref) do
       ColumnPreference.create(
 user_id: user.id,
 action_name: 'some_action',
 column_name: 'col2',
 visible: false
 )
-    }
-    let(:defaults) {
+    end
+    let(:defaults) do
       {
         col1: { name: "col1", visible: false },
         col2: { name: "col2", visible: true },
         col3: { name: "col3", visible: false },
       }
-    }
+    end
 
     context "when the user has preferences stored for the given action" do
       before do

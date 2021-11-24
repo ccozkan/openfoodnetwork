@@ -21,7 +21,7 @@ describe "Concurrent checkouts", concurrency: true, type: :request do
   let(:breakpoint) { Mutex.new }
 
   let(:address_params) { address.attributes.except("id") }
-  let(:order_params) {
+  let(:order_params) do
     {
       "payments_attributes" => [
         {
@@ -32,7 +32,7 @@ describe "Concurrent checkouts", concurrency: true, type: :request do
       "bill_address_attributes" => address_params,
       "ship_address_attributes" => address_params,
     }
-  }
+  end
   let(:params) { { format: :json, order: order_params } }
 
   before do

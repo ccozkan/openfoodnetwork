@@ -86,9 +86,9 @@ order_cycle,
       end
 
       context "with variant overrides" do
-        let!(:override) {
+        let!(:override) do
           create(:variant_override, hub: distributor, variant: variant, count_on_hand: 0)
-        }
+        end
 
         it "does not return product when an override is out of stock" do
           expect(

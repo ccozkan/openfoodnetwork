@@ -109,14 +109,14 @@ describe 'Enterprises Index' do
     let(:distributor2) { create(:distributor_enterprise, name: 'Another Distributor') }
     let(:distributor3) { create(:distributor_enterprise, name: 'Yet Another Distributor') }
     let(:enterprise_manager) { create(:user) }
-    let!(:er) {
+    let!(:er) do
       create(
 :enterprise_relationship,
 parent: distributor3,
 child: distributor1,
                           permissions_list: [:edit_profile]
 )
-    }
+    end
 
     before(:each) do
       enterprise_manager.enterprise_roles.build(enterprise: supplier1).save
@@ -174,9 +174,9 @@ child: distributor1,
 
   describe "as the owner of an enterprise" do
     let!(:user) { create(:user) }
-    let!(:owned_distributor) {
+    let!(:owned_distributor) do
       create(:distributor_enterprise, name: 'Owned Distributor', owner: user)
-    }
+    end
 
     before do
       login_as user

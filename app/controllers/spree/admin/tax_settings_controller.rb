@@ -7,9 +7,9 @@ module Spree
         Spree::Config.set(preferences_params.to_h)
 
         respond_to do |format|
-          format.html {
+          format.html do
             redirect_to spree.edit_admin_tax_settings_path
-          }
+          end
         end
       end
 

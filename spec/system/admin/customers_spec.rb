@@ -89,7 +89,7 @@ without_options: [unmanaged_distributor.name]
 
         # Deleting
         create(:order, customer: customer1)
-        expect {
+        expect do
           within "tr#c_#{customer1.id}" do
             accept_alert do
               find("a.delete-customer").click
@@ -98,21 +98,21 @@ without_options: [unmanaged_distributor.name]
           expect(page).to have_selector "#info-dialog .text",
                                         text: I18n.t('admin.customers.destroy.has_associated_orders')
           click_button "OK"
-        }.to_not change { Customer.count }
+        end.to_not change { Customer.count }
 
-        expect {
+        expect do
           within "tr#c_#{customer2.id}" do
             accept_alert do
               find("a.delete-customer").click
             end
           end
           expect(page).to have_no_selector "tr#c_#{customer2.id}"
-        }.to change { Customer.count }
+        end.to change { Customer.count }
 .by(-1)
       end
 
       describe "for a shop with multiple customers" do
-        let!(:order1) {
+        let!(:order1) do
           create(
 :order,
 total: 0,
@@ -122,8 +122,8 @@ user: nil,
         state: 'complete',
 customer: customer1
 )
-        }
-        let!(:order2) {
+        end
+        let!(:order2) do
           create(
 :order,
 total: 99,
@@ -133,8 +133,8 @@ user: nil,
         state: 'complete',
 customer: customer2
 )
-        }
-        let!(:order3) {
+        end
+        let!(:order3) do
           create(
 :order,
 total: 0,
@@ -144,12 +144,12 @@ user: nil,
         state: 'complete',
 customer: customer4
 )
-        }
+        end
 
-        let!(:payment_method) {
+        let!(:payment_method) do
           create(:stripe_sca_payment_method, distributors: [managed_distributor1])
-        }
-        let!(:payment1) {
+        end
+        let!(:payment1) do
           create(
 :payment,
 order: order1,
@@ -158,7 +158,7 @@ payment_method: payment_method,
           response_code: 'pi_123',
 amount: 88.00
 )
-        }
+        end
 
         before do
           customer4.update enterprise: managed_distributor1
@@ -185,7 +185,7 @@ amount: 88.00
         end
 
         context "with an additional negative payment (or refund)" do
-          let!(:payment2) {
+          let!(:payment2) do
             create(
 :payment,
 order: order1,
@@ -194,7 +194,7 @@ payment_method: payment_method,
           response_code: 'pi_123',
 amount: -25.00
 )
-          }
+          end
 
           before do
             order1.user = user
@@ -387,35 +387,35 @@ amount: -25.00
 
           it "creates customers when the email provided is valid" do
             # When an invalid email without domain is used it is checked by a regex, in the UI
-            expect {
+            expect do
               click_link('New Customer')
               fill_in 'email', with: "email_with_no_domain@"
               click_button 'Add Customer'
               expect(page).to have_selector "#new-customer-dialog .error",
                                             text: "Please enter a valid email address"
-            }.to_not change { Customer.of(managed_distributor1).count }
+            end.to_not change { Customer.of(managed_distributor1).count }
 
             # When an invalid email with domain is used it is checked by the "valid_email2" gem #7886
-            expect {
+            expect do
               fill_in 'email', with: "invalid_email_with_no_complete_domain@incomplete"
               click_button 'Add Customer'
               expect(page).to have_selector "#new-customer-dialog .error", text: "Email is invalid"
-            }.to_not change { Customer.of(managed_distributor1).count }
+            end.to_not change { Customer.of(managed_distributor1).count }
 
             # When an existing email is used
-            expect {
+            expect do
               fill_in 'email', with: customer1.email
               click_button 'Add Customer'
               expect(page).to have_selector "#new-customer-dialog .error",
                                             text: "Email is associated with an existing customer"
-            }.to_not change { Customer.of(managed_distributor1).count }
+            end.to_not change { Customer.of(managed_distributor1).count }
 
             # When a new valid email is used
-            expect {
+            expect do
               fill_in 'email', with: "new@email.com"
               click_button 'Add Customer'
               expect(page).not_to have_selector "#new-customer-dialog"
-            }.to change { Customer.of(managed_distributor1).count }
+            end.to change { Customer.of(managed_distributor1).count }
 .from(2).to(3)
           end
         end

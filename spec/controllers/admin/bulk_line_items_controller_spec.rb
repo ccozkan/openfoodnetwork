@@ -6,7 +6,7 @@ describe Admin::BulkLineItemsController, type: :controller do
   describe '#index' do
     render_views
 
-    let(:line_item_attributes) {
+    let(:line_item_attributes) do
       %i[
 id
 quantity
@@ -18,9 +18,9 @@ units_product
 units_variant
          order
 ]
-    }
+    end
     let!(:dist1) { FactoryBot.create(:distributor_enterprise) }
-    let!(:order1) {
+    let!(:order1) do
       FactoryBot.create(
 :order,
 state: 'complete',
@@ -28,8 +28,8 @@ completed_at: 1.day.ago,
 distributor: dist1,
         billing_address: FactoryBot.create(:address)
 )
-    }
-    let!(:order2) {
+    end
+    let!(:order2) do
       FactoryBot.create(
 :order,
 state: 'complete',
@@ -37,8 +37,8 @@ completed_at: Time.zone.now,
 distributor: dist1,
         billing_address: FactoryBot.create(:address)
 )
-    }
-    let!(:order3) {
+    end
+    let!(:order3) do
       FactoryBot.create(
 :order,
 state: 'complete',
@@ -46,7 +46,7 @@ completed_at: Time.zone.now,
 distributor: dist1,
         billing_address: FactoryBot.create(:address)
 )
-    }
+    end
     let!(:line_item1) { FactoryBot.create(:line_item_with_shipment, order: order1) }
     let!(:line_item2) { FactoryBot.create(:line_item_with_shipment, order: order2) }
     let!(:line_item3) { FactoryBot.create(:line_item_with_shipment, order: order2) }
@@ -83,17 +83,17 @@ distributor: dist1,
 
         it "formats final_weight_volume as a float" do
           expect(
-json_response['line_items'].map { |line_item|
+json_response['line_items'].map do |line_item|
                    line_item['final_weight_volume']
-                 }.all? { |fwv| fwv.is_a?(Float) }
+                 end.all? { |fwv| fwv.is_a?(Float) }
 ).to eq(true)
         end
 
         it "returns distributor object with id key" do
           expect(
-json_response['line_items'].map { |line_item|
+json_response['line_items'].map do |line_item|
                    line_item['supplier']
-                 }.all? { |d| d.key?('id') }
+                 end.all? { |d| d.key?('id') }
 ).to eq(true)
         end
       end
@@ -125,7 +125,7 @@ json_response['line_items'].map { |line_item|
       let(:distributor2) { create(:distributor_enterprise) }
       let(:coordinator) { create(:distributor_enterprise) }
       let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
-      let!(:order1) {
+      let!(:order1) do
         FactoryBot.create(
 :order,
 order_cycle: order_cycle,
@@ -134,22 +134,22 @@ state: 'complete',
 distributor: distributor1,
 billing_address: FactoryBot.create(:address)
 )
-      }
-      let!(:line_item1) {
+      end
+      let!(:line_item1) do
         FactoryBot.create(
 :line_item_with_shipment,
 order: order1,
                           product: FactoryBot.create(:product, supplier: supplier)
 )
-      }
-      let!(:line_item2) {
+      end
+      let!(:line_item2) do
         FactoryBot.create(
 :line_item_with_shipment,
 order: order1,
                           product: FactoryBot.create(:product, supplier: supplier)
 )
-      }
-      let!(:order2) {
+      end
+      let!(:order2) do
         FactoryBot.create(
 :order,
 order_cycle: order_cycle,
@@ -158,14 +158,14 @@ state: 'complete',
 distributor: distributor2,
 billing_address: FactoryBot.create(:address)
 )
-      }
-      let!(:line_item3) {
+      end
+      let!(:line_item3) do
         FactoryBot.create(
 :line_item_with_shipment,
 order: order2,
                           product: FactoryBot.create(:product, supplier: supplier)
 )
-      }
+      end
 
       context "producer enterprise" do
         before do
@@ -235,7 +235,7 @@ order: order2,
     let(:distributor1) { create(:distributor_enterprise) }
     let(:coordinator) { create(:distributor_enterprise) }
     let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
-    let!(:order1) {
+    let!(:order1) do
       FactoryBot.create(
 :order,
 order_cycle: order_cycle,
@@ -244,8 +244,8 @@ state: 'complete',
 distributor: distributor1,
 billing_address: FactoryBot.create(:address)
 )
-    }
-    let!(:line_item1) {
+    end
+    let!(:line_item1) do
       line_item1 = FactoryBot.create(
 :line_item_with_shipment,
 order: order1,
@@ -253,7 +253,7 @@ order: order1,
 )
       # make sure shipment is available through db reloads of this line_item
       line_item1.tap(&:save!)
-    }
+    end
     let(:line_item_params) { { quantity: 3, final_weight_volume: 3000, price: 3.00 } }
     let(:params) { { id: line_item1.id, order_id: order1.number, line_item: line_item_params } }
 
@@ -349,7 +349,7 @@ order: order1,
     let(:distributor1) { create(:distributor_enterprise) }
     let(:coordinator) { create(:distributor_enterprise) }
     let(:order_cycle) { create(:simple_order_cycle, coordinator: coordinator) }
-    let!(:order1) {
+    let!(:order1) do
       FactoryBot.create(
 :order,
 order_cycle: order_cycle,
@@ -358,14 +358,14 @@ state: 'complete',
 distributor: distributor1,
 billing_address: FactoryBot.create(:address)
 )
-    }
-    let!(:line_item1) {
+    end
+    let!(:line_item1) do
       FactoryBot.create(
 :line_item_with_shipment,
 order: order1,
                           product: FactoryBot.create(:product, supplier: supplier)
 )
-    }
+    end
     let(:params) { { id: line_item1.id, order_id: order1.number } }
 
     before do
@@ -377,9 +377,9 @@ order: order1,
       before { params[:format] = :json }
 
       it 'destroys the line item' do
-        expect {
+        expect do
           spree_delete :destroy, params
-        }.to change { Spree::LineItem.where(id: line_item1).count }
+        end.to change { Spree::LineItem.where(id: line_item1).count }
 .from(1).to(0)
       end
 
@@ -397,40 +397,40 @@ order: order1,
 
   context "updating the order's taxes, fees, and states" do
     let(:distributor) { create(:distributor_enterprise_with_tax) }
-    let!(:order_cycle) {
+    let!(:order_cycle) do
       create(
 :order_cycle,
 distributors: [distributor],
               coordinator_fees: [line_item_fee1, line_item_fee2, order_fee]
 )
-    }
+    end
     let(:outgoing_exchange) { order_cycle.exchanges.outgoing.first }
 
-    let!(:order) {
+    let!(:order) do
       create(
 :order_with_line_items,
 line_items_count: 2,
 distributor: distributor,
                         order_cycle: order_cycle
 )
-    }
+    end
     let(:line_item1) { order.line_items.first }
     let(:line_item2) { order.line_items.last }
 
     let!(:zone) { create(:zone_with_member) }
     let(:tax_included) { true }
     let(:tax_rate5) { create(:tax_rate, amount: 0.05, zone: zone, included_in_price: tax_included) }
-    let(:tax_rate10) {
+    let(:tax_rate10) do
       create(:tax_rate, amount: 0.10, zone: zone, included_in_price: tax_included)
-    }
-    let(:tax_rate15) {
+    end
+    let(:tax_rate15) do
       create(:tax_rate, amount: 0.15, zone: zone, included_in_price: tax_included)
-    }
+    end
     let(:tax_cat5) { create(:tax_category, tax_rates: [tax_rate5]) }
     let(:tax_cat10) { create(:tax_category, tax_rates: [tax_rate10]) }
     let(:tax_cat15) { create(:tax_category, tax_rates: [tax_rate15]) }
 
-    let!(:shipping_method) {
+    let!(:shipping_method) do
       create(
 :shipping_method_with,
 :shipping_fee,
@@ -438,10 +438,10 @@ tax_category: tax_cat5,
 name: "Shiperoo",
                                       distributors: [distributor]
 )
-    }
+    end
     let!(:payment_method) { create(:payment_method, :per_item, distributors: [distributor]) }
 
-    let(:line_item_fee1) {
+    let(:line_item_fee1) do
       create(
 :enterprise_fee,
 :per_item,
@@ -449,10 +449,10 @@ amount: 1,
 inherits_tax_category: false,
                             tax_category: tax_cat15
 )
-    }
-    let(:line_item_fee2) {
+    end
+    let(:line_item_fee2) do
       create(:enterprise_fee, :per_item, amount: 2, inherits_tax_category: true)
-    }
+    end
     let(:order_fee) { create(:enterprise_fee, :flat_rate, amount: 3, tax_category: tax_cat15) }
 
     before do

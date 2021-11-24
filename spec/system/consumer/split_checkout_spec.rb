@@ -8,11 +8,11 @@ describe "As a consumer, I want to checkout my order", js: true do
   let!(:zone) { create(:zone_with_member) }
   let(:supplier) { create(:supplier_enterprise) }
   let(:distributor) { create(:distributor_enterprise, charges_sales_tax: true) }
-  let(:product) {
+  let(:product) do
     create(:taxed_product, supplier: supplier, price: 10, zone: zone, tax_rate_amount: 0.1)
-  }
+  end
   let(:variant) { product.variants.first }
-  let!(:order_cycle) {
+  let!(:order_cycle) do
     create(
 :simple_order_cycle,
 suppliers: [supplier],
@@ -20,8 +20,8 @@ distributors: [distributor],
                      coordinator: create(:distributor_enterprise),
 variants: [variant]
 )
-  }
-  let(:order) {
+  end
+  let(:order) do
     create(
 :order,
 order_cycle: order_cycle,
@@ -29,13 +29,13 @@ distributor: distributor,
 bill_address_id: nil,
         ship_address_id: nil
 )
-  }
+  end
 
   let(:fee_tax_rate) { create(:tax_rate, amount: 0.10, zone: zone, included_in_price: true) }
   let(:fee_tax_category) { create(:tax_category, tax_rates: [fee_tax_rate]) }
   let(:enterprise_fee) { create(:enterprise_fee, amount: 1.23, tax_category: fee_tax_category) }
 
-  let(:free_shipping) {
+  let(:free_shipping) do
     create(
 :shipping_method,
 require_ship_address: true,
@@ -43,10 +43,10 @@ name: "Free Shipping",
 description: "yellow",
                   calculator: Calculator::FlatRate.new(preferred_amount: 0.00)
 )
-  }
+  end
   let(:shipping_tax_rate) { create(:tax_rate, amount: 0.25, zone: zone, included_in_price: true) }
   let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
-  let(:shipping_with_fee) {
+  let(:shipping_with_fee) do
     create(
 :shipping_method,
 require_ship_address: false,
@@ -55,7 +55,7 @@ tax_category: shipping_tax_category,
 description: "blue",
                   calculator: Calculator::FlatRate.new(preferred_amount: 4.56)
 )
-  }
+  end
   let!(:payment_method) { create(:payment_method, distributors: [distributor]) }
 
   before do

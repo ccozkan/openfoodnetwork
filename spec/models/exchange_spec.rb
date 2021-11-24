@@ -60,12 +60,12 @@ incoming: e1.incoming
     let(:coordinator) { create(:distributor_enterprise) }
     let(:distributor) { create(:distributor_enterprise) }
     let(:oc) { create(:simple_order_cycle, coordinator: coordinator) }
-    let(:incoming_exchange) {
+    let(:incoming_exchange) do
       oc.exchanges.create! sender: supplier, receiver: coordinator, incoming: true
-    }
-    let(:outgoing_exchange) {
+    end
+    let(:outgoing_exchange) do
       oc.exchanges.create! sender: coordinator, receiver: distributor, incoming: false
-    }
+    end
 
     describe "reporting whether it is an incoming exchange" do
       it "returns true for incoming exchanges" do
@@ -151,12 +151,12 @@ incoming: e1.incoming
     end
 
     describe "finding exchanges by direction" do
-      let!(:incoming_exchange) {
+      let!(:incoming_exchange) do
         oc.exchanges.create! sender: supplier,    receiver: coordinator, incoming: true
-      }
-      let!(:outgoing_exchange) {
+      end
+      let!(:outgoing_exchange) do
         oc.exchanges.create! sender: coordinator, receiver: distributor, incoming: false
-      }
+      end
 
       it "finds incoming exchanges" do
         expect(Exchange.incoming).to eq([incoming_exchange])

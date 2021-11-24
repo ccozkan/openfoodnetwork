@@ -276,13 +276,13 @@ receiver_id: coordinator_id,
         let!(:v7) { create(:variant) } # Existing + Request Add + Not Editable + Not Incoming
         let!(:v8) { create(:variant) } # Existing + Request Add + Editable + Not Incoming
         let!(:v9) { create(:variant) } # Not Existing + Request Add + Editable + Not Incoming
-        let!(:exchange) {
+        let!(:exchange) do
           create(
 :exchange,
 incoming: false,
            variant_ids: [v3.id, v4.id, v5.id, v6.id, v7.id, v8.id]
 )
-        }
+        end
         let!(:oc) { exchange.order_cycle }
         let!(:enterprise) { exchange.receiver }
         let!(:coordinator) { oc.coordinator }
@@ -348,9 +348,9 @@ incoming: false,
         let!(:v5) { create(:variant) } # Existing + Request Remove + Editable
         let!(:v6) { create(:variant) } # Existing + Request Remove + Not Editable
         let!(:v7) { create(:variant) } # Existing + Not mentioned + Editable
-        let!(:exchange) {
+        let!(:exchange) do
           create(:exchange, incoming: true, variant_ids: [v3.id, v4.id, v5.id, v6.id, v7.id])
-        }
+        end
         let!(:oc) { exchange.order_cycle }
         let!(:enterprise) { exchange.sender }
         let!(:coordinator) { oc.coordinator }
@@ -547,7 +547,7 @@ enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id]
         let!(:enterprise_fee2) { create(:enterprise_fee) }
         let!(:enterprise_fee3) { create(:enterprise_fee) }
 
-        let!(:exchange) {
+        let!(:exchange) do
           create(
 :exchange,
 order_cycle: oc,
@@ -557,7 +557,7 @@ incoming: incoming,
            variant_ids: [variant1.id, variant2.id],
 enterprise_fee_ids: [enterprise_fee1.id, enterprise_fee2.id]
 )
-        }
+        end
 
         context "as a manager of the coorindator" do
           before do

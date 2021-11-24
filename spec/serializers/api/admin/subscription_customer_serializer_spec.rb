@@ -7,9 +7,9 @@ describe Api::Admin::SubscriptionCustomerSerializer do
   let(:address) { build(:address) }
   let(:customer) { build(:customer) }
   let(:serializer) { Api::Admin::SubscriptionCustomerSerializer.new(customer) }
-  let(:finder_mock) {
+  let(:finder_mock) do
     instance_double(OpenFoodNetwork::AddressFinder, bill_address: address, ship_address: address)
-  }
+  end
 
   before do
     allow(serializer).to receive(:finder) { finder_mock }

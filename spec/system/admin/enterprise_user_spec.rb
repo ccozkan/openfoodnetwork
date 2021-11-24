@@ -12,9 +12,9 @@ describe ' As a Super User I want to setup users to manage an enterprise ' do
   let(:supplier_profile) { create(:supplier_enterprise, name: 'Supplier profile', sells: 'none') }
   let!(:distributor1) { create(:distributor_enterprise, name: 'Distributor 3') }
   let!(:distributor2) { create(:distributor_enterprise, name: 'Distributor 4') }
-  let(:distributor_profile) {
+  let(:distributor_profile) do
     create(:distributor_enterprise, name: 'Distributor profile', sells: 'none')
-  }
+  end
 
   describe "creating an enterprise user" do
     context "with a limitted number of owned enterprises" do

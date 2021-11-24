@@ -6,9 +6,9 @@ module OrderManagement
   module Order
     describe StripeScaPaymentAuthorize do
       let(:order) { create(:order) }
-      let(:payment_authorize) {
+      let(:payment_authorize) do
         OrderManagement::Order::StripeScaPaymentAuthorize.new(order)
-      }
+      end
 
       describe "#call!" do
         context "when no pending payments are present" do

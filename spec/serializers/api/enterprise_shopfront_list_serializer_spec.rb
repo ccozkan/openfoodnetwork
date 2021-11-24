@@ -4,9 +4,9 @@ require 'spec_helper'
 
 describe Api::EnterpriseShopfrontListSerializer do
   let(:enterprise) { create(:distributor_enterprise) }
-  let(:serializer) {
+  let(:serializer) do
     Api::EnterpriseShopfrontListSerializer.new enterprise
-  }
+  end
 
   it "serializes enterprise attributes" do
     expect(serializer.to_json).to match enterprise.name

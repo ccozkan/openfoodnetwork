@@ -11,22 +11,22 @@ describe "As a consumer I want to shop with a distributor", js: true do
   describe "Viewing a distributor" do
     let(:distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
     let(:supplier) { create(:supplier_enterprise) }
-    let(:oc1) {
+    let(:oc1) do
       create(
 :simple_order_cycle,
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise),
 orders_close_at: 2.days.from_now
 )
-    }
-    let(:oc2) {
+    end
+    let(:oc2) do
       create(
 :simple_order_cycle,
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise),
 orders_close_at: 3.days.from_now
 )
-    }
+    end
     let(:product) { create(:simple_product, supplier: supplier, meta_keywords: "Domestic") }
     let(:variant) { product.variants.first }
     let(:order) { create(:order, distributor: distributor) }
@@ -204,9 +204,9 @@ orders_close_at: 3.days.from_now
     describe "after selecting an order cycle with products visible" do
       let(:variant1) { create(:variant, product: product, price: 20) }
       let(:variant2) { create(:variant, product: product, price: 30, display_name: "Badgers") }
-      let(:product2) {
+      let(:product2) do
         create(:simple_product, supplier: supplier, name: "Meercats", meta_keywords: "Wild")
-      }
+      end
       let(:variant3) { create(:variant, product: product2, price: 40, display_name: "Ferrets") }
       let(:exchange) { Exchange.find(oc1.exchanges.to_enterprises(distributor).outgoing.first.id) }
 
@@ -496,9 +496,9 @@ orders_close_at: 3.days.from_now
 
         context "when the soft-deleted variant has an associated override" do
           describe "adding the soft-deleted variant to the cart" do
-            let!(:variant_override) {
+            let!(:variant_override) do
               create(:variant_override, variant: variant, hub: distributor, count_on_hand: 100)
-            }
+            end
 
             it "handles it as if the variant has gone out of stock" do
               variant.delete

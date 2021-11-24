@@ -318,9 +318,9 @@ lambda {
 
     def self.like_any(fields, values)
       where fields.map { |field|
-        values.map { |value|
+        values.map do |value|
           arel_table[field].matches("%#{value}%")
-        }.inject(:or)
+        end.inject(:or)
       }.inject(:or)
     end
 

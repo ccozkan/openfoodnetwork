@@ -11,9 +11,9 @@ describe Spree::Admin::OrdersController, type: :controller do
     before { controller_login_as_admin }
 
     it "advances the order state" do
-      expect {
+      expect do
         spree_get :edit, id: order
-      }.to change { order.reload.state }
+      end.to change { order.reload.state }
 .from("cart").to("payment")
     end
 
@@ -82,12 +82,12 @@ order_cycle_id: order.order_cycle_id
         let(:user) { create(:admin_user) }
         let(:variant1) { create(:variant) }
         let(:variant2) { create(:variant) }
-        let(:distributor) {
+        let(:distributor) do
           create(:distributor_enterprise, allow_order_changes: true, charges_sales_tax: true)
-        }
+        end
         let(:order_cycle) { create(:simple_order_cycle, distributors: [distributor]) }
         let(:enterprise_fee) { create(:enterprise_fee, calculator: build(:calculator_per_item)) }
-        let!(:exchange) {
+        let!(:exchange) do
           create(
 :exchange,
 incoming: true,
@@ -96,7 +96,7 @@ sender: variant1.product.supplier,
 variants: [variant1, variant2],
 enterprise_fees: [enterprise_fee]
 )
-        }
+        end
         let!(:order) do
           order = create(
 :completed_order_with_totals,
@@ -165,12 +165,12 @@ order_cycle: order_cycle
         context "with taxes on enterprise fees" do
           let(:zone) { create(:zone_with_member) }
           let(:tax_included) { true }
-          let(:tax_rate) {
+          let(:tax_rate) do
             create(:tax_rate, amount: 0.25, included_in_price: tax_included, zone: zone)
-          }
-          let!(:enterprise_fee) {
+          end
+          let!(:enterprise_fee) do
             create(:enterprise_fee, tax_category: tax_rate.tax_category, amount: 1)
-          }
+          end
 
           before do
             allow(order).to receive(:tax_zone) { zone }
@@ -204,7 +204,7 @@ order_cycle: order_cycle
             end
 
             context "when the order has legacy taxes" do
-              let(:legacy_tax_adjustment) {
+              let(:legacy_tax_adjustment) do
                 create(
 :adjustment,
 amount: 0.5,
@@ -214,7 +214,7 @@ originator: tax_rate,
 adjustable: order,
 state: "closed"
 )
-              }
+              end
 
               before do
                 order.all_adjustments.tax.delete_all

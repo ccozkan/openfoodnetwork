@@ -10,28 +10,28 @@ describe SubscriptionPlacementJob do
 
   describe "finding proxy_orders that are ready to be placed" do
     let(:shop) { create(:distributor_enterprise) }
-    let(:order_cycle1) {
+    let(:order_cycle1) do
       create(
 :simple_order_cycle,
 coordinator: shop,
 orders_open_at: 1.minute.ago,
                      orders_close_at: 10.minutes.from_now
 )
-    }
-    let(:order_cycle2) {
+    end
+    let(:order_cycle2) do
       create(
 :simple_order_cycle,
 coordinator: shop,
 orders_open_at: 10.minutes.ago,
                      orders_close_at: 1.minute.ago
 )
-    }
+    end
     let(:schedule) { create(:schedule, order_cycles: [order_cycle1, order_cycle2]) }
     let(:subscription) { create(:subscription, shop: shop, schedule: schedule) }
-    let!(:proxy_order) {
+    # OK
+let!(:proxy_order) do
       create(:proxy_order, subscription: subscription, order_cycle: order_cycle1)
-    } # OK
-
+    end
     it "ignores proxy orders where the OC has closed" do
       expect(job.send(:proxy_orders)).to include proxy_order
       proxy_order.update!(order_cycle_id: order_cycle2.id)

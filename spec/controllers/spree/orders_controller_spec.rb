@@ -13,9 +13,9 @@ describe Spree::OrdersController, type: :controller do
 
   describe "viewing an order" do
     let(:customer) { create(:customer) }
-    let(:order) {
+    let(:order) do
       create(:order_with_credit_payment, customer: customer, distributor: customer.enterprise)
-    }
+    end
 
     before do
       allow(controller).to receive(:spree_current_user) { current_user }
@@ -85,16 +85,16 @@ describe Spree::OrdersController, type: :controller do
 
   describe "confirming a payment intent" do
     let(:customer) { create(:customer) }
-    let(:order) {
+    let(:order) do
       create(
 :order_with_totals,
 customer: customer,
 distributor: customer.enterprise,
                     state: "payment"
 )
-    }
+    end
     let(:payment_method) { create(:stripe_sca_payment_method) }
-    let!(:payment) {
+    let!(:payment) do
       create(
         :payment,
         payment_method: payment_method,
@@ -103,7 +103,7 @@ distributor: customer.enterprise,
         order: order,
         state: "requires_authorization"
       )
-    }
+    end
 
     before do
       allow(controller).to receive(:spree_current_user) { current_user }
@@ -249,13 +249,13 @@ distributor: customer.enterprise,
     describe "when an item is in the cart" do
       let(:order) { subject.current_order(true) }
       let(:oc) { create(:simple_order_cycle, distributors: [d], variants: [variant]) }
-      let(:d) {
+      let(:d) do
         create(
 :distributor_enterprise,
 shipping_methods: [create(:shipping_method)],
                          payment_methods: [create(:payment_method)]
 )
-      }
+      end
       let(:variant) { create(:variant, on_demand: false, on_hand: 5) }
       let(:line_item) { order.line_items.last }
 
@@ -353,14 +353,14 @@ line_items_attributes: {
 
   describe "removing items from a completed order" do
     context "with shipping and transaction fees" do
-      let(:distributor) {
+      let(:distributor) do
         create(:distributor_enterprise, charges_sales_tax: true, allow_order_changes: true)
-      }
-      let(:shipping_tax_rate) {
+      end
+      let(:shipping_tax_rate) do
         create(:tax_rate, amount: 0.25, included_in_price: true, zone: create(:zone_with_member))
-      }
+      end
       let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
-      let(:order) {
+      let(:order) do
         create(
 :completed_order_with_fees,
 distributor: distributor,
@@ -368,7 +368,7 @@ shipping_fee: shipping_fee,
                             payment_fee: payment_fee,
 shipping_tax_category: shipping_tax_category
 )
-      }
+      end
       let(:line_item1) { order.line_items.first }
       let(:line_item2) { order.line_items.second }
       let(:shipping_fee) { 3 }
@@ -415,7 +415,7 @@ line_items_attributes: {
       let(:distributor) { create(:distributor_enterprise, allow_order_changes: true) }
       let(:order_cycle) { create(:simple_order_cycle, distributors: [distributor]) }
       let(:enterprise_fee) { create(:enterprise_fee, calculator: build(:calculator_per_item)) }
-      let!(:exchange) {
+      let!(:exchange) do
         create(
 :exchange,
 incoming: true,
@@ -424,7 +424,7 @@ sender: variant1.product.supplier,
 variants: [variant1, variant2],
 enterprise_fees: [enterprise_fee]
 )
-      }
+      end
       let!(:order) do
         order = create(
 :completed_order_with_totals,
@@ -439,7 +439,7 @@ order_cycle: order_cycle
         order.recreate_all_fees!
         order
       end
-      let(:params) {
+      let(:params) do
         {
 order: {
 line_items_attributes: {
@@ -447,7 +447,7 @@ line_items_attributes: {
         }
 }
 }
-      }
+      end
 
       before do
         allow(subject).to receive(:spree_current_user) { order.user }
@@ -466,7 +466,7 @@ line_items_attributes: {
       end
 
       context "when a line item is removed" do
-        let(:params) {
+        let(:params) do
           {
 order: {
 line_items_attributes: {
@@ -475,7 +475,7 @@ line_items_attributes: {
           }
 }
 }
-        }
+        end
 
         it "updates the fees" do
           expect(order.total).to eq order.item_total + (enterprise_fee.calculator.preferred_amount * 2)
@@ -493,7 +493,7 @@ line_items_attributes: {
 
   describe "request to remove items from a completed order" do
     let(:order) { create(:completed_order_with_totals, line_items_count: 2) }
-    let(:params) {
+    let(:params) do
       {
 order: {
 line_items_attributes: {
@@ -502,7 +502,7 @@ line_items_attributes: {
       }
 }
 }
-    }
+    end
 
     before { allow(subject).to receive(:order_to_update) { order } }
 
@@ -624,13 +624,13 @@ line_items_attributes: {
       end
 
       context "when the order is complete" do
-        let(:order) {
+        let(:order) do
           create(
 :completed_order_with_totals,
 user: user,
                               distributor: create(:distributor_enterprise)
 )
-        }
+        end
 
         before do
           setup_email

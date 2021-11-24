@@ -5,9 +5,9 @@ require 'spec_helper'
 describe TaxRateFinder do
   describe "getting the corresponding tax rate" do
     let(:amount) { BigDecimal(120) }
-    let(:tax_rate) {
+    let(:tax_rate) do
       create(:tax_rate, amount: 0.2, calculator: Calculator::DefaultTax.new, zone: zone)
-    }
+    end
     let(:tax_category) { create(:tax_category, tax_rates: [tax_rate]) }
     let(:zone) { create(:zone_with_member) }
     let(:shipment) { create(:shipment) }

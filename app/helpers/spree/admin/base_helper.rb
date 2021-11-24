@@ -130,7 +130,7 @@ class: 'input_string fullwidth'
       def preference_fields(object, form)
         return unless object.respond_to?(:preferences)
 
-        object.preferences.keys.map { |key|
+        object.preferences.keys.map do |key|
           preference_label = form.label(
 "preferred_#{key}",
                                         Spree.t(key.to_s.gsub("_from_list", "")) + ": "
@@ -142,7 +142,7 @@ class: 'input_string fullwidth'
 object
           ).html_safe
           { label: preference_label, field: preference_field }
-        }
+        end
       end
 
       def link_to_add_fields(name, target, options = {})

@@ -57,9 +57,9 @@ module Spree
           let(:hub) { order.distributor }
           let(:variant) { line_item.variant }
           let(:vo_stock) { 999 }
-          let!(:variant_override) {
+          let!(:variant_override) do
             create(:variant_override, variant: variant, hub: hub, count_on_hand: vo_stock)
-          }
+          end
 
           context "when the override has stock" do
             it "is valid" do

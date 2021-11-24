@@ -61,12 +61,12 @@ module OrderManagement
           end
 
           context "when variant overrides apply" do
-            let!(:override1) {
+            let!(:override1) do
               create(:variant_override, hub: subscription.shop, variant: sli1.variant, price: 1.2)
-            }
-            let!(:override2) {
+            end
+            let!(:override2) do
               create(:variant_override, hub: subscription.shop, variant: sli2.variant, price: 2.3)
-            }
+            end
 
             it "recalculates price_estimates based on override prices and associated fees" do
               estimator.estimate!
@@ -79,14 +79,14 @@ module OrderManagement
       end
 
       describe "updating estimates for shipping and payment fees" do
-        let(:subscription) {
+        let(:subscription) do
           create(
 :subscription,
 with_items: true,
                payment_method: payment_method,
                shipping_method: shipping_method
 )
-        }
+        end
         let!(:sli1) { subscription.subscription_line_items.first }
         let!(:sli2) { subscription.subscription_line_items.second }
         let!(:sli3) { subscription.subscription_line_items.third }
@@ -100,18 +100,18 @@ with_items: true,
         end
 
         context "using flat rate calculators" do
-          let(:shipping_method) {
+          let(:shipping_method) do
             create(
 :shipping_method,
                    calculator: Calculator::FlatRate.new(preferred_amount: 12.34)
 )
-          }
-          let(:payment_method) {
+          end
+          let(:payment_method) do
             create(
 :payment_method,
                    calculator: Calculator::FlatRate.new(preferred_amount: 9.12)
 )
-          }
+          end
 
           it "calculates fees based on the rates provided" do
             estimator.estimate!
@@ -121,18 +121,18 @@ with_items: true,
         end
 
         context "using flat percent item total calculators" do
-          let(:shipping_method) {
+          let(:shipping_method) do
             create(
 :shipping_method,
                    calculator: Calculator::FlatPercentItemTotal.new(preferred_flat_percent: 10)
 )
-          }
-          let(:payment_method) {
+          end
+          let(:payment_method) do
             create(
 :payment_method,
                    calculator: Calculator::FlatPercentItemTotal.new(preferred_flat_percent: 20)
 )
-          }
+          end
 
           it "calculates fees based on the estimated item total and percentage provided" do
             estimator.estimate!
@@ -142,18 +142,18 @@ with_items: true,
         end
 
         context "using flat percent per item calculators" do
-          let(:shipping_method) {
+          let(:shipping_method) do
             create(
 :shipping_method,
                    calculator: Calculator::FlatPercentPerItem.new(preferred_flat_percent: 5)
 )
-          }
-          let(:payment_method) {
+          end
+          let(:payment_method) do
             create(
 :payment_method,
                    calculator: Calculator::FlatPercentPerItem.new(preferred_flat_percent: 10)
 )
-          }
+          end
 
           it "calculates fees based on the estimated item prices and percentage provided" do
             estimator.estimate!
@@ -163,18 +163,18 @@ with_items: true,
         end
 
         context "using per item calculators" do
-          let(:shipping_method) {
+          let(:shipping_method) do
             create(
 :shipping_method,
                    calculator: Calculator::PerItem.new(preferred_amount: 1.2)
 )
-          }
-          let(:payment_method) {
+          end
+          let(:payment_method) do
             create(
 :payment_method,
                    calculator: Calculator::PerItem.new(preferred_amount: 0.3)
 )
-          }
+          end
 
           it "calculates fees based on the number of items and rate provided" do
             estimator.estimate!

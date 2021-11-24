@@ -49,7 +49,7 @@ describe CartController, type: :controller do
     let!(:variant_not_in_the_order) { create(:variant) }
 
     let(:hub) { create(:distributor_enterprise, with_payment_and_shipping: true) }
-    let!(:variant_override_in_the_order) {
+    let!(:variant_override_in_the_order) do
       create(
 :variant_override,
 hub: hub,
@@ -59,8 +59,8 @@ price: 55.55,
 default_stock: nil,
 resettable: false
 )
-    }
-    let!(:variant_override_not_in_the_order) {
+    end
+    let!(:variant_override_not_in_the_order) do
       create(
 :variant_override,
 hub: hub,
@@ -69,15 +69,15 @@ count_on_hand: 7,
                    default_stock: nil,
 resettable: false
 )
-    }
+    end
 
-    let(:order_cycle) {
+    let(:order_cycle) do
       create(:simple_order_cycle, suppliers: [producer], coordinator: hub, distributors: [hub])
-    }
+    end
     let!(:order) { subject.current_order(true) }
-    let!(:line_item) {
+    let!(:line_item) do
       create(:line_item, order: order, variant: variant_in_the_order, quantity: 2, max_quantity: 3)
-    }
+    end
 
     before do
       variant_in_the_order.on_hand = 4

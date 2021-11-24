@@ -95,26 +95,27 @@ describe ProductsRenderer do
     let(:hub) { create(:distributor_enterprise) }
     let(:oc) { create(:simple_order_cycle, distributors: [hub], variants: [v1, v3, v4]) }
     let(:p) { create(:simple_product) }
-    let!(:v1) {
+    # In exchange, not in inventory (ie. not_hidden)
+let!(:v1) do
       create(:variant, product: p, unit_value: 3)
-    } # In exchange, not in inventory (ie. not_hidden)
+    end
     let!(:v2) { create(:variant, product: p, unit_value: 5) } # Not in exchange
-    let!(:v3) {
+    let!(:v3) do
       create(
 :variant,
 product: p,
 unit_value: 7,
           inventory_items: [create(:inventory_item, enterprise: hub, visible: true)]
 )
-    }
-    let!(:v4) {
+    end
+    let!(:v4) do
       create(
 :variant,
 product: p,
 unit_value: 9,
           inventory_items: [create(:inventory_item, enterprise: hub, visible: false)]
 )
-    }
+    end
     let(:products_renderer) { ProductsRenderer.new(hub, oc, customer) }
     let(:variants) { products_renderer.send(:variants_for_shop_by_id) }
 

@@ -111,9 +111,9 @@ describe CheckoutController, type: :controller do
       context "after redirecting back from Stripe" do
         let(:order) { create(:order_with_totals_and_distribution) }
         let!(:payment) { create(:payment, state: "pending", amount: order.total, order: order) }
-        let!(:transaction_fee) {
+        let!(:transaction_fee) do
           create(:adjustment, state: "open", amount: 10, order: order, adjustable: payment)
-        }
+        end
 
         before do
           allow(order).to receive_message_chain(:insufficient_stock_lines, :empty?).and_return(false)
@@ -178,7 +178,7 @@ describe CheckoutController, type: :controller do
         let(:user) { order.user }
         let(:order) { create(:order_with_totals) }
         let(:payment_method) { create(:stripe_sca_payment_method) }
-        let(:payment) {
+        let(:payment) do
           create(
             :payment,
             amount: order.total,
@@ -186,7 +186,7 @@ describe CheckoutController, type: :controller do
             payment_method: payment_method,
             response_code: "pi_123"
           )
-        }
+        end
 
         before do
           Stripe.api_key = "sk_test_12345"
@@ -221,9 +221,9 @@ describe CheckoutController, type: :controller do
           order.update_columns(customer_id: nil)
           Customer.delete_all
 
-          expect {
+          expect do
             get :edit, params: { payment_intent: "pi_123" }
-          }.to change { Customer.count }
+          end.to change { Customer.count }
 .by(1)
         end
       end

@@ -6,7 +6,7 @@ require 'spec_helper'
 module OpenFoodNetwork
   describe TagRuleApplicator do
     let!(:enterprise) { create(:distributor_enterprise) }
-    let!(:oc_tag_rule) {
+    let!(:oc_tag_rule) do
       create(
 :filter_order_cycles_tag_rule,
 enterprise: enterprise,
@@ -15,8 +15,8 @@ priority: 6,
 preferred_exchange_tags: "tag1",
 preferred_matched_order_cycles_visibility: "visible"
 )
-    }
-    let!(:product_tag_rule1) {
+    end
+    let!(:product_tag_rule1) do
       create(
 :filter_products_tag_rule,
 enterprise: enterprise,
@@ -25,8 +25,8 @@ priority: 5,
 preferred_variant_tags: "tag1",
 preferred_matched_variants_visibility: "visible"
 )
-    }
-    let!(:product_tag_rule2) {
+    end
+    let!(:product_tag_rule2) do
       create(
 :filter_products_tag_rule,
 enterprise: enterprise,
@@ -35,8 +35,8 @@ priority: 4,
 preferred_variant_tags: "tag3",
 preferred_matched_variants_visibility: "hidden"
 )
-    }
-    let!(:product_tag_rule3) {
+    end
+    let!(:product_tag_rule3) do
       create(
 :filter_products_tag_rule,
 enterprise: enterprise,
@@ -45,8 +45,8 @@ priority: 3,
 preferred_variant_tags: "tag1",
 preferred_matched_variants_visibility: "visible"
 )
-    }
-    let!(:default_product_tag_rule) {
+    end
+    let!(:default_product_tag_rule) do
       create(
 :filter_products_tag_rule,
 enterprise: enterprise,
@@ -55,8 +55,8 @@ is_default: true,
                            preferred_variant_tags: "tag1",
 preferred_matched_variants_visibility: "hidden"
 )
-    }
-    let!(:sm_tag_rule) {
+    end
+    let!(:sm_tag_rule) do
       create(
 :filter_shipping_methods_tag_rule,
 enterprise: enterprise,
@@ -65,7 +65,7 @@ priority: 1,
 preferred_shipping_method_tags: "tag1",
 preferred_matched_shipping_methods_visibility: "visible"
 )
-    }
+    end
 
     describe "initialisation" do
       context "when enterprise is nil" do
@@ -81,17 +81,17 @@ preferred_matched_shipping_methods_visibility: "visible"
       end
 
       context "when rule_type does not match an existing rule type" do
-        let(:applicator) {
+        let(:applicator) do
           OpenFoodNetwork::TagRuleApplicator.new(enterprise, "FilterSomething", ["tag1"])
-        }
+        end
         it { expect { applicator }
 .to raise_error NameError }
       end
 
       context "when enterprise and rule_type are present" do
-        let(:applicator) {
+        let(:applicator) do
           OpenFoodNetwork::TagRuleApplicator.new(enterprise, "FilterProducts", customer_tags)
-        }
+        end
 
         context "when the customer tags are nil" do
           let!(:customer_tags) { nil }
@@ -249,15 +249,15 @@ product_tag_rule2,
     end
 
     describe "reject?" do
-      let(:applicator) {
+      let(:applicator) do
         OpenFoodNetwork::TagRuleApplicator.new(enterprise, "FilterProducts", ["tag1"])
-      }
-      let(:customer_rule) {
+      end
+      let(:customer_rule) do
         double(:customer_rule, reject_matched?: "customer_rule.reject_matched?")
-      }
-      let(:default_rule) {
+      end
+      let(:default_rule) do
         double(:customer_rule, reject_matched?: "default_rule.reject_matched?")
-      }
+      end
       let(:dummy) { double(:dummy) }
 
       before { allow(applicator).to receive(:customer_rules) { [customer_rule] } }
@@ -293,25 +293,25 @@ product_tag_rule2,
     end
 
     describe "smoke test for products" do
-      let(:product1) {
+      let(:product1) do
         { :id => 1, :name => 'product 1', "variants" => [{ :id => 4, "tag_list" => ["tag1"] }] }
-      }
-      let(:product2) {
+      end
+      let(:product2) do
         {
 :id => 2,
 :name => 'product 2',
 "variants" => [{ :id => 5, "tag_list" => ["tag1"] }, { :id => 9, "tag_list" => ["tag2"] }]
 }
-      }
-      let(:product3) {
+      end
+      let(:product3) do
         { :id => 3, :name => 'product 3', "variants" => [{ :id => 6, "tag_list" => ["tag3"] }] }
-      }
+      end
       let!(:products_array) { [product1, product2, product3] }
 
       context "when customer tags don't match any rules" do
-        let(:applicator) {
+        let(:applicator) do
           OpenFoodNetwork::TagRuleApplicator.new(enterprise, "FilterProducts", ["lalalala"])
-        }
+        end
 
         it "applies the default rule" do
           applicator.filter!(products_array)
@@ -327,9 +327,9 @@ product3
       end
 
       context "when customer tags match one or more rules" do
-        let(:applicator) {
+        let(:applicator) do
           OpenFoodNetwork::TagRuleApplicator.new(enterprise, "FilterProducts", ["tag1"])
-        }
+        end
 
         it "applies those rules" do
           # product_tag_rule1 and product_tag_rule2 are being applied

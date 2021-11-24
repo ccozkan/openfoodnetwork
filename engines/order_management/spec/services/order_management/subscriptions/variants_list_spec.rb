@@ -55,14 +55,14 @@ orders_open_at: 2.weeks.ago,
         end
 
         context "if the supplier is permitted for the shop" do
-          let!(:enterprise_relationship) {
+          let!(:enterprise_relationship) do
             create(
 :enterprise_relationship,
 child: shop,
                           parent: product.supplier,
                           permissions_list: [:add_to_order_cycle]
 )
-          }
+          end
 
           it "is eligible" do
             expect(described_class.eligible_variants(shop)).to include(variant)
@@ -74,14 +74,14 @@ child: shop,
           let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
 
           context "if it is an incoming exchange where the shop is the receiver" do
-            let!(:incoming_exchange) {
+            let!(:incoming_exchange) do
               order_cycle.exchanges.create(
 sender: product.supplier,
 receiver: shop,
 incoming: true,
 variants: [variant]
 )
-            }
+            end
 
             it "is not eligible" do
               expect(described_class.eligible_variants(shop)).to_not include(variant)
@@ -89,14 +89,14 @@ variants: [variant]
           end
 
           context "if it is an outgoing exchange where the shop is the receiver" do
-            let!(:outgoing_exchange) {
+            let!(:outgoing_exchange) do
               order_cycle.exchanges.create(
 sender: product.supplier,
 receiver: shop,
 incoming: false,
 variants: [variant]
 )
-            }
+            end
 
             context "if the order cycle is currently open" do
               let!(:order_cycle) { current_order_cycle }
@@ -142,14 +142,14 @@ variants: [variant]
           let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
 
           context "if it is an incoming exchange where the shop is the receiver" do
-            let!(:incoming_exchange) {
+            let!(:incoming_exchange) do
               order_cycle.exchanges.create(
 sender: product.supplier,
 receiver: shop,
 incoming: true,
 variants: [variant]
 )
-            }
+            end
 
             it "is is false" do
               expect(described_class).not_to be_in_open_and_upcoming_order_cycles(
@@ -161,14 +161,14 @@ shop,
           end
 
           context "if it is an outgoing exchange where the shop is the receiver" do
-            let!(:outgoing_exchange) {
+            let!(:outgoing_exchange) do
               order_cycle.exchanges.create(
 sender: product.supplier,
 receiver: shop,
 incoming: false,
 variants: [variant]
 )
-            }
+            end
 
             it "is true" do
               expect(described_class).to be_in_open_and_upcoming_order_cycles(

@@ -118,22 +118,22 @@ module Spree
       context "handling legacy taxes" do
         let(:order) { create(:order) }
         let(:zone) { create(:zone_with_member) }
-        let(:tax_rate20) {
+        let(:tax_rate20) do
           create(:tax_rate, amount: 0.20, included_in_price: false, zone: zone)
-        }
-        let(:tax_rate30) {
+        end
+        let(:tax_rate30) do
           create(:tax_rate, amount: 0.30, included_in_price: false, zone: zone)
-        }
-        let!(:variant) {
+        end
+        let!(:variant) do
           create(:variant, tax_category: tax_rate20.tax_category, price: 10)
-        }
-        let!(:line_item) {
+        end
+        let!(:line_item) do
           create(:line_item, variant: variant, order: order, quantity: 2)
-        }
-        let!(:shipping_method) {
+        end
+        let!(:shipping_method) do
           create(:shipping_method, tax_category: tax_rate30.tax_category)
-        }
-        let!(:shipment) {
+        end
+        let!(:shipment) do
           create(
 :shipment_with,
 :shipping_method,
@@ -141,7 +141,7 @@ order: order,
 cost: 50,
                                   shipping_method: shipping_method
 )
-        }
+        end
 
         before do
           shipment.update_columns(cost: 20.0)
@@ -152,7 +152,7 @@ cost: 50,
         end
 
         context "when the order has legacy taxes" do
-          let!(:legacy_tax_adjustment) {
+          let!(:legacy_tax_adjustment) do
             create(
 :adjustment,
 order: order,
@@ -161,7 +161,7 @@ included: false,
              label: "legacy",
 originator_type: "Spree::TaxRate"
 )
-          }
+          end
 
           it "removes any legacy tax adjustments on order" do
             order.create_tax_charge!

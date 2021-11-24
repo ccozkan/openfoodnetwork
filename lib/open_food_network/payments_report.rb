@@ -157,20 +157,20 @@ proc { |orders| orders.first.payment_state },
          proc { |orders| orders.sum(&:ship_total) },
          proc { |orders| orders.map(&:total).sum },
          proc { |orders|
-           orders.sum { |o|
-             o.payments.select { |payment|
+           orders.sum do |o|
+             o.payments.select do |payment|
                payment.completed? &&
                  (payment.payment_method.name.to_s.include? "EFT")
-             }.sum(&:amount)
-           }
+             end.sum(&:amount)
+           end
          },
          proc { |orders|
-           orders.sum { |o|
-             o.payments.select { |payment|
+           orders.sum do |o|
+             o.payments.select do |payment|
                payment.completed? &&
                  (payment.payment_method.name.to_s.include? "PayPal")
-             }.sum(&:amount)
-           }
+             end.sum(&:amount)
+           end
          },
          proc { |orders| orders.sum { |order| order.outstanding_balance.to_f } }
 ]

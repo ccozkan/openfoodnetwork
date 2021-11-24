@@ -12,13 +12,13 @@ describe 'Shops', js: true do
   let!(:profile) { create(:distributor_enterprise, sells: 'none') }
   let!(:d1) { create(:distributor_enterprise, with_payment_and_shipping: true) }
   let!(:d2) { create(:distributor_enterprise, with_payment_and_shipping: true) }
-  let!(:order_cycle) {
+  let!(:order_cycle) do
     create(
 :simple_order_cycle,
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise)
 )
-  }
+  end
   let!(:producer) { create(:supplier_enterprise) }
   let!(:er) { create(:enterprise_relationship, parent: distributor, child: producer) }
 
@@ -81,13 +81,13 @@ distributors: [distributor],
   end
 
   describe "filtering by product property" do
-    let!(:order_cycle) {
+    let!(:order_cycle) do
       create(
 :simple_order_cycle,
 distributors: [d1, d2],
                      coordinator: create(:distributor_enterprise)
 )
-    }
+    end
     let!(:p1) { create(:simple_product, supplier: producer) }
     let!(:p2) { create(:simple_product, supplier: create(:supplier_enterprise)) }
     let(:ex_d1) { order_cycle.exchanges.outgoing.where(receiver_id: d1).first }
@@ -119,17 +119,17 @@ distributors: [d1, d2],
   end
 
   describe "taxon badges" do
-    let!(:closed_oc) {
+    let!(:closed_oc) do
       create(:closed_order_cycle, distributors: [shop], variants: [p_closed.variants.first])
-    }
+    end
     let!(:p_closed) { create(:simple_product, primary_taxon: taxon_closed, taxons: [taxon_closed]) }
     let(:shop) { create(:distributor_enterprise, with_payment_and_shipping: true) }
     let(:taxon_closed) { create(:taxon, name: 'Closed') }
 
     describe "open shops" do
-      let!(:open_oc) {
+      let!(:open_oc) do
         create(:open_order_cycle, distributors: [shop], variants: [p_open.variants.first])
-      }
+      end
       let!(:p_open) { create(:simple_product, primary_taxon: taxon_open, taxons: [taxon_open]) }
       let(:taxon_open) { create(:taxon, name: 'Open') }
 
@@ -152,14 +152,14 @@ distributors: [d1, d2],
   end
 
   describe "property badges" do
-    let!(:order_cycle) {
+    let!(:order_cycle) do
       create(
 :simple_order_cycle,
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise),
 variants: [product.variants.first]
 )
-    }
+    end
     let(:product) { create(:simple_product, supplier: producer) }
 
     before do
@@ -185,14 +185,14 @@ variants: [product.variants.first]
   describe "hub producer modal" do
     let!(:product) { create(:simple_product, supplier: producer, taxons: [taxon]) }
     let!(:taxon) { create(:taxon, name: 'Fruit') }
-    let!(:order_cycle) {
+    let!(:order_cycle) do
       create(
 :simple_order_cycle,
 distributors: [distributor],
                      coordinator: create(:distributor_enterprise),
 variants: [product.variants.first]
 )
-    }
+    end
 
     it "shows hub producer modals" do
       visit shops_path

@@ -20,7 +20,7 @@ describe Spree::Admin::ReportsController, type: :controller do
   let(:product3) { create(:product, price: 34.56, supplier: supplier3) }
 
   # Given two order cycles with both distributors
-  let(:ocA) {
+  let(:ocA) do
     create(
 :simple_order_cycle,
 coordinator: coordinator1,
@@ -28,8 +28,8 @@ distributors: [distributor1, distributor2],
                      suppliers: [supplier1, supplier2, supplier3],
 variants: [product1.master, product3.master]
 )
-  }
-  let(:ocB) {
+  end
+  let(:ocB) do
     create(
 :simple_order_cycle,
 coordinator: coordinator2,
@@ -37,7 +37,7 @@ distributors: [distributor1, distributor2],
                      suppliers: [supplier1, supplier2, supplier3],
 variants: [product2.master]
 )
-  }
+  end
 
   # orderA1 can only be accessed by supplier1, supplier3 and distributor1
   let(:orderA1) do

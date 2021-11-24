@@ -117,13 +117,13 @@ format: :json
       let(:line_item) { order.line_items.first }
       let(:existing_variant) { line_item.variant }
       let(:new_variant) { create(:variant) }
-      let(:params) {
+      let(:params) do
         {
           quantity: 2,
           order_id: order.to_param,
           id: order.shipments.first.to_param
         }
-      }
+      end
 
       before do
         line_item.update!(quantity: 3)
@@ -131,32 +131,32 @@ format: :json
 
       context 'for completed shipments' do
         it 'adds a variant to a shipment' do
-          expect {
+          expect do
             api_put :add, params.merge(variant_id: new_variant.to_param)
             expect(response.status).to eq(200)
-          }.to change { inventory_units_for(new_variant).size }
+          end.to change { inventory_units_for(new_variant).size }
 .by(2)
         end
 
         it 'adjusts stock when adding a variant' do
-          expect {
+          expect do
             api_put :add, params.merge(variant_id: new_variant.to_param)
-          }.to change { new_variant.reload.on_hand }
+          end.to change { new_variant.reload.on_hand }
 .by(-2)
         end
 
         it 'removes a variant from a shipment' do
-          expect {
+          expect do
             api_put :remove, params.merge(variant_id: existing_variant.to_param)
             expect(response.status).to eq(200)
-          }.to change { inventory_units_for(existing_variant).size }
+          end.to change { inventory_units_for(existing_variant).size }
 .by(-2)
         end
 
         it 'adjusts stock when removing a variant' do
-          expect {
+          expect do
             api_put :remove, params.merge(variant_id: existing_variant.to_param)
-          }.to change { existing_variant.reload.on_hand }
+          end.to change { existing_variant.reload.on_hand }
 .by(2)
         end
       end
@@ -167,35 +167,35 @@ format: :json
         end
 
         it "doesn't adjust stock when adding a variant" do
-          expect {
+          expect do
             api_put :add, params.merge(variant_id: existing_variant.to_param)
             expect(response.status).to eq(422)
-          }.to_not change { existing_variant.reload.on_hand }
+          end.to_not change { existing_variant.reload.on_hand }
         end
 
         it "doesn't adjust stock when removing a variant" do
-          expect {
+          expect do
             api_put :remove, params.merge(variant_id: existing_variant.to_param)
             expect(response.status).to eq(422)
-          }.to_not change { existing_variant.reload.on_hand }
+          end.to_not change { existing_variant.reload.on_hand }
         end
       end
 
       context "with shipping fees" do
         let!(:distributor) { create(:distributor_enterprise) }
         let(:fee_amount) { 10 }
-        let!(:shipping_method_with_fee) {
+        let!(:shipping_method_with_fee) do
           create(
 :shipping_method_with,
 :shipping_fee,
 distributors: [distributor],
                                       shipping_fee: fee_amount
 )
-        }
+        end
         let!(:order_cycle) { create(:order_cycle, distributors: [distributor]) }
-        let!(:order) {
+        let!(:order) do
           create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor)
-        }
+        end
         let(:shipping_fee) { order.reload.shipment.adjustments.first }
 
         before do
@@ -206,18 +206,18 @@ distributors: [distributor],
 
         context "adding item to a shipment" do
           it "updates the shipping fee" do
-            expect {
+            expect do
               api_put :add, params.merge(variant_id: new_variant.to_param)
-            }.to change { order.reload.shipment.adjustments.first.amount }
+            end.to change { order.reload.shipment.adjustments.first.amount }
 .by(20)
           end
         end
 
         context "removing item from a shipment" do
           it "updates the shipping fee" do
-            expect {
+            expect do
               api_put :remove, params.merge(variant_id: existing_variant.to_param)
-            }.to change { order.reload.shipment.adjustments.first.amount }
+            end.to change { order.reload.shipment.adjustments.first.amount }
 .by(-20)
           end
         end
@@ -226,21 +226,21 @@ distributors: [distributor],
 
     describe "#update" do
       let!(:distributor) { create(:distributor_enterprise) }
-      let!(:shipping_method1) {
+      let!(:shipping_method1) do
         create(:shipping_method_with, :flat_rate, distributors: [distributor], amount: 10)
-      }
-      let!(:shipping_method2) {
+      end
+      let!(:shipping_method2) do
         create(:shipping_method_with, :flat_rate, distributors: [distributor], amount: 20)
-      }
+      end
       let!(:order_cycle) { create(:order_cycle, distributors: [distributor]) }
-      let!(:order) {
+      let!(:order) do
         create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor)
-      }
-      let(:new_shipping_rate) {
+      end
+      let(:new_shipping_rate) do
         order.shipment.shipping_rates.select { |sr| sr.shipping_method == shipping_method2 }
 .first
-      }
-      let(:params) {
+      end
+      let(:params) do
         {
           id: order.shipment.number,
           order_id: order.number,
@@ -248,7 +248,7 @@ distributors: [distributor],
             selected_shipping_rate_id: new_shipping_rate.id
           }
         }
-      }
+      end
 
       before do
         order.shipments.first.shipping_methods = [shipping_method1, shipping_method2]
@@ -284,19 +284,19 @@ distributors: [distributor],
             it "does not update closed adjustments without unlock option" do
               params[:shipment][:unlock] = "no"
 
-              expect {
+              expect do
                 api_put :update, params
                 expect(response.status).to eq 200
-              }.to_not change { order.reload.shipment.fee_adjustment.amount }
+              end.to_not change { order.reload.shipment.fee_adjustment.amount }
             end
 
             it "updates closed adjustments with unlock option selected" do
               params[:shipment][:unlock] = "yes"
 
-              expect {
+              expect do
                 api_put :update, params
                 expect(response.status).to eq 200
-              }.to change { order.reload.shipment.fee_adjustment.amount }
+              end.to change { order.reload.shipment.fee_adjustment.amount }
             end
           end
         end
@@ -360,9 +360,9 @@ order_id: shipment.order.to_param,
         end
 
         context "when line items have fees" do
-          let(:fee_order) {
+          let(:fee_order) do
             instance_double(Spree::Order, number: "123", distributor: variant.product.supplier)
-          }
+          end
           let(:contents) { instance_double(Spree::OrderContents) }
 
           before do

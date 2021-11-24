@@ -21,13 +21,13 @@ describe OrderCycleWarning do
     end
 
     context "with a valid distributor" do
-      let!(:distributor) {
+      let!(:distributor) do
         create(
 :distributor_enterprise,
                shipping_methods: [create(:shipping_method)],
                payment_methods: [create(:payment_method)]
 )
-      }
+      end
 
       it "returns nil" do
         expect(subject.new(user).call).to eq nil

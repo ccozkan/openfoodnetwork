@@ -13,18 +13,18 @@ module Admin
     describe "#index" do
       describe "when the user manages a coordinator" do
         let!(:coordinator) { create(:distributor_enterprise, owner: distributor_owner) }
-        let!(:oc1) {
+        let!(:oc1) do
           create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 60.days.ago)
-        }
-        let!(:oc2) {
+        end
+        let!(:oc2) do
           create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 40.days.ago)
-        }
-        let!(:oc3) {
+        end
+        let!(:oc3) do
           create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: 20.days.ago)
-        }
-        let!(:oc4) {
+        end
+        let!(:oc4) do
           create(:simple_order_cycle, orders_open_at: 70.days.ago, orders_close_at: nil)
-        }
+        end
 
         context "html" do
           it "doesn't load any data" do
@@ -226,7 +226,7 @@ params
       let(:coordinator) { order_cycle.coordinator }
       let(:hub) { create(:distributor_enterprise) }
       let(:v) { create(:variant) }
-      let!(:incoming_exchange) {
+      let!(:incoming_exchange) do
         create(
 :exchange,
 order_cycle: order_cycle,
@@ -235,8 +235,8 @@ receiver: coordinator,
            incoming: true,
 variants: [v]
 )
-      }
-      let!(:outgoing_exchange) {
+      end
+      let!(:outgoing_exchange) do
         create(
 :exchange,
 order_cycle: order_cycle,
@@ -245,12 +245,12 @@ receiver: hub,
 incoming: false,
            variants: [v]
 )
-      }
+      end
 
       let(:allowed) { { incoming_exchanges: [], outgoing_exchanges: [] } }
-      let(:restricted) {
+      let(:restricted) do
         { name: 'some name', orders_open_at: 1.day.from_now.to_s, orders_close_at: 1.day.ago.to_s }
-      }
+      end
       let(:params) { { format: :json, id: order_cycle.id, order_cycle: allowed.merge(restricted) } }
       let(:form_mock) { instance_double(OrderCycleForm, save: true) }
 

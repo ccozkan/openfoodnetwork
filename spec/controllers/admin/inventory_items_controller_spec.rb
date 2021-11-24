@@ -9,15 +9,15 @@ describe Admin::InventoryItemsController, type: :controller do
 
       let(:enterprise) { create(:distributor_enterprise) }
       let(:variant) { create(:variant) }
-      let(:inventory_item) {
+      let(:inventory_item) do
         create(:inventory_item, enterprise: enterprise, variant: variant, visible: true)
-      }
-      let(:params) {
+      end
+      let(:params) do
         {
 format: format,
 inventory_item: { enterprise_id: enterprise.id, variant_id: variant.id, visible: false }
 }
-      }
+      end
 
       context "where I don't manage the inventory item enterprise" do
         before do
@@ -68,7 +68,7 @@ child: enterprise,
 
           context "with unacceptable data" do
             render_views
-            let!(:bad_params) {
+            let!(:bad_params) do
               {
 format: format,
 inventory_item: {
@@ -77,7 +77,7 @@ variant_id: variant.id,
 visible: nil
 }
 }
-            }
+            end
 
             it "returns an error message" do
               expect { spree_post :create, bad_params }
@@ -97,9 +97,9 @@ visible: nil
 
       let(:enterprise) { create(:distributor_enterprise) }
       let(:variant) { create(:variant) }
-      let(:inventory_item) {
+      let(:inventory_item) do
         create(:inventory_item, enterprise: enterprise, variant: variant, visible: true)
-      }
+      end
       let(:params) { { format: format, id: inventory_item.id, inventory_item: { visible: false } } }
 
       context "where I don't manage the inventory item enterprise" do
@@ -147,9 +147,9 @@ child: enterprise,
 
           context "with unacceptable data" do
             render_views
-            let!(:bad_params) {
+            let!(:bad_params) do
               { format: format, id: inventory_item.id, inventory_item: { visible: nil } }
-            }
+            end
 
             it "returns an error message" do
               expect { spree_put :update, bad_params }

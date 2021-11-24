@@ -29,32 +29,32 @@ describe ' As a Super Admin I want to be able to set a distributor on each payme
 
     context "using stripe connect" do
       let(:user) { create(:user, enterprise_limit: 5) }
-      let!(:connected_enterprise) {
+      let!(:connected_enterprise) do
         create(:distributor_enterprise, name: "Connected", owner: user)
-      }
-      let!(:revoked_account_enterprise) {
+      end
+      let!(:revoked_account_enterprise) do
         create(:distributor_enterprise, name: "Revoked", owner: user)
-      }
-      let!(:missing_account_enterprise) {
+      end
+      let!(:missing_account_enterprise) do
         create(:distributor_enterprise, name: "Missing", owner: user)
-      }
-      let!(:valid_stripe_account) {
+      end
+      let!(:valid_stripe_account) do
         create(
 :stripe_account,
 enterprise: connected_enterprise,
                  stripe_user_id: "acc_connected123"
 )
-      }
-      let!(:disconnected_stripe_account) {
+      end
+      let!(:disconnected_stripe_account) do
         create(
 :stripe_account,
 enterprise: revoked_account_enterprise,
                  stripe_user_id: "acc_revoked123"
 )
-      }
-      let!(:stripe_account_mock) {
+      end
+      let!(:stripe_account_mock) do
         { id: "acc_connected123", business_name: "My Org", charges_enabled: true }
-      }
+      end
 
       around do |example|
         original_stripe_connect_enabled = Spree::Config[:stripe_connect_enabled]
@@ -178,9 +178,9 @@ distributors: [@distributors[0]],
     let(:distributor2) { create(:distributor_enterprise, name: 'Second Distributor') }
     let(:distributor3) { create(:distributor_enterprise, name: 'Third Distributor') }
     let(:payment_method1) { create(:payment_method, name: 'One', distributors: [distributor1]) }
-    let(:payment_method2) {
+    let(:payment_method2) do
       create(:payment_method, name: 'Two', distributors: [distributor1, distributor2])
-    }
+    end
     let(:payment_method3) { create(:payment_method, name: 'Three', distributors: [distributor3]) }
 
     before(:each) do

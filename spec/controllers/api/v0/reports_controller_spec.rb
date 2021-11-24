@@ -4,12 +4,12 @@ require "spec_helper"
 
 describe Api::V0::ReportsController, type: :controller do
   let(:enterprise_user) { create(:user, enterprises: create(:enterprise)) }
-  let(:params) {
+  let(:params) do
     {
       report_type: 'packing',
       q: { created_at_lt: Time.zone.now }
     }
-  }
+  end
 
   before do
     allow(controller).to receive(:spree_current_user) { current_user }

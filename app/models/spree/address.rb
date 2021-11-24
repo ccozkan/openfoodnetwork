@@ -65,17 +65,17 @@ module Spree
       self_attrs = attributes
       other_attrs = other.respond_to?(:attributes) ? other.attributes : {}
 
-      [self_attrs, other_attrs].each { |attrs|
+      [self_attrs, other_attrs].each do |attrs|
         attrs.except!('id', 'created_at', 'updated_at', 'order_id')
-      }
+      end
 
       self_attrs == other_attrs
     end
 
     def empty?
-      attributes.except('id', 'created_at', 'updated_at', 'order_id', 'country_id').all? { |_, v|
+      attributes.except('id', 'created_at', 'updated_at', 'order_id', 'country_id').all? do |_, v|
         v.nil?
-      }
+      end
     end
 
     # Generates an ActiveMerchant compatible address hash

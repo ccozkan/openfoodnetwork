@@ -3,11 +3,11 @@
 FactoryBot.define do
   factory :payment, class: Spree::Payment do
     transient do
-      distributor {
+      distributor do
         order.distributor ||
           Enterprise.is_distributor.first ||
           FactoryBot.create(:distributor_enterprise)
-      }
+      end
     end
 
     amount { 45.75 }

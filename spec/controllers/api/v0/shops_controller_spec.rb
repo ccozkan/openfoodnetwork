@@ -7,9 +7,9 @@ describe Api::V0::ShopsController, type: :controller do
   render_views
 
   context "as a non-authenticated user" do
-    let!(:hub) {
+    let!(:hub) do
       create(:distributor_enterprise, with_payment_and_shipping: true, name: 'Shopfront Test Hub')
-    }
+    end
     let!(:producer) { create(:supplier_enterprise, name: 'Shopfront Test Producer') }
     let!(:category) { create(:taxon, name: 'Fruit') }
     let!(:product) { create(:product, supplier: producer, primary_taxon: category) }

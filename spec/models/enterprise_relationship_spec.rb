@@ -50,14 +50,14 @@ child: e2,
       end
 
       context "updating an existing list of permissions" do
-        let(:er) {
+        let(:er) do
           create(
 :enterprise_relationship,
 parent: e1,
 child: e2,
                           permissions_list: ["one", "two", "three"]
 )
-        }
+        end
         it "creates a new permission for each item in the list that has no existing permission" do
           er.permissions_list = ['four']
           er.save!
@@ -170,43 +170,43 @@ child: e1,
       let(:some_other_producer) { create(:supplier_enterprise) }
 
       context "when variant_override permission is present" do
-        let!(:er) {
+        let!(:er) do
           create(
 :enterprise_relationship,
 child: hub,
 parent: producer,
                           permissions_list: [:add_to_order_cycles, :create_variant_overrides]
 )
-        }
-        let!(:some_other_er) {
+        end
+        let!(:some_other_er) do
           create(
 :enterprise_relationship,
 child: hub,
 parent: some_other_producer,
                           permissions_list: [:add_to_order_cycles, :create_variant_overrides]
 )
-        }
-        let!(:vo1) {
+        end
+        let!(:vo1) do
           create(
 :variant_override,
 hub: hub,
                    variant: create(:variant, product: create(:product, supplier: producer))
 )
-        }
-        let!(:vo2) {
+        end
+        let!(:vo2) do
           create(
 :variant_override,
 hub: hub,
                    variant: create(:variant, product: create(:product, supplier: producer))
 )
-        }
-        let!(:vo3) {
+        end
+        let!(:vo3) do
           create(
 :variant_override,
 hub: hub,
                    variant: create(:variant, product: create(:product, supplier: some_other_producer))
 )
-        }
+        end
 
         context "revoking variant override permissions" do
           context "when the enterprise relationship is destroyed" do
@@ -243,51 +243,51 @@ hub: hub,
       end
 
       context "when variant_override permission is not present" do
-        let!(:er) {
+        let!(:er) do
           create(
 :enterprise_relationship,
 child: hub,
 parent: producer,
                           permissions_list: [:add_to_order_cycles]
 )
-        }
-        let!(:some_other_er) {
+        end
+        let!(:some_other_er) do
           create(
 :enterprise_relationship,
 child: hub,
 parent: some_other_producer,
                           permissions_list: [:add_to_order_cycles]
 )
-        }
-        let!(:vo1) {
+        end
+        let!(:vo1) do
           create(
 :variant_override,
 hub: hub,
                    variant: create(:variant, product: create(:product, supplier: producer)),
 permission_revoked_at: Time.now.in_time_zone
 )
-        }
-        let!(:vo2) {
+        end
+        let!(:vo2) do
           create(
 :variant_override,
 hub: hub,
                    variant: create(:variant, product: create(:product, supplier: producer)),
 permission_revoked_at: Time.now.in_time_zone
 )
-        }
-        let!(:vo3) {
+        end
+        let!(:vo3) do
           create(
 :variant_override,
 hub: hub,
                    variant: create(:variant, product: create(:product, supplier: some_other_producer)),
 permission_revoked_at: Time.now.in_time_zone
 )
-        }
+        end
 
         context "and is then added" do
-          before {
+          before do
             er.permissions_list = [:add_to_order_cycles, :create_variant_overrides]; er.save!
-          }
+          end
           it "should set permission_revoked_at to nil for all relevant variant overrides" do
             expect(vo1.reload.permission_revoked_at).to be_nil
             expect(vo2.reload.permission_revoked_at).to be_nil

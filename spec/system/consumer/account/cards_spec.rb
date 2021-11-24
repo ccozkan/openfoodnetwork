@@ -10,17 +10,17 @@ describe "Credit Cards", js: true do
   describe "as a logged in user" do
     let(:user) { create(:user) }
     let!(:customer) { create(:customer, user: user) }
-    let!(:default_card) {
+    let!(:default_card) do
       create(
 :stored_credit_card,
 user_id: user.id,
 gateway_customer_profile_id: 'cus_AZNMJ',
                      is_default: true
 )
-    }
-    let!(:non_default_card) {
+    end
+    let!(:non_default_card) do
       create(:stored_credit_card, user_id: user.id, gateway_customer_profile_id: 'cus_FDTG')
-    }
+    end
 
     around do |example|
       original_stripe_connect_enabled = Spree::Config[:stripe_connect_enabled]

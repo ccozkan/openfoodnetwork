@@ -172,9 +172,9 @@ module Spree
 
       describe "finding line items with and without tax" do
         let(:tax_rate) { create(:tax_rate, calculator: ::Calculator::DefaultTax.new) }
-        let!(:adjustment1) {
+        let!(:adjustment1) do
           create(:adjustment, originator: tax_rate, label: "TR", amount: 123, included_tax: 10.00)
-        }
+        end
 
         before do
           li1
@@ -273,7 +273,7 @@ module Spree
         let!(:hub) { create(:distributor_enterprise) }
         let(:bill_address) { create(:address) }
         let!(:variant_on_demand) { create(:variant, on_demand: true, on_hand: 1) }
-        let!(:order) {
+        let!(:order) do
           create(
 :order,
                  distributor: hub,
@@ -281,11 +281,11 @@ module Spree
                  bill_address: bill_address,
                  ship_address: bill_address
 )
-        }
+        end
         let!(:shipping_method) { create(:shipping_method, distributors: [hub]) }
-        let!(:line_item) {
+        let!(:line_item) do
           create(:line_item, variant: variant_on_demand, quantity: 10, order: order)
-        }
+        end
 
         before do
           order.reload
@@ -393,9 +393,9 @@ module Spree
       let!(:v) { create(:variant, on_demand: false, on_hand: 10) }
       let!(:v_on_demand) { create(:variant, on_demand: true, on_hand: 1) }
       let(:li) { build_stubbed(:line_item, variant: v, order: o, quantity: 5, max_quantity: 5) }
-      let(:li_on_demand) {
+      let(:li_on_demand) do
         build_stubbed(:line_item, variant: v_on_demand, order: o, quantity: 99, max_quantity: 99)
-      }
+      end
 
       context "when the variant is on_demand" do
         it { expect(li_on_demand.sufficient_stock?).to be true }
@@ -454,7 +454,7 @@ module Spree
       let(:li_no_tax)   { create(:line_item) }
       let(:li_tax)      { create(:line_item) }
       let(:tax_rate)    { create(:tax_rate, calculator: ::Calculator::DefaultTax.new) }
-      let!(:adjustment) {
+      let!(:adjustment) do
         create(
 :adjustment,
 adjustable: li_tax,
@@ -463,7 +463,7 @@ label: "TR",
              amount: 10.00,
 included: true
 )
-      }
+      end
 
       context "checking if a line item has tax included" do
         it "returns true when it does" do
@@ -488,14 +488,14 @@ included: true
 
     describe "unit value/description" do
       describe "inheriting units" do
-        let!(:p) {
+        let!(:p) do
           create(
 :product,
 variant_unit: "weight",
 variant_unit_scale: 1,
           master: create(:variant, unit_value: 1000)
 )
-        }
+        end
         let!(:v) { p.variants.first }
         let!(:o) { create(:order) }
 
@@ -511,9 +511,9 @@ variant_unit_scale: 1,
           end
 
           context "when a final_weight_volume has been set" do
-            let(:li) {
+            let(:li) do
               build(:line_item, order: o, variant: v, quantity: 3, final_weight_volume: 2000)
-            }
+            end
 
             it "uses the changed value" do
               expect(li.final_weight_volume).to eq 2000
@@ -737,9 +737,9 @@ variant_unit_scale: 1,
           ov_var  = v.option_values.last
           allow(li).to receive(:unit_description) { 'foo' }
 
-          expect {
+          expect do
             li.update_attribute(:final_weight_volume, 10)
-          }.to change(Spree::OptionValue, :count).by(1)
+          end.to change(Spree::OptionValue, :count).by(1)
 
           expect(li.option_values).not_to include ov_orig
           expect(li.option_values).not_to include ov_var
@@ -760,9 +760,9 @@ variant_unit_scale: 1,
           ov_new  = v.option_values.last
           allow(li).to receive(:unit_description) { 'bar' }
 
-          expect {
+          expect do
             li.update_attribute(:final_weight_volume, 10)
-          }.to change(Spree::OptionValue, :count).by(0)
+          end.to change(Spree::OptionValue, :count).by(0)
 
           expect(li.option_values).not_to include ov_orig
           expect(li.option_values).to     include ov_new
@@ -815,15 +815,15 @@ variant_unit_scale: 1,
       let!(:li) { create(:line_item, product: p) }
 
       it "removes option value associations for unit option types" do
-        expect {
+        expect do
           li.delete_unit_option_values
-        }.to change(li.option_values, :count).by(-1)
+        end.to change(li.option_values, :count).by(-1)
       end
 
       it "does not delete option values" do
-        expect {
+        expect do
           li.delete_unit_option_values
-        }.to change(Spree::OptionValue, :count).by(0)
+        end.to change(Spree::OptionValue, :count).by(0)
       end
     end
 

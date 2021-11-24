@@ -19,9 +19,9 @@ describe "Managing enterprise images" do
 
     describe "images for an enterprise" do
       let(:alert_text_logo) { 'The logo will be removed immediately after you confirm'.strip }
-      let(:alert_text_promo) {
+      let(:alert_text_promo) do
         'The promo image will be removed immediately after you confirm.'.strip
-      }
+      end
 
       def go_to_images
         within(".side_menu") do

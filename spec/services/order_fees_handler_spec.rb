@@ -8,9 +8,9 @@ describe OrderFeesHandler do
   let(:line_item) { order.line_items.first }
 
   let(:service) { OrderFeesHandler.new(order) }
-  let(:calculator) {
+  let(:calculator) do
     double(OpenFoodNetwork::EnterpriseFeeCalculator, create_order_adjustments_for: true)
-  }
+  end
 
   before do
     allow(service).to receive(:calculator) { calculator }

@@ -9,16 +9,16 @@ describe Api::V0::ProductsController, type: :controller do
   let(:supplier) { create(:supplier_enterprise) }
   let(:supplier2) { create(:supplier_enterprise) }
   let!(:product) { create(:product, supplier: supplier) }
-  let!(:inactive_product) {
+  let!(:inactive_product) do
     create(:product, available_on: Time.zone.now.tomorrow, name: "inactive")
-  }
+  end
   let(:product_other_supplier) { create(:product, supplier: supplier2) }
   let(:product_with_image) { create(:product_with_image, supplier: supplier) }
-  let(:attributes) {
+  let(:attributes) do
     ["id", "name", "supplier", "price", "on_hand", "available_on", "permalink_live"]
-  }
+  end
   let(:all_attributes) { ["id", "name", "price", "available_on", "variants"] }
-  let(:variants_attributes) {
+  let(:variants_attributes) do
     [
 "id",
 "options_text",
@@ -33,7 +33,7 @@ describe Api::V0::ProductsController, type: :controller do
 "on_hand",
 "price"
 ]
-  }
+  end
 
   let(:current_api_user) { build(:user) }
 
@@ -56,16 +56,16 @@ describe Api::V0::ProductsController, type: :controller do
 
       expect(all_attributes.all? { |attr| json_response.keys.include? attr }).to eq(true)
       expect(
-variants_attributes.all? { |attr|
+variants_attributes.all? do |attr|
                json_response['variants'].first.keys.include? attr
-             }
+             end
 ).to eq(true)
     end
 
     context "finds a product by permalink first then by id" do
-      let!(:other_product) {
+      let!(:other_product) do
         create(:product, permalink: "these-are-not-the-droids-you-are-looking-for")
-      }
+      end
 
       before do
         product.update_attribute(:permalink, "#{other_product.id}-and-1-ways")

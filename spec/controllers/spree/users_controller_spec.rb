@@ -14,9 +14,9 @@ describe Spree::UsersController, type: :controller do
     let!(:distributor2) { create(:distributor_enterprise) }
     let!(:d1o1) { create(:completed_order_with_totals, distributor: distributor1, user_id: u1.id) }
     let!(:d1o2) { create(:completed_order_with_totals, distributor: distributor1, user_id: u1.id) }
-    let!(:d1_order_for_u2) {
+    let!(:d1_order_for_u2) do
       create(:completed_order_with_totals, distributor: distributor1, user_id: u2.id)
-    }
+    end
     let!(:d1o3) { create(:order, state: 'cart', distributor: distributor1, user_id: u1.id) }
     let!(:d2o1) { create(:completed_order_with_totals, distributor: distributor2, user_id: u2.id) }
 

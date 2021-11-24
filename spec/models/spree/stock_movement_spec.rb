@@ -13,9 +13,9 @@ describe Spree::StockMovement do
 
   it 'is readonly unless new' do
     subject.save
-    expect {
+    expect do
       subject.save
-    }.to raise_error(ActiveRecord::ReadOnlyRecord)
+    end.to raise_error(ActiveRecord::ReadOnlyRecord)
   end
 
   context "when quantity is negative" do

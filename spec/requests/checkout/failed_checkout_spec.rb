@@ -7,7 +7,7 @@ describe "checking out an order that initially fails", type: :request do
 
   let!(:shop) { create(:enterprise) }
   let!(:order_cycle) { create(:simple_order_cycle) }
-  let!(:exchange) {
+  let!(:exchange) do
     create(
 :exchange,
 order_cycle: order_cycle,
@@ -16,20 +16,20 @@ receiver: shop,
            incoming: false,
 pickup_time: "Monday"
 )
-  }
+  end
   let!(:address) { create(:address) }
   let!(:line_item) { create(:line_item, order: order, quantity: 3, price: 5.00) }
-  let!(:payment_method) {
+  let!(:payment_method) do
     create(:bogus_payment_method, distributor_ids: [shop.id], environment: Rails.env)
-  }
-  let!(:check_payment_method) {
+  end
+  let!(:check_payment_method) do
     create(:payment_method, distributor_ids: [shop.id], environment: Rails.env)
-  }
+  end
   let!(:shipping_method) { create(:shipping_method, distributor_ids: [shop.id]) }
   let!(:shipment) { create(:shipment_with, :shipping_method, shipping_method: shipping_method) }
-  let!(:order) {
+  let!(:order) do
     create(:order, shipments: [shipment], distributor: shop, order_cycle: order_cycle)
-  }
+  end
   let(:params) do
     {
 order: {

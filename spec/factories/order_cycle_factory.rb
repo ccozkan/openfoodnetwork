@@ -5,12 +5,12 @@ FactoryBot.define do
     coordinator_fees { [create(:enterprise_fee, enterprise: coordinator)] }
 
     transient do
-      suppliers {
+      suppliers do
         [create(:supplier_enterprise), create(:supplier_enterprise)]
-      }
-      distributors {
+      end
+      distributors do
         [create(:distributor_enterprise), create(:distributor_enterprise)]
-      }
+      end
     end
 
     after(:create) do |_oc, proxy|

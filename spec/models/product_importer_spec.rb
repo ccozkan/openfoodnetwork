@@ -8,36 +8,36 @@ describe ProductImport::ProductImporter do
   let!(:user) { create(:user) }
   let!(:user2) { create(:user) }
   let!(:user3) { create(:user) }
-  let!(:enterprise) {
+  let!(:enterprise) do
     create(:enterprise, is_primary_producer: true, owner: user, name: "User Enterprise")
-  }
-  let!(:enterprise2) {
+  end
+  let!(:enterprise2) do
     create(
 :distributor_enterprise,
 is_primary_producer: true,
 owner: user2,
                          name: "Another Enterprise"
 )
-  }
-  let!(:enterprise3) {
+  end
+  let!(:enterprise3) do
     create(
 :distributor_enterprise,
 is_primary_producer: true,
 owner: user3,
                          name: "And Another Enterprise"
 )
-  }
-  let!(:enterprise4) {
+  end
+  let!(:enterprise4) do
     create(:enterprise, is_primary_producer: false, owner: user, name: "Non-Producer")
-  }
-  let!(:relationship) {
+  end
+  let!(:relationship) do
     create(
 :enterprise_relationship,
 parent: enterprise,
 child: enterprise2,
                           permissions_list: [:create_variant_overrides]
 )
-  }
+  end
 
   let!(:category) { create(:taxon, name: 'Vegetables') }
   let!(:category2) { create(:taxon, name: 'Cake') }
@@ -47,7 +47,7 @@ child: enterprise2,
   let!(:tax_category2) { create(:tax_category) }
   let!(:shipping_category) { create(:shipping_category) }
 
-  let!(:product) {
+  let!(:product) do
     create(
 :simple_product,
 supplier: enterprise2,
@@ -55,8 +55,8 @@ name: 'Hypothetical Cake',
 description: nil,
                  primary_taxon_id: category2.id
 )
-  }
-  let!(:variant) {
+  end
+  let!(:variant) do
     create(
 :variant,
 product_id: product.id,
@@ -65,8 +65,8 @@ on_hand: '100',
 unit_value: '500',
           display_name: 'Preexisting Banana'
 )
-  }
-  let!(:product2) {
+  end
+  let!(:product2) do
     create(
 :simple_product,
 supplier: enterprise,
@@ -76,8 +76,8 @@ unit_value: '500',
                  primary_taxon_id: category.id,
 description: nil
 )
-  }
-  let!(:product3) {
+  end
+  let!(:product3) do
     create(
 :simple_product,
 supplier: enterprise,
@@ -86,8 +86,8 @@ name: 'Sprouts',
 unit_value: '500',
                  primary_taxon_id: category.id
 )
-  }
-  let!(:product4) {
+  end
+  let!(:product4) do
     create(
 :simple_product,
 supplier: enterprise,
@@ -99,8 +99,8 @@ variant_unit: "items",
 variant_unit_name: "Whole",
 primary_taxon_id: category.id
 )
-  }
-  let!(:product5) {
+  end
+  let!(:product5) do
     create(
 :simple_product,
 supplier: enterprise2,
@@ -109,8 +109,8 @@ name: 'Lettuce',
 unit_value: '500',
                  primary_taxon_id: category.id
 )
-  }
-  let!(:product6) {
+  end
+  let!(:product6) do
     create(
 :simple_product,
 supplier: enterprise3,
@@ -123,8 +123,8 @@ variant_unit: 'weight',
 primary_taxon_id: category.id,
 description: nil
 )
-  }
-  let!(:product7) {
+  end
+  let!(:product7) do
     create(
 :simple_product,
 supplier: enterprise3,
@@ -136,9 +136,9 @@ variant_unit: 'weight',
 primary_taxon_id: category.id,
 description: nil
 )
-  }
+  end
 
-  let!(:product8) {
+  let!(:product8) do
     create(
 :simple_product,
 supplier: enterprise,
@@ -150,8 +150,8 @@ variant_unit_scale: 1,
 variant_unit: 'weight',
 primary_taxon_id: category4.id
 )
-  }
-  let!(:product9) {
+  end
+  let!(:product9) do
     create(
 :simple_product,
 supplier: enterprise,
@@ -163,8 +163,8 @@ variant_unit_scale: 1,
 variant_unit: 'weight',
 primary_taxon_id: category4.id
 )
-  }
-  let!(:variant2) {
+  end
+  let!(:variant2) do
     create(
 :variant,
 product_id: product8.id,
@@ -173,8 +173,8 @@ on_hand: '100',
 unit_value: '500',
           display_name: 'Porridge Oats'
 )
-  }
-  let!(:variant3) {
+  end
+  let!(:variant3) do
     create(
 :variant,
 product_id: product8.id,
@@ -183,8 +183,8 @@ on_hand: '100',
 unit_value: '500',
           display_name: 'Rolled Oats'
 )
-  }
-  let!(:variant4) {
+  end
+  let!(:variant4) do
     create(
 :variant,
 product_id: product9.id,
@@ -193,24 +193,24 @@ on_hand: '100',
 unit_value: '500',
           display_name: 'Flaked Oats'
 )
-  }
+  end
 
-  let!(:variant_override) {
+  let!(:variant_override) do
     create(
 :variant_override,
 variant_id: product4.variants.first.id,
 hub: enterprise2,
                    count_on_hand: 42
 )
-  }
-  let!(:variant_override2) {
+  end
+  let!(:variant_override2) do
     create(
 :variant_override,
 variant_id: product5.variants.first.id,
 hub: enterprise,
                    count_on_hand: 96
 )
-  }
+  end
 
   let(:permissions) { OpenFoodNetwork::Permissions.new(user) }
 
@@ -219,7 +219,7 @@ hub: enterprise,
   end
 
   describe "importing products from a spreadsheet" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << [
 "name",
@@ -294,7 +294,7 @@ enterprise.name,
                 shipping_category.name
 ]
       end
-    }
+    end
     let(:importer) { import_data csv_data }
 
     it "returns the number of entries" do
@@ -371,7 +371,7 @@ enterprise.name,
   end
 
   describe "when uploading a spreadsheet with some invalid entries" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << [
 "name",
@@ -395,7 +395,7 @@ enterprise.name,
 ]
         csv << ["Bad Potatoes", "", "Vegetables", "6", "6.50", "1", "", shipping_category.name]
       end
-    }
+    end
     let(:importer) { import_data csv_data }
 
     it "validates entries" do
@@ -427,11 +427,11 @@ enterprise.name,
 
   describe "when uploading a spreadsheet with some malformed data" do
     # Use a simple string as CSV.generate will do some escaping
-    let(:csv_data) {
+    let(:csv_data) do
       csv = "name,producer,category,on_hand,price,units,unit_type,shipping_category\n"
       csv += "Good Carrots,#{enterprise.name},Vegetables,5,3.20,500,g,#{shipping_category.name}\n"
       csv += "Malformed \rBrocolli,#{enterprise.name},Vegetables,8,2.50,200,g,#{shipping_category.name}\n"
-    }
+    end
     let(:importer) { import_data csv_data }
 
     # an unquoted \n will create a non valid line which will fail entry validation hence why we are only testing with \r
@@ -448,7 +448,7 @@ I18n.t(
   end
 
   describe "when shipping category is missing" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << [
 "name",
@@ -475,7 +475,7 @@ nil,
                 nil
 ]
       end
-    }
+    end
     let(:importer) { import_data csv_data }
 
     it "raises an error" do
@@ -487,13 +487,13 @@ nil,
   end
 
   describe "when enterprises are not valid" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type"]
         csv << ["Product 1", "Non-existent Enterprise", "Vegetables", "5", "5.50", "500", "g"]
         csv << ["Product 2", enterprise4.name, "Vegetables", "5", "5.50", "500", "g"]
       end
-    }
+    end
     let(:importer) { import_data csv_data }
 
     it "adds enterprise errors" do
@@ -506,7 +506,7 @@ nil,
   end
 
   describe "adding new variants to existing products and updating exiting products" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << [
 "name",
@@ -542,7 +542,7 @@ enterprise2.name,
 shipping_category.name
 ]
       end
-    }
+    end
     let(:importer) { import_data csv_data }
 
     it "validates entries" do
@@ -578,7 +578,7 @@ shipping_category.name
   end
 
   describe "updating an exiting variant" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << [
 "name",
@@ -605,7 +605,7 @@ enterprise2.name,
 shipping_category.name
 ]
       end
-    }
+    end
     let(:importer) { import_data csv_data }
 
     it "ignores (non-updatable) description field if it doesn't match the current description" do
@@ -619,7 +619,7 @@ shipping_category.name
   end
 
   describe "adding new product and sub-variant at the same time" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << [
 "name",
@@ -688,7 +688,7 @@ enterprise.name,
                 shipping_category.name
 ]
       end
-    }
+    end
     let(:importer) { import_data csv_data }
 
     it "validates entries" do
@@ -727,7 +727,7 @@ enterprise.name,
   end
 
   describe "updating various fields" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << [
 "name",
@@ -766,7 +766,7 @@ enterprise3.name,
                 shipping_category.name
 ]
       end
-    }
+    end
     let(:importer) { import_data csv_data }
 
     it "validates entries" do
@@ -798,13 +798,13 @@ enterprise3.name,
   end
 
   describe "updating non-updatable fields on existing products" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << ["name", "producer", "category", "on_hand", "price", "units", "unit_type"]
         csv << ["Beetroot", enterprise3.name, "Meat", "5", "3.50", "500", "g"]
         csv << ["Tomato", enterprise3.name, "Vegetables", "6", "5.50", "500", "Kg"]
       end
-    }
+    end
     let(:importer) { import_data csv_data }
 
     it "does not allow updating" do
@@ -821,7 +821,7 @@ enterprise3.name,
   end
 
   describe "when more than one product of the same name already exists with multiple variants each" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << [
 "name",
@@ -841,7 +841,7 @@ enterprise3.name,
         csv << ["Oats", enterprise.name, "Cereal", "", "70", "8.50", "500", "g", "French Oats", shipping_category.name]   # Add
         csv << ["Oats", enterprise.name, "Cereal", "", "70", "8.50", "500", "g", "Scottish Oats", shipping_category.name] # Add
       end
-    }
+    end
     let(:importer) { import_data csv_data }
 
     it "validates entries" do
@@ -868,7 +868,7 @@ enterprise3.name,
   end
 
   describe "when importer processes create and update across multiple stages" do
-    let(:csv_data) {
+    let(:csv_data) do
       CSV.generate do |csv|
         csv << [
 "name",
@@ -887,7 +887,7 @@ enterprise3.name,
         csv << ["Bag of Oats", enterprise.name, "Cereal", "90", "7.50", "500", "g", "Scottish Oats", shipping_category.name]  # Add
         csv << ["Bag of Oats", enterprise.name, "Cereal", "30", "6.50", "500", "g", "Breakfast Oats", shipping_category.name] # Add
       end
-    }
+    end
 
     it "processes the validation in stages" do
       # Using settings of start: 1, end: 3 to simulate import over multiple stages
@@ -944,7 +944,7 @@ enterprise3.name,
 
   describe "importing items into inventory" do
     describe "creating and updating inventory" do
-      let(:csv_data) {
+      let(:csv_data) do
         CSV.generate do |csv|
           csv << [
 "name",
@@ -960,7 +960,7 @@ enterprise3.name,
           csv << ["Sprouts", enterprise2.name, enterprise.name, "6", "6.50", "500", "g", ""]
           csv << ["Cabbage", enterprise2.name, enterprise.name, "2001", "1.50", "1", "", "Whole"]
         end
-      }
+      end
       let(:importer) { import_data csv_data, import_into: 'inventories' }
 
       it "validates entries" do
@@ -1006,12 +1006,12 @@ hub_id: enterprise2.id
     end
 
     describe "updating existing inventory referenced by display_name" do
-      let(:csv_data) {
+      let(:csv_data) do
         CSV.generate do |csv|
           csv << ["name", "display_name", "distributor", "producer", "on_hand", "price", "units"]
           csv << ["Oats", "Porridge Oats", enterprise2.name, enterprise.name, "900", "", "500"]
         end
-      }
+      end
       let(:importer) { import_data csv_data, import_into: 'inventories' }
 
       it "updates inventory item correctly" do
@@ -1031,14 +1031,14 @@ enterprise_id: enterprise2.id
     end
 
     describe "updating existing item that was set to hidden in inventory" do
-      let!(:inventory) {
+      let!(:inventory) do
         InventoryItem.create(
 variant_id: product4.variants.first.id,
 enterprise_id: enterprise2.id,
 visible: false
 )
-      }
-      let(:csv_data) {
+      end
+      let(:csv_data) do
         CSV.generate do |csv|
           csv << [
 "name",
@@ -1051,7 +1051,7 @@ visible: false
 ]
           csv << ["Cabbage", enterprise2.name, enterprise.name, "900", "", "1", "Whole"]
         end
-      }
+      end
       let(:importer) { import_data csv_data, import_into: 'inventories' }
 
       it "sets the item to visible in inventory when the item is updated" do

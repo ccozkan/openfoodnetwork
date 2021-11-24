@@ -79,9 +79,9 @@ describe 'shipping methods' do
     let(:distributor2) { create(:distributor_enterprise, name: 'Second Distributor') }
     let(:distributor3) { create(:distributor_enterprise, name: 'Third Distributor') }
     let(:shipping_method1) { create(:shipping_method, name: 'One', distributors: [distributor1]) }
-    let(:shipping_method2) {
+    let(:shipping_method2) do
       create(:shipping_method, name: 'Two', distributors: [distributor1, distributor2])
-    }
+    end
     let(:sm3) { create(:shipping_method, name: 'Three', distributors: [distributor3]) }
     let(:shipping_category) { create(:shipping_category) }
 

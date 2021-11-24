@@ -11,9 +11,9 @@ describe Spree::Admin::TaxSettingsController, type: :controller do
     end
 
     it "changes Tax settings" do
-      expect {
+      expect do
         spree_post :update, params
-      }.to change { Spree::Config[:products_require_tax_category] }
+      end.to change { Spree::Config[:products_require_tax_category] }
 .to(true)
     end
   end

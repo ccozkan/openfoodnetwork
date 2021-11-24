@@ -4,11 +4,11 @@ require 'spec_helper'
 
 describe EmbeddedPageService do
   let(:enterprise_slug) { 'test-enterprise' }
-  let(:params) {
+  let(:params) do
     { controller: 'enterprises', action: 'shop', id: enterprise_slug, embedded_shopfront: true }
-  }
+  end
   let(:session) { {} }
-  let(:request) {
+  let(:request) do
     ActionController::TestRequest.new(
       {
 'HTTP_HOST' => 'ofn-instance.com',
@@ -17,14 +17,14 @@ describe EmbeddedPageService do
 nil,
 nil
     )
-  }
-  let(:response) {
+  end
+  let(:response) do
     ActionDispatch::TestResponse.new(
 200,
 'X-Frame-Options' => 'DENY',
      'Content-Security-Policy' => "frame-ancestors 'none'"
 )
-  }
+  end
   let(:service) { EmbeddedPageService.new(params, session, request, response) }
 
   before do
@@ -80,11 +80,11 @@ nil
     end
 
     context "when the request's referer is malformed" do
-      let(:request) {
+      let(:request) do
         ActionController::TestRequest.new(
           { 'HTTP_HOST' => 'ofn-instance.com', 'HTTP_REFERER' => 'hello' }, nil, nil
         )
-      }
+      end
       before do
         service.embed!
       end

@@ -33,17 +33,17 @@ payment_state: 'balance_due'
 )
     end
 
-    let!(:order_cycle2) {
+    let!(:order_cycle2) do
       create(:simple_order_cycle, name: 'Two', orders_close_at: 2.weeks.from_now)
-    }
-    let!(:order_cycle3) {
+    end
+    let!(:order_cycle3) do
       create(:simple_order_cycle, name: 'Three', orders_close_at: 3.weeks.from_now)
-    }
-    let!(:order_cycle4) {
+    end
+    let!(:order_cycle4) do
       create(:simple_order_cycle, name: 'Four', orders_close_at: 4.weeks.from_now)
-    }
+    end
 
-    let!(:order2) {
+    let!(:order2) do
       create(
 :order_with_credit_payment,
 user: user,
@@ -51,23 +51,23 @@ distributor: distributor2,
                             order_cycle: order_cycle2,
 completed_at: 2.days.ago
 )
-    }
-    let!(:order3) {
+    end
+    let!(:order3) do
       create(
 :order_with_credit_payment,
 user: user,
 distributor: distributor3,
                             order_cycle: order_cycle3
 )
-    }
-    let!(:order4) {
+    end
+    let!(:order4) do
       create(
 :order_with_credit_payment,
 user: user,
 distributor: distributor4,
                             order_cycle: order_cycle4
 )
-    }
+    end
 
     it "order cycles appear in descending order by close date on orders page" do
       login_as_admin_and_visit 'admin/orders'

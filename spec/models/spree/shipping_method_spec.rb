@@ -31,9 +31,9 @@ module Spree
         let!(:distributor_b) { create(:distributor_enterprise) }
         let!(:distributor_c) { create(:distributor_enterprise) }
 
-        let!(:shipping_method_a) {
+        let!(:shipping_method_a) do
           create(:shipping_method, distributors: [distributor_a, distributor_b])
-        }
+        end
         let!(:shipping_method_b) { create(:shipping_method, distributors: [distributor_b]) }
         let!(:shipping_method_c) { create(:shipping_method, distributors: [distributor_c]) }
 
@@ -69,13 +69,13 @@ module Spree
       let!(:d3) { create(:distributor_enterprise) }
       let!(:d4) { create(:distributor_enterprise) }
       let!(:d1_pickup) { create(:shipping_method, require_ship_address: false, distributors: [d1]) }
-      let!(:d1_delivery) {
+      let!(:d1_delivery) do
         create(:shipping_method, require_ship_address: true, distributors: [d1])
-      }
+      end
       let!(:d2_pickup) { create(:shipping_method, require_ship_address: false, distributors: [d2]) }
-      let!(:d3_delivery) {
+      let!(:d3_delivery) do
         create(:shipping_method, require_ship_address: true, distributors: [d3])
-      }
+      end
 
       it "reports when the services are available" do
         expect(ShippingMethod.services[d1.id]).to eq(pickup: true, delivery: true)

@@ -5,7 +5,7 @@ describe Api::Admin::VariantOverrideSerializer do
   let(:hub) { create(:distributor_enterprise) }
   let(:price) { 77.77 }
   let(:count_on_hand) { 11_111 }
-  let(:variant_override) {
+  let(:variant_override) do
     create(
 :variant_override,
 variant: variant,
@@ -13,7 +13,7 @@ hub: hub,
 price: price,
                    count_on_hand: count_on_hand
 )
-  }
+  end
 
   it "serializes a variant override" do
     serializer = Api::Admin::VariantOverrideSerializer.new variant_override

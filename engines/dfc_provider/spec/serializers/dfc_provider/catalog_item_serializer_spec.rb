@@ -9,7 +9,7 @@ describe DfcProvider::CatalogItemSerializer do
   subject { described_class.new(variant) }
 
   describe '#id' do
-    let(:catalog_item_id) {
+    let(:catalog_item_id) do
       [
         'http://test.host/api/dfc_provider',
         'enterprises',
@@ -17,7 +17,7 @@ describe DfcProvider::CatalogItemSerializer do
         'catalog_items',
         variant.id
       ].join('/')
-    }
+    end
 
     it 'returns the expected value' do
       expect(subject.id).to eq(catalog_item_id)
@@ -25,7 +25,7 @@ describe DfcProvider::CatalogItemSerializer do
   end
 
   describe '#references' do
-    let(:supplied_product_id) {
+    let(:supplied_product_id) do
       [
         'http://test.host/api/dfc_provider',
         'enterprises',
@@ -33,7 +33,7 @@ describe DfcProvider::CatalogItemSerializer do
         'supplied_products',
         variant.id
       ].join('/')
-    }
+    end
 
     it 'returns the expected value' do
       expect(subject.references).to eq("@id" => supplied_product_id, "@type" => "@id")

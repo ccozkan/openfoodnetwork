@@ -6,9 +6,9 @@ module Admin
       Spree::Config.set(preferences_params.to_h)
 
       respond_to do |format|
-        format.html {
+        format.html do
           redirect_to main_app.edit_admin_matomo_settings_path
-        }
+        end
       end
     end
 

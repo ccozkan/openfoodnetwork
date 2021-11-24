@@ -4,9 +4,9 @@ namespace :ofn do
   namespace :specs do
     namespace :run do
       def spec_folders
-        Pathname("spec/").children.select(&:directory?).map { |p|
+        Pathname("spec/").children.select(&:directory?).map do |p|
           p.split.last.to_s
-        } - %w(support factories javascripts performance)
+        end - %w(support factories javascripts performance)
       end
 
       def execute_rspec_for_pattern(pattern)

@@ -11,12 +11,12 @@ js: true do
   include AuthenticationHelper
   include WebHelper
 
-  let(:order_cycle_opening_time) {
+  let(:order_cycle_opening_time) do
     Time.zone.local(2040, 11, 0o6, 0o6, 0o0, 0o0).strftime("%F %T %z")
-  }
-  let(:order_cycle_closing_time) {
+  end
+  let(:order_cycle_closing_time) do
     Time.zone.local(2040, 11, 13, 17, 0o0, 0o0).strftime("%F %T %z")
-  }
+  end
 
   it "updating an order cycle", js: true do
     # Given an order cycle with all the settings

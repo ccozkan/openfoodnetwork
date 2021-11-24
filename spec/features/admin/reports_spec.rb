@@ -140,33 +140,33 @@ describe ' As an administrator I want numbers, all the numbers! ' do
   end
 
   describe "sales tax report" do
-    let(:distributor1) {
+    let(:distributor1) do
       create(:distributor_enterprise, with_payment_and_shipping: true, charges_sales_tax: true)
-    }
-    let(:distributor2) {
+    end
+    let(:distributor2) do
       create(:distributor_enterprise, with_payment_and_shipping: true, charges_sales_tax: true)
-    }
+    end
     let(:user1) { create(:user, enterprises: [distributor1]) }
     let(:user2) { create(:user, enterprises: [distributor2]) }
     let(:shipping_tax_rate) { create(:tax_rate, amount: 0.20, included_in_price: true, zone: zone) }
     let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
-    let!(:shipping_method) {
+    let!(:shipping_method) do
       create(
 :shipping_method_with,
 :expensive_name,
 distributors: [distributor1],
                                         tax_category: shipping_tax_category
 )
-    }
-    let(:enterprise_fee) {
+    end
+    let(:enterprise_fee) do
       create(
 :enterprise_fee,
 enterprise: user1.enterprises.first,
 tax_category: product2.tax_category,
                  calculator: Calculator::FlatRate.new(preferred_amount: 120.0)
 )
-    }
-    let(:order_cycle) {
+    end
+    let(:order_cycle) do
       create(
 :simple_order_cycle,
 coordinator: distributor1,
@@ -174,11 +174,11 @@ coordinator_fees: [enterprise_fee],
                      distributors: [distributor1],
 variants: [product1.variants.first, product2.variants.first]
 )
-    }
+    end
 
     let!(:zone) { create(:zone_with_member) }
     let(:address) { create(:address) }
-    let(:order1) {
+    let(:order1) do
       create(
 :order,
 order_cycle: order_cycle,
@@ -186,14 +186,14 @@ distributor: user1.enterprises.first,
         ship_address: address,
 bill_address: address
 )
-    }
+    end
     let(:product1) { create(:taxed_product, zone: zone, price: 12.54, tax_rate_amount: 0) }
     let(:product2) { create(:taxed_product, zone: zone, price: 500.15, tax_rate_amount: 0.2) }
 
-    let!(:line_item1) {
+    let!(:line_item1) do
       create(:line_item, variant: product1.variants.first, price: 12.54, quantity: 1, order: order1)
-    }
-    let!(:line_item2) {
+    end
+    let!(:line_item2) do
       create(
 :line_item,
 variant: product2.variants.first,
@@ -201,7 +201,7 @@ price: 500.15,
 quantity: 3,
             order: order1
 )
-    }
+    end
 
     before do
       order1.reload
@@ -262,28 +262,28 @@ amount: order1.reload.total,
 
     context "with two orders on the same day at different times" do
       let(:bill_address) { create(:address) }
-      let(:distributor_address) {
+      let(:distributor_address) do
         create(:address, address1: "distributor address", city: 'The Shire', zipcode: "1234")
-      }
+      end
       let(:distributor) { create(:distributor_enterprise, address: distributor_address) }
       let(:product) { create(:product) }
       let(:shipping_instructions) { "pick up on thursday please!" }
-      let(:order1) {
+      let(:order1) do
         create(
 :order,
 distributor: distributor,
 bill_address: bill_address,
         special_instructions: shipping_instructions
 )
-      }
-      let(:order2) {
+      end
+      let(:order2) do
         create(
 :order,
 distributor: distributor,
 bill_address: bill_address,
         special_instructions: shipping_instructions
 )
-      }
+      end
 
       before do
         Timecop.travel(Time.zone.local(2013, 4, 25, 14, 0, 0)) { order1.finalize! }
@@ -327,7 +327,7 @@ orders_close_at: nil
   describe "products and inventory report", js: true do
     let(:supplier) { create(:supplier_enterprise, name: 'Supplier Name') }
     let(:taxon)    { create(:taxon, name: 'Taxon Name') }
-    let(:product1) {
+    let(:product1) do
       create(
 :simple_product,
 name: "Product Name",
@@ -335,8 +335,8 @@ price: 100,
 supplier: supplier,
                  primary_taxon: taxon
 )
-    }
-    let(:product2) {
+    end
+    let(:product2) do
       create(
 :simple_product,
 name: "Product 2",
@@ -348,7 +348,7 @@ supplier: supplier,
 primary_taxon: taxon,
 sku: "product_sku"
 )
-    }
+    end
     let(:variant1) { product1.variants.first }
     let(:variant2) { create(:variant, product: product1, price: 80.0) }
     let(:variant3) { product2.variants.first }
@@ -510,34 +510,34 @@ product1.group_buy_unit_size.to_s,
   end
 
   describe "Xero invoices report" do
-    let(:distributor1) {
+    let(:distributor1) do
       create(:distributor_enterprise, with_payment_and_shipping: true, charges_sales_tax: true)
-    }
-    let(:distributor2) {
+    end
+    let(:distributor2) do
       create(:distributor_enterprise, with_payment_and_shipping: true, charges_sales_tax: true)
-    }
+    end
     let(:user1) { create(:user, enterprises: [distributor1]) }
     let(:user2) { create(:user, enterprises: [distributor2]) }
     let(:shipping_method) { create(:shipping_method_with, :expensive_name) }
     let(:shipment) { create(:shipment_with, :shipping_method, shipping_method: shipping_method) }
 
-    let(:enterprise_fee1) {
+    let(:enterprise_fee1) do
       create(
 :enterprise_fee,
 enterprise: user1.enterprises.first,
 tax_category: product2.tax_category,
                  calculator: Calculator::FlatRate.new(preferred_amount: 10)
 )
-    }
-    let(:enterprise_fee2) {
+    end
+    let(:enterprise_fee2) do
       create(
 :enterprise_fee,
 enterprise: user1.enterprises.first,
 tax_category: product2.tax_category,
                  calculator: Calculator::FlatRate.new(preferred_amount: 20)
 )
-    }
-    let(:order_cycle) {
+    end
+    let(:order_cycle) do
       create(
 :simple_order_cycle,
 coordinator: distributor1,
@@ -545,10 +545,10 @@ coordinator: distributor1,
 distributors: [distributor1],
 variants: [product1.master]
 )
-    }
+    end
 
     let!(:zone) { create(:zone_with_member) }
-    let(:bill_address) {
+    let(:bill_address) do
       create(
 :address,
 firstname: 'Customer',
@@ -558,8 +558,8 @@ address1: 'customer l1',
 city: 'customer city',
 zipcode: 1234
 )
-    }
-    let(:order1) {
+    end
+    let(:order1) do
       create(
 :order,
 order_cycle: order_cycle,
@@ -567,16 +567,16 @@ distributor: user1.enterprises.first,
         shipments: [shipment],
 bill_address: bill_address
 )
-    }
-    let(:product1) {
+    end
+    let(:product1) do
       create(:taxed_product, zone: zone, price: 12.54, tax_rate_amount: 0, sku: 'sku1')
-    }
-    let(:product2) {
+    end
+    let(:product2) do
       create(:taxed_product, zone: zone, price: 500.15, tax_rate_amount: 0.2, sku: 'sku2')
-    }
+    end
 
     describe "with adjustments" do
-      let!(:line_item1) {
+      let!(:line_item1) do
         create(
 :line_item,
 variant: product1.variants.first,
@@ -584,8 +584,8 @@ price: 12.54,
 quantity: 1,
             order: order1
 )
-      }
-      let!(:line_item2) {
+      end
+      let!(:line_item2) do
         create(
 :line_item,
 variant: product2.variants.first,
@@ -593,11 +593,11 @@ price: 500.15,
 quantity: 3,
             order: order1
 )
-      }
+      end
 
       let!(:tax_category) { create(:tax_category) }
       let!(:tax_rate) { create(:tax_rate, tax_category: tax_category) }
-      let!(:adj_shipping) {
+      let!(:adj_shipping) do
         create(
 :adjustment,
 order: order1,
@@ -606,8 +606,8 @@ label: "Shipping",
              originator: shipping_method,
 amount: 100.55
 )
-      }
-      let!(:adj_fee1) {
+      end
+      let!(:adj_fee1) do
         create(
 :adjustment,
 order: order1,
@@ -616,8 +616,8 @@ originator: enterprise_fee1,
              label: "Enterprise fee untaxed",
 amount: 10
 )
-      }
-      let!(:adj_fee2) {
+      end
+      let!(:adj_fee2) do
         create(
 :adjustment,
 order: order1,
@@ -627,8 +627,8 @@ originator: enterprise_fee2,
 amount: 20,
 tax_category: tax_category
 )
-      }
-      let!(:adj_fee2_tax) {
+      end
+      let!(:adj_fee2_tax) do
         create(
 :adjustment,
 order: order1,
@@ -637,8 +637,8 @@ originator: tax_rate,
 amount: 3,
              state: "closed"
 )
-      }
-      let!(:adj_admin1) {
+      end
+      let!(:adj_admin1) do
         create(
 :adjustment,
 order: order1,
@@ -647,8 +647,8 @@ originator: nil,
              label: "Manual adjustment",
 amount: 30
 )
-      }
-      let!(:adj_admin2) {
+      end
+      let!(:adj_admin2) do
         create(
 :adjustment,
 order: order1,
@@ -658,7 +658,7 @@ originator: nil,
 amount: 40,
 tax_category: tax_category
 )
-      }
+      end
 
       before do
         order1.update_order!

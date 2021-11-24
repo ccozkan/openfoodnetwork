@@ -3,9 +3,9 @@
 require 'spec_helper'
 
 describe TaxRateUpdater do
-  let!(:old_tax_rate) {
+  let!(:old_tax_rate) do
     create(:tax_rate, name: "Test Rate", amount: 0.2, calculator: Calculator::DefaultTax.new)
-  }
+  end
   let(:params) { { amount: 0.5 } }
   let(:service) { TaxRateUpdater.new(old_tax_rate, params) }
   let(:new_tax_rate) { service.updated_rate }

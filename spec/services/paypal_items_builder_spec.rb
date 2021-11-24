@@ -18,7 +18,7 @@ describe PaypalItemsBuilder do
   end
 
   context "listing adjustments" do
-    let!(:admin_adjustment) {
+    let!(:admin_adjustment) do
       create(
 :adjustment,
 label: "Admin Adjustment",
@@ -28,8 +28,8 @@ adjustable: order,
 originator: nil,
 state: "closed"
 )
-    }
-    let!(:ineligible_adjustment) {
+    end
+    let!(:ineligible_adjustment) do
       create(
 :adjustment,
 label: "Ineligible Adjustment",
@@ -40,9 +40,9 @@ eligible: false,
 state: "closed",
              originator_type: "Spree::PaymentMethod"
 )
-    }
+    end
     let!(:zone) { create(:zone_with_member) }
-    let!(:included_tax_rate) {
+    let!(:included_tax_rate) do
       create(
 :tax_rate,
 amount: 12,
@@ -50,8 +50,8 @@ included_in_price: true,
 zone: zone,
            calculator: ::Calculator::DefaultTax.new
 )
-    }
-    let!(:additional_tax_rate) {
+    end
+    let!(:additional_tax_rate) do
       create(
 :tax_rate,
 amount: 34,
@@ -59,8 +59,8 @@ included_in_price: false,
 zone: zone,
            calculator: ::Calculator::DefaultTax.new
 )
-    }
-    let!(:included_tax_adjustment) {
+    end
+    let!(:included_tax_adjustment) do
       create(
 :adjustment,
 label: "Included Tax Adjustment",
@@ -71,8 +71,8 @@ amount: 56,
 included: true,
 state: "closed"
 )
-    }
-    let!(:additional_tax_adjustment) {
+    end
+    let!(:additional_tax_adjustment) do
       create(
 :adjustment,
 label: "Additional Tax Adjustment",
@@ -82,9 +82,9 @@ adjustable: order.shipment,
 originator: additional_tax_rate,
 state: "closed"
 )
-    }
+    end
     let!(:enterprise_fee) { create(:enterprise_fee) }
-    let!(:line_item_enterprise_fee) {
+    let!(:line_item_enterprise_fee) do
       create(
 :adjustment,
 label: "Line Item Fee",
@@ -94,8 +94,8 @@ adjustable: order.line_items.first,
 originator: enterprise_fee,
 state: "closed"
 )
-    }
-    let!(:order_enterprise_fee) {
+    end
+    let!(:order_enterprise_fee) do
       create(
 :adjustment,
 label: "Order Fee",
@@ -105,7 +105,7 @@ adjustable: order,
 originator: enterprise_fee,
 state: "closed"
 )
-    }
+    end
 
     before { order.update_order! }
 

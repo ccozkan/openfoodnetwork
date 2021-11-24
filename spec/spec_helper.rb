@@ -32,16 +32,16 @@ Capybara.disable_animation = true
 
 RSpec.configure do |config|
   # DatabaseCleaner
-  config.before(:suite) {
+  config.before(:suite) do
     DatabaseCleaner.clean_with :deletion, except: ['spree_countries', 'spree_states']
-  }
+  end
   config.before(:each)           { DatabaseCleaner.strategy = :transaction }
-  config.before(:each, js: true) {
+  config.before(:each, js: true) do
     DatabaseCleaner.strategy = :deletion, { except: ['spree_countries', 'spree_states'] }
-  }
-  config.before(:each, concurrency: true) {
+  end
+  config.before(:each, concurrency: true) do
     DatabaseCleaner.strategy = :deletion, { except: ['spree_countries', 'spree_states'] }
-  }
+  end
   config.before(:each)           { DatabaseCleaner.start }
   config.after(:each)            { DatabaseCleaner.clean }
 

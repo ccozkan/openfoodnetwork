@@ -128,9 +128,9 @@ describe Admin::StripeAccountsController, type: :controller do
         end
 
         context "when a stripe account is associated with the specified enterprise" do
-          let!(:account) {
+          let!(:account) do
             create(:stripe_account, stripe_user_id: "acc_123", enterprise: enterprise)
-          }
+          end
 
           context "but access has been revoked or does not exist on stripe's servers" do
             before do

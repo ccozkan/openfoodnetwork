@@ -59,23 +59,23 @@ describe 'Groups', js: true do
 
   describe "hubs" do
     describe "filtering by product property" do
-      let!(:group) {
+      let!(:group) do
         create(:enterprise_group, enterprises: [d1, d2, d3, d4], on_front_page: true)
-      }
-      let!(:order_cycle) {
+      end
+      let!(:order_cycle) do
         create(
 :simple_order_cycle,
 distributors: [d1, d2, d3],
                      coordinator: create(:distributor_enterprise)
 )
-      }
-      let!(:closed_order_cycle) {
+      end
+      let!(:closed_order_cycle) do
         create(
 :closed_order_cycle,
 distributors: [d4],
                      coordinator: create(:distributor_enterprise)
 )
-      }
+      end
       let(:producer) { create(:supplier_enterprise) }
       let(:d1) { create(:distributor_enterprise, with_payment_and_shipping: true, visible: true) }
       let(:d2) { create(:distributor_enterprise, with_payment_and_shipping: true, visible: true) }

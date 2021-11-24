@@ -31,15 +31,15 @@ describe Admin::SchedulesController, type: :controller do
         end
 
         context "and there is a schedule of an OC coordinated by _another_ enterprise I manage and the first enterprise is given" do
-          let!(:other_managed_coordinator) {
+          let!(:other_managed_coordinator) do
             create(:distributor_enterprise, owner: managed_coordinator.owner)
-          }
-          let!(:other_coordinated_order_cycle) {
+          end
+          let!(:other_coordinated_order_cycle) do
             create(:simple_order_cycle, coordinator: other_managed_coordinator)
-          }
-          let!(:other_coordinated_schedule) {
+          end
+          let!(:other_coordinated_schedule) do
             create(:schedule, order_cycles: [other_coordinated_order_cycle])
-          }
+          end
           let(:params) { { format: :json, enterprise_id: managed_coordinator.id } }
 
           it "scopes @collection to schedules containing order_cycles coordinated by the first enterprise" do
@@ -62,22 +62,22 @@ describe Admin::SchedulesController, type: :controller do
     let(:user) { create(:user, enterprise_limit: 10) }
     let!(:managed_coordinator) { create(:enterprise, owner: user) }
     let!(:managed_enterprise) { create(:enterprise, owner: user) }
-    let!(:coordinated_order_cycle) {
+    let!(:coordinated_order_cycle) do
       create(:simple_order_cycle, coordinator: managed_coordinator)
-    }
-    let!(:coordinated_order_cycle2) {
+    end
+    let!(:coordinated_order_cycle2) do
       create(:simple_order_cycle, coordinator: managed_enterprise)
-    }
-    let!(:uncoordinated_order_cycle) {
+    end
+    let!(:uncoordinated_order_cycle) do
       create(:simple_order_cycle, coordinator: create(:enterprise))
-    }
-    let!(:uncoordinated_order_cycle2) {
+    end
+    let!(:uncoordinated_order_cycle2) do
       create(:simple_order_cycle, coordinator: create(:enterprise))
-    }
-    let!(:uncoordinated_order_cycle3) {
+    end
+    let!(:uncoordinated_order_cycle3) do
       create(:simple_order_cycle, coordinator: create(:enterprise))
-    }
-    let!(:coordinated_schedule) {
+    end
+    let!(:coordinated_schedule) do
       create(
 :schedule,
              order_cycles: [
@@ -86,7 +86,7 @@ uncoordinated_order_cycle,
                             uncoordinated_order_cycle3
 ]
 )
-    }
+    end
     let!(:uncoordinated_schedule) { create(:schedule, order_cycles: [uncoordinated_order_cycle]) }
 
     context "json" do
@@ -171,12 +171,12 @@ id: coordinated_schedule.id,
   describe "create" do
     let(:user) { create(:user) }
     let!(:managed_coordinator) { create(:enterprise, owner: user) }
-    let!(:coordinated_order_cycle) {
+    let!(:coordinated_order_cycle) do
       create(:simple_order_cycle, coordinator: managed_coordinator)
-    }
-    let!(:uncoordinated_order_cycle) {
+    end
+    let!(:uncoordinated_order_cycle) do
       create(:simple_order_cycle, coordinator: create(:enterprise))
-    }
+    end
 
     def create_schedule(params)
       spree_put :create, params
@@ -260,12 +260,12 @@ coordinated_order_cycle.id,
     let(:user) { create(:user, enterprise_limit: 10) }
     let(:managed_coordinator) { create(:enterprise, owner: user) }
     let(:coordinated_order_cycle) { create(:simple_order_cycle, coordinator: managed_coordinator) }
-    let(:uncoordinated_order_cycle) {
+    let(:uncoordinated_order_cycle) do
       create(:simple_order_cycle, coordinator: create(:enterprise))
-    }
-    let(:coordinated_schedule) {
+    end
+    let(:coordinated_schedule) do
       create(:schedule, order_cycles: [coordinated_order_cycle, uncoordinated_order_cycle])
-    }
+    end
     let(:uncoordinated_schedule) { create(:schedule, order_cycles: [uncoordinated_order_cycle]) }
     let(:params) { { format: :json } }
 

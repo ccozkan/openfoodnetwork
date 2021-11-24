@@ -297,14 +297,14 @@ describe ' As an administrator I want to manage enterprises ' do
     let(:distributor2) { create(:distributor_enterprise, name: 'Another Distributor') }
     let(:distributor3) { create(:distributor_enterprise, name: 'Yet Another Distributor') }
     let(:enterprise_user) { create(:user, enterprise_limit: 1) }
-    let!(:er) {
+    let!(:er) do
       create(
 :enterprise_relationship,
 parent: distributor3,
 child: distributor1,
                           permissions_list: [:edit_profile]
 )
-    }
+    end
 
     before(:each) do
       enterprise_user.enterprise_roles.build(enterprise: supplier1).save

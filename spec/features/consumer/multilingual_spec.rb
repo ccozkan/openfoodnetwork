@@ -43,9 +43,9 @@ describe 'Multilingual', js: true do
 
     context 'with a product in the cart' do
       let(:distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
-      let!(:order_cycle) {
+      let!(:order_cycle) do
         create(:simple_order_cycle, distributors: [distributor], variants: [product.variants.first])
-      }
+      end
       let(:product) { create(:simple_product) }
       let(:order) { create(:order, order_cycle: order_cycle, distributor: distributor) }
 

@@ -15,15 +15,15 @@ FactoryBot.define do
   end
 
   factory :weight_calculator, class: Calculator::Weight do
-    after(:build) { |c|
+    after(:build) do |c|
       c.set_preference(:per_unit, 0.5)
       c.set_preference(:unit_from_list, "kg")
-    }
-    after(:create) { |c|
+    end
+    after(:create) do |c|
       c.set_preference(:per_unit, 0.5)
       c.set_preference(:unit_from_list, "kg")
       c.save!
-    }
+    end
   end
 
   factory :default_tax_calculator, class: Calculator::DefaultTax

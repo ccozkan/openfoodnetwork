@@ -12,9 +12,9 @@ module Api
 
     describe "removing terms and conditions file" do
       fake_terms_file_path = File.open(Rails.root.join("app", "assets", "images", "logo-black.png"))
-      let(:terms_and_conditions_file) {
+      let(:terms_and_conditions_file) do
         Rack::Test::UploadedFile.new(fake_terms_file_path, "application/pdf")
-      }
+      end
       let(:enterprise) { create(:enterprise, owner: enterprise_owner) }
 
       before do

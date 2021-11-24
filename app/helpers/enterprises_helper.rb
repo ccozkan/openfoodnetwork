@@ -57,12 +57,12 @@ current_customer&.tag_list
   end
 
   def enterprises_options(enterprises)
-    enterprises.map { |enterprise|
+    enterprises.map do |enterprise|
       [
 enterprise.name + ": " + enterprise.address.address1 + ", " + enterprise.address.city,
        enterprise.id.to_i
 ]
-    }
+    end
   end
 
   def enterprises_to_names(enterprises)

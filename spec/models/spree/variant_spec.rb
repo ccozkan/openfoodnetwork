@@ -286,7 +286,7 @@ separator: ','
         let(:p_external) { create(:simple_product) }
         let(:v_external) { create(:variant, product: p_external) }
 
-        let!(:ex_in) {
+        let!(:ex_in) do
           create(
 :exchange,
 order_cycle: oc,
@@ -295,8 +295,8 @@ receiver: oc.coordinator,
            incoming: true,
 variants: [v1, v2]
 )
-        }
-        let!(:ex_out1) {
+        end
+        let!(:ex_out1) do
           create(
 :exchange,
 order_cycle: oc,
@@ -305,8 +305,8 @@ receiver: d1,
            incoming: false,
 variants: [v1]
 )
-        }
-        let!(:ex_out2) {
+        end
+        let!(:ex_out2) do
           create(
 :exchange,
 order_cycle: oc,
@@ -315,7 +315,7 @@ receiver: d2,
            incoming: false,
 variants: [v2]
 )
-        }
+        end
 
         it "returns variants in the order cycle and distributor" do
           expect(p1.variants.for_distribution(oc, d1)).to eq([v1])
@@ -338,12 +338,12 @@ variants: [v2]
         let!(:hidden_variant) { create(:variant) }
         let!(:visible_variant) { create(:variant) }
 
-        let!(:hidden_inventory_item) {
+        let!(:hidden_inventory_item) do
           create(:inventory_item, enterprise: enterprise, variant: hidden_variant, visible: false)
-        }
-        let!(:visible_inventory_item) {
+        end
+        let!(:visible_inventory_item) do
           create(:inventory_item, enterprise: enterprise, variant: visible_variant, visible: true)
-        }
+        end
 
         context "finding variants that are not hidden from an enterprise's inventory" do
           context "when the enterprise given is nil" do
@@ -365,30 +365,30 @@ variants: [v2]
             context "when inventory items exist for other enterprises" do
               let(:other_enterprise) { create(:distributor_enterprise) }
 
-              let!(:new_inventory_item) {
+              let!(:new_inventory_item) do
                 create(
 :inventory_item,
 enterprise: other_enterprise,
 variant: new_variant,
                  visible: true
 )
-              }
-              let!(:hidden_inventory_item2) {
+              end
+              let!(:hidden_inventory_item2) do
                 create(
 :inventory_item,
 enterprise: other_enterprise,
 variant: visible_variant,
                  visible: false
 )
-              }
-              let!(:visible_inventory_item2) {
+              end
+              let!(:visible_inventory_item2) do
                 create(
 :inventory_item,
 enterprise: other_enterprise,
 variant: hidden_variant,
                  visible: true
 )
-              }
+              end
 
               it "lists any variants that are not listed as visible=false only for the relevant enterprise" do
                 expect(variants).to include new_variant, visible_variant
@@ -413,9 +413,9 @@ variant: hidden_variant,
         let(:add_to_oc_producer) { create(:supplier_enterprise) }
         let(:other_producer) { create(:supplier_enterprise) }
         let!(:v1) { create(:variant, product: create(:simple_product, supplier: shop)) }
-        let!(:v2) {
+        let!(:v2) do
           create(:variant, product: create(:simple_product, supplier: add_to_oc_producer))
-        }
+        end
         let!(:v3) { create(:variant, product: create(:simple_product, supplier: other_producer)) }
 
         before do
@@ -686,9 +686,9 @@ child: shop,
         it "removes the old option value and assigns the new one" do
           ov_orig = v.option_values.last
 
-          expect {
+          expect do
             v.update!(unit_value: 10, unit_description: 'foo')
-          }.to change(Spree::OptionValue, :count).by(1)
+          end.to change(Spree::OptionValue, :count).by(1)
 
           expect(v.option_values).not_to include ov_orig
         end
@@ -705,9 +705,9 @@ child: shop,
           ov_orig = v.option_values.last
           ov_new  = v0.option_values.last
 
-          expect {
+          expect do
             v.update!(unit_value: 10, unit_description: 'foo')
-          }.to change(Spree::OptionValue, :count).by(0)
+          end.to change(Spree::OptionValue, :count).by(0)
 
           expect(v.option_values).not_to include ov_orig
           expect(v.option_values).to     include ov_new
@@ -716,9 +716,9 @@ child: shop,
 
       context "when the variant does not have a display_as value set" do
         let!(:p) { create(:simple_product, variant_unit: 'weight', variant_unit_scale: 1) }
-        let!(:v) {
+        let!(:v) do
           create(:variant, product: p, unit_value: 5, unit_description: 'bar', display_as: '')
-        }
+        end
 
         it "requests the name of the new option_value from OptionValueName" do
           expect_any_instance_of(VariantUnits::OptionValueNamer).to receive(:name).exactly(1).times.and_call_original
@@ -730,9 +730,9 @@ child: shop,
 
       context "when the variant has a display_as value set" do
         let!(:p) { create(:simple_product, variant_unit: 'weight', variant_unit_scale: 1) }
-        let!(:v) {
+        let!(:v) do
           create(:variant, product: p, unit_value: 5, unit_description: 'bar', display_as: 'FOOS!')
-        }
+        end
 
         it "does not request the name of the new option_value from OptionValueName" do
           expect_any_instance_of(VariantUnits::OptionValueNamer).not_to receive(:name)
@@ -751,15 +751,15 @@ child: shop,
       end
 
       it "removes option value associations for unit option types" do
-        expect {
+        expect do
           @v.delete_unit_option_values
-        }.to change(@v.option_values, :count).by(-1)
+        end.to change(@v.option_values, :count).by(-1)
       end
 
       it "does not delete option values" do
-        expect {
+        expect do
           @v.delete_unit_option_values
-        }.to change(Spree::OptionValue, :count).by(0)
+        end.to change(Spree::OptionValue, :count).by(0)
       end
     end
 

@@ -48,14 +48,14 @@ module CheckoutCallbacks
   def load_countries
     @countries = available_countries.map { |c| [c.name, c.id] }
     @countries_with_states =
- available_countries.map { |c|
+ available_countries.map do |c|
       [
 c.id,
-c.states.map { |s|
+c.states.map do |s|
                [s.name, s.id]
-             }
+             end
 ]
-    }
+    end
   end
 
   def redirect_to_shop?

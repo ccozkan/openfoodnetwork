@@ -198,9 +198,9 @@ success?: true,
             gateway.stub(:authorize).and_return(failed_response)
             expect(payment).to receive(:failure)
             expect(payment).to_not receive(:pend)
-            expect {
+            expect do
               payment.authorize!
-            }.to raise_error(Spree::Core::GatewayError)
+            end.to raise_error(Spree::Core::GatewayError)
           end
         end
       end
@@ -502,9 +502,9 @@ card,
       context "raises an error if no source is specified" do
         specify do
           payment = build_stubbed(:payment, source: nil, payment_method: gateway)
-          expect {
+          expect do
             payment.process!
-          }.to raise_error(Spree::Core::GatewayError, Spree.t(:payment_processing_failed))
+          end.to raise_error(Spree::Core::GatewayError, Spree.t(:payment_processing_failed))
         end
       end
     end
@@ -585,9 +585,9 @@ card,
 
       context "non-completed payments" do
         it "doesn't update order payment total" do
-          expect {
+          expect do
             create(:payment, amount: 100, order: order)
-          }.not_to change { order.payment_total }
+          end.not_to change { order.payment_total }
         end
       end
 
@@ -759,7 +759,7 @@ source_attributes: {
       end
 
       context "other payment exists" do
-        let(:other_payment) {
+        let(:other_payment) do
           gateway.name = 'Gateway'
           gateway.distributors << create(:distributor_enterprise)
           gateway.save!
@@ -769,7 +769,7 @@ source_attributes: {
           payment.order = create(:order)
           payment.payment_method = gateway
           payment
-        }
+        end
 
         before { other_payment.save! }
 
@@ -934,16 +934,16 @@ payment_method: payment_method,
 
       context "to Stripe payments" do
         let(:shop) { create(:enterprise) }
-        let(:payment_method) {
+        let(:payment_method) do
           create(
 :stripe_connect_payment_method,
 distributor_ids: [create(:distributor_enterprise).id],
                                 preferred_enterprise_id: shop.id
 )
-        }
-        let(:payment) {
+        end
+        let(:payment) do
           create(:payment, order: order, payment_method: payment_method, amount: order.total)
-        }
+        end
         let(:calculator) { ::Calculator::FlatPercentItemTotal.new(preferred_flat_percent: 10) }
 
         before do
@@ -954,9 +954,9 @@ distributor_ids: [create(:distributor_enterprise).id],
         end
 
         context "when the payment fails" do
-          let(:failed_response) {
+          let(:failed_response) do
             ActiveMerchant::Billing::Response.new(false, "This is an error message")
-          }
+          end
 
           before do
             allow(payment_method).to receive(:purchase) { failed_response }

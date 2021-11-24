@@ -85,9 +85,9 @@ bill_address: bill_address,
       table = subject.table
 
       line_items =
- @orders.map(&:line_items).flatten.select { |li|
+ @orders.map(&:line_items).flatten.select do |li|
         li.product.supplier == @supplier1 && li.variant == @variant1
-      }
+      end
 
       sum_quantities = line_items.map(&:quantity).sum
       sum_max_quantities = line_items.map { |li| li.max_quantity || 0 }
@@ -123,13 +123,13 @@ sum_max_quantities
       table_row_objects = subject.variants_and_quantities
 
       variant_rows =
- table_row_objects.select { |r|
+ table_row_objects.select do |r|
         r.instance_of?(OpenFoodNetwork::GroupBuyVariantRow)
-      }
+      end
       product_rows =
- table_row_objects.select { |r|
+ table_row_objects.select do |r|
         r.instance_of?(OpenFoodNetwork::GroupBuyProductRow)
-      }
+      end
 
       supplier_groups = variant_rows.group_by { |r| r.variant.product.supplier }
       variant_groups = variant_rows.group_by(&:variant)

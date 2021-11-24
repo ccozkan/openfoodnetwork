@@ -9,9 +9,9 @@ module Spree
 
     describe "scopes" do
       let!(:arbitrary_adjustment) { create(:adjustment, label: "Arbitrary") }
-      let!(:return_authorization_adjustment) {
+      let!(:return_authorization_adjustment) do
         create(:adjustment, originator: create(:return_authorization))
-      }
+      end
 
       it "returns return_authorization adjustments" do
         expect(Spree::Adjustment.return_authorization.to_a).to eq [return_authorization_adjustment]
@@ -78,10 +78,10 @@ amount: 0
         end
 
         it "removes orphaned adjustments" do
-          expect {
+          expect do
             line_item.delete
             adjustment.reload.update_adjustment!
-          }.to change { Spree::Adjustment.count }
+          end.to change { Spree::Adjustment.count }
 .by(-1)
         end
       end
@@ -212,20 +212,20 @@ amount: 0
       describe "Shipment adjustments" do
         let(:zone) { create(:zone_with_member) }
         let(:inclusive_tax) { true }
-        let(:tax_rate) {
+        let(:tax_rate) do
           create(:tax_rate, included_in_price: inclusive_tax, zone: zone, amount: 0.25)
-        }
+        end
         let(:tax_category)    { create(:tax_category, name: "Shipping", tax_rates: [tax_rate]) }
         let(:hub)             { create(:distributor_enterprise, charges_sales_tax: true) }
         let(:order)           { create(:order, distributor: hub) }
         let(:line_item)       { create(:line_item, order: order) }
 
-        let(:shipping_method) {
+        let(:shipping_method) do
           create(:shipping_method_with, :flat_rate, tax_category: tax_category)
-        }
-        let(:shipment) {
+        end
+        let(:shipment) do
           create(:shipment_with, :shipping_method, shipping_method: shipping_method, order: order)
-        }
+        end
 
         describe "the shipping charge" do
           it "is the adjustment amount" do
@@ -326,7 +326,7 @@ amount: 0
 
       describe "EnterpriseFee adjustments" do
         let(:zone)             { create(:zone_with_member) }
-        let(:fee_tax_rate)     {
+        let(:fee_tax_rate)     do
           create(
 :tax_rate,
 included_in_price: true,
@@ -334,12 +334,12 @@ calculator: ::Calculator::DefaultTax.new,
 zone: zone,
            amount: 0.1
 )
-        }
+        end
         let(:fee_tax_category) { create(:tax_category, tax_rates: [fee_tax_rate]) }
 
         let(:coordinator) { create(:distributor_enterprise, charges_sales_tax: true) }
         let(:variant)     { create(:variant, product: create(:product, tax_category: nil)) }
-        let(:order_cycle) {
+        let(:order_cycle) do
           create(
 :simple_order_cycle,
 coordinator: coordinator,
@@ -347,16 +347,16 @@ coordinator_fees: [enterprise_fee],
                      distributors: [coordinator],
 variants: [variant]
 )
-        }
+        end
         let(:line_item)   { create(:line_item, variant: variant) }
-        let(:order)       {
+        let(:order)       do
           create(
 :order,
 line_items: [line_item],
 order_cycle: order_cycle,
         distributor: coordinator
 )
-        }
+        end
         let(:fee)         { order.all_adjustments.reload.enterprise_fee.first }
         let(:fee_tax)     { fee.adjustments.tax.first }
 
@@ -366,14 +366,14 @@ order_cycle: order_cycle,
           end
 
           context "when enterprise fees are taxed per-order" do
-            let(:enterprise_fee) {
+            let(:enterprise_fee) do
               create(
 :enterprise_fee,
 enterprise: coordinator,
 tax_category: fee_tax_category,
                  calculator: ::Calculator::FlatRate.new(preferred_amount: 50.0)
 )
-            }
+            end
 
             describe "when the tax rate includes the tax in the price" do
               it "records the correct amount in a tax adjustment" do
@@ -409,14 +409,14 @@ tax_category: fee_tax_category,
           end
 
           context "when enterprise fees are taxed per-item" do
-            let(:enterprise_fee) {
+            let(:enterprise_fee) do
               create(
 :enterprise_fee,
 enterprise: coordinator,
 tax_category: fee_tax_category,
                  calculator: ::Calculator::PerItem.new(preferred_amount: 50.0)
 )
-            }
+            end
 
             describe "when the tax rate includes the tax in the price" do
               it "records the correct amount in a tax adjustment" do
@@ -438,7 +438,7 @@ tax_category: fee_tax_category,
         end
 
         context "when enterprise fees inherit their tax_category from the product they are applied to" do
-          let(:product_tax_rate) {
+          let(:product_tax_rate) do
             create(
 :tax_rate,
 included_in_price: true,
@@ -446,7 +446,7 @@ calculator: ::Calculator::DefaultTax.new,
            zone: zone,
 amount: 0.2
 )
-          }
+          end
           let(:product_tax_category) { create(:tax_category, tax_rates: [product_tax_rate]) }
 
           before do
@@ -455,14 +455,14 @@ amount: 0.2
           end
 
           context "when enterprise fees are taxed per-order" do
-            let(:enterprise_fee) {
+            let(:enterprise_fee) do
               create(
 :enterprise_fee,
 enterprise: coordinator,
 inherits_tax_category: true,
                  calculator: ::Calculator::FlatRate.new(preferred_amount: 50.0)
 )
-            }
+            end
 
             describe "when the tax rate includes the tax in the price" do
               it "records no tax on the enterprise fee adjustments" do
@@ -490,14 +490,14 @@ inherits_tax_category: true,
           end
 
           context "when enterprise fees are taxed per-item" do
-            let(:enterprise_fee) {
+            let(:enterprise_fee) do
               create(
 :enterprise_fee,
 enterprise: coordinator,
 inherits_tax_category: true,
                  calculator: ::Calculator::PerItem.new(preferred_amount: 50.0)
 )
-            }
+            end
 
             describe "when the tax rate includes the tax in the price" do
               it "records the correct amount in a tax adjustment" do
@@ -538,14 +538,14 @@ inherits_tax_category: true,
       let(:distributor) { create(:distributor_enterprise, charges_sales_tax: true) }
       let(:order) { create(:order, distributor: distributor) }
       let(:included_in_price) { true }
-      let(:tax_rate) {
+      let(:tax_rate) do
         create(
 :tax_rate,
 included_in_price: included_in_price,
 zone: zone,
            calculator: ::Calculator::FlatRate.new(preferred_amount: 0.1)
 )
-      }
+      end
       let(:product) { create(:product, tax_category: tax_category) }
       let(:variant) { product.variants.first }
 
@@ -575,9 +575,9 @@ zone: zone,
 
       describe "inclusive and additional scopes" do
         let(:included) { true }
-        let(:adjustment) {
+        let(:adjustment) do
           create(:adjustment, adjustable: order, originator: tax_rate, included: included)
-        }
+        end
 
         context "when tax is included in price" do
           it "is returned by the #included scope" do
@@ -598,7 +598,7 @@ zone: zone,
     context "return authorization adjustments" do
       let!(:return_authorization) { create(:return_authorization, amount: 123) }
       let(:order) { return_authorization.order }
-      let!(:return_adjustment) {
+      let!(:return_adjustment) do
         create(
 :adjustment,
 originator: return_authorization,
@@ -606,7 +606,7 @@ order: order,
              adjustable: order,
 amount: 456
 )
-      }
+      end
 
       describe "#update_adjustment!" do
         it "sets a negative value equal to the return authorization amount" do

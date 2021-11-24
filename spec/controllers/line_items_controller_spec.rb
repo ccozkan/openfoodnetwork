@@ -45,13 +45,13 @@ line_items_count: 1
       end
 
       let(:order) { item.order }
-      let(:order_cycle) {
+      let(:order_cycle) do
         create(
 :simple_order_cycle,
 distributors: [distributor],
                      variants: [order.line_item_variants]
 )
-      }
+      end
 
       before { allow(controller).to receive_messages spree_current_user: item.order.user }
 
@@ -99,9 +99,9 @@ distributors: [distributor],
               end
 
               context "after a payment is captured" do
-                let(:payment) {
+                let(:payment) do
                   create(:check_payment, amount: order.total, order: order, state: 'completed')
-                }
+                end
                 before { payment.capture! }
 
                 it 'updates the payment state' do
@@ -132,7 +132,7 @@ included_in_price: true,
       let(:shipping_fee) { 3 }
       let(:payment_fee) { 5 }
       let(:distributor_with_taxes) { create(:distributor_enterprise_with_tax) }
-      let(:order) {
+      let(:order) do
         create(
 :completed_order_with_fees,
 distributor: distributor_with_taxes,
@@ -140,7 +140,7 @@ distributor: distributor_with_taxes,
 payment_fee: payment_fee,
                             shipping_tax_category: shipping_tax_category
 )
-      }
+      end
 
       before do
         allow(order).to receive(:tax_zone) { zone }
@@ -178,15 +178,15 @@ payment_fee: payment_fee,
       let(:variant2) { create(:variant) }
       let(:distributor) { create(:distributor_enterprise, allow_order_changes: true) }
       let(:order_cycle) { create(:simple_order_cycle, distributors: [distributor]) }
-      let(:calculator) {
+      let(:calculator) do
         Calculator::PriceSack.new(
 preferred_minimal_amount: 15,
 preferred_normal_amount: 22,
 preferred_discount_amount: 11
 )
-      }
+      end
       let(:enterprise_fee) { create(:enterprise_fee, calculator: calculator) }
-      let!(:exchange) {
+      let!(:exchange) do
         create(
 :exchange,
 incoming: true,
@@ -195,7 +195,7 @@ sender: variant1.product.supplier,
 variants: [variant1, variant2],
 enterprise_fees: [enterprise_fee]
 )
-      }
+      end
       let!(:order) do
         order = create(
 :completed_order_with_totals,

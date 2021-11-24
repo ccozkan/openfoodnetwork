@@ -5,14 +5,14 @@ require 'spec_helper'
 module Spree
   describe CreditCard do
     describe "original specs from Spree" do
-      let(:valid_credit_card_attributes) {
+      let(:valid_credit_card_attributes) do
         {
           number: '4111111111111111',
           verification_value: '123',
           month: 12,
           year: Time.zone.now.year + 1
         }
-      }
+      end
 
       def self.payment_states
         Spree::Payment.state_machine.states.keys
@@ -278,13 +278,13 @@ module Spree
 
         context "and the checkout creates a card" do
           let!(:card1) { create(:credit_card, onetime_card_attrs) }
-          let(:store_card_profile_attrs) {
+          let(:store_card_profile_attrs) do
             {
               cc_type: "visa",
               gateway_customer_profile_id: "cus_FH9HflKAJw6Kxy",
               gateway_payment_profile_id: "card_1EmayNBZvgSKc1B2wctIzzoh"
             }
-          }
+          end
 
           it "doesn't set a one-time card as the default" do
             expect(card1.reload.is_default).to be false

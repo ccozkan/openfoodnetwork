@@ -125,44 +125,44 @@ describe ' As an administrator I want to manage simple order cycles ', js: true 
     let!(:supplier_unmanaged) { create(:supplier_enterprise, name: 'Unmanaged supplier') }
     let!(:supplier_permitted) { create(:supplier_enterprise, name: 'Permitted supplier') }
     let!(:distributor_managed) { create(:distributor_enterprise, name: 'Managed distributor') }
-    let!(:other_distributor_managed) {
+    let!(:other_distributor_managed) do
       create(:distributor_enterprise, name: 'Other Managed distributor')
-    }
+    end
     let!(:distributor_unmanaged) { create(:distributor_enterprise, name: 'Unmanaged Distributor') }
     let!(:distributor_permitted) { create(:distributor_enterprise, name: 'Permitted distributor') }
-    let!(:distributor_managed_fee) {
+    let!(:distributor_managed_fee) do
       create(:enterprise_fee, enterprise: distributor_managed, name: 'Managed distributor fee')
-    }
-    let!(:shipping_method) {
+    end
+    let!(:shipping_method) do
       create(
 :shipping_method,
              distributors: [distributor_managed, distributor_unmanaged, distributor_permitted]
 )
-    }
-    let!(:payment_method) {
+    end
+    let!(:payment_method) do
       create(
 :payment_method,
              distributors: [distributor_managed, distributor_unmanaged, distributor_permitted]
 )
-    }
+    end
     let!(:product_managed) { create(:product, supplier: supplier_managed) }
     let!(:variant_managed) { product_managed.variants.first }
     let!(:product_permitted) { create(:product, supplier: supplier_permitted) }
     let!(:variant_permitted) { product_permitted.variants.first }
-    let!(:schedule) {
+    let!(:schedule) do
       create(
 :schedule,
 name: 'Schedule1',
            order_cycles: [create(:simple_order_cycle, coordinator: distributor_managed)]
 )
-    }
-    let!(:schedule_of_other_managed_distributor) {
+    end
+    let!(:schedule_of_other_managed_distributor) do
       create(
 :schedule,
 name: 'Other Schedule',
            order_cycles: [create(:simple_order_cycle, coordinator: other_distributor_managed)]
 )
-    }
+    end
 
     before do
       # Relationships required for interface to work

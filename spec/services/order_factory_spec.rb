@@ -105,9 +105,9 @@ describe OrderFactory do
       end
 
       context "when an override is present" do
-        let!(:override) {
+        let!(:override) do
           create(:variant_override, hub_id: shop.id, variant_id: variant1.id, count_on_hand: 3)
-        }
+        end
         before { attrs[:line_items].first[:quantity] = 6 }
 
         context "when skip_stock_check is not requested" do
@@ -138,9 +138,9 @@ describe OrderFactory do
       end
 
       context "when an override is present" do
-        let!(:override) {
+        let!(:override) do
           create(:variant_override, hub_id: shop.id, variant_id: variant1.id, price: 3.0)
-        }
+        end
 
         it "uses the price from the override" do
           expect_new_order

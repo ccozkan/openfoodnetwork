@@ -122,9 +122,9 @@ proc { |is|
         groups = double(:groups)
         expect(@items).to receive(:group_by).and_return(groups)
         sorted_groups = {}
-        1.upto(number_of_categories) { |i|
+        1.upto(number_of_categories) do |i|
           sorted_groups[i] = double(:group, name: "Group " + i.to_s)
-        }
+        end
         expect(groups).to receive(:sort_by).and_return(sorted_groups)
         group = { group1: 1, group2: 2, group3: 3 }
         expect(subject).to receive(:build_tree).exactly(number_of_categories).times.and_return(group)

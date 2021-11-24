@@ -20,9 +20,9 @@ module Admin
 
       respond_to do |format|
         format.html
-        format.json {
+        format.json do
           render_as_json @collection, controller: self, include_calculators: @include_calculators
-        }
+        end
         # format.json { @presented_collection = @collection.each_with_index.map { |ef, i| EnterpriseFeePresenter.new(self, ef, i) } }
       end
     end

@@ -107,10 +107,10 @@ describe Enterprise do
         expect(u1.owned_enterprises.reload).to eq [e]
         4.times { create(:enterprise, owner: u1) }
         e2 = create(:enterprise, owner: u2)
-        expect {
+        expect do
           e2.owner = u1
           e2.save!
-        }.to raise_error ActiveRecord::RecordInvalid,
+        end.to raise_error ActiveRecord::RecordInvalid,
                          "Validation failed: #{u1.email} is not permitted to own any more enterprises (limit is 5)."
       end
     end
@@ -513,12 +513,14 @@ to: hub1,
           producer2
           expect { hub1 }
 .to change(EnterpriseRelationship, :count).by(2) # 2 producer links
-          expect {
+          # 2 producer links + 1 hub link
+expect do
             hub2
-          }.to change(EnterpriseRelationship, :count).by(3) # 2 producer links + 1 hub link
-          expect {
+          end.to change(EnterpriseRelationship, :count).by(3)
+          # 2 producer links + 2 hub links
+expect do
             hub3
-          }.to change(EnterpriseRelationship, :count).by(4) # 2 producer links + 2 hub links
+          end.to change(EnterpriseRelationship, :count).by(4)
         end
       end
 
@@ -560,9 +562,9 @@ to: hub1,
     let(:product2) { create(:simple_product, primary_taxon: taxon1, taxons: [taxon1, taxon2]) }
     let(:product3) { create(:simple_product, primary_taxon: taxon3) }
     let(:oc) { create(:order_cycle) }
-    let(:ex) {
+    let(:ex) do
       create(:exchange, order_cycle: oc, incoming: false, sender: supplier, receiver: distributor)
-    }
+    end
 
     it "gets all taxons of all distributed products" do
       allow(Spree::Product).to receive(:in_distributor).and_return [product1, product2]
@@ -584,14 +586,14 @@ to: hub1,
   end
 
   describe "presentation of attributes" do
-    let(:distributor) {
+    let(:distributor) do
       build_stubbed(
 :distributor_enterprise,
                     website: "http://www.google.com",
                     facebook: "www.facebook.com/roger",
                     linkedin: "https://linkedin.com"
 )
-    }
+    end
 
     it "strips http from url fields" do
       expect(distributor.website).to eq("www.google.com")
@@ -615,18 +617,18 @@ to: hub1,
   describe "provide enterprise category" do
     let(:producer_sell_all) { build_stubbed(:enterprise, is_primary_producer: true,  sells: "any") }
     let(:producer_sell_own) { build_stubbed(:enterprise, is_primary_producer: true,  sells: "own") }
-    let(:producer_sell_none) {
+    let(:producer_sell_none) do
       build_stubbed(:enterprise, is_primary_producer: true, sells: "none")
-    }
-    let(:non_producer_sell_all) {
+    end
+    let(:non_producer_sell_all) do
       build_stubbed(:enterprise, is_primary_producer: false,  sells: "any")
-    }
-    let(:non_producer_sell_own) {
+    end
+    let(:non_producer_sell_own) do
       build_stubbed(:enterprise, is_primary_producer: false,  sells: "own")
-    }
-    let(:non_producer_sell_none) {
+    end
+    let(:non_producer_sell_none) do
       build_stubbed(:enterprise, is_primary_producer: false, sells: "none")
-    }
+    end
 
     it "should output enterprise categories" do
       expect(producer_sell_all.is_primary_producer).to eq(true)

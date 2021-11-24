@@ -13,14 +13,14 @@ describe "Product Import", js: true do
   let!(:user2) { create(:user) }
   let!(:enterprise) { create(:supplier_enterprise, owner: user, name: "User Enterprise") }
   let!(:enterprise2) { create(:distributor_enterprise, owner: user2, name: "Another Enterprise") }
-  let!(:relationship) {
+  let!(:relationship) do
     create(
 :enterprise_relationship,
 parent: enterprise,
 child: enterprise2,
                           permissions_list: [:create_variant_overrides]
 )
-  }
+  end
 
   let!(:category) { create(:taxon, name: 'Vegetables') }
   let!(:category2) { create(:taxon, name: 'Cake') }
@@ -29,7 +29,7 @@ child: enterprise2,
   let!(:shipping_category) { create(:shipping_category) }
 
   let!(:product) { create(:simple_product, supplier: enterprise2, name: 'Hypothetical Cake') }
-  let!(:variant) {
+  let!(:variant) do
     create(
 :variant,
 product_id: product.id,
@@ -38,8 +38,8 @@ on_hand: 100,
 unit_value: '500',
           display_name: 'Preexisting Banana'
 )
-  }
-  let!(:product2) {
+  end
+  let!(:product2) do
     create(
 :simple_product,
 supplier: enterprise,
@@ -49,32 +49,32 @@ unit_value: '500',
                  description: '',
 primary_taxon_id: category.id
 )
-  }
-  let!(:product3) {
+  end
+  let!(:product3) do
     create(:simple_product, supplier: enterprise, on_hand: 100, name: 'Sprouts', unit_value: '500')
-  }
-  let!(:product4) {
+  end
+  let!(:product4) do
     create(:simple_product, supplier: enterprise, on_hand: 100, name: 'Cabbage', unit_value: '500')
-  }
-  let!(:product5) {
+  end
+  let!(:product5) do
     create(:simple_product, supplier: enterprise2, on_hand: 100, name: 'Lettuce', unit_value: '500')
-  }
-  let!(:variant_override) {
+  end
+  let!(:variant_override) do
     create(
 :variant_override,
 variant_id: product4.variants.first.id,
 hub: enterprise2,
                    count_on_hand: 42
 )
-  }
-  let!(:variant_override2) {
+  end
+  let!(:variant_override2) do
     create(
 :variant_override,
 variant_id: product5.variants.first.id,
 hub: enterprise,
                    count_on_hand: 96
 )
-  }
+  end
 
   let(:shipping_category_id_str) { Spree::ShippingCategory.all.first.id.to_s }
 

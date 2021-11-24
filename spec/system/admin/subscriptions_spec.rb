@@ -16,11 +16,11 @@ describe 'Subscriptions' do
     before { login_as user }
 
     context 'listing subscriptions' do
-      let!(:subscription) {
+      let!(:subscription) do
         create(:subscription, shop: shop, with_items: true, with_proxy_orders: true)
-      }
+      end
       let!(:customer) { create(:customer, name: "Customer A") }
-      let!(:other_subscription) {
+      let!(:other_subscription) do
         create(
 :subscription,
 shop: shop,
@@ -28,13 +28,13 @@ customer: customer,
 with_items: true,
                with_proxy_orders: true
 )
-      }
-      let!(:subscription2) {
+      end
+      let!(:subscription2) do
         create(:subscription, shop: shop2, with_items: true, with_proxy_orders: true)
-      }
-      let!(:subscription_unmanaged) {
+      end
+      let!(:subscription_unmanaged) do
         create(:subscription, shop: shop_unmanaged, with_items: true, with_proxy_orders: true)
-      }
+      end
 
       before do
         subscription.update(shipping_fee_estimate: 3.5)
@@ -199,7 +199,7 @@ with_options: [shop.name, shop2.name],
     context 'creating a new subscription' do
       let(:address) { create(:address) }
       let!(:customer_user) { create(:user) }
-      let!(:credit_card1) {
+      let!(:credit_card1) do
         create(
 :stored_credit_card,
 user: customer_user,
@@ -208,8 +208,8 @@ last_digits: 1111,
 month: 10,
                      year: 2030
 )
-      }
-      let!(:customer) {
+      end
+      let!(:customer) do
         create(
 :customer,
 enterprise: shop,
@@ -217,36 +217,36 @@ bill_address: address,
 user: customer_user,
            allow_charges: true
 )
-      }
+      end
       let!(:test_product) { create(:product, supplier: shop) }
-      let!(:test_variant) {
+      let!(:test_variant) do
         create(:variant, product: test_product, unit_value: "100", price: 12.00, option_values: [])
-      }
+      end
       let!(:shop_product) { create(:product, supplier: shop) }
-      let!(:shop_variant) {
+      let!(:shop_variant) do
         create(:variant, product: shop_product, unit_value: "1000", price: 6.00, option_values: [])
-      }
+      end
       let!(:enterprise_fee) { create(:enterprise_fee, amount: 1.75) }
-      let!(:order_cycle) {
+      let!(:order_cycle) do
         create(
 :simple_order_cycle,
 coordinator: shop,
 orders_open_at: 2.days.from_now,
                      orders_close_at: 7.days.from_now
 )
-      }
-      let!(:outgoing_exchange) {
+      end
+      let!(:outgoing_exchange) do
         order_cycle.exchanges.create(
 sender: shop,
 receiver: shop,
 variants: [test_variant, shop_variant],
 enterprise_fees: [enterprise_fee]
 )
-      }
+      end
       let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
-      let!(:payment_method) {
+      let!(:payment_method) do
         create(:stripe_connect_payment_method, name: 'Credit Card', distributors: [shop])
-      }
+      end
       let!(:shipping_method) { create(:shipping_method, distributors: [shop]) }
 
       before do
@@ -325,10 +325,10 @@ enterprise_fees: [enterprise_fee]
         click_button('Next')
 
         # Attempting to submit without a product
-        expect {
+        expect do
           click_button('Create Subscription')
           expect(page).to have_content 'Please add at least one product'
-        }.to_not change(Subscription, :count)
+        end.to_not change(Subscription, :count)
 
         click_button('edit-products')
 
@@ -344,10 +344,10 @@ enterprise_fees: [enterprise_fee]
 
         click_button('Next')
 
-        expect {
+        expect do
           click_button('Create Subscription')
           expect(page).to have_current_path admin_subscriptions_path
-        }.to change(Subscription, :count).by(1)
+        end.to change(Subscription, :count).by(1)
 
         select2_select shop.name, from: "shop_id"
         expect(page).to have_selector "td.items.panel-toggle"
@@ -384,50 +384,50 @@ enterprise_fees: [enterprise_fee]
       let!(:product1) { create(:product, supplier: shop) }
       let!(:product2) { create(:product, supplier: shop) }
       let!(:product3) { create(:product, supplier: shop) }
-      let!(:variant1) {
+      let!(:variant1) do
         create(:variant, product: product1, unit_value: '100', price: 12.00, option_values: [])
-      }
-      let!(:variant2) {
+      end
+      let!(:variant2) do
         create(:variant, product: product2, unit_value: '1000', price: 6.00, option_values: [])
-      }
-      let!(:variant3) {
+      end
+      let!(:variant3) do
         create(:variant, product: product3, unit_value: '10000', price: 22.00, option_values: [])
-      }
+      end
       let!(:enterprise_fee) { create(:enterprise_fee, amount: 1.75) }
-      let!(:order_cycle) {
+      let!(:order_cycle) do
         create(
 :simple_order_cycle,
 coordinator: shop,
 orders_open_at: 2.days.from_now,
                      orders_close_at: 7.days.from_now
 )
-      }
-      let!(:outgoing_exchange) {
+      end
+      let!(:outgoing_exchange) do
         order_cycle.exchanges.create(
 sender: shop,
 receiver: shop,
 variants: [variant1, variant2],
 enterprise_fees: [enterprise_fee]
 )
-      }
+      end
       let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
-      let!(:variant3_oc) {
+      let!(:variant3_oc) do
         create(
 :simple_order_cycle,
 coordinator: shop,
 orders_open_at: 2.days.from_now,
                      orders_close_at: 7.days.from_now
 )
-      }
-      let!(:variant3_ex) {
+      end
+      let!(:variant3_ex) do
         variant3_oc.exchanges.create(sender: shop, receiver: shop, variants: [variant3])
-      }
+      end
       let!(:payment_method) { create(:payment_method, distributors: [shop]) }
-      let!(:stripe_payment_method) {
+      let!(:stripe_payment_method) do
         create(:stripe_connect_payment_method, name: 'Credit Card', distributors: [shop])
-      }
+      end
       let!(:shipping_method) { create(:shipping_method, distributors: [shop]) }
-      let!(:subscription) {
+      let!(:subscription) do
         create(
 :subscription,
                shop: shop,
@@ -440,7 +440,7 @@ create(:subscription_line_item, variant: variant1, quantity: 2, price_estimate: 
 ],
                with_proxy_orders: true
 )
-      }
+      end
 
       it "passes the smoke test" do
         visit edit_admin_subscription_path(subscription)
@@ -560,9 +560,9 @@ parent: supplier,
         end
       end
       let!(:permitted_supplier_product) { create(:product, supplier: permitted_supplier) }
-      let!(:permitted_supplier_variant) {
+      let!(:permitted_supplier_variant) do
         create(:variant, product: permitted_supplier_product, unit_value: "2000")
-      }
+      end
       let!(:incoming_exchange_product) { create(:product) }
       let!(:incoming_exchange_variant) do
         create(:variant, product: incoming_exchange_product, unit_value: "2000").tap do |variant|
@@ -621,10 +621,10 @@ receiver: shop,
         click_button "Next"
 
         # Submit form
-        expect {
+        expect do
           click_button "Create Subscription"
           expect(page).to have_current_path admin_subscriptions_path
-        }.to change(Subscription, :count).by(1)
+        end.to change(Subscription, :count).by(1)
 
         # Subscription line items are created
         subscription = Subscription.last

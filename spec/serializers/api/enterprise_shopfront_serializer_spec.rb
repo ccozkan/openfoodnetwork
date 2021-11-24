@@ -9,14 +9,14 @@ describe Api::EnterpriseShopfrontSerializer do
 
   let!(:taxon1) { create(:taxon, name: 'Meat') }
   let!(:taxon2) { create(:taxon, name: 'Veg') }
-  let!(:product) {
+  let!(:product) do
     create(:product, supplier: producer, primary_taxon: taxon1, taxons: [taxon1, taxon2])
-  }
+  end
 
   let(:close_time) { 2.days.from_now }
   let!(:oc) { create(:simple_order_cycle, orders_close_at: close_time, distributors: [hub]) }
 
-  let!(:ex) {
+  let!(:ex) do
     create(
 :exchange,
 order_cycle: oc,
@@ -24,7 +24,7 @@ incoming: false,
            sender: producer,
 receiver: hub
 )
-  }
+  end
 
   let(:serializer) { Api::EnterpriseShopfrontSerializer.new hub }
 

@@ -42,9 +42,9 @@ describe Spree::OrderMailer do
 
     it "accepts an order id as an alternative to an Order object" do
       expect(Spree::Order).to receive(:find).with(order.id).and_return(order)
-      expect {
+      expect do
         described_class.confirm_email_for_customer(order.id).deliver_now
-      }.to_not raise_error
+      end.to_not raise_error
     end
   end
 
@@ -77,9 +77,9 @@ describe Spree::OrderMailer do
 
     it "cancel_email accepts an order id as an alternative to an Order object" do
       expect(Spree::Order).to receive(:find).with(order.id).and_return(order)
-      expect {
+      expect do
         Spree::OrderMailer.cancel_email(order.id).deliver_now
-      }.to_not raise_error
+      end.to_not raise_error
     end
   end
 
@@ -135,15 +135,15 @@ describe Spree::OrderMailer do
 
   describe "order confimation" do
     let(:bill_address) { create(:address) }
-    let(:distributor_address) {
+    let(:distributor_address) do
       create(:address, address1: "distributor address", city: 'The Shire', zipcode: "1234")
-    }
+    end
     let(:distributor) { create(:distributor_enterprise, address: distributor_address) }
     let(:shipping_instructions) { "pick up on thursday please!" }
-    let(:ship_address) {
+    let(:ship_address) do
       create(:address, address1: "distributor address", city: 'The Shire', zipcode: "1234")
-    }
-    let(:order) {
+    end
+    let(:order) do
       create(
 :order_with_line_items,
 distributor: distributor,
@@ -151,7 +151,7 @@ bill_address: bill_address,
 ship_address: ship_address,
                         special_instructions: shipping_instructions
 )
-    }
+    end
 
     after do
       ActionMailer::Base.deliveries.clear

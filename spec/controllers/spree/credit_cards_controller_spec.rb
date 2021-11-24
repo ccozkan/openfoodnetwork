@@ -30,9 +30,9 @@ describe Spree::CreditCardsController, type: :controller do
     end
 
     context "when the request to store the customer/card with Stripe is successful" do
-      let(:response_mock) {
+      let(:response_mock) do
         { status: 200, body: JSON.generate(id: "cus_AZNMJ", default_source: "card_1AEEb") }
-      }
+      end
 
       it "saves the card locally" do
         spree_post :new_from_token, params

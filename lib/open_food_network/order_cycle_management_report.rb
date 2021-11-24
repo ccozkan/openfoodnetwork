@@ -143,9 +143,9 @@ sa.firstname,
     end
 
     def has_temperature_controlled_items?(order)
-      order.line_items.any? { |line_item|
+      order.line_items.any? do |line_item|
         line_item.product.shipping_category&.temperature_controlled
-      }
+      end
     end
 
     def is_payment_methods?

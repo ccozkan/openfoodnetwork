@@ -17,9 +17,9 @@ describe Spree::Ability do
 
   TOKEN = 'token123'
 
-  after(:each) {
+  after(:each) do
     user.spree_roles = []
-  }
+  end
 
   context 'for general resource' do
     let(:resource) { Object.new }
@@ -330,14 +330,14 @@ describe Spree::Ability do
     let(:er2) { create(:enterprise_relationship, parent: d1, child: s1) }
     let(:er3) { create(:enterprise_relationship, parent: s2, child: d2) }
 
-    let(:er_ps) {
+    let(:er_ps) do
       create(
 :enterprise_relationship,
 parent: s_related,
 child: s1,
                           permissions_list: [:manage_products]
 )
-    }
+    end
 
     subject { user }
     let(:user) { nil }
@@ -541,7 +541,7 @@ for: Spree::Admin::ReportsController
 
         context "where the enterprise is in an order_cycle" do
           let!(:order_cycle) { create(:simple_order_cycle) }
-          let!(:exchange) {
+          let!(:exchange) do
             create(
 :exchange,
 incoming: true,
@@ -549,7 +549,7 @@ order_cycle: order_cycle,
 receiver: order_cycle.coordinator,
            sender: s1
 )
-          }
+          end
 
           it "should be able to access read/update order cycle actions" do
             is_expected.to have_ability([:admin, :index, :read, :edit, :update], for: order_cycle)
@@ -596,14 +596,14 @@ receiver: order_cycle.coordinator,
 
       describe "editing enterprises" do
         let!(:d_related) { create(:distributor_enterprise) }
-        let!(:er_pd) {
+        let!(:er_pd) do
           create(
 :enterprise_relationship,
 parent: d_related,
 child: d1,
                           permissions_list: [:edit_profile]
 )
-        }
+        end
 
         it "should be able to edit enterprises it manages" do
           is_expected.to have_ability(
@@ -661,14 +661,14 @@ for: d_related
         let(:vo3) { create(:variant_override, hub: d2, variant: p1.master) }
         let(:vo4) { create(:variant_override, hub: d2, variant: p2.master) }
 
-        let!(:er1) {
+        let!(:er1) do
           create(
 :enterprise_relationship,
 parent: s1,
 child: d1,
                           permissions_list: [:create_variant_overrides]
 )
-        }
+        end
 
         it "should be able to access variant overrides page" do
           is_expected.to have_ability(
@@ -811,7 +811,7 @@ for: Spree::Admin::ReportsController
 
       context "for a given order_cycle" do
         let!(:order_cycle) { create(:simple_order_cycle, coordinator: d2) }
-        let!(:exchange) {
+        let!(:exchange) do
           create(
 :exchange,
 incoming: false,
@@ -819,7 +819,7 @@ order_cycle: order_cycle,
 receiver: d1,
            sender: order_cycle.coordinator
 )
-        }
+        end
 
         it "should be able to access read and update order cycle actions" do
           is_expected.to have_ability([:admin, :index, :read, :edit, :update], for: order_cycle)
@@ -971,9 +971,9 @@ for: EnterpriseFee
 
     describe "when user of the distributor which is also the producer" do
       let(:user) { distributor.owner }
-      let!(:distributor) {
+      let!(:distributor) do
         create(:distributor_enterprise, is_primary_producer: true, sells: "any")
-      }
+      end
       let!(:producer) { distributor }
 
       it "should have permission" do

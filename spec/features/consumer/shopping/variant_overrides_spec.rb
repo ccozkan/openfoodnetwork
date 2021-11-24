@@ -11,9 +11,9 @@ describe "shopping with variant overrides defined", js: true do
 
   let(:hub) { create(:distributor_enterprise, with_payment_and_shipping: true) }
   let(:producer) { create(:supplier_enterprise) }
-  let(:oc) {
+  let(:oc) do
     create(:simple_order_cycle, suppliers: [producer], coordinator: hub, distributors: [hub])
-  }
+  end
   let(:outgoing_exchange) { oc.exchanges.outgoing.first }
   let(:sm) { hub.shipping_methods.first }
   let(:pm) { hub.payment_methods.first }
@@ -25,14 +25,14 @@ describe "shopping with variant overrides defined", js: true do
   let(:product1_variant2) { create(:variant, product: product1, price: 22.22, unit_value: 2) }
   let(:product2_variant1) { create(:variant, product: product2, price: 33.33, unit_value: 3) }
   let(:product1_variant3) { create(:variant, product: product1, price: 44.44, unit_value: 4) }
-  let(:product3_variant1) {
+  let(:product3_variant1) do
     create(:variant, product: product3, price: 55.55, unit_value: 5, on_demand: true)
-  }
-  let(:product3_variant2) {
+  end
+  let(:product3_variant2) do
     create(:variant, product: product3, price: 66.66, unit_value: 6, on_demand: true)
-  }
+  end
   let(:product4_variant1) { create(:variant, product: product4, price: 77.77, unit_value: 7) }
-  let!(:product1_variant1_override) {
+  let!(:product1_variant1_override) do
     create(
 :variant_override,
 :use_producer_stock_settings,
@@ -43,8 +43,8 @@ count_on_hand: nil,
 default_stock: nil,
 resettable: false
 )
-  }
-  let!(:product1_variant2_override) {
+  end
+  let!(:product1_variant2_override) do
     create(
 :variant_override,
 hub: hub,
@@ -53,8 +53,8 @@ count_on_hand: 0,
                    default_stock: nil,
 resettable: false
 )
-  }
-  let!(:product2_variant1_override) {
+  end
+  let!(:product2_variant1_override) do
     create(
 :variant_override,
 hub: hub,
@@ -63,8 +63,8 @@ count_on_hand: 0,
                    default_stock: nil,
 resettable: false
 )
-  }
-  let!(:product1_variant3_override) {
+  end
+  let!(:product1_variant3_override) do
     create(
 :variant_override,
 hub: hub,
@@ -73,8 +73,8 @@ count_on_hand: 3,
                    default_stock: nil,
 resettable: false
 )
-  }
-  let!(:product3_variant1_override) {
+  end
+  let!(:product3_variant1_override) do
     create(
 :variant_override,
 hub: hub,
@@ -83,8 +83,8 @@ count_on_hand: 0,
                    default_stock: nil,
 resettable: false
 )
-  }
-  let!(:product3_variant2_override) {
+  end
+  let!(:product3_variant2_override) do
     create(
 :variant_override,
 hub: hub,
@@ -93,16 +93,16 @@ count_on_hand: 6,
                    default_stock: nil,
 resettable: false
 )
-  }
-  let(:enterprise_fee) {
+  end
+  let(:enterprise_fee) do
     create(
 :enterprise_fee,
 enterprise: hub,
 fee_type: 'packing',
                  calculator: Calculator::FlatPercentPerItem.new(preferred_flat_percent: 10)
 )
-  }
-  let!(:product4_variant1_override) {
+  end
+  let!(:product4_variant1_override) do
     create(
 :variant_override,
 hub: hub,
@@ -112,7 +112,7 @@ count_on_hand: nil,
 default_stock: nil,
 resettable: false
 )
-  }
+  end
 
   before do
     outgoing_exchange.variants = [

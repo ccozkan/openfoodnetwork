@@ -57,9 +57,9 @@ I18n.t(:report_header_order_number),
       when "tax_rates"
         orders.map do |order|
           [order.number, order.total - order.total_tax] +
-            relevant_rates.map { |rate|
+            relevant_rates.map do |rate|
               OrderTaxAdjustmentsFetcher.new(order).totals.fetch(rate, 0)
-            } + [order.total_tax, order.total]
+            end + [order.total_tax, order.total]
         end
       else
         orders.map do |order|

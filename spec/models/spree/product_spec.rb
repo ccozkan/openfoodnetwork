@@ -175,18 +175,18 @@ module Spree
       end
 
       it "should not create duplicate properties when set_property is called" do
-        expect {
+        expect do
           product.set_property('the_prop', 'value2')
           product.save
           product.reload
-        }.not_to change(product.properties, :length)
+        end.not_to change(product.properties, :length)
 
-        expect {
+        expect do
           product.set_property('the_prop_new', 'value')
           product.save
           product.reload
           expect(product.property('the_prop_new')).to eq 'value'
-        }.to change { product.properties.length }
+        end.to change { product.properties.length }
 .by(1)
       end
 
@@ -413,13 +413,13 @@ module Spree
         let(:product) { create(:simple_product) }
         let(:supplier) { product.supplier }
         let(:distributor) { create(:distributor_enterprise) }
-        let!(:oc) {
+        let!(:oc) do
           create(
 :simple_order_cycle,
 distributors: [distributor],
                      variants: [product.variants.first]
 )
-        }
+        end
 
         it "touches the supplier" do
           expect { product.destroy }
@@ -510,20 +510,20 @@ distributors: [distributor],
         let!(:product2) { create(:product) }
         let!(:product3) { create(:product) }
         let!(:product4) { create(:product) }
-        let!(:order_cycle1) {
+        let!(:order_cycle1) do
           create(
 :order_cycle,
 distributors: [distributor1],
               variants: [product1.variants.first, product2.variants.first]
 )
-        }
-        let!(:order_cycle2) {
+        end
+        let!(:order_cycle2) do
           create(
 :order_cycle,
 distributors: [distributor2],
               variants: [product3.variants.first]
 )
-        }
+        end
 
         it "returns distributed products for a given Enterprise AR relation" do
           distributors = Enterprise.where(id: [distributor1.id, distributor2.id]).to_a
@@ -656,15 +656,15 @@ orders_close_at: Date.tomorrow
         let!(:visible_variant1) { create(:variant, product: product) }
         let!(:visible_variant2) { create(:variant, product: product) }
 
-        let!(:hidden_inventory_item) {
+        let!(:hidden_inventory_item) do
           create(:inventory_item, enterprise: enterprise, variant: hidden_variant, visible: false)
-        }
-        let!(:visible_inventory_item1) {
+        end
+        let!(:visible_inventory_item1) do
           create(:inventory_item, enterprise: enterprise, variant: visible_variant1, visible: true)
-        }
-        let!(:visible_inventory_item2) {
+        end
+        let!(:visible_inventory_item2) do
           create(:inventory_item, enterprise: enterprise, variant: visible_variant2, visible: true)
-        }
+        end
 
         let!(:products) { Spree::Product.visible_for(enterprise) }
 
@@ -852,14 +852,14 @@ value: 'NASAA 54321'
 
     describe "variant units" do
       context "when the product already has a variant unit set (and all required option types exist)" do
-        let!(:p) {
+        let!(:p) do
           create(
 :simple_product,
                  variant_unit: 'weight',
                  variant_unit_scale: 1,
                  variant_unit_name: nil
 )
-        }
+        end
 
         let!(:ot_volume) { create(:option_type, name: 'unit_volume', presentation: 'Volume') }
 
@@ -880,9 +880,9 @@ value: 'NASAA 54321'
 
           expect(v.option_values.map(&:name).include?("1L")).to eq(false)
           expect(v.option_values.map(&:name).include?("1g")).to eq(true)
-          expect {
+          expect do
             p.update!(variant_unit: 'volume', variant_unit_scale: 0.001)
-          }.to change(p.master.option_values.reload, :count).by(0)
+          end.to change(p.master.option_values.reload, :count).by(0)
           v.reload
           expect(v.option_values.map(&:name).include?("1L")).to eq(true)
           expect(v.option_values.map(&:name).include?("1g")).to eq(false)
@@ -895,9 +895,9 @@ value: 'NASAA 54321'
 
           expect(p.master.option_values.map(&:name).include?("1L")).to eq(false)
           expect(p.master.option_values.map(&:name).include?("1g")).to eq(true)
-          expect {
+          expect do
             p.update!(variant_unit: 'volume', variant_unit_scale: 0.001)
-          }.to change(p.master.option_values.reload, :count).by(0)
+          end.to change(p.master.option_values.reload, :count).by(0)
           p.reload
           expect(p.master.option_values.map(&:name).include?("1L")).to eq(true)
           expect(p.master.option_values.map(&:name).include?("1g")).to eq(false)
@@ -958,9 +958,9 @@ value: 'NASAA 54321'
       let(:v)  { create(:variant, product: p) }
       let(:oc) { create(:simple_order_cycle) }
       let(:s)  { create(:supplier_enterprise) }
-      let(:e)  {
+      let(:e)  do
         create(:exchange, order_cycle: oc, incoming: true, sender: s, receiver: oc.coordinator)
-      }
+      end
 
       it "removes the master variant from all order cycles" do
         e.variants << p.master
@@ -997,12 +997,12 @@ value: 'NASAA 54321'
 
       context "when some variants have import date and some do not" do
         let!(:variant_a) { create(:variant, product: product, import_date: nil) }
-        let!(:variant_b) {
+        let!(:variant_b) do
           create(:variant, product: product, import_date: reference_time - 1.hour)
-        }
-        let!(:variant_c) {
+        end
+        let!(:variant_c) do
           create(:variant, product: product, import_date: reference_time - 2.hours)
-        }
+        end
 
         it "returns the most recent import date" do
           expect(product.import_date).to eq(variant_b.import_date)
@@ -1010,15 +1010,15 @@ value: 'NASAA 54321'
       end
 
       context "when all variants have import date" do
-        let!(:variant_a) {
+        let!(:variant_a) do
           create(:variant, product: product, import_date: reference_time - 2.hours)
-        }
-        let!(:variant_b) {
+        end
+        let!(:variant_b) do
           create(:variant, product: product, import_date: reference_time - 1.hour)
-        }
-        let!(:variant_c) {
+        end
+        let!(:variant_c) do
           create(:variant, product: product, import_date: reference_time - 3.hours)
-        }
+        end
 
         it "returns the most recent import date" do
           expect(product.import_date).to eq(variant_b.import_date)

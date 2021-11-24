@@ -8,15 +8,15 @@ describe Api::Admin::ForOrderCycle::SuppliedProductSerializer do
   let!(:product) { create(:simple_product) }
   let!(:non_inventory_variant) { product.variants.first }
   let!(:inventory_variant) { create(:variant, product: product.reload) }
-  let(:serialized_product) {
+  let(:serialized_product) do
     Api::Admin::ForOrderCycle::SuppliedProductSerializer.new(
 product,
                                                              order_cycle: order_cycle
 ).to_json
-  }
-  let!(:inventory_item) {
+  end
+  let!(:inventory_item) do
     create(:inventory_item, enterprise: coordinator, variant: inventory_variant, visible: true)
-  }
+  end
 
   context "when order cycle shows only variants in the coordinator's inventory" do
     before do

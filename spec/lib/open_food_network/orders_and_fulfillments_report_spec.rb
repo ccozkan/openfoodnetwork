@@ -10,7 +10,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
   let(:distributor) { create(:distributor_enterprise) }
   let(:order_cycle) { create(:simple_order_cycle) }
   let(:address) { create(:address) }
-  let(:order) {
+  let(:order) do
     create(
       :order,
       completed_at: 1.day.ago,
@@ -18,7 +18,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
       distributor: distributor,
       bill_address: address
     )
-  }
+  end
   let(:line_item) { build(:line_item_with_shipment) }
   let(:user) { create(:user) }
   let(:admin_user) { create(:admin_user) }
@@ -52,7 +52,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
       end
 
       context "that has granted P-OC to the distributor" do
-        let(:o2) {
+        let(:o2) do
           create(
             :order,
             distributor: distributor,
@@ -60,10 +60,10 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
             bill_address: create(:address),
             ship_address: create(:address)
           )
-        }
-        let(:li2) {
+        end
+        let(:li2) do
           build(:line_item_with_shipment, product: create(:simple_product, supplier: s1))
-        }
+        end
 
         before do
           o2.line_items << li2
@@ -94,7 +94,7 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
       end
 
       context "that has not granted P-OC to the distributor" do
-        let(:o2) {
+        let(:o2) do
           create(
             :order,
             distributor: distributor,
@@ -102,10 +102,10 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
             bill_address: create(:address),
             ship_address: create(:address)
           )
-        }
-        let(:li2) {
+        end
+        let(:li2) do
           build(:line_item_with_shipment, product: create(:simple_product, supplier: s1))
-        }
+        end
 
         before do
           o2.line_items << li2
@@ -178,10 +178,10 @@ describe OpenFoodNetwork::OrdersAndFulfillmentsReport do
       create(:variant, product: product, display_name: "Gala", sku: "GALA", on_hand: 100)
     end
 
-    let(:items) {
+    let(:items) do
       report = described_class.new(admin_user, { report_type: "order_cycle_customer_totals" }, true)
       OpenFoodNetwork::OrderGrouper.new(report.rules, report.columns).table(report.table_items)
-    }
+    end
 
     before do
       # Clear price so it will be computed based on quantity and variant price.

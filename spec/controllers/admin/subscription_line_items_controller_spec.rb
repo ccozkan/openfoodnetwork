@@ -10,35 +10,35 @@ describe Admin::SubscriptionLineItemsController, type: :controller do
     let!(:shop) { create(:enterprise, owner: user) }
     let(:unmanaged_shop) { create(:enterprise) }
     let!(:product) { create(:product) }
-    let!(:variant) {
+    let!(:variant) do
       create(:variant, product: product, unit_value: '100', price: 15.00, option_values: [])
-    }
-    let!(:outgoing_exchange) {
+    end
+    let!(:outgoing_exchange) do
       order_cycle.exchanges.create(
 sender: shop,
 receiver: shop,
 variants: [variant],
 enterprise_fees: [enterprise_fee]
 )
-    }
+    end
     let!(:enterprise_fee) { create(:enterprise_fee, amount: 3.50) }
-    let!(:order_cycle) {
+    let!(:order_cycle) do
       create(
 :simple_order_cycle,
 coordinator: shop,
 orders_open_at: 2.days.from_now,
                      orders_close_at: 7.days.from_now
 )
-    }
+    end
     let!(:schedule) { create(:schedule, order_cycles: [order_cycle]) }
-    let(:unmanaged_schedule) {
+    let(:unmanaged_schedule) do
       create(:schedule, order_cycles: [create(:simple_order_cycle, coordinator: unmanaged_shop)])
-    }
+    end
 
     context "json" do
-      let(:params) {
+      let(:params) do
         { format: :json, subscription_line_item: { quantity: 2, variant_id: variant.id } }
-      }
+      end
 
       context 'as an enterprise user' do
         before { allow(controller).to receive(:spree_current_user) { user } }
@@ -116,9 +116,9 @@ orders_open_at: 2.days.from_now,
               end
 
               context "where a relevant variant override exists" do
-                let!(:override) {
+                let!(:override) do
                   create(:variant_override, hub_id: shop.id, variant_id: variant.id, price: 12.00)
-                }
+                end
 
                 it "returns a serialized subscription line item with a price estimate, based on the override" do
                   spree_post :build, params

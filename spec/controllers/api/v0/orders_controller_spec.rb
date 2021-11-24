@@ -185,9 +185,9 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
     end
 
     describe "#show" do
-      let!(:order) {
+      let!(:order) do
         create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor)
-      }
+      end
 
       context "Resource not found" do
         before { allow(controller).to receive(:spree_current_user) { admin_user } }
@@ -238,9 +238,9 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
       end
 
       context "as distributor owner" do
-        let!(:order) {
+        let!(:order) do
           create(:completed_order_with_fees, order_cycle: order_cycle, distributor: distributor)
-        }
+        end
 
         before { allow(controller).to receive(:spree_current_user) { order.distributor.owner } }
 
@@ -297,14 +297,14 @@ params: { q: { completed_at_not_null: true, s: 'created_at desc' } },
       let(:user) { create(:user) }
       let(:product) { create(:simple_product) }
       let(:distributor) { create(:distributor_enterprise, owner: user) }
-      let(:order_cycle) {
+      let(:order_cycle) do
         create(
 :simple_order_cycle,
                distributors: [distributor],
 variants: [product.variants.first]
 )
-      }
-      let!(:order) {
+      end
+      let!(:order) do
         create(
 :order_with_totals_and_distribution,
                user: user,
@@ -313,7 +313,7 @@ order_cycle: order_cycle,
                state: 'complete',
 payment_state: 'balance_due'
 )
-      }
+      end
 
       before do
         order.finalize!

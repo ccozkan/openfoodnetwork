@@ -134,14 +134,14 @@ permissions.send(
     describe "finding enterprises for which variant overrides can be created, for each hub" do
       let!(:hub) { create(:distributor_enterprise) }
       let!(:producer) { create(:supplier_enterprise) }
-      let!(:er) {
+      let!(:er) do
         create(
 :enterprise_relationship,
 parent: producer,
 child: hub,
                           permissions_list: [:create_variant_overrides]
 )
-      }
+      end
 
       before do
         allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: hub.id) }
@@ -177,14 +177,14 @@ child: e2,
 
       describe "hubs connected to the user by relationships only" do
         let!(:producer_managed) { create(:supplier_enterprise) }
-        let!(:er_oc) {
+        let!(:er_oc) do
           create(
 :enterprise_relationship,
 parent: hub,
 child: producer_managed,
                           permissions_list: [:add_to_order_cycle, :create_variant_overrides]
 )
-        }
+        end
 
         before do
           allow(permissions).to receive(:managed_enterprises) {
@@ -285,9 +285,9 @@ child: producer_managed,
     ########################################
 
     describe "finding related enterprises with a particular permission" do
-      let!(:er) {
+      let!(:er) do
         create(:enterprise_relationship, parent: e1, child: e2, permissions_list: [permission])
-      }
+      end
 
       it "returns the enterprises" do
         allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: e2) }

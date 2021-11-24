@@ -95,9 +95,9 @@ module Spree
         let!(:distributor_b) { create(:distributor_enterprise) }
         let!(:distributor_c) { create(:distributor_enterprise) }
 
-        let!(:payment_method_a) {
+        let!(:payment_method_a) do
           create(:payment_method, distributors: [distributor_a, distributor_b])
-        }
+        end
         let!(:payment_method_b) { create(:payment_method, distributors: [distributor_b]) }
         let!(:payment_method_c) { create(:payment_method, distributors: [distributor_c]) }
 

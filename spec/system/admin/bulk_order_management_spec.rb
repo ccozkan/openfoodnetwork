@@ -18,22 +18,22 @@ describe ' As an Administrator I want to be able to manage orders in bulk ', js:
     end
 
     context "displaying the list of line items" do
-      let!(:o1) {
+      let!(:o1) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
-      let!(:o2) {
+      end
+      let!(:o2) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
+      end
       let!(:o3) { create(:order_with_distributor, state: 'address', completed_at: nil) }
       let!(:o4) { create(:order_with_distributor, state: 'complete', completed_at: Time.zone.now) }
       let!(:o5) { create(:order_with_distributor, state: 'complete', completed_at: Time.zone.now) }
@@ -62,7 +62,7 @@ shipment_state: 'ready',
     end
 
     context "displaying individual columns" do
-      let!(:o1) {
+      let!(:o1) do
         create(
 :order_with_distributor,
 state: 'complete',
@@ -70,8 +70,8 @@ shipment_state: 'ready',
 completed_at: Time.zone.now,
                          bill_address: create(:address)
 )
-      }
-      let!(:o2) {
+      end
+      let!(:o2) do
         create(
 :order_with_distributor,
 state: 'complete',
@@ -79,11 +79,11 @@ shipment_state: 'ready',
 completed_at: Time.zone.now,
                          bill_address: nil
 )
-      }
+      end
       let!(:li1) { create(:line_item_with_shipment, order: o1) }
-      let!(:li2) {
+      let!(:li2) do
         create(:line_item_with_shipment, order: o2, product: create(:product_with_option_types))
-      }
+      end
 
       before :each do
         visit_bulk_order_management
@@ -135,22 +135,22 @@ visible: true
     end
 
     describe "sorting of line items" do
-      let!(:o1) {
+      let!(:o1) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
-      let!(:o2) {
+      end
+      let!(:o2) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
+      end
       let!(:li1) { create(:line_item_with_shipment, order: o1) }
       let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
@@ -201,14 +201,14 @@ shipment_state: 'ready',
     end
 
     context "tracking changes" do
-      let!(:o1) {
+      let!(:o1) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
+      end
       let!(:li1) { create(:line_item_with_shipment, order: o1, quantity: 5) }
 
       before :each do
@@ -263,7 +263,7 @@ shipment_state: 'ready',
       login_as_admin
     end
 
-    let!(:p1) {
+    let!(:p1) do
       create(
 :product_with_option_types,
 group_buy: true,
@@ -271,17 +271,17 @@ group_buy_unit_size: 5000,
                             variant_unit: "weight",
 variants: [create(:variant, unit_value: 1000)]
 )
-    }
+    end
     let!(:v1) { p1.variants.first }
-    let!(:o1) {
+    let!(:o1) do
       create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-    }
-    let!(:li1) {
+    end
+    let!(:li1) do
       create(
 :line_item_with_shipment,
 order: o1,
@@ -290,7 +290,7 @@ quantity: 5,
 final_weight_volume: 1000,
                           price: 10.00
 )
-    }
+    end
 
     before { v1.update_attribute(:on_hand, 100) }
 
@@ -364,7 +364,7 @@ final_weight_volume: 1000,
       context "supplier filter" do
         let!(:s1) { create(:supplier_enterprise) }
         let!(:s2) { create(:supplier_enterprise) }
-        let!(:o1) {
+        let!(:o1) do
           create(
 :order_with_distributor,
 state: 'complete',
@@ -372,13 +372,13 @@ shipment_state: 'ready',
 completed_at: Time.zone.now,
                          order_cycle: create(:simple_order_cycle)
 )
-        }
-        let!(:li1) {
+        end
+        let!(:li1) do
           create(:line_item_with_shipment, order: o1, product: create(:product, supplier: s1))
-        }
-        let!(:li2) {
+        end
+        let!(:li2) do
           create(:line_item_with_shipment, order: o1, product: create(:product, supplier: s2))
-        }
+        end
 
         before :each do
           visit_bulk_order_management
@@ -413,7 +413,7 @@ completed_at: Time.zone.now,
       context "distributor filter" do
         let!(:d1) { create(:distributor_enterprise) }
         let!(:d2) { create(:distributor_enterprise) }
-        let!(:o1) {
+        let!(:o1) do
           create(
 :order_with_distributor,
 state: 'complete',
@@ -422,8 +422,8 @@ completed_at: Time.zone.now,
 distributor: d1,
                          order_cycle: create(:simple_order_cycle)
 )
-        }
-        let!(:o2) {
+        end
+        let!(:o2) do
           create(
 :order_with_distributor,
 state: 'complete',
@@ -432,7 +432,7 @@ completed_at: Time.zone.now,
 distributor: d2,
                          order_cycle: create(:simple_order_cycle)
 )
-        }
+        end
         let!(:li1) { create(:line_item_with_shipment, order: o1) }
         let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
@@ -468,7 +468,7 @@ distributor: d2,
         let!(:distributor) { create(:distributor_enterprise) }
         let!(:oc1) { create(:simple_order_cycle, distributors: [distributor]) }
         let!(:oc2) { create(:simple_order_cycle, distributors: [distributor]) }
-        let!(:o1) {
+        let!(:o1) do
           create(
 :order_with_distributor,
 state: 'complete',
@@ -476,8 +476,8 @@ shipment_state: 'ready',
 completed_at: Time.zone.now,
                          order_cycle: oc1
 )
-        }
-        let!(:o2) {
+        end
+        let!(:o2) do
           create(
 :order_with_distributor,
 state: 'complete',
@@ -485,7 +485,7 @@ shipment_state: 'ready',
 completed_at: Time.zone.now,
                          order_cycle: oc2
 )
-        }
+        end
         let!(:li1) { create(:line_item_with_shipment, order: o1) }
         let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
@@ -525,7 +525,7 @@ completed_at: Time.zone.now,
         let!(:oc2) { create(:simple_order_cycle, suppliers: [s2], distributors: [d2]) }
         let!(:p1) { create(:product, supplier: s1) }
         let!(:p2) { create(:product, supplier: s2) }
-        let!(:o1) {
+        let!(:o1) do
           create(
 :order_with_distributor,
 state: 'complete',
@@ -534,8 +534,8 @@ completed_at: Time.zone.now,
 distributor: d1,
                          order_cycle: oc1
 )
-        }
-        let!(:o2) {
+        end
+        let!(:o2) do
           create(
 :order_with_distributor,
 state: 'complete',
@@ -544,7 +544,7 @@ completed_at: Time.zone.now,
 distributor: d2,
                          order_cycle: oc2
 )
-        }
+        end
         let!(:li1) { create(:line_item_with_shipment, order: o1, product: p1) }
         let!(:li2) { create(:line_item_with_shipment, order: o2, product: p2) }
 
@@ -591,30 +591,30 @@ distributor: d2,
     end
 
     context "using quick search" do
-      let!(:o1) {
+      let!(:o1) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
-      let!(:o2) {
+      end
+      let!(:o2) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
-      let!(:o3) {
+      end
+      let!(:o3) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
+      end
       let!(:li1) { create(:line_item_with_shipment, order: o1) }
       let!(:li2) { create(:line_item_with_shipment, order: o2) }
       let!(:li3) { create(:line_item_with_shipment, order: o3) }
@@ -635,38 +635,38 @@ shipment_state: 'ready',
     end
 
     context "using date restriction controls" do
-      let!(:o1) {
+      let!(:o1) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.today - 7.days - 1.second
 )
-      }
-      let!(:o2) {
+      end
+      let!(:o2) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.today - 7.days
 )
-      }
-      let!(:o3) {
+      end
+      let!(:o3) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now.end_of_day
 )
-      }
-      let!(:o4) {
+      end
+      let!(:o4) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now.end_of_day + 1.second
 )
-      }
+      end
       let!(:li1) { create(:line_item_with_shipment, order: o1, quantity: 1) }
       let!(:li2) { create(:line_item_with_shipment, order: o2, quantity: 2) }
       let!(:li3) { create(:line_item_with_shipment, order: o3, quantity: 3) }
@@ -743,22 +743,22 @@ shipment_state: 'ready',
     end
 
     context "bulk action controls" do
-      let!(:o1) {
+      let!(:o1) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
-      let!(:o2) {
+      end
+      let!(:o2) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
+      end
       let!(:li1) { create(:line_item_with_shipment, order: o1) }
       let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
@@ -773,22 +773,22 @@ shipment_state: 'ready',
 
       it "displays a checkbox to which toggles the 'checked' state of all checkboxes" do
         check "toggle_bulk"
-        page.all("input[type='checkbox'][name='bulk']").each { |checkbox|
+        page.all("input[type='checkbox'][name='bulk']").each do |checkbox|
           expect(checkbox.checked?).to be true
-        }
+        end
         uncheck "toggle_bulk"
-        page.all("input[type='checkbox'][name='bulk']").each { |checkbox|
+        page.all("input[type='checkbox'][name='bulk']").each do |checkbox|
           expect(checkbox.checked?).to be false
-        }
+        end
       end
 
       it "displays a bulk action select box with a list of actions" do
         list_of_actions = ['Delete Selected']
         find("div#bulk-actions-dropdown").click
         within("div#bulk-actions-dropdown") do
-          list_of_actions.each { |action_name|
+          list_of_actions.each do |action_name|
             expect(page).to have_selector "div.menu_item", text: action_name
-          }
+          end
         end
       end
 
@@ -837,7 +837,7 @@ shipment_state: 'ready',
     context "using action buttons" do
       context "using edit buttons" do
         let(:address) { create(:address) }
-        let!(:o1) {
+        let!(:o1) do
           create(
 :order_with_distributor,
 ship_address: address,
@@ -845,8 +845,8 @@ state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-        }
-        let!(:o2) {
+        end
+        let!(:o2) do
           create(
 :order_with_distributor,
 ship_address: address,
@@ -854,7 +854,7 @@ state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-        }
+        end
         let!(:li1) { create(:line_item_with_shipment, order: o1) }
         let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
@@ -889,22 +889,22 @@ shipment_state: 'ready',
       end
 
       context "using delete buttons" do
-        let!(:o1) {
+        let!(:o1) do
           create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-        }
-        let!(:o2) {
+        end
+        let!(:o2) do
           create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-        }
+        end
         let!(:li1) { create(:line_item_with_shipment, order: o1) }
         let!(:li2) { create(:line_item_with_shipment, order: o2) }
 
@@ -926,25 +926,25 @@ shipment_state: 'ready',
     end
 
     context "clicking the link on variant name" do
-      let!(:o1) {
+      let!(:o1) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
-      let!(:o2) {
+      end
+      let!(:o2) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
+      end
       let!(:li1) { create(:line_item_with_shipment, order: o1) }
       let!(:li2) { create(:line_item_with_shipment, order: o2) }
-      let!(:p3) {
+      let!(:p3) do
         create(
 :product_with_option_types,
 group_buy: true,
@@ -952,22 +952,22 @@ group_buy_unit_size: 5000,
                             variant_unit: "weight",
 variants: [create(:variant, unit_value: 1000)]
 )
-      }
+      end
       let!(:v3) { p3.variants.first }
-      let!(:o3) {
+      let!(:o3) do
         create(
 :order_with_distributor,
 state: 'complete',
 shipment_state: 'ready',
                          completed_at: Time.zone.now
 )
-      }
-      let!(:li3) {
+      end
+      let!(:li3) do
         create(:line_item_with_shipment, order: o3, variant: v3, quantity: 3, max_quantity: 6)
-      }
-      let!(:li4) {
+      end
+      let!(:li4) do
         create(:line_item_with_shipment, order: o2, variant: v3, quantity: 1, max_quantity: 3)
-      }
+      end
 
       before :each do
         visit_bulk_order_management
@@ -1025,7 +1025,7 @@ shipment_state: 'ready',
     let(:s1) { create(:supplier_enterprise, name: 'First Supplier') }
     let(:d1) { create(:distributor_enterprise, name: 'First Distributor') }
     let(:d2) { create(:distributor_enterprise, name: 'Another Distributor') }
-    let!(:o1) {
+    let!(:o1) do
       create(
 :order_with_distributor,
 state: 'complete',
@@ -1033,8 +1033,8 @@ shipment_state: 'ready',
 completed_at: Time.zone.now,
                          distributor: d1
 )
-    }
-    let!(:o2) {
+    end
+    let!(:o2) do
       create(
 :order_with_distributor,
 state: 'complete',
@@ -1042,13 +1042,13 @@ shipment_state: 'ready',
 completed_at: Time.zone.now,
                          distributor: d2
 )
-    }
-    let!(:line_item_distributed) {
+    end
+    let!(:line_item_distributed) do
       create(:line_item_with_shipment, order: o1, product: create(:product, supplier: s1))
-    }
-    let!(:line_item_not_distributed) {
+    end
+    let!(:line_item_not_distributed) do
       create(:line_item_with_shipment, order: o2, product: create(:product, supplier: s1))
-    }
+    end
 
     before(:each) do
       @enterprise_user = create(:user)

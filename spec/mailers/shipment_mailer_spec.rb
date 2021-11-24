@@ -30,9 +30,9 @@ describe Spree::ShipmentMailer do
 
   it "shipment_email accepts an shipment id as an alternative to an Shipment object" do
     expect(Spree::Shipment).to receive(:find).with(shipment.id).and_return(shipment)
-    expect {
+    expect do
       Spree::ShipmentMailer.shipped_email(shipment.id).deliver_now
-    }.to_not raise_error
+    end.to_not raise_error
   end
 
   it "includes the distributor's name in the subject" do

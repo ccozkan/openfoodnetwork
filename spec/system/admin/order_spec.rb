@@ -182,14 +182,14 @@ state: 'complete',
 
   # Regression test for #7337
   context "creating a new order with a variant override" do
-    let!(:override) {
+    let!(:override) do
       create(
 :variant_override,
 hub: distributor,
 variant: product.variants.first,
                    count_on_hand: 100
 )
-    }
+    end
 
     before do
       product.variants.first.update(on_demand: false, on_hand: 0)

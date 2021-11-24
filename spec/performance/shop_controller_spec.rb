@@ -5,9 +5,9 @@ require 'spec_helper'
 describe ShopController, type: :controller, performance: true do
   let(:d) { create(:distributor_enterprise) }
   let(:enterprise_fee) { create(:enterprise_fee) }
-  let(:order_cycle) {
+  let(:order_cycle) do
     create(:simple_order_cycle, distributors: [d], coordinator_fees: [enterprise_fee])
-  }
+  end
 
   before do
     allow(controller).to receive(:current_distributor) { d }

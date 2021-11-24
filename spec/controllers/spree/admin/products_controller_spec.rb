@@ -124,13 +124,13 @@ describe Spree::Admin::ProductsController, type: :controller do
     let(:taxon) { create(:taxon) }
     let(:shipping_category) { create(:shipping_category) }
 
-    let(:product_attrs) {
+    let(:product_attrs) do
       attributes_for(:product).merge(
         shipping_category_id: shipping_category.id,
         supplier_id: supplier.id,
         primary_taxon_id: taxon.id
       )
-    }
+    end
 
     before do
       controller_login_as_admin
@@ -178,14 +178,14 @@ describe Spree::Admin::ProductsController, type: :controller do
 
     describe "change product supplier" do
       let(:distributor) { create(:distributor_enterprise) }
-      let!(:order_cycle) {
+      let!(:order_cycle) do
         create(
 :simple_order_cycle,
 variants: [product.variants.first],
 coordinator: distributor,
                      distributors: [distributor]
 )
-      }
+      end
 
       it "should remove product from existing Order Cycles" do
         new_producer = create(:enterprise)

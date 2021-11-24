@@ -8,9 +8,9 @@ module SampleData
 
     def create_samples
       log "Creating users:"
-      usernames.map { |name|
+      usernames.map do |name|
         create_user(name)
-      }.to_h
+      end.to_h
     end
 
     private

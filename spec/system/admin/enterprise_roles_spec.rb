@@ -99,9 +99,9 @@ create(:enterprise)
       let(:new_email) { 'new@manager.com' }
 
       let!(:enterprise) { create(:enterprise, name: 'Test Enterprise', owner: user1) }
-      let!(:enterprise_role) {
+      let!(:enterprise_role) do
         create(:enterprise_role, user_id: user2.id, enterprise_id: enterprise.id)
-      }
+      end
 
       before do
         click_link 'Enterprises'

@@ -9,7 +9,7 @@ describe ProducerMailer, type: :mailer do
   before { setup_email }
 
   let!(:zone) { create(:zone_with_member) }
-  let!(:tax_rate) {
+  let!(:tax_rate) do
     create(
 :tax_rate,
 included_in_price: true,
@@ -17,34 +17,34 @@ calculator: Calculator::DefaultTax.new,
 zone: zone,
            amount: 0.1
 )
-  }
+  end
   let!(:tax_category) { create(:tax_category, tax_rates: [tax_rate]) }
   let(:s1) { create(:supplier_enterprise) }
   let(:s2) { create(:supplier_enterprise) }
   let(:s3) { create(:supplier_enterprise) }
   let(:d1) { create(:distributor_enterprise, charges_sales_tax: true) }
   let(:d2) { create(:distributor_enterprise) }
-  let(:p1) {
+  let(:p1) do
     create(:product, name: "Zebra", price: 12.34, supplier: s1, tax_category: tax_category)
-  }
+  end
   let(:p2) { create(:product, name: "Aardvark", price: 23.45, supplier: s2) }
   let(:p3) { create(:product, name: "Banana", price: 34.56, supplier: s1) }
   let(:p4) { create(:product, name: "coffee", price: 45.67, supplier: s1) }
   let(:p5) { create(:product, name: "Daffodil", price: 56.78, supplier: s1) }
   let(:p6) { create(:product, name: "Eggs", price: 67.89, supplier: s1) }
   let(:order_cycle) { create(:simple_order_cycle) }
-  let!(:incoming_exchange) {
+  let!(:incoming_exchange) do
     order_cycle.exchanges.create! sender: s1,
 receiver: d1,
 incoming: true,
                                   receival_instructions: 'Outside shed.'
-  }
-  let!(:outgoing_exchange) {
+  end
+  let!(:outgoing_exchange) do
     order_cycle.exchanges.create! sender: d1,
 receiver: d1,
 incoming: false,
                                   pickup_time: 'Tue, 23rd Dec'
-  }
+  end
 
   let!(:order) do
     order = create(:order, distributor: d1, order_cycle: order_cycle, state: 'complete')
@@ -211,9 +211,9 @@ state: 'complete',
     end
 
     it "does not add customer names table" do
-      expect {
+      expect do
         body_as_html(mail).find(".order-summary.customer-order")
-      }.to raise_error(Capybara::ElementNotFound)
+      end.to raise_error(Capybara::ElementNotFound)
     end
   end
 

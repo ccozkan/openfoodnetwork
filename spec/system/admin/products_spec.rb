@@ -160,9 +160,9 @@ describe ' As an admin I want to set a supplier and distributor(s) for a product
   end
 
   describe 'cloning' do
-    let!(:product1) {
+    let!(:product1) do
       create(:simple_product, name: 'a weight product', supplier: @supplier, variant_unit: "weight")
-    }
+    end
 
     context 'products', js: true do
       before do

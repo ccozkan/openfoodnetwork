@@ -33,9 +33,9 @@ module OrderManagement
         variant.on_hand = 0
         variant.on_demand = false
         variant.save
-        expect {
+        expect do
           create(:variant_override, variant: variant, hub: distributor, count_on_hand: 10)
-        }.to change {
+        end.to change {
           subject.package.on_hand.size
         }.from(4).to(5)
       end

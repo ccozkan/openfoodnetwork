@@ -8,14 +8,14 @@ describe "Packing Reports" do
   describe "fetching orders" do
     let(:distributor) { create(:distributor_enterprise) }
     let(:order_cycle) { create(:simple_order_cycle) }
-    let(:order) {
+    let(:order) do
       create(
 :completed_order_with_totals,
 order_cycle: order_cycle,
 distributor: distributor,
                               line_items_count: 0
 )
-    }
+    end
     let(:line_item) { build(:line_item_with_shipment) }
     let(:user) { create(:admin_user) }
     let(:params) { {} }
@@ -54,22 +54,22 @@ distributor: distributor,
       let!(:user) { create(:user) }
       let(:supplier1) { create(:supplier_enterprise) }
       let(:supplier2) { create(:supplier_enterprise) }
-      let(:order2) {
+      let(:order2) do
         create(
 :completed_order_with_totals,
 distributor: distributor,
                               bill_address: create(:address),
                               ship_address: create(:address)
 )
-      }
-      let(:line_item2) {
+      end
+      let(:line_item2) do
         build(:line_item_with_shipment,
 product: create(:simple_product, name: "visible", supplier: supplier1))
-      }
-      let(:line_item3) {
+      end
+      let(:line_item3) do
         build(:line_item_with_shipment,
 product: create(:simple_product, name: "not visible", supplier: supplier2))
-      }
+      end
 
       before do
         order2.line_items << line_item2
@@ -121,13 +121,13 @@ child: distributor,
     context "as a manager of a distributor" do
       let!(:user) { create(:user) }
       let(:distributor2) { create(:distributor_enterprise) }
-      let(:order3) {
+      let(:order3) do
         create(
 :completed_order_with_totals,
 distributor: distributor2,
                               line_items_count: 0
 )
-      }
+      end
       let(:line_item3) { build(:line_item_with_shipment) }
 
       before do
@@ -143,14 +143,14 @@ distributor: distributor2,
 
       context "filtering by order cycle" do
         let(:order_cycle2) { create(:simple_order_cycle) }
-        let(:order4) {
+        let(:order4) do
           create(
 :completed_order_with_totals,
 distributor: distributor,
 order_cycle: order_cycle2,
                               line_items_count: 0
 )
-        }
+        end
         let(:line_item4) { build(:line_item_with_shipment) }
         let(:params) { { order_cycle_id_in: order_cycle.id } }
 
@@ -168,14 +168,14 @@ order_cycle: order_cycle2,
 
     describe "ordering and grouping" do
       let(:distributor2) { create(:distributor_enterprise) }
-      let(:order2) {
+      let(:order2) do
         create(
 :completed_order_with_totals,
 order_cycle: order_cycle,
 distributor: distributor2,
                               line_items_count: 2
 )
-      }
+      end
 
       before do
         order2.finalize!

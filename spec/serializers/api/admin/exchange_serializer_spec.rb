@@ -13,14 +13,14 @@ describe Api::Admin::ExchangeSerializer do
 
   context "serializing incoming exchanges" do
     let(:exchange) { create(:exchange, incoming: true, variants: [v1, v2, v3]) }
-    let!(:inventory_item) {
+    let!(:inventory_item) do
       create(
 :inventory_item,
 enterprise: exchange.order_cycle.coordinator,
 variant: v1,
                  visible: true
 )
-    }
+    end
 
     before do
       allow(OpenFoodNetwork::OrderCyclePermissions).to receive(:new) { permissions_mock }
@@ -67,9 +67,9 @@ variant: v1,
 
   context "serializing outgoing exchanges" do
     let(:exchange) { create(:exchange, incoming: false, variants: [v1, v2, v3]) }
-    let!(:inventory_item) {
+    let!(:inventory_item) do
       create(:inventory_item, enterprise: exchange.receiver, variant: v1, visible: true)
-    }
+    end
 
     before do
       allow(OpenFoodNetwork::OrderCyclePermissions).to receive(:new) { permissions_mock }

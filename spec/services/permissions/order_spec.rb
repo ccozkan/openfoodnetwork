@@ -9,26 +9,26 @@ module Permissions
     let!(:basic_permissions) { OpenFoodNetwork::Permissions.new(user) }
     let(:distributor) { create(:distributor_enterprise) }
     let(:coordinator) { create(:distributor_enterprise) }
-    let(:order_cycle) {
+    let(:order_cycle) do
       create(:simple_order_cycle, coordinator: coordinator, distributors: [distributor])
-    }
-    let(:order_completed) {
+    end
+    let(:order_completed) do
       create(:completed_order_with_totals, order_cycle: order_cycle, distributor: distributor)
-    }
-    let(:order_cancelled) {
+    end
+    let(:order_cancelled) do
       create(:order, order_cycle: order_cycle, distributor: distributor, state: 'canceled')
-    }
-    let(:order_cart) {
+    end
+    let(:order_cart) do
       create(:order, order_cycle: order_cycle, distributor: distributor, state: 'cart')
-    }
-    let(:order_from_last_year) {
+    end
+    let(:order_from_last_year) do
       create(
 :completed_order_with_totals,
 order_cycle: order_cycle,
 distributor: distributor,
                               completed_at: Time.zone.now - 1.year
 )
-    }
+    end
 
     before { allow(OpenFoodNetwork::Permissions).to receive(:new) { basic_permissions } }
 

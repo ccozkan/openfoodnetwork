@@ -10,12 +10,12 @@ describe "Check out with Stripe", js: true do
   include StripeStubs
 
   let(:distributor) { create(:distributor_enterprise) }
-  let!(:order_cycle) {
+  let!(:order_cycle) do
     create(:simple_order_cycle, distributors: [distributor], variants: [variant])
-  }
+  end
   let(:product) { create(:product, price: 10) }
   let(:variant) { product.variants.first }
-  let(:order) {
+  let(:order) do
     create(
 :order,
 order_cycle: order_cycle,
@@ -23,24 +23,24 @@ distributor: distributor,
 bill_address_id: nil,
         ship_address_id: nil
 )
-  }
+  end
 
-  let(:shipping_with_fee) {
+  let(:shipping_with_fee) do
     create(
 :shipping_method,
 require_ship_address: false,
 name: "Donkeys",
                   calculator: Calculator::FlatRate.new(preferred_amount: 4.56)
 )
-  }
+  end
   let(:free_shipping) { create(:shipping_method) }
-  let!(:check_with_fee) {
+  let!(:check_with_fee) do
     create(
 :payment_method,
 distributors: [distributor],
                  calculator: Calculator::FlatRate.new(preferred_amount: 5.67)
 )
-  }
+  end
 
   before do
     setup_stripe
@@ -74,9 +74,9 @@ distributors: [distributor],
 )
       end
 
-      let!(:stripe_account) {
+      let!(:stripe_account) do
         create(:stripe_account, enterprise_id: distributor.id, stripe_user_id: 'some_id')
-      }
+      end
 
       let(:response_mock) { { id: "ch_1234", object: "charge", amount: 2000 } }
 
@@ -112,9 +112,9 @@ distributors: [distributor],
 
   describe "using Stripe SCA" do
     let!(:stripe_account) { create(:stripe_account, enterprise: distributor) }
-    let!(:stripe_sca_payment_method) {
+    let!(:stripe_sca_payment_method) do
       create(:stripe_sca_payment_method, distributors: [distributor])
-    }
+    end
     let!(:shipping_method) { create(:shipping_method) }
     let(:error_message) { "Card was declined: insufficient funds." }
 

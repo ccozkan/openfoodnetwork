@@ -155,7 +155,7 @@ with_items: true,
     let!(:bill_address_attrs) { subscription.bill_address.attributes }
     let!(:ship_address_attrs) { subscription.ship_address.attributes }
 
-    let(:params) {
+    let(:params) do
       {
 bill_address_attributes: {
 id: bill_address_attrs["id"],
@@ -164,7 +164,7 @@ address1: "123 abc st",
 phone: "1123581321"
 }
 }
-    }
+    end
     let(:syncer) { OrderSyncer.new(subscription) }
 
     context "when a ship address is not required" do
@@ -274,7 +274,7 @@ with_items: true,
     let!(:bill_address_attrs) { subscription.bill_address.attributes }
     let!(:ship_address_attrs) { subscription.ship_address.attributes }
 
-    let(:params) {
+    let(:params) do
       {
 ship_address_attributes: {
 id: ship_address_attrs["id"],
@@ -283,7 +283,7 @@ address1: "123 abc st",
 phone: "1123581321"
 }
 }
-    }
+    end
     let(:syncer) { OrderSyncer.new(subscription) }
 
     context "when a ship address is not required" do
@@ -303,9 +303,9 @@ phone: "1123581321"
       end
 
       context "but the shipping method is being changed to one that requires a ship_address" do
-        let(:new_shipping_method) {
+        let(:new_shipping_method) do
           create(:shipping_method, distributors: [distributor], require_ship_address: true)
-        }
+        end
 
         before { params.merge!(shipping_method_id: new_shipping_method.id) }
 
@@ -537,9 +537,9 @@ variant_id: sli.variant_id
     end
 
     context "when quantity is within available stock" do
-      let(:params) {
+      let(:params) do
         { subscription_line_items_attributes: [{ id: nil, variant_id: variant.id, quantity: 1 }] }
-      }
+      end
 
       it "adds the line item and updates the total on all orders" do
         expect(syncer.sync!).to be true
@@ -551,9 +551,9 @@ variant_id: sli.variant_id
     end
 
     context "when quantity is greater than available stock" do
-      let(:params) {
+      let(:params) do
         { subscription_line_items_attributes: [{ id: nil, variant_id: variant.id, quantity: 7 }] }
-      }
+      end
 
       context "when order is not complete" do
         it "adds the line_item and updates totals on all orders" do

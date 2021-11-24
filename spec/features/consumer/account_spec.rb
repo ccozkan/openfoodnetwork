@@ -24,7 +24,7 @@ js: true do
 
     context "with completed orders" do
       let(:order_cycle) { create(:simple_order_cycle) }
-      let!(:d1o1) {
+      let!(:d1o1) do
         create(
 :completed_order_with_totals,
 distributor: distributor1,
@@ -32,8 +32,8 @@ user: user,
 total: 10_000,
                               order_cycle: order_cycle
 )
-      }
-      let!(:d1o2) {
+      end
+      let!(:d1o2) do
         create(
 :order_without_full_payment,
 distributor: distributor1,
@@ -41,11 +41,11 @@ user: user,
 total: 5000,
                              order_cycle: order_cycle
 )
-      }
+      end
       let!(:d2o1) { create(:completed_order_with_totals, distributor: distributor2, user: user) }
-      let!(:credit_order) {
+      let!(:credit_order) do
         create(:order_with_credit_payment, distributor: distributor_credit, user: user)
-      }
+      end
 
       before do
         credit_order.update_order!

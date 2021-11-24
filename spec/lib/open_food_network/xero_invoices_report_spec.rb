@@ -10,13 +10,13 @@ module OpenFoodNetwork
     let(:user) { create(:user) }
 
     describe "option defaults" do
-      let(:report) {
+      let(:report) do
         XeroInvoicesReport.new user,
 initial_invoice_number: '',
 invoice_date: '',
 due_date: '',
                                      account_code: ''
-      }
+      end
 
       around { |example| Timecop.travel(Time.zone.local(2015, 5, 5, 14, 0, 0)) { example.run } }
 
@@ -31,13 +31,13 @@ report_type: 'summary'
     end
 
     describe "summary rows" do
-      let(:report) {
+      let(:report) do
         XeroInvoicesReport.new user,
 initial_invoice_number: '',
 invoice_date: '',
 due_date: '',
                                      account_code: ''
-      }
+      end
       let(:order) { double(:order) }
       let(:summary_rows) { report.send(:summary_rows_for_order, order, 1, {}) }
 

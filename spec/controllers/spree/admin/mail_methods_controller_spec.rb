@@ -31,9 +31,9 @@ locale: nil
     allow(controller).to receive_messages(spree_current_user: user)
     ActionMailer::Base.perform_deliveries = true
 
-    expect {
+    expect do
       spree_post :testmail
-    }.to change { ActionMailer::Base.deliveries.size }
+    end.to change { ActionMailer::Base.deliveries.size }
 .by(1)
   end
 end

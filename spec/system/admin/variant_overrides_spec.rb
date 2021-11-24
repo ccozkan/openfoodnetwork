@@ -19,36 +19,36 @@ js: true do
     let!(:producer_managed) { create(:supplier_enterprise) }
     let!(:producer_related) { create(:supplier_enterprise) }
     let!(:producer_unrelated) { create(:supplier_enterprise) }
-    let!(:er1) {
+    let!(:er1) do
       create(
 :enterprise_relationship,
 parent: producer,
 child: hub,
                           permissions_list: [:create_variant_overrides]
 )
-    }
-    let!(:er2) {
+    end
+    let!(:er2) do
       create(
 :enterprise_relationship,
 parent: producer_related,
 child: hub,
                           permissions_list: [:create_variant_overrides]
 )
-    }
+    end
     let(:user) { create(:user, enterprises: [hub, producer_managed]) }
 
     before { login_as user }
 
     describe "selecting a hub" do
-      let!(:er1) {
+      # This er should not confer ability to create VOs for hub2
+let!(:er1) do
         create(
 :enterprise_relationship,
 parent: hub2,
 child: producer_managed,
                           permissions_list: [:add_to_order_cycle]
 )
-      } # This er should not confer ability to create VOs for hub2
-
+      end
       it "displays a list of hub choices (ie. only those managed by the user)" do
         visit spree.admin_dashboard_path
         click_link 'Products'
@@ -59,34 +59,34 @@ child: producer_managed,
     end
 
     context "when inventory_items exist for variants" do
-      let!(:product) {
+      let!(:product) do
         create(:simple_product, supplier: producer, variant_unit: 'weight', variant_unit_scale: 1)
-      }
+      end
       let!(:variant) { create(:variant, product: product, unit_value: 1, price: 1.23, on_hand: 12) }
       let!(:inventory_item) { create(:inventory_item, enterprise: hub, variant: variant) }
 
-      let!(:product_managed) {
+      let!(:product_managed) do
         create(
 :simple_product,
 supplier: producer_managed,
 variant_unit: 'weight',
                  variant_unit_scale: 1
 )
-      }
-      let!(:variant_managed) {
+      end
+      let!(:variant_managed) do
         create(:variant, product: product_managed, unit_value: 3, price: 3.65, on_hand: 2)
-      }
-      let!(:inventory_item_managed) {
+      end
+      let!(:inventory_item_managed) do
         create(:inventory_item, enterprise: hub, variant: variant_managed)
-      }
+      end
 
       let!(:product_related) { create(:simple_product, supplier: producer_related) }
-      let!(:variant_related) {
+      let!(:variant_related) do
         create(:variant, product: product_related, unit_value: 2, price: 2.34, on_hand: 23)
-      }
-      let!(:inventory_item_related) {
+      end
+      let!(:inventory_item_related) do
         create(:inventory_item, enterprise: hub, variant: variant_related)
-      }
+      end
 
       let!(:product_unrelated) { create(:simple_product, supplier: producer_unrelated) }
 
@@ -257,7 +257,7 @@ variant_unit: 'weight',
         end
 
         context "with overrides" do
-          let!(:vo) {
+          let!(:vo) do
             create(
 :variant_override,
 :on_demand,
@@ -268,23 +268,23 @@ price: 77.77,
 resettable: true,
 tag_list: ["tag1", "tag2", "tag3"]
 )
-          }
-          let!(:vo_no_auth) {
+          end
+          let!(:vo_no_auth) do
             create(:variant_override, variant: variant, hub: hub2, price: 1, count_on_hand: 2)
-          }
-          let!(:product2) {
+          end
+          let!(:product2) do
             create(
 :simple_product,
 supplier: producer,
 variant_unit: 'weight',
                  variant_unit_scale: 1
 )
-          }
-          let!(:variant2) {
+          end
+          let!(:variant2) do
             create(:variant, product: product2, unit_value: 8, price: 1.00, on_hand: 12)
-          }
+          end
           let!(:inventory_item2) { create(:inventory_item, enterprise: hub, variant: variant2) }
-          let!(:vo_no_reset) {
+          let!(:vo_no_reset) do
             create(
 :variant_override,
 variant: variant2,
@@ -294,11 +294,11 @@ count_on_hand: 40,
                    default_stock: 100,
 resettable: false
 )
-          }
-          let!(:variant3) {
+          end
+          let!(:variant3) do
             create(:variant, product: product, unit_value: 2, price: 5.00, on_hand: 6)
-          }
-          let!(:vo3) {
+          end
+          let!(:vo3) do
             create(
 :variant_override,
 variant: variant3,
@@ -309,7 +309,7 @@ sku: "SOMESKU",
                    default_stock: 100,
 resettable: false
 )
-          }
+          end
           let!(:inventory_item3) { create(:inventory_item, enterprise: hub, variant: variant3) }
 
           before do
@@ -516,12 +516,12 @@ placeholder: ""
     end
 
     describe "when inventory_items do not exist for variants" do
-      let!(:product) {
+      let!(:product) do
         create(:simple_product, supplier: producer, variant_unit: 'weight', variant_unit_scale: 1)
-      }
-      let!(:variant1) {
+      end
+      let!(:variant1) do
         create(:variant, product: product, unit_value: 1, price: 1.23, on_hand: 12)
-      }
+      end
       let!(:variant2) { create(:variant, product: product, unit_value: 2, price: 4.56, on_hand: 3) }
 
       context "when a hub is selected" do

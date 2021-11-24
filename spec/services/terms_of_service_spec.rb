@@ -23,9 +23,9 @@ describe TermsOfService do
     end
 
     it "should reflect whether the platform TOS have been accepted since the last update" do
-      expect {
+      expect do
         allow(TermsOfServiceFile).to receive(:updated_at) { Time.zone.now }
-      }.to change {
+      end.to change {
         TermsOfService.tos_accepted?(customer)
       }.from(true).to(false)
     end
@@ -38,9 +38,9 @@ describe TermsOfService do
     end
 
     it "should reflect whether the platform TOS have been accepted since the last update" do
-      expect {
+      expect do
         allow(distributor).to receive(:terms_and_conditions_updated_at) { Time.zone.now }
-      }.to change {
+      end.to change {
         TermsOfService.tos_accepted?(customer, distributor)
       }.from(true).to(false)
     end

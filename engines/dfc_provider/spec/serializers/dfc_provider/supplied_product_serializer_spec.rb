@@ -9,7 +9,7 @@ describe DfcProvider::SuppliedProductSerializer do
   subject { described_class.new(variant) }
 
   describe '#id' do
-    let(:supplied_product_id) {
+    let(:supplied_product_id) do
       [
         'http://test.host/api/dfc_provider',
         'enterprises',
@@ -17,7 +17,7 @@ describe DfcProvider::SuppliedProductSerializer do
         'supplied_products',
         variant.id
       ].join('/')
-    }
+    end
 
     it 'returns the expected value' do
       expect(subject.id).to eq(supplied_product_id)

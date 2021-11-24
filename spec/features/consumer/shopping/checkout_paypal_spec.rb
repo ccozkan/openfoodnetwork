@@ -12,7 +12,7 @@ describe "Check out with Paypal", js: true do
   let(:supplier) { create(:supplier_enterprise) }
   let(:product) { create(:simple_product, supplier: supplier) }
   let(:variant) { product.variants.first }
-  let(:order_cycle) {
+  let(:order_cycle) do
     create(
       :simple_order_cycle,
       suppliers: [supplier],
@@ -20,8 +20,8 @@ describe "Check out with Paypal", js: true do
       coordinator: distributor,
       variants: [variant]
     )
-  }
-  let(:order) {
+  end
+  let(:order) do
     create(
       :order,
       order_cycle: order_cycle,
@@ -29,7 +29,7 @@ describe "Check out with Paypal", js: true do
       bill_address_id: nil,
       ship_address_id: nil
     )
-  }
+  end
   let(:free_shipping) { create(:shipping_method) }
   let!(:paypal) do
     Spree::Gateway::PayPalExpress.create!(

@@ -67,7 +67,7 @@ child: coordinator,
 
         context "where P-OC has not been granted to the coordinator by other enterprises" do
           context "where the other enterprise are already in the order cycle" do
-            let!(:ex_incoming) {
+            let!(:ex_incoming) do
               create(
 :exchange,
 order_cycle: oc,
@@ -75,8 +75,8 @@ sender: producer,
 receiver: coordinator,
            incoming: true
 )
-            }
-            let!(:ex_outgoing) {
+            end
+            let!(:ex_outgoing) do
               create(
 :exchange,
 order_cycle: oc,
@@ -84,7 +84,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-            }
+            end
 
             context "where the coordinator sells any" do
               it "returns enterprises which have granted P-OC to the coordinator" do
@@ -127,7 +127,7 @@ child: coordinator,
           end
 
           context "where my hub is in the order cycle" do
-            let!(:ex_outgoing) {
+            let!(:ex_outgoing) do
               create(
 :exchange,
 order_cycle: oc,
@@ -135,7 +135,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-            }
+            end
 
             it "returns my hub" do
               enterprises = permissions.visible_enterprises
@@ -154,7 +154,7 @@ child: hub,
               end
 
               context "where the producer is in the order cycle" do
-                let!(:ex_incoming) {
+                let!(:ex_incoming) do
                   create(
 :exchange,
 order_cycle: oc,
@@ -162,7 +162,7 @@ sender: producer,
 receiver: coordinator,
            incoming: true
 )
-                }
+                end
 
                 it "returns the producer" do
                   enterprises = permissions.visible_enterprises
@@ -191,7 +191,7 @@ child: producer,
               end
 
               context "where the producer is in the order cycle" do
-                let!(:ex_incoming) {
+                let!(:ex_incoming) do
                   create(
 :exchange,
 order_cycle: oc,
@@ -199,7 +199,7 @@ sender: producer,
 receiver: coordinator,
            incoming: true
 )
-                }
+                end
 
                 it "returns the producer" do
                   enterprises = permissions.visible_enterprises
@@ -235,7 +235,7 @@ receiver: coordinator,
           end
 
           context "but is already in the order cycle" do
-            let!(:ex) {
+            let!(:ex) do
               create(
 :exchange,
 order_cycle: oc,
@@ -243,7 +243,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-            }
+            end
 
             it "returns my hub" do
               enterprises = permissions.visible_enterprises
@@ -252,9 +252,9 @@ receiver: hub,
             end
 
             context "and distributes variants distributed by an unmanaged and unpermitted producer" do
-              before {
+              before do
                 ex.variants << create(:variant, product: create(:product, supplier: producer))
-              }
+              end
 
               # TODO: update this when we are confident about P-OCs
               it "returns that producer as well" do
@@ -283,7 +283,7 @@ child: coordinator,
           end
 
           context "where my producer is in the order cycle" do
-            let!(:ex_incoming) {
+            let!(:ex_incoming) do
               create(
 :exchange,
 order_cycle: oc,
@@ -291,7 +291,7 @@ sender: producer,
 receiver: coordinator,
            incoming: true
 )
-            }
+            end
 
             it "returns my producer" do
               enterprises = permissions.visible_enterprises
@@ -310,7 +310,7 @@ child: producer,
               end
 
               context "where the hub is also in the order cycle" do
-                let!(:ex_outgoing) {
+                let!(:ex_outgoing) do
                   create(
 :exchange,
 order_cycle: oc,
@@ -318,7 +318,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-                }
+                end
 
                 it "returns the hub as well" do
                   enterprises = permissions.visible_enterprises
@@ -348,7 +348,7 @@ child: hub,
               end
 
               context "where the hub is also in the order cycle" do
-                let!(:ex_outgoing) {
+                let!(:ex_outgoing) do
                   create(
 :exchange,
 order_cycle: oc,
@@ -356,7 +356,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-                }
+                end
 
                 it "returns the hub as well" do
                   enterprises = permissions.visible_enterprises
@@ -393,7 +393,7 @@ receiver: hub,
           end
 
           context "but is already in the order cycle" do
-            let!(:ex_incoming) {
+            let!(:ex_incoming) do
               create(
 :exchange,
 order_cycle: oc,
@@ -401,7 +401,7 @@ sender: producer,
 receiver: coordinator,
            incoming: true
 )
-            }
+            end
 
             # TODO: update this when we are confident about P-OCs
             it "returns my producer" do
@@ -411,7 +411,7 @@ receiver: coordinator,
             end
 
             context "and has variants distributed by an outgoing hub" do
-              let!(:ex_outgoing) {
+              let!(:ex_outgoing) do
                 create(
 :exchange,
 order_cycle: oc,
@@ -419,13 +419,13 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-              }
-              before {
+              end
+              before do
                 ex_outgoing.variants << create(
 :variant,
                                                product: create(:product, supplier: producer)
 )
-              }
+              end
 
               # TODO: update this when we are confident about P-OCs
               it "returns that hub as well" do
@@ -441,7 +441,7 @@ receiver: hub,
 
     describe "finding exchanges of an order cycle that an admin can manage" do
       describe "as the manager of the coordinator" do
-        let!(:ex_in) {
+        let!(:ex_in) do
           create(
 :exchange,
 order_cycle: oc,
@@ -449,10 +449,10 @@ sender: producer,
 receiver: coordinator,
            incoming: true
 )
-        }
-        let!(:ex_out) {
+        end
+        let!(:ex_out) do
           create(:exchange, order_cycle: oc, sender: coordinator, receiver: hub, incoming: false)
-        }
+        end
 
         before do
           allow(permissions).to receive(:managed_enterprises) {
@@ -466,7 +466,7 @@ receiver: coordinator,
       end
 
       describe "as the manager of a hub" do
-        let!(:ex_in) {
+        let!(:ex_in) do
           create(
 :exchange,
 order_cycle: oc,
@@ -474,16 +474,16 @@ sender: producer,
 receiver: coordinator,
            incoming: true
 )
-        }
+        end
 
         before do
           allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [hub]) }
         end
 
         context "where my hub is in the order cycle" do
-          let!(:ex_out) {
+          let!(:ex_out) do
             create(:exchange, order_cycle: oc, sender: coordinator, receiver: hub, incoming: false)
-          }
+          end
 
           it "returns my hub's outgoing exchange" do
             expect(permissions.visible_exchanges).to eq([ex_out])
@@ -522,9 +522,9 @@ child: hub,
           context "where my hub's outgoing exchange contains variants of a producer I don't manage and has not given my hub P-OC" do
             let!(:product) { create(:product, supplier: producer) }
             let!(:variant) { create(:variant, product: product) }
-            let!(:ex_out) {
+            let!(:ex_out) do
               create(:exchange, order_cycle: oc, sender: coordinator, receiver: hub, incoming: true)
-            }
+            end
             before { ex_out.variants << variant }
 
             it "returns incoming exchanges supplying the variants in my outgoing exchange" do
@@ -535,16 +535,16 @@ child: hub,
       end
 
       describe "as the manager of a producer" do
-        let!(:ex_out) {
+        let!(:ex_out) do
           create(:exchange, order_cycle: oc, sender: coordinator, receiver: hub, incoming: false)
-        }
+        end
 
         before do
           allow(permissions).to receive(:managed_enterprises) { Enterprise.where(id: [producer]) }
         end
 
         context "where my producer supplies to the order cycle" do
-          let!(:ex_in) {
+          let!(:ex_in) do
             create(
 :exchange,
 order_cycle: oc,
@@ -552,7 +552,7 @@ sender: producer,
 receiver: coordinator,
            incoming: true
 )
-          }
+          end
 
           it "returns my producer's incoming exchange" do
             expect(permissions.visible_exchanges).to eq([ex_in])
@@ -594,7 +594,7 @@ child: hub,
             before { ex_out.variants << variant }
 
             context "where my producer supplies to the order cycle" do
-              let!(:ex_in) {
+              let!(:ex_in) do
                 create(
 :exchange,
 order_cycle: oc,
@@ -602,7 +602,7 @@ sender: producer,
 receiver: coordinator,
            incoming: true
 )
-              }
+              end
 
               it "returns the outgoing exchange" do
                 expect(permissions.visible_exchanges).to include ex_out
@@ -666,7 +666,7 @@ child: hub,
           end
 
           context "where the hub is in the order cycle" do
-            let!(:ex) {
+            let!(:ex) do
               create(
 :exchange,
 order_cycle: oc,
@@ -674,7 +674,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-            }
+            end
 
             it "returns variants produced by that producer only" do
               visible = permissions.visible_variants_for_incoming_exchanges_from(producer1)
@@ -732,7 +732,7 @@ child: hub,
 
           # TODO: for backwards compatability, remove later
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
-            let!(:ex) {
+            let!(:ex) do
               create(
 :exchange,
 order_cycle: oc,
@@ -740,7 +740,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-            }
+            end
 
             # producer2 produces v2 and has not granted P-OC to hub (or coordinator for that matter)
             before { ex.variants << v2 }
@@ -781,7 +781,7 @@ child: hub,
 
           # TODO: for backwards compatability, remove later
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
-            let!(:ex) {
+            let!(:ex) do
               create(
 :exchange,
 order_cycle: oc,
@@ -789,7 +789,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-            }
+            end
 
             # producer2 produces v2 and has not granted P-OC to hub
             before { ex.variants << v2 }
@@ -815,7 +815,7 @@ child: hub,
           end
 
           context "where my producer is in the order cycle" do
-            let!(:ex) {
+            let!(:ex) do
               create(
 :exchange,
 order_cycle: oc,
@@ -823,7 +823,7 @@ sender: producer1,
 receiver: coordinator,
            incoming: true
 )
-            }
+            end
 
             it "returns all of my produced variants" do
               visible = permissions.visible_variants_for_outgoing_exchanges_to(hub)
@@ -861,7 +861,7 @@ child: hub,
 
           # TODO: for backwards compatability, remove later
           context "but which has variants already in the exchange" do
-            let!(:ex) {
+            let!(:ex) do
               create(
 :exchange,
 order_cycle: oc,
@@ -869,7 +869,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-            }
+            end
             # This one won't be in the exchange, and so shouldn't be visible
             let!(:v3) { create(:variant, product: create(:simple_product, supplier: producer2)) }
 
@@ -976,7 +976,7 @@ child: hub,
 
           # TODO: for backwards compatability, remove later
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
-            let!(:ex) {
+            let!(:ex) do
               create(
 :exchange,
 order_cycle: oc,
@@ -984,7 +984,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-            }
+            end
 
             # producer2 produces v2 and has not granted P-OC to hub (or coordinator for that matter)
             before { ex.variants << v2 }
@@ -1025,7 +1025,7 @@ child: hub,
 
           # TODO: for backwards compatability, remove later
           context "when an exchange exists between the coordinator and the hub within this order cycle" do
-            let!(:ex) {
+            let!(:ex) do
               create(
 :exchange,
 order_cycle: oc,
@@ -1033,7 +1033,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-            }
+            end
 
             # producer2 produces v2 and has not granted P-OC to hub
             before { ex.variants << v2 }
@@ -1059,7 +1059,7 @@ child: hub,
           end
 
           context "where my producer is in the order cycle" do
-            let!(:ex) {
+            let!(:ex) do
               create(
 :exchange,
 order_cycle: oc,
@@ -1067,7 +1067,7 @@ sender: producer1,
 receiver: coordinator,
            incoming: true
 )
-            }
+            end
 
             context "where the outgoing hub has granted P-OC to my producer" do
               before do
@@ -1125,7 +1125,7 @@ child: hub,
 
           # TODO: for backwards compatability, remove later
           context "but which has variants already in the exchange" do
-            let!(:ex) {
+            let!(:ex) do
               create(
 :exchange,
 order_cycle: oc,
@@ -1133,7 +1133,7 @@ sender: coordinator,
 receiver: hub,
            incoming: false
 )
-            }
+            end
             # This one won't be in the exchange, and so shouldn't be visible
             let!(:v3) { create(:variant, product: create(:simple_product, supplier: producer2)) }
 

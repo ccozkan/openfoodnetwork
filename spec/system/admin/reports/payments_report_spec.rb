@@ -66,14 +66,14 @@ describe "Payments Reports" do
 
   context 'when choosing payment totals report type' do
     let(:paypal) { create(:payment_method, name: "PayPal") }
-    let!(:paypal_payment) {
+    let!(:paypal_payment) do
       create(:payment, order: order, payment_method: paypal, state: "completed", amount: 5)
-    }
+    end
 
     let(:eft) { create(:payment_method, name: "EFT") }
-    let!(:eft_payment) {
+    let!(:eft_payment) do
       create(:payment, order: other_order, payment_method: eft, state: "completed", amount: 6)
-    }
+    end
 
     it 'shows orders with payment state, their balance and and payment totals' do
       visit spree.payments_admin_reports_path

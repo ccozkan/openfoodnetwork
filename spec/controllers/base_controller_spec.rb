@@ -15,17 +15,17 @@ describe BaseController, type: :controller do
     let(:user) { create(:user) }
 
     it "doesn't change anything without a user" do
-      expect {
+      expect do
         get :index
-      }.to_not change { Spree::Order.count }
+      end.to_not change { Spree::Order.count }
     end
 
     it "creates a new order" do
       allow(controller).to receive(:spree_current_user).and_return(user)
 
-      expect {
+      expect do
         get :index
-      }.to change { Spree::Order.count }
+      end.to change { Spree::Order.count }
 .by(1)
 
       expect(user.orders.count).to eq 1
@@ -35,9 +35,9 @@ describe BaseController, type: :controller do
       last_cart = create(:order, user: user, created_by: user, state: "cart", completed_at: nil)
       allow(controller).to receive(:spree_current_user).and_return(user)
 
-      expect {
+      expect do
         get :index
-      }.to_not change { Spree::Order.count }
+      end.to_not change { Spree::Order.count }
 
       expect(session[:order_id]).to eq last_cart.id
     end
@@ -62,9 +62,9 @@ describe BaseController, type: :controller do
 
       allow(controller).to receive(:spree_current_user).and_return(user)
 
-      expect {
+      expect do
         get :index
-      }.to_not change { Spree::Order.count }
+      end.to_not change { Spree::Order.count }
 
       expect(current_cart.line_items.count).to eq 0
     end
@@ -86,9 +86,9 @@ describe BaseController, type: :controller do
 
       allow(controller).to receive(:spree_current_user).and_return(user)
 
-      expect {
+      expect do
         get :index
-      }.to change { Spree::Order.count }
+      end.to change { Spree::Order.count }
 .by(1)
 
       expect(session[:order_id]).to_not eq just_completed_order.id

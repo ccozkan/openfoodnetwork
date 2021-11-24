@@ -21,9 +21,9 @@ module VariantUnits
                    .order("#{Spree::OptionType.table_name}.position asc")
                end
 
-      values.map { |option_value|
+      values.map do |option_value|
         presentation(option_value)
-      }.to_sentence(words_connector: ", ", two_words_connector: ", ")
+      end.to_sentence(words_connector: ", ", two_words_connector: ", ")
     end
 
     def presentation(option_value)

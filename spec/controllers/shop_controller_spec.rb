@@ -5,9 +5,9 @@ require 'spec_helper'
 describe ShopController, type: :controller do
   let!(:pm) { create(:payment_method) }
   let!(:sm) { create(:shipping_method) }
-  let(:distributor) {
+  let(:distributor) do
     create(:distributor_enterprise, payment_methods: [pm], shipping_methods: [sm])
-  }
+  end
 
   it "redirects to the home page if no distributor is selected" do
     get :show

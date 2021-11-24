@@ -35,22 +35,22 @@ module Api
       end
 
       context "with variant overrides" do
-        let!(:vo1) {
+        let!(:vo1) do
           create(
 :variant_override,
                  hub: distributor,
                  variant: product1.variants.first,
                  price: 1234.56
 )
-        }
-        let!(:vo2) {
+        end
+        let!(:vo2) do
           create(
 :variant_override,
                  hub: distributor,
                  variant: product2.variants.first,
                  count_on_hand: 0
 )
-        }
+        end
 
         it "returns results scoped with variant overrides" do
           api_get :products, id: order_cycle.id, distributor: distributor.id
@@ -91,28 +91,28 @@ distributor: distributor.id,
       end
 
       context "when tag rules apply" do
-        let!(:vo1) {
+        let!(:vo1) do
           create(
 :variant_override,
                  hub: distributor,
                  variant: product1.variants.first
 )
-        }
-        let!(:vo2) {
+        end
+        let!(:vo2) do
           create(
 :variant_override,
                  hub: distributor,
                  variant: product2.variants.first
 )
-        }
-        let!(:vo3) {
+        end
+        let!(:vo3) do
           create(
 :variant_override,
                  hub: distributor,
                  variant: product3.variants.first
 )
-        }
-        let(:default_hide_rule) {
+        end
+        let(:default_hide_rule) do
           create(
 :filter_products_tag_rule,
                  enterprise: distributor,
@@ -120,8 +120,8 @@ distributor: distributor.id,
                  preferred_variant_tags: "hide_these_variants_from_everyone",
                  preferred_matched_variants_visibility: "hidden"
 )
-        }
-        let!(:hide_rule) {
+        end
+        let!(:hide_rule) do
           create(
 :filter_products_tag_rule,
                  enterprise: distributor,
@@ -129,8 +129,8 @@ distributor: distributor.id,
                  preferred_customer_tags: "hide_from_these_customers",
                  preferred_matched_variants_visibility: "hidden"
 )
-        }
-        let!(:show_rule) {
+        end
+        let!(:show_rule) do
           create(
 :filter_products_tag_rule,
                  enterprise: distributor,
@@ -138,7 +138,7 @@ distributor: distributor.id,
                  preferred_customer_tags: "show_for_these_customers",
                  preferred_matched_variants_visibility: "visible"
 )
-        }
+        end
 
         it "does not return variants hidden by general rules" do
           vo1.update_attribute(:tag_list, default_hide_rule.preferred_variant_tags)
@@ -211,9 +211,9 @@ distributor: distributor.id,
 
       context "with producer properties" do
         let!(:property4) { create(:property) }
-        let!(:producer_property) {
+        let!(:producer_property) do
           create(:producer_property, producer_id: product1.supplier.id, property: property4)
-        }
+        end
 
         it "loads producer properties for distributed products in the order cycle" do
           api_get :properties, id: order_cycle.id, distributor: distributor.id
@@ -230,18 +230,18 @@ property2.presentation,
 
     context "with custom taxon ordering applied and duplicate product names in the order cycle" do
       let!(:supplier) { create(:supplier_enterprise) }
-      let!(:product5) {
+      let!(:product5) do
         create(:product, name: "Duplicate name", primary_taxon: taxon3, supplier: supplier)
-      }
-      let!(:product6) {
+      end
+      let!(:product6) do
         create(:product, name: "Duplicate name", primary_taxon: taxon3, supplier: supplier)
-      }
-      let!(:product7) {
+      end
+      let!(:product7) do
         create(:product, name: "Duplicate name", primary_taxon: taxon2, supplier: supplier)
-      }
-      let!(:product8) {
+      end
+      let!(:product8) do
         create(:product, name: "Duplicate name", primary_taxon: taxon2, supplier: supplier)
-      }
+      end
 
       before do
         distributor.preferred_shopfront_taxon_order = "#{taxon2.id},#{taxon3.id},#{taxon1.id}"

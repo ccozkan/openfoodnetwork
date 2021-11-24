@@ -12,7 +12,7 @@ describe "As a consumer I want to check out my cart", js: true do
   let!(:zone) { create(:zone_with_member) }
   let(:distributor) { create(:distributor_enterprise, charges_sales_tax: true) }
   let(:supplier) { create(:supplier_enterprise) }
-  let!(:order_cycle) {
+  let!(:order_cycle) do
     create(
 :simple_order_cycle,
 suppliers: [supplier],
@@ -20,15 +20,15 @@ distributors: [distributor],
                      coordinator: create(:distributor_enterprise),
 variants: [variant]
 )
-  }
+  end
   let(:enterprise_fee) { create(:enterprise_fee, amount: 1.23, tax_category: fee_tax_category) }
   let(:fee_tax_rate) { create(:tax_rate, amount: 0.10, zone: zone, included_in_price: true) }
   let(:fee_tax_category) { create(:tax_category, tax_rates: [fee_tax_rate]) }
-  let(:product) {
+  let(:product) do
     create(:taxed_product, supplier: supplier, price: 10, zone: zone, tax_rate_amount: 0.1)
-  }
+  end
   let(:variant) { product.variants.first }
-  let(:order) {
+  let(:order) do
     create(
 :order,
 order_cycle: order_cycle,
@@ -36,11 +36,11 @@ distributor: distributor,
 bill_address_id: nil,
         ship_address_id: nil
 )
-  }
+  end
   let(:shipping_tax_rate) { create(:tax_rate, amount: 0.25, zone: zone, included_in_price: true) }
   let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
 
-  let(:free_shipping) {
+  let(:free_shipping) do
     create(
 :shipping_method,
 require_ship_address: true,
@@ -48,8 +48,8 @@ name: "Frogs",
 description: "yellow",
                   calculator: Calculator::FlatRate.new(preferred_amount: 0.00)
 )
-  }
-  let(:shipping_with_fee) {
+  end
+  let(:shipping_with_fee) do
     create(
 :shipping_method,
 require_ship_address: false,
@@ -58,25 +58,25 @@ tax_category: shipping_tax_category,
 description: "blue",
                   calculator: Calculator::FlatRate.new(preferred_amount: 4.56)
 )
-  }
-  let(:tagged_shipping) {
+  end
+  let(:tagged_shipping) do
     create(:shipping_method, require_ship_address: false, name: "Local", tag_list: "local")
-  }
-  let!(:check_without_fee) {
+  end
+  let!(:check_without_fee) do
     create(
 :payment_method,
 distributors: [distributor],
 name: "Roger rabbit",
                  type: "Spree::PaymentMethod::Check"
 )
-  }
-  let!(:check_with_fee) {
+  end
+  let!(:check_with_fee) do
     create(
 :payment_method,
 distributors: [distributor],
                  calculator: Calculator::FlatRate.new(preferred_amount: 5.67)
 )
-  }
+  end
   let!(:paypal) do
     Spree::Gateway::PayPalExpress.create!(
 name: "Paypal",
@@ -188,9 +188,9 @@ distributor_ids: [distributor.id]
 
     context "when distributor has T&Cs" do
       let(:fake_terms_and_conditions_path) { Rails.root.join("app/assets/images/logo-white.png") }
-      let(:terms_and_conditions_file) {
+      let(:terms_and_conditions_file) do
         Rack::Test::UploadedFile.new(fake_terms_and_conditions_path, "application/pdf")
-      }
+      end
 
       before do
         order.distributor.terms_and_conditions = terms_and_conditions_file
@@ -287,9 +287,9 @@ distributor_ids: [distributor.id]
 
     context "when the seller's terms and the platform's terms have to be accepted" do
       let(:fake_terms_and_conditions_path) { Rails.root.join("app/assets/images/logo-white.png") }
-      let(:terms_and_conditions_file) {
+      let(:terms_and_conditions_file) do
         Rack::Test::UploadedFile.new(fake_terms_and_conditions_path, "application/pdf")
-      }
+      end
       let(:tos_url) { "https://example.org/tos" }
 
       before do
@@ -322,14 +322,14 @@ distributor_ids: [distributor.id]
     end
 
     context "with previous orders" do
-      let!(:prev_order) {
+      let!(:prev_order) do
         create(
 :completed_order_with_totals,
 order_cycle: order_cycle,
 distributor: distributor,
                               user: order.user
 )
-      }
+      end
 
       before do
         order.distributor.allow_order_changes = true
@@ -602,14 +602,14 @@ distributor: distributor,
         describe "credit card payments" do
           ["Spree::Gateway::Bogus", "Spree::Gateway::BogusSimple"].each do |gateway_type|
             context "with a credit card payment method using #{gateway_type}" do
-              let!(:check_without_fee) {
+              let!(:check_without_fee) do
                 create(
 :payment_method,
 distributors: [distributor],
 name: "Roger rabbit",
                  type: gateway_type
 )
-              }
+              end
 
               it "takes us to the order confirmation page when submitted with a valid credit card" do
                 fill_in 'Card Number', with: "4111111111111111"

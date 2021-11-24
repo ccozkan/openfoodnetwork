@@ -9,7 +9,7 @@ describe EnterprisesController, type: :controller do
     let(:line_item) { create(:line_item) }
     let!(:current_distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
     let!(:distributor) { create(:distributor_enterprise, with_payment_and_shipping: true) }
-    let!(:order_cycle1) {
+    let!(:order_cycle1) do
       create(
 :simple_order_cycle,
 distributors: [distributor],
@@ -17,15 +17,15 @@ orders_open_at: 2.days.ago,
                      orders_close_at: 3.days.from_now,
 variants: [line_item.variant]
 )
-    }
-    let!(:order_cycle2) {
+    end
+    let!(:order_cycle2) do
       create(
 :simple_order_cycle,
 distributors: [distributor],
 orders_open_at: 3.days.ago,
                      orders_close_at: 4.days.from_now
 )
-    }
+    end
 
     before do
       order.set_distributor! current_distributor
@@ -63,14 +63,14 @@ orders_open_at: 3.days.ago,
     end
 
     context "using FilterOrderCycles tag rules" do
-      let!(:order_cycle3) {
+      let!(:order_cycle3) do
         create(
 :simple_order_cycle,
 distributors: [distributor],
 orders_open_at: 3.days.ago,
                      orders_close_at: 4.days.from_now
 )
-      }
+      end
       let!(:oc3_exchange) { order_cycle3.exchanges.outgoing.to_enterprise(distributor).first }
       let(:customer) { create(:customer, user: user, enterprise: distributor) }
 
@@ -132,9 +132,9 @@ orders_open_at: 3.days.ago,
     describe "when an out of stock item is in the cart" do
       let(:variant) { create(:variant, on_demand: false, on_hand: 10) }
       let(:line_item) { create(:line_item, variant: variant) }
-      let(:order_cycle) {
+      let(:order_cycle) do
         create(:simple_order_cycle, distributors: [current_distributor], variants: [variant])
-      }
+      end
 
       before do
         order.set_distribution! current_distributor, order_cycle

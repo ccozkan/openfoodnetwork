@@ -31,9 +31,9 @@ describe EnterpriseFee do
 
     describe "for tax_category" do
       let(:tax_category) { create(:tax_category) }
-      let(:enterprise_fee) {
+      let(:enterprise_fee) do
         create(:enterprise_fee, tax_category_id: nil, inherits_tax_category: true)
-      }
+      end
 
       it "maintains valid tax_category settings" do
         # Changing just tax_category, when inheriting

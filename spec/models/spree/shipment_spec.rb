@@ -92,12 +92,12 @@ describe Spree::Shipment do
     let(:shipment) { create(:shipment) }
     let(:shipping_method1) { create(:shipping_method) }
     let(:shipping_method2) { create(:shipping_method) }
-    let(:shipping_rates) {
+    let(:shipping_rates) do
       [
         Spree::ShippingRate.new(shipping_method: shipping_method1, cost: 10.00, selected: true),
         Spree::ShippingRate.new(shipping_method: shipping_method2, cost: 20.00)
       ]
-    }
+    end
 
     it 'returns shipping_method from selected shipping_rate' do
       shipment.shipping_rates.delete_all

@@ -17,13 +17,13 @@ describe CartService do
   context "end-to-end" do
     let(:order) { create(:order, distributor: distributor, order_cycle: order_cycle) }
     let(:distributor) { create(:distributor_enterprise) }
-    let(:order_cycle) {
+    let(:order_cycle) do
       create(
 :simple_order_cycle,
 distributors: [distributor],
                      variants: [variant]
 )
-    }
+    end
     let(:cart_service) { CartService.new(order) }
     let(:variant) { create(:variant) }
 
@@ -91,9 +91,9 @@ distributors: [distributor],
         end
 
         describe "when the soft-deleted variant is already in the cart" do
-          let!(:existing_line_item) {
+          let!(:existing_line_item) do
             create(:line_item, variant: variant, quantity: 2, order: order)
-          }
+          end
 
           it "removes the line_item from the cart" do
             variant.delete

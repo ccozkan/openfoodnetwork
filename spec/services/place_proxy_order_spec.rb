@@ -44,9 +44,9 @@ describe PlaceProxyOrder do
     end
 
     context "when the order is already complete" do
-      let(:summarizer) {
+      let(:summarizer) do
         instance_double(OrderManagement::Subscriptions::Summarizer, record_order: true)
-      }
+      end
 
       let!(:proxy_order) { create(:proxy_order, subscription: subscription) }
       let(:order) { proxy_order.order }
@@ -109,9 +109,9 @@ describe PlaceProxyOrder do
   end
 
   describe "#send_placement_email" do
-    let(:summarizer) {
+    let(:summarizer) do
       instance_double(OrderManagement::Subscriptions::Summarizer, record_order: true)
-    }
+    end
 
     before do
       allow(SubscriptionMailer).to receive(:placement_email) { mail_mock }
@@ -160,9 +160,9 @@ describe PlaceProxyOrder do
   end
 
   describe "#send_empty_email" do
-    let(:summarizer) {
+    let(:summarizer) do
       instance_double(OrderManagement::Subscriptions::Summarizer, record_order: true)
-    }
+    end
 
     let(:changes) { double(:changes) }
     let(:stock_changes_loader) { instance_double(CapQuantity) }

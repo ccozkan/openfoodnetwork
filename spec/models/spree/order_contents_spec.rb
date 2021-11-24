@@ -43,9 +43,9 @@ describe Spree::OrderContents do
   context "#remove" do
     context "given an invalid variant" do
       it "raises an exception" do
-        expect {
+        expect do
           subject.remove(variant, 1)
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        end.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -53,9 +53,9 @@ describe Spree::OrderContents do
       it 'should remove line item' do
         subject.add(variant, 3)
 
-        expect {
+        expect do
           subject.remove(variant)
-        }.to change(Spree::LineItem, :count).by(-1)
+        end.to change(Spree::LineItem, :count).by(-1)
       end
     end
 
@@ -105,9 +105,9 @@ line_items_attributes: {
     end
 
     it "updates order totals" do
-      expect {
+      expect do
         subject.update_cart params
-      }.to change { subject.order.total }
+      end.to change { subject.order.total }
     end
 
     context "submits item quantity 0" do
@@ -120,9 +120,9 @@ line_items_attributes: {
       end
 
       it "removes item from order" do
-        expect {
+        expect do
           subject.update_cart params
-        }.to change { order.line_items.count }
+        end.to change { order.line_items.count }
       end
     end
 

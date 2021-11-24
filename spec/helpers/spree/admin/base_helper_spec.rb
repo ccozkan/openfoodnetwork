@@ -7,9 +7,9 @@ describe Spree::Admin::BaseHelper, type: :helper do
 
   describe "#link_to_remove_fields" do
     let(:name) { 'Hola' }
-    let(:form) {
+    let(:form) do
       double('form_for', hidden_field: '<input type="hidden" name="_method" value="destroy">')
-    }
+    end
     let(:options) { {} }
 
     subject { helper.link_to_remove_fields(name, form, options) }

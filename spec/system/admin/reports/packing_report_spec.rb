@@ -14,26 +14,26 @@ describe "Packing Reports", js: true do
 
     let(:bill_address1) { create(:address, lastname: "MULLER") }
     let(:bill_address2) { create(:address, lastname: "Mistery") }
-    let(:distributor_address) {
+    let(:distributor_address) do
       create(:address, address1: "distributor address", city: 'The Shire', zipcode: "1234")
-    }
+    end
     let(:distributor) { create(:distributor_enterprise, address: distributor_address) }
-    let(:order1) {
+    let(:order1) do
       create(
 :completed_order_with_totals,
 line_items_count: 0,
 distributor: distributor,
                               bill_address: bill_address1
 )
-    }
-    let(:order2) {
+    end
+    let(:order2) do
       create(
 :completed_order_with_totals,
 line_items_count: 0,
 distributor: distributor,
                               bill_address: bill_address2
 )
-    }
+    end
     let(:supplier) { create(:supplier_enterprise, name: "Supplier") }
     let(:product1) { create(:simple_product, name: "Product 1", supplier: supplier) }
     let(:variant1) { create(:variant, product: product1, unit_description: "Big") }
@@ -127,7 +127,7 @@ distributor: distributor,
   describe "With soft-deleted variants" do
     let(:distributor) { create(:distributor_enterprise) }
     let(:oc) { create(:simple_order_cycle) }
-    let(:order) {
+    let(:order) do
       create(
 :completed_order_with_totals,
 line_items_count: 0,
@@ -135,7 +135,7 @@ completed_at: 1.day.ago,
                               order_cycle: oc,
 distributor: distributor
 )
-    }
+    end
     let(:li1) { build(:line_item_with_shipment) }
     let(:li2) { build(:line_item_with_shipment) }
 

@@ -10,13 +10,13 @@ module Spree
   describe Admin::PaymentMethodsController, type: :controller do
     describe "#create and #update" do
       let!(:enterprise) { create(:distributor_enterprise, owner: user) }
-      let(:payment_method) {
+      let(:payment_method) do
         GatewayWithPassword.create!(
 name: "Bogus",
 preferred_password: "haxme",
 distributor_ids: [enterprise.id]
 )
-      }
+      end
       let!(:user) { create(:user) }
 
       before { allow(controller).to receive(:spree_current_user) { user } }
@@ -34,35 +34,35 @@ id: payment_method.id,
 
       context "tries to save invalid payment" do
         it "doesn't break, responds nicely" do
-          expect {
+          expect do
             spree_post :create, payment_method: { name: "", type: "Spree::Gateway::Bogus" }
-          }.not_to raise_error
+          end.not_to raise_error
         end
       end
 
       it "can create a payment method of a valid type" do
-        expect {
+        expect do
           spree_post :create,
                      payment_method: {
 name: "Test Method",
 type: "Spree::Gateway::Bogus",
 distributor_ids: [enterprise.id]
 }
-        }.to change(Spree::PaymentMethod, :count).by(1)
+        end.to change(Spree::PaymentMethod, :count).by(1)
 
         expect(response).to be_redirect
         expect(response).to redirect_to spree.edit_admin_payment_method_path(assigns(:payment_method))
       end
 
       it "can not create a payment method of an invalid type" do
-        expect {
+        expect do
           spree_post :create,
                      payment_method: {
 name: "Invalid Payment Method",
 type: "Spree::InvalidType",
 distributor_ids: [enterprise.id]
 }
-        }.to change(Spree::PaymentMethod, :count).by(0)
+        end.to change(Spree::PaymentMethod, :count).by(0)
 
         expect(response).to be_redirect
         expect(response).to redirect_to spree.new_admin_payment_method_path
@@ -72,7 +72,7 @@ distributor_ids: [enterprise.id]
     describe "#update" do
       context "updating a payment method" do
         let!(:payment_method) { create(:payment_method, :flat_rate) }
-        let(:params) {
+        let(:params) do
           {
             id: payment_method.id,
             payment_method: {
@@ -86,7 +86,7 @@ distributor_ids: [enterprise.id]
               }
             }
           }
-        }
+        end
 
         before { controller_login_as_admin }
 
@@ -101,14 +101,14 @@ distributor_ids: [enterprise.id]
         end
 
         context "when the given payment method type does not match" do
-          let(:params) {
+          let(:params) do
             {
               id: payment_method.id,
               payment_method: {
                 type: "Spree::Gateway::Bogus"
               }
             }
-          }
+          end
 
           it "updates the payment method type" do
             spree_post :update, params
@@ -122,18 +122,18 @@ distributor_ids: [enterprise.id]
         let!(:user) { create(:user, enterprise_limit: 2) }
         let!(:enterprise1) { create(:distributor_enterprise, owner: user) }
         let!(:enterprise2) { create(:distributor_enterprise, owner: create(:user)) }
-        let!(:payment_method) {
+        let!(:payment_method) do
           create(
 :stripe_connect_payment_method,
 distributor_ids: [enterprise1.id, enterprise2.id],
                                 preferred_enterprise_id: enterprise2.id
 )
-        }
+        end
 
         before { allow(controller).to receive(:spree_current_user) { user } }
 
         context "when an attempt is made to change the stripe account holder (preferred_enterprise_id)" do
-          let(:params) {
+          let(:params) do
             {
               id: payment_method.id,
               payment_method: {
@@ -141,7 +141,7 @@ distributor_ids: [enterprise1.id, enterprise2.id],
                 preferred_enterprise_id: enterprise1.id
               }
             }
-          }
+          end
 
           context "as a user that does not manage the existing stripe account holder" do
             it "prevents the stripe account holder from being updated" do

@@ -67,15 +67,15 @@ distributor: distributor
   end
 
   context "loading shipping methods" do
-    let!(:shipping_method1) {
+    let!(:shipping_method1) do
       create(:shipping_method, distributors: [distributor], name: "First")
-    }
-    let!(:shipping_method2) {
+    end
+    let!(:shipping_method2) do
       create(:shipping_method, distributors: [distributor], name: "Second")
-    }
-    let!(:shipping_method3) {
+    end
+    let!(:shipping_method3) do
       create(:shipping_method, distributors: [distributor], name: "Third")
-    }
+    end
     let!(:order) do
       create(
 :completed_order_with_totals,
@@ -99,14 +99,14 @@ distributor: distributor
 
   context "displaying payment fees" do
     context "with both failed and completed payments present" do
-      let!(:order) {
+      let!(:order) do
         create(
 :order_ready_to_ship,
 user: customer.user,
                       customer: customer,
 distributor: distributor
 )
-      }
+      end
       let(:completed_payment) { order.payments.completed.first }
       let!(:failed_payment) { create(:payment, order: order, state: "failed") }
 

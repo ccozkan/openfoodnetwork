@@ -8,7 +8,7 @@ describe Spree::Gateway::StripeSCA, type: :model do
   describe "#purchase" do
     let(:order) { create(:order_with_totals_and_distribution) }
     let(:credit_card) { create(:credit_card) }
-    let(:payment) {
+    let(:payment) do
       create(
         :payment,
         state: "checkout",
@@ -18,16 +18,16 @@ describe Spree::Gateway::StripeSCA, type: :model do
         source: credit_card,
         response_code: "12345"
       )
-    }
-    let(:gateway_options) {
+    end
+    let(:gateway_options) do
       { order_id: order.number }
-    }
-    let(:payment_authorised) {
+    end
+    let(:payment_authorised) do
       payment_intent(payment.amount, "requires_capture")
-    }
-    let(:capture_successful) {
+    end
+    let(:capture_successful) do
       payment_intent(payment.amount, "succeeded")
-    }
+    end
 
     it "captures the payment" do
       stub_request(:get, "https://api.stripe.com/v1/payment_intents/12345")

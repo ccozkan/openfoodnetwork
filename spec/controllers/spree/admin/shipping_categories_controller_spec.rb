@@ -11,9 +11,9 @@ module Spree
         before { controller_login_as_admin }
 
         it "creates a shipping shipping category" do
-          expect {
+          expect do
             spree_post :create, shipping_category: { name: "Frozen" }
-          }.to change { Spree::ShippingCategory.count }
+          end.to change { Spree::ShippingCategory.count }
 .by(1)
 
           expect(response).to redirect_to spree.admin_shipping_categories_url
@@ -29,9 +29,9 @@ module Spree
 
         it "deletes an existing shipping category" do
           shipping_category = create(:shipping_category)
-          expect {
+          expect do
             spree_delete :destroy, id: shipping_category.id
-          }.to change { Spree::ShippingCategory.count }
+          end.to change { Spree::ShippingCategory.count }
 .by(-1)
 
           expect(response).to redirect_to spree.admin_shipping_categories_url

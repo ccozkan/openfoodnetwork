@@ -64,7 +64,7 @@ describe ProductImport::EntryValidator do
     end
 
     context "products exist" do
-      let!(:product_g) {
+      let!(:product_g) do
         create(
           :simple_product,
           supplier: enterprise,
@@ -74,9 +74,9 @@ describe ProductImport::EntryValidator do
           variant_unit_scale: 1,
           variant_unit: 'weight'
         )
-      }
+      end
 
-      let!(:product_kg) {
+      let!(:product_kg) do
         create(
           :simple_product,
           supplier: enterprise,
@@ -86,7 +86,7 @@ describe ProductImport::EntryValidator do
           variant_unit_scale: 1000,
           variant_unit: 'weight'
         )
-      }
+      end
 
       it "validates a spreadsheet entry in g" do
         entries = [entry_g]

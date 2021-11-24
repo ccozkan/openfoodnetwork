@@ -47,10 +47,10 @@ class WeightsAndMeasures
   def find_largest_unit(scales, product_scale_system)
     return nil unless scales
 
-    largest_unit = scales.select { |scale, unit_info|
+    largest_unit = scales.select do |scale, unit_info|
       unit_info['system'] == product_scale_system &&
         @variant.unit_value / scale >= 1
-    }.max
+    end.max
     return scales.first if largest_unit.nil?
 
     largest_unit

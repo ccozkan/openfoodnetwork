@@ -11,16 +11,16 @@ describe Admin::ColumnPreferencesController, type: :controller do
     let!(:enterprise) { create(:enterprise, owner: user1, users: [user1, user2]) }
 
     context "json" do
-      let!(:column_preference) {
+      let!(:column_preference) do
         ColumnPreference.create(
 user_id: user1.id,
 action_name: 'enterprises_index',
 column_name: "name",
 visible: true
 )
-      }
+      end
 
-      let(:column_preference_params) {
+      let(:column_preference_params) do
         [
           {
 id: column_preference.id,
@@ -44,7 +44,7 @@ column_name: 'status',
 visible: true
 }
         ]
-      }
+      end
 
       context "where I don't own the preferences submitted" do
         before do

@@ -23,55 +23,55 @@ module OrderManagement
         let(:now) { Time.zone.now }
         let(:schedule) { create(:schedule, order_cycles: [oc]) }
 
-        let(:closed_oc) {
+        let(:closed_oc) do
           create(:simple_order_cycle, orders_open_at: now - 1.minute, orders_close_at: now)
-        }
-        let(:open_oc_closes_before_begins_at_oc) { # Open, but closes before begins at
+        end
+        let(:open_oc_closes_before_begins_at_oc) do # Open, but closes before begins at
           create(
 :simple_order_cycle,
                  orders_open_at: now - 1.minute,
 orders_close_at: now + 59.seconds
 )
-        }
-        let(:open_oc) { # Open & closes between begins at and ends at
+        end
+        let(:open_oc) do # Open & closes between begins at and ends at
           create(
 :simple_order_cycle,
                  orders_open_at: now - 1.minute,
 orders_close_at: now + 90.seconds
 )
-        }
-        let(:upcoming_closes_before_begins_at_oc) { # Upcoming, but closes before begins at
+        end
+        let(:upcoming_closes_before_begins_at_oc) do # Upcoming, but closes before begins at
           create(
 :simple_order_cycle,
                  orders_open_at: now + 30.seconds,
 orders_close_at: now + 59.seconds
 )
-        }
-        let(:upcoming_closes_on_begins_at_oc) { # Upcoming & closes on begins at
+        end
+        let(:upcoming_closes_on_begins_at_oc) do # Upcoming & closes on begins at
           create(
 :simple_order_cycle,
                  orders_open_at: now + 30.seconds,
 orders_close_at: now + 1.minute
 )
-        }
-        let(:upcoming_closes_on_ends_at_oc) { # Upcoming & closes on ends at
+        end
+        let(:upcoming_closes_on_ends_at_oc) do # Upcoming & closes on ends at
           create(
 :simple_order_cycle,
                  orders_open_at: now + 30.seconds,
 orders_close_at: now + 2.minutes
 )
-        }
-        let(:upcoming_closes_after_ends_at_oc) { # Upcoming & closes after ends at
+        end
+        let(:upcoming_closes_after_ends_at_oc) do # Upcoming & closes after ends at
           create(
 :simple_order_cycle,
                  orders_open_at: now + 30.seconds,
 orders_close_at: now + 121.seconds
 )
-        }
+        end
 
-        let(:subscription) {
+        let(:subscription) do
           build(:subscription, begins_at: now + 1.minute, ends_at: now + 2.minutes)
-        }
+        end
         let(:proxy_orders) { subscription.reload.proxy_orders }
         let(:order_cycles) { proxy_orders.map(&:order_cycle) }
         let(:syncer) { ProxyOrderSyncer.new(subscription) }
@@ -325,9 +325,9 @@ orders_close_at: now + 121.seconds
             end
 
             context "for an oc not included in the relevant schedule" do
-              let!(:proxy_order) {
+              let!(:proxy_order) do
                 create(:proxy_order, subscription: subscription, order_cycle: open_oc)
-              }
+              end
               before do
                 open_oc.schedule_ids = []
                 expect(open_oc.save!).to be true

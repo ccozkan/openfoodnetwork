@@ -17,28 +17,28 @@ module CheckoutHelper
     # Remove tax adjustments and (optionally) shipping fees
     adjustments.reject! { |a| a.originator_type == 'Spree::TaxRate' }
     if exclude.include? :shipping
-      adjustments.reject! { |a|
+      adjustments.reject! do |a|
         a.originator_type == 'Spree::ShippingMethod'
-      }
+      end
     end
     if exclude.include? :payment
-      adjustments.reject! { |a|
+      adjustments.reject! do |a|
         a.originator_type == 'Spree::PaymentMethod'
-      }
+      end
     end
     if exclude.include? :line_item
-      adjustments.reject! { |a|
+      adjustments.reject! do |a|
         a.adjustable_type == 'Spree::LineItem'
-      }
+      end
     end
 
     enterprise_fee_adjustments =
- adjustments.select { |a|
+ adjustments.select do |a|
       a.originator_type == 'EnterpriseFee' && a.adjustable_type != 'Spree::LineItem'
-    }
-    adjustments.reject! { |a|
+    end
+    adjustments.reject! do |a|
       a.originator_type == 'EnterpriseFee' && a.adjustable_type != 'Spree::LineItem'
-    }
+    end
     unless exclude.include? :admin_and_handling
       adjustments << Spree::Adjustment.new(
         label: I18n.t(:orders_form_admin), amount: enterprise_fee_adjustments.sum(&:amount)

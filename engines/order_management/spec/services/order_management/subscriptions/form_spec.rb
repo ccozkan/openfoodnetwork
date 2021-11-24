@@ -11,13 +11,13 @@ module OrderManagement
         let!(:product1) { create(:product, supplier: shop) }
         let!(:product2) { create(:product, supplier: shop) }
         let!(:product3) { create(:product, supplier: shop) }
-        let!(:variant1) {
+        let!(:variant1) do
           create(:variant, product: product1, unit_value: '100', price: 12.00, option_values: [])
-        }
-        let!(:variant2) {
+        end
+        let!(:variant2) do
           create(:variant, product: product2, unit_value: '1000', price: 6.00, option_values: [])
-        }
-        let!(:variant3) {
+        end
+        let!(:variant3) do
           create(
 :variant,
 product: product2,
@@ -26,81 +26,81 @@ unit_value: '1000',
 option_values: [],
 on_hand: 1
 )
-        }
+        end
         let!(:enterprise_fee) { create(:enterprise_fee, amount: 1.75) }
-        let!(:order_cycle1) {
+        let!(:order_cycle1) do
           create(
 :simple_order_cycle,
 coordinator: shop,
                      orders_open_at: 9.days.ago,
                      orders_close_at: 2.days.ago
 )
-        }
-        let!(:order_cycle2) {
+        end
+        let!(:order_cycle2) do
           create(
 :simple_order_cycle,
 coordinator: shop,
                      orders_open_at: 2.days.ago,
                      orders_close_at: 5.days.from_now
 )
-        }
-        let!(:order_cycle3) {
+        end
+        let!(:order_cycle3) do
           create(
 :simple_order_cycle,
 coordinator: shop,
                      orders_open_at: 5.days.from_now,
                      orders_close_at: 12.days.from_now
 )
-        }
-        let!(:order_cycle4) {
+        end
+        let!(:order_cycle4) do
           create(
 :simple_order_cycle,
 coordinator: shop,
                      orders_open_at: 12.days.from_now,
                      orders_close_at: 19.days.from_now
 )
-        }
-        let!(:outgoing_exchange1) {
+        end
+        let!(:outgoing_exchange1) do
           order_cycle1.exchanges.create(
 sender: shop,
 receiver: shop,
 variants: [variant1, variant2, variant3],
 enterprise_fees: [enterprise_fee]
 )
-        }
-        let!(:outgoing_exchange2) {
+        end
+        let!(:outgoing_exchange2) do
           order_cycle2.exchanges.create(
 sender: shop,
 receiver: shop,
 variants: [variant1, variant2, variant3],
 enterprise_fees: [enterprise_fee]
 )
-        }
-        let!(:outgoing_exchange3) {
+        end
+        let!(:outgoing_exchange3) do
           order_cycle3.exchanges.create(
 sender: shop,
 receiver: shop,
 variants: [variant1, variant3],
 enterprise_fees: []
 )
-        }
-        let!(:outgoing_exchange4) {
+        end
+        let!(:outgoing_exchange4) do
           order_cycle4.exchanges.create(
 sender: shop,
 receiver: shop,
 variants: [variant1, variant2, variant3],
 enterprise_fees: [enterprise_fee]
 )
-        }
-        let!(:schedule) {
+        end
+        let!(:schedule) do
           create(:schedule, order_cycles: [order_cycle1, order_cycle2, order_cycle3, order_cycle4])
-        }
+        end
         let!(:payment_method) { create(:payment_method, distributors: [shop]) }
         let!(:shipping_method) { create(:shipping_method, distributors: [shop]) }
         let!(:address) { create(:address) }
         let(:subscription) { Subscription.new }
 
-        let!(:params) {
+        let!(:params) do
           {
             shop_id: shop.id,
             customer_id: customer.id,
@@ -117,7 +117,7 @@ enterprise_fees: [enterprise_fee]
               { variant_id: variant3.id, quantity: 3, price_estimate: 9.0 }
             ]
           }
-        }
+        end
 
         let(:form) { OrderManagement::Subscriptions::Form.new(subscription, params) }
 

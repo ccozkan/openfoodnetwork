@@ -7,17 +7,17 @@ describe ProcessPaymentIntent do
 
   describe "processing a payment intent" do
     let(:customer) { create(:customer) }
-    let(:order) {
+    let(:order) do
       create(
 :order_with_totals,
 customer: customer,
 distributor: customer.enterprise,
                     state: "payment"
 )
-    }
+    end
     let(:payment_method) { create(:stripe_sca_payment_method) }
 
-    let!(:payment) {
+    let!(:payment) do
       create(
         :payment,
         payment_method: payment_method,
@@ -26,7 +26,7 @@ distributor: customer.enterprise,
         order: order,
         state: "requires_authorization"
       )
-    }
+    end
     let(:validator) { instance_double(Stripe::PaymentIntentValidator) }
 
     before do

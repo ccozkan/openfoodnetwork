@@ -61,12 +61,12 @@ describe Spree::InventoryUnit do
   context "#finalize_units!" do
     let!(:stock_location) { create(:stock_location) }
     let(:variant) { create(:variant) }
-    let(:inventory_units) {
+    let(:inventory_units) do
       [
         create(:inventory_unit, variant: variant),
         create(:inventory_unit, variant: variant)
       ]
-    }
+    end
 
     it "should create a stock movement" do
       Spree::InventoryUnit.finalize_units!(inventory_units)

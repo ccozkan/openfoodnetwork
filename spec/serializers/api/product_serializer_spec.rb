@@ -14,14 +14,14 @@ describe Api::ProductSerializer do
   let!(:product) { create(:product, primary_taxon: taxon, properties: [property], price: 20.00) }
   let(:variant1) { create(:variant, product: product) }
 
-  let(:serializer) {
+  let(:serializer) do
     described_class.new(
 product,
                         variants: [variant1],
                         current_distributor: distributor,
                         current_order_cycle: order_cycle
 )
-  }
+  end
 
   before do
     add_variant_to_order_cycle(exchange, variant1)

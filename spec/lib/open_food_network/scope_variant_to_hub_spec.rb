@@ -9,7 +9,7 @@ module OpenFoodNetwork
     let(:v)   { create(:variant, price: 11.11, on_hand: 1, on_demand: true, sku: "VARIANTSKU") }
     let(:v2)  { create(:variant, price: 22.22, on_hand: 5) }
     let(:v3)  { create(:variant, price: 33.33, on_hand: 6) }
-    let(:vo)  {
+    let(:vo)  do
       create(
 :variant_override,
 hub: hub,
@@ -19,8 +19,8 @@ count_on_hand: 2,
 on_demand: false,
                    sku: "VOSKU"
 )
-    }
-    let(:vo2) {
+    end
+    let(:vo2) do
       create(
 :variant_override,
 hub: hub,
@@ -29,11 +29,11 @@ price: 33.33,
 count_on_hand: nil,
                    on_demand: true
 )
-    }
+    end
     let(:vo3) { create(:variant_override, hub: hub, variant: v3, price: 44.44, count_on_hand: 16) }
-    let(:vo_price_only) {
+    let(:vo_price_only) do
       create(:variant_override, :use_producer_stock_settings, hub: hub, variant: v, price: 22.22)
-    }
+    end
     let(:scoper) { ScopeVariantToHub.new(hub) }
 
     describe "overriding price" do

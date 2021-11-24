@@ -47,14 +47,14 @@ Spree::Money.new(
   describe "#checkout_adjustments_for" do
     let(:order) { create(:order_with_totals_and_distribution) }
     let(:enterprise_fee) { create(:enterprise_fee, amount: 123) }
-    let!(:fee_adjustment) {
+    let!(:fee_adjustment) do
       create(
 :adjustment,
 originator: enterprise_fee,
 adjustable: order,
              order: order
 )
-    }
+    end
 
     before do
       order.update_order!
@@ -76,30 +76,30 @@ adjustable: order,
 
     context "tax rate adjustments" do
       let!(:tax_rate) { create(:tax_rate, amount: 0.1, calculator: ::Calculator::DefaultTax.new) }
-      let!(:line_item_fee_adjustment) {
+      let!(:line_item_fee_adjustment) do
         create(
 :adjustment,
 originator: enterprise_fee,
 adjustable: order.line_items.first,
              order: order
 )
-      }
-      let!(:order_tax_adjustment) {
+      end
+      let!(:order_tax_adjustment) do
         create(
 :adjustment,
                originator: tax_rate,
                adjustable: fee_adjustment,
                order: order
 )
-      }
-      let!(:line_item_fee_adjustment_tax_adjustment) {
+      end
+      let!(:line_item_fee_adjustment_tax_adjustment) do
         create(
 :adjustment,
                originator: tax_rate,
                adjustable: line_item_fee_adjustment,
                order: order
 )
-      }
+      end
 
       it "removes tax rate adjustments" do
         expect(order.all_adjustments.tax.count).to eq(2)
@@ -111,14 +111,14 @@ adjustable: order.line_items.first,
     end
 
     context "with return authorization adjustments" do
-      let!(:return_adjustment) {
+      let!(:return_adjustment) do
         create(
 :adjustment,
 originator_type: 'Spree::ReturnAuthorization',
 adjustable: order,
              order: order
 )
-      }
+      end
 
       it "includes return adjustments" do
         adjustments = helper.checkout_adjustments_for(order)

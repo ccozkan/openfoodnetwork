@@ -17,9 +17,9 @@ FactoryBot.define do
       shipment.add_shipping_method(create(:shipping_method), true)
 
       shipment.order.line_items.each do |line_item|
-        line_item.quantity.times {
+        line_item.quantity.times do
           shipment.inventory_units.create(variant_id: line_item.variant_id)
-        }
+        end
       end
     end
   end
@@ -38,15 +38,15 @@ FactoryBot.define do
         shipping_method { create(:shipping_method) }
       end
 
-      shipping_rates {
+      shipping_rates do
         [Spree::ShippingRate.create(shipping_method: shipping_method, selected: true)]
-      }
+      end
 
       after(:create) do |shipment, _evaluator|
         shipment.order.line_items.each do |line_item|
-          line_item.quantity.times {
+          line_item.quantity.times do
             shipment.inventory_units.create(variant_id: line_item.variant_id)
-          }
+          end
         end
 
         # Ensure correct shipping cost is assigned to both shipping rate and shipment.

@@ -9,7 +9,7 @@ describe Api::V0::VariantsController, type: :controller do
   let!(:variant1) { FactoryBot.create(:variant) }
   let!(:variant2) { FactoryBot.create(:variant) }
   let!(:variant3) { FactoryBot.create(:variant) }
-  let(:attributes) {
+  let(:attributes) do
     [
 :id,
 :options_text,
@@ -21,7 +21,7 @@ describe Api::V0::VariantsController, type: :controller do
 :display_as,
      :display_name
 ]
-  }
+  end
 
   before do
     allow(controller).to receive(:spree_current_user) { current_api_user }

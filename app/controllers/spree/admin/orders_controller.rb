@@ -95,9 +95,9 @@ only: [
         Spree::OrderMailer.invoice_email(@order.id).deliver_later
         flash[:success] = t('admin.orders.invoice_email_sent')
 
-        respond_with(@order) { |format|
+        respond_with(@order) do |format|
           format.html { redirect_to spree.edit_admin_order_path(@order) }
-        }
+        end
       end
 
       def print
@@ -135,9 +135,9 @@ only: [
 :must_have_valid_business_number,
                           enterprise_name: @order.distributor.name
 )
-        respond_with(@order) { |format|
+        respond_with(@order) do |format|
           format.html { redirect_to spree.edit_admin_order_path(@order) }
-        }
+        end
       end
 
       def load_distribution_choices

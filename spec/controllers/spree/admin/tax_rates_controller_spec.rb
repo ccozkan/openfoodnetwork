@@ -8,7 +8,7 @@ module Spree
       include AuthenticationHelper
 
       let!(:default_tax_zone) { create(:zone, default_tax: true) }
-      let!(:tax_rate) {
+      let!(:tax_rate) do
         create(
 :tax_rate,
 name: "Original Rate",
@@ -17,7 +17,7 @@ included_in_price: false,
            calculator: build(:calculator),
 zone: default_tax_zone
 )
-      }
+      end
 
       describe "#update" do
         before { controller_login_as_admin }
@@ -26,14 +26,14 @@ zone: default_tax_zone
           let!(:adjustment) { create(:adjustment, originator: tax_rate) }
 
           context "when the amount and included flag are not changed" do
-            let(:params) {
+            let(:params) do
               { name: "Updated Rate", amount: "0.1", included_in_price: "0" }
-            }
+            end
 
             it "updates the record" do
-              expect {
+              expect do
                 spree_put :update, id: tax_rate.id, tax_rate: params
-              }.to_not change { Spree::TaxRate.with_deleted.count }
+              end.to_not change { Spree::TaxRate.with_deleted.count }
 
               expect(response).to redirect_to spree.admin_tax_rates_url
               expect(tax_rate.reload.name).to eq "Updated Rate"
@@ -43,11 +43,11 @@ zone: default_tax_zone
 
           context "when the amount is changed" do
             it "duplicates the record and soft-deletes the duplicate" do
-              expect {
+              expect do
                 spree_put :update,
 id: tax_rate.id,
                                    tax_rate: { name: "Changed Rate", amount: "0.5" }
-              }.to change { Spree::TaxRate.with_deleted.count }
+              end.to change { Spree::TaxRate.with_deleted.count }
 .by(1)
 
               expect(response).to redirect_to spree.admin_tax_rates_url
@@ -66,11 +66,11 @@ id: tax_rate.id,
 
           context "when included_in_price is changed" do
             it "duplicates the record and soft-deletes the duplicate" do
-              expect {
+              expect do
                 spree_put :update,
 id: tax_rate.id,
                                    tax_rate: { name: "Changed Rate", included_in_price: "1" }
-              }.to change { Spree::TaxRate.with_deleted.count }
+              end.to change { Spree::TaxRate.with_deleted.count }
 .by(1)
 
               expect(response).to redirect_to spree.admin_tax_rates_url

@@ -9,15 +9,15 @@ describe VariantOverride do
   describe "scopes" do
     let(:hub1) { create(:distributor_enterprise) }
     let(:hub2) { create(:distributor_enterprise) }
-    let!(:vo1) {
+    let!(:vo1) do
       create(:variant_override, hub: hub1, variant: variant, import_date: Time.zone.now.yesterday)
-    }
-    let!(:vo2) {
+    end
+    let!(:vo2) do
       create(:variant_override, hub: hub2, variant: variant, import_date: Time.zone.now)
-    }
-    let!(:vo3) {
+    end
+    let!(:vo3) do
       create(:variant_override, hub: hub1, variant: variant, permission_revoked_at: Time.zone.now)
-    }
+    end
 
     it "ignores variant_overrides with revoked_permissions by default" do
       expect(VariantOverride.all).to_not include vo3

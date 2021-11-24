@@ -100,7 +100,7 @@ describe 'Tag Rules', js: true do
   end
 
   context "updating" do
-    let!(:default_fsm_tag_rule) {
+    let!(:default_fsm_tag_rule) do
       create(
 :filter_shipping_methods_tag_rule,
 enterprise: enterprise,
@@ -108,8 +108,8 @@ enterprise: enterprise,
 is_default: true,
 preferred_shipping_method_tags: "local"
 )
-    }
-    let!(:fp_tag_rule) {
+    end
+    let!(:fp_tag_rule) do
       create(
 :filter_products_tag_rule,
 enterprise: enterprise,
@@ -117,8 +117,8 @@ enterprise: enterprise,
 preferred_customer_tags: "member",
 preferred_variant_tags: "member"
 )
-    }
-    let!(:fpm_tag_rule) {
+    end
+    let!(:fpm_tag_rule) do
       create(
 :filter_payment_methods_tag_rule,
 enterprise: enterprise,
@@ -126,8 +126,8 @@ enterprise: enterprise,
 preferred_customer_tags: "trusted",
 preferred_payment_method_tags: "trusted"
 )
-    }
-    let!(:foc_tag_rule) {
+    end
+    let!(:foc_tag_rule) do
       create(
 :filter_order_cycles_tag_rule,
 enterprise: enterprise,
@@ -135,8 +135,8 @@ enterprise: enterprise,
 preferred_customer_tags: "wholesale",
 preferred_exchange_tags: "wholesale"
 )
-    }
-    let!(:fsm_tag_rule) {
+    end
+    let!(:fsm_tag_rule) do
       create(
 :filter_shipping_methods_tag_rule,
 enterprise: enterprise,
@@ -144,7 +144,7 @@ enterprise: enterprise,
 preferred_customer_tags: "local",
 preferred_shipping_method_tags: "local"
 )
-    }
+    end
 
     before do
       visit_tag_rules
@@ -253,12 +253,12 @@ count: 1
   end
 
   context "deleting" do
-    let!(:tag_rule) {
+    let!(:tag_rule) do
       create(:filter_products_tag_rule, enterprise: enterprise, preferred_customer_tags: "member")
-    }
-    let!(:default_rule) {
+    end
+    let!(:default_rule) do
       create(:filter_products_tag_rule, is_default: true, enterprise: enterprise)
-    }
+    end
 
     before do
       visit_tag_rules

@@ -7,9 +7,9 @@ module PermittedAttributes
     let(:oc_permitted_attributes) { PermittedAttributes::OrderCycle.new(params) }
 
     describe "with basic attributes" do
-      let(:params) {
+      let(:params) do
         ActionController::Parameters.new(order_cycle: { id: "2", name: "First Order Cycle" })
-      }
+      end
 
       it "keeps permitted and removes not permitted" do
         permitted_attributes = oc_permitted_attributes.call
@@ -20,7 +20,7 @@ module PermittedAttributes
     end
 
     describe "nested incoming_exchanges attributes" do
-      let(:params) {
+      let(:params) do
         ActionController::Parameters.new(
 order_cycle: {
 incoming_exchanges: [
@@ -32,7 +32,7 @@ variants: []
 ]
 }
 )
-      }
+      end
 
       it "keeps permitted and removes not permitted" do
         permitted_attributes = oc_permitted_attributes.call
@@ -44,7 +44,7 @@ variants: []
     end
 
     describe "variants inside incoming_exchanges attributes" do
-      let(:params) {
+      let(:params) do
         ActionController::Parameters.new(
 order_cycle: {
 incoming_exchanges: [
@@ -57,7 +57,7 @@ variants: {
 ]
 }
 )
-      }
+      end
 
       it "keeps all variant_ids provided" do
         permitted_attributes = oc_permitted_attributes.call

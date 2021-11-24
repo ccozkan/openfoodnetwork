@@ -25,10 +25,10 @@ describe Calculator::Weight do
     let(:variant) { build_stubbed(:variant, unit_value: 10_000) }
     let(:line_item) { build_stubbed(:line_item, variant: variant, quantity: 2) }
 
-    before {
+    before do
       subject.set_preference(:per_unit, 5)
       subject.set_preference(:unit_from_list, "kg")
-    }
+    end
 
     it "computes shipping cost for a line item" do
       expect(subject.compute(line_item)).to eq(100) # 10 * 2 * 5
@@ -174,14 +174,14 @@ describe Calculator::Weight do
     end
 
     context "when the product uses item unit" do
-      let!(:product_attributes) {
+      let!(:product_attributes) do
         {
 variant_unit: "items",
 variant_unit_scale: nil,
 variant_unit_name: "pc",
 display_as: "pc"
 }
-      }
+      end
       let!(:variant_attributes) { { unit_value: 3.0, weight: 2.5, display_as: "pc" } }
 
       it "is correct" do
@@ -193,20 +193,20 @@ display_as: "pc"
   end
 
   context "when variant_unit is 'items'" do
-    let(:product) {
+    let(:product) do
       build_stubbed(
 :product,
 variant_unit: 'items',
 variant_unit_scale: nil,
           variant_unit_name: "bunch"
 )
-    }
+    end
     let(:line_item) { build_stubbed(:line_item, variant: variant, quantity: 1) }
 
-    before {
+    before do
       subject.set_preference(:per_unit, 5)
       subject.set_preference(:unit_from_list, "kg")
-    }
+    end
 
     context "when unit_value is zero variant.weight is present" do
       let(:variant) { build_stubbed(:variant, product: product, unit_value: 0, weight: 10.0) }
@@ -225,7 +225,7 @@ variant_unit_scale: nil,
     end
 
     context "when unit_value is nil and variant.weight is present" do
-      let(:variant) {
+      let(:variant) do
         build_stubbed(
 :variant,
 product: product,
@@ -233,7 +233,7 @@ unit_description: "bunches",
 unit_value: nil,
           weight: 10.0
 )
-      }
+      end
 
       it "uses the variant weight" do
         line_item.final_weight_volume = 1
@@ -243,7 +243,7 @@ unit_value: nil,
     end
 
     context "when unit_value is nil and variant.weight is nil" do
-      let(:variant) {
+      let(:variant) do
         build_stubbed(
 :variant,
 product: product,
@@ -251,7 +251,7 @@ unit_description: "bunches",
 unit_value: nil,
           weight: nil
 )
-      }
+      end
 
       it "uses zero weight" do
         line_item.final_weight_volume = 1

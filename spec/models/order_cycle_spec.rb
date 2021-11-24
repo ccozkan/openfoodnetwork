@@ -204,7 +204,7 @@ receiver: create(:enterprise)
     let(:oc) { create(:simple_order_cycle) }
     let(:d1) { create(:enterprise) }
     let(:d2) { create(:enterprise) }
-    let!(:e0) {
+    let!(:e0) do
       create(
 :exchange,
 incoming: true,
@@ -212,8 +212,8 @@ incoming: true,
 sender: create(:enterprise),
 receiver: oc.coordinator
 )
-    }
-    let!(:e1) {
+    end
+    let!(:e1) do
       create(
 :exchange,
 incoming: false,
@@ -221,8 +221,8 @@ incoming: false,
 sender: oc.coordinator,
 receiver: d1
 )
-    }
-    let!(:e2) {
+    end
+    let!(:e2) do
       create(
 :exchange,
 incoming: false,
@@ -230,24 +230,24 @@ incoming: false,
 sender: oc.coordinator,
 receiver: d2
 )
-    }
+    end
     let!(:p0) { create(:simple_product) }
     let!(:p1) { create(:simple_product) }
     let!(:p1_v_deleted) { create(:variant, product: p1) }
-    let!(:p1_v_visible) {
+    let!(:p1_v_visible) do
       create(
 :variant,
 product: p1,
           inventory_items: [create(:inventory_item, enterprise: d2, visible: true)]
 )
-    }
-    let!(:p1_v_hidden) {
+    end
+    let!(:p1_v_hidden) do
       create(
 :variant,
 product: p1,
           inventory_items: [create(:inventory_item, enterprise: d2, visible: false)]
 )
-    }
+    end
     let!(:p2) { create(:simple_product) }
     let!(:p2_v) { create(:variant, product: p2) }
 
@@ -569,31 +569,31 @@ orders_close_at: 12.days.from_now
     let(:shop) { create(:enterprise) }
     let(:user) { create(:user) }
     let(:oc) { create(:order_cycle) }
-    let!(:order) {
+    let!(:order) do
       create(:completed_order_with_totals, distributor: shop, user: user, order_cycle: oc)
-    }
-    let!(:order_from_other_hub) {
+    end
+    let!(:order_from_other_hub) do
       create(
 :completed_order_with_totals,
 distributor: create(:enterprise),
 user: user,
                               order_cycle: oc
 )
-    }
-    let!(:order_from_other_user) {
+    end
+    let!(:order_from_other_user) do
       create(:completed_order_with_totals, distributor: shop, user: create(:user), order_cycle: oc)
-    }
-    let!(:order_from_other_oc) {
+    end
+    let!(:order_from_other_oc) do
       create(
 :completed_order_with_totals,
 distributor: shop,
 user: user,
                               order_cycle: create(:order_cycle)
 )
-    }
-    let!(:order_cancelled) {
+    end
+    let!(:order_cancelled) do
       create(:completed_order_with_totals, distributor: shop, user: user, order_cycle: oc)
-    }
+    end
 
     before do
       setup_email
@@ -621,9 +621,9 @@ user: user,
     let!(:oc) { create(:order_cycle, name: "Original") }
 
     it "remembers old versions" do
-      expect {
+      expect do
         oc.update!(name: "New name")
-      }.to change {
+      end.to change {
         oc.versions.count
       }.by(1)
 
@@ -635,11 +635,11 @@ user: user,
     xit "records versions when adding schedules" do
       pending "seems broken with current version"
 
-      expect {
+      expect do
         # Creating a schedule associates it automatically:
         create(:schedule)
         expect(oc.schedules.count).to eq 1
-      }.to change {
+      end.to change {
         oc.versions.count
       }.by(1)
     end

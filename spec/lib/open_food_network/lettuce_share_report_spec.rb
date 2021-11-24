@@ -41,14 +41,14 @@ module OpenFoodNetwork
         let(:variant2) { create(:variant) }
         let(:variant3) { create(:variant) }
         let(:variant4) { create(:variant, on_hand: 0, on_demand: true) }
-        let(:hub_address) {
+        let(:hub_address) do
           create(:address, address1: "distributor address", city: 'The Shire', zipcode: "1234")
-        }
+        end
         let(:hub) { create(:distributor_enterprise, address: hub_address) }
         let(:variant2_override) { create(:variant_override, hub: hub, variant: variant2) }
-        let(:variant3_override) {
+        let(:variant3_override) do
           create(:variant_override, hub: hub, variant: variant3, count_on_hand: 0)
-        }
+        end
 
         it "all items" do
           allow(report).to receive(:child_variants) {

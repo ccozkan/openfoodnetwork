@@ -39,9 +39,9 @@ module ProductImport
           )
         end
 
-        let(:reset_stock_strategy) {
+        let(:reset_stock_strategy) do
           instance_double(Catalog::ProductImport::ProductsResetStrategy)
-        }
+        end
 
         before do
           allow(entry_processor).to receive(:permission_by_id?).with(enterprise.id.to_s) { true }

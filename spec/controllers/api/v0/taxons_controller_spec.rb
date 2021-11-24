@@ -8,9 +8,9 @@ describe Api::V0::TaxonsController do
   let(:taxonomy) { create(:taxonomy) }
   let(:taxon) { create(:taxon, name: "Ruby", taxonomy: taxonomy) }
   let(:taxon2) { create(:taxon, name: "Rails", taxonomy: taxonomy) }
-  let(:attributes) {
+  let(:attributes) do
     ["id", "name", "pretty_name", "permalink", "position", "parent_id", "taxonomy_id"]
-  }
+  end
 
   before do
     allow(controller).to receive(:spree_current_user) { current_api_user }

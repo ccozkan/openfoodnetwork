@@ -4,15 +4,15 @@ require 'spec_helper'
 
 describe Spree::OrdersController, type: :controller, performance: true do
   let(:distributor) { create(:distributor_enterprise) }
-  let(:order_cycle) {
+  let(:order_cycle) do
     create(
 :simple_order_cycle,
 distributors: [distributor],
-variants: products.map { |p|
+variants: products.map do |p|
                                                                          p.variants.first
-                                                                       }
+                                                                       end
 )
-  }
+  end
   let(:products) { (0...num_products).map { create(:product) } }
   let(:order) { subject.current_order(true) }
   let(:num_products) { 20 }

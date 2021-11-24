@@ -8,9 +8,9 @@ describe ImageImporter do
 
   describe "#import" do
     it "downloads and attaches to the product" do
-      expect {
+      expect do
         subject.import(url, product)
-      }.to change {
+      end.to change {
         Spree::Image.count
       }.by(1)
 

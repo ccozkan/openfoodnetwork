@@ -19,12 +19,12 @@ js: true do
   let(:taxon_fruit) { create(:taxon, name: 'Fruit') }
   let(:taxon_veg) { create(:taxon, name: 'Vegetables') }
 
-  let!(:product1) {
+  let!(:product1) do
     create(:simple_product, supplier: producer1, primary_taxon: taxon_fruit, taxons: [taxon_fruit])
-  }
-  let!(:product2) {
+  end
+  let!(:product2) do
     create(:simple_product, supplier: producer2, primary_taxon: taxon_veg, taxons: [taxon_veg])
-  }
+  end
 
   let(:shop) { create(:distributor_enterprise) }
   let!(:er) { create(:enterprise_relationship, parent: shop, child: producer1) }

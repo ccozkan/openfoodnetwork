@@ -3,12 +3,12 @@
 require "spec_helper"
 
 describe Api::V0::ReportsController, type: :controller do
-  let(:params) {
+  let(:params) do
     {
       report_type: 'packing',
       q: { created_at_lt: Time.zone.now }
     }
-  }
+  end
 
   before do
     allow(controller).to receive(:spree_current_user) { current_user }
@@ -33,14 +33,14 @@ describe Api::V0::ReportsController, type: :controller do
       let!(:order) { create(:completed_order_with_totals) }
       let(:supplier) { order.line_items.first.product.supplier }
       let(:current_user) { supplier.owner }
-      let!(:perms) {
+      let!(:perms) do
         create(
 :enterprise_relationship,
 parent: supplier,
 child: order.distributor,
                           permissions_list: [:add_to_order_cycle]
 )
-      }
+      end
 
       it "renders results" do
         api_get :show, params

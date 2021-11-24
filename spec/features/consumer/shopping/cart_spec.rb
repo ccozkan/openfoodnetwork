@@ -10,11 +10,11 @@ describe "full-page cart", js: true do
 
   describe "viewing the cart" do
     let!(:zone) { create(:zone_with_member) }
-    let(:distributor) {
+    let(:distributor) do
       create(:distributor_enterprise, with_payment_and_shipping: true, charges_sales_tax: true)
-    }
+    end
     let(:supplier) { create(:supplier_enterprise) }
-    let!(:order_cycle) {
+    let!(:order_cycle) do
       create(
 :simple_order_cycle,
 suppliers: [supplier],
@@ -22,16 +22,16 @@ distributors: [distributor],
                      coordinator: create(:distributor_enterprise),
 variants: [product_with_tax.variants.first, product_with_fee.variants.first]
 )
-    }
-    let(:enterprise_fee) {
+    end
+    let(:enterprise_fee) do
       create(:enterprise_fee, amount: 11.00, tax_category: product_with_tax.tax_category)
-    }
-    let(:product_with_tax) {
+    end
+    let(:product_with_tax) do
       create(:taxed_product, supplier: supplier, zone: zone, price: 110.00, tax_rate_amount: 0.1)
-    }
-    let(:product_with_fee) {
+    end
+    let(:product_with_fee) do
       create(:simple_product, supplier: supplier, price: 0.86, on_hand: 100)
-    }
+    end
     let(:order) { create(:order, order_cycle: order_cycle, distributor: distributor) }
 
     before do
@@ -77,12 +77,12 @@ variants: [product_with_tax.variants.first, product_with_fee.variants.first]
     end
 
     describe "percentage fees" do
-      let(:percentage_fee) {
+      let(:percentage_fee) do
         create(
 :enterprise_fee,
                calculator: Calculator::FlatPercentPerItem.new(preferred_flat_percent: 20)
 )
-      }
+      end
 
       before do
         add_enterprise_fee percentage_fee
@@ -102,14 +102,14 @@ variants: [product_with_tax.variants.first, product_with_fee.variants.first]
 
     describe "admin and handling flat fees" do
       context "when there are fees" do
-        let(:handling_fee) {
+        let(:handling_fee) do
           create(
 :enterprise_fee,
 calculator: Calculator::FlatRate.new(preferred_amount: 1),
                  enterprise: order_cycle.coordinator,
 fee_type: 'admin'
 )
-        }
+        end
 
         before do
           add_enterprise_fee handling_fee
@@ -144,14 +144,14 @@ fee_type: 'admin'
 
     describe "admin weight calculated fees" do
       context "order with 2 line items" do
-        let(:admin_fee) {
+        let(:admin_fee) do
           create(
 :enterprise_fee,
 calculator: Calculator::Weight.new(preferred_per_unit: 1, preferred_unit_from_list: "kg"),
                  enterprise: order_cycle.coordinator,
 fee_type: 'admin'
 )
-        }
+        end
 
         before do
           product_with_fee.variants.first.update(unit_value: '2000.0')
@@ -290,22 +290,22 @@ product_with_tax.variants.first.id => 3
     context "when ordered in the same order cycle" do
       let(:address) { create(:address) }
       let(:user) { create(:user, bill_address: address, ship_address: address) }
-      let!(:prev_order1) {
+      let!(:prev_order1) do
         create(
 :completed_order_with_totals,
 order_cycle: order_cycle,
 distributor: distributor,
                               user: user
 )
-      }
-      let!(:prev_order2) {
+      end
+      let!(:prev_order2) do
         create(
 :completed_order_with_totals,
 order_cycle: order_cycle,
 distributor: distributor,
                               user: user
 )
-      }
+      end
 
       before do
         order.user = user

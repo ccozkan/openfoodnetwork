@@ -42,7 +42,7 @@ module OpenFoodNetwork
         let(:product) { create(:product) }
         let(:shipping_method) { create(:shipping_method) }
         let(:shipping_instructions) { 'pick up on thursday please!' }
-        let(:order) {
+        let(:order) do
           create(
 :order,
                  state: 'complete',
@@ -51,7 +51,7 @@ completed_at: Time.zone.now,
 bill_address: bill_address,
                  special_instructions: shipping_instructions
 )
-        }
+        end
         let(:payment_method) { create(:payment_method, distributors: [distributor]) }
         let(:payment) { create(:payment, payment_method: payment_method, order: order) }
         let(:line_item) { create(:line_item_with_shipment, product: product, order: order) }

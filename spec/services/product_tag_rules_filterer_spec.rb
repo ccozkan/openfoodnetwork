@@ -13,14 +13,14 @@ describe ProductTagRulesFilterer do
     let(:variant_hidden_by_default) { create(:variant_override, variant: v1, hub: distributor) }
     let(:variant_hidden_by_rule) { create(:variant_override, variant: v2, hub: distributor) }
     let(:variant_shown_by_rule) { create(:variant_override, variant: v3, hub: distributor) }
-    let(:variant_hidden_for_another_customer) {
+    let(:variant_hidden_for_another_customer) do
       create(:variant_override, variant: v4, hub: distributor)
-    }
+    end
     let(:customer) { create(:customer, enterprise: distributor) }
-    let(:variants_relation) {
+    let(:variants_relation) do
       Spree::Variant.joins(:product).where("spree_products.supplier_id = ?", distributor.id)
-    }
-    let(:default_hide_rule) {
+    end
+    let(:default_hide_rule) do
       create(
 :filter_products_tag_rule,
              enterprise: distributor,
@@ -28,8 +28,8 @@ describe ProductTagRulesFilterer do
              preferred_variant_tags: "hide_these_variants_from_everyone",
              preferred_matched_variants_visibility: "hidden"
 )
-    }
-    let!(:hide_rule) {
+    end
+    let!(:hide_rule) do
       create(
 :filter_products_tag_rule,
              enterprise: distributor,
@@ -37,8 +37,8 @@ describe ProductTagRulesFilterer do
              preferred_customer_tags: "hide_from_these_customers",
              preferred_matched_variants_visibility: "hidden"
 )
-    }
-    let!(:show_rule) {
+    end
+    let!(:show_rule) do
       create(
 :filter_products_tag_rule,
              enterprise: distributor,
@@ -46,8 +46,8 @@ describe ProductTagRulesFilterer do
              preferred_customer_tags: "show_for_these_customers",
              preferred_matched_variants_visibility: "visible"
 )
-    }
-    let!(:non_applicable_rule) {
+    end
+    let!(:non_applicable_rule) do
       create(
 :filter_products_tag_rule,
              enterprise: distributor,
@@ -55,7 +55,7 @@ describe ProductTagRulesFilterer do
              preferred_customer_tags: "hide_from_other_customers",
              preferred_matched_variants_visibility: "hidden"
 )
-    }
+    end
     let(:filterer) { described_class.new(distributor, customer, variants_relation) }
 
     context "when the distributor has no rules" do

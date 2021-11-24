@@ -5,13 +5,13 @@ require 'spec_helper'
 describe Api::Admin::CustomerSerializer do
   let(:tag_list) { ["one", "two", "three"] }
   let(:customer) { create(:customer, tag_list: tag_list) }
-  let!(:tag_rule) {
+  let!(:tag_rule) do
     create(
 :filter_order_cycles_tag_rule,
 enterprise: customer.enterprise,
                                preferred_customer_tags: "two"
 )
-  }
+  end
 
   it "serializes a customer with tags" do
     tag_rule_mapping = TagRule.mapping_for(Enterprise.where(id: customer.enterprise_id))

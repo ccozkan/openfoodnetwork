@@ -17,7 +17,7 @@ module Stripe
       end
 
       context "when url is found in response" do
-        let(:params) {
+        let(:params) do
           {
 "status" => "requires_source_action",
 "next_source_action" => {
@@ -25,7 +25,7 @@ module Stripe
 "authorize_with_url" => { "url" => "https://www.stripe.com/authorize" }
 }
 }
-        }
+        end
 
         it "patches response.cvv_result.message with the url in the response" do
           new_response = patcher.call!

@@ -68,7 +68,7 @@ order.number,
       end
 
       def line_items_in_print_data
-        order.line_items.map { |line_item|
+        order.line_items.map do |line_item|
           [
 line_item.quantity.to_s,
            line_item.product.name,
@@ -78,7 +78,7 @@ with_currency: false
 ),
            line_item.display_amount_with_adjustments.format(symbol: false, with_currency: false)
 ]
-        }
+        end
       end
 
       def adjustments_in_print_data
@@ -93,12 +93,12 @@ raw(adjustment.label),
       end
 
       def taxes_in_print_data
-        display_checkout_taxes_hash(order).map { |tax_rate, tax_value|
+        display_checkout_taxes_hash(order).map do |tax_rate, tax_value|
           [
 tax_rate,
            tax_value.format(with_currency: false)
 ]
-        }
+        end
       end
     end
   end

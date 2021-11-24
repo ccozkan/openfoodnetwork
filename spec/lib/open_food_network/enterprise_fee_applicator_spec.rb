@@ -7,9 +7,9 @@ module OpenFoodNetwork
   describe EnterpriseFeeApplicator do
     let(:line_item) { create(:line_item) }
     let(:inherits_tax) { true }
-    let(:enterprise_fee) {
+    let(:enterprise_fee) do
       create(:enterprise_fee, inherits_tax_category: inherits_tax, tax_category: fee_tax_category)
-    }
+    end
     let(:fee_tax_category) { nil }
     let(:tax_category) { create(:tax_category) }
     let(:product) { create(:simple_product, tax_category: tax_category) }
@@ -63,13 +63,13 @@ module OpenFoodNetwork
 
     describe "making labels" do
       let(:variant) { double(:variant, product: double(:product, name: 'Bananas')) }
-      let(:enterprise_fee) {
+      let(:enterprise_fee) do
         double(
 :enterprise_fee,
 fee_type: 'packing',
                  enterprise: double(:enterprise, name: 'Ballantyne')
 )
-      }
+      end
       let(:applicator) { EnterpriseFeeApplicator.new enterprise_fee, variant, 'distributor' }
 
       describe "#line_item_adjustment_label" do

@@ -15,14 +15,14 @@ describe Admin::EnterprisesController, type: :controller do
   let(:supplier) { create(:supplier_enterprise, owner: supplier_owner) }
   let(:country) { Spree::Country.find_by name: 'Australia' }
   let(:state) { Spree::State.find_by name: 'Victoria' }
-  let(:address_params) {
+  let(:address_params) do
     { address1: 'a', city: 'a', zipcode: 'a', country_id: country.id, state_id: state.id }
-  }
+  end
 
   before { @request.env['HTTP_REFERER'] = 'http://test.com/' }
 
   describe "creating an enterprise" do
-    let(:enterprise_params) {
+    let(:enterprise_params) do
       {
 enterprise: {
 name: 'zzz',
@@ -31,7 +31,7 @@ is_primary_producer: '0',
 address_attributes: address_params
 }
 }
-    }
+    end
 
     it "grants management permission if the current user is an enterprise user" do
       allow(controller).to receive_messages spree_current_user: distributor_manager

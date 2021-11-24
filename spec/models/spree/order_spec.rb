@@ -609,18 +609,18 @@ create(:line_item, price: 1.0, quantity: 2),
 
   describe "getting the shipping tax" do
     let(:order) { create(:order) }
-    let(:shipping_tax_rate) {
+    let(:shipping_tax_rate) do
       create(:tax_rate, amount: 0.25, included_in_price: true, zone: create(:zone_with_member))
-    }
+    end
     let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
-    let!(:shipping_method) {
+    let!(:shipping_method) do
       create(:shipping_method_with, :flat_rate, tax_category: shipping_tax_category)
-    }
+    end
 
     context "with a taxed shipment" do
-      let!(:shipment) {
+      let!(:shipment) do
         create(:shipment_with, :shipping_method, shipping_method: shipping_method, order: order)
-      }
+      end
 
       before do
         allow(order).to receive(:tax_zone) { shipping_tax_rate.zone }
@@ -643,7 +643,7 @@ create(:line_item, price: 1.0, quantity: 2),
   describe "#enterprise_fee_tax" do
     let!(:order) { create(:order) }
     let(:enterprise_fee) { create(:enterprise_fee) }
-    let!(:fee_adjustment) {
+    let!(:fee_adjustment) do
       create(
 :adjustment,
 adjustable: order,
@@ -652,8 +652,8 @@ originator: enterprise_fee,
 order: order,
 state: "closed"
 )
-    }
-    let!(:fee_tax1) {
+    end
+    let!(:fee_tax1) do
       create(
 :adjustment,
 adjustable: fee_adjustment,
@@ -662,8 +662,8 @@ originator_type: "Spree::TaxRate",
 order: order,
 state: "closed"
 )
-    }
-    let!(:fee_tax2) {
+    end
+    let!(:fee_tax2) do
       create(
 :adjustment,
 adjustable: fee_adjustment,
@@ -672,8 +672,8 @@ originator_type: "Spree::TaxRate",
 order: order,
 state: "closed"
 )
-    }
-    let!(:admin_adjustment) {
+    end
+    let!(:admin_adjustment) do
       create(
 :adjustment,
 adjustable: order,
@@ -682,7 +682,7 @@ originator: nil,
 order: order,
 state: "closed"
 )
-    }
+    end
 
     it "returns a sum of all taxes on enterprise fees" do
       expect(order.reload.enterprise_fee_tax).to eq(16.8)
@@ -698,7 +698,7 @@ state: "closed"
       create(:shipment_with, :shipping_method, shipping_method: shipping_method, order: order)
     end
     let(:enterprise_fee) { create(:enterprise_fee) }
-    let!(:fee) {
+    let!(:fee) do
       create(
 :adjustment,
 adjustable: order,
@@ -707,8 +707,8 @@ label: "EF",
 amount: 20,
              order: order
 )
-    }
-    let!(:fee_tax) {
+    end
+    let!(:fee_tax) do
       create(
 :adjustment,
 adjustable: fee,
@@ -717,8 +717,8 @@ originator: fee_tax_rate,
 order: order,
 state: "closed"
 )
-    }
-    let!(:shipping_tax) {
+    end
+    let!(:shipping_tax) do
       create(
 :adjustment,
 adjustable: shipment,
@@ -727,7 +727,7 @@ originator: shipping_tax_rate,
 order: order,
 state: "closed"
 )
-    }
+    end
 
     before do
       order.update_order!
@@ -1021,9 +1021,9 @@ distributors: [new_distributor],
       end
 
       context "and a customer for order.distributor and order.user.email does not alread exist" do
-        let!(:customer) {
+        let!(:customer) do
           create(:customer, enterprise: distributor, email: 'some-other-email@email.com')
-        }
+        end
 
         it "does not set the customer and returns nil" do
           result = order.send(:associate_customer)
@@ -1061,9 +1061,9 @@ distributors: [new_distributor],
 
     context "when a customer not been linked to the order" do
       context "but one matching order#email_for_customer already exists" do
-        let!(:customer) {
+        let!(:customer) do
           create(:customer, enterprise: distributor, email: 'some-other-email@email.com')
-        }
+        end
         before { allow(order).to receive(:email_for_customer) { 'some-other-email@email.com' } }
 
         it "links the customer customer to the order" do
@@ -1137,7 +1137,7 @@ distributors: [new_distributor],
     let(:zone) { create(:zone_with_member) }
     let(:shipping_tax_rate) { create(:tax_rate, amount: 0.25, included_in_price: true, zone: zone) }
     let(:shipping_tax_category) { create(:tax_category, tax_rates: [shipping_tax_rate]) }
-    let(:order) {
+    let(:order) do
       create(
 :completed_order_with_fees,
 distributor: distributor,
@@ -1145,7 +1145,7 @@ shipping_fee: shipping_fee,
                             payment_fee: payment_fee,
                             shipping_tax_category: shipping_tax_category
 )
-    }
+    end
     let(:shipping_fee) { 3 }
     let(:payment_fee) { 5 }
     let(:item_num) { order.line_items.length }
@@ -1194,9 +1194,9 @@ shipping_fee: shipping_fee,
     end
 
     context "changing the shipping method to one without fees" do
-      let(:shipping_method) {
+      let(:shipping_method) do
         create(:shipping_method, calculator: Calculator::FlatRate.new(preferred_amount: 0))
-      }
+      end
 
       it "updates shipping fees" do
         order.shipments = [
@@ -1211,9 +1211,9 @@ create(:shipment_with, :shipping_method, shipping_method: shipping_method)
     end
 
     context "changing the payment method to one without fees" do
-      let(:payment_method) {
+      let(:payment_method) do
         create(:payment_method, calculator: Calculator::FlatRate.new(preferred_amount: 0))
-      }
+      end
 
       it "removes transaction fees" do
         # Change the payment method
@@ -1249,22 +1249,22 @@ create(:shipment_with, :shipping_method, shipping_method: shipping_method)
     end
 
     context "when an order has been finalised in this order cycle" do
-      let!(:prev_order) {
+      let!(:prev_order) do
         create(
 :completed_order_with_totals,
 distributor: distributor,
 order_cycle: order_cycle,
                               user: order.user
 )
-      }
-      let!(:prev_order2) {
+      end
+      let!(:prev_order2) do
         create(
 :completed_order_with_totals,
 distributor: distributor,
 order_cycle: order_cycle,
                               user: order.user
 )
-      }
+      end
       let(:product) { create(:product) }
 
       before do
@@ -1285,9 +1285,9 @@ product.variants.first,
   describe "determining checkout steps for an order" do
     let!(:enterprise) { create(:enterprise) }
     let!(:order) { create(:order, distributor: enterprise) }
-    let!(:payment_method) {
+    let!(:payment_method) do
       create(:stripe_connect_payment_method, distributor_ids: [enterprise.id])
-    }
+    end
     let!(:payment) { create(:payment, order: order, payment_method: payment_method) }
 
     it "does not include the :confirm step" do
@@ -1473,13 +1473,13 @@ product.variants.first,
       end
 
       it "does not change the shipments" do
-        expect {
+        expect do
           order.ensure_updated_shipments
-        }.not_to change { order.shipments }
+        end.not_to change { order.shipments }
 
-        expect {
+        expect do
           order.ensure_updated_shipments
-        }.not_to change { order.state }
+        end.not_to change { order.state }
       end
     end
   end

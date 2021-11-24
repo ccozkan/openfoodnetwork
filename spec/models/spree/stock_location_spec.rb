@@ -64,9 +64,9 @@ module Spree
 
     it 'it creates a stock_movement' do
       variant.on_demand = false
-      expect {
+      expect do
         subject.move variant, 5
-      }.to change { subject.stock_movements.where(stock_item_id: stock_item).count }
+      end.to change { subject.stock_movements.where(stock_item_id: stock_item).count }
 .by(1)
     end
 

@@ -11,7 +11,7 @@ describe Spree::Admin::Orders::CustomerDetailsController, type: :controller do
       let(:address) { create(:address) }
       let!(:distributor) { create(:distributor_enterprise) }
       let!(:shipment) { create(:shipment) }
-      let!(:order) {
+      let!(:order) do
         create(
           :order_with_totals_and_distribution,
           state: 'cart',
@@ -22,8 +22,8 @@ describe Spree::Admin::Orders::CustomerDetailsController, type: :controller do
           bill_address: nil,
           ship_address: nil,
         )
-      }
-      let(:address_params) {
+      end
+      let(:address_params) do
         {
           firstname: address.firstname,
           lastname: address.lastname,
@@ -35,14 +35,14 @@ describe Spree::Admin::Orders::CustomerDetailsController, type: :controller do
           state_id: address.state_id,
           phone: address.phone
         }
-      }
+      end
 
       before do
         controller_login_as_enterprise_user [order.distributor]
       end
 
       it "advances the order state" do
-        expect {
+        expect do
           spree_post :update,
 order: {
 email: user.email,
@@ -50,7 +50,7 @@ bill_address_attributes: address_params,
 ship_address_attributes: address_params
 },
                               order_id: order.number
-        }.to change { order.reload.state }
+        end.to change { order.reload.state }
 .from("cart").to("payment")
       end
 

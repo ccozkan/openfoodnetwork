@@ -170,9 +170,9 @@ Package::ContentItem.new(variant, 2, :on_hand),
 
         let(:shipping_method1) { create(:shipping_method, distributors: [enterprise]) }
         let(:shipping_method2) { create(:shipping_method, distributors: [other_enterprise]) }
-        let!(:shipping_method3) {
+        let!(:shipping_method3) do
           create(:shipping_method, distributors: [enterprise], deleted_at: Time.zone.now)
-        }
+        end
 
         describe "#shipping_methods" do
           it "does not return shipping methods not used by the package's order distributor" do

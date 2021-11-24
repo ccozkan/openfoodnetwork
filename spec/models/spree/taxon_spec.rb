@@ -19,12 +19,12 @@ module Spree
     end
 
     describe "finding distributed taxons" do
-      let!(:oc_open) {
+      let!(:oc_open) do
         create(:open_order_cycle, distributors: [e], variants: [p_open.variants.first])
-      }
-      let!(:oc_closed) {
+      end
+      let!(:oc_closed) do
         create(:closed_order_cycle, distributors: [e], variants: [p_closed.variants.first])
-      }
+      end
       let!(:p_open) { create(:simple_product, primary_taxon: t1) }
       let!(:p_closed) { create(:simple_product, primary_taxon: t2) }
 
@@ -98,9 +98,9 @@ module Spree
       let(:taxonomy) { create(:taxonomy) }
 
       it "does not error out" do
-        expect {
+        expect do
           taxonomy.root.children.where(name: "Some name").first_or_create
-        }.not_to raise_error
+        end.not_to raise_error
       end
     end
   end

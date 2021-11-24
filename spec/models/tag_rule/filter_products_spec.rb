@@ -21,20 +21,20 @@ describe TagRule::FilterProducts, type: :model do
       end
 
       context "when the rule has preferred variant tags specified that match ANY of the variant tags" do
-        before {
+        before do
           allow(tag_rule).to receive(:preferred_variant_tags) {
                                "wholesale,some_tag,member"
                              }
-        }
+        end
         it { expect(tag_rule.send(:tags_match?, variant_object)).to be true }
       end
 
       context "when the rule has preferred variant tags specified that match NONE of the variant tags" do
-        before {
+        before do
           allow(tag_rule).to receive(:preferred_variant_tags) {
                                "wholesale,some_tag,some_other_tag"
                              }
-        }
+        end
         it { expect(tag_rule.send(:tags_match?, variant_object)).to be false }
       end
     end

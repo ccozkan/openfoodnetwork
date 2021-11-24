@@ -7,7 +7,7 @@ describe Spree::Admin::ShippingMethodsController, type: :controller do
 
   describe "#update" do
     let(:shipping_method) { create(:shipping_method) }
-    let(:params) {
+    let(:params) do
       {
         id: shipping_method.id,
         shipping_method: {
@@ -16,7 +16,7 @@ describe Spree::Admin::ShippingMethodsController, type: :controller do
           }
         }
       }
-    }
+    end
 
     before { controller_login_as_admin }
 

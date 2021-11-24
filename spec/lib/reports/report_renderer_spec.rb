@@ -3,16 +3,16 @@
 require 'spec_helper'
 
 describe Reporting::ReportRenderer do
-  let(:data) {
+  let(:data) do
     [
       { "id" => 1, "name" => "carrots", "quantity" => 3 },
       { "id" => 2, "name" => "onions", "quantity" => 6 }
     ]
-  }
+  end
   let(:report_data) { ActiveRecord::Result.new(data.first.keys, data.map(&:values)) }
-  let(:report) {
+  let(:report) do
     OpenStruct.new(report_data: report_data)
-  }
+  end
   let(:service) { described_class.new(report) }
 
   describe "#table_headers" do

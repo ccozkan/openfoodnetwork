@@ -22,9 +22,9 @@ module Stripe
       end
 
       context "when called from Stripe Connect" do
-        let(:customer_response_body) {
+        let(:customer_response_body) do
           JSON.generate(id: customer_id, default_card: card_id, sources: { data: [{ id: "1" }] })
-        }
+        end
 
         it "fetches the customer id and the card id from the correct response fields" do
           profile_storer.create_customer_from_token
@@ -35,9 +35,9 @@ module Stripe
       end
 
       context "when called from Stripe SCA" do
-        let(:customer_response_body) {
+        let(:customer_response_body) do
           JSON.generate(customer: customer_id, id: card_id, sources: { data: [{ id: "1" }] })
-        }
+        end
 
         it "fetches the customer id and the card id from the correct response fields" do
           profile_storer.create_customer_from_token

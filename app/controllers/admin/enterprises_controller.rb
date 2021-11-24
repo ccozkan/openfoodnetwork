@@ -34,11 +34,11 @@ module Admin
     def index
       respond_to do |format|
         format.html
-        format.json {
+        format.json do
           render_as_json @collection,
 ams_prefix: params[:ams_prefix],
                                       spree_current_user: spree_current_user
-        }
+        end
       end
     end
 
@@ -62,15 +62,15 @@ ams_prefix: params[:ams_prefix],
         respond_with(@object) do |format|
           format.html { redirect_to location_after_save }
           format.js   { render layout: false }
-          format.json {
+          format.json do
             render_as_json @object, ams_prefix: 'index', spree_current_user: spree_current_user
-          }
+          end
         end
       else
         respond_with(@object) do |format|
-          format.json {
+          format.json do
             render json: { errors: @object.errors.messages }, status: :unprocessable_entity
-          }
+          end
         end
       end
     end

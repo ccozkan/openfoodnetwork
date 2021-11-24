@@ -168,9 +168,9 @@ module OrderManagement
           let!(:payment) { create(:payment, order: order, state: "requires_authorization") }
 
           it "returns requires_authorization" do
-            expect {
+            expect do
               updater.update_payment_state
-            }.to change { order.payment_state }
+            end.to change { order.payment_state }
 .to 'requires_authorization'
           end
         end
@@ -190,9 +190,9 @@ module OrderManagement
             order.payment_total = 2
             order.total = 1
 
-            expect {
+            expect do
               updater.update_payment_state
-            }.to change { order.payment_state }
+            end.to change { order.payment_state }
 .to 'credit_owed'
           end
         end
@@ -202,9 +202,9 @@ module OrderManagement
             order.payment_total = 1
             order.total = 2
 
-            expect {
+            expect do
               updater.update_payment_state
-            }.to change { order.payment_state }
+            end.to change { order.payment_state }
 .to 'balance_due'
           end
         end
@@ -214,9 +214,9 @@ module OrderManagement
             order.payment_total = 30
             order.total = 30
 
-            expect {
+            expect do
               updater.update_payment_state
-            }.to change { order.payment_state }
+            end.to change { order.payment_state }
 .to 'paid'
           end
         end
@@ -229,9 +229,9 @@ module OrderManagement
               order.payment_total = 0
               order.total = 30
 
-              expect {
+              expect do
                 updater.update_payment_state
-              }.to change { order.payment_state }
+              end.to change { order.payment_state }
 .to 'void'
             end
           end
@@ -246,9 +246,9 @@ module OrderManagement
                                 false
                               }
 
-              expect {
+              expect do
                 updater.update_payment_state
-              }.to change { order.payment_state }
+              end.to change { order.payment_state }
 .to 'credit_owed'
             end
           end
@@ -260,9 +260,9 @@ module OrderManagement
               allow(order).to receive_message_chain(:payments, :valid, :empty?) { false }
               allow(order).to receive_message_chain(:payments, :completed, :empty?) { false }
 
-              expect {
+              expect do
                 updater.update_payment_state
-              }.to change { order.payment_state }
+              end.to change { order.payment_state }
 .to 'void'
             end
           end
@@ -303,9 +303,9 @@ module OrderManagement
 
       context '#before_save_hook' do
         let(:distributor) { build(:distributor_enterprise) }
-        let(:shipment) {
+        let(:shipment) do
           create(:shipment_with, :shipping_method, shipping_method: shipping_method)
-        }
+        end
 
         before do
           order.distributor = distributor
@@ -358,7 +358,7 @@ module OrderManagement
             before { allow(order).to receive(:completed?) { true } }
 
             context "and the order has legacy taxes" do
-              let!(:legacy_tax_adjustment) {
+              let!(:legacy_tax_adjustment) do
                 create(
 :adjustment,
 order: order,
@@ -366,7 +366,7 @@ adjustable: order,
 included: false,
              originator_type: "Spree::TaxRate"
 )
-              }
+              end
 
               it "re-applies order taxes" do
                 expect(order).to receive(:create_tax_charge!)

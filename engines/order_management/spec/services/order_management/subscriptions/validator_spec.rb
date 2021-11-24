@@ -64,9 +64,9 @@ module OrderManagement
         end
 
         describe "shipping method validation" do
-          let(:subscription) {
+          let(:subscription) do
             instance_double(Subscription, subscription_stubs.except(:shipping_method))
-          }
+          end
           before { stub_validations(validator, validation_stubs.except(:shipping_method_allowed?)) }
 
           context "when no shipping method is present" do
@@ -80,9 +80,9 @@ module OrderManagement
 
           context "when a shipping method is present" do
             let(:shipping_method) { instance_double(Spree::ShippingMethod, distributors: [shop]) }
-            before {
+            before do
               expect(subscription).to receive(:shipping_method).at_least(:once) { shipping_method }
-            }
+            end
 
             context "and the shipping method is not associated with the shop" do
               before { allow(shipping_method).to receive(:distributors) { [double(:enterprise)] } }
@@ -105,9 +105,9 @@ module OrderManagement
         end
 
         describe "payment method validation" do
-          let(:subscription) {
+          let(:subscription) do
             instance_double(Subscription, subscription_stubs.except(:payment_method))
-          }
+          end
           before { stub_validations(validator, validation_stubs.except(:payment_method_allowed?)) }
 
           context "when no payment method is present" do
@@ -121,9 +121,9 @@ module OrderManagement
 
           context "when a payment method is present" do
             let(:payment_method) { instance_double(Spree::PaymentMethod, distributors: [shop]) }
-            before {
+            before do
               expect(subscription).to receive(:payment_method).at_least(:once) { payment_method }
-            }
+            end
 
             context "and the payment method is not associated with the shop" do
               before { allow(payment_method).to receive(:distributors) { [double(:enterprise)] } }
@@ -146,18 +146,18 @@ module OrderManagement
         end
 
         describe "payment method type validation" do
-          let(:subscription) {
+          let(:subscription) do
             instance_double(Subscription, subscription_stubs.except(:payment_method))
-          }
-          before {
+          end
+          before do
             stub_validations(validator, validation_stubs.except(:payment_method_type_allowed?))
-          }
+          end
 
           context "when a payment method is present" do
             let(:payment_method) { instance_double(Spree::PaymentMethod, distributors: [shop]) }
-            before {
+            before do
               expect(subscription).to receive(:payment_method).at_least(:once) { payment_method }
-            }
+            end
 
             context "and the payment method type is not in the approved list" do
               before { allow(payment_method).to receive(:type) { "Blah" } }
@@ -181,9 +181,9 @@ module OrderManagement
         end
 
         describe "dates" do
-          let(:subscription) {
+          let(:subscription) do
             instance_double(Subscription, subscription_stubs.except(:begins_at, :ends_at))
-          }
+          end
           before { stub_validations(validator, validation_stubs.except(:ends_at_after_begins_at?)) }
           before { expect(subscription).to receive(:begins_at).at_least(:once) { begins_at } }
 
@@ -237,9 +237,9 @@ module OrderManagement
 
         describe "addresses" do
           before { stub_validations(validator, validation_stubs) }
-          let(:subscription) {
+          let(:subscription) do
             instance_double(Subscription, subscription_stubs.except(:bill_address, :ship_address))
-          }
+          end
           before { expect(subscription).to receive(:bill_address).at_least(:once) { bill_address } }
           before { expect(subscription).to receive(:ship_address).at_least(:once) { ship_address } }
 
@@ -341,18 +341,18 @@ module OrderManagement
         end
 
         describe "credit card" do
-          let(:subscription) {
+          let(:subscription) do
             instance_double(Subscription, subscription_stubs.except(:payment_method))
-          }
+          end
           before { stub_validations(validator, validation_stubs.except(:credit_card_ok?)) }
-          before {
+          before do
             expect(subscription).to receive(:payment_method).at_least(:once) { payment_method }
-          }
+          end
 
           context "when using a Check payment method" do
-            let(:payment_method) {
+            let(:payment_method) do
               instance_double(Spree::PaymentMethod, type: "Spree::PaymentMethod::Check")
-            }
+            end
 
             it "returns true" do
               expect(validator.valid?).to be true
@@ -361,9 +361,9 @@ module OrderManagement
           end
 
           context "when using the StripeConnect payment gateway" do
-            let(:payment_method) {
+            let(:payment_method) do
               instance_double(Spree::PaymentMethod, type: "Spree::Gateway::StripeConnect")
-            }
+            end
             before { expect(subscription).to receive(:customer).at_least(:once) { customer } }
 
             context "when the customer does not allow charges" do
@@ -414,14 +414,14 @@ module OrderManagement
 
         describe "subscription line items" do
           let(:subscription) { instance_double(Subscription, subscription_stubs) }
-          before {
+          before do
             stub_validations(validator, validation_stubs.except(:subscription_line_items_present?))
-          }
-          before {
+          end
+          before do
             expect(subscription).to receive(:subscription_line_items).at_least(:once) {
               subscription_line_items
             }
-          }
+          end
 
           context "when no subscription line items exist" do
             let(:subscription_line_items) { [] }
@@ -433,9 +433,9 @@ module OrderManagement
           end
 
           context "when subscription line items exist but all are marked for destruction" do
-            let(:subscription_line_item1) {
+            let(:subscription_line_item1) do
               instance_double(SubscriptionLineItem, marked_for_destruction?: true)
-            }
+            end
             let(:subscription_line_items) { [subscription_line_item1] }
 
             it "adds an error and returns false" do
@@ -445,12 +445,12 @@ module OrderManagement
           end
 
           context "when subscription line items exist and some are not marked for destruction" do
-            let(:subscription_line_item1) {
+            let(:subscription_line_item1) do
               instance_double(SubscriptionLineItem, marked_for_destruction?: true)
-            }
-            let(:subscription_line_item2) {
+            end
+            let(:subscription_line_item2) do
               instance_double(SubscriptionLineItem, marked_for_destruction?: false)
-            }
+            end
             let(:subscription_line_items) { [subscription_line_item1, subscription_line_item2] }
 
             it "returns true" do
@@ -462,14 +462,14 @@ module OrderManagement
 
         describe "variant availability" do
           let(:subscription) { instance_double(Subscription, subscription_stubs) }
-          before {
+          before do
             stub_validations(validator, validation_stubs.except(:requested_variants_available?))
-          }
-          before {
+          end
+          before do
             expect(subscription).to receive(:subscription_line_items).at_least(:once) {
               subscription_line_items
             }
-          }
+          end
 
           context "when no subscription line items exist" do
             let(:subscription_line_items) { [] }
@@ -483,12 +483,12 @@ module OrderManagement
           context "when subscription line items exist" do
             let(:variant1) { instance_double(Spree::Variant, id: 1) }
             let(:variant2) { instance_double(Spree::Variant, id: 2) }
-            let(:subscription_line_item1) {
+            let(:subscription_line_item1) do
               instance_double(SubscriptionLineItem, variant: variant1)
-            }
-            let(:subscription_line_item2) {
+            end
+            let(:subscription_line_item2) do
               instance_double(SubscriptionLineItem, variant: variant2)
-            }
+            end
             let(:subscription_line_items) { [subscription_line_item1] }
 
             context "but some variants are unavailable" do

@@ -15,9 +15,9 @@ FactoryBot.define do
     password { 'secret' }
     password_confirmation { password }
     if Spree.user_class.attribute_method? :authentication_token
-      authentication_token {
+      authentication_token do
         generate(:user_authentication_token)
-      }
+      end
     end
 
     confirmation_sent_at { '1970-01-01 00:00:00' }

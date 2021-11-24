@@ -6,15 +6,15 @@ describe TaxHelper, type: :helper do
   let(:line_item) { create(:line_item) }
   let!(:tax_rate) { create(:tax_rate, amount: 0.1) }
   let!(:tax_rate2) { create(:tax_rate, amount: 0.2, included_in_price: false) }
-  let!(:included_tax_adjustment) {
+  let!(:included_tax_adjustment) do
     create(:adjustment, originator: tax_rate, adjustable: line_item, state: "closed")
-  }
-  let!(:additional_tax_adjustment) {
+  end
+  let!(:additional_tax_adjustment) do
     create(:adjustment, originator: tax_rate2, adjustable: line_item, state: "closed")
-  }
-  let!(:no_tax_adjustment) {
+  end
+  let!(:no_tax_adjustment) do
     create(:adjustment, amount: 0, adjustable: line_item, state: "closed")
-  }
+  end
 
   describe "#display_taxes" do
     it "displays included tax" do

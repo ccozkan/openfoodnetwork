@@ -146,9 +146,9 @@ if: lambda { |shipment|
     def find_shipping_rate_for(shipping_method_id)
       return unless shipping_method_id
 
-      shipping_rates.detect { |rate|
+      shipping_rates.detect do |rate|
         rate.shipping_method_id == shipping_method_id
-      }
+      end
     end
 
     def currency
