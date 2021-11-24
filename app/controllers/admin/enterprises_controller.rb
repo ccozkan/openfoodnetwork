@@ -330,7 +330,7 @@ ams_prefix: params[:ams_prefix] || 'basic',
     def location_after_save
       referer_path = OpenFoodNetwork::RefererParser.path(request.referer)
       
-      refered_from_producer_properties = referer_path =~ /\/producer_properties$/
+      refered_from_producer_properties = referer_path =~ %r{/producer_properties$}
       
 
       if refered_from_producer_properties
