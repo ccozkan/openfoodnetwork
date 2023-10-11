@@ -55,6 +55,9 @@ module Admin
       @report_title = report_title
       @rendering_options = rendering_options
       @data = Reporting::FrontendData.new(spree_current_user)
+      @completed_at_gt = params[:q].dig(:completed_at_gt)
+      @completed_at_lt = params[:q].dig(:completed_at_lt)
+      # asd
 
       variant_id_in = params[:variant_id_in]&.compact_blank
       load_selected_variant if variant_id_in.present?
